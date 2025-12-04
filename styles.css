@@ -1569,3 +1569,55 @@ body.theme-light .page-antibiopro .result * {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+
+/* ============================================================
+   AJUSTEMENTS : cartes pleine largeur + images plus grandes
+   ============================================================ */
+
+/* Sections principales en pleine largeur (pas de bande vide sur les côtés) */
+.container,
+.home,
+.anesth-menu,
+.rean-menu {
+  max-width: 100%;
+  margin: 0;
+  padding-inline: 8px;
+}
+
+/* Réduit un peu l'espace entre les cartes pour qu'elles remplissent mieux */
+.home .grid,
+.anesth-cards,
+.rean-grid {
+  gap: 8px;
+}
+
+/* Cartes de menus : on les fait bien “remplir” leur colonne */
+.home .card,
+.anesth-card,
+.rean-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* Images dans les encadrés : beaucoup plus grandes, occupent presque tout,
+   en laissant le titre visible en dessous */
+.home .card .menu-section-img,
+.anesth-card .menu-section-img,
+.rean-card .menu-section-img {
+  width: 100%;
+  flex: 1 1 auto;
+  object-fit: cover;      /* remplit bien l'encadré, quitte à recadrer un peu */
+  display: block;
+}
+
+/* Titres : collés à l'image, peu de marge pour garder un maximum de place à l'image */
+.home .card h3,
+.anesth-card h3,
+.rean-card h3 {
+  margin-top: 8px;
+  margin-bottom: 4px;
+  padding: 0 4px;
+  font-size: 1rem;
+  text-align: center;
+}
