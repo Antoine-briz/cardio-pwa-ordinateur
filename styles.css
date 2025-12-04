@@ -1670,27 +1670,43 @@ body.theme-light .page-antibiopro .result * {
   width: 100%;
 }
 
-.page-header {
+/* ============================================================
+   ENCADRÉ INCLINÉ À DROITE
+   ============================================================ */
+
+.page-header-card {
   position: relative;
-  padding: 24px 0;
-  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
 }
 
-.page-header::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  right: 5%;
-  width: 220px;
-  height: 220px;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  opacity: 0.15;
-  transform: translateY(-50%);
-  pointer-events: none;
+/* Le titre reste à gauche */
+.page-header-card h2 {
+  flex: 1;
 }
 
-.formules-header::after {
-  background-image: url('img/formules.png');
+/* Le petit encadré contenant l’image */
+.angled-card {
+  width: 180px;              /* taille de l’encadré */
+  height: 180px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  transform: rotate(8deg);    /* inclinaison */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-left: 24px;
 }
+
+/* L’image intérieure */
+.angled-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: rotate(-8deg);   /* CONTRAIRE → l’image reste droite ! */
+}
+
