@@ -4454,7 +4454,7 @@ function renderInterventionTAVI() {
   renderInterventionPage({
     titre: "TAVI",
     sousTitre: "",
-    image: "cardiostruct.png",
+    image: "cardiostruct2.png",
     encadres,
   });
 
@@ -4694,7 +4694,7 @@ function renderInterventionMitraClip() {
   renderInterventionPage({
     titre: "Mitra-clip",
     sousTitre: "",
-    image: "cardiostruct.png",
+    image: "mitraclip.png",
     encadres,
   });
 
@@ -4894,7 +4894,7 @@ function renderInterventionFOPCIA() {
   renderInterventionPage({
     titre: "Fermeture FOP / CIA",
     sousTitre: "",
-    image: "cardiostruct.png",
+    image: "mitralclip.png",
     encadres,
   });
 
@@ -5068,7 +5068,7 @@ function renderInterventionPacemakerDAI() {
   renderInterventionPage({
     titre: "Pacemaker & DAI",
     sousTitre: "Rythmologie",
-    image: "cardiostruct.png",
+    image: "pm.png",
     encadres,
   });
 
@@ -5177,7 +5177,7 @@ function renderInterventionAblationDroit() {
   renderInterventionPage({
     titre: "Ablations du cœur droit",
     sousTitre: "Flutter commun, ESV / TV droites",
-    image: "cardiostruct.png",
+    image: "ablation.png",
     encadres,
   });
 }
@@ -5257,7 +5257,7 @@ function renderInterventionAblationGauche() {
   renderInterventionPage({
     titre: "Ablations du cœur gauche",
     sousTitre: "Flutter gauche, FA, ESV / TV gauches",
-    image: "cardiostruct.png",
+    image: "ablation.png",
     encadres,
   });
 
