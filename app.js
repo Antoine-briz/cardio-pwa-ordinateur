@@ -5259,52 +5259,72 @@ function setupAblationGaucheLogic() {
 
 function renderReanMenu() {
   $app.innerHTML = `
-    <section>
+    <section class="rean-menu">
       <div class="hero">
-        <img src="img/titre.png" alt="Réanimation" />
         <h2>Protocoles de réanimation</h2>
       </div>
 
-      <div class="grid">
-        <button class="btn" onclick="location.hash = '#/reanimation/formules'">
-          Formules
-        </button>
+      <div class="grid rean-grid">
 
-        <button class="btn" onclick="renderReanPrescriptionsPostOp()">
-          Prescriptions post-opératoires
-        </button>
+        <!-- 1. Formules -->
+        <div class="card rean-card" onclick="location.hash = '#/reanimation/formules'">
+          <img src="img/formules.png" alt="Formules" class="menu-section-img" />
+          <h3>Formules</h3>
+        </div>
 
-        <button class="btn" onclick="renderReanSaignementsPostOp()">
-          Saignements post-opératoires
-        </button>
+        <!-- 2. Prescriptions post-opératoires -->
+        <div class="card rean-card" onclick="renderReanPrescriptionsPostOp()">
+          <img src="img/prescription.png" alt="Prescriptions post-opératoires" class="menu-section-img" />
+          <h3>Prescriptions post-opératoires</h3>
+        </div>
 
-        <button class="btn" onclick="renderReanFAPostOp()">
-          FA post-opératoire
-        </button>
+        <!-- 3. Saignements post-opératoires -->
+        <div class="card rean-card" onclick="renderReanSaignementsPostOp()">
+          <img src="img/saignement.png" alt="Saignements post-opératoires" class="menu-section-img" />
+          <h3>Saignements post-opératoires</h3>
+        </div>
 
-        <button class="btn" onclick="location.hash = '#/reanimation/eto'">
-          ETO (hors assistances)
-        </button>
+        <!-- 4. FA post-opératoire -->
+        <div class="card rean-card" onclick="renderReanFAPostOp()">
+          <img src="img/fa.png" alt="FA post-opératoire" class="menu-section-img" />
+          <h3>FA post-opératoire</h3>
+        </div>
 
-        <button class="btn" onclick="renderReanAntibiotherapieMenu()">
-          Antibiothérapies
-        </button>
+        <!-- 5. ETO (hors assistances) -->
+        <div class="card rean-card" onclick="location.hash = '#/reanimation/eto'">
+          <img src="img/eto.png" alt="Échocardiographie trans-œsophagienne" class="menu-section-img" />
+          <h3>ETO (hors assistances)</h3>
+        </div>
 
-        <button class="btn" onclick="location.hash = '#/reanimation/eer'">
-          EER et échanges plasmatiques
-        </button>
+        <!-- 6. Antibiothérapies -->
+        <div class="card rean-card" onclick="renderReanAntibiotherapieMenu()">
+          <img src="img/antibiotherapie.png" alt="Antibiothérapie en réanimation" class="menu-section-img" />
+          <h3>Antibiothérapies</h3>
+        </div>
 
-        <button class="btn" onclick="location.hash = '#/reanimation/transplantation'">
-          Transplantation cardiaque
-        </button>
+        <!-- 7. EER et échanges plasmatiques -->
+        <div class="card rean-card" onclick="location.hash = '#/reanimation/eer'">
+          <img src="img/dialyse.png" alt="EER et échanges plasmatiques" class="menu-section-img" />
+          <h3>EER et échanges plasmatiques</h3>
+        </div>
 
-        <button class="btn" onclick="location.hash = '#/reanimation/assistances'">
-          Assistances circulatoires
-        </button>
+        <!-- 8. Transplantation cardiaque -->
+        <div class="card rean-card" onclick="location.hash = '#/reanimation/transplantation'">
+          <img src="img/transplantation.png" alt="Transplantation cardiaque" class="menu-section-img" />
+          <h3>Transplantation cardiaque</h3>
+        </div>
+
+        <!-- 9. Assistances circulatoires -->
+        <div class="card rean-card" onclick="location.hash = '#/reanimation/assistances'">
+          <img src="img/assistances.png" alt="Assistances circulatoires" class="menu-section-img" />
+          <h3>Assistances circulatoires</h3>
+        </div>
+
       </div>
     </section>
   `;
 }
+
 
 /* ====================================================================
    RÉANIMATION – FORMULES
