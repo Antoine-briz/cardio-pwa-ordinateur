@@ -11,13 +11,28 @@ function h(cls, html) {
 }
 
 function sectionHeader(title, imageFile) {
+  // Si pas d'image, on garde l'ancien comportement simple
+  if (!imageFile) {
+    return `
+      <div class="hero">
+        <h2>${title}</h2>
+      </div>
+    `;
+  }
+
+  // Avec image : encadré incliné à droite
   return `
-    <div class="hero">
+    <div class="hero page-header-card">
       <h2>${title}</h2>
-      <img src="img/${imageFile}" alt="${title}">
+      <div class="angled-card">
+        <img src="img/${imageFile}" alt="${title}">
+      </div>
     </div>
   `;
 }
+
+
+
 // ==========================
 //  GESTION DU THÈME GLOBAL
 // ==========================
@@ -2308,10 +2323,21 @@ $btnRun.addEventListener("click", () => {
 function renderInterventionPage({ titre, sousTitre = "", encadres, image = null }) {
   $app.innerHTML = `
     <section>
-      <div class="hero">
-        <h2 data-title="${titre}">${titre}</h2>
-        ${image ? `<img src="img/${image}" alt="${titre}">` : ""}
-        ${sousTitre ? `<h3>${sousTitre}</h3>` : ""}
+      <div class="hero page-header-card">
+        <div class="page-header-text">
+          <h2 data-title="${titre}">${titre}</h2>
+          ${sousTitre ? `<h3>${sousTitre}</h3>` : ""}
+        </div>
+
+        ${
+          image
+            ? `
+          <div class="angled-card">
+            <img src="img/${image}" alt="${titre}">
+          </div>
+        `
+            : ""
+        }
       </div>
 
       ${encadres
@@ -2329,6 +2355,7 @@ function renderInterventionPage({ titre, sousTitre = "", encadres, image = null 
     </section>
   `;
 }
+
 
 function expandPatientCharacteristics() {
   // On cible tous les <details class="card">
