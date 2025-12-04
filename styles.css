@@ -1970,3 +1970,20 @@ details.card:first-of-type {
   line-height: 1.2;
   text-align: center;
 }
+
+/* ============================================================
+   Centrage des 4 encadrés du menu Anesthésie (2 × 2)
+   ============================================================ */
+
+/* 1. Grille centrée */
+.anesth-cards {
+  display: grid !important;
+  grid-template-columns: repeat(2, 340px); /* colonnes fixes → permet le centrage */
+  justify-content: center;                 /* centre la grille dans l’espace */
+  gap: 24px;
+}
+
+/* 2. Largeur fixe des cartes */
+.anesth-card {
+  width: 340px;
+}
