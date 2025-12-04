@@ -65,13 +65,13 @@ function initTheme() {
 //  PAGE D’ACCUEIL
 // =====================================================================
 
+// =====================================================================
+//  PAGE D’ACCUEIL
+// =====================================================================
+
 function renderHome() {
   $app.innerHTML = `
     <section class="home">
-      <div class="hero">
-        <img src="img/titre.png" alt="Titre" class="menu-title" />
-      </div>
-
       <div class="grid">
         <div class="card" onclick="location.hash = '#/anesthesie'">
           <h3>Protocoles d’anesthésie</h3>
@@ -89,17 +89,21 @@ function renderHome() {
         </div>
       </div>
 
-      <div style="margin-top:24px;">
+      <div class="home-main-buttons">
         <button class="btn outline" onclick="window.open('files/planning_medical.xlsx')">
-  Planning médical
-</button>
-        <button class="btn ghost" style="margin-top:8px;" onclick="location.hash = '#/annuaire'">
+          Planning médical
+        </button>
+        <button class="btn ghost" onclick="location.hash = '#/annuaire'">
           Annuaire
+        </button>
+        <button class="btn ghost" onclick="location.hash = '#/codes'">
+          Codes d’accès
         </button>
       </div>
     </section>
   `;
 }
+
 
 
 // =====================================================================
