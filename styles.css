@@ -1414,3 +1414,158 @@ body.theme-light .page-antibiopro .result * {
 .back-btn:hover {
   opacity: 0.85;
 }
+
+/* ============================================================
+   EXTENSIONS POUR VERSION ORDINATEUR
+   (À ajouter à la fin du fichier)
+   ============================================================ */
+
+/* -------------------------------
+   Container élargi
+---------------------------------- */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* -------------------------------
+   Header avec bandeau ordinateur
+---------------------------------- */
+.app-header {
+  padding: 0;
+}
+
+.header-banner {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* -------------------------------
+   Grilles multi-colonnes sur desktop
+---------------------------------- */
+@media (min-width: 960px) {
+  section > .grid {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+}
+
+/* -------------------------------
+   Grille "two" pour formulaires
+---------------------------------- */
+.grid.two {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (max-width: 800px) {
+  .grid.two {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================
+   ACCUEIL – 3 encadrés + 3 boutons
+   ============================================================ */
+.home {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.home .grid {
+  margin-top: 24px;
+}
+
+/* Ligne de boutons sous les 3 cartes */
+.home-main-buttons {
+  margin-top: 32px;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.home-main-buttons .btn {
+  width: auto;
+  min-width: 200px;
+}
+
+/* ============================================================
+   ANESTHÉSIE – boutons + 4 encadrés images
+   ============================================================ */
+.anesth-menu {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.anesth-top-row {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.anesth-top-row .btn {
+  width: auto;
+  min-width: 220px;
+}
+
+/* Grille des 4 cartes */
+.anesth-cards {
+  display: grid;
+  gap: 16px;
+}
+
+@media (min-width: 960px) {
+  .anesth-cards {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.anesth-card {
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.anesth-card .menu-section-img {
+  max-width: 140px;
+  margin-bottom: 12px;
+}
+
+/* ============================================================
+   RÉANIMATION – grille 3×3 d'encadrés avec image
+   ============================================================ */
+.rean-menu {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.rean-grid {
+  margin-top: 24px;
+}
+
+.rean-card {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+
+.rean-card .menu-section-img {
+  max-width: 140px;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+@media (min-width: 960px) {
+  .rean-menu .rean-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
