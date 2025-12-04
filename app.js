@@ -170,12 +170,6 @@ function renderAnesthMenu() {
           </div>
         </div>
       </div>
-
-      <!-- Colonne droite : image verticale pleine hauteur -->
-      <aside class="intervention-side">
-        <img src="img/anesthesie2.png" alt="Anesthésie">
-      </aside>
-
     </section>
   `;
 }
