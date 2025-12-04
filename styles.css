@@ -1680,3 +1680,63 @@ main.container {
   object-fit: cover;   /* l'image remplit la colonne sans bandes vides */
   display: block;
 }
+
+/* ============================================================
+   Ajustements d'affichage (version ordinateur)
+   ============================================================ */
+
+/* 1. Accueil : espace au-dessus / au-dessous des 3 encadrés */
+.home > .grid {
+  margin-top: 32px;
+  margin-bottom: 32px;
+}
+
+/* 2. Menu Anesthésie : 4 encadrés sur 2 lignes (2x2) plein large */
+.anesth-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  width: 100%;
+}
+
+.anesth-card {
+  width: 100%;
+}
+
+/* 3. Menu Réanimation : 3x3 plein large */
+.rean-menu {
+  max-width: 100%;
+  margin: 0;
+}
+
+.rean-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  width: 100%;
+}
+
+/* 4. Titres en haut des pages d'intervention : 2x plus gros */
+.intervention-shell .hero h2,
+.intervention-main .hero h2 {
+  font-size: 2.4rem;
+  line-height: 1.2;
+}
+
+/* (optionnel) sous-titres un peu plus grands aussi */
+.intervention-shell .hero h3,
+.intervention-main .hero h3 {
+  font-size: 1.2rem;
+}
+
+/* 5. Header : fond bleu foncé + texte clair */
+.appbar {
+  background: #0b1f3b;
+  border-bottom-color: rgba(15, 23, 42, 0.7);
+}
+
+.appbar,
+.appbar h1,
+.appbar small {
+  color: #f9fafb;
+}
