@@ -1621,3 +1621,51 @@ body.theme-light .page-antibiopro .result * {
   font-size: 1rem;
   text-align: center;
 }
+
+/* ============================================================
+   HEADER TEXTE – VERSION ORDINATEUR
+   ============================================================ */
+
+.app-header {
+  padding: 16px 0;
+  text-align: center;
+}
+
+.header-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header-title {
+  font-size: 1.6rem;      /* grande police */
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.header-subtitle {
+  font-size: 1rem;        /* plus petit */
+  opacity: 0.8;
+}
+
+/* ============================================================
+   ACCUEIL : ENCADRÉS À LA VERTICALE
+   ============================================================ */
+
+.home .grid {
+  display: flex;
+  flex-direction: column;     /* <-- empile verticalement */
+  gap: 16px;
+}
+
+@media (min-width: 960px) {
+  /* On reste en vertical même sur écran large */
+  .home .grid {
+    flex-direction: column;
+  }
+}
+
+/* Les cartes occupent toute la largeur */
+.home .card {
+  width: 100%;
+}
