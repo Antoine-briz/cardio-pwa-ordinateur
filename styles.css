@@ -1987,3 +1987,36 @@ details.card:first-of-type {
 .anesth-card {
   width: 340px;
 }
+
+/* Grille 4 cartes côte à côte centrées */
+.anesth-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 32px auto;
+}
+
+/* Cartes uniformes */
+.anesth-card {
+  background: var(--card);
+  border-radius: 16px;
+  overflow: hidden;
+  text-align: center;
+  cursor: pointer;
+  padding: 16px;
+}
+
+/* Images pleine largeur */
+.anesth-card .menu-section-img {
+  width: 100% !important;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+/* Titre centré */
+.anesth-menu .hero h2 {
+  text-align: center;
+}
