@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0f172a" />
+  <link rel="stylesheet" href="styles.css?v=1.0.0">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png" sizes="300x300">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+<body>
+  <div id="img-popup" class="img-popup" onclick="closePopup()">
+  <img id="popup-img" src="" alt="">
+</div>
+  <header class="appbar">
+    <h1>
+      Protocoles du SARIC<br>
+      <small>Institut de cardiologie - Pitié Salpêtrière</small>
+    </h1>
+  </header>
+
+  <main class="container">
+    <div id="app"></div>
+  </main>
+
+<footer id="app-footer">
+  <div class="theme-switcher">
+    <span>Thème :</span>
+    <label>
+      <input type="radio" name="theme" id="theme-dark" value="dark">
+      Sombre
+    </label>
+    <label>
+      <input type="radio" name="theme" id="theme-light" value="light">
+      Clair
+    </label>
+  </div>
+
+  <div class="footer-actions">
+    <button id="back-button" class="back-btn">⮜ Retour</button>
+  </div>
+</footer>
+
+
+  <script src="./app.js?v=1.0.0"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker
+          .register("./sw.js", { scope: "./" })
+          .then(reg => console.log("✅ Service Worker enregistré :", reg.scope))
+          .catch(err => console.error("❌ Erreur SW :", err));
+      });
+    }
+  </script>
+</body>
+</html>
