@@ -2608,7 +2608,7 @@ function setupPcLogic() {
   }
 
 function updateAtb() {
-  const poids = parseKg(poidsId);
+  const poids = parseKg(poidsInputId);
 
   // --- Gestion IMC (si pas allergique) ---
   if (cbImc && cbImc.checked) {
