@@ -2573,7 +2573,7 @@ function renderInterventionPontages() {
   renderInterventionPage({
     titre: "Pontages coronaires",
     sousTitre: "",
-    image: "chircec.png",
+    image: "chircec2.png",
     encadres,
   });
 
@@ -2795,7 +2795,7 @@ function renderInterventionRVA() {
   renderInterventionPage({
     titre: "RVA ou plastie aortique",
     sousTitre: "",
-    image: "chircec.png",
+    image: "chircec2.png",
     encadres,
   });
 
@@ -3029,7 +3029,7 @@ function renderInterventionRVM() {
   renderInterventionPage({
     titre: "RVM ou plastie mitrale",
     sousTitre: "",
-    image: "chircec.png",
+    image: "chircec2.png",
     encadres,
   });
 
@@ -3269,7 +3269,7 @@ function renderInterventionRVT() {
   renderInterventionPage({
     titre: "RVT ou plastie tricuspide",
     sousTitre: "",
-    image: "chircec.png",
+    image: "chircec2.png",
     encadres,
   });
 
@@ -3501,7 +3501,7 @@ function renderInterventionAorteAsc() {
   renderInterventionPage({
     titre: "Chirurgie de l’aorte ascendante (hors dissection Ao)",
     sousTitre: "",
-    image: "chircec.png",
+    image: "chircec2.png",
     encadres,
   });
 
@@ -3721,7 +3721,7 @@ function renderInterventionDrainagePericardique() {
   renderInterventionPage({
     titre: "Drainage péricardique",
     sousTitre: "",
-    image: "chircec.png",
+    image: "chircec2.png",
     encadres,
   });
 
@@ -3938,7 +3938,7 @@ function renderInterventionDissectionAo() {
   renderInterventionPage({
     titre: "Dissection aortique",
     sousTitre: "",
-    image: "chircec.png",
+    image: "chircec2.png",
     encadres,
   });
 
@@ -4199,7 +4199,7 @@ function renderInterventionTransplantAnesth() {
   renderInterventionPage({
     titre: "Transplantation cardiaque",
     sousTitre: "",
-    image: "chircec.png",
+    image: "chircec2.png",
     encadres,
   });
 
