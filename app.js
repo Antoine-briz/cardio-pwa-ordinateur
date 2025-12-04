@@ -2482,7 +2482,7 @@ function formatDoseMgPerKg(poids, mgPerKg) {
 function renderInterventionPontages() {
   const encadres = [
     {
-      titre: "Caractéristiques patient",
+      titre: "Sélectionez les caractéristiques du patient",
       html: `
         <div class="form">
           <div class="row">
