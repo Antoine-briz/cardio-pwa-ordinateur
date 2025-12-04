@@ -1948,3 +1948,34 @@ details.card:first-of-type {
     grid-template-columns: 1fr;
   }
 }
+
+/* Titre du menu principal beaucoup plus grand */
+.home-hero h2 {
+  font-size: 3.8rem !important;   /* environ 3× plus grand */
+  font-weight: 700;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+/* Boutons du menu principal côte à côte */
+.home-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+/* Pour harmoniser la largeur des boutons */
+.home-buttons .btn {
+  min-width: 220px;
+}
+
+/* Titres des 3 encadrés du menu principal : plus gros et plus visibles */
+.card-home h3 {
+  font-size: 2.1rem !important;   /* plus gros qu'avant */
+  font-weight: 700;
+  margin: 12px 0 16px;
+  line-height: 1.2;
+  text-align: center;
+}
