@@ -223,6 +223,7 @@ const routes = {
   // Divers
   "#/planning": renderPlanning,
   "#/annuaire": renderAnnuaire,
+  "#/codes": renderCodesAcces,
 };
 
 function navigate() {
