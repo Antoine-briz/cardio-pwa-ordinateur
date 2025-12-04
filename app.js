@@ -87,29 +87,34 @@ function initTheme() {
 function renderHome() {
   $app.innerHTML = `
     <section class="home">
-      <div class="grid">
-        <div class="card" onclick="location.hash = '#/anesthesie'">
+      <div class="hero home-hero">
+        <h2>Menu principal</h2>
+      </div>
+
+      <div class="home-cards">
+        <div class="card card-home" onclick="location.hash = '#/anesthesie'">
           <h3>Protocoles d’anesthésie</h3>
           <img src="img/anesthesie.png" alt="Anesthésie" class="menu-section-img" />
         </div>
 
-        <div class="card" onclick="location.hash = '#/reanimation'">
+        <div class="card card-home" onclick="location.hash = '#/reanimation'">
           <h3>Protocoles de réanimation</h3>
           <img src="img/reanimation.png" alt="Réanimation" class="menu-section-img" />
         </div>
 
-        <div class="card" onclick="location.hash = '#/cec'">
+        <div class="card card-home" onclick="location.hash = '#/cec'">
           <h3>Circulation extra-corporelle</h3>
           <img src="img/cec.png" alt="CEC" class="menu-section-img" />
         </div>
       </div>
 
-      <div class="home-main-buttons">
+      <div class="home-buttons">
         <button class="btn outline" onclick="window.open('files/planning_medical.xlsx')">
           Planning médical
         </button>
         <button class="btn ghost" onclick="location.hash = '#/annuaire'">
           Annuaire
+        </button>
         </button>
         <button class="btn ghost" onclick="location.hash = '#/codes'">
           Codes d’accès
@@ -118,7 +123,6 @@ function renderHome() {
     </section>
   `;
 }
-
 
 
 // =====================================================================
