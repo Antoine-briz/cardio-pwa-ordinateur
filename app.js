@@ -11861,6 +11861,22 @@ function renderAnnuaire() {
   });
 }
 
+function renderCodesAcces() {
+  $app.innerHTML = `
+    <section>
+      <div class="hero">
+        <h2>Codes d’accès</h2>
+      </div>
+
+      <div class="card">
+        <p>
+          Page « Codes d’accès » à compléter (VPN, logiciels, accès dossiers, etc.).
+        </p>
+      </div>
+    </section>
+  `;
+}
+
 document.addEventListener("click", (e) => {
   if (e.target.id === "back-button") {
     if (window.history.length > 1) {
