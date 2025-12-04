@@ -1621,3 +1621,62 @@ body.theme-light .page-antibiopro .result * {
   font-size: 1rem;        /* plus petit */
   opacity: 0.8;
 }
+
+/* ============================================================
+   Layout global : main entre header et footer
+   ============================================================ */
+
+html, body {
+  height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Le <main class="container"> remplit l'espace entre header et footer */
+main.container {
+  flex: 1;
+  display: flex;
+  max-width: 100%;
+  width: 100%;
+  padding: 16px;
+}
+
+/* #app occupe toute la largeur dispo côté contenu */
+#app {
+  flex: 1;
+  display: flex;
+}
+
+/* ============================================================
+   Interventions avec image : contenu à gauche, image à droite
+   ============================================================ */
+
+.intervention-shell {
+  display: flex;
+  flex: 1;
+}
+
+/* Colonne gauche : titre + encadrés */
+.intervention-main {
+  flex: 0 0 70%;
+  padding-right: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Colonne droite : image plein hauteur */
+.intervention-side {
+  flex: 0 0 30%;
+  display: flex;
+}
+
+.intervention-side img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;   /* l'image remplit la colonne sans bandes vides */
+  display: block;
+}
