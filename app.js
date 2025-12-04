@@ -2324,34 +2324,12 @@ function renderInterventionPage({ titre, sousTitre = "", encadres, image = null 
   const encadresHtml = encadres
     .map(
       (box) => `
-      ${encadres
-  .map((box, i) => {
-    const isCarac = box.titre.toLowerCase().includes("caract");
-    return `
-      <details class="card ${isCarac ? "carac-card" : ""}">
-        <summary><strong>${box.titre}</strong></summary>
-        <div class="card-body">
-          ${
-            isCarac
-              ? `
-                <div class="carac-top-row">
-                  ${box.html.split("<br>")[0]}
-                  ${box.html.split("<br>")[1]}
-                </div>
-                <div class="carac-bottom-row">
-                  ${box.html
-                    .split("<br>")
-                    .slice(2)
-                    .join("<br>")}
-                </div>
-              `
-              : box.html
-          }
-        </div>
-      </details>
-    `;
-  })
-  .join("")}
+      <details class="card">
+  <summary><strong>${box.titre}</strong></summary>
+  <div class="card-body">
+      ${box.html}
+  </div>
+</details>
     `
     )
     .join("");
