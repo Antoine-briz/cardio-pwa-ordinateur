@@ -131,44 +131,55 @@ function renderHome() {
 
 function renderAnesthMenu() {
   $app.innerHTML = `
-    <section class="anesth-menu">
-      <div class="hero">
-        <h2>Protocoles d’anesthésie</h2>
+    <section class="intervention-shell">
+      
+      <!-- Colonne gauche : titre + boutons + encadrés -->
+      <div class="intervention-main">
+        <div class="hero">
+          <h2>Protocoles d’anesthésie</h2>
+        </div>
+
+        <div class="anesth-top-row">
+          <button class="btn" onclick="location.hash = '#/anesthesie/consultations'">
+            Consultations
+          </button>
+          <button class="btn" onclick="location.hash = '#/anesthesie/antibiopro'">
+            Antibioprophylaxie
+          </button>
+        </div>
+
+        <div class="anesth-cards grid">
+          <div class="card anesth-card" onclick="location.hash = '#/anesthesie/chir-cec'">
+            <img src="img/chircec.png" alt="Chirurgie cardiaque" class="menu-section-img" />
+            <h3>Chirurgie cardiaque</h3>
+          </div>
+
+          <div class="card anesth-card" onclick="location.hash = '#/anesthesie/cardio-struct'">
+            <img src="img/cardiostruct.png" alt="Cardiologie structurelle" class="menu-section-img" />
+            <h3>Cardiologie structurelle</h3>
+          </div>
+
+          <div class="card anesth-card" onclick="location.hash = '#/anesthesie/vasculaire'">
+            <img src="img/vasculaire.png" alt="Chirurgie vasculaire" class="menu-section-img" />
+            <h3>Chirurgie vasculaire</h3>
+          </div>
+
+          <div class="card anesth-card" onclick="location.hash = '#/anesthesie/radiovasculaire'">
+            <img src="img/radiovasc.png" alt="Radio-vasculaire" class="menu-section-img" />
+            <h3>Radio-vasculaire</h3>
+          </div>
+        </div>
       </div>
 
-      <div class="anesth-top-row">
-        <button class="btn" onclick="location.hash = '#/anesthesie/consultations'">
-          Consultations
-        </button>
-        <button class="btn" onclick="location.hash = '#/anesthesie/antibiopro'">
-          Antibioprophylaxie
-        </button>
-      </div>
+      <!-- Colonne droite : image verticale pleine hauteur -->
+      <aside class="intervention-side">
+        <img src="img/anesthesie2.png" alt="Anesthésie">
+      </aside>
 
-      <div class="anesth-cards grid">
-        <div class="card anesth-card" onclick="location.hash = '#/anesthesie/chir-cec'">
-          <img src="img/chircec.png" alt="Chirurgie cardiaque" class="menu-section-img" />
-          <h3>Chirurgie cardiaque</h3>
-        </div>
-
-        <div class="card anesth-card" onclick="location.hash = '#/anesthesie/cardio-struct'">
-          <img src="img/cardiostruct.png" alt="Cardiologie structurelle" class="menu-section-img" />
-          <h3>Cardiologie structurelle</h3>
-        </div>
-
-        <div class="card anesth-card" onclick="location.hash = '#/anesthesie/vasculaire'">
-          <img src="img/vasculaire.png" alt="Chirurgie vasculaire" class="menu-section-img" />
-          <h3>Chirurgie vasculaire</h3>
-        </div>
-
-        <div class="card anesth-card" onclick="location.hash = '#/anesthesie/radiovasculaire'">
-          <img src="img/radiovasc.png" alt="Radio-vasculaire" class="menu-section-img" />
-          <h3>Radio-vasculaire</h3>
-        </div>
-      </div>
     </section>
   `;
 }
+
 
 
 // Lance tout après chargement du DOM
