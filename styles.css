@@ -1778,3 +1778,35 @@ details.card:first-of-type {
   flex-wrap: wrap;
   gap: 24px;
 }
+
+/* ============================================================
+   Encadrés : images en pleine largeur
+   ============================================================ */
+
+.card img,
+.anesth-card img,
+.rean-card img,
+.home .card img {
+  width: 100% !important;        /* occupe toute la largeur */
+  height: auto !important;       /* conserve les proportions */
+  object-fit: cover;             /* remplit l'encadré si nécessaire */
+  display: block;                
+  margin: 0;
+  padding: 0;
+}
+
+/* Pour que les encadrés eux-mêmes ne limitent pas l’image */
+.card,
+.anesth-card,
+.rean-card,
+.home .card {
+  overflow: hidden;               /* coupe le surplus si nécessaire */
+}
+
+/* Ajustement esthétique */
+.card h3,
+.anesth-card h3,
+.rean-card h3,
+.home .card h3 {
+  margin-top: 8px;                /* petit espace sous l’image */
+}
