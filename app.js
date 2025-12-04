@@ -2322,9 +2322,9 @@ $btnRun.addEventListener("click", () => {
 
 function renderInterventionPage({ titre, sousTitre = "", encadres, image = null }) {
   $app.innerHTML = `
-    <section>
-      <div class="hero page-header-card">
-        <div class="page-header-text">
+    <section class="intervention">
+      <div class="intervention-hero">
+        <div class="intervention-hero-left">
           <h2 data-title="${titre}">${titre}</h2>
           ${sousTitre ? `<h3>${sousTitre}</h3>` : ""}
         </div>
@@ -2332,9 +2332,9 @@ function renderInterventionPage({ titre, sousTitre = "", encadres, image = null 
         ${
           image
             ? `
-          <div class="angled-card">
-            <img src="img/${image}" alt="${titre}">
-          </div>
+        <div class="intervention-hero-right">
+          <div class="intervention-hero-image" style="background-image: url('img/${image}');"></div>
+        </div>
         `
             : ""
         }
