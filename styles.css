@@ -1821,3 +1821,77 @@ details.card:first-of-type {
   object-fit: cover;
   display: block;
 }
+
+/* ============================================================
+   MENUS ANESTHÉSIE / RÉANIMATION – PLEIN ÉCRAN
+   (2x2 et 3x3, images pleine largeur)
+   ============================================================ */
+
+/* Le conteneur des menus occupe toute la largeur */
+.anesth-menu,
+.rean-menu {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 16px 32px;
+}
+
+/* Les grilles utilisent vraiment toute la largeur */
+.anesth-cards,
+.rean-grid {
+  width: 100%;
+}
+
+/* ANESTHÉSIE : 4 cartes en 2x2 */
+.anesth-cards {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+/* RÉANIMATION : 9 cartes en 3x3 */
+.rean-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+/* Les cartes elles-mêmes : bloc simple, pas de flex qui écrase l'image */
+.anesth-card,
+.rean-card {
+  display: block !important;
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  text-align: center;
+  overflow: hidden;
+}
+
+/* Images de carte : VRAI bandeau pleine largeur */
+.anesth-card .menu-section-img,
+.rean-card .menu-section-img {
+  display: block;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 140px !important;      /* hauteur de bandeau (ajuste si tu veux) */
+  object-fit: cover;             /* remplit bien l'encadré */
+  border-radius: 12px;
+  margin: 0 0 12px 0;
+}
+
+/* Titre en dessous de l'image */
+.anesth-card h3,
+.rean-card h3 {
+  margin: 4px 0 0;
+  font-size: 1.05rem;
+}
+
+/* Sur petits écrans, on repasse en 1 colonne proprement */
+@media (max-width: 800px) {
+  .anesth-cards {
+    grid-template-columns: 1fr;
+  }
+  .rean-grid {
+    grid-template-columns: 1fr;
+  }
+}
