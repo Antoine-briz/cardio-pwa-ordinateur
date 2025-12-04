@@ -2033,3 +2033,8 @@ details.card:first-of-type {
 .intervention-shell details.card:first-of-type {
   margin-bottom: 32px !important;
 }
+
+/* Espace entre le titre "Caractéristiques patient" et le début du contenu */
+details.card:first-of-type .card-body {
+  padding-top: 16px !important;   /* ajuste la valeur si tu veux plus ou moins d'espace */
+}
