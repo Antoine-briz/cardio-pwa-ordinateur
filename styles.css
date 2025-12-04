@@ -1895,3 +1895,56 @@ details.card:first-of-type {
     grid-template-columns: 1fr;
   }
 }
+/* ============================================================
+   MENU PRINCIPAL — 3 encadrés pleine largeur et titres plus gros
+   ============================================================ */
+
+/* Grille des 3 encadrés */
+.home-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 colonnes égales */
+  gap: 32px;                              /* espace entre les cartes */
+  width: 100%;
+  margin: 32px 0 40px;
+}
+
+/* Style des encadrés principaux */
+.card-home {
+  height: 260px;                /* encadrés plus hauts */
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--card);
+  border-radius: 16px;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* Titres des encadrés : 2× plus gros */
+.card-home h3 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin: 0 0 16px;
+}
+
+/* Images en pleine largeur */
+.card-home .menu-section-img {
+  width: 100% !important;
+  height: 150px !important;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+/* Responsive : 2 colonnes puis 1 colonne si écran étroit */
+@media (max-width: 900px) {
+  .home-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .home-cards {
+    grid-template-columns: 1fr;
+  }
+}
