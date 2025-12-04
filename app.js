@@ -580,35 +580,46 @@ function renderAnesthCardioStructMenu() {
   $app.innerHTML = `
     <section class="intervention-shell">
 
-      <!-- Colonne gauche : titre + boutons -->
+      <!-- Colonne gauche : titre + deux groupes -->
       <div class="intervention-main">
         <div class="hero">
           <h2>Cardiologie structurelle et rythmologie</h2>
         </div>
 
+        <!-- Groupe 1 : Cardiologie structurelle -->
+        <h3>Cardiologie structurelle</h3>
         <div class="grid">
           <button class="btn" onclick="renderInterventionTAVI()">
             TAVI
           </button>
+
           <button class="btn" onclick="renderInterventionMitraClip()">
             Mitra-clip
           </button>
+
           <button class="btn" onclick="renderInterventionFOPCIA()">
             Fermeture FOP / CIA
           </button>
+        </div>
+
+        <!-- Groupe 2 : Rythmologie interventionnelle -->
+        <h3 style="margin-top:24px;">Rythmologie interventionnelle</h3>
+        <div class="grid">
           <button class="btn" onclick="renderInterventionPacemakerDAI()">
             Pacemaker &amp; DAI
           </button>
+
           <button class="btn" onclick="renderInterventionAblationDroit()">
             Ablations du cœur droit
           </button>
+
           <button class="btn" onclick="renderInterventionAblationGauche()">
             Ablations du cœur gauche
           </button>
         </div>
       </div>
 
-      <!-- Colonne droite : image verticale -->
+      <!-- Colonne droite : grande image verticale -->
       <aside class="intervention-side">
         <img src="img/cardiostruct2.png" alt="Cardiologie structurelle et rythmologie">
       </aside>
