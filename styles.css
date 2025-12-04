@@ -1710,3 +1710,68 @@ body.theme-light .page-antibiopro .result * {
   transform: rotate(-8deg);   /* CONTRAIRE → l’image reste droite ! */
 }
 
+/* ============================================================
+   INTERVENTIONS : image grande à droite avec bord oblique
+   ============================================================ */
+
+.intervention-hero {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin-bottom: 16px;
+}
+
+/* Colonne gauche : titre + éventuel sous-titre */
+.intervention-hero-left {
+  flex: 1 1 60%;
+  padding-right: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Colonne droite : panneau image */
+.intervention-hero-right {
+  flex: 0 0 40%;
+  position: relative;
+  min-height: 220px;
+  /* pour que le panneau colle au haut de la section */
+}
+
+/* Bordure oblique à gauche du panneau */
+.intervention-hero-right::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -40px;                  /* empiète un peu sur la partie texte */
+  width: 80px;
+  background: var(--bg, #0b1220); /* même couleur que le fond de la page */
+  clip-path: polygon(0 0, 100% 0, 60% 100%, 0 100%);
+}
+
+/* Image de fond couvrant tout le panneau droit */
+.intervention-hero-image {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Un peu de responsive pour écrans plus petits */
+@media (max-width: 900px) {
+  .intervention-hero {
+    flex-direction: column;
+  }
+
+  .intervention-hero-right {
+    flex: 0 0 auto;
+    min-height: 180px;
+    margin-top: 12px;
+  }
+
+  .intervention-hero-right::before {
+    left: 0;
+    width: 0; /* on masque la bordure oblique sur mobile pour ne pas gêner */
+  }
+}
