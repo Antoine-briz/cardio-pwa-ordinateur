@@ -2321,37 +2321,47 @@ $btnRun.addEventListener("click", () => {
 }
 
 function renderInterventionPage({ titre, sousTitre = "", encadres, image = null }) {
+  const encadresHtml = encadres
+    .map(
+      (box) => `
+      <details class="card">
+        <summary><strong>${box.titre}</strong></summary>
+        <div class="card-body">
+          ${box.html}
+        </div>
+      </details>
+    `
+    )
+    .join("");
+
+  // Cas avec image : mise en page 2 colonnes (contenu à gauche, image à droite)
+  if (image) {
+    $app.innerHTML = `
+      <section class="intervention-shell">
+        <div class="intervention-main">
+          <div class="hero">
+            <h2 data-title="${titre}">${titre}</h2>
+            ${sousTitre ? `<h3>${sousTitre}</h3>` : ""}
+          </div>
+          ${encadresHtml}
+        </div>
+
+        <aside class="intervention-side">
+          <img src="img/${image}" alt="${titre}">
+        </aside>
+      </section>
+    `;
+    return;
+  }
+
+  // Cas sans image : ancien comportement (une seule colonne)
   $app.innerHTML = `
-    <section class="intervention">
-      <div class="intervention-hero">
-        <div class="intervention-hero-left">
-          <h2 data-title="${titre}">${titre}</h2>
-          ${sousTitre ? `<h3>${sousTitre}</h3>` : ""}
-        </div>
-
-        ${
-          image
-            ? `
-        <div class="intervention-hero-right">
-          <div class="intervention-hero-image" style="background-image: url('img/${image}');"></div>
-        </div>
-        `
-            : ""
-        }
+    <section>
+      <div class="hero">
+        <h2 data-title="${titre}">${titre}</h2>
+        ${sousTitre ? `<h3>${sousTitre}</h3>` : ""}
       </div>
-
-      ${encadres
-        .map(
-          (box) => `
-          <details class="card">
-            <summary><strong>${box.titre}</strong></summary>
-            <div class="card-body">
-              ${box.html}
-            </div>
-          </details>
-        `
-        )
-        .join("")}
+      ${encadresHtml}
     </section>
   `;
 }
