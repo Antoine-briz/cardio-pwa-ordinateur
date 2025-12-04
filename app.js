@@ -520,49 +520,61 @@ function renderAnesthConsultTraitements() {
   });
 }
 
-
 function renderAnesthChirCecMenu() {
   $app.innerHTML = `
-    <section>
-      ${sectionHeader("Chirurgie cardiaque sous CEC", "chircec.png")}
+    <section class="intervention-shell">
+      
+      <!-- Colonne gauche : titre + boutons -->
+      <div class="intervention-main">
+        <div class="hero">
+          <h2>Chirurgie cardiaque sous CEC</h2>
+        </div>
 
-      <h3>Chirurgies programmées sous CEC</h3>
-      <div class="grid">
-        <button class="btn" onclick="renderInterventionPontages()">
-          Pontages coronaires
-        </button>
-        <button class="btn" onclick="renderInterventionRVA()">
-          RVA ou plastie aortique
-        </button>
-        <button class="btn" onclick="renderInterventionRVM()">
-          RVM ou plastie mitrale
-        </button>
-        <button class="btn" onclick="renderInterventionRVT()">
-          RVT ou plastie tricuspide
-        </button>
-        <button class="btn" onclick="renderInterventionAorteAsc()">
-          Chirurgie de l’aorte ascendante (hors dissection)
-        </button>
+        <h3>Chirurgies programmées sous CEC</h3>
+        <div class="grid">
+          <button class="btn" onclick="renderInterventionPontages()">
+            Pontages coronaires
+          </button>
+          <button class="btn" onclick="renderInterventionRVA()">
+            RVA ou plastie aortique
+          </button>
+          <button class="btn" onclick="renderInterventionRVM()">
+            RVM ou plastie mitrale
+          </button>
+          <button class="btn" onclick="renderInterventionRVT()">
+            RVT ou plastie tricuspide
+          </button>
+          <button class="btn" onclick="renderInterventionAorteAsc()">
+            Chirurgie de l’aorte ascendante (hors dissection)
+          </button>
+        </div>
+
+        <h3 style="margin-top:24px;">Chirurgies urgentes et assistances circulatoires</h3>
+        <div class="grid">
+          <button class="btn" onclick="renderInterventionDrainagePericardique()">
+            Drainage péricardique
+          </button>
+          <button class="btn" onclick="renderInterventionDissectionAo()">
+            Dissection aortique
+          </button>
+          <button class="btn" onclick="renderInterventionTransplantAnesth()">
+            Transplantation cardiaque
+          </button>
+          <button class="btn" onclick="renderInterventionAssistancesCEC()">
+            Assistances circulatoires (implantation / explantation)
+          </button>
+        </div>
       </div>
 
-      <h3 style="margin-top:24px;">Chirurgies urgentes et assistances circulatoires</h3>
-      <div class="grid">
-        <button class="btn" onclick="renderInterventionDrainagePericardique()">
-          Drainage péricardique
-        </button>
-        <button class="btn" onclick="renderInterventionDissectionAo()">
-          Dissection aortique
-        </button>
-        <button class="btn" onclick="renderInterventionTransplantAnesth()">
-          Transplantation cardiaque
-        </button>
-        <button class="btn" onclick="renderInterventionAssistancesCEC()">
-          Assistances circulatoires (implantation / explantation)
-        </button>
-      </div>
+      <!-- Colonne droite : image pleine hauteur -->
+      <aside class="intervention-side">
+        <img src="img/chircec2.png" alt="Chirurgie cardiaque sous CEC">
+      </aside>
+
     </section>
   `;
 }
+
 
 function renderAnesthCardioStructMenu() {
   $app.innerHTML = `
