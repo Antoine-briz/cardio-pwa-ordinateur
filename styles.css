@@ -1810,3 +1810,14 @@ details.card:first-of-type {
 .home .card h3 {
   margin-top: 8px;                /* petit espace sous l’image */
 }
+
+/* Forcer les images de menus à utiliser toute la largeur des encadrés */
+.home .card .menu-section-img,
+.anesth-card .menu-section-img,
+.rean-card .menu-section-img {
+  max-width: 100% !important;  /* annule le max-width: 140px défini plus haut */
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+}
