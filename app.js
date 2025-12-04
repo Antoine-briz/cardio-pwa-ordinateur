@@ -584,34 +584,47 @@ function renderAnesthChirCecMenu() {
   `;
 }
 
-
 function renderAnesthCardioStructMenu() {
   $app.innerHTML = `
-    <section>
-      ${sectionHeader("Cardiologie structurelle et rythmologie", "cardiostruct.png")}
-      <div class="grid">
-        <button class="btn" onclick="renderInterventionTAVI()">
-          TAVI
-        </button>
-        <button class="btn" onclick="renderInterventionMitraClip()">
-          Mitra-clip
-        </button>
-        <button class="btn" onclick="renderInterventionFOPCIA()">
-          Fermeture FOP / CIA
-        </button>
-        <button class="btn" onclick="renderInterventionPacemakerDAI()">
-          Pacemaker & DAI
-        </button>
-        <button class="btn" onclick="renderInterventionAblationDroit()">
-          Ablations du cœur droit
-        </button>
-        <button class="btn" onclick="renderInterventionAblationGauche()">
-          Ablations du cœur gauche
-        </button>
+    <section class="intervention-shell">
+
+      <!-- Colonne gauche : titre + boutons -->
+      <div class="intervention-main">
+        <div class="hero">
+          <h2>Cardiologie structurelle et rythmologie</h2>
+        </div>
+
+        <div class="grid">
+          <button class="btn" onclick="renderInterventionTAVI()">
+            TAVI
+          </button>
+          <button class="btn" onclick="renderInterventionMitraClip()">
+            Mitra-clip
+          </button>
+          <button class="btn" onclick="renderInterventionFOPCIA()">
+            Fermeture FOP / CIA
+          </button>
+          <button class="btn" onclick="renderInterventionPacemakerDAI()">
+            Pacemaker &amp; DAI
+          </button>
+          <button class="btn" onclick="renderInterventionAblationDroit()">
+            Ablations du cœur droit
+          </button>
+          <button class="btn" onclick="renderInterventionAblationGauche()">
+            Ablations du cœur gauche
+          </button>
+        </div>
       </div>
+
+      <!-- Colonne droite : image verticale -->
+      <aside class="intervention-side">
+        <img src="img/cardiostruct2.png" alt="Cardiologie structurelle et rythmologie">
+      </aside>
+
     </section>
   `;
 }
+
 
 function renderAnesthVasculaire() {
   $app.innerHTML = `
