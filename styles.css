@@ -1669,3 +1669,24 @@ body.theme-light .page-antibiopro .result * {
 .home .card {
   width: 100%;
 }
+
+.page-header {
+  position: relative;
+  padding: 24px 0;
+  margin-bottom: 16px;
+}
+
+.page-header::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 5%;
+  width: 220px;
+  height: 220px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0.15;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
