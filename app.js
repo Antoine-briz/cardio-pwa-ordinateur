@@ -5411,31 +5411,40 @@ function renderReanMenu() {
 
 function renderReanFormulesMenu() {
   $app.innerHTML = `
-    <section>
+    <section class="intervention-shell">
 
-      ${sectionHeader("Formules", "formules.png")}
+      <div class="intervention-main">
+        <div class="hero">
+          <h2>Formules</h2>
+        </div>
 
-      <div class="grid">
-        <button class="btn" onclick="renderReanFormulesVentilation()">
-          Ventilation
-        </button>
+        <div class="grid">
+          <button class="btn" onclick="renderReanFormulesVentilation()">
+            Ventilation
+          </button>
 
-        <button class="btn" onclick="renderReanFormulesCardio()">
-          Cardio-vasculaire
-        </button>
+          <button class="btn" onclick="renderReanFormulesCardio()">
+            Cardio-vasculaire
+          </button>
 
-        <button class="btn" onclick="renderReanFormulesMetabolique()">
-          Métabolique
-        </button>
+          <button class="btn" onclick="renderReanFormulesMetabolique()">
+            Métabolique
+          </button>
 
-        <button class="btn" onclick="renderReanFormulesNeuro()">
-          Neurologie
-        </button>
+          <button class="btn" onclick="renderReanFormulesNeuro()">
+            Neurologie
+          </button>
+        </div>
       </div>
+
+      <aside class="intervention-side">
+        <img src="img/formules2.png" alt="Formules">
+      </aside>
 
     </section>
   `;
 }
+
 
 
 /* ============================================================
@@ -5526,7 +5535,7 @@ function renderReanFormulesVentilation() {
 
   renderInterventionPage({
     titre: "Formules",
-    image: "formules.png",
+    image: "formules2.png",
     sousTitre: "Ventilation",
     encadres,
   });
@@ -5679,7 +5688,7 @@ function renderReanFormulesCardio() {
 
   renderInterventionPage({
     titre: "Formules",
-    image: "formules.png",
+    image: "formules2.png",
     sousTitre: "Cardio-vasculaires",
     encadres,
   });
@@ -5939,7 +5948,7 @@ function renderReanFormulesMetabolique() {
 
   renderInterventionPage({
     titre: "Formules",
-    image: "formules.png",
+    image: "formules2.png",
     sousTitre: "Métaboliques",
     encadres,
   });
@@ -6157,7 +6166,7 @@ function renderReanFormulesNeuro() {
 
   renderInterventionPage({
     titre: "Formules",
-    image: "formules.png",
+    image: "formules2.png",
     sousTitre: "Neurologie",
     encadres,
   });
