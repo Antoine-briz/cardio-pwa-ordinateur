@@ -6292,7 +6292,7 @@ function renderReanPrescriptionsPostOp() {
   renderInterventionPage({
     titre: "Prescriptions post-opératoires (hors transplant. et assistances)",
     sousTitre: "",
-    image: "prescription.png", 
+    image: "prescription2.png", 
     encadres,
   });
 
@@ -6472,7 +6472,7 @@ function renderReanSaignementsPostOp() {
   renderInterventionPage({
     titre: "Saignements post-opératoires",
     sousTitre: "",
-    image: "saignement.png", 
+    image: "saignement2.png", 
     encadres,
   });
 }
@@ -6543,7 +6543,7 @@ function renderReanFAPostOp() {
   renderInterventionPage({
     titre: "Prise en charge de la FA post-opératoire",
     sousTitre: "",
-    image: "fa.png",   // 👈 nouvelle ligne : image juste sous le titre
+    image: "fa2.png",   // 👈 nouvelle ligne : image juste sous le titre
     encadres,
   });
 
@@ -6885,7 +6885,7 @@ function renderReanEerPostOp() {
   renderInterventionPage({
     titre: "EER et échanges plasmatiques",
     sousTitre: "EER post-opératoire",
-    image: "dialyse.png",
+    image: "dialyse2.png",
     encadres,
   });
 
@@ -7085,7 +7085,7 @@ function renderReanEchangesPlasmatiques() {
   renderInterventionPage({
     titre: "EER et échanges plasmatiques",
     sousTitre: "Échanges plasmatiques",
-    image: "dialyse.png",
+    image: "dialyse2.png",
     encadres,
   });
 
@@ -7160,28 +7160,42 @@ function setupEchangesPlasmatiquesLogic() {
 
 function renderReanTransplantMenu() {
   $app.innerHTML = `
-    <section>
-      ${sectionHeader("Transplantation cardiaque", "transplantation.png")}
-      <div class="grid">
-        <button class="btn" onclick="renderReanTransplantHemodynamique()">
-          Gestion hémodynamique post-opératoire
-        </button>
-        <button class="btn" onclick="renderReanTransplantImmuno()">
-          Protocole d’immunosuppression
-        </button>
-        <button class="btn" onclick="renderReanTransplantRejet()">
-          Rejet aigu de greffon
-        </button>
-        <button class="btn" onclick="renderReanTransplantInfections()">
-          Infections et transplantation
-        </button>
-        <button class="btn" onclick="renderReanTransplantCoronaires()">
-          Prévention maladie coronaire du greffon
-        </button>
+    <section class="intervention-shell">
+
+      <!-- Colonne gauche -->
+      <div class="intervention-main">
+        <div class="hero">
+          <h2>Transplantation cardiaque</h2>
+        </div>
+
+        <div class="grid">
+          <button class="btn" onclick="renderReanTransplantHemodynamique()">
+            Gestion hémodynamique post-opératoire
+          </button>
+          <button class="btn" onclick="renderReanTransplantImmuno()">
+            Protocole d’immunosuppression
+          </button>
+          <button class="btn" onclick="renderReanTransplantRejet()">
+            Rejet aigu de greffon
+          </button>
+          <button class="btn" onclick="renderReanTransplantInfections()">
+            Infections et transplantation
+          </button>
+          <button class="btn" onclick="renderReanTransplantCoronaires()">
+            Prévention maladie coronaire du greffon
+          </button>
+        </div>
       </div>
+
+      <!-- Colonne droite : image verticale -->
+      <aside class="intervention-side">
+        <img src="img/transplantation2.png" alt="Transplantation cardiaque">
+      </aside>
+
     </section>
   `;
 }
+
 
 function renderReanTransplantHemodynamique() {
   $app.innerHTML = `
@@ -7314,7 +7328,7 @@ function renderReanTransplantImmuno() {
   renderInterventionPage({
     titre: "Transplantation cardiaque – Réanimation",
     sousTitre: "Protocole d’immunosuppression",
-    image: "transplantation.png",
+    image: "transplantation2.png",
     encadres,
   });
 
@@ -7628,7 +7642,7 @@ function renderReanTransplantRejet() {
   renderInterventionPage({
     titre: "Transplantation cardiaque – Réanimation",
     sousTitre: "Rejet aigu de greffon",
-    image: "transplantation.png",
+    image: "transplantation2.png",
     encadres,
   });
 
@@ -7815,7 +7829,7 @@ function renderReanTransplantInfections() {
   renderInterventionPage({
     titre: "Transplantation cardiaque – Réanimation",
     sousTitre: "Infections et transplantation",
-    image: "transplantation.png",
+    image: "transplantation2.png",
     encadres,
   });
 
