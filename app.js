@@ -6761,16 +6761,31 @@ function openVideo(src) {
 
 function renderReanEerMenu() {
   $app.innerHTML = `
-    <section>
-      ${sectionHeader("EER et échanges plasmatiques", "dialyse.png")}
+    <section class="intervention-shell">
 
-      <div class="grid">
-        <button class="btn" onclick="renderReanEerPostOp()">EER post-opératoire</button>
-        <button class="btn" onclick="renderReanEchangesPlasmatiques()">Echanges plasmatiques</button>
+      <div class="intervention-main">
+        <div class="hero">
+          <h2>EER et échanges plasmatiques</h2>
+        </div>
+
+        <div class="grid">
+          <button class="btn" onclick="renderReanEerPostOp()">
+            EER post-opératoire
+          </button>
+          <button class="btn" onclick="renderReanEchangesPlasmatiques()">
+            Echanges plasmatiques
+          </button>
+        </div>
       </div>
+
+      <aside class="intervention-side">
+        <img src="img/dialyse2.png" alt="EER et échanges plasmatiques">
+      </aside>
+
     </section>
   `;
 }
+
 
 // --- EER post-opératoire (indications, abord, CVVH)
 
@@ -7980,28 +7995,40 @@ function renderReanTransplantCoronaires() {
 
 function renderReanAssistancesMenu() {
   $app.innerHTML = `
-    <section>
-      ${sectionHeader("Assistances circulatoires", "assistances.png")}
-      <div class="grid">
-        <button class="btn" onclick="renderReanAssistECMO()">
-          ECMO artério-veineuse
-        </button>
-        <button class="btn" onclick="renderReanAssistBCPIA()">
-          BCPIA
-        </button>
-        <button class="btn" onclick="renderReanAssistImpella()">
-          Impella
-        </button>
-        <button class="btn" onclick="renderReanAssistLVAD()">
-          LVAD
-        </button>
-        <button class="btn" onclick="renderReanAssistCardioWest()">
-          Cardio-west
-        </button>
+    <section class="intervention-shell">
+
+      <div class="intervention-main">
+        <div class="hero">
+          <h2>Assistances circulatoires</h2>
+        </div>
+
+        <div class="grid">
+          <button class="btn" onclick="renderReanAssistECMO()">
+            ECMO artério-veineuse
+          </button>
+          <button class="btn" onclick="renderReanAssistBCPIA()">
+            BCPIA
+          </button>
+          <button class="btn" onclick="renderReanAssistImpella()">
+            Impella
+          </button>
+          <button class="btn" onclick="renderReanAssistLVAD()">
+            LVAD
+          </button>
+          <button class="btn" onclick="renderReanAssistCardioWest()">
+            Cardio-west
+          </button>
+        </div>
       </div>
+
+      <aside class="intervention-side">
+        <img src="img/assistances2.png" alt="Assistances circulatoires">
+      </aside>
+
     </section>
   `;
 }
+
 
 function renderReanAssistECMO() {
   const encadres = [
@@ -8099,20 +8126,42 @@ function renderReanAssistCardioWest() {
 
 function renderReanAntibiotherapieMenu() {
   $app.innerHTML = `
-    <section>
-      <h2>Antibiothérapie en Réanimation</h2>
-      <img src="img/antibiotherapie.png" alt="Antibiothérapie en réanimation">
-      <div class="grid">
-        <button class="btn" onclick="renderProbaMenu()">Antibiothérapie probabiliste</button>
-        <button class="btn" onclick="renderAdapteeMenu()">Traitement des BMR et BHRe</button>
-        <button class="btn" onclick="renderDureesForm()">Durée d'antibiothérapie</button>
-        <button class="btn" onclick="renderReinForm()">Adaptation posologique à la fonction rénale</button>
-        <button class="btn" onclick="renderModalitesForm()">Modalités d'administration des antibiotiques</button>
+    <section class="intervention-shell">
+
+      <div class="intervention-main">
+        <div class="hero">
+          <h2>Antibiothérapie en Réanimation</h2>
+        </div>
+
+        <div class="grid">
+          <button class="btn" onclick="renderProbaMenu()">
+            Antibiothérapie probabiliste
+          </button>
+          <button class="btn" onclick="renderAdapteeMenu()">
+            Traitement des BMR et BHRe
+          </button>
+          <button class="btn" onclick="renderDureesForm()">
+            Durée d'antibiothérapie
+          </button>
+          <button class="btn" onclick="renderReinForm()">
+            Adaptation posologique à la fonction rénale
+          </button>
+          <button class="btn" onclick="renderModalitesForm()">
+            Modalités d'administration des antibiotiques
+          </button>
+        </div>
+
+        <div id="atb-section-root" style="margin-top:16px;"></div>
       </div>
-      <div id="atb-section-root" style="margin-top:16px;"></div>
+
+      <aside class="intervention-side">
+        <img src="img/antibiotherapie2.png" alt="Antibiothérapie en réanimation">
+      </aside>
+
     </section>
   `;
 }
+
 
 // Les 5 fonctions suivantes se contentent de déléguer à tes fonctions
 // existantes de pwa-atb-rules (renderProbaMenu, renderAdapteeMenu, etc.)
