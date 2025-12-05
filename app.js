@@ -2374,7 +2374,7 @@ function renderInterventionPage({ titre, sousTitre = "", encadres, image = null 
   // Cas avec image : mise en page 2 colonnes (contenu à gauche, image à droite)
   if (image) {
     $app.innerHTML = `
-      <section class="intervention-shell">
+      <section class="intervention-shell ${image ? 'anesth-intervention' : ''}">
         <div class="intervention-main">
           <div class="hero">
             <h2 data-title="${titre}">${titre}</h2>
