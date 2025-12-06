@@ -8182,28 +8182,43 @@ function renderReanAntibiotherapieMenu() {
 
 function renderProbaMenu() {
   $app.innerHTML = `
-    ${h("card", `
-      <h2>Antibiothérapie probabiliste</h2>
-      <p>Sélectionnez le foyer infectieux :</p>
-    `)}
+    <section class="intervention-shell">
 
-    ${h("grid cols-2", `
-      <button class="btn outline" onclick="location.hash='#/proba/pneumonies'">Pneumonies</button>
-      <button class="btn outline" onclick="location.hash='#/proba/mediastinite'">Médiastinites post-opératoires</button>
-      <button class="btn outline" onclick="location.hash='#/proba/scarpa'">Infections de Scarpa</button>
-      <button class="btn outline" onclick="location.hash='#/proba/endocardite'">Endocardites infectieuses</button>
-      <button class="btn outline" onclick="location.hash='#/proba/iu'">Infections urinaires</button>
-      <button class="btn outline" onclick="location.hash='#/proba/abdo'">Infections intra-abdominales</button>
-      <button class="btn outline" onclick="location.hash='#/proba/dermohypo'">Infections des parties molles</button>
-      <button class="btn outline" onclick="location.hash='#/proba/neuro'">Infections neuro-méningées</button>
-      <button class="btn outline" onclick="location.hash='#/proba/sepsis'">Sepsis sans porte d'entrée</button>
-    `)}
+      <!-- Colonne gauche : titre + texte + boutons -->
+      <div class="intervention-main">
 
-    ${h("card", `
-      <button class="btn ghost" onclick="history.back()">← Retour</button>
-    `)}
+        ${h("card", `
+          <h2>Antibiothérapie probabiliste</h2>
+          <p>Sélectionnez le foyer infectieux :</p>
+        `)}
+
+        ${h("grid cols-2", `
+          <button class="btn" onclick="location.hash='#/proba/pneumonies'">Pneumonies</button>
+          <button class="btn" onclick="location.hash='#/proba/mediastinite'">Médiastinites post-opératoires</button>
+          <button class="btn" onclick="location.hash='#/proba/scarpa'">Infections de Scarpa</button>
+          <button class="btn" onclick="location.hash='#/proba/endocardite'">Endocardites infectieuses</button>
+          <button class="btn" onclick="location.hash='#/proba/iu'">Infections urinaires</button>
+          <button class="btn" onclick="location.hash='#/proba/abdo'">Infections intra-abdominales</button>
+          <button class="btn" onclick="location.hash='#/proba/dermohypo'">Infections des parties molles</button>
+          <button class="btn" onclick="location.hash='#/proba/neuro'">Infections neuro-méningées</button>
+          <button class="btn" onclick="location.hash='#/proba/sepsis'">Sepsis sans porte d'entrée</button>
+        `)}
+
+        ${h("card", `
+          <button class="btn ghost" onclick="history.back()">← Retour</button>
+        `)}
+
+      </div>
+
+      <!-- Colonne droite : image -->
+      <aside class="intervention-side">
+        <img src="img/probabiliste.png" alt="Antibiothérapie probabiliste">
+      </aside>
+
+    </section>
   `;
 }
+
 
 
 function renderAdapteeMenu() {
