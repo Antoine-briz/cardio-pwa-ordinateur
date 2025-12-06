@@ -8289,65 +8289,74 @@ function renderDureesForm() {
     "Infections urinaires": ["Cystite", "Pyélonéphrite", "IU masculine"],
     "Bactériémies": ["Inconnue", "Cathéter", "Autre infection"],
     "Infections intra-abdominales": [
-      "Cholécystite","Angiocholite","Abcès hépatique","Inf. nécrose pancréatique",
-      "Péritonite communautaire","Péritonite nosocomiale","Appendicite","Diverticulite",
-      "Entéro-colite","Inf. liquide ascite"
+      "Cholécystite", "Angiocholite", "Abcès hépatique", "Inf. nécrose pancréatique",
+      "Péritonite communautaire", "Péritonite nosocomiale", "Appendicite", "Diverticulite",
+      "Entéro-colite", "Inf. liquide ascite"
     ],
     "Infections neuro-méningées": ["Méningite", "Encéphalite", "Abcès cérébral"],
-    "Infections des parties molles": ["Non nécrosantes","Nécrosantes"],
-    "Endocardite infectieuse": ["Valve native","Prothèse valvulaire (< ou > 1 an)"]
+    "Infections des parties molles": ["Non nécrosantes", "Nécrosantes"],
+    "Endocardite infectieuse": ["Valve native", "Prothèse valvulaire (< ou > 1 an)"]
   };
 
   const BACTERIES = {
     "Cocci Gram -": ["Neisseria meningitidis"],
-    "Cocci Gram +": ["Streptococcus spp.","Staphylococcus spp.","Enterococcus spp."],
+    "Cocci Gram +": ["Streptococcus spp.", "Staphylococcus spp.", "Enterococcus spp."],
     "Bacilles Gram -": [
-      "Entérobactéries","Pseudomonas aeruginosa","Stenotrophomonas maltophilia",
-      "Acinetobacter baumannii","Haemophilus influenzae","Legionella pneumophila"
+      "Entérobactéries", "Pseudomonas aeruginosa", "Stenotrophomonas maltophilia",
+      "Acinetobacter baumannii", "Haemophilus influenzae", "Legionella pneumophila"
     ],
-    "Bacilles Gram +": ["Clostridium difficile","Listeria monocytogenes","Nocardia spp."],
-    "Autres": ["Mycoplasma pneumoniae","Mycobacterium tuberculosis"]
+    "Bacilles Gram +": ["Clostridium difficile", "Listeria monocytogenes", "Nocardia spp."],
+    "Autres": ["Mycoplasma pneumoniae", "Mycobacterium tuberculosis"]
   };
 
   const GROUPES_BACT = Object.keys(BACTERIES);
 
   // ======================= UI =======================
   $app.innerHTML = `
-    <div class="card"><strong>Durée d’antibiothérapie</strong></div>
+    <section class="intervention-shell">
 
-    <div class="hero-pneu card">
-      <img src="./img/fabrice.png" alt="Durée d'antibiothérapie" class="form-hero">
-    </div>
+      <!-- Colonne gauche : titre + formulaire -->
+      <div class="intervention-main">
+        <div class="card"><strong>Durée d’antibiothérapie</strong></div>
 
-    <form id="formDuree" class="form">
-      <div class="grid two">
-        <fieldset>
-          <legend>Infection</legend>
-          <label for="selTypeInfect">Type d’infection</label>
-          <select id="selTypeInfect"></select>
+        <form id="formDuree" class="form">
+          <div class="grid two">
+            <fieldset>
+              <legend>Infection</legend>
+              <label for="selTypeInfect">Type d’infection</label>
+              <select id="selTypeInfect"></select>
 
-          <label for="selSousType">Sous-type d’infection</label>
-          <select id="selSousType"></select>
-        </fieldset>
+              <label for="selSousType">Sous-type d’infection</label>
+              <select id="selSousType"></select>
+            </fieldset>
 
-        <fieldset>
-          <legend>Documentation</legend>
-          <label for="selCatBact">Catégorie</label>
-          <select id="selCatBact"></select>
+            <fieldset>
+              <legend>Documentation</legend>
+              <label for="selCatBact">Catégorie</label>
+              <select id="selCatBact"></select>
 
-          <label for="selEspece">Espèce bactérienne</label>
-          <select id="selEspece"></select>
-        </fieldset>
+              <label for="selEspece">Espèce bactérienne</label>
+              <select id="selEspece"></select>
+            </fieldset>
+          </div>
+
+          <div class="actions">
+            <button type="button" class="btn" id="btnCalcul">Durée recommandée</button>
+            <button type="button" class="btn ghost" onclick="history.back()">← Retour</button>
+          </div>
+
+          <div id="resDuree" class="result"></div>
+        </form>
       </div>
 
-      <div class="actions">
-        <button type="button" class="btn" id="btnCalcul">Durée recommandée</button>
-        <button type="button" class="btn ghost" onclick="history.back()">← Retour</button>
-      </div>
+      <!-- Colonne droite : image verticale -->
+      <aside class="intervention-side">
+        <img src="./img/fabrice2.png" alt="Durée d'antibiothérapie">
+      </aside>
 
-      <div id="resDuree" class="result"></div>
-    </form>
+    </section>
   `;
+}
 
   // Remplissage des combos + dépendances
   const $type = document.getElementById("selTypeInfect");
