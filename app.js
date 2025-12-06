@@ -8899,43 +8899,57 @@ function humanizeEntretien(text) {
   return text;
 }
 
-
 function renderModalitesForm() {
   $app.innerHTML = `
-    <div class="card"><strong>Modalités d’administration des antibiotiques</strong></div>
+    <section class="intervention-shell">
 
-    <div class="hero-pneu card">
-      <img src="./img/modalite.png" alt="Modalités d'administration" class="form-hero">
-    </div>
+      <!-- Colonne gauche : titre + formulaire -->
+      <div class="intervention-main">
 
-    <form id="formModa" class="form">
-      <fieldset>
-        <legend>Classe d’antibiotique</legend>
-        <select id="classeModa">
-          <option value="">— Sélectionner —</option>
-          <option value="betalactamine">β-lactamines</option>
-          <option value="aminoside">Aminosides</option>
-          <option value="fluoroquinolone">Fluoroquinolones</option>
-          <option value="antigram">Anti-Gram+</option>
-          <option value="autres">Autres</option>
-        </select>
-      </fieldset>
+        <div class="card">
+          <strong>Modalités d’administration des antibiotiques</strong>
+        </div>
 
-      <fieldset>
-        <legend>Molécule</legend>
-        <select id="moleculeModa">
-          <option value="">— Choisir une classe d’abord —</option>
-        </select>
-      </fieldset>
+        <form id="formModa" class="form">
 
-      <div class="actions">
-        <button type="button" class="btn" id="btnModa">Afficher les modalités</button>
-        <button type="button" class="btn ghost" onclick="history.back()">← Retour</button>
+          <fieldset>
+            <legend>Classe d’antibiotique</legend>
+            <select id="classeModa">
+              <option value="">— Sélectionner —</option>
+              <option value="betalactamine">β-lactamines</option>
+              <option value="aminoside">Aminosides</option>
+              <option value="fluoroquinolone">Fluoroquinolones</option>
+              <option value="antigram">Anti-Gram+</option>
+              <option value="autres">Autres</option>
+            </select>
+          </fieldset>
+
+          <fieldset>
+            <legend>Molécule</legend>
+            <select id="moleculeModa">
+              <option value="">— Choisir une classe d’abord —</option>
+            </select>
+          </fieldset>
+
+          <div class="actions">
+            <button type="button" class="btn" id="btnModa">Afficher les modalités</button>
+            <button type="button" class="btn ghost" onclick="history.back()">← Retour</button>
+          </div>
+
+          <div id="resModa" class="result"></div>
+
+        </form>
       </div>
 
-      <div id="resModa" class="result"></div>
-    </form>
+      <!-- Colonne droite : grande image verticale -->
+      <aside class="intervention-side">
+        <img src="./img/modalite.png" alt="Modalités d'administration">
+      </aside>
+
+    </section>
   `;
+}
+
 
   // ==========================
   // 📋 Données MODALITÉS À COMPLÉTER
