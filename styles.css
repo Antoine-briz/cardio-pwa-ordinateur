@@ -2064,3 +2064,13 @@ details.card:first-of-type .card-body {
 .anesth-intervention details.card:first-of-type {
   margin-bottom: 40px !important; /* espace augmenté seulement en anesthésie */
 }
+
+/* 1) Espacement spécial du 1er encadré — uniquement pour anesthésie */
+.anesth-intervention details.card:first-of-type {
+  margin-bottom: 32px !important;
+}
+
+/* 2) Espacement normal pour réanimation / CEC — mais PAS anesthésie */
+.intervention-shell:not(.anesth-intervention) details.card {
+  margin-bottom: 16px;
+}
