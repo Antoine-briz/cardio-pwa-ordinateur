@@ -2050,27 +2050,3 @@ details.card:first-of-type .card-body {
   margin-bottom: 0 !important;
 }
 
-/* ----------------------------------------------------------- */
-/*  ESPACEMENT DES ENCADRÉS : LOGIQUE SPÉCIFIQUE ANESTHÉSIE   */
-/* ----------------------------------------------------------- */
-
-/* Par défaut : même espacement entre tous les encadrés */
-.intervention-main details.card {
-  margin-bottom: 24px;
-}
-
-/* Cas particulier : pages d'anesthésie uniquement  
-   → Le premier encadré doit être plus espacé que les autres */
-.anesth-intervention details.card:first-of-type {
-  margin-bottom: 40px !important; /* espace augmenté seulement en anesthésie */
-}
-
-/* 1) Espacement spécial du 1er encadré — uniquement pour anesthésie */
-.anesth-intervention details.card:first-of-type {
-  margin-bottom: 32px !important;
-}
-
-/* 2) Espacement normal pour réanimation / CEC — mais PAS anesthésie */
-.intervention-shell:not(.anesth-intervention) details.card {
-  margin-bottom: 16px;
-}
