@@ -10189,8 +10189,6 @@ function renderProbaPneumonieForm() {
 
     </section>
   `;
-}
-
 
   document.getElementById("btnReco").addEventListener("click", () => {
     const fd = new FormData(document.getElementById("formPneu"));
