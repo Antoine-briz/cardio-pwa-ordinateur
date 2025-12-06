@@ -8725,54 +8725,70 @@ function renderDureesForm() {
   }
 }
 
-
 function renderReinForm() {
   $app.innerHTML = `
-    <div class="card"><strong>Adaptation à la fonction rénale</strong></div>
-    <div class="hero-pneu card">
-      <img src="./img/dialyse.png" alt="Fonction rénale" class="form-hero">
-    </div>
+    <section class="intervention-shell">
 
-    <form id="formRein" class="form">
-      <fieldset>
-        <legend>Famille d’antibiotique</legend>
-        <select id="famille">
-          <option value="">— Sélectionner —</option>
-          <option value="betalactamine">β-lactamines</option>
-          <option value="aminoside">Aminosides</option>
-          <option value="fluoroquinolone">Fluoroquinolones</option>
-          <option value="antigram">Anti-Gram+</option>
-          <option value="autres">Autres</option>
-        </select>
-      </fieldset>
+      <!-- Colonne gauche : titre + formulaire -->
+      <div class="intervention-main">
 
-      <fieldset>
-        <legend>Molécule</legend>
-        <select id="molecule"><option value="">— Choisir une famille d’abord —</option></select>
-      </fieldset>
+        <div class="card">
+          <strong>Adaptation à la fonction rénale</strong>
+        </div>
 
-      <fieldset>
-        <legend>Fonction rénale</legend>
-        <select id="fonction">
-          <option value="">— Sélectionner —</option>
-          <option value=">120">DFG > 120 mL/min/1,73m²</option>
-          <option value="30-120">DFG = 30–120 mL/min/1,73m²</option>
-          <option value="30-10">DFG = 30–10 mL/min/1,73m²</option>
-          <option value="<10">DFG < 10 mL/min/1,73m²</option>
-          <option value="hd">Hémodialyse intermittente</option>
-          <option value="cvvh">CVVH 30–35 mL/kg/h</option>
-          <option value="cvvhd">CVVHD 30–35 mL/kg/h</option>
-        </select>
-      </fieldset>
+        <form id="formRein" class="form">
 
-      <div class="actions">
-        <button type="button" class="btn" id="btnRein">Afficher la posologie</button>
-        <button type="button" class="btn ghost" onclick="history.back()">← Retour</button>
+          <fieldset>
+            <legend>Famille d’antibiotique</legend>
+            <select id="famille">
+              <option value="">— Sélectionner —</option>
+              <option value="betalactamine">β-lactamines</option>
+              <option value="aminoside">Aminosides</option>
+              <option value="fluoroquinolone">Fluoroquinolones</option>
+              <option value="antigram">Anti-Gram+</option>
+              <option value="autres">Autres</option>
+            </select>
+          </fieldset>
+
+          <fieldset>
+            <legend>Molécule</legend>
+            <select id="molecule">
+              <option value="">— Choisir une famille d’abord —</option>
+            </select>
+          </fieldset>
+
+          <fieldset>
+            <legend>Fonction rénale</legend>
+            <select id="fonction">
+              <option value="">— Sélectionner —</option>
+              <option value=">120">DFG > 120 mL/min/1,73m²</option>
+              <option value="30-120">DFG = 30–120 mL/min/1,73m²</option>
+              <option value="30-10">DFG = 30–10 mL/min/1,73m²</option>
+              <option value="<10">DFG < 10 mL/min/1,73m²</option>
+              <option value="hd">Hémodialyse intermittente</option>
+              <option value="cvvh">CVVH 30–35 mL/kg/h</option>
+              <option value="cvvhd">CVVHD 30–35 mL/kg/h</option>
+            </select>
+          </fieldset>
+
+          <div class="actions">
+            <button type="button" class="btn" id="btnRein">Afficher la posologie</button>
+            <button type="button" class="btn ghost" onclick="history.back()">← Retour</button>
+          </div>
+
+          <div id="resRein" class="result"></div>
+
+        </form>
       </div>
 
-      <div id="resRein" class="result"></div>
-    </form>
+      <!-- Colonne droite : image verticale -->
+      <aside class="intervention-side">
+        <img src="./img/dialyse2.png" alt="Fonction rénale">
+      </aside>
+
+    </section>
   `;
+}
 
   // ===== Données fidèles au tableau PDF =====
   // Colonnes: charge | >120 | 30-120 | 30-10 | <10 | hd | cvvh | cvvhd
