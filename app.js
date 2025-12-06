@@ -8180,6 +8180,23 @@ function renderReanAntibiotherapieMenu() {
 // Les 5 fonctions suivantes se contentent de déléguer à tes fonctions
 // existantes de pwa-atb-rules (renderProbaMenu, renderAdapteeMenu, etc.)
 
+// Layout générique : contenu à gauche, image à droite
+function renderWithRightImage({ title, image, bodyHtml }) {
+  $app.innerHTML = `
+    <section class="intervention-shell">
+
+      <div class="intervention-main">
+        ${bodyHtml}
+      </div>
+
+      <aside class="intervention-side">
+        <img src="img/${image}" alt="${title}">
+      </aside>
+
+    </section>
+  `;
+}
+
 function renderProbaMenu() {
   $app.innerHTML = `
     <section class="intervention-shell">
@@ -10097,71 +10114,81 @@ BACTERIA_DATA.erv = {
 };
 
 
-function renderProbaPneumonieForm(){
+function renderProbaPneumonieForm() {
   $app.innerHTML = `
-    <div class="card"><strong>Caractéristiques de la pneumonie</strong></div>
+    <section class="intervention-shell">
 
-    <div class="hero-pneu card">
-      <img src="./img/pneumonie.png" alt="Pneumonie" class="form-hero">
-    </div>
+      <!-- Colonne gauche : titre + formulaire -->
+      <div class="intervention-main">
+        <div class="card"><strong>Caractéristiques de la pneumonie</strong></div>
 
-    <form id="formPneu" class="form">
-      <!-- le reste de ton formulaire inchangé -->
+        <form id="formPneu" class="form">
+          <!-- le reste de ton formulaire inchangé -->
 
-      <fieldset>
-        <legend>Lieu de survenue</legend>
-        <label><input type="radio" name="origine" value="Communautaire" checked> Communautaire</label>
-        <label><input type="radio" name="origine" value="Nosocomiale"> Nosocomiale</label>
-      </fieldset>
+          <fieldset>
+            <legend>Lieu de survenue</legend>
+            <label><input type="radio" name="origine" value="Communautaire" checked> Communautaire</label>
+            <label><input type="radio" name="origine" value="Nosocomiale"> Nosocomiale</label>
+          </fieldset>
 
-      <fieldset>
-        <legend>Risque de bactérie multirésistante</legend>
-        <div class="row">
-          <label><input type="checkbox" name="pseudo"> FdR de P. aeruginosa*</label>
-          <label><input type="checkbox" name="blse"> FdR de BLSE**</label>
-          <label><input type="checkbox" name="sarm"> FdR de SARM***</label>
-        </div>
-      </fieldset>
+          <fieldset>
+            <legend>Risque de bactérie multirésistante</legend>
+            <div class="row">
+              <label><input type="checkbox" name="pseudo"> FdR de P. aeruginosa*</label>
+              <label><input type="checkbox" name="blse"> FdR de BLSE**</label>
+              <label><input type="checkbox" name="sarm"> FdR de SARM***</label>
+            </div>
+          </fieldset>
 
-      <fieldset>
-        <legend>Caractéristiques patient</legend>
-        <div class="row">
-          <label><input type="checkbox" name="immuno"> Immunodépression</label>
-          <label><input type="checkbox" name="allergie"> Allergie β-lactamines</label>
-        </div>
-      </fieldset>
+          <fieldset>
+            <legend>Caractéristiques patient</legend>
+            <div class="row">
+              <label><input type="checkbox" name="immuno"> Immunodépression</label>
+              <label><input type="checkbox" name="allergie"> Allergie β-lactamines</label>
+            </div>
+          </fieldset>
 
-      <fieldset>
-        <legend>Sévérité</legend>
-        <label><input type="checkbox" name="choc"> Choc septique</label>
-      </fieldset>
+          <fieldset>
+            <legend>Sévérité</legend>
+            <label><input type="checkbox" name="choc"> Choc septique</label>
+          </fieldset>
 
-      <fieldset>
-        <legend>Pneumonies particulières</legend>
-        <div class="row">
-          <label><input type="checkbox" name="necro"> Pneumonie nécrosante</label>
-          <label><input type="checkbox" name="inhal"> Inhalation</label>
-        </div>
-      </fieldset>
+          <fieldset>
+            <legend>Pneumonies particulières</legend>
+            <div class="row">
+              <label><input type="checkbox" name="necro"> Pneumonie nécrosante</label>
+              <label><input type="checkbox" name="inhal"> Inhalation</label>
+            </div>
+          </fieldset>
 
- <!-- Ajout de la légende avec l'encadré -->
-      <div class="warning-container">
-        <p><strong>*Risque de P. aeruginosa:</strong> Un facteur de risque parmi « antibiothérapie < 3 mois, BPCO sévère (VEMS < 50%), bronchectasies/mucoviscidose, trachéotomie, ATCD de colonisation/infection à P. aeruginosa »</p>
-        <p><strong>**Risque de BLSE:</strong> « Antibiothérapie < 3 mois, ATCD de colonisation/infection à BLSE, hospitalisation depuis plus de 5j, voyage dans un pays endémique ». Indications des carbapénèmes:</p>
-        <ul>
-          <li> Choc septique ou P/F < 150 + 1 facteur de risque</li>
-          <li> 3 facteurs de risque</li>
-        </ul>
-        <p><strong>***Risque de SARM:</strong> Un facteur de risque parmi « colonisation/infection récente à SARM, prévalence locale > 10-12%, lésion cutanée chronique, dialyse chronique ».</p>
+          <!-- Encadré d'explications -->
+          <div class="warning-container">
+            <p><strong>*Risque de P. aeruginosa:</strong> Un facteur de risque parmi « antibiothérapie < 3 mois, BPCO sévère (VEMS < 50%), bronchectasies/mucoviscidose, trachéotomie, ATCD de colonisation/infection à P. aeruginosa »</p>
+            <p><strong>**Risque de BLSE:</strong> « Antibiothérapie < 3 mois, ATCD de colonisation/infection à BLSE, hospitalisation depuis plus de 5j, voyage dans un pays endémique ». Indications des carbapénèmes:</p>
+            <ul>
+              <li> Choc septique ou P/F < 150 + 1 facteur de risque</li>
+              <li> 3 facteurs de risque</li>
+            </ul>
+            <p><strong>***Risque de SARM:</strong> Un facteur de risque parmi « colonisation/infection récente à SARM, prévalence locale > 10-12%, lésion cutanée chronique, dialyse chronique ».</p>
+          </div>
+
+          <div class="actions">
+            <button type="button" class="btn" id="btnReco">Antibiothérapie probabiliste recommandée</button>
+            <button type="button" class="btn ghost" onclick="history.back()">← Retour</button>
+          </div>
+          <div id="resPneu" class="result"></div>
+        </form>
       </div>
 
-      <div class="actions">
-        <button type="button" class="btn" id="btnReco">Antibiothérapie probabiliste recommandée</button>
-        <button type="button" class="btn ghost" onclick="history.back()">← Retour</button>
-      </div>
-      <div id="resPneu" class="result"></div>
-    </form>
+      <!-- Colonne droite : image pneumonie -->
+      <aside class="intervention-side">
+        <img src="./img/pneumonie.png" alt="Pneumonie">
+      </aside>
+
+    </section>
   `;
+}
+
 
   document.getElementById("btnReco").addEventListener("click", () => {
     const fd = new FormData(document.getElementById("formPneu"));
