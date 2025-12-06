@@ -8740,7 +8740,6 @@ function renderDureesForm() {
     r = r.replace(/sem$/g, "semaines");
     return r;
   }
-}
 
 function renderReinForm() {
   $app.innerHTML = `
