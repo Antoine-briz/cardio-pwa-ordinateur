@@ -12160,3 +12160,14 @@ function renderNotFound() {
     </section>
   `;
 }
+
+/* Titres génériques des pages Antibiothérapie */
+.antibio-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0 0 24px;
+  padding: 0;
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+}
