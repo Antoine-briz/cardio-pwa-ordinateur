@@ -8298,7 +8298,6 @@ function renderAdapteeMenu() {
   `;
 }
 
-
 function renderDureesForm() {
   // ======================= Données – listes =======================
   const INFECTIONS = {
@@ -8368,7 +8367,7 @@ function renderDureesForm() {
 
       <!-- Colonne droite : image verticale -->
       <aside class="intervention-side">
-        <img src="./img/fabrice2.png" alt="Durée d'antibiothérapie">
+        <img src="./img/fabrice.png" alt="Durée d'antibiothérapie">
       </aside>
 
     </section>
@@ -8718,6 +8717,8 @@ function renderDureesForm() {
 
     return d;
   }
+
+
 
   function formatDuree(txt) {
     if (!txt) return "";
