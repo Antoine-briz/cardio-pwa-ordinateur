@@ -2049,3 +2049,18 @@ details.card:first-of-type .card-body {
 .intervention-shell details.card:first-of-type {
   margin-bottom: 0 !important;
 }
+
+/* ----------------------------------------------------------- */
+/*  ESPACEMENT DES ENCADRÉS : LOGIQUE SPÉCIFIQUE ANESTHÉSIE   */
+/* ----------------------------------------------------------- */
+
+/* Par défaut : même espacement entre tous les encadrés */
+.intervention-main details.card {
+  margin-bottom: 24px;
+}
+
+/* Cas particulier : pages d'anesthésie uniquement  
+   → Le premier encadré doit être plus espacé que les autres */
+.anesth-intervention details.card:first-of-type {
+  margin-bottom: 40px !important; /* espace augmenté seulement en anesthésie */
+}
