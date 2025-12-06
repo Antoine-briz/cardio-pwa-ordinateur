@@ -2028,25 +2028,12 @@ details.card:first-of-type {
   margin-bottom: 24px;
 }
 
-/* Espace supplémentaire sous l'encadré "Caractéristiques patient" */
-.intervention-main details.card:first-of-type,
-.intervention-shell details.card:first-of-type {
-  margin-bottom: 32px !important;
-}
-
 /* Espace entre le titre "Caractéristiques patient" et le début du contenu */
 details.card:first-of-type .card-body {
   padding-top: 16px !important;   /* ajuste la valeur si tu veux plus ou moins d'espace */
 }
 
-/* Espace SOUS le 1er encadré UNIQUEMENT pour les pages d'anesthésie */
-.anesth-intervention details.card:first-of-type {
-  margin-bottom: 32px !important;
+/* Espacement constant entre tous les encadrés */
+details.card {
+  margin-bottom: 16px !important;
 }
-
-/* Supprime l’espace global qui concernait toutes les pages */
-.intervention-main details.card:first-of-type,
-.intervention-shell details.card:first-of-type {
-  margin-bottom: 0 !important;
-}
-
