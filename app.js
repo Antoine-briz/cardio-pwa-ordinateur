@@ -8219,55 +8219,67 @@ function renderProbaMenu() {
   `;
 }
 
-
-
 function renderAdapteeMenu() {
-  console.log("renderAdapteeMenu is called!"); 
+  $app.innerHTML = `
+    <section class="intervention-shell">
 
-  const appContainer = document.getElementById("app");
+      <!-- Colonne gauche : titre + boutons -->
+      <div class="intervention-main">
+        <div class="hero">
+          <h2>Antibiothérapie adaptée : germes multisensibles, BMR et BHRe</h2>
+        </div>
 
-  // Efface le contenu précédent
-  appContainer.innerHTML = "";
+        <div class="grid cols-2">
+          <button class="btn" onclick="location.hash='#/adaptee/sensibles'">
+            Germes multisensibles
+          </button>
 
-  const container = document.createElement("div");
-  container.classList.add("antibiotherapy-container");
+          <button class="btn" onclick="location.hash='#/adaptee/SARM'">
+            SARM
+          </button>
 
-  const title = document.createElement("h2");
-  title.textContent = "Antibiothérapie adaptée: germes multisensibles, BMR et BHRe";
+          <button class="btn" onclick="location.hash='#/adaptee/ampC'">
+            Entérobactéries ampC
+          </button>
 
-  const linksContainer = document.createElement("div");
-  linksContainer.classList.add("germs-links");
+          <button class="btn" onclick="location.hash='#/adaptee/BLSE'">
+            BLSE
+          </button>
 
-  const links = [
-    { href: "#/adaptee/sensibles", text: "Germes multisensibles" },
-    { href: "#/adaptee/SARM", text: "SARM" },
-    { href: "#/adaptee/ampC", text: "Entérobactéries ampC" },
-    { href: "#/adaptee/BLSE", text: "BLSE" },
-    { href: "#/adaptee/pyo", text: "Pseudomonas aeruginosas MDR/XDR" },
-    { href: "#/adaptee/acineto", text: "Acinetobacter baumannii Imipénème-R" },
-    { href: "#/adaptee/steno", text: "Stenotrophomonas maltophilia" },
-    { href: "#/adaptee/carba", text: "Entérobactéries carbapénémases" },
-    { href: "#/adaptee/erv", text: "E. faecium Vancomycine-R" }
-  ];
+          <button class="btn" onclick="location.hash='#/adaptee/pyo'">
+            Pseudomonas aeruginosa MDR/XDR
+          </button>
 
-  links.forEach(link => {
-    const anchor = document.createElement("a");
-    anchor.href = link.href;
-    anchor.textContent = link.text;
-    anchor.addEventListener("click", (e) => {
-      e.preventDefault(); // Empêche la navigation par défaut
-      location.hash = link.href; // Change le hash pour afficher la bonne page
-    });
-    linksContainer.appendChild(anchor);
-  });
+          <button class="btn" onclick="location.hash='#/adaptee/acineto'">
+            Acinetobacter baumannii Imipénème-R
+          </button>
 
-  container.appendChild(title);
-  container.appendChild(linksContainer);
+          <button class="btn" onclick="location.hash='#/adaptee/steno'">
+            Stenotrophomonas maltophilia
+          </button>
 
-  console.log("Inserting content into #app");  // Log pour vérifier l'insertion du contenu
-  appContainer.appendChild(container); // Insère le contenu dans #app
+          <button class="btn" onclick="location.hash='#/adaptee/carba'">
+            Entérobactéries carbapénémases
+          </button>
+
+          <button class="btn" onclick="location.hash='#/adaptee/erv'">
+            E. faecium Vancomycine-R
+          </button>
+        </div>
+
+        <div style="margin-top: 16px;">
+          <button class="btn ghost" onclick="history.back()">← Retour</button>
+        </div>
+      </div>
+
+      <!-- Colonne droite : image verticale -->
+      <aside class="intervention-side">
+        <img src="img/adaptee.png" alt="Antibiothérapie adaptée">
+      </aside>
+
+    </section>
+  `;
 }
-
 
 
 function renderDureesForm() {
