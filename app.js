@@ -8804,7 +8804,6 @@ function renderReinForm() {
 
     </section>
   `;
-}
 
   // ===== Données fidèles au tableau PDF =====
   // Colonnes: charge | >120 | 30-120 | 30-10 | <10 | hd | cvvh | cvvhd
@@ -8922,7 +8921,7 @@ function renderReinForm() {
 
   out.insertAdjacentElement("afterend", infoDiv);
 });
-}
+
 // Remplace les "/6h", "/8h", "/12 à 24h", "/8–12h", etc. par "toutes les …"
 function humanizeEntretien(text) {
   if (!text) return text;
