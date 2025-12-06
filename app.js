@@ -8870,42 +8870,45 @@ function renderReinForm() {
   };
 
   const selFamille = document.getElementById("famille");
-  const selMolecule = document.getElementById("molecule");
+  const selMoleculeRein = document.getElementById("molecule");
 
   selFamille.addEventListener("change", () => {
     const f = selFamille.value;
-    if (!f) { selMolecule.innerHTML = `<option value="">— Choisir une famille d’abord —</option>`; return; }
+    if (!f) {
+      selMoleculeRein.innerHTML = `<option value="">— Choisir une famille d’abord —</option>`;
+      return;
+    }
     const options = Object.keys(data[f]).map(m => `<option value="${m}">${m}</option>`).join("");
-    selMolecule.innerHTML = `<option value="">— Sélectionner —</option>` + options;
+    selMoleculeRein.innerHTML = `<option value="">— Sélectionner —</option>` + options;
   });
 
   document.getElementById("btnRein").addEventListener("click", () => {
-  const f = selFamille.value, m = selMolecule.value, fn = document.getElementById("fonction").value;
-  const out = document.getElementById("resRein");
+    const f = selFamille.value;
+    const m = selMoleculeRein.value;
+    const fn = document.getElementById("fonction").value;
+    const out = document.getElementById("resRein");
 
-  if (!f || !m || !fn) {
-    out.textContent = "⚠️ Merci de sélectionner une famille, une molécule et une fonction rénale.";
-    return;
-  }
+    if (!f || !m || !fn) {
+      out.textContent = "⚠️ Merci de sélectionner une famille, une molécule et une fonction rénale.";
+      return;
+    }
 
-  const mol = data[f][m];
-  const entretienBrut = mol[fn] || "—";
-  const entretienLisible = humanizeEntretien(entretienBrut);
+    const mol = data[f][m];
+    const entretienBrut = mol[fn] || "—";
+    const entretienLisible = humanizeEntretien(entretienBrut);
 
-  // Affichage principal de la réponse
-  out.innerHTML = `
-    <strong>${m}</strong><br>
-    <em>Dose de charge :</em> ${mol.charge}<br>
-    <em>Dose d’entretien (${document.getElementById("fonction").selectedOptions[0].textContent}) :</em> ${entretienLisible}
-  `;
+    out.innerHTML = `
+      <strong>${m}</strong><br>
+      <em>Dose de charge :</em> ${mol.charge}<br>
+      <em>Dose d’entretien (${document.getElementById("fonction").selectedOptions[0].textContent}) :</em> ${entretienLisible}
+    `;
 
-  // Ajout des crédits
-  out.innerHTML += `
-    <div class="credits">
-      D'après le travail de : Dr Gilles TROCHE, Dr Marine PAUL et Dr Antoine BRIZARD<br>
-      (Bases de données ANSM, GPR et Dexther)
-    </div>
-  `;
+    out.innerHTML += `
+      <div class="credits">
+        D'après le travail de : Dr Gilles TROCHE, Dr Marine PAUL et Dr Antoine BRIZARD<br>
+        (Bases de données ANSM, GPR et Dexther)
+      </div>
+    `;
 
   // ✅ Ajout de l'encadré d'information supplémentaire
   const existingNote = document.querySelector(".rein-note");
