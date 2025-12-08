@@ -2210,56 +2210,68 @@ function renderAntibioproForm() {
     { key: "ORL",            label: "Chirurgie ORL" },
     { key: "Maxillo-facial", label: "Chirurgie maxillo-faciale" },
     { key: "Plastique",      label: "Chirurgie plastique et reconstructrice" }
-  ].filter(s => ANTIBIOPRO_DATA[s.key]); // ne garder que celles présentes dans les données
+  ].filter(s => ANTIBIOPRO_DATA[s.key]);
 
-  // HTML
+  // === NOUVELLE MISE EN PAGE : colonne gauche + image à droite ===
   $app.innerHTML = `
-    <div class="page page-antibiopro">
-      <span class="title-badge">Antibioprophylaxies per-opératoire</span>
+    <section class="intervention-shell">
 
-      <div class="card hero">
-        <img src="./img/antibioprophylaxie.png" alt="Antibioprophylaxie per-opératoire" onerror="this.style.display='none'">
-      </div>
+      <!-- Colonne gauche : titre + formulaire -->
+      <div class="intervention-main">
 
-      <form class="form" onsubmit="return false;">
-        <fieldset>
-          <legend>Spécialité chirurgicale</legend>
-          <select id="sel-specialite">
-            <option value="">— Choisir —</option>
-            ${SPEC_ORDER.map(s => `<option value="${s.key}">${s.label}</option>`).join("")}
-          </select>
-        </fieldset>
+        <h2 class="intervention-title" style="text-align:center; margin-bottom:24px;">
+          Antibioprophylaxies per-opératoire
+        </h2>
 
-        <fieldset>
-          <legend>Type d’intervention</legend>
-          <select id="sel-type" disabled>
-            <option value="">— Choisir —</option>
-          </select>
-        </fieldset>
+        <form class="form" onsubmit="return false;">
 
-        <fieldset>
-          <legend>Intervention</legend>
-          <select id="sel-intervention" disabled>
-            <option value="">— Choisir —</option>
-          </select>
-        </fieldset>
+          <fieldset>
+            <legend>Spécialité chirurgicale</legend>
+            <select id="sel-specialite">
+              <option value="">— Choisir —</option>
+              ${SPEC_ORDER.map(s => `<option value="${s.key}">${s.label}</option>`).join("")}
+            </select>
+          </fieldset>
 
-        <label class="checkbox">
-          <input type="checkbox" id="chk-allergie">
-          Allergie aux β-lactamines
-        </label>
+          <fieldset>
+            <legend>Type d’intervention</legend>
+            <select id="sel-type" disabled>
+              <option value="">— Choisir —</option>
+            </select>
+          </fieldset>
 
-        <div class="actions">
-          <button class="btn outline" id="btn-run">Antibioprophylaxie recommandée</button>
-          <button class="btn ghost" type="button" onclick="history.back()">← Retour</button>
+          <fieldset>
+            <legend>Intervention</legend>
+            <select id="sel-intervention" disabled>
+              <option value="">— Choisir —</option>
+            </select>
+          </fieldset>
+
+          <label class="checkbox">
+            <input type="checkbox" id="chk-allergie">
+            Allergie aux β-lactamines
+          </label>
+
+          <div class="actions">
+            <button class="btn" id="btn-run">Antibioprophylaxie recommandée</button>
+            <button class="btn ghost" type="button" onclick="history.back()">← Retour</button>
+          </div>
+        </form>
+
+        <div id="result" class="result" style="display:none;"></div>
+        <div id="result-note" class="muted" style="display:none; margin-top:.5rem;">
+          <small>Doubler la posologie de β-lactamines uniquement si IMC > 50 kg/m²</small>
         </div>
-      </form>
 
-      <div id="result" class="result" style="display:none;"></div>
-      <div id="result-note" class="muted" style="display:none; margin-top:.5rem;">
-        <small>Doubler la posologie de β-lactamines uniquement si IMC > 50 kg/m²</small>
       </div>
-    </div>
+
+      <!-- Colonne droite : image verticale -->
+      <aside class="intervention-side">
+        <img src="./img/antibioprophylaxie.png"
+             alt="Antibioprophylaxie per-opératoire">
+      </aside>
+
+    </section>
   `;
 
   // Références DOM
