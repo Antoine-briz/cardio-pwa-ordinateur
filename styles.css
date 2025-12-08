@@ -2049,3 +2049,28 @@ details.card {
   box-shadow: none !important;
 }
 
+/* Centrer les titres des pages d'antibiothérapie probabiliste */
+.antibio-title {
+  text-align: center;
+  display: block;
+  width: 100%;
+}
+
+/* Rendre le texte lisible dans les cartes Médiastinite & Scarpa en thème sombre */
+[data-theme="dark"] .page-mediastinite .card,
+[data-theme="dark"] .page-mediastinite .card * ,
+[data-theme="dark"] .page-scarpa .card,
+[data-theme="dark"] .page-scarpa .card * {
+  color: #ffffff !important;
+}
+
+/* Encadré de légende toujours clair, texte toujours noir */
+.warning-container {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #ccc;
+}
+
+.warning-container * {
+  color: #000000 !important;
+}
