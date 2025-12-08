@@ -84,6 +84,9 @@ function initTheme() {
 function renderHome() {
   $app.innerHTML = `
     <section class="home">
+    <div class="title-strip">
+        <img src="img/titre.png" alt="Titre de l'application" class="title-strip-img">
+      </div>
       <div class="hero home-hero">
         <h2>Menu principal</h2>
       </div>
@@ -122,9 +125,6 @@ function renderHome() {
 }
 
 
-// =====================================================================
-//  ANESTHÉSIE – MENU PRINCIPAL
-// =====================================================================
 
 // =====================================================================
 //  ANESTHÉSIE – MENU PRINCIPAL
@@ -133,6 +133,9 @@ function renderHome() {
 function renderAnesthMenu() {
   $app.innerHTML = `
     <section class="anesth-menu">
+    <div class="title-strip">
+        <img src="img/titre.png" alt="Titre de l'application" class="title-strip-img">
+      </div>
       <div class="hero">
         <h2>Protocoles d’anesthésie</h2>
       </div>
@@ -5298,6 +5301,9 @@ function setupAblationGaucheLogic() {
 function renderReanMenu() {
   $app.innerHTML = `
     <section class="rean-menu">
+    <div class="title-strip">
+        <img src="img/titre.png" alt="Titre de l'application" class="title-strip-img">
+      </div>
       <div class="hero">
         <h2>Protocoles de réanimation</h2>
       </div>
