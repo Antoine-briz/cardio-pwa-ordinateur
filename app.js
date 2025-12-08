@@ -232,6 +232,18 @@ const routes = {
 "#/proba/mediastinite": renderProbaMediastiniteForm,
 "#/proba/scarpa": renderProbaScarpaForm,
 "#/proba/sepsis": renderProbaSepsisForm,
+
+ // Antibiothérapie adaptée
+  "#/adaptee": renderAdapteeMenu,
+  "#/adaptee/sensibles": () => renderBacteriaPage("sensibles", BACTERIA_DATA.sensibles),
+  "#/adaptee/SARM":      () => renderBacteriaPage("SARM",      BACTERIA_DATA.SARM),
+  "#/adaptee/ampC":      () => renderBacteriaPage("ampC",      BACTERIA_DATA.ampC),
+  "#/adaptee/BLSE":      () => renderBacteriaPage("BLSE",      BACTERIA_DATA.BLSE),
+  "#/adaptee/pyo":       () => renderBacteriaPage("pyo",       BACTERIA_DATA.pyo),
+  "#/adaptee/acineto":   () => renderBacteriaPage("acineto",   BACTERIA_DATA.acineto),
+  "#/adaptee/steno":     () => renderBacteriaPage("steno",     BACTERIA_DATA.steno),
+  "#/adaptee/carba":     () => renderBacteriaPage("carba",     BACTERIA_DATA.carba),
+  "#/adaptee/erv":       () => renderBacteriaPage("erv",       BACTERIA_DATA.erv),
   
   // CEC
   "#/cec": renderCecMenu,
