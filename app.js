@@ -274,21 +274,34 @@ window.addEventListener("load", navigate);
 // Page "Consultations" : 2 boutons bleus
 function renderAnesthConsultations() {
   $app.innerHTML = `
-    <section>
-      ${sectionHeader("Consultation d’anesthésie", "consultation.png")}
+    <section class="intervention-shell">
 
-      <div class="grid">
-        <button class="btn" onclick="window.open('https://www.euroscore.org/index.php?id=17', '_blank')">
-          Calcul de l’EuroScore II
-        </button>
+      <!-- Colonne gauche : titre + boutons -->
+      <div class="intervention-main">
 
-        <button class="btn" onclick="renderAnesthConsultTraitements()">
-          Gestion pré-opératoire des traitements
-        </button>
+        <h2 class="page-title">Consultation d’anesthésie</h2>
+
+        <div class="grid">
+          <button class="btn" onclick="window.open('https://www.euroscore.org/index.php?id=17', '_blank')">
+            Calcul de l’EuroScore II
+          </button>
+
+          <button class="btn" onclick="renderAnesthConsultTraitements()">
+            Gestion pré-opératoire des traitements
+          </button>
+        </div>
+
       </div>
+
+      <!-- Colonne droite : image -->
+      <aside class="intervention-side">
+        <img src="img/consultation.png" alt="Consultation d'anesthésie">
+      </aside>
+
     </section>
   `;
 }
+
 
 // Page "Gestion pré-opératoire des traitements"
 function renderAnesthConsultTraitements() {
