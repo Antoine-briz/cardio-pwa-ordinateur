@@ -10216,6 +10216,18 @@ function renderProbaPneumonieForm() {
   });
 }
 
+// ---------- Démo de logique provisoire (on la remplacera par tes règles) ----------
+function decidePneumonie(p){
+  // Priorités d’exemple (identiques à ce qu’on a déjà esquissé)
+  if (p.allergie) return `Lévofloxacine 500 mg x2/j ± Aztréonam si besoin (${p.origine.toLowerCase()}).`;
+  if (p.blse) return `Méropénème 4–6 g/24h IVL${p.origine==="Communautaire"?" + Spiramycine 3 MU x3/j":""}.`;
+  if (p.pseudo || p.immuno) return `Céfépime 1 g x4/j ou Pip/Tazo 4 g x4/j${p.origine==="Communautaire"?" + Spiramycine 3 MU x3/j":""}.`;
+  if (p.inhal) return `${p.origine==="Communautaire"?"Amox/Clav 1 g x3/j":"Amox/Clav 1 g x3/j ou Pip/Tazo 4 g x4/j"}.`;
+  // défaut
+  if (p.origine==="Communautaire") return "Céfotaxime 1 g x4–6/24h + Spiramycine 3 MU x3/j.";
+  return "Céfépime 1 g x4/j si >5j; sinon Céfotaxime 1 g x4–6/24h.";
+}
+
 function renderProbaIUForm() {
   $app.innerHTML = `
     <section class="intervention-shell">
