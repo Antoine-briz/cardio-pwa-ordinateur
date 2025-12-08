@@ -9340,63 +9340,69 @@ function renderSensiblesPage() {
   `;
 }
 
-
-function renderBacteriaPage(slug, data){
+function renderBacteriaPage(slug, data) {
   const $app = document.getElementById("app");
   const title = data.title;
   const img = `./img/${slug}.png`; // ex : ./img/SARM.png ou ./img/ampC.png
 
   $app.innerHTML = `
-    <div class="bact-page">
-      <span class="title-badge">${title}</span>
+    <section class="intervention-shell bact-page">
+      
+      <!-- Colonne gauche : titre + contenu -->
+      <div class="intervention-main">
+        <h2 class="antibio-title">${title}</h2>
 
-      <div class="card bact-hero">
+        <div class="info-grid">
+          <section class="info-card">
+            <h3>Définition</h3>
+            <div class="info-content">${data.definition}</div>
+          </section>
+
+          <section class="info-card">
+            <h3>Mécanisme de résistance</h3>
+            <div class="info-content">${data.mecanisme}</div>
+          </section>
+
+          <section class="info-card">
+            <h3>Epidémiologie</h3>
+            <div class="info-content">${data.epidemio}</div>
+          </section>
+
+          <section class="info-card">
+            <h3>Phénotype habituel</h3>
+            <div class="info-content">${data.phenotype}</div>
+          </section>
+
+          <section class="info-card">
+            <h3>Antibiotique de référence</h3>
+            <div class="info-content">${data.refAtb}</div>
+          </section>
+
+          <section class="info-card">
+            <h3>Antibiotique selon le site infectieux</h3>
+            <div class="info-content">${data.siteAtb}</div>
+          </section>
+
+          <section class="info-card">
+            <h3>Ajout si choc septique</h3>
+            <div class="info-content">${data.choc}</div>
+          </section>
+        </div>
+
+        <div class="actions">
+          <button class="btn ghost" onclick="history.back()">← Retour</button>
+        </div>
+      </div>
+
+      <!-- Colonne droite : image pleine hauteur -->
+      <aside class="intervention-side">
         <img src="${img}" alt="${title}" onerror="this.style.display='none'">
-      </div>
+      </aside>
 
-      <div class="info-grid">
-        <section class="info-card">
-          <h3>Définition</h3>
-          <div class="info-content">${data.definition}</div>
-        </section>
-
-        <section class="info-card">
-          <h3>Mécanisme de résistance</h3>
-          <div class="info-content">${data.mecanisme}</div>
-        </section>
-
-        <section class="info-card">
-          <h3>Epidémiologie</h3>
-          <div class="info-content">${data.epidemio}</div>
-        </section>
-
-        <section class="info-card">
-          <h3>Phénotype habituel</h3>
-          <div class="info-content">${data.phenotype}</div>
-        </section>
-
-        <section class="info-card">
-          <h3>Antibiotique de référence</h3>
-          <div class="info-content">${data.refAtb}</div>
-        </section>
-
-        <section class="info-card">
-          <h3>Antibiotique selon le site infectieux</h3>
-          <div class="info-content">${data.siteAtb}</div>
-        </section>
-
-        <section class="info-card">
-          <h3>Ajout si choc septique</h3>
-          <div class="info-content">${data.choc}</div>
-        </section>
-      </div>
-
-      <div class="actions">
-        <button class="btn ghost" onclick="history.back()">← Retour</button>
-      </div>
-    </div>
+    </section>
   `;
 }
+
 
 const BACTERIA_DATA = {
   SARM: {
