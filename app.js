@@ -11656,7 +11656,7 @@ if ($chkAllerg.checked) {
 
       <!-- Colonne droite : image verticale -->
       <aside class="intervention-side">
-        <img src="./img/ecmo.png" alt="Infection de Scarpa">
+        <img src="./img/scarpa.png" alt="Infection de Scarpa">
       </aside>
 
     </section>
