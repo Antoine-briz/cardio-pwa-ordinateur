@@ -10736,105 +10736,118 @@ function recoCasParticuliers(p){
   return txt;
 }
 
-function renderProbaNeuroForm(){
+function renderProbaNeuroForm() {
   $app.innerHTML = `
-    <h2 class="antibio-title">Infections neuro-méningées</h2>
+    <section class="intervention-shell">
 
-    <div class="hero-pneu card">
-      <img src="./img/neuro.png" alt="Infections neuro-méningées" class="form-hero">
-    </div>
+      <!-- Colonne gauche : titre + formulaire -->
+      <div class="intervention-main">
 
-    <form id="formNeuro" class="form">
-      <fieldset>
-        <legend>Allergie aux β-lactamines</legend>
-        <label><input type="radio" name="allergie" value="non" checked> Non</label>
-        <label><input type="radio" name="allergie" value="oui"> Oui</label>
-      </fieldset>
+        <h2 class="antibio-title">Infections neuro-méningées</h2>
 
-      <fieldset>
-        <legend>Type d’infection</legend>
-        <label><input type="radio" name="type" value="meningite" checked> Méningite purulente</label>
-        <label><input type="radio" name="type" value="me"> Méningo-encéphalite</label>
-        <label><input type="radio" name="type" value="abces"> Abcès cérébral</label>
-      </fieldset>
+        <form id="formNeuro" class="form">
 
-      <!-- Bloc MÉNINGITE -->
-      <fieldset id="blocMeningite">
-        <legend>Méningite — Examen direct du LCS</legend>
-        <label><input type="radio" name="edi" value="non" checked> Non</label>
-        <label><input type="radio" name="edi" value="oui"> Oui</label>
+          <fieldset>
+            <legend>Allergie aux β-lactamines</legend>
+            <label><input type="radio" name="allergie" value="non" checked> Non</label>
+            <label><input type="radio" name="allergie" value="oui"> Oui</label>
+          </fieldset>
 
-        <div id="ediSelect" class="row hidden" style="margin-top:8px">
-          <label style="grid-column:1/-1">
-            Résultat :
-            <select id="cmbEDI">
-              <option value="CG+">CG+</option>
-              <option value="CG-">CG-</option>
-              <option value="BG+">BG+</option>
-              <option value="BG-">BG-</option>
-            </select>
-          </label>
-        </div>
+          <fieldset>
+            <legend>Type d’infection</legend>
+            <label><input type="radio" name="type" value="meningite" checked> Méningite purulente</label>
+            <label><input type="radio" name="type" value="me"> Méningo-encéphalite</label>
+            <label><input type="radio" name="type" value="abces"> Abcès cérébral</label>
+          </fieldset>
 
-        <fieldset style="margin-top:10px">
-          <legend>Eléments complémentaires</legend>
-          <div class="row">
-            <label><input type="checkbox" name="argListeria"> Argument pour listériose*</label>
-            <label><input type="checkbox" name="lcsHSV"> LCS compatible HSV/VZV</label>
+          <!-- Bloc MÉNINGITE -->
+          <fieldset id="blocMeningite">
+            <legend>Méningite — Examen direct du LCS</legend>
+            <label><input type="radio" name="edi" value="non" checked> Non</label>
+            <label><input type="radio" name="edi" value="oui"> Oui</label>
+
+            <div id="ediSelect" class="row hidden" style="margin-top:8px">
+              <label style="grid-column:1/-1">
+                Résultat :
+                <select id="cmbEDI">
+                  <option value="CG+">CG+</option>
+                  <option value="CG-">CG-</option>
+                  <option value="BG+">BG+</option>
+                  <option value="BG-">BG-</option>
+                </select>
+              </label>
+            </div>
+
+            <fieldset style="margin-top:10px">
+              <legend>Eléments complémentaires</legend>
+              <div class="row">
+                <label><input type="checkbox" name="argListeria"> Argument pour listériose*</label>
+                <label><input type="checkbox" name="lcsHSV"> LCS compatible HSV/VZV</label>
+              </div>
+            </fieldset>
+          </fieldset>
+
+          <!-- Bloc MÉNINGO-ENCÉPHALITE -->
+          <fieldset id="blocME" class="hidden">
+            <legend>Signes de gravité</legend>
+            <div class="row">
+              <label><input type="checkbox" name="focal"> Signe de localisation</label>
+              <label><input type="checkbox" name="coma"> Coma</label>
+              <label><input type="checkbox" name="convuls"> Convulsions</label>
+            </div>
+
+            <fieldset style="margin-top:10px">
+              <legend>Orientation étiologique</legend>
+              <label><input type="radio" name="etio" value="oui"> Oui</label>
+              <label><input type="radio" name="etio" value="non"> Non</label>
+            </fieldset>
+          </fieldset>
+
+          <!-- Bloc ABCÈS CÉRÉBRAL -->
+          <fieldset id="blocAbces" class="hidden">
+            <legend>Porte d’entrée</legend>
+            <label style="display:block;max-width:380px">
+              <select id="cmbPorte">
+                <option value=""></option>
+                <option value="Post-operatoire">Post-opératoire</option>
+                <option value="Traumatique">Traumatique</option>
+                <option value="Indeterminee">Indéterminée</option>
+                <option value="Autre">Autre</option>
+              </select>
+            </label>
+
+            <fieldset style="margin-top:10px">
+              <legend>Immunodépression</legend>
+              <div class="row">
+                <label><input type="checkbox" name="onco"> Onco-hématologie</label>
+                <label><input type="checkbox" name="transp"> Transplanté</label>
+                <label><input type="checkbox" name="vih"> VIH</label>
+                <label><input type="checkbox" name="immunAutre"> Autre</label>
+              </div>
+            </fieldset>
+          </fieldset>
+
+          <!-- Encadré d'information -->
+          <div class="warning-container">
+            <p><strong>*Arguments en faveur d’une listériose :</strong> Un critère suffit parmi : « âge > 65 ans, grossesse, diabète, immunodépression (dont cancer évolutif), maladies hépatiques chroniques (hépatite chronique, cirrhose, OH chronique) ».</p>
           </div>
-        </fieldset>
-      </fieldset>
 
-      <!-- Bloc MÉNINGO-ENCÉPHALITE -->
-      <fieldset id="blocME" class="hidden">
-        <legend>Signes de gravité</legend>
-        <div class="row">
-          <label><input type="checkbox" name="focal"> Signe de localisation</label>
-          <label><input type="checkbox" name="coma"> Coma</label>
-          <label><input type="checkbox" name="convuls"> Convulsions</label>
-        </div>
-        <fieldset style="margin-top:10px">
-          <legend>Orientation étiologique</legend>
-          <label><input type="radio" name="etio" value="oui"> Oui</label>
-          <label><input type="radio" name="etio" value="non"> Non</label>
-        </fieldset>
-      </fieldset>
-
-      <!-- Bloc ABCÈS CÉRÉBRAL -->
-      <fieldset id="blocAbces" class="hidden">
-        <legend>Porte d’entrée</legend>
-        <label style="display:block;max-width:380px">
-          <select id="cmbPorte">
-            <option value=""></option>
-            <option value="Post-operatoire">Post-opératoire</option>
-            <option value="Traumatique">Traumatique</option>
-            <option value="Indeterminee">Indéterminée</option>
-            <option value="Autre">Autre</option>
-          </select>
-        </label>
-
-        <fieldset style="margin-top:10px">
-          <legend>Immunodépression</legend>
-          <div class="row">
-            <label><input type="checkbox" name="onco"> Onco-hématologie</label>
-            <label><input type="checkbox" name="transp"> Transplanté</label>
-            <label><input type="checkbox" name="vih"> VIH</label>
-            <label><input type="checkbox" name="immunAutre"> Autre</label>
+          <div class="actions">
+            <button type="button" class="btn" id="btnNeuro">Antibiothérapie probabiliste recommandée</button>
+            <button type="button" class="btn ghost" onclick="history.back()">← Retour</button>
           </div>
-        </fieldset>
-      </fieldset>
 
-<!-- Encadré des infections neuroméningées -->
-      <div class="warning-container">
-        <p><strong>*Arguments en faveur d’une listériose :</strong> Un critère suffit parmi : « âge > 65 ans, grossesse, diabète, immunodépression (dont cancer évolutif), maladies hépatiques chroniques (hépatite chronique, cirrhose, OH chronique) ».</p>
+          <div id="resNeuro" class="result"></div>
+        </form>
+
       </div>
 
-      <div class="actions">
-        <button type="button" class="btn" id="btnNeuro">Antibiothérapie probabiliste recommandée</button>
-        <button type="button" class="btn ghost" onclick="history.back()">← Retour</button>
-      </div>
-      <div id="resNeuro" class="result"></div>
-    </form>
+      <!-- Colonne droite : image -->
+      <aside class="intervention-side">
+        <img src="./img/neuro.png" alt="Infections neuro-méningées">
+      </aside>
+
+    </section>
   `;
 
   // UI dynamique (affichages conditionnels)
@@ -11234,40 +11247,50 @@ function renderProbaDermohypoForm(){
   }
 }
 
-function renderProbaEndocarditeForm(){
+function renderProbaEndocarditeForm() {
   $app.innerHTML = `
-    <h2 class="antibio-title">Endocardites infectieuses</h2>
+    <section class="intervention-shell">
 
-    <div class="hero-pneu card">
-      <img src="./img/endocardite.png" alt="Endocardite infectieuse" class="form-hero">
-    </div>
+      <!-- Colonne gauche : titre + formulaire -->
+      <div class="intervention-main">
 
-    <form id="formEndo" class="form">
-      <fieldset>
-        <legend>Lieu de survenue</legend>
-        <label><input type="radio" name="lieu" value="Communautaire" checked> Communautaire</label>
-        <label><input type="radio" name="lieu" value="Nosocomiale/Associée aux soins"> Nosocomiale / Associée aux soins</label>
-      </fieldset>
+        <h2 class="antibio-title">Endocardites infectieuses</h2>
 
-      <fieldset>
-        <legend>Type de valve</legend>
-        <label><input type="radio" name="valve" value="Native" checked> Native</label>
-        <label><input type="radio" name="valve" value="Prothétique"> Prothétique</label>
-      </fieldset>
+        <form id="formEndo" class="form">
 
-      <fieldset>
-        <legend>Allergie aux β-lactamines</legend>
-        <label><input type="radio" name="aller" value="Non" checked> Non</label>
-        <label><input type="radio" name="aller" value="Oui"> Oui</label>
-      </fieldset>
+          <fieldset>
+            <legend>Lieu de survenue</legend>
+            <label><input type="radio" name="lieu" value="Communautaire" checked> Communautaire</label>
+            <label><input type="radio" name="lieu" value="Nosocomiale/Associée aux soins"> Nosocomiale / Associée aux soins</label>
+          </fieldset>
 
-      <div class="actions">
-        <button type="button" class="btn" id="btnEndo">Antibiothérapie probabiliste recommandée</button>
-        <button type="button" class="btn ghost" onclick="history.back()">← Retour</button>
+          <fieldset>
+            <legend>Type de valve</legend>
+            <label><input type="radio" name="valve" value="Native" checked> Native</label>
+            <label><input type="radio" name="valve" value="Prothétique"> Prothétique</label>
+          </fieldset>
+
+          <fieldset>
+            <legend>Allergie aux β-lactamines</legend>
+            <label><input type="radio" name="aller" value="Non" checked> Non</label>
+            <label><input type="radio" name="aller" value="Oui"> Oui</label>
+          </fieldset>
+
+          <div class="actions">
+            <button type="button" class="btn" id="btnEndo">Antibiothérapie probabiliste recommandée</button>
+            <button type="button" class="btn ghost" onclick="history.back()">← Retour</button>
+          </div>
+
+          <div id="resEndo" class="result"></div>
+        </form>
       </div>
 
-      <div id="resEndo" class="result"></div>
-    </form>
+      <!-- Colonne droite : image -->
+      <aside class="intervention-side">
+        <img src="./img/endocardite.png" alt="Endocardite infectieuse">
+      </aside>
+
+    </section>
   `;
 
   document.getElementById("btnEndo").addEventListener("click", () => {
@@ -11340,63 +11363,74 @@ function renderProbaEndocarditeForm(){
   }
 }
 
-function renderProbaSepsisForm(){
+function renderProbaSepsisForm() {
   $app.innerHTML = `
-    <h2 class="antibio-title">Sepsis sans point d'appel</h2>
+    <section class="intervention-shell">
 
-    <div class="hero-pneu card">
-      <img src="./img/sepsis.png" alt="Sepsis sans porte d'entrée" class="form-hero">
-    </div>
+      <!-- Colonne gauche : contenu inchangé -->
+      <div class="intervention-main">
 
-    <form id="formSepsis" class="form">
-      <fieldset>
-        <legend>Lieu de survenue</legend>
-        <label><input type="radio" name="lieu" value="Communautaire" checked> Communautaire</label>
-        <label><input type="radio" name="lieu" value="Nosocomiale"> Nosocomiale</label>
-      </fieldset>
+        <h2 class="antibio-title">Sepsis sans point d'appel</h2>
 
-      <fieldset>
-        <legend>Patient neutropénique</legend>
-        <label><input type="radio" name="neutro" value="Non" checked> Non</label>
-        <label><input type="radio" name="neutro" value="Oui"> Oui</label>
-      </fieldset>
+        <form id="formSepsis" class="form">
 
-      <fieldset>
-        <legend>Allergie aux β-lactamines</legend>
-        <label><input type="radio" name="allergie" value="Non" checked> Non</label>
-        <label><input type="radio" name="allergie" value="Oui"> Oui</label>
-      </fieldset>
+          <fieldset>
+            <legend>Lieu de survenue</legend>
+            <label><input type="radio" name="lieu" value="Communautaire" checked> Communautaire</label>
+            <label><input type="radio" name="lieu" value="Nosocomiale"> Nosocomiale</label>
+          </fieldset>
 
-      <fieldset>
-        <legend>Critères microbiologiques</legend>
-        <label><input type="checkbox" name="blse"> FdR de BLSE*</label>
-        <label><input type="checkbox" name="sarm"> FdR de SARM**</label>
-      </fieldset>
+          <fieldset>
+            <legend>Patient neutropénique</legend>
+            <label><input type="radio" name="neutro" value="Non" checked> Non</label>
+            <label><input type="radio" name="neutro" value="Oui"> Oui</label>
+          </fieldset>
 
-      <fieldset>
-        <legend>Choc septique</legend>
-        <label><input type="radio" name="choc" value="Non" checked> Non</label>
-        <label><input type="radio" name="choc" value="Oui"> Oui</label>
-      </fieldset>
+          <fieldset>
+            <legend>Allergie aux β-lactamines</legend>
+            <label><input type="radio" name="allergie" value="Non" checked> Non</label>
+            <label><input type="radio" name="allergie" value="Oui"> Oui</label>
+          </fieldset>
 
-      <aside class="card ghost" style="max-width:520px">
-        <strong>Conseil malin !</strong><br>
-        Avez-vous bien pensé à la Leptospirose et à la maladie de Still ?
+          <fieldset>
+            <legend>Critères microbiologiques</legend>
+            <label><input type="checkbox" name="blse"> FdR de BLSE*</label>
+            <label><input type="checkbox" name="sarm"> FdR de SARM**</label>
+          </fieldset>
+
+          <fieldset>
+            <legend>Choc septique</legend>
+            <label><input type="radio" name="choc" value="Non" checked> Non</label>
+            <label><input type="radio" name="choc" value="Oui"> Oui</label>
+          </fieldset>
+
+          <aside class="card ghost" style="max-width:520px">
+            <strong>Conseil malin !</strong><br>
+            Avez-vous bien pensé à la Leptospirose et à la maladie de Still ?
+          </aside>
+
+          <!-- Encadré d'avertissement -->
+          <div class="warning-container">
+            <p><strong>*FdR de BLSE :</strong> ATB &lt; 3 mois, ATCD de colonisation/infection BLSE, hospit. dans les 3 mois, voyage dans un pays endémique.</p>
+            <p><strong>**FdR de SARM :</strong> colo/infection récente SARM, vie institution/long séjour, lésion cutanée chronique, dialyse chronique.</p>
+          </div>
+
+          <div class="actions">
+            <button type="button" class="btn" id="btnSepsis">Antibiothérapie probabiliste recommandée</button>
+            <button type="button" class="btn ghost" onclick="history.back()">← Retour</button>
+          </div>
+
+          <div id="resSepsis" class="result"></div>
+
+        </form>
+      </div>
+
+      <!-- Colonne droite : image -->
+      <aside class="intervention-side">
+        <img src="./img/sepsis.png" alt="Sepsis sans porte d'entrée">
       </aside>
 
-<!-- Ajout de l'encadré avec la légende pour les sepsis sans porte d'entrée -->
-      <div class="warning-container">
-        <p><strong>*FdR de BLSE :</strong> ATB < 3 mois, ATCD de colonisation/infection BLSE, hospit. dans les 3 mois, voyage dans un pays endémique.</p>
-        <p><strong>**FdR de SARM :</strong> colo/infection récente SARM, vie institution/long séjour, lésion cutanée chronique, dialyse chronique.</p>
-      </div>
-
-      <div class="actions">
-        <button type="button" class="btn" id="btnSepsis">Antibiothérapie probabiliste recommandée</button>
-        <button type="button" class="btn ghost" onclick="history.back()">← Retour</button>
-      </div>
-
-      <div id="resSepsis" class="result"></div>
-    </form>
+    </section>
   `;
 
   document.getElementById("btnSepsis").addEventListener("click", () => {
@@ -11502,36 +11536,43 @@ function renderProbaMediastiniteForm() {
   const $app = document.getElementById('app');
 
   $app.innerHTML = `
-    <div class="page page-mediastinite">
-      <span class="title-badge">Caractéristiques de la médiastinite post-opératoire</span>
+    <section class="intervention-shell">
 
-      <div class="card hero">
-        <img src="./img/mediastinite.png" alt="Médiastinites post-opératoires" onerror="this.style.display='none'">
+      <!-- Colonne gauche : titre + formulaire -->
+      <div class="intervention-main">
+
+        <h2 class="antibio-title">Caractéristiques de la médiastinite post-opératoire</h2>
+
+        <form class="form" onsubmit="return false;">
+          <fieldset>
+            <legend>Options</legend>
+
+            <label class="checkbox" style="margin-top:.25rem;">
+              <input type="checkbox" id="chk-allergie">
+              Allergie aux β-lactamines
+            </label>
+
+            <label class="checkbox">
+              <input type="checkbox" id="chk-choc">
+              Choc septique
+            </label>
+          </fieldset>
+
+          <div class="actions">
+            <button class="btn" id="btn-run">Antibiothérapie probabiliste recommandée</button>
+            <button class="btn ghost" type="button" onclick="history.back()">← Retour</button>
+          </div>
+        </form>
+
+        <div id="result" class="result" style="display:none;"></div>
       </div>
 
-      <form class="form" onsubmit="return false;">
-        <fieldset>
-          <legend>Options</legend>
+      <!-- Colonne droite : image verticale -->
+      <aside class="intervention-side">
+        <img src="./img/mediastinite.png" alt="Médiastinites post-opératoires">
+      </aside>
 
-          <label class="checkbox" style="margin-top:.25rem;">
-            <input type="checkbox" id="chk-allergie">
-            Allergie aux β-lactamines
-          </label>
-
-          <label class="checkbox">
-            <input type="checkbox" id="chk-choc">
-            Choc septique
-          </label>
-        </fieldset>
-
-        <div class="actions">
-          <button class="btn outline" id="btn-run">Antibiothérapie probabiliste recommandée</button>
-          <button class="btn ghost" type="button" onclick="history.back()">← Retour</button>
-        </div>
-      </form>
-
-      <div id="result" class="result" style="display:none;"></div>
-    </div>
+    </section>
   `;
 
   const $chkAllerg = document.getElementById('chk-allergie');
@@ -11575,40 +11616,50 @@ if ($chkAllerg.checked) {
   });
 }
 
-function renderProbaScarpaForm() {
+  function renderProbaScarpaForm() {
   const $app = document.getElementById('app');
 
   $app.innerHTML = `
-    <div class="page page-scarpa">
-      <span class="title-badge">Caractéristiques de l'infection de scarpa</span>
+    <section class="intervention-shell">
 
-      <div class="card hero">
-        <img src="./img/ecmo.png" alt="Infection de Scarpa" onerror="this.style.display='none'">
+      <!-- Colonne gauche : titre + formulaire -->
+      <div class="intervention-main">
+        <h2 class="antibio-title">Infection de Scarpa</h2>
+
+        <form class="form" onsubmit="return false;">
+          <fieldset>
+            <legend>Options</legend>
+
+            <label class="checkbox" style="margin-top:.25rem;">
+              <input type="checkbox" id="chk-allergie">
+              Allergie aux β-lactamines
+            </label>
+
+            <label class="checkbox">
+              <input type="checkbox" id="chk-choc">
+              Choc septique
+            </label>
+          </fieldset>
+
+          <div class="actions">
+            <button class="btn" id="btn-run">
+              Antibiothérapie probabiliste recommandée
+            </button>
+            <button class="btn ghost" type="button" onclick="history.back()">
+              ← Retour
+            </button>
+          </div>
+        </form>
+
+        <div id="result" class="result" style="display:none;"></div>
       </div>
 
-      <form class="form" onsubmit="return false;">
-        <fieldset>
-          <legend>Options</legend>
+      <!-- Colonne droite : image verticale -->
+      <aside class="intervention-side">
+        <img src="./img/ecmo.png" alt="Infection de Scarpa">
+      </aside>
 
-          <label class="checkbox" style="margin-top:.25rem;">
-            <input type="checkbox" id="chk-allergie">
-            Allergie aux β-lactamines
-          </label>
-
-          <label class="checkbox">
-            <input type="checkbox" id="chk-choc">
-            Choc septique
-          </label>
-        </fieldset>
-
-        <div class="actions">
-          <button class="btn outline" id="btn-run">Antibiothérapie probabiliste recommandée</button>
-          <button class="btn ghost" type="button" onclick="history.back()">← Retour</button>
-        </div>
-      </form>
-
-      <div id="result" class="result" style="display:none;"></div>
-    </div>
+    </section>
   `;
 
   const $chkAllerg = document.getElementById('chk-allergie');
