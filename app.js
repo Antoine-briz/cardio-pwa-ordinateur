@@ -10400,75 +10400,87 @@ function wrapIU(p, gravite, res, notes){
   ].filter(Boolean).join("\n");
 }
 
-function renderProbaAbdoForm(){
+function renderProbaAbdoForm() {
   $app.innerHTML = `
-    <h2 class="antibio-title">Infections intra-abdominales</h2>
+    <section class="intervention-shell">
 
-    <div class="hero-pneu card">
-      <img src="./img/abdo.png" alt="Infections intra-abdominales" class="form-hero">
-    </div>
+      <!-- COLONNE GAUCHE -->
+      <div class="intervention-main">
 
-    <form id="formAbdo" class="form">
-      <fieldset>
-        <legend>Origine</legend>
-        <label><input type="radio" name="origine" value="Communautaires" checked> Communautaires</label>
-        <label><input type="radio" name="origine" value="Nosocomiales"> Nosocomiales</label>
-      </fieldset>
+        <h2 class="antibio-title">Infections intra-abdominales</h2>
 
-      <fieldset>
-        <legend>Catégorie d’infection</legend>
-        <div class="row">
-          <label><input type="radio" name="categorie" value="Infections des voies biliaires"> Infections des voies biliaires</label>
-          <label><input type="radio" name="categorie" value="Infections entéro-coliques (hors péritonites)"> Infections entéro-coliques (hors péritonites)</label>
-          <label><input type="radio" name="categorie" value="Péritonites secondaires"> Péritonites secondaires</label>
-          <label><input type="radio" name="categorie" value="Cas particuliers"> Cas particuliers</label>
-        </div>
-      </fieldset>
+        <form id="formAbdo" class="form">
 
-      <fieldset id="fsSousType" class="hidden">
-        <legend>Sous-type</legend>
-        <select id="cboSousType"></select>
-      </fieldset>
+          <fieldset>
+            <legend>Origine</legend>
+            <label><input type="radio" name="origine" value="Communautaires" checked> Communautaires</label>
+            <label><input type="radio" name="origine" value="Nosocomiales"> Nosocomiales</label>
+          </fieldset>
 
- <fieldset>
-  <legend>Facteurs de risque microbiologiques</legend>
-  <div class="row">
-    <label><input type="checkbox" name="BLSE"> FdR de BLSE* </label>
-    <label><input type="checkbox" name="Faecium"> FdR de E. faecium**</label>
-    <label><input type="checkbox" name="Dupont"> Score de Dupont ≥ 3*** </label>
-    <label><input type="checkbox" name="ProtheseBiliaire"> Prothèse biliaire</label>
-  </div>
-</fieldset>
+          <fieldset>
+            <legend>Catégorie d’infection</legend>
+            <div class="row">
+              <label><input type="radio" name="categorie" value="Infections des voies biliaires"> Infections des voies biliaires</label>
+              <label><input type="radio" name="categorie" value="Infections entéro-coliques (hors péritonites)"> Infections entéro-coliques (hors péritonites)</label>
+              <label><input type="radio" name="categorie" value="Péritonites secondaires"> Péritonites secondaires</label>
+              <label><input type="radio" name="categorie" value="Cas particuliers"> Cas particuliers</label>
+            </div>
+          </fieldset>
 
-<fieldset>
-  <legend>Gravité</legend>
-  <div class="row">
-    <label><input type="checkbox" name="Sepsis"> Sepsis</label>
-    <label><input type="checkbox" name="Choc"> Choc septique</label>
-  </div>
-</fieldset>
+          <fieldset id="fsSousType" class="hidden">
+            <legend>Sous-type</legend>
+            <select id="cboSousType"></select>
+          </fieldset>
 
-<fieldset>
-  <legend>Facteurs liés au patient</legend>
-  <div class="row">
-    <label><input type="checkbox" name="allergieBL"> Allergie sévère β-lactamines</label>
-    <label><input type="checkbox" name="immunodep"> Immunodépression</label>
-  </div>
-</fieldset>
+          <fieldset>
+            <legend>Facteurs de risque microbiologiques</legend>
+            <div class="row">
+              <label><input type="checkbox" name="BLSE"> FdR de BLSE* </label>
+              <label><input type="checkbox" name="Faecium"> FdR de E. faecium**</label>
+              <label><input type="checkbox" name="Dupont"> Score de Dupont ≥ 3*** </label>
+              <label><input type="checkbox" name="ProtheseBiliaire"> Prothèse biliaire</label>
+            </div>
+          </fieldset>
 
-<!-- Ajout de l'encadré avec la légende pour les infections intra-abdominales -->
-      <div class="warning-container">
-        <p><strong>*Facteurs de risque d’infection à BLSE (un seul critère suffit parmi) :</strong> traitement < 1 mois par Tazocilline ou céphalosporine anti-P. aeruginosa, colonisation/infection à EBLSE, colonisation/infection à P. aeruginosa Tazo-R dans les 3 derniers mois.</p>
-        <p><strong>**Facteurs de risque d’infection à E. faecium (un seul critère suffit parmi) :</strong> immunodéprimé, infection biliaire, antibiothérapie en cours, colonisation connue à E. faecium.</p>
-        <p><strong>***Score de Dupont :</strong> Indication à un traitement antifongique en cas de péritonite si ≥ 3 critères parmi : Sexe féminin, perforation sus-mésocolique, choc septique, antibiothérapie en cours depuis > 48h.</p>
+          <fieldset>
+            <legend>Gravité</legend>
+            <div class="row">
+              <label><input type="checkbox" name="Sepsis"> Sepsis</label>
+              <label><input type="checkbox" name="Choc"> Choc septique</label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Facteurs liés au patient</legend>
+            <div class="row">
+              <label><input type="checkbox" name="allergieBL"> Allergie sévère β-lactamines</label>
+              <label><input type="checkbox" name="immunodep"> Immunodépression</label>
+            </div>
+          </fieldset>
+
+          <!-- Encadré explicatif -->
+          <div class="warning-container">
+            <p><strong>*Facteurs de risque d’infection à BLSE :</strong> traitement < 1 mois par Tazocilline ou C3G anti-pyo, colonisation/infection à EBLSE, colonisation/infection à P. aeruginosa Tazo-R dans les 3 derniers mois.</p>
+            <p><strong>**Risque de E. faecium :</strong> immunodéprimé, infection biliaire, ATB en cours, colonisation connue à E. faecium.</p>
+            <p><strong>***Score de Dupont :</strong> antifongique si ≥ 3 critères : femme, perforation sus-mésocolique, choc, ATB > 48h.</p>
+          </div>
+
+          <div class="actions">
+            <button type="button" class="btn" id="btnAbdo">Antibiothérapie probabiliste recommandée</button>
+            <button type="button" class="btn ghost" onclick="history.back()">← Retour</button>
+          </div>
+
+          <div id="resAbdo" class="result"></div>
+
+        </form>
       </div>
 
-      <div class="actions">
-        <button type="button" class="btn" id="btnAbdo">Antibiothérapie probabiliste recommandée</button>
-        <button type="button" class="btn ghost" onclick="history.back()">← Retour</button>
-      </div>
-      <div id="resAbdo" class="result"></div>
-    </form>
+      <!-- COLONNE DROITE : image -->
+      <aside class="intervention-side">
+        <img src="./img/abdo.png" alt="Infections intra-abdominales">
+      </aside>
+
+    </section>
   `;
 
   // — sous-types dynamiques (ComboBox)
