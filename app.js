@@ -5305,7 +5305,7 @@ function renderReanMenu() {
         <img src="img/titre.png" alt="Titre de l'application" class="title-strip-img">
       </div>
       <div class="hero">
-        <h2>Protocoles de réanimation</h2>
+        <h2 class="page-title">Protocoles de réanimation</h2>
       </div>
 
       <div class="grid rean-grid">
