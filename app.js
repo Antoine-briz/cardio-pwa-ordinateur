@@ -11624,7 +11624,7 @@ function renderProbaMediastiniteForm() {
 
       <!-- Colonne droite : image verticale -->
       <aside class="intervention-side">
-        <img src="./img/mediastinite.png" alt="Médiastinites post-opératoires">
+        <img src="./img/chircec2.png" alt="Médiastinites post-opératoires">
       </aside>
 
     </section>
