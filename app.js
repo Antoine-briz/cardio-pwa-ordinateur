@@ -8262,9 +8262,7 @@ function renderAdapteeMenu() {
   `;
 }
 
-function renderDureesForm() {
-  // ======================= Données – listes =======================
-  const INFECTIONS = {
+ const INFECTIONS = {
     "Pneumonies": ["Communautaire", "PAVM", "Nécrose/abcès", "Empyème pleural"],
     "Infections urinaires": ["Cystite", "Pyélonéphrite", "IU masculine"],
     "Bactériémies": ["Inconnue", "Cathéter", "Autre infection"],
@@ -8290,6 +8288,8 @@ function renderDureesForm() {
   };
 
   const GROUPES_BACT = Object.keys(BACTERIES);
+
+function renderDureesForm() {
 
   // ======================= UI =======================
   $app.innerHTML = `
