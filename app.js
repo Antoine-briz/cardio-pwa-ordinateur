@@ -8333,8 +8333,7 @@ function renderDureesForm() {
 
       <!-- Colonne gauche : titre + formulaire -->
       <div class="intervention-main">
-        <div class="card"><strong>Durée d’antibiothérapie</strong></div>
-
+        <h2 class="antibio-title">Durée d’antibiothérapie</h2>
         <form id="formDuree" class="form">
           <div class="grid two">
             <fieldset>
@@ -10122,7 +10121,7 @@ function renderProbaPneumonieForm() {
 
       <!-- Colonne gauche : titre + formulaire -->
       <div class="intervention-main">
-        <div class="card"><strong>Caractéristiques de la pneumonie</strong></div>
+        <h2 class="antibio-title">Pneumonies</h2>
 
         <form id="formPneu" class="form">
           <!-- le reste de ton formulaire inchangé -->
@@ -10211,60 +10210,67 @@ function renderProbaPneumonieForm() {
   });
 }
 
-function renderProbaIUForm(){
+function renderProbaIUForm() {
   $app.innerHTML = `
-    <div class="card"><strong>Infections urinaires — caractéristiques</strong></div>
+    <section class="intervention-shell">
 
-    <div class="hero-pneu card">
-      <img src="./img/urinaire.png" alt="Infections urinaires" class="form-hero">
-    </div>
+      <!-- Colonne gauche : titre + formulaire -->
+      <div class="intervention-main">
+        
+        <h2 class="antibio-title">Infections urinaires</h2>
 
-    <form id="formIU" class="form">
-      <fieldset>
-        <legend>Lieu de survenue</legend>
-        <label><input type="radio" name="origine" value="Communautaire" checked> Communautaire</label>
-        <label><input type="radio" name="origine" value="Nosocomiale"> Nosocomiale</label>
-      </fieldset>
-      
-    <fieldset>
-      <legend>Signes de gravité</legend>
-      <label><input type="checkbox" name="qsofa2"> Q-SOFA ≥ 2</label>
-      <label><input type="checkbox" name="gesteUrg"> Geste urologique urgent</label>
-      <label><input type="checkbox" name="choc"> Choc septique</label>
-    </fieldset>
+        <form id="formIU" class="form">
 
-    <!-- Facteurs de risque microbiologique -->
-    <fieldset>
-      <legend>Facteurs de risque microbiologique</legend>
-      <label><input type="checkbox" name="blse" value="BLSE/portage"> Infection/portage BLSE < 6 mois</label>
-      <label><input type="checkbox" name="autreFdrBlse" value="Autre FdR BLSE*"> Autre FdR BLSE*</label>
-    </fieldset>
+          <fieldset>
+            <legend>Lieu de survenue</legend>
+            <label><input type="radio" name="origine" value="Communautaire" checked> Communautaire</label>
+            <label><input type="radio" name="origine" value="Nosocomiale"> Nosocomiale</label>
+          </fieldset>
+          
+          <fieldset>
+            <legend>Signes de gravité</legend>
+            <label><input type="checkbox" name="qsofa2"> Q-SOFA ≥ 2</label>
+            <label><input type="checkbox" name="gesteUrg"> Geste urologique urgent</label>
+            <label><input type="checkbox" name="choc"> Choc septique</label>
+          </fieldset>
 
-    <!-- Facteurs liés au patient -->
-    <fieldset>
-      <legend>Facteurs liés au patient</legend>
-      <label><input type="checkbox" name="allergieBL" value="Allergie aux β-lactamines"> Allergie aux β-lactamines</label>
-      <label><input type="checkbox" name="immunodep" value="Immunodépression"> Immunodépression</label>
-    </fieldset>
+          <fieldset>
+            <legend>Facteurs de risque microbiologique</legend>
+            <label><input type="checkbox" name="blse" value="BLSE/portage"> Infection/portage BLSE < 6 mois</label>
+            <label><input type="checkbox" name="autreFdrBlse" value="Autre FdR BLSE*"> Autre FdR BLSE*</label>
+          </fieldset>
 
-    <!-- Cas particulier -->
-    <fieldset>
-      <legend>Cas particulier</legend>
-      <label><input type="checkbox" name="pnaEmphy"> Pyélonéphrite emphysémateuse</label>
-    </fieldset>
-  </div>
+          <fieldset>
+            <legend>Facteurs liés au patient</legend>
+            <label><input type="checkbox" name="allergieBL" value="Allergie aux β-lactamines"> Allergie aux β-lactamines</label>
+            <label><input type="checkbox" name="immunodep" value="Immunodépression"> Immunodépression</label>
+          </fieldset>
 
-<!-- Ajout de l'encadré avec la légende pour les infections urinaires -->
-      <div class="warning-container">
-        <p><strong>*Facteurs de risque de BLSE:</strong> ATCD de colonisation/infection à BLSE dans les 6 mois, antibiothérapie dans les 6 mois (Spectre ≥ Augmentin/C1G/C2G), voyage en pays endémique.</p>
+          <fieldset>
+            <legend>Cas particulier</legend>
+            <label><input type="checkbox" name="pnaEmphy"> Pyélonéphrite emphysémateuse</label>
+          </fieldset>
+
+          <!-- Encadré d'explication -->
+          <div class="warning-container">
+            <p><strong>*Facteurs de risque de BLSE :</strong> ATCD de colonisation/infection à BLSE dans les 6 mois, antibiothérapie dans les 6 mois (Spectre ≥ Augmentin/C1G/C2G), voyage en pays endémique.</p>
+          </div>
+
+          <div class="actions">
+            <button type="button" class="btn" id="btnIU">Antibiothérapie probabiliste recommandée</button>
+            <button type="button" class="btn ghost" onclick="history.back()">← Retour</button>
+          </div>
+
+          <div id="resIU" class="result"></div>
+        </form>
       </div>
 
-  <div class="actions">
-    <button type="button" class="btn" id="btnIU">Antibiothérapie probabiliste recommandée</button>
-    <button type="button" class="btn ghost" onclick="history.back()">← Retour</button>
-  </div>
-  <div id="resIU" class="result"></div>
-</form>
+      <!-- Colonne droite : image -->
+      <aside class="intervention-side">
+        <img src="./img/urinaire.png" alt="Infections urinaires">
+      </aside>
+
+    </section>
   `;
 
   document.getElementById("btnIU").addEventListener("click", () => {
@@ -10396,7 +10402,7 @@ function wrapIU(p, gravite, res, notes){
 
 function renderProbaAbdoForm(){
   $app.innerHTML = `
-    <div class="card"><strong>Infections intra-abdominales — caractéristiques</strong></div>
+    <h2 class="antibio-title">Infections intra-abdominales</h2>
 
     <div class="hero-pneu card">
       <img src="./img/abdo.png" alt="Infections intra-abdominales" class="form-hero">
@@ -10720,7 +10726,7 @@ function recoCasParticuliers(p){
 
 function renderProbaNeuroForm(){
   $app.innerHTML = `
-    <div class="card"><strong>Infections neuro-méningées — caractéristiques</strong></div>
+    <h2 class="antibio-title">Infections neuro-méningées</h2>
 
     <div class="hero-pneu card">
       <img src="./img/neuro.png" alt="Infections neuro-méningées" class="form-hero">
@@ -10979,7 +10985,7 @@ function buildAbces(p){
 
 function renderProbaDermohypoForm(){
   $app.innerHTML = `
-    <div class="card"><strong>Caractéristiques de l’infection des parties molles</strong></div>
+    <h2 class="antibio-title">Infections des parties molles</h2>
 
     <div class="hero-pneu card">
       <img src="./img/dermohypodermite.png" alt="Dermohypodermite" class="form-hero">
@@ -11218,7 +11224,7 @@ function renderProbaDermohypoForm(){
 
 function renderProbaEndocarditeForm(){
   $app.innerHTML = `
-    <div class="card"><strong>Caractéristiques de l'endocardite infectieuse</strong></div>
+    <h2 class="antibio-title">Endocardites infectieuses</h2>
 
     <div class="hero-pneu card">
       <img src="./img/endocardite.png" alt="Endocardite infectieuse" class="form-hero">
@@ -11324,7 +11330,7 @@ function renderProbaEndocarditeForm(){
 
 function renderProbaSepsisForm(){
   $app.innerHTML = `
-    <div class="card"><strong>Caractéristiques du sepsis sans point d'appel</strong></div>
+    <h2 class="antibio-title">Sepsis sans point d'appel</h2>
 
     <div class="hero-pneu card">
       <img src="./img/sepsis.png" alt="Sepsis sans porte d'entrée" class="form-hero">
