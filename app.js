@@ -5009,10 +5009,10 @@ function renderInterventionPacemakerDAI() {
         <p><strong>Uniquement si pose de matériel (non indiquée si retrait isolé) :</strong></p>
         <ul id="pm-atb-block">
           <li id="pm-cefa-standard">
-            Céfazoline 2 g (+1 g priming CEC) puis 1 g toutes les 4 h.
+            Céfazoline 2 g puis 1 g toutes les 4 h.
           </li>
           <li id="pm-cefa-obese" style="display:none;">
-            Céfazoline 4 g (+2 g priming CEC) puis 2 g toutes les 4 h
+            Céfazoline 4 g puis 2 g toutes les 4 h
             (IMC &gt; 50).
           </li>
           <li id="pm-vanco" style="display:none;">
