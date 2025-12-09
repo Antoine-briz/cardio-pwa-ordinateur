@@ -2103,7 +2103,7 @@ details.card {
 /* Taille réduite des logos pour ne pas augmenter le header */
 .header-logo-left img,
 .header-logo-right img {
-  height: 40px;      /* Ajuste si tu veux plus petit/grand */
+  height: 80px;      /* Ajuste si tu veux plus petit/grand */
   width: auto;
   opacity: 0.9;
 }
@@ -2115,12 +2115,12 @@ details.card {
 }
 
 .header-title {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 2rem;
+  font-weight: 800;
 }
 
 .header-subtitle {
-  font-size: 0.75rem;
+  font-size: 1rem;
   opacity: 0.8;
 }
 
@@ -2141,4 +2141,5 @@ details.card {
   width: 100%;
   height: auto;
   display: block;         /* supprime l'espace blanc sous l'image */
+   margin-bottom: 1rem;   /* ← espace remis sous l'image */
 }
