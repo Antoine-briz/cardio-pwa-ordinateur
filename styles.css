@@ -355,13 +355,11 @@ html, body {
   max-width: 100%;
   box-sizing: border-box;
   overflow: hidden;
-
-  /* Thème clair */
   background-color: #f9f9f9;
-  color: #000;                 /* Texte lisible en clair */
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 1rem;
+  /* ⚠️ PAS de color ici, pour laisser le thème clair/sombre gérer la couleur du texte */
 }
 
 /* 🌙 Thème sombre : texte blanc + fond foncé + bordure visible */
@@ -506,14 +504,15 @@ html, body {
 }
 
 .info-card {
-  color: black !important;  /* texte toujours lisible */
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
   background-color: #f9f9f9;
   border: 1px solid #ddd;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   padding: 1rem;
-  width: 100%;               /* Forces les encadrés à occuper 100% de la largeur */
-  box-sizing: border-box;    /* Inclut les bordures et le padding dans la largeur */
+  /* ⚠️ PAS de color ici, pour laisser le thème clair/sombre gérer la couleur du texte */
 }
 
 /* Police et espacement adaptés sur mobile */
@@ -2183,19 +2182,19 @@ fieldset {
 }
 
 /* 3️⃣ Encadrés "Antibiothérapie adaptée" — version corrigée */
+/* 3️⃣ Encadrés "info-card" (mise en page commune clair/sombre) */
 .info-card {
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
   overflow: hidden;
-
-  /* Thème clair */
   background-color: #f9f9f9;
-  color: #000;                 /* Texte lisible en clair */
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 1rem;
+  /* ⚠️ PAS de color ici, pour laisser le thème clair/sombre gérer la couleur du texte */
 }
+
 
 /* 🌙 Thème sombre : texte blanc + fond foncé + bordure visible */
 [data-theme="dark"] .info-card {
@@ -2217,4 +2216,26 @@ fieldset {
 [data-theme="dark"] .info-card table,
 [data-theme="dark"] .info-card table * {
   color: #000 !important;
+}
+
+/* ============================
+   Antibiothérapie adaptée : couleurs
+   ============================ */
+
+/* Thème clair : texte noir dans les encadrés */
+[data-theme="light"] .bact-page .info-card {
+  color: #000;
+}
+
+/* Thème sombre : texte blanc dans les encadrés */
+[data-theme="dark"] .bact-page .info-card {
+  color: #ffffff !important;
+  background-color: rgba(15, 23, 42, 0.9);
+  border-color: rgba(148, 163, 184, 0.6);
+}
+
+/* MAIS on garde les tableaux en noir sur fond blanc */
+[data-theme="dark"] .bact-page .info-card table,
+[data-theme="dark"] .bact-page .info-card table * {
+  color: #000000 !important;
 }
