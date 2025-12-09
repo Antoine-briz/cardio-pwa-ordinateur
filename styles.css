@@ -2114,3 +2114,21 @@ details.card {
   font-size: 1rem;          /* plus grand */
   opacity: 0.85;
 }
+
+/* Bandeau titre juste sous le header */
+.title-strip {
+  margin: 0;              /* supprime tout espace au-dessus */
+  padding: 0;             /* supprime le padding éventuel */
+  width: 100vw;           /* largeur totale du viewport */
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;     /* astuce pour casser les marges du container */
+  margin-right: -50vw;    /* et assurer un full-width réel */
+}
+
+.title-strip-img {
+  width: 100%;
+  height: auto;
+  display: block;         /* supprime l'espace blanc sous l'image */
+}
