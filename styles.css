@@ -2074,3 +2074,52 @@ details.card {
 .warning-container * {
   color: #000000 !important;
 }
+
+/* ===== Logos du header ===== */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Le titre reste centré */
+  position: relative;
+  padding: 0.75rem 1rem;
+}
+
+/* Conteneurs des logos */
+.header-logo-left,
+.header-logo-right {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.header-logo-left {
+  left: 0.5rem;
+}
+
+.header-logo-right {
+  right: 0.5rem;
+}
+
+/* Taille réduite des logos pour ne pas augmenter le header */
+.header-logo-left img,
+.header-logo-right img {
+  height: 40px;      /* Ajuste si tu veux plus petit/grand */
+  width: auto;
+  opacity: 0.9;
+}
+
+/* Texte centré */
+.header-text {
+  text-align: center;
+  flex: none;
+}
+
+.header-title {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.header-subtitle {
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
