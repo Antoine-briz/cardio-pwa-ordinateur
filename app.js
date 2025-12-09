@@ -85,12 +85,8 @@ function renderHome() {
   $app.innerHTML = `
     <section class="home">
     <div class="title-strip">
-        <img src="img/titre.png" alt="Titre de l'application" class="title-strip-img">
+        <img src="img/titre2.png" alt="Titre de l'application" class="title-strip-img">
       </div>
-      <div class="hero home-hero">
-        <h2>Menu principal</h2>
-      </div>
-
       <div class="home-cards">
         <div class="card card-home" onclick="location.hash = '#/anesthesie'">
           <h3>Protocoles d’anesthésie</h3>
@@ -134,10 +130,7 @@ function renderAnesthMenu() {
   $app.innerHTML = `
     <section class="anesth-menu">
     <div class="title-strip">
-        <img src="img/titre.png" alt="Titre de l'application" class="title-strip-img">
-      </div>
-      <div class="hero">
-        <h2>Protocoles d’anesthésie</h2>
+        <img src="img/titre3.png" alt="Titre de l'application" class="title-strip-img">
       </div>
 
       <div class="anesth-top-row">
@@ -5302,10 +5295,7 @@ function renderReanMenu() {
   $app.innerHTML = `
     <section class="rean-menu">
     <div class="title-strip">
-        <img src="img/titre.png" alt="Titre de l'application" class="title-strip-img">
-      </div>
-      <div class="hero">
-        <h2 class="page-title">Protocoles de réanimation</h2>
+        <img src="img/titre4.png" alt="Titre de l'application" class="title-strip-img">
       </div>
 
       <div class="grid rean-grid">
