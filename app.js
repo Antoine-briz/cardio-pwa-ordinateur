@@ -8341,7 +8341,6 @@ function renderDureesForm() {
 
     </section>
   `;
-}
 
   // Remplissage des combos + dépendances
   const $type = document.getElementById("selTypeInfect");
@@ -8686,7 +8685,7 @@ function renderDureesForm() {
 
     return d;
   }
-
+  }
 
 
   function formatDuree(txt) {
