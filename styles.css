@@ -2075,45 +2075,55 @@ details.card {
   color: #000000 !important;
 }
 
-/* === HEADER AVEC LOGOS À GAUCHE + TEXTE CENTRÉ + LOGO À DROITE === */
+/* ===== Logos du header ===== */
 .app-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 1rem; /* un peu plus grand */
-  background: #0f172a;
-  color: white;
-  min-height: 90px; /* hauteur augmentée */
+  justify-content: center; /* Le titre reste centré */
+  position: relative;
+  padding: 0.75rem 1rem;
 }
 
-/* Conteneur logos */
-.header-logo {
-  flex: 0 0 auto;
+/* Conteneurs des logos */
+.header-logo-left,
+.header-logo-right {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
-/* Logos 2× plus grands */
-.header-logo img {
-  height: 70px;     /* 2× la taille précédente (~35px) */
+.header-logo-left {
+  left: 0.5rem;
+}
+
+.header-logo-right {
+  right: 0.5rem;
+}
+
+/* Taille réduite des logos pour ne pas augmenter le header */
+.header-logo-left img,
+.header-logo-right img {
+  height: 40px;      /* Ajuste si tu veux plus petit/grand */
   width: auto;
-  object-fit: contain;
+  opacity: 0.9;
 }
 
-/* Texte du header */
+/* Texte centré */
 .header-text {
-  flex: 1;
   text-align: center;
-  line-height: 1.3;
+  flex: none;
 }
 
 .header-title {
-  font-size: 1.4rem;        /* plus grand */
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .header-subtitle {
-  font-size: 1rem;          /* plus grand */
-  opacity: 0.85;
+  font-size: 0.75rem;
+  opacity: 0.8;
 }
+
 
 /* Bandeau titre juste sous le header */
 .title-strip {
