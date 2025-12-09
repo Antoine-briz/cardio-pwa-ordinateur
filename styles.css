@@ -2143,3 +2143,15 @@ details.card {
   display: block;         /* supprime l'espace blanc sous l'image */
    margin-bottom: 1rem;   /* ← espace remis sous l'image */
 }
+
+/* Encadrés de sélection (fieldsets) bien visibles en clair/sombre */
+
+/* Thème clair : bordure noire */
+fieldset {
+  border: 1px solid #000000;
+}
+
+/* Thème sombre : bordure blanche */
+[data-theme="dark"] fieldset {
+  border: 1px solid #ffffff;
+}
