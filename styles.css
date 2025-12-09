@@ -349,17 +349,43 @@ html, body {
 }
 
 /* 3️⃣ Encadrés prennent toute la largeur de l'écran sans déborder */
+/* 3️⃣ Encadrés "Antibiothérapie adaptée" — version corrigée */
 .info-card {
-  width: 100%;                /* L'encadré prend toute la largeur de l'écran */
-  max-width: 100%;            /* Empêche le débordement de l'encadré */
-  box-sizing: border-box;     /* Inclut les bordures et padding dans la largeur totale */
-  overflow: hidden;           /* Masque tout contenu qui dépasse de l'encadré */
-  background-color: #f9f9f9;  /* Fond clair pour les encadrés */
-  color: black !important;    /* Assure que le texte est en noir et lisible */
-  border: 1px solid #ddd;     /* Bordure légère pour l'encadré */
-  border-radius: 8px;         /* Coins arrondis pour l'encadré */
-  padding: 1rem;              /* Ajoute un peu de padding à l'intérieur de l'encadré */
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  /* Thème clair */
+  background-color: #f9f9f9;
+  color: #000;                 /* Texte lisible en clair */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
 }
+
+/* 🌙 Thème sombre : texte blanc + fond foncé + bordure visible */
+[data-theme="dark"] .info-card {
+  background-color: #1e293b;  /* gris-bleu foncé (lisible, neutre) */
+  color: #fff !important;     /* PROBLÈME PRINCIPAL RÉSOLU → texte bien blanc */
+  border: 1px solid #ffffff55; /* bordure blanche semi-transparente */
+}
+
+/* Pour être sûr que tout le contenu intérieur devienne blanc */
+[data-theme="dark"] .info-card *,
+[data-theme="dark"] .info-card strong,
+[data-theme="dark"] .info-card p,
+[data-theme="dark"] .info-card li {
+  color: #fff !important;
+}
+
+/* ❗ Exceptions : NE PAS mettre en blanc le texte des tableaux */
+/* (les tableaux doivent rester texte noir sur fond blanc) */
+[data-theme="dark"] .info-card table,
+[data-theme="dark"] .info-card table * {
+  color: #000 !important;
+}
+
 
 /* 4️⃣ Le contenu des tableaux peut dépasser à l'intérieur des encadrés mais ne fait pas défiler la page */
 .info-card .info-content {
@@ -2154,4 +2180,41 @@ fieldset {
 /* Thème sombre : bordure blanche */
 [data-theme="dark"] fieldset {
   border: 1px solid #ffffff;
+}
+
+/* 3️⃣ Encadrés "Antibiothérapie adaptée" — version corrigée */
+.info-card {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  /* Thème clair */
+  background-color: #f9f9f9;
+  color: #000;                 /* Texte lisible en clair */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+/* 🌙 Thème sombre : texte blanc + fond foncé + bordure visible */
+[data-theme="dark"] .info-card {
+  background-color: #1e293b;  /* gris-bleu foncé (lisible, neutre) */
+  color: #fff !important;     /* PROBLÈME PRINCIPAL RÉSOLU → texte bien blanc */
+  border: 1px solid #ffffff55; /* bordure blanche semi-transparente */
+}
+
+/* Pour être sûr que tout le contenu intérieur devienne blanc */
+[data-theme="dark"] .info-card *,
+[data-theme="dark"] .info-card strong,
+[data-theme="dark"] .info-card p,
+[data-theme="dark"] .info-card li {
+  color: #fff !important;
+}
+
+/* ❗ Exceptions : NE PAS mettre en blanc le texte des tableaux */
+/* (les tableaux doivent rester texte noir sur fond blanc) */
+[data-theme="dark"] .info-card table,
+[data-theme="dark"] .info-card table * {
+  color: #000 !important;
 }
