@@ -593,12 +593,17 @@ function renderAnesthVasculaire() {
 // Menu Radio-vasculaire (1 page par intervention)
 function renderAnesthRadioVascMenu() {
   $app.innerHTML = `
-    <section class="anesth-menu">
-      <div class="hero home-hero">
-        <h2>Radio-vasculaire</h2>
-      </div>
+     <section class="intervention-shell">
 
-      <div class="grid">
+      <!-- Colonne gauche : titre + deux groupes -->
+      <div class="intervention-main">
+        <div class="hero">
+          <h2>Radio-vasculaire</h2>
+        </div>
+
+        <!-- Groupe 1 : Cardiologie structurelle -->
+        <h3>Radiovasculaire</h3>
+        <div class="grid">
         <button class="btn" onclick="location.hash = '#/anesthesie/radiovasculaire/fav'">Angioplastie de FAV humérale</button>
         <button class="btn" onclick="location.hash = '#/anesthesie/radiovasculaire/mi'">Angioplastie des membres inférieurs</button>
         <button class="btn" onclick="location.hash = '#/anesthesie/radiovasculaire/embol'">Embolisation pelvienne</button>
