@@ -600,16 +600,14 @@ function renderAnesthRadioVascMenu() {
         <div class="hero">
           <h2>Radio-vasculaire</h2>
         </div>
-
-        <h3>Radiovasculaire</h3>
         <div class="grid">
-          <button class="btn" onclick="location.hash = '#/anesthesie/radiovasculaire/fav'">Angioplastie de FAV humérale</button>
-          <button class="btn" onclick="location.hash = '#/anesthesie/radiovasculaire/mi'">Angioplastie des membres inférieurs</button>
-          <button class="btn" onclick="location.hash = '#/anesthesie/radiovasculaire/embol'">Embolisation pelvienne</button>
-          <button class="btn" onclick="location.hash = '#/anesthesie/radiovasculaire/abdo'">Ablations intra-abdominales</button>
-          <button class="btn" onclick="location.hash = '#/anesthesie/radiovasculaire/tips'">TIPS</button>
-          <button class="btn" onclick="location.hash = '#/anesthesie/radiovasculaire/biliaire'">Drainage biliaire percutané</button>
-          <button class="btn" onclick="location.hash = '#/anesthesie/radiovasculaire/nephro'">Néphrostomie percutanée</button>
+          <button class="btn" onclick="renderInterventionRadioVascFAV()">Angioplastie de FAV humérale</button>
+          <button class="btn" onclick="renderInterventionRadioVascMI()">Angioplastie des membres inférieurs</button>
+          <button class="btn" onclick="renderInterventionRadioVascEmbol()">Embolisation pelvienne</button>
+          <button class="btn" onclick="renderInterventionRadioVascAbdo()">Ablations intra-abdominales</button>
+          <button class="btn" onclick="renderInterventionRadioVascTIPS()">TIPS</button>
+          <button class="btn" onclick="renderInterventionRadioVascBiliaire()">Drainage biliaire percutané</button>
+          <button class="btn" onclick="renderInterventionRadioVascNephro()">Néphrostomie percutanée</button>
         </div>
 
         <div class="actions">
@@ -626,27 +624,15 @@ function renderAnesthRadioVascMenu() {
   `;
 }
 
-// Helpers UI (même logique que tes pages)
-function rvRadio(name, value, label, checked=false) {
-  return `<label class="checkbox"><input type="radio" name="${name}" value="${value}" ${checked ? "checked" : ""}> ${label}</label>`;
-}
-function rvCheck(id, label) {
-  return `<label class="checkbox"><input type="checkbox" id="${id}"> ${label}</label>`;
-}
-function rvImg(src, alt) {
-  // même principe que tes images cliquables (hépatite.png) si openPopup existe
-  return `
-    <div class="mini-figure" style="margin-top:.5rem;">
-      <img src="./img/${src}" alt="${alt}" style="max-width:220px; width:100%; height:auto; cursor:pointer;"
-           onclick="(window.openPopup ? openPopup(this.src) : window.open(this.src,'_blank'))">
-    </div>
-  `;
-}
+
+// -------------------------------
+// Anesthésie RADIO VASCULAIRE
+// -------------------------------
 
 // -------------------------------
 // 1) Angioplastie de FAV humérale
 // -------------------------------
-function renderRV_FAV() {
+function renderInterventionRadioVascFAV() {
   const encadres = [
     {
       titre: "Caractéristiques patient",
@@ -733,7 +719,7 @@ function renderRV_FAV() {
 // ----------------------------------------
 // 2) Angioplastie des membres inférieurs
 // ----------------------------------------
-function renderRV_MI() {
+function renderInterventionRadioVascMI() {
   const encadres = [
     {
       titre: "Caractéristiques patient",
@@ -820,7 +806,7 @@ function renderRV_MI() {
 // -----------------------
 // 3) Embolisation pelvienne
 // -----------------------
-function renderRV_Embol() {
+function renderInterventionRadioVascEmbol() {
   const encadres = [
     {
       titre: "Caractéristiques patient",
@@ -907,7 +893,7 @@ function renderRV_Embol() {
 // -------------------------
 // 4) Ablations intra-abdominales
 // -------------------------
-function renderRV_Abdo() {
+function renderInterventionRadioVascAbdo() {
   const encadres = [
     {
       titre: "Caractéristiques patient",
@@ -1026,7 +1012,7 @@ function renderRV_Abdo() {
 }
 
 // ----- 5) TIPS -----
-function renderRV_TIPS() {
+function renderInterventionRadioVascTIPS() {
   const encadres = [
     {
       titre: "Caractéristiques patient",
@@ -1082,7 +1068,7 @@ function renderRV_TIPS() {
 }
 
 // ----- 6) Drainage biliaire percutané -----
-function renderRV_Biliaire() {
+function renderInterventionRadioVascBiliaire() {
   const encadres = [
     {
       titre: "Caractéristiques patient",
@@ -1159,7 +1145,7 @@ function renderRV_Biliaire() {
 }
 
 // ----- 7) Néphrostomie percutanée -----
-function renderRV_Nephro() {
+function renderInterventionRadioVascNephro() {
   const encadres = [
     {
       titre: "Caractéristiques patient",
