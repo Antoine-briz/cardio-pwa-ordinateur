@@ -624,7 +624,6 @@ function renderAnesthRadioVascMenu() {
   `;
 }
 
-
 // -------------------------------
 // Anesthésie RADIO VASCULAIRE
 // -------------------------------
