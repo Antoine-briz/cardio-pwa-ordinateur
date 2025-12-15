@@ -1206,7 +1206,6 @@ function renderInterventionRadioVascBiliaire() {
           ${rvCheck("bilIMC","IMC &gt; 50 kg/m2")}
           ${rvCheck("bilAllergie","Allergie aux bêta-lactamines")}
           </div>
-        </div>
       `
     },
     {
@@ -1284,7 +1283,6 @@ function renderInterventionRadioVascNephro() {
           ${rvCheck("nephIMC","IMC &gt; 50 kg/m2")}
           ${rvCheck("nephAllergie","Allergie aux bêta-lactamines")}
           </div>
-        </div>
       `
     },
     {
