@@ -1042,12 +1042,12 @@ expandPatientCharacteristics();
       Intubation par sonde double lumière :
       <a href="javascript:void(0)"
          class="inline-img-link"
-         onclick="openPopup('./img/uniplum1.png')">
+         onclick="openPopup('./img/iotdoublelum.png')">
         Gestion de l’intubation (clicable)
       </a>,
       <a href="javascript:void(0)"
          class="inline-img-link"
-         onclick="openPopup('./img/uniplum2.png')">
+         onclick="openPopup('./img/gestionunipulm.png')">
         gestion de la ventilation uni-pulmonaire
       </a>
     </div>
@@ -1065,12 +1065,12 @@ if (pos === "Décubitus latéral") {
       Intubation par sonde double lumière :
       <a href="javascript:void(0)"
          class="inline-img-link"
-         onclick="openPopup('./img/uniplum1.png')">
+         onclick="openPopup('./img/iotdoublelum.png')">
         Gestion de l’intubation 🖼️️
       </a>,
       <a href="javascript:void(0)"
          class="inline-img-link"
-         onclick="openPopup('./img/uniplum2.png')">
+         onclick="openPopup('./img/gestionunipulm.png')">
         Gestion ventilation uni-pulmonaire 🖼️️
       </a>
     </div>
@@ -1090,7 +1090,7 @@ if (pos === "Décubitus ventral") {
       Procédure de décubitus ventral :
       <a href="javascript:void(0)"
          class="inline-img-link"
-         onclick="openPopup('./img/vdp.png')">
+         onclick="openPopup('./img/dv.png')">
         Décubitus ventral 🖼️️
       </a>
     </div>
