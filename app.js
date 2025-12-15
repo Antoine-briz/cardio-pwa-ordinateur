@@ -1063,10 +1063,12 @@ if (pos === "Décubitus latéral") {
 
     <div>
       Intubation par sonde double lumière :
-      <span class="img-link" onclick="openImg('uniplum1.png')">
+      <span class="img-link" onclick="openImg('iotdoublelum.png')">
         🖼️ Gestion de l’intubation
       </span>,
-      🖼️ Gestion de la ventilation uni-pulmonaire
+      <span class="img-link" onclick="openImg('gestionunipulm.png')">
+        🖼️ Gestion ventilation unipulmonaire
+      </span>,
     </div>
 
     <div style="margin-top:.5rem;">
@@ -1084,7 +1086,7 @@ if (pos === "Décubitus ventral") {
 
     <div>
       Procédure de décubitus ventral :
-      <span class="img-link" onclick="openImg('vdp.png')">
+      <span class="img-link" onclick="openImg('vd.png')">
         🖼️ Décubitus ventral
       </span>
     </div>
