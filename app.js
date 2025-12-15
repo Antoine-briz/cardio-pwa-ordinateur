@@ -628,6 +628,40 @@ function renderAnesthRadioVascMenu() {
 // Anesthésie RADIO VASCULAIRE
 // -------------------------------
 
+// ===============================
+// Helpers Radio-vasculaire (UI)
+// ===============================
+function rvRadio(name, value, label, checked = false) {
+  return `
+    <label class="checkbox">
+      <input type="radio" name="${name}" value="${value}" ${checked ? "checked" : ""}>
+      ${label}
+    </label>
+  `;
+}
+
+function rvCheck(id, label) {
+  return `
+    <label class="checkbox">
+      <input type="checkbox" id="${id}">
+      ${label}
+    </label>
+  `;
+}
+
+function rvImg(src, alt) {
+  return `
+    <div class="mini-figure" style="margin-top:.5rem;">
+      <img
+        src="img/${src}"
+        alt="${alt}"
+        style="max-width:220px;width:100%;height:auto;cursor:pointer;"
+        onclick="(window.openPopup ? openPopup(this.src) : window.open(this.src,'_blank'))"
+      >
+    </div>
+  `;
+}
+
 // -------------------------------
 // 1) Angioplastie de FAV humérale
 // -------------------------------
