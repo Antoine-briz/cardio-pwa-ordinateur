@@ -1283,13 +1283,6 @@ function renderInterventionRadioVascNephro() {
         <div class="info-content">
           ${rvCheck("nephIMC","IMC &gt; 50 kg/m2")}
           ${rvCheck("nephAllergie","Allergie aux bêta-lactamines")}
-          <div style="margin-top:.5rem;">
-            <div><strong>Gestion des traitements :</strong></div>
-            <ul>
-              <li>Poursuite Kardégic</li>
-              <li>Arrêt anti-P2Y12</li>
-              <li>Arrêt anticoagulants</li>
-            </ul>
           </div>
         </div>
       `
@@ -1318,8 +1311,7 @@ function renderInterventionRadioVascNephro() {
       html: `
         <div class="info-content">
           <div>ECBU pré-opératoire stérile (hors urgence)</div>
-          <div style="margin-top:.5rem;">Scope ECG 5 branches, SpO2, PNI, IOT, EtCO2</div>
-          <div>BIS, TOF</div>
+          <div style="margin-top:.5rem;">Scope ECG 5 branches, SpO2, PNI, IOT, EtCO2, BIS, TOF</div>
           <div style="margin-top:.25rem;">VVP 18G avec prolongateur et octopus</div>
         </div>
       `
