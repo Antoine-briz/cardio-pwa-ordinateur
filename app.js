@@ -1059,23 +1059,20 @@ if (pos === "Décubitus latéral") {
   an = `
     <div><strong>Protocole d’anesthésie :</strong> Anesthésie générale avec IOT</div>
     <div>Induction AIVOC Propofol/Rémifentanil</div>
-    <div>Curarisation par curare antagonisable (Rocuronium 0,6-1,2mg/kg)</div>
+    <div>Curarisation par curare antagonisable (Rocuronium 0,6–1,2 mg/kg)</div>
 
     <div>
       Intubation par sonde double lumière :
-      <a href="javascript:void(0)"
-         class="inline-img-link"
-         onclick="openPopup('./img/iotdoublelum.png')">
-        Gestion de l’intubation 🖼️️
-      </a>,
-      <a href="javascript:void(0)"
-         class="inline-img-link"
-         onclick="openPopup('./img/gestionunipulm.png')">
-        Gestion ventilation uni-pulmonaire 🖼️️
-      </a>
+      <span class="img-link" onclick="openImg('uniplum1.png')">
+        🖼️ Gestion de l’intubation
+      </span>,
+      🖼️ Gestion de la ventilation uni-pulmonaire
     </div>
 
-    <div style="margin-top:.5rem;"><strong>Analgésie post-opératoire :</strong> Paracétamol, Acupan +/- Profenid</div>
+    <div style="margin-top:.5rem;">
+      <strong>Analgésie post-opératoire :</strong>
+      Paracétamol, Acupan ± Profenid
+    </div>
   `;
 }
 
@@ -1083,19 +1080,19 @@ if (pos === "Décubitus ventral") {
   an = `
     <div><strong>Protocole d’anesthésie :</strong> Anesthésie générale avec IOT</div>
     <div>Induction AIVOC Propofol/Rémifentanil</div>
-    <div>Curarisation par curare antagonisable (Rocuronium 0,6-1,2mg/kg)</div>
-    <div>IOT par sonde mono-lumière</div>
+    <div>Curarisation par curare antagonisable (Rocuronium 0,6–1,2 mg/kg)</div>
 
     <div>
       Procédure de décubitus ventral :
-      <a href="javascript:void(0)"
-         class="inline-img-link"
-         onclick="openPopup('./img/dv.png')">
-        Décubitus ventral 🖼️️
-      </a>
+      <span class="img-link" onclick="openImg('vdp.png')">
+        🖼️ Décubitus ventral
+      </span>
     </div>
 
-    <div style="margin-top:.5rem;"><strong>Analgésie post-opératoire :</strong> Paracétamol, Acupan +/- Profenid</div>
+    <div style="margin-top:.5rem;">
+      <strong>Analgésie post-opératoire :</strong>
+      Paracétamol, Acupan ± Profenid
+    </div>
   `;
 }
 
