@@ -1048,7 +1048,7 @@ expandPatientCharacteristics();
       <a href="javascript:void(0)"
          class="inline-img-link"
          onclick="openPopup('./img/gestionunipulm.png')">
-        gestion de la ventilation uni-pulmonaire
+        gestion de la ventilation uni-pulmonaire (clicable)
       </a>
     </div>
 
