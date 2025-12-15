@@ -662,6 +662,704 @@ function rvImg(src, alt) {
   `;
 }
 
+// -------------------------------
+// 1) Angioplastie de FAV humérale
+// -------------------------------
+function renderInterventionRadioVascFAV() {
+  const encadres = [
+    {
+      titre: "Caractéristiques patient",
+      ouvert: true,
+      html: `
+        <div class="info-content">
+          <div style="margin-bottom:.5rem;"><strong>Type d’angioplastie</strong></div>
+          ${rvRadio("favType","Sans pose de stent","Sans pose de stent",true)}
+          ${rvRadio("favType","Avec pose de stent","Avec pose de stent")}
+
+          <div style="margin-top:.75rem;">
+            ${rvCheck("favIMC","IMC &gt; 50 kg/m2")}
+            ${rvCheck("favAllergie","Allergie aux bêta-lactamines")}
+          </div>
+        </div>
+      `
+    },
+    {
+      titre: "Hémostase / risque hémorragique",
+  html: `
+    <div class="info-content">
+      <div>Procédure possible si:</div>
+      <ul>
+        <li>Plaquettes &gt; 50 G/L</li>
+        <li>TP &gt; 50%</li>
+      </ul>
+
+      <div style="margin-top:.5rem;">Gestion des traitements:</div>
+      <ul>
+        <li>Poursuite Kardégic</li>
+        <li>Arrêt anti-P2Y12</li>
+        <li>Arrêt anticoagulants</li>
+      </ul>
+    </div>
+  `
+    },
+    {
+      titre: "Monitorage",
+      html: `
+        <div class="info-content">
+          <div>Scope ECG 5 branches, SpO2, PNI, EtCO2, BIS, TOF</div>
+          <div style="margin-top:.25rem;">VVP 18G avec prolongateur et octopus</div>
+        </div>
+      `
+    },
+    {
+      titre: "Anesthésie",
+      html: `
+        <div class="info-content">
+          <div><strong>Protocole d’anesthésie :</strong> Anesthésie générale avec IOT</div>
+          <div>AIVOC Propofol/Rémifentanil</div>
+          <div>Décubitus dorsal</div>
+          <div style="margin-top:.5rem;"><strong>Analgésie post-opératoire :</strong> Paracétamol, Acupan</div>
+        </div>
+      `
+    },
+    {
+      titre: "Antibioprophylaxie",
+      html: `<div class="info-content" id="favABX"></div>`
+    }
+  ];
+
+  renderInterventionPage({
+    titre: "Angioplastie de FAV humérale",
+    sousTitre: "",
+    image: "radiovasc.png",
+    encadres,
+  });
+
+expandPatientCharacteristics();
+  
+  // --- Algorithme ABX (issu des XXX, non affiché) ---
+  function compute() {
+    const type = document.querySelector("input[name='favType']:checked")?.value || "Sans pose de stent";
+    const imc = document.getElementById("favIMC")?.checked;
+    const allergie = document.getElementById("favAllergie")?.checked;
+
+    let txt = "Pas d’antibioprophylaxie.";
+    if (type === "Avec pose de stent") {
+      txt = "Céfazoline 2g puis 1g toutes les 4h IVSE.";
+      if (imc) txt = "Céfazoline 4g puis 2g toutes les 4h IVSE.";
+      if (allergie) txt = "Vancomycine 30mg/kg IVL une injection 30 min avant incision.";
+    }
+    document.getElementById("favABX").innerHTML = txt;
+  }
+
+  document.querySelectorAll("input[name='favType'], #favIMC, #favAllergie")
+    .forEach(el => el.addEventListener("change", compute));
+  compute();
+}
+
+// ----------------------------------------
+// 2) Angioplastie des membres inférieurs
+// ----------------------------------------
+function renderInterventionRadioVascMI() {
+  const encadres = [
+    {
+      titre: "Caractéristiques patient",
+      ouvert: true,
+      html: `
+        <div class="info-content">
+          <div style="margin-bottom:.5rem;"><strong>Type d’angioplastie</strong></div>
+          ${rvRadio("miType","Sans pose de stent ou stent nu","Sans pose de stent ou stent nu",true)}
+          ${rvRadio("miType","Avec pose de stent couvert","Avec pose de stent couvert")}
+
+          <div id="miExtra" style="margin-top:.75rem; display:none;">
+            ${rvCheck("miIMC","IMC &gt; 50 kg/m2")}
+            ${rvCheck("miAllergie","Allergie aux bêta-lactamines")}
+          </div>
+        </div>
+      `
+    },
+    {
+      titre: "Hémostase / risque hémorragique",
+  html: `
+    <div class="info-content">
+      <div>Procédure possible si:</div>
+      <ul>
+        <li>Plaquettes &gt; 50 G/L</li>
+        <li>TP &gt; 50%</li>
+      </ul>
+
+      <div style="margin-top:.5rem;">Gestion des traitements:</div>
+      <ul>
+        <li>Poursuite Kardégic</li>
+        <li>Arrêt anti-P2Y12 (sauf geste veineux)</li>
+        <li>Arrêt anticoagulants (sauf geste veineux)</li>
+      </ul>
+    </div>
+  `
+    },
+    {
+      titre: "Monitorage",
+      html: `
+        <div class="info-content">
+          <div>Scope ECG 5 branches, SpO2, PNI, EtCO2, BIS, TOF</div>
+          <div style="margin-top:.25rem;">VVP 18G avec prolongateur et octopus</div>
+        </div>
+      `
+    },
+    {
+      titre: "Anesthésie",
+      html: `
+        <div class="info-content">
+          <div><strong>Protocole d’anesthésie :</strong> Anesthésie générale avec IOT</div>
+          <div>AIVOC Propofol/Rémifentanil</div>
+          <div>Décubitus dorsal</div>
+          <div style="margin-top:.5rem;"><strong>Analgésie post-opératoire :</strong> Paracétamol, Acupan</div>
+        </div>
+      `
+    },
+    { titre: "Antibioprophylaxie", html: `<div class="info-content" id="miABX"></div>` }
+  ];
+
+  renderInterventionPage({
+    titre: "Angioplastie des membres inférieurs",
+    sousTitre: "",
+    image: "radiovasc.png",
+    encadres,
+  });
+
+  expandPatientCharacteristics();
+
+  function compute() {
+    const type = document.querySelector("input[name='miType']:checked")?.value || "Sans pose de stent ou stent nu";
+    const extra = document.getElementById("miExtra");
+    const showExtra = (type === "Avec pose de stent couvert");
+    extra.style.display = showExtra ? "block" : "none";
+
+    const imc = document.getElementById("miIMC")?.checked;
+    const allergie = document.getElementById("miAllergie")?.checked;
+
+    let txt = "Pas d’antibioprophylaxie.";
+    if (type === "Avec pose de stent couvert") {
+      txt = "Céfazoline 2g puis 1g toutes les 4h IVSE.";
+      if (imc) txt = "Céfazoline 4g puis 2g toutes les 4h IVSE.";
+      if (allergie) txt = "Vancomycine 30mg/kg IVL une injection 30 min avant incision.";
+    }
+    document.getElementById("miABX").innerHTML = txt;
+  }
+
+  document.querySelectorAll("input[name='miType'], #miIMC, #miAllergie")
+    .forEach(el => el.addEventListener("change", compute));
+  compute();
+}
+
+// -----------------------
+// 3) Embolisation pelvienne
+// -----------------------
+function renderInterventionRadioVascEmbol() {
+  const encadres = [
+    {
+      titre: "Caractéristiques patient",
+      ouvert: true,
+      html: `
+        <div class="info-content">
+          <div style="margin-bottom:.5rem;"><strong>Type d’embolisation</strong></div>
+          ${rvRadio("embType","Embolisation artérielle","Embolisation artérielle",true)}
+          ${rvRadio("embType","Embolisation veineuse","Embolisation veineuse")}
+
+          <div id="embExtra" style="margin-top:.75rem;">
+            ${rvCheck("embIMC","IMC &gt; 50 kg/m2")}
+            ${rvCheck("embAllergie","Allergie aux bêta-lactamines")}
+          </div>
+        </div>
+      `
+    },
+    {
+      titre: "Hémostase / risque hémorragique",
+  html: `
+    <div class="info-content">
+      <div>Procédure possible si:</div>
+      <ul>
+        <li>Plaquettes &gt; 50 G/L</li>
+        <li>TP &gt; 50%</li>
+      </ul>
+
+      <div style="margin-top:.5rem;">Gestion des traitements:</div>
+      <ul>
+        <li>Poursuite Kardégic</li>
+        <li>Arrêt anti-P2Y12 (sauf geste veineux)</li>
+        <li>Arrêt anticoagulants (sauf geste veineux)</li>
+      </ul>
+    </div>
+  `
+    },
+    {
+      titre: "Monitorage",
+      html: `
+        <div class="info-content">
+          <div>Scope ECG 5 branches, SpO2, PNI, EtCO2, BIS, TOF</div>
+          <div style="margin-top:.25rem;">VVP 18G avec prolongateur et octopus</div>
+        </div>
+      `
+    },
+    {
+      titre: "Anesthésie",
+      html: `
+        <div class="info-content">
+          <div><strong>Protocole d’anesthésie :</strong> Anesthésie générale avec IOT</div>
+          <div>AIVOC Propofol/Rémifentanil</div>
+          <div>Décubitus dorsal</div>
+          <div style="margin-top:.5rem;"><strong>Analgésie post-opératoire :</strong> Paracétamol, Acupan</div>
+        </div>
+      `
+    },
+    { titre: "Antibioprophylaxie", html: `<div class="info-content" id="embABX"></div>` }
+  ];
+
+  renderInterventionPage({
+    titre: "Embolisation pelvienne",
+    sousTitre: "",
+    image: "radiovasc.png",
+    encadres,
+  });
+
+  expandPatientCharacteristics();
+  
+  function compute() {
+    const type = document.querySelector("input[name='embType']:checked")?.value || "Embolisation artérielle";
+    const extra = document.getElementById("embExtra");
+    const showExtra = (type === "Embolisation artérielle");
+    extra.style.display = showExtra ? "block" : "none";
+
+    const imc = document.getElementById("embIMC")?.checked;
+    const allergie = document.getElementById("embAllergie")?.checked;
+
+    let txt = "Pas d’antibioprophylaxie.";
+    if (type === "Embolisation artérielle") {
+      txt = "Céfazoline 2g puis 1g toutes les 4h IVSE.";
+      if (imc) txt = "Céfazoline 4g puis 2g toutes les 4h IVSE.";
+      if (allergie) txt = "Vancomycine 30mg/kg IVL une injection 30 min avant incision.";
+    }
+    document.getElementById("embABX").innerHTML = txt;
+  }
+
+  document.querySelectorAll("input[name='embType'], #embIMC, #embAllergie")
+    .forEach(el => el.addEventListener("change", compute));
+  compute();
+}
+
+// -------------------------
+// 4) Ablations intra-abdominales
+// -------------------------
+function renderInterventionRadioVascAbdo() {
+  const encadres = [
+    {
+      titre: "Caractéristiques patient",
+      ouvert: true,
+      html: `
+        <div class="info-content">
+          <div style="margin-bottom:.5rem;"><strong>Position demandée par le chirurgien</strong></div>
+          ${rvRadio("pos","Décubitus dorsal","Décubitus dorsal",true)}
+          ${rvRadio("pos","Décubitus latéral","Décubitus latéral")}
+          ${rvRadio("pos","Décubitus ventral","Décubitus ventral")}
+
+          <div style="margin-top:.75rem; margin-bottom:.5rem;"><strong>Type d’ablation</strong></div>
+          ${rvRadio("abType","Hépatique","Hépatique",true)}
+          ${rvRadio("abType","Rénale","Rénale")}
+
+          <div style="margin-top:.75rem;">
+            ${rvCheck("abIMC","IMC &gt; 50 kg/m2")}
+            ${rvCheck("abAllergie","Allergie aux bêta-lactamines")}
+          </div>
+        </div>
+      `
+    },
+    {
+      titre: "Hémostase / risque hémorragique",
+  html: `
+    <div class="info-content">
+      <div>Procédure possible si:</div>
+      <ul>
+        <li>Plaquettes &gt; 50 G/L</li>
+        <li>TP &gt; 50%</li>
+      </ul>
+
+      <div style="margin-top:.5rem;">Gestion des traitements:</div>
+      <ul>
+        <li>Poursuite Kardégic</li>
+        <li>Arrêt anti-P2Y12</li>
+        <li>Arrêt anticoagulants</li>
+      </ul>
+    </div>
+  `
+    },
+    { titre: "Monitorage", html: `<div class="info-content" id="abMon"></div>` },
+    { titre: "Anesthésie", html: `<div class="info-content" id="abAn"></div>` },
+    { titre: "Antibioprophylaxie", html: `<div class="info-content" id="abABX"></div>` },
+  ];
+
+  renderInterventionPage({
+    titre: "Ablations intra-abdominales",
+    sousTitre: "",
+    image: "radiovasc.png",
+    encadres,
+  });
+
+expandPatientCharacteristics();
+  
+  function compute() {
+    const pos = document.querySelector("input[name='pos']:checked")?.value || "Décubitus dorsal";
+    const type = document.querySelector("input[name='abType']:checked")?.value || "Hépatique";
+    const imc = document.getElementById("abIMC")?.checked;
+    const allergie = document.getElementById("abAllergie")?.checked;
+
+    // Monitorage (issu du tableau)
+    let mon = `
+      <div>Scope ECG 5 branches, SpO2, PNI, EtCO2</div>
+      <div>Capnomasque</div>
+      <div style="margin-top:.25rem;">VVP 18G avec prolongateur et octopus</div>
+    `;
+    if (pos === "Décubitus latéral" || pos === "Décubitus ventral") {
+      mon = `
+        <div>Scope ECG 5 branches, SpO2, PNI, IOT/EtCO2, BIS, TOF</div>
+        <div style="margin-top:.25rem;">VVP 18G avec prolongateur et octopus</div>
+      `;
+    }
+    document.getElementById("abMon").innerHTML = mon;
+
+    // Anesthésie (issu du tableau)
+    let an = `
+      <div><strong>Protocole d’anesthésie :</strong> Sédation par AIVOC de Rémifentanil</div>
+      <div>Décubitus dorsal</div>
+      <div style="margin-top:.5rem;"><strong>Analgésie post-opératoire :</strong> Paracétamol, Acupan +/- Profenid</div>
+    `;
+    if (pos === "Décubitus latéral") {
+  an = `
+    <div><strong>Protocole d’anesthésie :</strong> Anesthésie générale avec IOT</div>
+    <div>Induction AIVOC Propofol/Rémifentanil</div>
+    <div>Curarisation par curare antagonisable (Rocuronium 0,6-1,2mg/kg)</div>
+
+    <div>
+      Intubation par sonde double lumière :
+      <a href="javascript:void(0)"
+         class="inline-img-link"
+         onclick="openPopup('./img/uniplum1.png')">
+        Gestion de l’intubation (clicable)
+      </a>,
+      <a href="javascript:void(0)"
+         class="inline-img-link"
+         onclick="openPopup('./img/uniplum2.png')">
+        gestion de la ventilation uni-pulmonaire
+      </a>
+    </div>
+
+    <div style="margin-top:.5rem;"><strong>Analgésie post-opératoire :</strong> Paracétamol, Acupan +/- Profenid</div>
+  `;
+}
+if (pos === "Décubitus latéral") {
+  an = `
+    <div><strong>Protocole d’anesthésie :</strong> Anesthésie générale avec IOT</div>
+    <div>Induction AIVOC Propofol/Rémifentanil</div>
+    <div>Curarisation par curare antagonisable (Rocuronium 0,6-1,2mg/kg)</div>
+
+    <div>
+      Intubation par sonde double lumière :
+      <a href="javascript:void(0)"
+         class="inline-img-link"
+         onclick="openPopup('./img/uniplum1.png')">
+        Gestion de l’intubation 🖼️️
+      </a>,
+      <a href="javascript:void(0)"
+         class="inline-img-link"
+         onclick="openPopup('./img/uniplum2.png')">
+        Gestion ventilation uni-pulmonaire 🖼️️
+      </a>
+    </div>
+
+    <div style="margin-top:.5rem;"><strong>Analgésie post-opératoire :</strong> Paracétamol, Acupan +/- Profenid</div>
+  `;
+}
+
+if (pos === "Décubitus ventral") {
+  an = `
+    <div><strong>Protocole d’anesthésie :</strong> Anesthésie générale avec IOT</div>
+    <div>Induction AIVOC Propofol/Rémifentanil</div>
+    <div>Curarisation par curare antagonisable (Rocuronium 0,6-1,2mg/kg)</div>
+    <div>IOT par sonde mono-lumière</div>
+
+    <div>
+      Procédure de décubitus ventral :
+      <a href="javascript:void(0)"
+         class="inline-img-link"
+         onclick="openPopup('./img/vdp.png')">
+        Décubitus ventral 🖼️️
+      </a>
+    </div>
+
+    <div style="margin-top:.5rem;"><strong>Analgésie post-opératoire :</strong> Paracétamol, Acupan +/- Profenid</div>
+  `;
+}
+
+document.getElementById("abAn").innerHTML = an;
+
+    // Antibioprophylaxie (issu du tableau + XXX)
+    let abx = "Céfazoline 2g puis 1g toutes les 4h IVSE.";
+    if (imc) abx = "Céfazoline 4g puis 2g toutes les 4h IVSE.";
+
+    if (allergie) {
+      // si Rénale : Clinda + Genta ; si Hépatique : Vanco
+      if (type === "Rénale") abx = "Clindamycine 900mg IVL + Gentamicine 5mg/kg IVL.";
+      else abx = "Vancomycine 30mg/kg IVL une injection 30 min avant incision.";
+    }
+
+    document.getElementById("abABX").innerHTML = abx;
+  }
+
+  document.querySelectorAll("input[name='pos'], input[name='abType'], #abIMC, #abAllergie")
+    .forEach(el => el.addEventListener("change", compute));
+  compute();
+}
+
+// ----- 5) TIPS -----
+function renderInterventionRadioVascTIPS() {
+  const encadres = [
+    {
+      titre: "Caractéristiques patient",
+      ouvert: true,
+      html: `
+        <div class="info-content">
+          <div style="margin-bottom:.5rem;">
+            <strong>Gravité du patient :</strong> <em>(sélection unique)</em>
+          </div>
+
+          ${rvRadio("tipsGravite", "A froid", "A froid", true)}
+          ${rvRadio("tipsGravite", "Choc hémorragique", "Choc hémorragique")}
+
+          <div style="margin-top:.75rem;">
+            ${rvCheck("tipsIMC", "IMC &gt; 50 kg/m2")}
+          </div>
+
+          <div style="margin-top:.5rem;">
+            ${rvCheck("tipsAllergie", "Allergie aux bêta-lactamines")}
+          </div>
+        </div>
+      `
+    },
+    {
+      titre: "Hémostase / risque hémorragique",
+  html: `
+    <div class="info-content">
+      <div>Procédure possible si:</div>
+      <ul>
+        <li>Plaquettes &gt; 50 G/L</li>
+        <li>TP &gt; 50%</li>
+      </ul>
+
+      <div style="margin-top:.5rem;">Gestion des traitements:</div>
+      <ul>
+        <li>Poursuite Kardégic</li>
+        <li>Arrêt anti-P2Y12</li>
+        <li>Arrêt anticoagulants</li>
+      </ul>
+    </div>
+  `
+    },
+    {
+      titre: "Monitorage",
+      html: `
+        <div class="info-content">
+          <div>Scope ECG 5 branches, SpO2, PNI, EtCO2, BIS, TOF</div>
+          <div style="margin-top:.25rem;">VVP 18G avec prolongateur et octopus</div>
+        </div>
+      `
+    },
+    {
+      titre: "Anesthésie",
+      html: `
+        <div class="info-content">
+          <div><strong>Protocole d’anesthésie :</strong> Anesthésie générale avec IOT</div>
+          <div>AIVOC Propofol/Rémifentanil</div>
+          <div>Décubitus dorsal maintenu</div>
+          <div style="margin-top:.5rem;"><strong>Analgésie post-opératoire :</strong> Paracétamol, Acupan</div>
+        </div>
+      `
+    },
+    { titre: "Antibioprophylaxie", html: `<div class="info-content">Pas d’antibioprophylaxie.</div>` }
+  ];
+
+  renderInterventionPage({
+    titre: "TIPS",
+    sousTitre: "",
+    image: "radiovasc.png",
+    encadres,
+  });
+}
+
+expandPatientCharacteristics();
+
+// ----- 6) Drainage biliaire percutané -----
+function renderInterventionRadioVascBiliaire() {
+  const encadres = [
+    {
+      titre: "Caractéristiques patient",
+      ouvert: true,
+      html: `
+        <div class="info-content">
+          ${rvCheck("bilIMC","IMC &gt; 50 kg/m2")}
+          ${rvCheck("bilAllergie","Allergie aux bêta-lactamines")}
+          </div>
+        </div>
+      `
+    },
+    {
+      titre: "Hémostase / risque hémorragique",
+  html: `
+    <div class="info-content">
+      <div>Procédure possible si:</div>
+      <ul>
+        <li>Plaquettes &gt; 50 G/L</li>
+        <li>TP &gt; 50%</li>
+      </ul>
+
+      <div style="margin-top:.5rem;">Gestion des traitements:</div>
+      <ul>
+        <li>Poursuite Kardégic</li>
+        <li>Arrêt anti-P2Y12</li>
+        <li>Arrêt anticoagulants</li>
+      </ul>
+    </div>
+  `
+    },
+    {
+      titre: "Monitorage",
+      html: `
+        <div class="info-content">
+          <div>Scope ECG 5 branches, SpO2, PNI, EtCO2, BIS, TOF</div>
+          <div style="margin-top:.25rem;">VVP 18G avec prolongateur et octopus</div>
+        </div>
+      `
+    },
+    {
+      titre: "Anesthésie",
+      html: `
+        <div class="info-content">
+          <div><strong>Protocole d’anesthésie :</strong> Anesthésie générale avec IOT</div>
+          <div>AIVOC Propofol/Rémifentanil</div>
+          <div>Décubitus dorsal maintenu</div>
+          <div style="margin-top:.5rem;"><strong>Analgésie post-opératoire :</strong> Paracétamol, Acupan</div>
+        </div>
+      `
+    },
+    { titre: "Antibioprophylaxie", html: `<div class="info-content" id="bilABX"></div>` }
+  ];
+
+  renderInterventionPage({
+    titre: "Drainage biliaire percutané",
+    sousTitre: "",
+    image: "radiovasc.png",
+    encadres,
+  });
+
+expandPatientCharacteristics();
+  
+  function compute() {
+    const imc = document.getElementById("bilIMC")?.checked;
+    const allergie = document.getElementById("bilAllergie")?.checked;
+
+    let abx = "Ceftriaxone 1g IVL une injection.";
+    if (imc) abx = "Ceftriaxone 2g IVL une injection.";
+    if (allergie) abx = "Vancomycine 30mg/kg IVL une injection.";
+    document.getElementById("bilABX").innerHTML = abx;
+  }
+  document.querySelectorAll("#bilIMC, #bilAllergie").forEach(el => el.addEventListener("change", compute));
+  compute();
+}
+
+// ----- 7) Néphrostomie percutanée -----
+function renderInterventionRadioVascNephro() {
+  const encadres = [
+    {
+      titre: "Caractéristiques patient",
+      ouvert: true,
+      html: `
+        <div class="info-content">
+          ${rvCheck("nephIMC","IMC &gt; 50 kg/m2")}
+          ${rvCheck("nephAllergie","Allergie aux bêta-lactamines")}
+          <div style="margin-top:.5rem;">
+            <div><strong>Gestion des traitements :</strong></div>
+            <ul>
+              <li>Poursuite Kardégic</li>
+              <li>Arrêt anti-P2Y12</li>
+              <li>Arrêt anticoagulants</li>
+            </ul>
+          </div>
+        </div>
+      `
+    },
+    {
+      titre: "Hémostase / risque hémorragique",
+  html: `
+    <div class="info-content">
+      <div>Procédure possible si:</div>
+      <ul>
+        <li>Plaquettes &gt; 50 G/L</li>
+        <li>TP &gt; 50%</li>
+      </ul>
+
+      <div style="margin-top:.5rem;">Gestion des traitements:</div>
+      <ul>
+        <li>Poursuite Kardégic</li>
+        <li>Arrêt anti-P2Y12</li>
+        <li>Arrêt anticoagulants</li>
+      </ul>
+    </div>
+  `
+    },
+    {
+      titre: "Monitorage",
+      html: `
+        <div class="info-content">
+          <div>ECBU pré-opératoire stérile (hors urgence)</div>
+          <div style="margin-top:.5rem;">Scope ECG 5 branches, SpO2, PNI, IOT, EtCO2</div>
+          <div>BIS, TOF</div>
+          <div style="margin-top:.25rem;">VVP 18G avec prolongateur et octopus</div>
+        </div>
+      `
+    },
+    {
+      titre: "Anesthésie",
+      html: `
+        <div class="info-content">
+          <div><strong>Protocole d’anesthésie :</strong> Anesthésie générale avec IOT</div>
+          <div>AIVOC Propofol/Rémifentanil</div>
+          <div>Décubitus latéral</div>
+          <div style="margin-top:.5rem;"><strong>Analgésie post-opératoire :</strong> Paracétamol, Acupan</div>
+        </div>
+      `
+    },
+    { titre: "Antibioprophylaxie", html: `<div class="info-content" id="nephABX"></div>` }
+  ];
+
+  renderInterventionPage({
+    titre: "Néphrostomie percutanée",
+    sousTitre: "",
+    image: "radiovasc.png",
+    encadres,
+  });
+
+expandPatientCharacteristics();
+  
+  function compute() {
+    const imc = document.getElementById("nephIMC")?.checked;
+    const allergie = document.getElementById("nephAllergie")?.checked;
+
+    let abx = "Ceftriaxone 1g IVL une injection.";
+    if (imc) abx = "Ceftriaxone 2g IVL une injection.";
+    if (allergie) abx = "Vancomycine 30mg/kg IVL une injection.";
+    document.getElementById("nephABX").innerHTML = abx;
+  }
+  document.querySelectorAll("#nephIMC, #nephAllergie").forEach(el => el.addEventListener("change", compute));
+  compute();
+}
 
 
 // =====================================================================
