@@ -1086,7 +1086,7 @@ if (pos === "Décubitus ventral") {
 
     <div>
       Procédure de décubitus ventral :
-      <span class="img-link" onclick="openImg('vd.png')">
+      <span class="img-link" onclick="openImg('dv.png')">
         🖼️ Décubitus ventral
       </span>
     </div>
