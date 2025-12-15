@@ -731,7 +731,7 @@ function renderInterventionRadioVascFAV() {
   renderInterventionPage({
     titre: "Angioplastie de FAV humérale",
     sousTitre: "",
-    image: "radiovasc.png",
+    image: "radiovasc2.png",
     encadres,
   });
 
@@ -823,7 +823,7 @@ function renderInterventionRadioVascMI() {
   renderInterventionPage({
     titre: "Angioplastie des membres inférieurs",
     sousTitre: "",
-    image: "radiovasc.png",
+    image: "radiovasc2.png",
     encadres,
   });
 
@@ -918,7 +918,7 @@ function renderInterventionRadioVascEmbol() {
   renderInterventionPage({
     titre: "Embolisation pelvienne",
     sousTitre: "",
-    image: "radiovasc.png",
+    image: "radiovasc2.png",
     encadres,
   });
 
@@ -1000,7 +1000,7 @@ function renderInterventionRadioVascAbdo() {
   renderInterventionPage({
     titre: "Ablations intra-abdominales",
     sousTitre: "",
-    image: "radiovasc.png",
+    image: "radiovasc2.png",
     encadres,
   });
 
@@ -1189,7 +1189,7 @@ function renderInterventionRadioVascTIPS() {
   renderInterventionPage({
     titre: "TIPS",
     sousTitre: "",
-    image: "radiovasc.png",
+    image: "radiovasc2.png",
     encadres,
   });
 }
@@ -1255,7 +1255,7 @@ function renderInterventionRadioVascBiliaire() {
   renderInterventionPage({
     titre: "Drainage biliaire percutané",
     sousTitre: "",
-    image: "radiovasc.png",
+    image: "radiovasc2.png",
     encadres,
   });
 
@@ -1342,7 +1342,7 @@ function renderInterventionRadioVascNephro() {
   renderInterventionPage({
     titre: "Néphrostomie percutanée",
     sousTitre: "",
-    image: "radiovasc.png",
+    image: "radiovasc2.png",
     encadres,
   });
 
