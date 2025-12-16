@@ -13071,7 +13071,7 @@ function renderAcrChirCardiaque() {
         <div class="acr5-frame f-aides">
           <div class="acr5-frame-title">Aides</div>
           <div class="acr5-frame-body acr5-aides-body">
-            <button class="acr5-btn help" onclick="openImg('aidecognitiveSFAR.png')">
+            <button class="acr5-btn danger" onclick="openImg('aidecognitiveSFAR.png')">
               Aide cognitive ACR SFAR
             </button>
 
@@ -13127,7 +13127,7 @@ function renderAcrChirCardiaque() {
           <div class="acr5-frame-subtitle">(Cliquez pour ajouter)</div>
 
           <div class="acr5-frame-body acr5-others-body">
-            <button class="acr5-btn brown other-cee" onclick="acrAddEvent('CEE 150–200 J')">
+            <button class="acr5-btn other other-cee" onclick="acrAddEvent('CEE 150–200 J')">
               <img class="acr5-icon" src="img/eclair.png" alt="">
               <div>
                 <div class="acr5-big">CEE</div>
@@ -13135,7 +13135,7 @@ function renderAcrChirCardiaque() {
               </div>
             </button>
 
-            <button class="acr5-btn brown other-intub"
+            <button class="acr5-btn other other-intub"
               onclick="acrAddEvent('Intubation/VM (Vt 6 mL/kg, PEP 5, FR 10, FiO2 100%)')">
               <img class="acr5-icon" src="img/iot.png" alt="">
               <div>
@@ -13145,7 +13145,7 @@ function renderAcrChirCardiaque() {
             </button>
 
             <!-- ✅ DERNIER bouton : Départ ECMO + icône ecmova.png -->
-            <button class="acr5-btn brown other-ecmo"
+            <button class="acr5-btn other other-ecmo" 
               onclick="acrAddEvent('Départ ECMO')">
               <img class="acr5-icon" src="img/ecmova.png" alt="">
               <div>
