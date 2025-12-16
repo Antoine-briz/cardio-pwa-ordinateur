@@ -2260,330 +2260,198 @@ fieldset {
   margin-top: auto;  /* pousse en bas */
 }
 
-/* ============================================================
-   ACR — page dédiée (ordinateur)
-   ============================================================ */
+/* =========================================================
+   ACR – VERSION ORDINATEUR (Rendu PPT, 5 encadrés)
+   ========================================================= */
 
-.acr-page { display: flex; flex-direction: column; gap: 18px; }
-
-.acr-top {
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 16px;
-  align-items: start;
-}
-
-.acr-title h2 {
-  margin: 0 0 10px;
-  font-size: 28px;
-}
-
-.acr-top-right {
+/* ----- Layout global ----- */
+.acr5-wrap {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  align-items: stretch;
+  gap: 14px;
 }
 
-.acr-chrono-box {
-  border: 2px solid var(--border);
-  border-radius: 14px;
-  padding: 10px 12px;
-  background: var(--card);
-  text-align: center;
-}
-
-.acr-chrono-label { font-weight: 700; opacity: 0.85; }
-.acr-chrono { font-size: 34px; font-weight: 800; letter-spacing: 1px; margin-top: 4px; }
-
-.acr-contact {
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 10px 12px;
-  background: var(--card);
-}
-
-.acr-grid {
+.acr5-board {
+  width: min(1300px, 96vw);
+  margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 0.9fr 0.9fr;
-  gap: 16px;
+  grid-template-columns: 1.15fr 0.95fr 0.7fr;
+  grid-template-rows: auto auto;
+  gap: 14px;
 }
 
-.acr-card {
+/* placement des 5 encadrés */
+.f-chrono { grid-column: 1; grid-row: 1; }
+.f-aides  { grid-column: 2; grid-row: 1; }
+.f-synth  { grid-column: 3; grid-row: 1 / 3; }
+.f-meds   { grid-column: 1 / 3; grid-row: 2; }
+.f-others { grid-column: 2; grid-row: 2; }
+
+/* ----- Encadré générique ----- */
+.acr5-frame {
   background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  overflow: hidden;
-}
-
-.acr-card-head {
-  padding: 12px 14px;
-  border-bottom: 1px solid var(--border);
-  font-weight: 800;
-}
-
-.acr-card-head h3 {
-  margin: 0;
-  font-size: 18px;
+  border: 2px solid rgba(0,0,0,0.12);
+  border-radius: 18px;
+  overflow: hidden;                /* rien ne dépasse */
   display: flex;
-  justify-content: space-between;
-  gap: 10px;
+  flex-direction: column;
 }
-.acr-card-head h3 span { font-weight: 600; opacity: 0.7; font-size: 12px; }
 
-.acr-card-body {
+.acr5-frame-title {
+  padding: 10px 12px;
+  font-weight: 900;
+  font-size: 16px;
+  border-bottom: 1px solid rgba(0,0,0,0.12);
+  background: rgba(0,0,0,0.03);
+}
+
+.acr5-frame-subtitle {
+  padding: 6px 12px 0;
+  font-size: 12px;
+  font-weight: 700;
+  opacity: 0.75;
+}
+
+.acr5-frame-body {
   padding: 12px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  height: 100%;
 }
 
-/* Couleurs comme sur ta maquette : bleu / marron */
-.btn.acr-blue {
-  background: #0b3c6d;
-  border: 1px solid #0b3c6d;
-  color: #fff;
-}
-.btn.acr-brown {
-  background: #6b4b1f;
-  border: 1px solid #6b4b1f;
-  color: #fff;
-}
-.btn.acr-help {
-  background: #2f3a44;
-  border: 1px solid #2f3a44;
-  color: #fff;
+/* ----- Boutons ----- */
+.acr5-btn {
+  border: 0;
+  border-radius: 16px;
+  padding: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  text-align: center;
 }
 
-.btn.acr-etio {
-  background: transparent;
-  border: 2px solid #0b3c6d;
-  color: var(--fg);
-}
+.acr5-btn.blue   { background: #4472C4; color: #fff; }
+.acr5-btn.brown  { background: #ED7D31; color: #fff; }
+.acr5-btn.help   { background: #44546A; color: #fff; }
+.acr5-btn.danger { background: #C00000; color: #fff; }
 
-.btn.acr-ecmo {
-  background: #0b3c6d;
-  border: 1px solid #0b3c6d;
-  color: #fff;
-}
-
-/* Boutons avec icône */
-.acr-with-icon {
-  display: flex;
+/* ----- Chronomètre ----- */
+.acr5-chrono-body {
   align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
-  text-align: left;
-}
-.acr-icon {
-  width: 26px;
-  height: 26px;
-  object-fit: contain;
-  flex: 0 0 auto;
+  justify-content: center;
 }
 
-.acr-mar {
+.acr5-chrono-label {
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.acr5-chrono-screen {
+  width: 100%;
   margin-top: 6px;
-  border-top: 1px dashed var(--border);
-  padding-top: 10px;
+  padding: 18px 12px;
+  text-align: center;
+  font-size: 56px;
+  font-weight: 950;
+  letter-spacing: 2px;
+  background: #fff;
+  border-radius: 16px;
+  border: 2px solid rgba(0,0,0,0.15);
+}
+
+/* ----- Aides ----- */
+.acr5-phones {
+  margin-top: 6px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(0,0,0,0.03);
+  border: 1px solid rgba(0,0,0,0.12);
   display: grid;
   gap: 6px;
 }
 
-/* Modal Synthèse */
-.acr-modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.75);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  padding: 16px;
+/* ----- Autres ----- */
+.acr5-others-body {
+  gap: 12px;
 }
 
-.acr-modal-card {
-  width: min(900px, 95vw);
-  max-height: 85vh;
-  overflow: auto;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-}
-
-.acr-modal-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 14px;
-  border-bottom: 1px solid var(--border);
-}
-
-.acr-modal-head h3 { margin: 0; }
-
-.acr-modal-close {
-  border: 0;
-  background: transparent;
-  cursor: pointer;
+.acr5-big {
   font-size: 18px;
-  color: var(--fg);
+  font-weight: 900;
 }
 
-.acr-modal-body {
-  margin: 0;
-  padding: 14px;
-  white-space: pre-wrap;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 14px;
+.acr5-small {
+  font-size: 12px;
+  font-weight: 800;
+  opacity: 0.95;
+  margin-top: 2px;
 }
 
-.acr-modal-actions {
-  padding: 12px 14px;
-  border-top: 1px solid var(--border);
+.acr5-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
 }
 
-/* ===== ACR : rendu identique PPT (ordinateur) ===== */
-.acr-ppt-wrap { display:flex; flex-direction:column; gap:14px; }
+.other-cee,
+.other-intub {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  text-align: left;
+}
 
-.acr-ppt{
+.other-ecmo {
+  text-align: center;
+}
+
+/* ----- Synthèse ----- */
+.acr5-synth-body {
+  justify-content: flex-start;
+}
+
+.synth-btn {
+  padding: 16px 12px;
+}
+
+.acr5-synth-note {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+/* ----- Médicaments : placement PPT strict ----- */
+.acr5-meds-body {
   position: relative;
-  width: min(1200px, 96vw);
-  aspect-ratio: 16 / 9;
-  margin: 0 auto;
-  background: transparent;
+  min-height: 360px;
+  overflow: hidden;        /* aucun dépassement */
 }
 
-.acr-box{
-  position:absolute;
-  border-radius: 18px;
-  box-sizing:border-box;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  font-weight:700;
+.acr5-meds-body .m1,
+.acr5-meds-body .m2,
+.acr5-meds-body .m3,
+.acr5-meds-body .m4,
+.acr5-meds-body .m5,
+.acr5-meds-body .m6,
+.acr5-meds-body .m7,
+.acr5-meds-body .m8,
+.acr5-meds-body .m9 {
+  position: absolute;
+  width: 30%;
+  height: 26%;
+  padding: 10px;
 }
 
-/* Couleurs (proches du PPT Office) */
-.acr-red{ background:#C00000; color:#fff; border:0; }
-.acr-blue{ background:#4472C4; color:#fff; border:0; }
-.acr-brown{ background:#ED7D31; color:#fff; border:0; }
-.acr-grey{ background:#44546A; color:#fff; border:0; }
+/* Colonne gauche */
+.m1 { left: 2%;  top: 4%; }
+.m2 { left: 2%;  top: 36%; }
+.m3 { left: 2%;  top: 68%; }
 
-.acr-btn{ cursor:pointer; padding:10px 12px; }
-.acr-btn:active{ transform: translateY(1px); }
+/* Colonne centrale */
+.m4 { left: 35%; top: 4%; }
+.m5 { left: 35%; top: 36%; }
+.m6 { left: 35%; top: 68%; }
 
-.acr-titlebar{
-  left:1.12%; top:2.45%;
-  width:96.86%; height:15.93%;
-  background:#ffffff;
-  border:2px solid rgba(0,0,0,0.08);
-  justify-content:flex-start;
-  padding-left:28px;
-}
-.acr-titletext{ font-size:32px; font-weight:800; color:#111; }
-
-.acr-etiologies-top{
-  left:65.05%; top:26.60%;
-  width:14.18%; height:11.78%;
-  font-size:16px;
-}
-
-/* Bloc ECMO */
-.acr-ecmo{
-  left:80.53%; top:26.14%;
-  width:16.10%; height:26.64%;
-  flex-direction:column;
-  gap:10px;
-  padding:14px;
-}
-.acr-ecmo-title{ font-size:18px; line-height:1.15; }
-.acr-ecmo-sub{ font-size:16px; font-weight:800; }
-
-/* Chrono label + écran */
-.acr-chrono-label{
-  left:5.89%; top:19.36%;
-  width:15.38%; height:6.73%;
-  background:transparent;
-  font-size:18px;
-}
-.acr-chrono-screen{
-  left:2.68%; top:22.72%;
-  width:44.16%; height:32.65%;
-  background:#fff;
-  border:2px solid rgba(0,0,0,0.10);
-  font-size:56px;
-  font-weight:900;
-  letter-spacing:2px;
-}
-
-/* Titres colonnes */
-.acr-coltitle{
-  background:transparent;
-  font-size:18px;
-}
-.acr-med-title{ left:5.89%; top:56.35%; width:30.84%; height:6.73%; }
-.acr-aides-title{ left:53.73%; top:19.36%; width:7.35%; height:6.73%; }
-.acr-autres-title{ left:51.14%; top:57.33%; width:24.28%; height:6.73%; }
-
-/* Médicaments : placements (PPT-like) */
-.acr-med1{ left:4.39%; top:64.11%; width:12.73%; height:9.34%; }
-.acr-med2{ left:4.29%; top:75.33%; width:12.73%; height:9.34%; }
-.acr-med3{ left:4.29%; top:86.54%; width:12.73%; height:9.34%; }
-
-.acr-med4{ left:18.44%; top:64.11%; width:12.62%; height:9.34%; }
-.acr-med5{ left:18.44%; top:75.33%; width:12.62%; height:9.34%; }
-.acr-med6{ left:18.44%; top:86.54%; width:12.62%; height:9.34%; }
-
-.acr-med7{ left:32.48%; top:86.62%; width:12.62%; height:9.34%; }
-.acr-med8{ left:32.48%; top:64.02%; width:12.62%; height:9.34%; }
-.acr-med9{ left:18.43%; top:98.0%; width:0; height:0; } /* désactivé si pas dans ta slide finale */
-
-/* Aides */
-.acr-aide1{ left:51.14%; top:28.60%; width:14.18%; height:11.78%; }
-.acr-aide2{ left:65.05%; top:41.00%; width:14.18%; height:11.78%; }
-
-.acr-marbox{
-  left:53.10%; top:39.68%;
-  width:16.10%; height:18.0%;
-  background:#fff;
-  border:2px solid rgba(0,0,0,0.08);
-  flex-direction:column;
-  gap:6px;
-  font-weight:800;
-}
-
-/* Autres */
-.acr-cee{
-  left:50.46%; top:65.70%;
-  width:12.76%; height:31.30%;
-  gap:10px;
-  padding:14px;
-  justify-content:flex-start;
-}
-.acr-intub{
-  left:63.60%; top:65.70%;
-  width:23.70%; height:31.30%;
-  gap:10px;
-  padding:14px;
-  justify-content:flex-start;
-  text-align:left;
-}
-.acr-small{ font-size:12px; font-weight:700; opacity:0.95; line-height:1.25; }
-
-.acr-icon{ width:28px; height:28px; object-fit:contain; flex:0 0 auto; }
-
-/* Synthèse (droite) */
-.acr-synth-title{
-  left:86.10%; top:56.90%;
-  width:10.81%; height:6.73%;
-  background:transparent;
-  font-size:18px;
-}
-.acr-synth-btn{
-  left:85.00%; top:61.25%;
-  width:13.02%; height:36.90%;
-  padding:14px;
-  font-size:16px;
-  line-height:1.2;
-}
+/* Colonne droite */
+.m8 { left: 68%; top: 4%; }
+.m9 { left: 68%; top: 36%; }
+.m7 { left: 68%; top: 68%; }
