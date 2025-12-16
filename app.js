@@ -12944,6 +12944,240 @@ function renderCodesAcces() {
   `;
 }
 
+// ============================================================
+//  ACR — Chirurgie cardiaque (version ordinateur)
+// ============================================================
+
+let acrTimerInterval = null;
+let acrStartMs = null;
+let acrLog = []; // { label, wall, chrono }
+
+function pad2(n) {
+  return String(n).padStart(2, "0");
+}
+
+function getChronoStr() {
+  if (!acrStartMs) return "00:00";
+  const elapsed = Date.now() - acrStartMs;
+  const totalSec = Math.floor(elapsed / 1000);
+  const mm = Math.floor(totalSec / 60);
+  const ss = totalSec % 60;
+  return `${pad2(mm)}:${pad2(ss)}`;
+}
+
+function getWallTimeStr() {
+  // Heure réelle au moment du clic
+  return new Date().toLocaleTimeString("fr-FR", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+}
+
+function acrAddEvent(label) {
+  const entry = {
+    label,
+    wall: getWallTimeStr(),
+    chrono: getChronoStr(),
+  };
+  acrLog.push(entry);
+}
+
+function acrStartTimer() {
+  // éviter les doublons si on revient sur la page
+  if (acrTimerInterval) clearInterval(acrTimerInterval);
+
+  acrStartMs = Date.now();
+  acrLog = [];
+
+  // Ligne “début de la réanimation” dès l’ouverture
+  acrAddEvent("Début de la réanimation");
+
+  const chronoEl = document.getElementById("acr-chrono");
+  const tick = () => {
+    if (!chronoEl) return;
+    chronoEl.textContent = getChronoStr();
+  };
+
+  tick();
+  acrTimerInterval = setInterval(tick, 250);
+}
+
+function acrStopTimer() {
+  if (acrTimerInterval) clearInterval(acrTimerInterval);
+  acrTimerInterval = null;
+  acrStartMs = null;
+}
+
+function openAcrSynthese() {
+  // Format demandé : une ligne par élément avec heure + (durée chrono)
+  const lines = acrLog.map(e => `• ${e.label} — ${e.wall} (${e.chrono})`).join("\n");
+
+  const overlay = document.createElement("div");
+  overlay.className = "acr-modal";
+  overlay.innerHTML = `
+    <div class="acr-modal-card" role="dialog" aria-modal="true">
+      <div class="acr-modal-head">
+        <h3>Synthèse</h3>
+        <button class="acr-modal-close" aria-label="Fermer">✖</button>
+      </div>
+      <pre class="acr-modal-body">${lines || "—"}</pre>
+      <div class="acr-modal-actions">
+        <button class="btn ghost" id="acr-close">Fermer</button>
+      </div>
+    </div>
+  `;
+
+  const close = () => overlay.remove();
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) close();
+  });
+  overlay.querySelector(".acr-modal-close")?.addEventListener("click", close);
+  overlay.querySelector("#acr-close")?.addEventListener("click", close);
+
+  document.body.appendChild(overlay);
+}
+
+function renderAcrChirCardiaque() {
+  // Nettoie un éventuel chrono précédent si on revient sur la page
+  acrStopTimer();
+
+  $app.innerHTML = `
+    <section class="acr-ppt-wrap">
+      <div class="acr-ppt">
+
+        <!-- Bandeau titre -->
+        <div class="acr-box acr-titlebar">
+          <div class="acr-titletext">Arrêt cardiocirculatoire</div>
+        </div>
+
+        <!-- Bouton étiologies (haut) -->
+        <button class="acr-box acr-btn acr-red acr-etiologies-top"
+                onclick="openImg('tableauacr.png')">
+          Etiologies ACR<br/>Chir. cardiaque
+        </button>
+
+        <!-- Bloc Appel ECMO -->
+        <button class="acr-box acr-btn acr-red acr-ecmo"
+                onclick="acrAddEvent('Appel ECMO')">
+          <div class="acr-ecmo-title">Appel ECMO<br/>(Cliquez ici)</div>
+          <div class="acr-ecmo-sub">Interne de chirurgie: 65 645</div>
+        </button>
+
+        <!-- Chrono label + écran -->
+        <div class="acr-box acr-chrono-label">Chronomètre</div>
+        <div class="acr-box acr-chrono-screen" id="acr-chrono">00:00</div>
+
+        <!-- Titres colonnes -->
+        <div class="acr-box acr-coltitle acr-med-title">Médicaments (Cliquez pour ajouter)</div>
+        <div class="acr-box acr-coltitle acr-aides-title">Aides</div>
+        <div class="acr-box acr-coltitle acr-autres-title">Autres (Cliquez pour ajouter)</div>
+
+        <!-- Médicaments (boutons bleus) -->
+        <button class="acr-box acr-btn acr-blue acr-med1"
+                onclick="acrAddEvent('Adrénaline 1 mg IVD')">
+          Adrénaline 1mg IVD
+        </button>
+
+        <button class="acr-box acr-btn acr-blue acr-med2"
+                onclick="acrAddEvent('Bicar. 4,2% 250 mL')">
+          Bicar. 4,2%<br/>250mL
+        </button>
+
+        <button class="acr-box acr-btn acr-blue acr-med3"
+                onclick="acrAddEvent('GluCalcium 1 g IVD')">
+          GluCalcium<br/>1g IVD
+        </button>
+
+        <button class="acr-box acr-btn acr-blue acr-med4"
+                onclick="acrAddEvent('Intra lipides 3 mL/kg IVL')">
+          Intra lipides<br/>3 mL/kg IVL
+        </button>
+
+        <button class="acr-box acr-btn acr-blue acr-med5"
+                onclick="acrAddEvent('Bicar. 8,4% 100 mL')">
+          Bicar. 8,4% 100mL
+        </button>
+
+        <button class="acr-box acr-btn acr-blue acr-med6"
+                onclick="acrAddEvent('Ringer lactate 500 mL')">
+          Ringer lactate 500mL
+        </button>
+
+        <button class="acr-box acr-btn acr-blue acr-med7"
+                onclick="acrAddEvent('Actilyse EP 0,6 mg/kg 15 min')">
+          Actilyse EP 0,6 mg/kg 15min
+        </button>
+
+        <button class="acr-box acr-btn acr-blue acr-med8"
+                onclick="acrAddEvent('Lidocaïne 1 mg/kg IVL')">
+          Lidocaïne<br/>1 mg/kg IVL
+        </button>
+
+        <button class="acr-box acr-btn acr-blue acr-med9"
+                onclick="acrAddEvent('Cordarone 300 mg IVD')">
+          Cordarone 300mg IVD
+        </button>
+
+        <!-- Aides : boutons -->
+        <button class="acr-box acr-btn acr-grey acr-aide1"
+                onclick="openImg('aidecognitiveSFAR.png')">
+          Aide cognitive ACR SFAR
+        </button>
+
+        <button class="acr-box acr-btn acr-grey acr-aide2"
+                onclick="openImg('tableauacr.png')">
+          Etiologies ACR<br/>chir cardiaque
+        </button>
+
+        <!-- Numéros MAR -->
+        <div class="acr-box acr-marbox">
+          <div>MAR réa: 27 670</div>
+          <div>MAR USIP: 28 118</div>
+          <div>MAR bloc: 27 671</div>
+        </div>
+
+        <!-- Autres (marron) -->
+        <button class="acr-box acr-btn acr-brown acr-cee"
+                onclick="acrAddEvent('CEE 150–200 J')">
+          <img class="acr-icon" src="img/eclair.png" alt="">
+          <div>
+            <div>CEE</div>
+            <div>150-200J</div>
+          </div>
+        </button>
+
+        <button class="acr-box acr-btn acr-brown acr-intub"
+                onclick="acrAddEvent('Intubation/VM (Vt 6 mL/kg, PEP 5, FR 10, FiO2 100%)')">
+          <img class="acr-icon" src="img/iot.png" alt="">
+          <div>
+            <div>Intubation/VM</div>
+            <div class="acr-small">Vt 6mL/kg, PEP 5 cmH2O, FR 10/min, FiO2 100%</div>
+          </div>
+        </button>
+
+        <!-- Synthèse -->
+        <div class="acr-box acr-synth-title">Synthèse</div>
+        <button class="acr-box acr-btn acr-brown acr-synth-btn"
+                onclick="openAcrSynthese()">
+          Cliquez pour afficher la synthèse
+        </button>
+
+      </div>
+
+      <div class="actions">
+        <button class="btn ghost" onclick="history.back()">← Retour</button>
+      </div>
+    </section>
+  `;
+
+  // Condition #1 : le chronomètre démarre dès l'ouverture de la page
+  // + ajoute automatiquement la ligne "Début de la réanimation"
+  acrStartTimer();
+}
+
+
+
 document.addEventListener("click", (e) => {
   if (e.target.id === "back-button") {
     if (window.history.length > 1) {
