@@ -13024,6 +13024,14 @@ function acrStopTimer() {
   acrStartMs = null;
 }
 
+function setAcrTheme(forceLight) {
+  if (forceLight) {
+    document.body.classList.add("acr-force-light");
+  } else {
+    document.body.classList.remove("acr-force-light");
+  }
+}
+
 function openAcrSynthese() {
   const lines = acrLog
     .map(e => `• ${e.label} — ${e.wall} (${e.chrono})`)
@@ -13054,7 +13062,7 @@ function openAcrSynthese() {
 
 function renderAcrChirCardiaque() {
   acrStopTimer();
-
+  setAcrTheme(true);   // 🔒 force texte noir sur ACR
   $app.innerHTML = `
     <section class="acr5-wrap">
       <div class="acr5-board">
