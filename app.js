@@ -12974,6 +12974,18 @@ function getWallTimeStr() {
   });
 }
 
+function acrRenderLiveSynth() {
+  const el = document.getElementById("acr-synth-live");
+  if (!el) return;
+
+  const lines = acrLog
+    .map(e => `• ${e.label} — ${e.wall} (${e.chrono})`)
+    .join("\n");
+
+  el.textContent = lines || "—";
+}
+
+// 🔁 Remplace ta fonction acrAddEvent par celle-ci (ou ajoute l’appel à acrRenderLiveSynth())
 function acrAddEvent(label) {
   const entry = {
     label,
@@ -12981,6 +12993,9 @@ function acrAddEvent(label) {
     chrono: getChronoStr(),
   };
   acrLog.push(entry);
+
+  // ✅ met à jour la synthèse “live” dans l’encadré
+  acrRenderLiveSynth();
 }
 
 function acrStartTimer() {
@@ -12992,7 +13007,7 @@ function acrStartTimer() {
 
   // Ligne “début de la réanimation” dès l’ouverture
   acrAddEvent("Début de la réanimation");
-
+  acrRenderLiveSynth();
   const chronoEl = document.getElementById("acr-chrono");
   const tick = () => {
     if (!chronoEl) return;
@@ -13037,9 +13052,7 @@ function openAcrSynthese() {
   document.body.appendChild(overlay);
 }
 
-
 function renderAcrChirCardiaque() {
-  // On repart proprement à l’entrée sur la page
   acrStopTimer();
 
   $app.innerHTML = `
@@ -13048,9 +13061,8 @@ function renderAcrChirCardiaque() {
 
         <!-- CHRONOMÈTRES -->
         <div class="acr5-frame f-chrono">
-          <div class="acr5-frame-title">Chronomètres</div>
+          <div class="acr5-frame-title">Chronomètre</div>
           <div class="acr5-frame-body acr5-chrono-body">
-            <div class="acr5-chrono-label">Chronomètre</div>
             <div id="acr-chrono" class="acr5-chrono-screen">00:00</div>
           </div>
         </div>
@@ -13071,20 +13083,21 @@ function renderAcrChirCardiaque() {
               <div><strong>MAR réa :</strong> 27 670</div>
               <div><strong>MAR USIP :</strong> 28 118</div>
               <div><strong>MAR bloc :</strong> 27 671</div>
+              <div><strong>Interne chirurgie :</strong> 65 645</div>
             </div>
           </div>
         </div>
 
-        <!-- SYNTHÈSE -->
+        <!-- SYNTHÈSE (LIVE) -->
         <div class="acr5-frame f-synth">
           <div class="acr5-frame-title">Synthèse</div>
           <div class="acr5-frame-body acr5-synth-body">
             <button class="acr5-btn brown synth-btn" onclick="openAcrSynthese()">
-              Cliquez pour afficher la synthèse
+              Ouvrir en fenêtre
             </button>
-            <div class="acr5-synth-note">
-              (La synthèse s’ouvre en fenêtre superposée, le chrono continue)
-            </div>
+
+            <!-- ✅ Synthèse en continu -->
+            <pre id="acr-synth-live" class="acr5-synth-live">—</pre>
           </div>
         </div>
 
@@ -13093,7 +13106,6 @@ function renderAcrChirCardiaque() {
           <div class="acr5-frame-title">Médicaments</div>
           <div class="acr5-frame-subtitle">(Cliquez pour ajouter)</div>
 
-          <!-- Placement stable : grille 3x3 (pas de chevauchement, cohérent) -->
           <div class="acr5-frame-body acr5-meds-grid">
             <button class="acr5-btn blue" onclick="acrAddEvent('Adrénaline 1 mg IVD')">Adrénaline 1mg IVD</button>
             <button class="acr5-btn blue" onclick="acrAddEvent('Cordarone 300 mg IVD')">Cordarone 300mg IVD</button>
@@ -13115,13 +13127,6 @@ function renderAcrChirCardiaque() {
           <div class="acr5-frame-subtitle">(Cliquez pour ajouter)</div>
 
           <div class="acr5-frame-body acr5-others-body">
-            <!-- ✅ ECMO remis avec le numéro DANS le bouton -->
-            <button class="acr5-btn brown other-ecmo" onclick="acrAddEvent('Appel ECMO')">
-              <div class="acr5-big">Appel ECMO</div>
-              <div class="acr5-small">(Cliquez ici)</div>
-              <div class="acr5-small"><strong>Interne de chirurgie :</strong> 65 645</div>
-            </button>
-
             <button class="acr5-btn brown other-cee" onclick="acrAddEvent('CEE 150–200 J')">
               <img class="acr5-icon" src="img/eclair.png" alt="">
               <div>
@@ -13138,6 +13143,15 @@ function renderAcrChirCardiaque() {
                 <div class="acr5-small">Vt 6mL/kg · PEP 5 · FR 10/min · FiO2 100%</div>
               </div>
             </button>
+
+            <!-- ✅ DERNIER bouton : Départ ECMO + icône ecmova.png -->
+            <button class="acr5-btn brown other-ecmo"
+              onclick="acrAddEvent('Départ ECMO')">
+              <img class="acr5-icon" src="img/ecmova.png" alt="">
+              <div>
+                <div class="acr5-big">Départ ECMO</div>
+              </div>
+            </button>
           </div>
         </div>
 
@@ -13149,8 +13163,8 @@ function renderAcrChirCardiaque() {
     </section>
   `;
 
-  // démarre dès l’ouverture + ajoute “Début de la réanimation”
   acrStartTimer();
+  acrRenderLiveSynth(); // ✅ initialise l’affichage live immédiatement
 }
 
 
