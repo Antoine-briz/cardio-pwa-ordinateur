@@ -13261,7 +13261,7 @@ const routes = {
   "#/planning": renderPlanning,
   "#/annuaire": renderAnnuaire,
   "#/codes": renderCodesAcces,
-  "#/acr": renderArretCardioResp,
+  "#/acr": renderAcrChirCardiaque,
 };
 
 function navigate() {
