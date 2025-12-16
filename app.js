@@ -13039,129 +13039,110 @@ function openAcrSynthese() {
 }
 
 function renderAcrChirCardiaque() {
-  // Nettoie un éventuel chrono précédent si on revient sur la page
+  // On stoppe seulement quand on ENTRE sur la page (pour repartir proprement)
   acrStopTimer();
 
   $app.innerHTML = `
-    <section class="acr-ppt-wrap">
-      <div class="acr-ppt">
+    <section class="acr5-wrap">
+      <div class="acr5-board">
 
-        <!-- Bandeau titre -->
-        <div class="acr-box acr-titlebar">
-          <div class="acr-titletext">Arrêt cardiocirculatoire</div>
+        <!-- 1) CHRONOMÈTRES -->
+        <div class="acr5-frame f-chrono">
+          <div class="acr5-frame-title">Chronomètres</div>
+          <div class="acr5-frame-body acr5-chrono-body">
+            <div class="acr5-chrono-label">Chronomètre</div>
+            <div id="acr-chrono" class="acr5-chrono-screen">00:00</div>
+          </div>
         </div>
 
-        <!-- Bouton étiologies (haut) -->
-        <button class="acr-box acr-btn acr-red acr-etiologies-top"
-                onclick="openImg('tableauacr.png')">
-          Etiologies ACR<br/>Chir. cardiaque
-        </button>
+        <!-- 2) AIDES -->
+        <div class="acr5-frame f-aides">
+          <div class="acr5-frame-title">Aides</div>
+          <div class="acr5-frame-body acr5-aides-body">
+            <button class="acr5-btn help" onclick="openImg('aidecognitiveSFAR.png')">
+              Aide cognitive ACR SFAR
+            </button>
 
-        <!-- Bloc Appel ECMO -->
-        <button class="acr-box acr-btn acr-red acr-ecmo"
-                onclick="acrAddEvent('Appel ECMO')">
-          <div class="acr-ecmo-title">Appel ECMO<br/>(Cliquez ici)</div>
-          <div class="acr-ecmo-sub">Interne de chirurgie: 65 645</div>
-        </button>
+            <!-- UN SEUL bouton Étiologies -->
+            <button class="acr5-btn danger" onclick="openImg('tableauacr.png')">
+              Etiologies ACR<br>Chir. cardiaque
+            </button>
 
-        <!-- Chrono label + écran -->
-        <div class="acr-box acr-chrono-label">Chronomètre</div>
-        <div class="acr-box acr-chrono-screen" id="acr-chrono">00:00</div>
-
-        <!-- Titres colonnes -->
-        <div class="acr-box acr-coltitle acr-med-title">Médicaments (Cliquez pour ajouter)</div>
-        <div class="acr-box acr-coltitle acr-aides-title">Aides</div>
-        <div class="acr-box acr-coltitle acr-autres-title">Autres (Cliquez pour ajouter)</div>
-
-        <!-- Médicaments (boutons bleus) -->
-        <button class="acr-box acr-btn acr-blue acr-med1"
-                onclick="acrAddEvent('Adrénaline 1 mg IVD')">
-          Adrénaline 1mg IVD
-        </button>
-
-        <button class="acr-box acr-btn acr-blue acr-med2"
-                onclick="acrAddEvent('Bicar. 4,2% 250 mL')">
-          Bicar. 4,2%<br/>250mL
-        </button>
-
-        <button class="acr-box acr-btn acr-blue acr-med3"
-                onclick="acrAddEvent('GluCalcium 1 g IVD')">
-          GluCalcium<br/>1g IVD
-        </button>
-
-        <button class="acr-box acr-btn acr-blue acr-med4"
-                onclick="acrAddEvent('Intra lipides 3 mL/kg IVL')">
-          Intra lipides<br/>3 mL/kg IVL
-        </button>
-
-        <button class="acr-box acr-btn acr-blue acr-med5"
-                onclick="acrAddEvent('Bicar. 8,4% 100 mL')">
-          Bicar. 8,4% 100mL
-        </button>
-
-        <button class="acr-box acr-btn acr-blue acr-med6"
-                onclick="acrAddEvent('Ringer lactate 500 mL')">
-          Ringer lactate 500mL
-        </button>
-
-        <button class="acr-box acr-btn acr-blue acr-med7"
-                onclick="acrAddEvent('Actilyse EP 0,6 mg/kg 15 min')">
-          Actilyse EP 0,6 mg/kg 15min
-        </button>
-
-        <button class="acr-box acr-btn acr-blue acr-med8"
-                onclick="acrAddEvent('Lidocaïne 1 mg/kg IVL')">
-          Lidocaïne<br/>1 mg/kg IVL
-        </button>
-
-        <button class="acr-box acr-btn acr-blue acr-med9"
-                onclick="acrAddEvent('Cordarone 300 mg IVD')">
-          Cordarone 300mg IVD
-        </button>
-
-        <!-- Aides : boutons -->
-        <button class="acr-box acr-btn acr-grey acr-aide1"
-                onclick="openImg('aidecognitiveSFAR.png')">
-          Aide cognitive ACR SFAR
-        </button>
-
-        <button class="acr-box acr-btn acr-grey acr-aide2"
-                onclick="openImg('tableauacr.png')">
-          Etiologies ACR<br/>chir cardiaque
-        </button>
-
-        <!-- Numéros MAR -->
-        <div class="acr-box acr-marbox">
-          <div>MAR réa: 27 670</div>
-          <div>MAR USIP: 28 118</div>
-          <div>MAR bloc: 27 671</div>
+            <!-- Numéros : PAS des boutons -->
+            <div class="acr5-phones">
+              <div><strong>MAR réa :</strong> 27 670</div>
+              <div><strong>MAR USIP :</strong> 28 118</div>
+              <div><strong>MAR bloc :</strong> 27 671</div>
+            </div>
+          </div>
         </div>
 
-        <!-- Autres (marron) -->
-        <button class="acr-box acr-btn acr-brown acr-cee"
-                onclick="acrAddEvent('CEE 150–200 J')">
-          <img class="acr-icon" src="img/eclair.png" alt="">
-          <div>
-            <div>CEE</div>
-            <div>150-200J</div>
-          </div>
-        </button>
+        <!-- 3) MÉDICAMENTS -->
+        <div class="acr5-frame f-meds">
+          <div class="acr5-frame-title">Médicaments</div>
+          <div class="acr5-frame-subtitle">(Cliquez pour ajouter)</div>
 
-        <button class="acr-box acr-btn acr-brown acr-intub"
-                onclick="acrAddEvent('Intubation/VM (Vt 6 mL/kg, PEP 5, FR 10, FiO2 100%)')">
-          <img class="acr-icon" src="img/iot.png" alt="">
-          <div>
-            <div>Intubation/VM</div>
-            <div class="acr-small">Vt 6mL/kg, PEP 5 cmH2O, FR 10/min, FiO2 100%</div>
-          </div>
-        </button>
+          <!-- Zone interne "PPT-like" : positions fixes DANS le cadre -->
+          <div class="acr5-frame-body acr5-meds-body">
 
-        <!-- Synthèse -->
-        <div class="acr-box acr-synth-title">Synthèse</div>
-        <button class="acr-box acr-btn acr-brown acr-synth-btn"
-                onclick="openAcrSynthese()">
-          Cliquez pour afficher la synthèse
-        </button>
+            <button class="acr5-btn blue m1" onclick="acrAddEvent('Adrénaline 1 mg IVD')">Adrénaline 1mg IVD</button>
+            <button class="acr5-btn blue m2" onclick="acrAddEvent('Bicar. 4,2% 250 mL')">Bicar. 4,2%<br>250mL</button>
+            <button class="acr5-btn blue m3" onclick="acrAddEvent('GluCalcium 1 g IVD')">GluCalcium<br>1g IVD</button>
+
+            <button class="acr5-btn blue m4" onclick="acrAddEvent('Intra lipides 3 mL/kg IVL')">Intra lipides<br>3 mL/kg IVL</button>
+            <button class="acr5-btn blue m5" onclick="acrAddEvent('Bicar. 8,4% 100 mL')">Bicar. 8,4%<br>100mL</button>
+            <button class="acr5-btn blue m6" onclick="acrAddEvent('Ringer lactate 500 mL')">Ringer lactate<br>500mL</button>
+
+            <button class="acr5-btn blue m7" onclick="acrAddEvent('Actilyse EP 0,6 mg/kg 15 min')">Actilyse EP<br>0,6 mg/kg 15min</button>
+            <button class="acr5-btn blue m8" onclick="acrAddEvent('Lidocaïne 1 mg/kg IVL')">Lidocaïne<br>1 mg/kg IVL</button>
+            <button class="acr5-btn blue m9" onclick="acrAddEvent('Cordarone 300 mg IVD')">Cordarone<br>300mg IVD</button>
+
+          </div>
+        </div>
+
+        <!-- 4) AUTRES -->
+        <div class="acr5-frame f-others">
+          <div class="acr5-frame-title">Autres</div>
+          <div class="acr5-frame-subtitle">(Cliquez pour ajouter)</div>
+
+          <div class="acr5-frame-body acr5-others-body">
+            <button class="acr5-btn brown other-ecmo" onclick="acrAddEvent('Appel ECMO')">
+              <div class="acr5-big">Appel ECMO</div>
+              <div class="acr5-small">(Cliquez ici)</div>
+              <div class="acr5-small"><strong>Interne de chirurgie :</strong> 65 645</div>
+            </button>
+
+            <button class="acr5-btn brown other-cee" onclick="acrAddEvent('CEE 150–200 J')">
+              <img class="acr5-icon" src="img/eclair.png" alt="">
+              <div>
+                <div class="acr5-big">CEE</div>
+                <div class="acr5-small">150-200J</div>
+              </div>
+            </button>
+
+            <button class="acr5-btn brown other-intub"
+              onclick="acrAddEvent('Intubation/VM (Vt 6 mL/kg, PEP 5, FR 10, FiO2 100%)')">
+              <img class="acr5-icon" src="img/iot.png" alt="">
+              <div>
+                <div class="acr5-big">Intubation/VM</div>
+                <div class="acr5-small">Vt 6mL/kg · PEP 5 · FR 10/min · FiO2 100%</div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- 5) SYNTHÈSE -->
+        <div class="acr5-frame f-synth">
+          <div class="acr5-frame-title">Synthèse</div>
+          <div class="acr5-frame-body acr5-synth-body">
+            <button class="acr5-btn brown synth-btn" onclick="openAcrSynthese()">
+              Cliquez pour afficher la synthèse
+            </button>
+            <div class="acr5-synth-note">
+              (Le chronomètre continue pendant l’ouverture de la synthèse)
+            </div>
+          </div>
+        </div>
 
       </div>
 
@@ -13171,11 +13152,9 @@ function renderAcrChirCardiaque() {
     </section>
   `;
 
-  // Condition #1 : le chronomètre démarre dès l'ouverture de la page
-  // + ajoute automatiquement la ligne "Début de la réanimation"
+  // #1 : démarre immédiatement + ajoute “Début de la réanimation”
   acrStartTimer();
 }
-
 
 
 document.addEventListener("click", (e) => {
