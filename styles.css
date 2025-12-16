@@ -2525,4 +2525,11 @@ body.acr-force-light .acr5-synth-live {
   width: 100%;
 }
 
+.other-ecmo {
+  align-items: center;   /* au lieu de flex-start */
+}
 
+.other-ecmo .acr5-big {
+  margin: 0;
+  line-height: 1.2;
+}
