@@ -2239,3 +2239,23 @@ fieldset {
 [data-theme="dark"] .bact-page .info-card table * {
   color: #000000 !important;
 }
+
+/* Bouton “urgence” rouge */
+.btn.danger {
+  background: #dc2626;
+  color: #fff;
+}
+.btn.danger:hover {
+  opacity: 0.92;
+}
+
+/* Pousser le bouton urgence en bas de la page d’accueil */
+.home {
+  min-height: calc(100vh - 220px); /* ajuste si besoin selon header+footer */
+  display: flex;
+  flex-direction: column;
+}
+
+.home-emergency {
+  margin-top: auto;  /* pousse en bas */
+}
