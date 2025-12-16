@@ -2261,43 +2261,44 @@ fieldset {
 }
 
 /* =========================================================
-   ACR – VERSION ORDINATEUR (Rendu PPT, 5 encadrés)
+   ACR – VERSION ORDINATEUR (plein écran, 5 cadres)
    ========================================================= */
 
-/* ----- Layout global ----- */
-.acr5-wrap {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
+.acr5-wrap { display:flex; flex-direction:column; gap:14px; }
 
-.acr5-board {
-  width: min(1300px, 96vw);
-  margin: 0 auto;
+/* ✅ prend toute la largeur utile (plus de vide à droite) */
+.acr5-board{
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 12px;                 /* petite marge écran */
+  box-sizing: border-box;
+
   display: grid;
-  grid-template-columns: 1.15fr 0.95fr 0.7fr;
-  grid-template-rows: auto auto;
+  grid-template-columns: 1.15fr 1fr 0.85fr;
+  grid-template-rows: auto 1fr;
   gap: 14px;
 }
 
-/* placement des 5 encadrés */
+/* ✅ 5 cadres distincts, sans chevauchement */
 .f-chrono { grid-column: 1; grid-row: 1; }
 .f-aides  { grid-column: 2; grid-row: 1; }
 .f-synth  { grid-column: 3; grid-row: 1 / 3; }
-.f-meds   { grid-column: 1 / 3; grid-row: 2; }
+.f-meds   { grid-column: 1; grid-row: 2; }
 .f-others { grid-column: 2; grid-row: 2; }
 
-/* ----- Encadré générique ----- */
-.acr5-frame {
+/* cadre générique */
+.acr5-frame{
   background: var(--card);
   border: 2px solid rgba(0,0,0,0.12);
   border-radius: 18px;
-  overflow: hidden;                /* rien ne dépasse */
-  display: flex;
-  flex-direction: column;
+  overflow: hidden;                 /* rien ne dépasse */
+  display:flex;
+  flex-direction:column;
+  min-height: 180px;
 }
 
-.acr5-frame-title {
+.acr5-frame-title{
   padding: 10px 12px;
   font-weight: 900;
   font-size: 16px;
@@ -2305,62 +2306,56 @@ fieldset {
   background: rgba(0,0,0,0.03);
 }
 
-.acr5-frame-subtitle {
+.acr5-frame-subtitle{
   padding: 6px 12px 0;
   font-size: 12px;
   font-weight: 700;
   opacity: 0.75;
 }
 
-.acr5-frame-body {
+.acr5-frame-body{
   padding: 12px;
-  display: flex;
-  flex-direction: column;
+  display:flex;
+  flex-direction:column;
   gap: 10px;
   height: 100%;
+  box-sizing: border-box;
 }
 
-/* ----- Boutons ----- */
-.acr5-btn {
+/* boutons */
+.acr5-btn{
   border: 0;
   border-radius: 16px;
   padding: 12px;
   font-weight: 800;
   cursor: pointer;
   text-align: center;
+  line-height: 1.15;
 }
+.acr5-btn.blue   { background:#4472C4; color:#fff; }
+.acr5-btn.brown  { background:#ED7D31; color:#fff; }
+.acr5-btn.help   { background:#44546A; color:#fff; }
+.acr5-btn.danger { background:#C00000; color:#fff; }
 
-.acr5-btn.blue   { background: #4472C4; color: #fff; }
-.acr5-btn.brown  { background: #ED7D31; color: #fff; }
-.acr5-btn.help   { background: #44546A; color: #fff; }
-.acr5-btn.danger { background: #C00000; color: #fff; }
-
-/* ----- Chronomètre ----- */
-.acr5-chrono-body {
-  align-items: center;
-  justify-content: center;
-}
-
-.acr5-chrono-label {
-  font-size: 18px;
-  font-weight: 900;
-}
-
-.acr5-chrono-screen {
+/* chrono */
+.acr5-chrono-body{ align-items:center; justify-content:center; }
+.acr5-chrono-label{ font-size:18px; font-weight:900; }
+.acr5-chrono-screen{
   width: 100%;
   margin-top: 6px;
   padding: 18px 12px;
-  text-align: center;
+  text-align:center;
   font-size: 56px;
   font-weight: 950;
   letter-spacing: 2px;
-  background: #fff;
+  background:#fff;
   border-radius: 16px;
   border: 2px solid rgba(0,0,0,0.15);
+  box-sizing: border-box;
 }
 
-/* ----- Aides ----- */
-.acr5-phones {
+/* aides */
+.acr5-phones{
   margin-top: 6px;
   padding: 10px 12px;
   border-radius: 14px;
@@ -2370,88 +2365,90 @@ fieldset {
   gap: 6px;
 }
 
-/* ----- Autres ----- */
-.acr5-others-body {
+/* ✅ Médicaments : grille 3x3 harmonieuse (plus fiable que l’absolu) */
+.acr5-meds-grid{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
   gap: 12px;
+  height: 100%;
 }
+.acr5-meds-grid .acr5-btn{ height: 100%; }
 
-.acr5-big {
-  font-size: 18px;
-  font-weight: 900;
-}
+/* autres */
+.acr5-others-body{ gap: 12px; }
+.acr5-big{ font-size:18px; font-weight:900; }
+.acr5-small{ font-size:12px; font-weight:800; opacity:0.95; margin-top:2px; }
 
-.acr5-small {
-  font-size: 12px;
-  font-weight: 800;
-  opacity: 0.95;
-  margin-top: 2px;
-}
-
-.acr5-icon {
-  width: 28px;
-  height: 28px;
-  object-fit: contain;
-}
+.acr5-icon{ width:28px; height:28px; object-fit:contain; flex:0 0 auto; }
 
 .other-cee,
-.other-intub {
+.other-intub{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  justify-content:flex-start;
+  text-align:left;
+}
+
+.other-ecmo{ text-align:center; }
+
+/* synthèse */
+.acr5-synth-body{ justify-content:flex-start; }
+.synth-btn{ padding: 16px 12px; }
+.acr5-synth-note{ font-size:12px; opacity:0.7; }
+
+/* =========================================================
+   Modal Synthèse (overlay superposé)
+   ========================================================= */
+.acr-modal{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.72);
   display: flex;
-  gap: 10px;
-  align-items: flex-start;
-  text-align: left;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  padding: 16px;
 }
 
-.other-ecmo {
-  text-align: center;
+.acr-modal-card{
+  width: min(900px, 96vw);
+  max-height: 86vh;
+  overflow: auto;
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 16px;
 }
 
-/* ----- Synthèse ----- */
-.acr5-synth-body {
-  justify-content: flex-start;
+.acr-modal-head{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(0,0,0,0.12);
 }
 
-.synth-btn {
-  padding: 16px 12px;
+.acr-modal-head h3{ margin:0; }
+
+.acr-modal-close{
+  border:0;
+  background:transparent;
+  cursor:pointer;
+  font-size: 18px;
+  color: var(--fg);
 }
 
-.acr5-synth-note {
-  font-size: 12px;
-  opacity: 0.7;
+.acr-modal-body{
+  margin:0;
+  padding: 14px;
+  white-space: pre-wrap;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 14px;
 }
 
-/* ----- Médicaments : placement PPT strict ----- */
-.acr5-meds-body {
-  position: relative;
-  min-height: 360px;
-  overflow: hidden;        /* aucun dépassement */
+.acr-modal-actions{
+  padding: 12px 14px;
+  border-top: 1px solid rgba(0,0,0,0.12);
 }
 
-.acr5-meds-body .m1,
-.acr5-meds-body .m2,
-.acr5-meds-body .m3,
-.acr5-meds-body .m4,
-.acr5-meds-body .m5,
-.acr5-meds-body .m6,
-.acr5-meds-body .m7,
-.acr5-meds-body .m8,
-.acr5-meds-body .m9 {
-  position: absolute;
-  width: 30%;
-  height: 26%;
-  padding: 10px;
-}
-
-/* Colonne gauche */
-.m1 { left: 2%;  top: 4%; }
-.m2 { left: 2%;  top: 36%; }
-.m3 { left: 2%;  top: 68%; }
-
-/* Colonne centrale */
-.m4 { left: 35%; top: 4%; }
-.m5 { left: 35%; top: 36%; }
-.m6 { left: 35%; top: 68%; }
-
-/* Colonne droite */
-.m8 { left: 68%; top: 4%; }
-.m9 { left: 68%; top: 36%; }
-.m7 { left: 68%; top: 68%; }
