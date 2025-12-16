@@ -2452,3 +2452,16 @@ fieldset {
   border-top: 1px solid rgba(0,0,0,0.12);
 }
 
+.acr5-synth-live{
+  margin: 0;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.12);
+  background: rgba(0,0,0,0.03);
+  white-space: pre-wrap;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  overflow: auto;
+  flex: 1;              /* remplit l’encadré synthèse */
+  min-height: 220px;    /* évite “quasi vide” */
+}
