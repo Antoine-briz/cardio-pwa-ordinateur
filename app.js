@@ -116,6 +116,11 @@ function renderHome() {
           Codes d’accès
         </button>
       </div>
+      <div class="home-emergency">
+        <button class="btn danger" onclick="location.hash = '#/acr'">
+          Arrêt cardio-respiratoire
+        </button>
+      </div>
     </section>
   `;
 }
@@ -13022,6 +13027,7 @@ const routes = {
   "#/planning": renderPlanning,
   "#/annuaire": renderAnnuaire,
   "#/codes": renderCodesAcces,
+  "#/acr": renderArretCardioResp,
 };
 
 function navigate() {
