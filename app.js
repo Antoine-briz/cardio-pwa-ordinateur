@@ -13091,7 +13091,7 @@ function renderAcrChirCardiaque() {
               <div><strong>MAR réa :</strong> 27 670</div>
               <div><strong>MAR USIP :</strong> 28 118</div>
               <div><strong>MAR bloc :</strong> 27 671</div>
-              <div><strong>Interne chirurgie :</strong> 65 645</div>
+              <div><strong>Interne chirurgie cardiaque :</strong> 65 645</div>
             </div>
           </div>
         </div>
