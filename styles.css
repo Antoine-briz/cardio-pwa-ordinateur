@@ -2465,3 +2465,17 @@ fieldset {
   flex: 1;              /* remplit l’encadré synthèse */
   min-height: 220px;    /* évite “quasi vide” */
 }
+
+/* --- Couleurs boutons --- */
+.acr5-btn.other { background:#0B3D2E; color:#fff; } /* vert foncé */
+
+/* (Optionnel) si tu n'utilises plus .help sur ACR, tu peux le garder ailleurs */
+.acr5-btn.help { background:#44546A; color:#fff; }
+.acr5-btn.danger { background:#C00000; color:#fff; }
+
+/* --- Chronomètre 2x --- */
+.acr5-chrono-screen{
+  font-size: 112px;   /* 2x (avant 56px) */
+  padding: 26px 12px; /* un peu plus haut pour respirer */
+  letter-spacing: 3px;
+}
