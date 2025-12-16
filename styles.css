@@ -2479,3 +2479,50 @@ fieldset {
   padding: 26px 12px; /* un peu plus haut pour respirer */
   letter-spacing: 3px;
 }
+
+/* =========================================================
+   ACR – Forçage texte noir (thème sombre compatible)
+   ========================================================= */
+
+/* Quand la page ACR est active */
+body.acr-force-light .acr5-frame,
+body.acr-force-light .acr5-frame * {
+  color: #000 !important;
+}
+
+/* Sauf les boutons colorés (texte blanc conservé) */
+body.acr-force-light .acr5-btn,
+body.acr-force-light .acr5-btn * {
+  color: #fff !important;
+}
+
+/* Champ synthèse (texte noir lisible) */
+body.acr-force-light .acr5-synth-live {
+  color: #000 !important;
+}
+
+/* =========================================================
+   ACR – Centrage des titres CEE & Intubation
+   ========================================================= */
+
+/* Boutons concernés */
+.other-cee,
+.other-intub {
+  justify-content: center;   /* centre le contenu horizontalement */
+  text-align: center;        /* centre le texte */
+}
+
+/* Le bloc texte à l’intérieur */
+.other-cee > div,
+.other-intub > div {
+  align-items: center;
+}
+
+/* Titre (CEE / Intubation) bien centré */
+.other-cee .acr5-big,
+.other-intub .acr5-big {
+  text-align: center;
+  width: 100%;
+}
+
+
