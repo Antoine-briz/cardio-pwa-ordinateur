@@ -105,22 +105,30 @@ function renderHome() {
       </div>
 
       <div class="home-buttons">
-        <button class="btn outline" onclick="window.open('files/planning_medical.xlsx')">
-          Planning médical
-        </button>
-        <button class="btn ghost" onclick="location.hash = '#/annuaire'">
-          Annuaire
-        </button>
-        </button>
-        <button class="btn ghost" onclick="location.hash = '#/codes'">
-          Codes d’accès
-        </button>
-      </div>
-      <div class="home-emergency">
-        <button class="btn danger" onclick="location.hash = '#/acr'">
-          Arrêt cardio-respiratoire
-        </button>
-      </div>
+  <button
+    class="btn home-btn home-primary"
+    onclick="window.open('files/planning_medical.xlsx')">
+    Planning médical
+  </button>
+
+  <button
+    class="btn home-btn home-primary"
+    onclick="location.hash = '#/annuaire'">
+    Annuaire
+  </button>
+
+  <button
+    class="btn home-btn home-primary"
+    onclick="location.hash = '#/codes'">
+    Codes d’accès
+  </button>
+
+  <button
+    class="btn home-btn home-danger"
+    onclick="location.hash = '#/acr'">
+    Arrêt cardio-respiratoire
+  </button>
+</div>
     </section>
   `;
 }
