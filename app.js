@@ -12879,7 +12879,6 @@ function renderAnnuaire() {
             <tr><td>LEBRETON Guillaume</td><td>62 979</td><td><a href="tel:0672320194">06.72.32.01.94</a></td></tr>
             <tr><td>SAIYDOUN Gabriel</td><td>27 175</td><td><a href="tel:0609777694">06.09.77.76.94</a></td></tr>
             <tr><td>MEYER Horacio</td><td>28 391</td><td><a href="tel:0768222955">07.68.22.29.55</a></td></tr>
-            <tr><td>RAMA Akhtar</td><td>65 687</td><td><a href="tel:0679287348">06.79.28.73.48</a></td></tr>
             <tr><td>ZAMORANO Claudio</td><td>28 391</td><td><a href="tel:0745332100">07.45.33.21.00</a></td></tr>
             <tr><td><em>Interne de garde</em></td><td>65 645</td><td>—</td></tr>
           </tbody>
