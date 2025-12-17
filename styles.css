@@ -2533,3 +2533,45 @@ body.acr-force-light .acr5-synth-live {
   margin: 0;
   line-height: 1.2;
 }
+
+/* =========================================================
+   HOME – Boutons bas homogénéisés
+   ========================================================= */
+
+/* Conteneur : espacement constant */
+.home-buttons {
+  display: flex;
+  gap: 8px;                 /* espace étroit mais constant */
+  justify-content: center;
+  flex-wrap: wrap;          /* sécurité petits écrans */
+}
+
+/* Base commune */
+.home-btn {
+  flex: 1;
+  min-width: 180px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  font-weight: 800;
+  font-size: 15px;
+  text-align: center;
+}
+
+/* Bleu foncé (comme autres menus) */
+.home-primary {
+  background: #0B3C6D;      /* bleu foncé cohérent */
+  color: #fff;
+  border: none;
+}
+
+/* Rouge bordeaux (urgence ACR) */
+.home-danger {
+  background: #7A1E1E;      /* rouge foncé / bordeaux */
+  color: #fff;
+  border: none;
+}
+
+/* Effet léger au survol (desktop) */
+.home-btn:hover {
+  opacity: 0.92;
+}
