@@ -1260,7 +1260,7 @@ function renderInterventionRadioVascTIPS() {
     // ⚠️ Ici je te remets une logique cohérente : à adapter si ton PPT impose autre chose.
     // - À froid : pas d’ATB
     // - Choc hémorragique : ATB, dose majorée si IMC>50, alternative si allergie
-    let txt = "Pas d’antibioprophylaxie.";
+    let txt = "Ceftriaxone 1 g IVL — dose unique.";
 
     if (gravite === "choc") {
       txt = "Ceftriaxone 1 g IVL — dose unique.";
