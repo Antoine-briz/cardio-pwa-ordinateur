@@ -9283,6 +9283,52 @@ function renderDureesForm() {
     add("Pneumonies","Empyème pleural","Bacilles Gram +","Nocardia spp.","6 mois");                                            // :contentReference[oaicite:26]{index=26}
     add("Pneumonies","Empyème pleural","Autres","Mycobacterium tuberculosis",">= 6 mois");                                     // :contentReference[oaicite:27]{index=27}
 
+// --------- CHIRURGIE CARDIAQUE ---------
+
+const scarpa = "14j IV si ECMO maintenue ; 7j IV après retrait ECMO ou dernière Hc+";
+const medi   = "6 semaines dont 3 semaines IV";
+
+// Infection de scarpa (durées identiques pour ces germes)
+for (const b of ["Streptococcus spp.","Staphylococcus spp.","Enterococcus spp."]) {
+  add("Chirurgie cardiaque","Infection de scarpa","Cocci Gram +",b,scarpa);
+}
+for (const b of ["Entérobactéries","Pseudomonas aeruginosa","Stenotrophomonas maltophilia","Acinetobacter baumannii","Haemophilus influenzae"]) {
+  add("Chirurgie cardiaque","Infection de scarpa","Bacilles Gram -",b,scarpa);
+}
+
+// Médiastinite
+for (const b of ["Streptococcus spp.","Staphylococcus spp.","Enterococcus spp."]) {
+  add("Chirurgie cardiaque","Médiastinite","Cocci Gram +",b,medi);
+}
+for (const b of ["Entérobactéries","Pseudomonas aeruginosa","Stenotrophomonas maltophilia","Acinetobacter baumannii","Haemophilus influenzae"]) {
+  add("Chirurgie cardiaque","Médiastinite","Bacilles Gram -",b,medi);
+}
+
+// EI sur valve native
+add("Chirurgie cardiaque","EI sur valve native","Cocci Gram +","Streptococcus spp.","2 à 4 semaines (2 sem si genta.)");
+add("Chirurgie cardiaque","EI sur valve native","Cocci Gram +","Staphylococcus spp.","4 à 6 semaines (pas d’aminoside)");
+add("Chirurgie cardiaque","EI sur valve native","Cocci Gram +","Enterococcus spp.","6 semaines (+2sem genta ou +6sem C3G)");
+add("Chirurgie cardiaque","EI sur valve native","Bacilles Gram -","Entérobactéries","6 semaines (+ 2sem genta)");
+for (const b of ["Pseudomonas aeruginosa","Stenotrophomonas maltophilia","Acinetobacter baumannii"]) {
+  add("Chirurgie cardiaque","EI sur valve native","Bacilles Gram -",b,">= 6 semaines en bithérapie");
+}
+add("Chirurgie cardiaque","EI sur valve native","Bacilles Gram -","Haemophilus influenzae","4 sem C3G (ou 4 sem Amox + 2sem Genta)");
+add("Chirurgie cardiaque","EI sur valve native","Bacilles Gram +","Nocardia spp.","6 mois");
+add("Chirurgie cardiaque","EI sur valve native","Autres","Mycobacterium tuberculosis","9 à 12 mois");
+
+// EI sur valve prothétique (< ou > 1 an)
+add("Chirurgie cardiaque","EI sur valve prothétique (< ou > 1 an)","Cocci Gram +","Streptococcus spp.","6 semaines (dont genta 2sem)");
+add("Chirurgie cardiaque","EI sur valve prothétique (< ou > 1 an)","Cocci Gram +","Staphylococcus spp.",">= 6 semaines (dont genta 2sem)");
+add("Chirurgie cardiaque","EI sur valve prothétique (< ou > 1 an)","Cocci Gram +","Enterococcus spp.","6 semaines (+2sem genta ou +6sem C3G)");
+add("Chirurgie cardiaque","EI sur valve prothétique (< ou > 1 an)","Bacilles Gram -","Entérobactéries","6 semaines (+ 2sem genta)");
+for (const b of ["Pseudomonas aeruginosa","Stenotrophomonas maltophilia","Acinetobacter baumannii"]) {
+  add("Chirurgie cardiaque","EI sur valve prothétique (< ou > 1 an)","Bacilles Gram -",b,">= 6 semaines en bithérapie");
+}
+add("Chirurgie cardiaque","EI sur valve prothétique (< ou > 1 an)","Bacilles Gram -","Haemophilus influenzae","6 sem C3G (ou 6 sem Amox + 2sem Genta)");
+add("Chirurgie cardiaque","EI sur valve prothétique (< ou > 1 an)","Bacilles Gram +","Nocardia spp.","6 mois");
+add("Chirurgie cardiaque","EI sur valve prothétique (< ou > 1 an)","Autres","Mycobacterium tuberculosis","12 à 18 mois");
+
+    
     // --------- INFECTIONS URINAIRES ---------
     // Cystite
     add("Infections urinaires","Cystite","Cocci Gram +","Streptococcus spp.","7 jours si β-lactamine");                      // :contentReference[oaicite:28]{index=28}
