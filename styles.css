@@ -2579,3 +2579,40 @@ body.acr-force-light .acr5-synth-live {
 .acr5-synth-body .acr5-btn {
   margin-bottom: 6px;
 }
+
+/* =========================================================
+   ACR – Desktop : Synthèse toujours lisible (fond clair + texte noir)
+   ========================================================= */
+
+@media (min-width: 821px) {
+
+  /* Encadré synthèse : fond clair forcé */
+  body.acr-force-light .acr5-frame.f-synth {
+    background: #ffffff !important;
+    border-color: rgba(0,0,0,0.15);
+  }
+
+  /* Titre de l’encadré */
+  body.acr-force-light .acr5-frame.f-synth .acr5-frame-title {
+    background: rgba(0,0,0,0.05) !important;
+    color: #000 !important;
+  }
+
+  /* Corps + texte de la synthèse */
+  body.acr-force-light .acr5-frame.f-synth,
+  body.acr-force-light .acr5-frame.f-synth * {
+    color: #000 !important;
+  }
+
+  /* Zone synthèse live (fond clair lisible) */
+  body.acr-force-light .acr5-synth-live {
+    background: rgba(0,0,0,0.03) !important;
+    color: #000 !important;
+  }
+
+  /* Boutons de la synthèse restent contrastés */
+  body.acr-force-light .acr5-frame.f-synth .acr5-btn,
+  body.acr-force-light .acr5-frame.f-synth .acr5-btn * {
+    color: #fff !important;
+  }
+}
