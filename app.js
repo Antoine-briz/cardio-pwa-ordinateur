@@ -13549,7 +13549,7 @@ function renderAnnuaire() {
   renderInterventionPage({
     titre: "Annuaire",
     sousTitre: "",
-    image: "annuaire.png",
+    image: "img/annuaire.png",
     encadres,
   });
 }
@@ -13605,7 +13605,7 @@ function renderCodesAcces() {
   renderInterventionPage({
     titre: "Codes d’accès",
     sousTitre: "",
-    image: "code.png",
+    image: "img/code.png",
     encadres,
   });
 }
