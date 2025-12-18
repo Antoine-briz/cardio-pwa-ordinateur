@@ -122,6 +122,8 @@ const PRECACHE = [
   "./img/titre3.png",
   "./img/titre4.png",
   "./img/transplantation2.png",
+  "./img/annuaire.png",
+  "./img/code.png",
 
   // Excel
   "./files/planning_medical.xlsx",
