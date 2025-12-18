@@ -13552,7 +13552,6 @@ function renderAnnuaire() {
   });
 }
 
-
 function renderCodesAcces() {
   $app.innerHTML = `
     <section>
@@ -13561,13 +13560,49 @@ function renderCodesAcces() {
       </div>
 
       <div class="card">
-        <p>
-          Page « Codes d’accès » à compléter (VPN, logiciels, accès dossiers, etc.).
-        </p>
+        <div style="height:6px;"></div>
+
+        <table class="annuaire-table">
+          <thead>
+            <tr>
+              <th>Étage</th>
+              <th>Porte</th>
+              <th>Code</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- 3ème étage -->
+            <tr><td>3ème étage</td><td>Bloc 3ème</td><td>0582#</td></tr>
+            <tr><td>3ème étage</td><td>Vestiaire bloc</td><td>C358</td></tr>
+            <tr><td>3ème étage</td><td>Réserve ECMO</td><td>C1375</td></tr>
+            <tr><td>3ème étage</td><td>Réserve IRAC</td><td>C1972</td></tr>
+            <tr><td>3ème étage</td><td>Coordo. Bloc 3ème</td><td>C18</td></tr>
+            <tr><td>3ème étage</td><td>Accès USIP</td><td>1848#</td></tr>
+            <tr><td>3ème étage</td><td>Salle de détente réa</td><td>C24</td></tr>
+            <tr><td>3ème étage</td><td>Office alimentaire réa</td><td>C89A</td></tr>
+            <tr><td>3ème étage</td><td>Salle de staff réa</td><td>C25</td></tr>
+            <tr><td>3ème étage</td><td>Pharmacie</td><td>C97A</td></tr>
+            <tr><td>3ème étage</td><td>Réserve IDE / AS</td><td>C85A / C91A</td></tr>
+
+            <!-- 4ème étage -->
+            <tr><td>4ème étage</td><td>Bureau VPA (4ème sud)</td><td>2738</td></tr>
+            <tr><td>4ème étage</td><td>Ch. de garde USIP (4ème sud)</td><td>C18</td></tr>
+
+            <!-- 1er étage -->
+            <tr><td>1er étage</td><td>Réveil 1er</td><td>52#</td></tr>
+            <tr><td>1er étage</td><td>PTI</td><td>80#</td></tr>
+            <tr><td>1er étage</td><td>Radiovasc 1er</td><td>2024 / C148</td></tr>
+
+            <!-- Rez-de-chaussée -->
+            <tr><td>Rez-de-chaussée</td><td>Radiovasc RDC</td><td>2011#</td></tr>
+            <tr><td>Rez-de-chaussée</td><td>Box 18 (consult cardio med)</td><td>C123</td></tr>
+          </tbody>
+        </table>
       </div>
     </section>
   `;
 }
+
 
 // ============================================================
 //  ACR — Chirurgie cardiaque (version ordinateur)
