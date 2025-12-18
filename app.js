@@ -13045,6 +13045,504 @@ function renderAnnuaire() {
         </table>
       `,
     },
+
+    /* ================================
+       4) RYTHMOLOGUES
+       ================================ */
+    {
+      titre: "Rythmologues",
+      sousTitreEncadre: "",
+      html: `
+        <div style="height:6px;"></div>
+
+        <table class="annuaire-table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Poste</th>
+              <th>Téléphone</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>BADENCO Nicolas</td><td>—</td><td>62 976</td></tr>
+            <tr><td>CHASTRE Thomas</td><td>—</td><td>63 821</td></tr>
+            <tr><td>DINANIAN Sylvie</td><td>—</td><td>27 804</td></tr>
+            <tr><td>DUTHOIT Guillaume</td><td>—</td><td>63 031</td></tr>
+            <tr><td>GANDJBAKHCH Estelle</td><td>—</td><td>63 055</td></tr>
+            <tr><td>JACQUEMART Étienne</td><td>—</td><td>27 545</td></tr>
+            <tr><td>LAREDO Mickaël</td><td>—</td><td>27 620</td></tr>
+            <tr><td>MAUPAIN Carole</td><td>—</td><td>27 283</td></tr>
+            <tr><td>ROLLAND Thomas</td><td>—</td><td>63 051</td></tr>
+            <tr><td>SCHUMACHER Stéphane</td><td>—</td><td>27 545</td></tr>
+            <tr><td>TEMMAR Yacine</td><td>—</td><td>63 036</td></tr>
+            <tr><td>THUILLOT Marine</td><td>—</td><td>63 036</td></tr>
+            <tr><td>WAINTRAUB Xavier</td><td>—</td><td>63 028</td></tr>
+          </tbody>
+        </table>
+      `,
+    },
+
+    /* ================================
+       5) CARDIOLOGUES
+       ================================ */
+    {
+      titre: "Cardiologues",
+      sousTitreEncadre: "",
+      html: `
+        <div style="height:6px;"></div>
+
+        <table class="annuaire-table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Poste</th>
+              <th>Téléphone</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>BALDI Lorenzo</td><td>—</td><td>27 531</td></tr>
+            <tr><td>BARTHELEMY Olivier</td><td>—</td><td>63 033</td></tr>
+            <tr><td>BEGOT Emmanuelle</td><td>—</td><td>27 778</td></tr>
+            <tr><td>CHOUSSAT Rémy</td><td>—</td><td>62 951</td></tr>
+            <tr><td>COLLET Jean-Philippe</td><td>—</td><td>62 962</td></tr>
+            <tr><td>CHARINOT Jean-Christophe</td><td>—</td><td>63 837</td></tr>
+            <tr><td>COUTANCE Guillaume</td><td>—</td><td>28 057</td></tr>
+            <tr><td>DESIRE Eva</td><td>—</td><td>28 196</td></tr>
+            <tr><td>GRANGER Camille</td><td>—</td><td>27 134</td></tr>
+            <tr><td>GUEDENEY Paul</td><td>—</td><td>27 619</td></tr>
+            <tr><td>HAMMOUDI Nadjib</td><td>—</td><td>80 782</td></tr>
+            <tr><td>HAZAN Fanny</td><td>—</td><td>80 699</td></tr>
+            <tr><td>HELFT Gérard</td><td>—</td><td>62 912</td></tr>
+            <tr><td>KERNEIS Mathieu</td><td>—</td><td>27 753</td></tr>
+            <tr><td>JAULT Frédérique</td><td>—</td><td>65 694</td></tr>
+            <tr><td>LECUYER Lucien</td><td>—</td><td>27 174</td></tr>
+            <tr><td>LE FEVRE Claude</td><td>—</td><td>63 012</td></tr>
+            <tr><td>LEGRAND Lise</td><td>—</td><td>63 836</td></tr>
+            <tr><td>MONGUILLON Victorien</td><td>—</td><td>28 375</td></tr>
+            <tr><td>MONTALESCOT Gilles</td><td>—</td><td>80 713</td></tr>
+            <tr><td>SILVAIN Johanne</td><td>—</td><td>62 975</td></tr>
+            <tr><td>OULDAMMAR Salima</td><td>—</td><td>28 163</td></tr>
+            <tr><td>VARNOUS Sheida</td><td>—</td><td>65 690</td></tr>
+            <tr><td>WALLET Thomas</td><td>—</td><td>62 975</td></tr>
+            <tr><td>ZEITOUNI Michel</td><td>—</td><td>80 680</td></tr>
+          </tbody>
+        </table>
+      `,
+    },
+
+    /* ================================
+       6) REZ-DE-CHAUSSÉE
+       ================================ */
+    {
+      titre: "Rez-de-chaussée",
+      sousTitreEncadre: "",
+      html: `
+        <div style="height:6px;"></div>
+
+        <table class="annuaire-table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Poste</th>
+              <th>Téléphone</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Radiologie interventionnelle — RDC</td><td>Poste IDE</td><td>27 815</td></tr>
+
+            <tr><td>UCASAR — RDC</td><td>Poste de soins IDE</td><td>28 074</td></tr>
+            <tr><td>UCASAR — RDC</td><td>Secrétariat</td><td>28 073</td></tr>
+            <tr><td>UCASAR — RDC</td><td>Médecin</td><td>62 999</td></tr>
+
+            <tr><td>HDJ chirurgie — RDC</td><td>Poste de soins</td><td>65 578 ou 65 577</td></tr>
+            <tr><td>HDJ cardiologie médicale — RDC</td><td>Poste de soins</td><td>62 896</td></tr>
+          </tbody>
+        </table>
+      `,
+    },
+
+    /* ================================
+       7) 1ER ÉTAGE
+       ================================ */
+    {
+      titre: "1er étage",
+      sousTitreEncadre: "",
+      html: `
+        <div style="height:6px;"></div>
+
+        <table class="annuaire-table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Poste</th>
+              <th>Téléphone</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>PTI — 1er étage</td><td>Poste IDE électrophysiologie</td><td>—</td></tr>
+            <tr><td>PTI — 1er étage</td><td>Accueil coro</td><td>—</td></tr>
+            <tr><td>PTI — 1er étage</td><td>Brancardier</td><td>—</td></tr>
+
+            <tr><td>Radio-vasculaire — 1er étage</td><td>Urgences</td><td>27 243</td></tr>
+            <tr><td>Radio-vasculaire — 1er étage</td><td>Poste manip-radio</td><td>65 639 ou 65 540</td></tr>
+
+            <tr><td>Réanimation médicale — 1er étage</td><td>Unité 1 (Ch 101 à 106)</td><td>63 801</td></tr>
+            <tr><td>Réanimation médicale — 1er étage</td><td>Unité 2 (Ch 107 à 112)</td><td>63 802</td></tr>
+            <tr><td>Réanimation médicale — 1er étage</td><td>Unité 3 (Ch 114 à 119)</td><td>63 803</td></tr>
+            <tr><td>Réanimation médicale — 1er étage</td><td>Réanimateur de garde</td><td>27 544</td></tr>
+
+            <tr><td>SSPI — 1er étage</td><td>Poste de soins IDE</td><td>28 120</td></tr>
+            <tr><td>USC — 1er étage</td><td>Poste de soins</td><td>62 939 ou 62 947</td></tr>
+          </tbody>
+        </table>
+      `,
+    },
+
+    /* ================================
+       8) 2ÈME ÉTAGE
+       ================================ */
+    {
+      titre: "2ème étage",
+      sousTitreEncadre: "",
+      html: `
+        <div style="height:6px;"></div>
+
+        <table class="annuaire-table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Poste</th>
+              <th>Téléphone</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>HDS — 2ème étage</td><td>Poste de soins</td><td>62 980</td></tr>
+
+            <tr><td>UCA — 2ème étage</td><td>UCA 1 (Ch 229 à 249)</td><td>62 946</td></tr>
+            <tr><td>UCA — 2ème étage</td><td>UCA 2 (Ch 219 à 228)</td><td>62 967</td></tr>
+            <tr><td>UCA — 2ème étage</td><td>Régul UCA</td><td>28 130</td></tr>
+            <tr><td>UCA — 2ème étage</td><td>Interne</td><td>62 905</td></tr>
+            <tr><td>UCA — 2ème étage</td><td>Secrétaires hospitalières</td><td>62 945 ou 62 949 ou 28 138</td></tr>
+
+            <tr><td>USIC — 2ème étage</td><td>Ch 201 à 212</td><td>62 943 ou 62 944</td></tr>
+            <tr><td>USIC — 2ème étage</td><td>Interne</td><td>62 960</td></tr>
+            <tr><td>USIC — 2ème étage</td><td>Ch 214 à 218</td><td>62 966</td></tr>
+          </tbody>
+        </table>
+      `,
+    },
+
+    /* ================================
+       9) 3ÈME ÉTAGE
+       ================================ */
+    {
+      titre: "3ème étage",
+      sousTitreEncadre: "",
+      html: `
+        <div style="height:6px;"></div>
+
+        <table class="annuaire-table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Poste</th>
+              <th>Téléphone</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>USI — 3ème étage</td><td>Cadre de santé — LE TOULLEC Ann-Solenn</td><td>28 121</td></tr>
+            <tr><td>USI — 3ème étage</td><td>DECT IDE</td><td>27 011</td></tr>
+            <tr><td>USI — 3ème étage</td><td>Poste de soins 2</td><td>63 083 ou 63 093</td></tr>
+            <tr><td>USI — 3ème étage</td><td>Poste de soins 3</td><td>63 046 ou 86 051</td></tr>
+            <tr><td>USI — 3ème étage</td><td>Fax</td><td>62 954</td></tr>
+            <tr><td>USI — 3ème étage</td><td>Interne</td><td>28 119</td></tr>
+            <tr><td>USI — 3ème étage</td><td>MAR</td><td>28 118</td></tr>
+
+            <tr><td>SSPI — 3ème étage</td><td>Poste de soins</td><td>63 900</td></tr>
+            <tr><td>SSPI — 3ème étage</td><td>DECT IDE</td><td>27 388</td></tr>
+            <tr><td>SSPI — 3ème étage</td><td>MAR</td><td>28 118</td></tr>
+            <tr><td>SSPI — 3ème étage</td><td>Interne</td><td>28 119</td></tr>
+
+            <tr><td>Réanimation chirurgicale — 3ème étage</td><td>Cadre de santé — RUGARD Sébastien</td><td>63 976</td></tr>
+            <tr><td>Réanimation chirurgicale — 3ème étage</td><td>Cadre de santé — GUIDEZ Laurence</td><td>27 487</td></tr>
+            <tr><td>Réanimation chirurgicale — 3ème étage</td><td>Secrétariat réanimation — MOVALLI Angèle</td><td>65 642</td></tr>
+            <tr><td>Réanimation chirurgicale — 3ème étage</td><td>IDE référent</td><td>28 164</td></tr>
+            <tr><td>Réanimation chirurgicale — 3ème étage</td><td>Interne de garde</td><td>65 644</td></tr>
+            <tr><td>Réanimation chirurgicale — 3ème étage</td><td>Unité 1 (Ch 301 à 306)</td><td>65 648</td></tr>
+            <tr><td>Réanimation chirurgicale — 3ème étage</td><td>Unité 2 (Ch 307 à 312)</td><td>65 649</td></tr>
+            <tr><td>Réanimation chirurgicale — 3ème étage</td><td>Unité 3 (Ch 314 à 319)</td><td>65 650</td></tr>
+          </tbody>
+        </table>
+      `,
+    },
+
+    /* ================================
+       10) 4ÈME ÉTAGE
+       ================================ */
+    {
+      titre: "4ème étage",
+      sousTitreEncadre: "",
+      html: `
+        <div style="height:6px;"></div>
+
+        <table class="annuaire-table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Poste</th>
+              <th>Téléphone</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Rythmologie — 4ème étage</td><td>Poste de soins</td><td>62 915 ou 63 064</td></tr>
+            <tr><td>Chirurgie cardiaque — 4ème étage</td><td>Ch 429 à 455</td><td>65 664 ou 65 064</td></tr>
+            <tr><td>Chirurgie cardiaque — 4ème étage</td><td>Ch 460 à 475</td><td>63 082 ou 63 072</td></tr>
+          </tbody>
+        </table>
+      `,
+    },
+
+    /* ================================
+       11) BRANCARDAGE
+       ================================ */
+    {
+      titre: "Brancardage",
+      sousTitreEncadre: "",
+      html: `
+        <div style="height:6px;"></div>
+
+        <table class="annuaire-table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Poste</th>
+              <th>Téléphone</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Secteur PTI — 1er étage</td><td>Brancardage</td><td>26 275</td></tr>
+            <tr><td>Secteur PTI — 1er étage</td><td>Brancardage</td><td>26 418</td></tr>
+
+            <tr><td>Chirurgie cardiaque</td><td>AS bloc</td><td>80 568</td></tr>
+            <tr><td>Chirurgie cardiaque</td><td>AS bloc</td><td>26 400</td></tr>
+            <tr><td>Chirurgie cardiaque</td><td>AS bloc</td><td>26 099</td></tr>
+
+            <tr><td>Chirurgie cardiaque</td><td>Courses cardio</td><td>26 376</td></tr>
+
+            <tr><td>Rythmologie</td><td>Brancardage</td><td>26 187</td></tr>
+
+            <tr><td>Secteur radio interventionnelle</td><td>Brancardage</td><td>65 540</td></tr>
+            <tr><td>Secteur radio interventionnelle</td><td>Brancardage</td><td>28 815</td></tr>
+
+            <tr><td>Coursier USIP / réa</td><td>(+ SSPI 3ème chir cardio si besoin)</td><td>26 444</td></tr>
+
+            <tr><td>Régulation PTAH</td><td>Jour</td><td>61 576</td></tr>
+            <tr><td>Régulation PTAH</td><td>Nuit</td><td>26 128 ou 26 086</td></tr>
+          </tbody>
+        </table>
+      `,
+    },
+
+    /* ================================
+       12) IMAGERIES
+       ================================ */
+    {
+      titre: "Imageries",
+      sousTitreEncadre: "",
+      html: `
+        <div style="height:6px;"></div>
+
+        <table class="annuaire-table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Poste</th>
+              <th>Téléphone</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Bâtiment cardio</td><td>Secrétariat</td><td>65 545</td></tr>
+            <tr><td>Bâtiment cardio</td><td>RDV</td><td>65 543</td></tr>
+            <tr><td>Bâtiment cardio</td><td>Urgences</td><td>27 206</td></tr>
+            <tr><td>Bâtiment cardio</td><td>Fax radio au lit</td><td>80 479</td></tr>
+            <tr><td>Bâtiment cardio</td><td>Accueil</td><td>65 542</td></tr>
+
+            <tr><td>Bâtiment cardio</td><td>RX thorax — RDC</td><td>65 532</td></tr>
+            <tr><td>Bâtiment cardio</td><td>Radio vasc — 1er étage (Piccline)</td><td>65 539 / 65 540</td></tr>
+            <tr><td>Bâtiment cardio</td><td>Fax piccline</td><td>65 541</td></tr>
+
+            <tr><td>Bâtiment cardio</td><td>Scanner — Console</td><td>80 821</td></tr>
+            <tr><td>Bâtiment cardio</td><td>Scanner — Interprétation</td><td>80 823</td></tr>
+            <tr><td>Bâtiment cardio</td><td>Scanner — Fax</td><td>65 544</td></tr>
+            <tr><td>Bâtiment cardio</td><td>Scanner — RDV</td><td>65 542 – 65 543</td></tr>
+
+            <tr><td>Bâtiment cardio</td><td>Coroscanner</td><td>65 543</td></tr>
+            <tr><td>Bâtiment cardio</td><td>Coronarographie</td><td>62 950</td></tr>
+
+            <tr><td>Bâtiment cardio</td><td>IRM — RDV</td><td>65 548</td></tr>
+            <tr><td>Bâtiment cardio</td><td>IRM — Console</td><td>80 820</td></tr>
+
+            <tr><td>Bâtiment cardio</td><td>Scinti myocardique</td><td>76 494 / 76 496</td></tr>
+            <tr><td>Bâtiment cardio</td><td>Scinti myocardique — Fax</td><td>76 512</td></tr>
+
+            <tr><td>Bâtiment cardio</td><td>Endoscopie digestif</td><td>61 023 / 61 026</td></tr>
+            <tr><td>Bâtiment cardio</td><td>Endoscopie digestif — Fax</td><td>61 433</td></tr>
+
+            <tr><td>Bâtiment cardio</td><td>Écho digestif</td><td>78 470 / 77 347</td></tr>
+            <tr><td>Bâtiment cardio</td><td>Écho digestif — Fax</td><td>78 412</td></tr>
+
+            <tr><td>Gaston Cordier</td><td>Scanner (bât. admissions) — RDV</td><td>76 346</td></tr>
+            <tr><td>Gaston Cordier</td><td>Scanner — Console</td><td>77 344</td></tr>
+            <tr><td>Gaston Cordier</td><td>Scanner — Résultats</td><td>77 340</td></tr>
+            <tr><td>Gaston Cordier</td><td>Scanner — Interne</td><td>27 357</td></tr>
+
+            <tr><td>Gaston Cordier</td><td>RX thorax</td><td>77 337</td></tr>
+            <tr><td>Gaston Cordier</td><td>RX thorax — Nuit</td><td>26 133</td></tr>
+
+            <tr><td>Gaston Cordier</td><td>Échographie</td><td>77 347</td></tr>
+            <tr><td>Gaston Cordier</td><td>Échographie — Fax</td><td>78 412</td></tr>
+
+            <tr><td>Gaston Cordier</td><td>TEP scanner</td><td>76 512 / 76 491 / 76 494 / 76 796</td></tr>
+
+            <tr><td>Babinski</td><td>Scan cérébral</td><td>63 533</td></tr>
+            <tr><td>Babinski</td><td>Scan cérébral — Fax</td><td>63 526</td></tr>
+
+            <tr><td>Babinski</td><td>IRM cérébrale — RDV</td><td>63 600 / 63 506 / 63 507</td></tr>
+            <tr><td>Babinski</td><td>IRM cérébrale — Console</td><td>63 538</td></tr>
+            <tr><td>Babinski</td><td>IRM cérébrale — Résultats</td><td>63 594 / 63 512</td></tr>
+            <tr><td>Babinski</td><td>IRM cérébrale — Fax</td><td>63 526</td></tr>
+
+            <tr><td>Paul Castaigne</td><td>IRM</td><td>61 699</td></tr>
+          </tbody>
+        </table>
+      `,
+    },
+
+    /* ================================
+       13) NUMÉROS EXTÉRIEURS AU BÂTIMENT CŒUR
+       ================================ */
+    {
+      titre: "Numéros extérieurs (bâtiment cœur)",
+      sousTitreEncadre: "",
+      html: `
+        <div style="height:6px;"></div>
+
+        <table class="annuaire-table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Poste</th>
+              <th>Téléphone</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Addiction (ECIMUD)</td><td>—</td><td>78 515 ou 78 580</td></tr>
+            <tr><td>Consultation pied diabétique</td><td>—</td><td>27 364</td></tr>
+            <tr><td>Consultation pied diabétique</td><td>Fax</td><td>77 834</td></tr>
+            <tr><td>Consultation urologie</td><td>—</td><td>61 863</td></tr>
+            <tr><td>Dermatologie</td><td>—</td><td>61 466</td></tr>
+            <tr><td>Diététicienne</td><td>—</td><td>61 915</td></tr>
+            <tr><td>Dialyse</td><td>—</td><td>77 245 ou 77 219</td></tr>
+            <tr><td>EEG</td><td>—</td><td>62 393 ou 62 395</td></tr>
+            <tr><td>EEG</td><td>Fax</td><td>61 942</td></tr>
+            <tr><td>EEG neurophysio</td><td>—</td><td>08 05 62 66 26</td></tr>
+            <tr><td>Équipe douleur</td><td>—</td><td>61 194 ou 77 622</td></tr>
+            <tr><td>Équipe douleur</td><td>Fax</td><td>77 955</td></tr>
+            <tr><td>Endoscopie nuit & week-end</td><td>—</td><td>26 170</td></tr>
+            <tr><td>Gastro</td><td>—</td><td>27 704</td></tr>
+            <tr><td>Gastro garde chir. MENÉGAUX</td><td>(digestif)</td><td>27 253 (27 254 urgence)</td></tr>
+            <tr><td>Gaston Cordier</td><td>Cadre réanimation</td><td>77 303</td></tr>
+            <tr><td>Interne chirurgie</td><td>VAILLANT</td><td>27 527 ou 27 526</td></tr>
+            <tr><td>Interne chir. vasculaire</td><td>Pr KOSKAS</td><td>27 493</td></tr>
+            <tr><td>Interne diabétologie</td><td>—</td><td>26 220</td></tr>
+            <tr><td>Interne maternité</td><td>—</td><td>77 735</td></tr>
+            <tr><td>Interne maxillo-faciale</td><td>—</td><td>27 368</td></tr>
+            <tr><td>Interne garde neurochir</td><td>—</td><td>63 690</td></tr>
+            <tr><td>Interne chir ortho</td><td>—</td><td>27 393</td></tr>
+            <tr><td>Interne orthophoniste</td><td>—</td><td>67 531 ou 67 506</td></tr>
+            <tr><td>Interne stomatologie</td><td>—</td><td>61 452</td></tr>
+            <tr><td>Maternité chef de garde</td><td>—</td><td>77 734</td></tr>
+            <tr><td>Neuro vasculaire</td><td>(avis/urgence)</td><td>27 013</td></tr>
+            <tr><td>Neurochirurgie cadres</td><td>—</td><td>63 347 ou 63 375</td></tr>
+            <tr><td>Neuro-ophtalmo</td><td>Fax</td><td>63 245</td></tr>
+            <tr><td>ORL</td><td>(week-end tel interne maxillo)</td><td>77 440</td></tr>
+            <tr><td>ORL</td><td>Fax</td><td>63 164 ou 63 121 ou 63 119</td></tr>
+            <tr><td>Pharmacie MDCTS</td><td>Jour / Nuit</td><td>62 078 ou 27 345 (nuit)</td></tr>
+            <tr><td>Pharmacie MDCTS</td><td>Fax</td><td>62 007</td></tr>
+            <tr><td>Pharmacie MDCTS</td><td>Dérivés du sang</td><td>62 280</td></tr>
+            <tr><td>Pharmacie MDCTS</td><td>Dispensation contrôlée</td><td>62 002</td></tr>
+            <tr><td>Pharmacie stupéfiants</td><td>—</td><td>80 285</td></tr>
+            <tr><td>Psychiatre</td><td>—</td><td>62 859</td></tr>
+            <tr><td>Réanimateur garde</td><td>Gaston Cordier (SSPI)</td><td>27 364</td></tr>
+            <tr><td>Réanimateur garde</td><td>Husson Mourrier</td><td>27 136 ou 75 894</td></tr>
+            <tr><td>Réanimateur garde</td><td>EOLE</td><td>20 333</td></tr>
+            <tr><td>Stomatologie urgence</td><td>—</td><td>61 307</td></tr>
+            <tr><td>USIC chir digestive</td><td>—</td><td>61 032</td></tr>
+          </tbody>
+        </table>
+      `,
+    },
+
+    /* ================================
+       14) LABORATOIRES
+       ================================ */
+    {
+      titre: "Laboratoires",
+      sousTitreEncadre: "",
+      html: `
+        <div style="height:6px;"></div>
+
+        <table class="annuaire-table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Poste</th>
+              <th>Téléphone</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Labo NFS</td><td>—</td><td>60 231 / 62 592</td></tr>
+
+            <tr><td>Labo biochimie</td><td>—</td><td>62 050 / 62 045</td></tr>
+            <tr><td>Labo biochimie</td><td>Fax</td><td>62 073</td></tr>
+            <tr><td>Labo biochimie</td><td>Biologiste</td><td>62 045 / 62 052</td></tr>
+
+            <tr><td>Labo hémostase</td><td>—</td><td>62 596 / 62 595</td></tr>
+            <tr><td>Labo hémostase</td><td>Biologiste</td><td>62 458 / 62 459</td></tr>
+
+            <tr><td>Labo EFS</td><td>—</td><td>60 274 / 60 277</td></tr>
+            <tr><td>Labo EFS</td><td>Fax</td><td>60 605</td></tr>
+
+            <tr><td>EFS distribution</td><td>—</td><td>60 270</td></tr>
+            <tr><td>EFS distribution</td><td>Fax</td><td>60 238</td></tr>
+
+            <tr><td>Labo RAI</td><td>—</td><td>60 273 / 60 274</td></tr>
+
+            <tr><td>Labo bactériologie</td><td>Jour</td><td>62 090</td></tr>
+            <tr><td>Labo bactériologie</td><td>Nuit</td><td>27 272</td></tr>
+            <tr><td>Labo bactériologie</td><td>Autre</td><td>62 088</td></tr>
+
+            <tr><td>Hygiène</td><td>—</td><td>62 086</td></tr>
+            <tr><td>Labo urgences</td><td>Gaston Cordier</td><td>77 352</td></tr>
+
+            <tr><td>Anapathologie</td><td>—</td><td>77 773 / 78 464 / 77 682</td></tr>
+            <tr><td>Anapathologie</td><td>Anapath de garde</td><td>78 466 / 78 464</td></tr>
+
+            <tr><td>Labo pharmaco</td><td>—</td><td>62 022</td></tr>
+            <tr><td>Labo toxico</td><td>—</td><td>77 352</td></tr>
+            <tr><td>Labo myco-parasito</td><td>—</td><td>60 182</td></tr>
+
+            <tr><td>Labo coprocultures</td><td>Charles Foix</td><td>01 49 59 46 33</td></tr>
+
+            <tr><td>Navettistes nuit</td><td>—</td><td>26 192</td></tr>
+            <tr><td>Centre de tri</td><td>—</td><td>61 551</td></tr>
+            <tr><td>Virologie</td><td>—</td><td>77 421</td></tr>
+            <tr><td>Bactério chir cardiaque</td><td>—</td><td>62 088</td></tr>
+            <tr><td>Urgence PCR</td><td>—</td><td>27 272</td></tr>
+          </tbody>
+        </table>
+      `,
+    },
   ];
 
   renderInterventionPage({
@@ -13053,6 +13551,7 @@ function renderAnnuaire() {
     encadres,
   });
 }
+
 
 function renderCodesAcces() {
   $app.innerHTML = `
