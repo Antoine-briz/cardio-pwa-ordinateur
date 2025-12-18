@@ -13605,7 +13605,7 @@ function renderCodesAcces() {
   renderInterventionPage({
     titre: "Codes d’accès",
     sousTitre: "",
-    image: "img/code.png",
+    image: "code.png",
     encadres,
   });
 }
