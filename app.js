@@ -13549,7 +13549,7 @@ function renderAnnuaire() {
   renderInterventionPage({
     titre: "Annuaire",
     sousTitre: "",
-    image: "img/annuaire.png",
+    image: "annuaire.png",
     encadres,
   });
 }
