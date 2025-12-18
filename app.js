@@ -9101,6 +9101,7 @@ function renderAdapteeMenu() {
 
  const INFECTIONS = {
     "Pneumonies": ["Communautaire", "PAVM", "Nécrose/abcès", "Empyème pleural"],
+   "Chirurgie cardiaque": ["Infection de scarpa","Médiastinite","EI sur valve native","EI sur valve prothétique (< ou > 1 an)"],
     "Infections urinaires": ["Cystite", "Pyélonéphrite", "IU masculine"],
     "Bactériémies": ["Inconnue", "Cathéter", "Autre infection"],
     "Infections intra-abdominales": [
