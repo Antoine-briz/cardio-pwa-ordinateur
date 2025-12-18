@@ -13424,7 +13424,7 @@ function renderAnnuaire() {
        13) NUMÉROS EXTÉRIEURS AU BÂTIMENT CŒUR
        ================================ */
     {
-      titre: "Numéros extérieurs (bâtiment cœur)",
+      titre: "Numéros extérieurs à l'institut de cardiologie",
       sousTitreEncadre: "",
       html: `
         <div style="height:6px;"></div>
