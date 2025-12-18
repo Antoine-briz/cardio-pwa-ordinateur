@@ -2575,3 +2575,7 @@ body.acr-force-light .acr5-synth-live {
 .home-btn:hover {
   opacity: 0.92;
 }
+
+.acr5-synth-body .acr5-btn {
+  margin-bottom: 6px;
+}
