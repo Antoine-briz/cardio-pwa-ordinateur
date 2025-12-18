@@ -13179,6 +13179,13 @@ function renderAcrChirCardiaque() {
         <div class="acr5-frame f-synth">
           <div class="acr5-frame-title">Synthèse</div>
           <div class="acr5-frame-body acr5-synth-body">
+            <button class="acr5-btn other" onclick="acrAddEvent('RACS')">
+    RACS
+  </button>
+
+  <button class="acr5-btn other" onclick="acrAddEvent('Nouvel ACR')">
+    Nouvel ACR
+  </button>
             <button class="acr5-btn brown synth-btn" onclick="openAcrSynthese()">
               Ouvrir en fenêtre
             </button>
