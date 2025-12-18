@@ -7997,57 +7997,73 @@ function renderReanTransplantMenu() {
   `;
 }
 
-
 function renderReanTransplantHemodynamique() {
   $app.innerHTML = `
-    <section>
-      ${sectionHeader("Transplantation cardiaque – Réanimation", "transplantation.png")}
+    <section class="intervention-shell">
 
-      <h3>Gestion hémodynamique post-opératoire</h3>
+      <!-- Colonne gauche : titre + contenu -->
+      <div class="intervention-main">
+        <div class="hero">
+          <h2>Transplantation cardiaque – Réanimation</h2>
+        </div>
 
-      <div class="card">
-        <div class="card-body">
-          <div class="form" style="margin-bottom:12px;">
-            <label>
-              <input type="checkbox" id="tx-ecmo" />
-              Patient sous ECMO VA
-            </label>
-          </div>
+        <div class="card">
+          <div class="card-body">
+            <h3 style="margin-top:0;">Gestion hémodynamique post-opératoire</h3>
 
-          <div id="tx-gestion-noecmo">
-            <p><strong>En l’absence d’ECMO VA :</strong></p>
-            <ul>
-              <li>Monitorage Swan-Ganz systématique.</li>
-              <li>NO inhalé systématique.</li>
-              <li>Objectifs hémodynamiques :
-                <ul>
-                  <li>FC 90–110/min</li>
-                  <li>PAM &gt; 65 mmHg</li>
-                  <li>PVC &lt; 15 mmHg</li>
-                  <li>Diurèse &gt; 0,5 mL/kg/h</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
+            <div class="form" style="margin:12px 0;">
+              <label>
+                <input type="checkbox" id="tx-ecmo" />
+                Patient sous ECMO VA
+              </label>
+            </div>
 
-          <div id="tx-gestion-ecmo" style="display:none;">
-            <p><strong>Assistance par ECMO VA :</strong></p>
-            <ul>
-              <li>BCPIA souvent associée.</li>
-              <li>Objectif de débit ECMO suffisant pour perfusion systémique,
-                  tout en conservant un certain flux trans-aortique.</li>
-              <li>HNF IVSE avec cible d’ACT / anti-Xa selon protocole.</li>
-              <li>Adaptation de la ventilation
-                  (Vt 6–8 mL/kg, FR 15–20/min, PEP 8–10 cmH₂O selon contexte).</li>
-            </ul>
+            <div id="tx-gestion-noecmo">
+              <p><strong>En l’absence d’ECMO VA :</strong></p>
+              <ul>
+                <li>Monitorage Swan-Ganz systématique.</li>
+                <li>NO inhalé systématique.</li>
+                <li>Objectifs hémodynamiques :
+                  <ul>
+                    <li>FC 90–110/min</li>
+                    <li>PAM &gt; 65 mmHg</li>
+                    <li>PVC &lt; 15 mmHg</li>
+                    <li>Diurèse &gt; 0,5 mL/kg/h</li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+
+            <div id="tx-gestion-ecmo" style="display:none;">
+              <p><strong>Assistance par ECMO VA :</strong></p>
+              <ul>
+                <li>BCPIA souvent associée.</li>
+                <li>Objectif de débit ECMO suffisant pour perfusion systémique,
+                    tout en conservant un certain flux trans-aortique.</li>
+                <li>HNF IVSE avec cible d’ACT / anti-Xa selon protocole.</li>
+                <li>Adaptation de la ventilation
+                    (Vt 6–8 mL/kg, FR 15–20/min, PEP 8–10 cmH₂O selon contexte).</li>
+              </ul>
+            </div>
           </div>
         </div>
+
+        <div class="actions">
+          <button class="btn ghost" onclick="history.back()">← Retour</button>
+        </div>
       </div>
+
+      <!-- Colonne droite : image verticale (du header au footer) -->
+      <aside class="intervention-side">
+        <img src="img/transplantation2.png" alt="Transplantation cardiaque">
+      </aside>
+
     </section>
   `;
 
   setupReanTransplantHemodynamiqueLogic();
 }
+
 
 function setupReanTransplantHemodynamiqueLogic() {
   const cb = document.getElementById("tx-ecmo");
