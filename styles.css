@@ -2696,3 +2696,37 @@ body.acr-force-light .acr5-synth-live {
 .info-content br {
   line-height: 1.5;
 }
+
+/* ==========================================================
+   CORRECTION MENU CHIRURGIE VASCULAIRE
+   ========================================================== */
+
+/* Les boutons vasculaires DOIVENT être des .btn normaux */
+.btn.btn-red,
+.btn.btn-blue {
+  font-family: inherit;
+  font-size: inherit;
+  padding: inherit;
+  border-radius: inherit;
+  height: auto;
+  line-height: normal;
+}
+/* Rouge foncé : protocoles spécifiques */
+.btn-red {
+  background-color: #8b1e1e;
+  color: #ffffff;
+}
+
+.btn-red:hover {
+  background-color: #a32626;
+}
+
+/* Bleu foncé : chirurgie */
+.btn-blue {
+  background-color: #0f3a5f;
+  color: #ffffff;
+}
+
+.btn-blue:hover {
+  background-color: #165a8c;
+}
