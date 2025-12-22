@@ -4746,7 +4746,7 @@ function renderInterventionDissectionAo() {
           <li>
             PFC, CUP, fibrinogène guidés par Quantra
             (
-              <span class="img-link" onclick="openImg('quantra.png')">
+              <span class="img-link" onclick="openImg('cf-algorithme-quantra.png')">
                 Afficher algorithme du Quantra
                 <span style="font-size:18px;">🖼️️ </span>
               </span>
@@ -4999,7 +4999,7 @@ function renderInterventionTransplantAnesth() {
           <li>
             PFC, CUP, fibrinogène guidés par Quantra
             (
-              <span class="img-link" onclick="openImg('quantra.png')">
+              <span class="img-link" onclick="openImg('cf-algorithme-quantra.png')">
                 Afficher algorithme du Quantra <span style="font-size:18px;">🖼️</span>
               </span>
             )
