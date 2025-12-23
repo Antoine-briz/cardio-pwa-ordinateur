@@ -1654,7 +1654,7 @@ Gestion des traitements :
 
 Pré-commande : 4 CGR`,
       monitorage: `Scope 5 branches, SpO2, VVP, TOF, KTa, BIS +/- NIRS, SU, réchauffeur/transfuseur`,
-      protocole: `Induction: Anesthésie générale AIVOC Propofol/Sufentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
+      protocole: `<strong>Induction:</strong> Anesthésie générale AIVOC Propofol/Sufentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
 
 <strong>Antibioprophylaxie:</strong> Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
 
@@ -1666,7 +1666,7 @@ Pré-commande : 4 CGR`,
 - Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)
 - Transfusion guidée par le Quantra Cf algorithme Quantra
 
-Objectifs tensionnels: Cf objectifs tensionnels chirurgie aortique`,
+<strong>Objectifs tensionnels:</strong> Cf objectifs tensionnels chirurgie aortique`,
       alr: `TAP-bloc ou QLB
 Cf TAP-bloc 🖥️
 Cf QLB 🖥️`,
@@ -1741,7 +1741,7 @@ Pré-commande : 4 CGR`,
       monitorage: `Scope 5 branches, SpO2, VVP, TOF, KTa, BIS, SU, réchauffeur/transfuseur`,
       protocole: `<strong>Induction:</strong> Anesthésie générale AIVOC Propofol/Sufentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
 
-Antibioprophylaxie: Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
+<strong>Antibioprophylaxie:</strong> Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
 
 <strong>Entretien:</strong>
 - AIVOC Propofol/Sufentanil , Atracurium IVSE
