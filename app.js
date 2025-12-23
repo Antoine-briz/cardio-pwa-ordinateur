@@ -585,14 +585,6 @@ function renderAnesthVasculaireMenu() {
           <h2>Chirurgie vasculaire</h2>
         </div>
 
-        <!-- Bouton protocoles spécifiques -->
-        <h3>Protocoles transversaux</h3>
-        <div class="grid">
-          <button class="btn btn-red" onclick="renderVasculaireProtocoles()">
-            Protocoles spécifiques
-          </button>
-        </div>
-
         <!-- Groupe : Chirurgies vasculaires -->
         <h3 style="margin-top:24px;">Chirurgies vasculaires</h3>
         <div class="grid">
@@ -614,6 +606,14 @@ function renderAnesthVasculaireMenu() {
 
           <button class="btn btn-blue" onclick="renderInterventionEndoprothese()">
             Endoprothèses aortiques
+          </button>
+        </div>
+
+<!-- Bouton protocoles spécifiques -->
+        <h3>Protocoles transversaux</h3>
+        <div class="grid">
+          <button class="btn btn-red" onclick="renderVasculaireProtocoles()">
+            Protocoles spécifiques
           </button>
         </div>
       </div>
@@ -1481,8 +1481,8 @@ function renderInterventionAorteThoracique() {
         `<strong>Antibioprophylaxie:</strong> ${antibioticText()}<br>` +
         `<br>` +
         `<strong>Entretien:</strong> <br>` +
-        `AIVOC Propofol/Sufentanil , Atracurium IVSE<br>` +
-        `Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE <br>` +
+        `- AIVOC Propofol/Sufentanil , Atracurium IVSE<br>` +
+        `- Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE <br>` +
         `<br>` +
         `<strong>Hémostase: </strong><br>` +
         `- Exacyl <strong>${mgKg(20)}</strong> puis <strong>${mgKgH(2)}</strong> IVSE (sauf CI)<br>` +
@@ -1497,8 +1497,8 @@ function renderInterventionAorteThoracique() {
         `<strong>Antibioprophylaxie:</strong> ${antibioticText()}<br>` +
         `<br>` +
         `<strong>Entretien: </strong><br>` +
-        `AIVOC Propofol/Sufentanil , Atracurium IVSE<br>` +
-        `Xylocaïne (10mg/mL) + Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE. <br>` +
+        `- AIVOC Propofol/Sufentanil , Atracurium IVSE<br>` +
+        `- Xylocaïne (10mg/mL) + Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE. <br>` +
         `<br>` +
         `<strong>Hémostase:</strong><br>` +
         `- Exacyl <strong>${mgKg(20)}</strong> puis <strong>${mgKgH(2)}</strong> IVSE (sauf CI)<br>` +
@@ -1517,8 +1517,8 @@ function renderInterventionAorteThoracique() {
       `<strong>Antibioprophylaxie:</strong> ${antibioticText()}<br>` +
       `<br>` +
       `<strong>Entretien: </strong><br>` +
-      `AIVOC Propofol/Sufentanil , Atracurium IVSE<br>` +
-      `Xylocaïne (10mg/mL) + Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE. <br>` +
+      `- AIVOC Propofol/Sufentanil , Atracurium IVSE<br>` +
+      `- Xylocaïne (10mg/mL) + Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE. <br>` +
       `<br>` +
       `<strong>Hémostase: </strong><br>` +
       `- Héparine <strong>${uiKg(50)}</strong>, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si &lt; 2h (½ dose 2-4h, 0 &gt; 4h)<br>` +
