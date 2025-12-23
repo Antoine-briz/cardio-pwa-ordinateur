@@ -1667,7 +1667,7 @@ Pré-commande : 4 CGR`,
 - Transfusion guidée par le Quantra Cf algorithme Quantra
 
 <strong>Objectifs tensionnels:</strong> Cf objectifs tensionnels chirurgie aortique`,
-      alr: `TAP-bloc ou QLB
+      alr: `TAP-bloc ou QLB2 ou Péridurale thoracique
 Cf TAP-bloc 🖥️
 Cf QLB 🖥️`,
       orientation: `USIP/Réa
@@ -1709,7 +1709,7 @@ Pré-commande : 4 CGR`,
 <strong>Hémostase:</strong>
 - Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)
 - Transfusion guidée par le Quantra Cf algorithme Quantra`,
-      alr: `TAP-bloc ou QLB
+      alr: `TAP-bloc ou QLB2 ou Péridurale thoracique
 Cf TAP-bloc 🖥️
 Cf QLB 🖥️`,
       orientation: `USIP/Réa
@@ -1750,7 +1750,7 @@ Pré-commande : 4 CGR`,
 <strong>Hémostase:</strong>
 - Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)
 - Transfusion guidée par le Quantra Cf algorithme Quantra`,
-      alr: `TAP-bloc ou QLB
+      alr: `TAP-bloc ou QLB2 ou Péridurale thoracique
 Cf TAP-bloc 🖥️
 Cf QLB 🖥️`,
       orientation: `USIP/Réa
@@ -1791,7 +1791,7 @@ Pré-commande : 4 CGR`,
 <strong>Hémostase:</strong>
 - Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)
 - Transfusion guidée par le Quantra Cf algorithme Quantra`,
-      alr: `TAP-bloc ou QLB
+      alr: `TAP-bloc ou QLB2 ou Péridurale thoracique
 Cf TAP-bloc 🖥️
 Cf QLB 🖥️`,
       orientation: `USIP/Réa
@@ -1833,7 +1833,7 @@ Pré-commande : 4 CGR`,
 <strong>Hémostase:</strong>
 - Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)
 - Transfusion guidée par le Quantra Cf algorithme Quantra`,
-      alr: `TAP-bloc ou QLB
+      alr: `TAP-bloc ou QLB2 ou Péridurale thoracique
 Cf TAP-bloc 🖥️
 Cf QLB 🖥️`,
       orientation: `USIP/Réa
