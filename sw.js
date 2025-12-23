@@ -140,7 +140,13 @@ const PRECACHE = [
 "./img/cf-supra-claviculaire.png",
 "./img/objectifs-tensionnels.png",
 
-  // Excel
+  // Files
+  "./files/Infections des prothèses vasculaires.pdf",
+"./files/Antibiothérapies des amputations de membre.pdf",
+"./files/Protocole DLE.pdf",
+"./files/Mémo DLE.pdf",
+"./files/Protocole fibrinolyse in situ.pdf",
+"./files/Mémo fibrinolyse in situ.pdf",
   "./files/planning_medical.xlsx",
 ];
 
