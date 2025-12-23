@@ -604,7 +604,7 @@ function renderAnesthVasculaireMenu() {
             Chirurgies du membre inférieur
           </button>
 
-          <button class="btn btn-blue" onclick="renderInterventionEndoprothese()">
+          <button class="btn btn-blue" onclick="renderInterventionEndoprotheses()">
             Endoprothèses aortiques
           </button>
         </div>
