@@ -2124,10 +2124,10 @@ Pré-commande : 4 CGR`,
 
 <strong>Hémostase:</strong> Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)`,
       alr: `Au choix:
-Bloc fémoral ou BIIIH ou QLB
-Cf bloc fémoral 🖥️
+QLB2/3 OU BIIIH + Bloc fémoral
+Cf QLB 🖥️
 Cf BIIIH 🖥️
-Cf QLB 🖥️`,
+Cf bloc fémoral 🖥️`,
       orientation: `SSPI 2h minimum
 
 Examens à l’entrée: 
@@ -2162,10 +2162,8 @@ Pré-commande : 4 CGR`,
 <strong>Entretien:</strong> AIVOC propofol/rémifentanil
 
 <strong>Hémostase:</strong> Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)`,
-      alr: `Au choix:
-Bloc fémoral ou BIIIH ou QLB
-Cf bloc fémoral 🖥️
-Cf BIIIH 🖥️
+      alr: `
+Bloc QLB 2 ou 3
 Cf QLB 🖥️`,
       orientation: `SSPI 2h minimum
 
@@ -2201,8 +2199,9 @@ Pré-commande : 4 CGR`,
 <strong>Entretien:</strong> AIVOC propofol/rémifentanil
 
 <strong>Hémostase:</strong> Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)`,
-      alr: `Au choix:
-Cf fémoral 🖥️ Cf BIIIH 🖥️ Cf sciatique 🖥️ Cf canal adducteurs 🖥️ Cf obturateur🖥️`,
+      alr: `Si sus-articulaire, au choix: Bloc fémoral + BIIH OU Bloc fémoral + QLB2 OU Bloc obturateur + BIIH OU Bloc obturateur + QLB 
+      Si sous-articulaire, au choix: Bloc fémoral + BIIH + sciatique poplité OU Bloc canal des adducteurs + Bloc obturateur + BIIH + sciatique poplité
+Cf BIIIH 🖥️ Cf bloc fémoral 🖥️ Cf QLB 🖥️ Cf obturateur 🖥️ Cf sciatique 🖥️ Cf canal adducteurs 🖥️`,
       orientation: `SSPI 2h minimum
 
 Examens à l’entrée: 
