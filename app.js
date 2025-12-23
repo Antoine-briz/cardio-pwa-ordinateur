@@ -1553,6 +1553,7 @@ function renderInterventionAorteThoracique() {
   renderSelected();
 }
 
+
 function renderInterventionAorteAbdominale() {
   // ----------------------------------------------------------
   // Helpers
@@ -1948,9 +1949,9 @@ Surveillance:
     if (el) el.innerHTML = html || "";
   };
 
-  function nl2br(s) {
-    return escapeHtml(s).replace(/\n/g, "<br>");
-  }
+ function nl2brRaw(s) {
+  return (s ?? "").replace(/\n/g, "<br>");
+}
 
   function applyProtocolConditions(rawText) {
     // 1) Induction à risque
@@ -1997,16 +1998,16 @@ Surveillance:
     const row = DATA[key];
 
     // autres encadrés : texte cellule => nl2br => liens
-    setHtml("vaa-gestion", linkifyImgs(nl2br(row.gestion)));
-    setHtml("vaa-monitorage", linkifyImgs(nl2br(row.monitorage)));
+    setHtml("vaa-gestion", linkifyImgs(nl2brRaw(row.gestion)));
+    setHtml("vaa-monitorage", linkifyImgs(nl2brRaw(row.monitorage)));
 
     // protocole : conditions + calculs/kg + liens images
     const prot = applyProtocolConditions(row.protocole);
-    const protHtml = augmentPerKg(linkifyImgs(nl2br(prot)));
+    const protHtml = augmentPerKg(linkifyImgs(nl2brRaw(prot)));
     setHtml("vaa-protocole", protHtml);
 
-    setHtml("vaa-alr", linkifyImgs(nl2br(row.alr)));
-    setHtml("vaa-orientation", linkifyImgs(nl2br(row.orientation)));
+    setHtml("vaa-alr", linkifyImgs(nl2brRaw(row.alr)));
+    setHtml("vaa-orientation", linkifyImgs(nl2brRaw(row.orientation)));
 
     if (typeof setupAnesthGlobalDoseLogic === "function") setupAnesthGlobalDoseLogic();
     if (poidsInput) poidsInput.dispatchEvent(new Event("input"));
