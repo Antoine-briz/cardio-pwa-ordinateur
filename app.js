@@ -1119,11 +1119,10 @@ function renderInterventionCarotide() {
         `<strong>Induction:</strong> Anesthésie générale ${hypnotiqueSterno}, ${curare}<br>` +
         `<strong>Antibioprophylaxie:</strong> ${atb}<br><br>` +
         `<strong>Entretien:</strong> AIVOC Propofol/Sufentanil<br><br>` +
-        `<strong>Objectif TA:</strong> PAS &gt; 140 mmHg pendant le clampage des TSA`
-        `<strong>Hémostase:</strong> <br>- Exacyl ${mgKg(20)} puis ${mgKgH(2)} IVSE (sauf CI)<br>` +
+        `<strong>Hémostase:</strong><br> - Exacyl ${mgKg(20)} puis ${mgKgH(2)} IVSE (sauf CI)<br>` +
         `${heparineTsa}<br>` +
-        `- Transfusion guidée par le Quantra ${imgLink("Cf algorithme Quantra", "cf-algorithme-quantra.png")}<br><br>` +
-        
+        ` - Transfusion guidée par le Quantra ${imgLink("Cf algorithme Quantra", "cf-algorithme-quantra.png")}<br><br>` +
+        `<strong>Objectif TA:</strong> PAS &gt; 140 mmHg pendant le clampage des TSA`
       );
     }
 
@@ -1132,7 +1131,7 @@ function renderInterventionCarotide() {
         `<strong>Induction:</strong> Anesthésie générale ${hypnotique}, ${curare}<br>` +
         `<strong>Antibioprophylaxie:</strong> ${atb}<br><br>` +
         `<strong>Entretien:</strong> AIVOC Propofol/Rémifentanil<br><br>` +
-        `<strong>Anticoagulation:</strong> Héparine ${uiKg(50)}, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si &lt; 2h (½ dose 2-4h, 0 &gt; 4h)`
+        `<strong>Anticoagulation:</strong><br> - Héparine ${uiKg(50)}, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si &lt; 2h (½ dose 2-4h, 0 &gt; 4h)`
       );
     }
 
