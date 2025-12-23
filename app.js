@@ -951,7 +951,7 @@ function renderInterventionCarotide() {
           <div class="row" id="row-pose-materiel" style="display:none;">
             <label>
               <input type="checkbox" id="vc-pose-materiel" />
-              Pose de matériel : Oui/Non
+              Pose de matériel
             </label>
           </div>
         </div>
