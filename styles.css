@@ -2687,3 +2687,21 @@ body.acr-force-light .acr5-synth-live {
 .info-content br {
   line-height: 1.5;
 }
+
+/* ==========================================================
+   Bouton PDF rouge – Antibiothérapie
+   ========================================================== */
+
+.btn.btn-red {
+  background-color: #8b1e1e !important;
+  color: #ffffff !important;
+}
+
+.btn.btn-red:hover {
+  background-color: #a32626 !important;
+}
+
+/* Espacement du bouton PDF sous la grille */
+.atb-pdf-link {
+  margin-top: 20px;
+}
