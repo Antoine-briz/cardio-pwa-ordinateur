@@ -11260,7 +11260,7 @@ function renderReanAntibiotherapieMenu() {
         <!-- Bouton rouge PDF -->
         <div class="atb-pdf-link">
           <button class="btn btn-red" onclick='openPdf("Bactériologie clinique.pdf")'>
-            Bactériologie clinique
+            Bactériologie clinique en réanimation
           </button>
         </div>
 
