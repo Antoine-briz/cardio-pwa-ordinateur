@@ -2722,4 +2722,44 @@ body.acr-force-light .acr5-synth-live {
   color: inherit;
   font-size: 16px;
 }
+/* ==========================================================
+   Bouton Retour – Footer
+   ========================================================== */
+
+.footer-actions {
+  display: flex;
+  justify-content: center;
+  padding: 12px 0;
+}
+
+.back-btn {
+  background-color: #ffffff;      /* fond blanc */
+  color: #000000;                 /* texte noir */
+  font-size: 18px;                /* plus gros */
+  font-weight: 600;
+  padding: 12px 28px;             /* bouton large */
+  border-radius: 999px;           /* bouton bien arrondi */
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Effet au survol */
+.back-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+}
+
+/* Effet au clic */
+.back-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+}
+
+/* Accessibilité : focus clavier */
+.back-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0,0,0,0.25);
+}
 
