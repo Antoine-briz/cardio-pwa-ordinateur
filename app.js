@@ -2783,37 +2783,65 @@ function renderInterventionEndoprotheses() {
     return "Céfazoline 2g puis 1g toutes les 4h";
   }
 
-  function applyConditions(html, interventionName) {
-    let t = html || "";
+function applyConditions(html, interventionName) {
+  let t = html || "";
 
-    // retire les consignes orange (parenthèses contenant “Remplacé”)
-    t = t.replace(/\(Remplacé[^)]*\)/g, "");
+  // --------------------------------------------------
+  // 1. Retirer les consignes orange
+  // --------------------------------------------------
+  t = t.replace(/\(Remplacé[^)]*\)/g, "");
 
-    // induction à risque : remplacement du segment AIVOC
-    if (cbRisk?.checked) {
-      t = t.replace(/AIVOC\s+propofol\/rémifentanil/g, "Etomidate 0,3mg/kg car induction à risque");
-    }
-
-    // séquence rapide : remplacement de ( +/- ) Atracurium 0,5mg/kg
-    if (cbSeq?.checked) {
-      t = t.replace(/(\+\/-\s*)?Atracurium\s*0,5mg\/kg/g, "Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide");
-    }
-
-    // Antibioprophylaxie : on remplace tout le contenu de la ligne par la version choisie
+  // --------------------------------------------------
+  // 2. Induction à risque
+  // --------------------------------------------------
+  if (cbRisk?.checked) {
     t = t.replace(
-      /<strong>Antibioprophylaxie:\s*<\/strong>[\s\S]*?(?=<br><br>|$)/,
-      `<strong>Antibioprophylaxie: </strong>${antibioticText()}`
+      /AIVOC\s+propofol\/rémifentanil/g,
+      "Etomidate 0,3mg/kg car induction à risque"
     );
-
-    // Monitorage EVAR : note “remplacer PNI par KTa”
-    if (interventionName === "Endoprothèse aortique sous-rénale (EVAR)") {
-      t = t.replace(/\(Si induction à risque coché[^)]*\)/g, "");
-      if (cbRisk?.checked) t = t.replace(/\bPNI\b/g, "KTa");
-    }
-
-    return t;
   }
 
+  // --------------------------------------------------
+  // 3. Séquence rapide
+  // --------------------------------------------------
+  if (cbSeq?.checked) {
+    t = t.replace(
+      /(\+\/-\s*)?Atracurium\s*0,5mg\/kg/g,
+      "Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide"
+    );
+  }
+
+// --------------------------------------------------
+// Saut de ligne homogène entre Induction / ATB / Entretien
+// --------------------------------------------------
+t = t.replace(
+  /<strong>Induction:[\s\S]*?<strong>Antibioprophylaxie:/,
+  (match) => match.replace("<strong>Antibioprophylaxie:", "<br><br><strong>Antibioprophylaxie:")
+);
+
+t = t.replace(
+  /<strong>Antibioprophylaxie:\s*<\/strong>[\s\S]*?(?=<br><br>|$)/,
+  `<strong>Antibioprophylaxie: </strong>${antibioticText()}<br><br>
+<strong>Entretien:</strong> AIVOC Propofol/Rémifentanil`
+);
+
+  // --------------------------------------------------
+  // 6. Supprimer "ALR: Pas d’ALR"
+  // --------------------------------------------------
+  t = t.replace(/<br><br><strong>ALR:\s*<\/strong>\s*Pas d’ALR/gi, "");
+  t = t.replace(/<br><strong>ALR:\s*<\/strong>\s*Pas d’ALR/gi, "");
+
+  // --------------------------------------------------
+  // 7. Cas particulier EVAR (PNI → KTa)
+  // --------------------------------------------------
+  if (interventionName === "Endoprothèse aortique sous-rénale (EVAR)") {
+    t = t.replace(/\(Si induction à risque coché[^)]*\)/g, "");
+    if (cbRisk?.checked) t = t.replace(/\bPNI\b/g, "KTa");
+  }
+
+  return t;
+}
+  
   function renderSelected() {
     const key = sel.value;
     const row = DATA[key];
