@@ -2730,3 +2730,6 @@ body.acr-force-light .acr5-synth-live {
 .btn-blue:hover {
   background-color: #165a8c;
 }
+
+.inline-img-link { color: #7cc3ff; text-decoration: underline; cursor: pointer; }
+.eto-icon { margin-left: 6px; cursor: pointer; }
