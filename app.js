@@ -1105,12 +1105,12 @@ function renderInterventionCarotide() {
 
     // Lignes d’hémostase / entretien / objectif TA (présentation “cellule”)
     const heparineCarotide =
-      "Héparine " +
+      "- Héparine " +
       uiKg(50) +
       " avant clampage carotidien, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si &lt; 2h (½ dose 2-4h, 0 &gt; 4h)";
 
     const heparineTsa =
-      "Héparine " +
+      "- Héparine " +
       uiKg(50) +
       " avant clampage des TSA, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si &lt; 2h (½ dose 2-4h, 0 &gt; 4h)";
 
@@ -1118,11 +1118,12 @@ function renderInterventionCarotide() {
       return (
         `<strong>Induction:</strong> Anesthésie générale ${hypnotiqueSterno}, ${curare}<br>` +
         `<strong>Antibioprophylaxie:</strong> ${atb}<br><br>` +
-        `<strong>Hémostase:</strong> Exacyl ${mgKg(20)} puis ${mgKgH(2)} IVSE (sauf CI)<br>` +
-        `${heparineTsa}<br>` +
-        `Transfusion guidée par le Quantra ${imgLink("Cf algorithme Quantra", "cf-algorithme-quantra.png")}<br><br>` +
         `<strong>Entretien:</strong> AIVOC Propofol/Sufentanil<br><br>` +
         `<strong>Objectif TA:</strong> PAS &gt; 140 mmHg pendant le clampage des TSA`
+        `<strong>Hémostase:</strong> <br>- Exacyl ${mgKg(20)} puis ${mgKgH(2)} IVSE (sauf CI)<br>` +
+        `${heparineTsa}<br>` +
+        `- Transfusion guidée par le Quantra ${imgLink("Cf algorithme Quantra", "cf-algorithme-quantra.png")}<br><br>` +
+        
       );
     }
 
@@ -1140,13 +1141,12 @@ function renderInterventionCarotide() {
     return (
       `<strong>Induction:</strong> Anesthésie générale ${hypnotique}, ${curare}<br>` +
       `<strong>Antibioprophylaxie:</strong> ${atb}<br><br>` +
-      `<strong>Hémostase:</strong> ${heparineCarotide}` +
-      (withQuantra
-        ? `<br>Transfusion guidée par le Quantra ${imgLink("Cf algorithme Quantra", "cf-algorithme-quantra.png")}`
-        : "") +
-      `<br><br>` +
       `<strong>Entretien:</strong> AIVOC Propofol/Rémifentanil<br><br>` +
-      `<strong>Objectif TA:</strong> PAS &gt; 140 mmHg pendant le clampage carotidien`
+      `<strong>Objectif TA:</strong> PAS &gt; 140 mmHg pendant le clampage carotidien``<br><br>` +
+      `<strong>Hémostase:</strong><br> ${heparineCarotide}` +
+      (withQuantra
+        ? `<br>- Transfusion guidée par le Quantra ${imgLink("Cf algorithme Quantra", "cf-algorithme-quantra.png")}`
+        : "") +
     );
   }
 
