@@ -1007,8 +1007,9 @@ function renderInterventionCarotide() {
   ];
 
   renderInterventionPage({
-    titre: "Chirurgie vasculaire : carotides et TSA",
+    titre: "Chirurgies de la carotides et des TSA",
     sousTitre: "",
+    image: "vasculaire2.png",
     encadres,
   });
 
@@ -1421,8 +1422,9 @@ function renderInterventionAorteThoracique() {
   ];
 
   renderInterventionPage({
-    titre: "Chirurgie vasculaire : aorte thoracique et thoraco-abdominale",
+    titre: "Chirurgies de l'aorte thoracique et thoraco-abdominale",
     sousTitre: "",
+    image: "vasculaire2.png",
     encadres,
   });
 
@@ -1915,8 +1917,9 @@ Douleur`,
   ];
 
   renderInterventionPage({
-    titre: "Chirurgie vasculaire : aorte abdominale et artères viscérales",
+    titre: "Chirurgies de l'aorte abdominale et des artères viscérales",
     sousTitre: "",
+    image: "vasculaire2.png",
     encadres,
   });
 
@@ -2439,8 +2442,9 @@ Douleur`,
   ];
 
   renderInterventionPage({
-    titre: "Chirurgie vasculaire : membre inférieur",
+    titre: "Chirurgies des membres inférieurs",
     sousTitre: "",
+    image: "vasculaire2.png",
     encadres,
   });
 
@@ -2731,8 +2735,9 @@ function renderInterventionEndoprotheses() {
   ];
 
   renderInterventionPage({
-    titre: "Chirurgie vasculaire : endoprothèses aortiques",
+    titre: "Endoprothèses aortiques",
     sousTitre: "",
+    image: "vasculaire2.png",
     encadres
   });
 
