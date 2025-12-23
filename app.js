@@ -1657,8 +1657,8 @@ Pré-commande : 4 CGR`,
 Antibioprophylaxie: Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
 
 Entretien:
-AIVOC Propofol/Sufentanil , Atracurium IVSE
-Xylocaïne (10mg/mL) + Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE
+- AIVOC Propofol/Sufentanil , Atracurium IVSE
+- Xylocaïne (10mg/mL) + Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE
 
 Hémostase:
 - Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)
@@ -1700,8 +1700,8 @@ Pré-commande : 4 CGR`,
 Antibioprophylaxie: Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
 
 Entretien:
-AIVOC Propofol/Sufentanil , Atracurium IVSE
-Xylocaïne (10mg/mL) + Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE
+- AIVOC Propofol/Sufentanil , Atracurium IVSE
+- Xylocaïne (10mg/mL) + Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE
 
 Hémostase:
 - Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)
@@ -1740,8 +1740,8 @@ Pré-commande : 4 CGR`,
 Antibioprophylaxie: Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
 
 Entretien:
-AIVOC Propofol/Sufentanil , Atracurium IVSE
-Xylocaïne (10mg/mL) + Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE
+- AIVOC Propofol/Sufentanil , Atracurium IVSE
+- Xylocaïne (10mg/mL) + Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE
 
 Hémostase:
 - Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)
@@ -1780,8 +1780,8 @@ Pré-commande : 4 CGR`,
 Antibioprophylaxie: Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
 
 Entretien:
-AIVOC Propofol/Sufentanil , Atracurium IVSE
-Xylocaïne (10mg/mL) + Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE
+- AIVOC Propofol/Sufentanil , Atracurium IVSE
+- Xylocaïne (10mg/mL) + Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE
 
 Hémostase:
 - Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)
@@ -1821,8 +1821,8 @@ Pré-commande : 4 CGR`,
 Antibioprophylaxie: Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
 
 Entretien:
-AIVOC Propofol/Sufentanil , Atracurium IVSE
-Xylocaïne (10mg/mL) + Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE
+- AIVOC Propofol/Sufentanil , Atracurium IVSE
+- Xylocaïne (10mg/mL) + Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE
 
 Hémostase:
 - Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)
