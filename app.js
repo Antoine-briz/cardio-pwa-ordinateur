@@ -16123,7 +16123,7 @@ const routes = {
   "#/anesthesie/antibiopro": renderAntibioproForm,
   "#/anesthesie/chir-cec": renderAnesthChirCecMenu,
   "#/anesthesie/cardio-struct": renderAnesthCardioStructMenu,
-  "#/anesthesie/vasculaire": renderAnesthVasculaire,
+  "#/anesthesie/vasculaire": renderAnesthVasculaireMenu,
   "#/anesthesie/radiovasculaire": renderAnesthRadioVascMenu,
 
   // Réanimation
