@@ -15851,6 +15851,57 @@ function renderAnnuaire() {
     image: "annuaire.png",
     encadres,
   });
+
+  
+  // ----------------------------------------------------------
+  // Barre de recherche (injectée au-dessus des encadrés)
+  // ----------------------------------------------------------
+  const main = document.querySelector(".intervention-main") || document.getElementById("app");
+
+  const searchBar = document.createElement("div");
+  searchBar.className = "annuaire-search";
+  searchBar.innerHTML = `
+    <input id="annuaire-search-input"
+           type="search"
+           placeholder="Rechercher un nom, un poste ou un numéro…"
+           autocomplete="off" />
+    <button class="btn" id="annuaire-search-clear" type="button">Effacer</button>
+  `;
+
+  // On place la barre juste après le titre (hero) si présent
+  const hero = main?.querySelector(".hero");
+  if (hero && hero.parentNode) {
+    hero.insertAdjacentElement("afterend", searchBar);
+  } else if (main) {
+    main.insertAdjacentElement("afterbegin", searchBar);
+  }
+
+  const input = document.getElementById("annuaire-search-input");
+  const clearBtn = document.getElementById("annuaire-search-clear");
+
+  function normalize(s) {
+    return (s || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, ""); // enlève accents
+  }
+
+  function applyFilter() {
+    const q = normalize(input.value.trim());
+
+    const rows = document.querySelectorAll(".annuaire-table tbody tr");
+    rows.forEach((tr) => {
+      const text = normalize(tr.innerText);
+      tr.style.display = q === "" || text.includes(q) ? "" : "none";
+    });
+  }
+
+  input.addEventListener("input", applyFilter);
+  clearBtn.addEventListener("click", () => {
+    input.value = "";
+    input.focus();
+    applyFilter();
+  });
 }
 
 function renderCodesAcces() {
