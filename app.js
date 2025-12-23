@@ -2579,7 +2579,7 @@ Surveillance:
     setHtml("vmi-monitorage", linkifyImgs(nl2brRaw(row.monitorage)));
 
     const prot = applyConditions(key, row.protocole);
-    const protHtml = augmentPerKg(linkifyImgs(nl2br(prot)));
+    const protHtml = augmentPerKg(linkifyImgs(nl2brRaw(prot)));
     setHtml("vmi-protocole", protHtml);
 
     setHtml("vmi-alr", linkifyImgs(nl2brRaw(row.alr)));
