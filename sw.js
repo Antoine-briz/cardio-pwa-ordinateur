@@ -147,6 +147,7 @@ const PRECACHE = [
 "./files/Mémo DLE.pdf",
 "./files/Protocole fibrinolyse in situ.pdf",
 "./files/Mémo fibrinolyse in situ.pdf",
+  "./files/Bactériologie clinique.pdf",
   "./files/planning_medical.xlsx",
 ];
 
