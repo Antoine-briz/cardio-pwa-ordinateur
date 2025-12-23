@@ -1477,7 +1477,7 @@ function renderInterventionAorteThoracique() {
     // sans ajouter de tirets/retours non présents.
     if (type === "ASC_CROSSE_CEC") {
       return (
-        `${inductionText()}<br>` +
+        `${inductionText()}<br><br>` +
         `<strong>Antibioprophylaxie:</strong> ${antibioticText()}<br>` +
         `<br>` +
         `<strong>Entretien:</strong> <br>` +
@@ -1493,7 +1493,7 @@ function renderInterventionAorteThoracique() {
 
     if (type === "ATA_123_CEC") {
       return (
-        `${inductionText()}<br>` +
+        `${inductionText()}<br><br>` +
         `<strong>Antibioprophylaxie:</strong> ${antibioticText()}<br>` +
         `<br>` +
         `<strong>Entretien: </strong><br>` +
@@ -1513,7 +1513,7 @@ function renderInterventionAorteThoracique() {
 
     // ATA IV sans CEC
     return (
-      `${inductionText()}<br>` +
+      `${inductionText()}<br><br>` +
       `<strong>Antibioprophylaxie:</strong> ${antibioticText()}<br>` +
       `<br>` +
       `<strong>Entretien: </strong><br>` +
