@@ -2233,10 +2233,9 @@ Pré-commande : 4 CGR`,
 
 <strong>Entretien:</strong> AIVOC propofol/rémifentanil
 
-<strong>Hémostase:</strong>
-- Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)`,
-      alr: `Au choix:
-Cf sciatique 🖥️ Cf fémoral 🖥️`,
+<strong>Hémostase:</strong> Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)`,
+      alr: `Carré des lombes bilatéral
+Cf QLB 🖥️`,
       orientation: `SSPI 2h minimum
 
 Examens à l’entrée: 
@@ -2269,8 +2268,8 @@ Pré-commande : 4 CGR`,
 <strong>Entretien:</strong> AIVOC propofol/rémifentanil
 
 <strong>Hémostase:</strong> Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)`,
-      alr: `Au choix:
-Cf sciatique 🖥️`,
+      alr: `Au choix:Bloc fémoral + BIIH + bloc sciatique
+ Cf bloc fémoral 🖥️ Cf BIIIH 🖥️ Cf sciatique 🖥️`,
       orientation: `SSPI 2h minimum
 
 Examens à l’entrée: 
@@ -2325,7 +2324,10 @@ Pré-commande : 2 CGR`,
       protocole: `<strong>Induction:</strong> Privilégier ALR avec cathéter périnerveux (bloc sciatique poplité ou fémoral selon le niveau d’amputation)
 
 <strong>Antibioprophylaxie</strong> (adapter selon documentation): Augmentin 2g/2...ergie cochée: Clindamycine 900 mg IVL + Gentamicine 6-7mg/kg IVL`,
-      alr: `Au choix:
+      alr: `Amputation d’orteil: Sciatique poplité +/- saphène si premier orteils 
+      Amputation trans-métatarsienne: Sciatique poplité
+      Amputation trans-tibiale: Sciatique + fémoral
+      Amputation trans-fémorale: Sciatique sous glutéal + fémoral
 Cf sciatique 🖥️ Cf fémoral 🖥️`,
       orientation: `SSPI 2h minimum
 
@@ -2370,9 +2372,8 @@ Pré-commande : 2 CGR`,
 <strong>Antibioprophylaxie:</strong> Pas d’antibioprophylaxie
 
 <strong>Entretien:</strong> AIVOC propofol/rémifentanil`,
-      alr: `BPV ou érecteur
-Cf BPV 🖥️
-Cf érecteur 🖥️`,
+      alr: `Au choix: BPV OU érecteur du rachis
+Cf BPV 🖥️ Cf érecteur 🖥️`,
       orientation: `SSPI 2h minimum
 
 Examens à l’entrée: 
