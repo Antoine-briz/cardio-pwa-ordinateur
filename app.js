@@ -688,9 +688,9 @@ function renderVasculaireProtocoles() {
 }
 
 function renderInterventionCarotide() {
-  // ------------------------------------------------------------------
+  // ----------------------------------------------------------
   // Helpers
-  // ------------------------------------------------------------------
+  // ----------------------------------------------------------
   const escapeHtml = (s) =>
     (s ?? "")
       .replaceAll("&", "&amp;")
@@ -710,115 +710,475 @@ function renderInterventionCarotide() {
     `${String(perKg).replace(".", ",")}mg/kg/h (${doseSpan(perKg, "mg/h")} mg/h)`;
 
   const imgLink = (label, file) =>
-    `<a href="javascript:void(0)" class="inline-img-link"
-        onclick="openImg('${file}')">${label}</a>`;
+    `<a href="javascript:void(0)" class="inline-img-link" onclick="openImg('${file}')">${label}</a>`;
 
-  // ------------------------------------------------------------------
-  // Données CAROTIDE (INCHANGÉES)
-  // ------------------------------------------------------------------
-  const VC = {
+  const imgIcon = (file) =>
+    `<span class="eto-icon" onclick="openImg('${file}')">🖥️</span>`;
+
+  // Remplace uniquement les "Cf ..." en lien image + icône écran (sans changer la mise en forme autour)
+  function linkifyImgs(html) {
+    if (!html) return "";
+
+    // Tolérance : parfois "Cf ..." est encadré en <strong> dans l’export, on neutralise le <strong> sur le lien
+    const replaceStrongCf = (label, file) => {
+      const strongPatternA = `<strong>${label}</strong><strong> 🖥️</strong>`;
+      const strongPatternB = `<strong>${label}</strong> <strong>🖥️</strong>`;
+      const plainPatternA = `${label} 🖥️`;
+      const plainPatternB = `${label}`;
+
+      const linked = `${imgLink(label, file)} ${imgIcon(file)}`;
+
+      return html
+        .replaceAll(strongPatternA, linked)
+        .replaceAll(strongPatternB, linked)
+        .replaceAll(plainPatternA, linked)
+        .replaceAll(plainPatternB, imgLink(label, file));
+    };
+
+    html = replaceStrongCf("Cf bloc cervical", "cf-bloc-cervical.png");
+    html = replaceStrongCf("Cf bloc thoracique-transverse", "cf-bloc-thoracique-transverse.png");
+
+    // Quantra (dans protocole)
+    html = html.replaceAll(
+      "Cf algorithme Quantra",
+      imgLink("Cf algorithme Quantra", "cf-algorithme-quantra.png")
+    );
+
+    return html;
+  }
+
+  // ----------------------------------------------------------
+  // Données : contenu des cellules (avec la même mise en forme)
+  // NB: ici je garde la présentation "comme cellule" (pas de tirets ajoutés).
+  // ----------------------------------------------------------
+  const DATA = {
     "Endartériectomie carotidienne": {
+      hasPoseMateriel: true,
       gestion:
-        "<strong>Examens complémentaires :</strong><br>- Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)<br>- ECG<br>- Consultation ORL avant 2ᵉ côté si patient non revu<br><br><strong>Gestion des traitements :</strong><br>- Maintien Kardégic<br>- Arrêt Clopidogrel J-5<br>- Arrêt Ticagrélor J-5<br>- Arrêt Prasugrel J-7<br>- Arrêt AOD J-5<br><br>- Si carotide symptomatique : possibilité de maintenir le clopidogrel après accord chirurgien (relayer prasugrel et ticagrélor par du clopidogrel)<br><br><strong>Pré-commande :</strong><br>- 2 CGR",
-      monitorage:
-        "- Scope 5 branches<br>- SpO2<br>- VVP<br>- KTa<br>- TOF<br>- BIS<br>- NIRS",
+        "<strong>Examens complémentaires&nbsp;: </strong><br>" +
+        "Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)<br>" +
+        "ECG<br>" +
+        "Consultation ORL avant 2ᵉ côté si patient non revu<br><br>" +
+        "<strong>&nbsp;Gestion des traitements&nbsp;: </strong><br>" +
+        "Maintien Kardégic<br>" +
+        "Arrêt Clopidogrel J-5<br>" +
+        "Arrêt Ticagrélor J-5<br>" +
+        "Arrêt Prasugrel J-7<br>" +
+        "Arrêt AOD J-5<br><br>" +
+        "Si carotide symptomatique : possibilité de maintenir le clopidogrel après accord chirurgien (relayer prasugrel et ticagrélor par du clopidogrel) <br><br>" +
+        "Pré-commande&nbsp;: 2 CGR",
+      monitorage: "Scope 5 branches, SpO2,  VVP, KTa, TOF, BIS, NIRS",
       alr:
-        "<strong>Anesthésie loco-régionale :</strong><br>- Blocs cervicaux superficiel et intermédiaire sous écho + infiltration locale par le chirurgien.<br>- Ropivacaïne 3,75mg/mL 20-25mL max (max 3mg/kg)<br><br>- Cf bloc cervical",
+        "Blocs cervicaux superficiel et intermédiaire, Ropicavaïne 3,75mg/mL 20-25mL max (max 3mg/kg)<br><br>" +
+        "Cf bloc cervical 🖥️",
       orientation:
-        "<strong>SSPI :</strong><br>- SSPI 2h minimum<br><br><strong>Examens à l'entrée/sortie SSPI :</strong><br>- Examen neuro<br>- Hématome cervical.<br>- Obj PAS &lt; 160 mmHg",
-      protocoleKind: "carotide_pose_materiel_pas_atb",
+        "<strong>SSPI 2h minimum</strong><br><br>" +
+        "<strong>Examens à l’entrée:</strong><br>" +
+        "ECG<br><br>" +
+        "<strong>Surveillance:</strong><br>" +
+        "Examen neuro<br>" +
+        "Hématome cervical<br>" +
+        "Obj PAS &lt; 160 mmHg",
+      kind: "CAROTIDE_CLAMP",
     },
 
     "Transposition carotido-sous-clavière": {
+      hasPoseMateriel: true,
       gestion:
-        "<strong>Examens complémentaires :</strong><br>- Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)<br>- ECG<br><br><strong>Gestion des traitements :</strong><br>- Maintien Kardégic<br>- Arrêt Clopidogrel J-5<br>- Arrêt Ticagrélor J-5<br>- Arrêt Prasugrel J-7<br>- Arrêt AOD J-5<br><br>- Possibilité de maintenir le clopidogrel après accord chirurgien (relayer prasugrel et ticagrélor par du clopidogrel)<br><br><strong>Pré-commande :</strong><br>- 2 CGR",
-      monitorage:
-        "- Scope 5 branches<br>- SpO2<br>- VVP<br>- KTa<br>- TOF<br>- BIS<br>- NIRS",
+        "<strong>Examens complémentaires&nbsp;: </strong><br>" +
+        "Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)<br>" +
+        "ECG<br><br>" +
+        "<strong>&nbsp;Gestion des traitements&nbsp;: </strong><br>" +
+        "Maintien Kardégic<br>" +
+        "Arrêt Clopidogrel J-5<br>" +
+        "Arrêt Ticagrélor J-5<br>" +
+        "Arrêt Prasugrel J-7<br>" +
+        "Arrêt AOD J-5<br><br>" +
+        "Possibilité de maintenir le clopidogrel après accord chirurgien (relayer prasugrel et ticagrélor par du clopidogrel)<br><br>" +
+        "Pré-commande&nbsp;: 2 CGR",
+      monitorage: "Scope 5 branches, SpO2,  VVP, KTa, TOF, BIS, NIRS",
       alr:
-        "<strong>Anesthésie loco-régionale :</strong><br>- Blocs cervicaux superficiel et intermédiaire sous écho + infiltration locale par le chirurgien.<br>- Ropivacaïne 3,75mg/mL 20-25mL max (max 3mg/kg)<br><br>- Cf bloc cervical",
+        "Blocs cervicaux superficiel et intermédiaire, Ropicavaïne 3,75mg/mL 20-25mL max (max 3mg/kg)<br><br>" +
+        "Cf bloc cervical 🖥️",
       orientation:
-        "<strong>SSPI :</strong><br>- SSPI 2h minimum<br><br><strong>Examens à l'entrée/sortie SSPI :</strong><br>- Examen neuro<br>- Hématome cervical.<br>- Obj PAS &lt; 160 mmHg",
-      protocoleKind: "carotide_pose_materiel_pas_atb",
+        "<strong>SSPI 2h minimum</strong><br><br>" +
+        "<strong>Examens à l’entrée:</strong><br>" +
+        "ECG<br><br>" +
+        "<strong>Surveillance:</strong><br>" +
+        "Examen neuro<br>" +
+        "Hématome cervical<br>" +
+        "Obj PAS &lt; 160 mmHg",
+      kind: "CAROTIDE_CLAMP",
+    },
+
+    "Exérèse de tumeur glomique / chémodectome": {
+      hasPoseMateriel: true,
+      gestion:
+        "<strong>Examens complémentaires&nbsp;: </strong><br>" +
+        "Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)<br>" +
+        "ECG<br><br>" +
+        "<strong>&nbsp;Gestion des traitements&nbsp;: </strong><br>" +
+        "Maintien Kardégic<br>" +
+        "Arrêt Clopidogrel J-5<br>" +
+        "Arrêt Ticagrélor J-5<br>" +
+        "Arrêt Prasugrel J-7<br>" +
+        "Arrêt AOD J-5<br><br>" +
+        "Pré-commande&nbsp;: 2 CGR",
+      monitorage:
+        "Scope 5 branches, SpO2, VVP, KTa, TOF, BIS, NIRS, Cell-saver, accélérateur/réchauffeur",
+      alr: "Aucune",
+      orientation:
+        "<strong>SSPI 2h minimum</strong><br><br>" +
+        "<strong>Examens à l’entrée:</strong><br>" +
+        "ECG<br><br>" +
+        "<strong>Surveillance:</strong><br>" +
+        "Examen neuro<br>" +
+        "Hématome cervical<br>" +
+        "Obj PAS &lt; 160 mmHg",
+      kind: "CAROTIDE_CLAMP_QUANTRA",
+    },
+
+    "Pontage inter-carotidien croisé": {
+      hasPoseMateriel: false,
+      gestion:
+        "<strong>Examens complémentaires&nbsp;: </strong><br>" +
+        "Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)<br>" +
+        "ECG<br>" +
+        "Radiographie de thorax de référence<br><br>" +
+        "<strong>&nbsp;Gestion des traitements&nbsp;: </strong><br>" +
+        "Maintien Kardégic<br>" +
+        "Arrêt Clopidogrel J-5<br>" +
+        "Arrêt Ticagrélor J-5<br>" +
+        "Arrêt Prasugrel J-7<br>" +
+        "Arrêt AOD J-5<br><br>" +
+        "Pré-commande&nbsp;: 2 CGR",
+      monitorage:
+        "Scope 5 branches, SpO2, VVP, KTa, TOF, BIS, NIRS, Cell-saver, accélérateur/réchauffeur",
+      alr: "Aucune",
+      orientation:
+        "<strong>SSPI 24h</strong><br><br>" +
+        "<strong>Examens:</strong><br>" +
+        "ECG + Biologie<br>" +
+        "GdS à 20h<br>" +
+        "Biologie + ECG à J1<br><br>" +
+        "<strong>Surveillance:</strong><br>" +
+        "Risque d’œdème laryngé<br>" +
+        "Examen neuro<br>" +
+        "Hématome cervical<br>" +
+        "Obj PAS &lt; 160 mmHg",
+      kind: "CAROTIDE_STANDARD",
     },
 
     "Transposition des TSA par sternotomie": {
+      hasPoseMateriel: false,
       gestion:
-        "<strong>Examens complémentaires :</strong><br>- Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)<br>- ECG<br>- Radiographie de thorax de référence<br><br><strong>Gestion des traitements :</strong><br>- Maintien Kardégic<br>- Arrêt Clopidogrel J-5<br>- Arrêt Ticagrélor J-5<br>- Arrêt Prasugrel J-7<br>- Arrêt AOD J-5<br><br><strong>Pré-commande :</strong><br>- 2 CGR",
+        "<strong>Examens complémentaires&nbsp;: </strong><br>" +
+        "Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)<br>" +
+        "ECG<br>" +
+        "Radiographie de thorax de référence<br><br>" +
+        "<strong>&nbsp;Gestion des traitements&nbsp;: </strong><br>" +
+        "Maintien Kardégic<br>" +
+        "Arrêt Clopidogrel J-5<br>" +
+        "Arrêt Ticagrélor J-5<br>" +
+        "Arrêt Prasugrel J-7<br>" +
+        "Arrêt AOD J-5<br><br>" +
+        "Pré-commande&nbsp;: 2 CGR",
       monitorage:
-        "- Scope 5 branches<br>- SpO2<br>- KTc fémoral<br>- KTa<br>- TOF<br>- BIS<br>- NIRS<br>- Cell-saver<br>- accélérateur/réchauffeur",
+        "Scope 5 branches, SpO2, KTc fémoral, KTa, TOF, BIS, NIRS, Cell-saver, accélérateur/réchauffeur",
       alr:
-        "<strong>Anesthésie loco-régionale :</strong><br>- Bloc thoracique transverse bilatéral, Ropivacaïne 3,75mg/mL 15-20mL x2 (max 3mg/kg)<br><br>- Cf bloc thoracique-transverse",
+        "Bloc thoracique transverse bilatéral, Ropicavaïne 3,75mg/mL 15-20mL x2 (max 3mg/kg)<br><br>" +
+        "Cf bloc thoracique-transverse 🖥️",
       orientation:
-        "<strong>USIP/Réa :</strong><br>- USIP/Réa<br><br><strong>Examens à l’entrée :</strong><br>- ECG<br>- Radio de thorax<br>- GDS-lact, NFS, ionogramme, BHC, troponinémie, TP/TCA<br><br><strong>Surveillance :</strong><br>- Saignement<br>- Défaillance respiratoire<br>- Examen neuro<br>- Obj PAS &lt; 160 mmHg",
-      protocoleKind: "tsa_sternotomie",
+        "<strong>USIP/Réa</strong><br><br>" +
+        "<strong>Examens à l’entrée:&nbsp;&nbsp;</strong><br>" +
+        "ECG<br>" +
+        "Radio de thorax<br>" +
+        "GDS-lact, NFS, ionogramme, BHC, troponinémie, TP/TCA<br><br>" +
+        "<strong>Surveillance:</strong><br>" +
+        "Saignement<br>" +
+        "Défaillance respiratoire<br>" +
+        "Examen neuro<br>" +
+        "Obj PAS &lt; 160 mmHg",
+      kind: "TSA_STERNOTOMIE",
+    },
+
+    "Syndrome du défilé thoraco brachial (1°côte) ou STTB": {
+      hasPoseMateriel: false,
+      gestion:
+        "<strong>Examens complémentaires&nbsp;: </strong><br>" +
+        "Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)<br>" +
+        "ECG<br>" +
+        "Radiographie de thorax de référence<br><br>" +
+        "<strong>&nbsp;Gestion des traitements&nbsp;: </strong><br>" +
+        "Maintien Kardégic<br>" +
+        "Arrêt Clopidogrel J-5<br>" +
+        "Arrêt Ticagrélor J-5<br>" +
+        "Arrêt Prasugrel J-7<br>" +
+        "Arrêt AOD J-5<br><br>" +
+        "Pré-commande&nbsp;: 2 CGR",
+      monitorage: "Scope 5 branches, SpO2, VVP, PNI, TOF, BIS",
+      alr: "Infiltration chirurgicale par Ropivacaïne 2mg/mL",
+      orientation:
+        "<strong>SSPI 2h minimum</strong><br><br>" +
+        "<strong>Examens à l’entrée:</strong><br>" +
+        "Radiographie de thorax +/- ECG +/- Hemocue<br><br>" +
+        "<strong>Surveillance:</strong><br>" +
+        "Douleur: PCA Morphine<br>" +
+        "Défaillance respi (PNO/Ep. Pleural)<br>" +
+        "Ischémie de MS",
+      kind: "STTB",
     },
   };
 
-  // ------------------------------------------------------------------
-  // UI
-  // ------------------------------------------------------------------
+  const INTERVENTIONS = Object.keys(DATA);
+
+  // ----------------------------------------------------------
+  // UI : Pose de matériel dans "Choix de l'intervention"
+  // ----------------------------------------------------------
   const encadres = [
     {
       titre: "Choix de l'intervention",
       html: `
-        <select id="vc-intervention" class="select">
-          ${Object.keys(VC)
-            .map((k) => `<option value="${k}">${k}</option>`)
-            .join("")}
-        </select>
+        <div class="form">
+          <div class="row">
+            <label>Intervention
+              <select id="vc-intervention" class="select">
+                ${INTERVENTIONS.map((k) => `<option value="${escapeHtml(k)}">${escapeHtml(k)}</option>`).join("")}
+              </select>
+            </label>
+          </div>
+
+          <div class="row" id="row-pose-materiel" style="display:none;">
+            <label>
+              <input type="checkbox" id="vc-pose-materiel" />
+              Pose de matériel : Oui/Non
+            </label>
+          </div>
+        </div>
       `,
     },
     {
       titre: "Caractéristiques patient",
       html: `
-        <label>Poids (kg)
-          <input type="number" id="anesth-poids" min="30" max="250" />
-        </label>
+        <div class="form">
+          <div class="row">
+            <label>Poids (kg)
+              <input type="number" id="anesth-poids" min="30" max="250" step="1" />
+            </label>
+          </div>
+
+          <div class="row">
+            <label>
+              <input type="checkbox" id="vc-induction-risque" />
+              Induction à risque (FEVG &lt; 35%, RA serré, HTAP)
+            </label>
+          </div>
+
+          <div class="row">
+            <label>
+              <input type="checkbox" id="vc-sequence-rapide" />
+              Séquence rapide
+            </label>
+          </div>
+
+          <div id="vc-atb-extra" style="margin-top:.5rem;">
+            <div class="row">
+              <label>
+                <input type="checkbox" id="vc-imc50" />
+                IMC &gt; 50 kg/m2
+              </label>
+            </div>
+
+            <div class="row">
+              <label>
+                <input type="checkbox" id="vc-allergie" />
+                Allergie aux béta-lactamines
+              </label>
+            </div>
+          </div>
+        </div>
       `,
     },
-    { titre: "Gestion pré-opératoire", html: `<div id="vc-gestion"></div>` },
-    { titre: "Monitorage/équipement", html: `<div id="vc-monitorage"></div>` },
-    { titre: "Protocole d'anesthésie", html: `<div id="vc-protocole"></div>` },
-    { titre: "Anesthésie loco-régionale", html: `<div id="vc-alr"></div>` },
-    { titre: "Orientation post-opératoire", html: `<div id="vc-orientation"></div>` },
+    { titre: "Gestion pré-opératoire", html: `<div id="vc-gestion" class="info-content"></div>` },
+    { titre: "Monitorage/équipement", html: `<div id="vc-monitorage" class="info-content"></div>` },
+    { titre: "Protocole d'anesthésie", html: `<div id="vc-protocole" class="info-content"></div>` },
+    { titre: "Anesthésie loco-régionale", html: `<div id="vc-alr" class="info-content"></div>` },
+    { titre: "Orientation post-opératoire", html: `<div id="vc-orientation" class="info-content"></div>` },
   ];
 
   renderInterventionPage({
-    titre: "Chirurgies de la carotides et des TSA",
-    image: "vasculaire2.png",
+    titre: "Chirurgie vasculaire : carotides et TSA",
+    sousTitre: "",
     encadres,
   });
 
-  document.querySelectorAll("details.card")[0].open = true;
-  document.querySelectorAll("details.card")[1].open = true;
+  // Ouvrir les 2 premiers encadrés
+  const cards = document.querySelectorAll("details.card");
+  if (cards[0]) cards[0].open = true;
+  if (cards[1]) cards[1].open = true;
 
-  // ------------------------------------------------------------------
-  // Rendu
-  // ------------------------------------------------------------------
+  // ----------------------------------------------------------
+  // DOM
+  // ----------------------------------------------------------
   const sel = document.getElementById("vc-intervention");
+  const poidsInput = document.getElementById("anesth-poids");
 
+  const rowPose = document.getElementById("row-pose-materiel");
+  const cbPose = document.getElementById("vc-pose-materiel");
+
+  const cbIndRisk = document.getElementById("vc-induction-risque");
+  const cbSeqRapide = document.getElementById("vc-sequence-rapide");
+
+  const boxAtbExtra = document.getElementById("vc-atb-extra");
+  const cbImc50 = document.getElementById("vc-imc50");
+  const cbAllergie = document.getElementById("vc-allergie");
+
+  const setHtml = (id, html) => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = html || "";
+  };
+
+  function updateVisibility() {
+    const key = sel.value;
+    const poseRelevant = !!DATA[key]?.hasPoseMateriel;
+
+    if (rowPose) rowPose.style.display = poseRelevant ? "" : "none";
+    if (!poseRelevant && cbPose) cbPose.checked = false;
+
+    if (poseRelevant) {
+      const show = !!cbPose?.checked;
+      if (boxAtbExtra) boxAtbExtra.style.display = show ? "" : "none";
+      if (!show) {
+        if (cbImc50) cbImc50.checked = false;
+        if (cbAllergie) cbAllergie.checked = false;
+      }
+    } else {
+      if (boxAtbExtra) boxAtbExtra.style.display = "";
+    }
+  }
+
+  // ----------------------------------------------------------
+  // Protocole : même “structure visuelle” que la cellule (titres en gras, pas de tirets ajoutés)
+  // ----------------------------------------------------------
+  function atbCefazVancomy(imc50, allergie) {
+    if (allergie) return `Vancomycine ${mgKg(30)} IVL une injection 30min avant incision`;
+    if (imc50) return "Céfazoline 4g puis 2g toutes les 4h.";
+    return "Céfazoline 2g puis 1g toutes les 4h";
+  }
+
+  function buildProtocole(key) {
+    const row = DATA[key];
+    const inductionRisk = !!cbIndRisk?.checked;
+    const seqRapide = !!cbSeqRapide?.checked;
+
+    const poseRelevant = !!row.hasPoseMateriel;
+    const poseMateriel = poseRelevant ? !!cbPose?.checked : false;
+
+    const imc50 = !!cbImc50?.checked;
+    const allergie = !!cbAllergie?.checked;
+
+    const hypnotique =
+      inductionRisk
+        ? `Etomidate ${mgKg(0.3)} car induction à risque`
+        : "AIVOC propofol/rémifentanil";
+
+    const hypnotiqueSterno =
+      inductionRisk
+        ? `Etomidate ${mgKg(0.3)} car induction à risque`
+        : "AIVOC Propofol/Sufentanil";
+
+    const curare =
+      seqRapide
+        ? `Rocuronium ${mgKg(1.2)} ou Célocurine ${mgKg(1)} car séquence rapide`
+        : `Atracurium ${mgKg(0.5)}`;
+
+    // Antibioprophylaxie (présentation sans ajout de lignes inutiles)
+    let atb;
+    if (row.hasPoseMateriel) {
+      atb = poseMateriel ? atbCefazVancomy(imc50, allergie) : "Pas d’antibioprophylaxie.";
+    } else if (row.kind === "STTB") {
+      atb = allergie ? "Clindamycine 900mg IVL, puis 600mg IVL après 4h." : atbCefazVancomy(imc50, false);
+    } else {
+      atb = atbCefazVancomy(imc50, allergie);
+    }
+
+    // Lignes d’hémostase / entretien / objectif TA (présentation “cellule”)
+    const heparineCarotide =
+      "Héparine " +
+      uiKg(50) +
+      " avant clampage carotidien, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si &lt; 2h (½ dose 2-4h, 0 &gt; 4h)";
+
+    const heparineTsa =
+      "Héparine " +
+      uiKg(50) +
+      " avant clampage des TSA, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si &lt; 2h (½ dose 2-4h, 0 &gt; 4h)";
+
+    if (row.kind === "TSA_STERNOTOMIE") {
+      return (
+        `<strong>Induction:</strong> Anesthésie générale ${hypnotiqueSterno}, ${curare}<br>` +
+        `<strong>Antibioprophylaxie:</strong> ${atb}<br><br>` +
+        `<strong>Hémostase:</strong> Exacyl ${mgKg(20)} puis ${mgKgH(2)} IVSE (sauf CI)<br>` +
+        `${heparineTsa}<br>` +
+        `Transfusion guidée par le Quantra ${imgLink("Cf algorithme Quantra", "cf-algorithme-quantra.png")}<br><br>` +
+        `<strong>Entretien:</strong> AIVOC Propofol/Sufentanil<br><br>` +
+        `<strong>Objectif TA:</strong> PAS &gt; 140 mmHg pendant le clampage des TSA`
+      );
+    }
+
+    if (row.kind === "STTB") {
+      return (
+        `<strong>Induction:</strong> Anesthésie générale ${hypnotique}, ${curare}<br>` +
+        `<strong>Antibioprophylaxie:</strong> ${atb}<br><br>` +
+        `<strong>Entretien:</strong> AIVOC Propofol/Rémifentanil<br><br>` +
+        `<strong>Anticoagulation:</strong> Héparine ${uiKg(50)}, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si &lt; 2h (½ dose 2-4h, 0 &gt; 4h)`
+      );
+    }
+
+    const withQuantra = row.kind === "CAROTIDE_CLAMP_QUANTRA";
+
+    return (
+      `<strong>Induction:</strong> Anesthésie générale ${hypnotique}, ${curare}<br>` +
+      `<strong>Antibioprophylaxie:</strong> ${atb}<br><br>` +
+      `<strong>Hémostase:</strong> ${heparineCarotide}` +
+      (withQuantra
+        ? `<br>Transfusion guidée par le Quantra ${imgLink("Cf algorithme Quantra", "cf-algorithme-quantra.png")}`
+        : "") +
+      `<br><br>` +
+      `<strong>Entretien:</strong> AIVOC Propofol/Rémifentanil<br><br>` +
+      `<strong>Objectif TA:</strong> PAS &gt; 140 mmHg pendant le clampage carotidien`
+    );
+  }
+
+  // ----------------------------------------------------------
+  // Render
+  // ----------------------------------------------------------
   function renderSelected() {
-    const row = VC[sel.value];
+    const key = sel.value;
+    const row = DATA[key];
 
-    document.getElementById("vc-gestion").innerHTML = row.gestion;
-    document.getElementById("vc-monitorage").innerHTML = row.monitorage;
-    document.getElementById("vc-alr").innerHTML =
-      row.alr
-        .replace("Cf bloc cervical",
-          imgLink("Cf bloc cervical", "cf-bloc-cervical.png"))
-        .replace("Cf bloc thoracique-transverse",
-          imgLink("Cf bloc thoracique-transverse", "cf-bloc-thoracique-transverse.png"));
-    document.getElementById("vc-orientation").innerHTML = row.orientation;
-    document.getElementById("vc-protocole").innerHTML =
-      `<strong>Hémostase :</strong><br>- Transfusion guidée par le Quantra ${imgLink(
-        "Cf algorithme Quantra",
-        "cf-algorithme-quantra.png"
-      )}`;
+    updateVisibility();
+
+    setHtml("vc-gestion", linkifyImgs(row.gestion));
+    setHtml("vc-monitorage", linkifyImgs(row.monitorage));
+    setHtml("vc-protocole", linkifyImgs(buildProtocole(key)));
+    setHtml("vc-alr", linkifyImgs(row.alr));
+    setHtml("vc-orientation", linkifyImgs(row.orientation));
+
+    if (typeof setupAnesthGlobalDoseLogic === "function") setupAnesthGlobalDoseLogic();
+    if (poidsInput) poidsInput.dispatchEvent(new Event("input"));
   }
 
   sel.addEventListener("change", renderSelected);
+  [poidsInput, cbPose, cbIndRisk, cbSeqRapide, cbImc50, cbAllergie].forEach((el) => {
+    if (!el) return;
+    el.addEventListener("change", renderSelected);
+    el.addEventListener("input", renderSelected);
+  });
+
   renderSelected();
 }
+
+
 
 function renderInterventionAorteThoracique() {
   // ----------------------------------------------------------
