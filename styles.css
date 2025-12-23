@@ -2705,3 +2705,21 @@ body.acr-force-light .acr5-synth-live {
 .atb-pdf-link {
   margin-top: 20px;
 }
+
+.annuaire-search {
+  display: flex;
+  gap: 10px;
+  margin: 14px 0 18px 0;
+  align-items: center;
+}
+
+.annuaire-search input[type="search"] {
+  flex: 1;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+  color: inherit;
+  font-size: 16px;
+}
+
