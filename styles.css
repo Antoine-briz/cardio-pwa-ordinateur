@@ -2617,46 +2617,38 @@ body.acr-force-light .acr5-synth-live {
   }
 }
 
-
 /* ==========================================================
    CHIRURGIE VASCULAIRE
    ========================================================== */
 
 /* ----------------------------------------------------------
-   Menu principal vasculaire
+   Boutons du menu vasculaire (mêmes boutons que partout)
+   -> on NE touche PAS au style de .btn
+   -> on ajoute uniquement les couleurs
    ---------------------------------------------------------- */
 
-.menu-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
-
 /* Bouton rouge foncé : Protocoles spécifiques */
-.btn-red {
-  background-color: #8b1e1e;   /* rouge foncé */
+.btn.btn-red {
+  background-color: #8b1e1e;
   color: #ffffff;
   border: none;
 }
-
-.btn-red:hover {
-  background-color: #a32626;   /* rouge plus clair au survol */
+.btn.btn-red:hover {
+  background-color: #a32626;
 }
 
-/* Boutons bleu foncé : chirurgies vasculaires */
-.btn-blue {
-  background-color: #0f3a5f;   /* bleu foncé */
+/* Boutons bleu foncé : menus chirurgie */
+.btn.btn-blue {
+  background-color: #0f3a5f;
   color: #ffffff;
   border: none;
 }
-
-.btn-blue:hover {
-  background-color: #165a8c;   /* bleu plus clair au survol */
+.btn.btn-blue:hover {
+  background-color: #165a8c;
 }
 
 /* ----------------------------------------------------------
-   Pages Protocoles spécifiques (PDF)
+   Pages "Protocoles spécifiques" (PDF)
    ---------------------------------------------------------- */
 
 .card .btn {
@@ -2665,27 +2657,26 @@ body.acr-force-light .acr5-synth-live {
 }
 
 /* ----------------------------------------------------------
-   Liens images cliquables (Cf XXX 🖥️)
+   Liens images cliquables (Cf XXX + 🖥️)
    ---------------------------------------------------------- */
 
 .inline-img-link {
-  color: #0f3a5f;
+  color: #7cc3ff;            /* bleu clair */
   text-decoration: underline;
   cursor: pointer;
-  font-weight: 500;
 }
 
 .inline-img-link:hover {
-  color: #165a8c;
+  opacity: 0.85;
 }
 
 .eto-icon {
+  margin-left: 6px;
   cursor: pointer;
-  margin-left: 0.3rem;
 }
 
 /* ----------------------------------------------------------
-   Contenu des encadrés (gras + listes)
+   Contenu des encadrés (mise en forme)
    ---------------------------------------------------------- */
 
 .info-content strong {
@@ -2696,40 +2687,3 @@ body.acr-force-light .acr5-synth-live {
 .info-content br {
   line-height: 1.5;
 }
-
-/* ==========================================================
-   CORRECTION MENU CHIRURGIE VASCULAIRE
-   ========================================================== */
-
-/* Les boutons vasculaires DOIVENT être des .btn normaux */
-.btn.btn-red,
-.btn.btn-blue {
-  font-family: inherit;
-  font-size: inherit;
-  padding: inherit;
-  border-radius: inherit;
-  height: auto;
-  line-height: normal;
-}
-/* Rouge foncé : protocoles spécifiques */
-.btn-red {
-  background-color: #8b1e1e;
-  color: #ffffff;
-}
-
-.btn-red:hover {
-  background-color: #a32626;
-}
-
-/* Bleu foncé : chirurgie */
-.btn-blue {
-  background-color: #0f3a5f;
-  color: #ffffff;
-}
-
-.btn-blue:hover {
-  background-color: #165a8c;
-}
-
-.inline-img-link { color: #7cc3ff; text-decoration: underline; cursor: pointer; }
-.eto-icon { margin-left: 6px; cursor: pointer; }
