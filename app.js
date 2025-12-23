@@ -75,6 +75,10 @@ function initTheme() {
   }
 }
 
+function openPdf(file) {
+  const url = new URL(`files/${file}`, window.location.href);
+  window.open(url.toString(), "_blank");
+}
 
 // =====================================================================
 //  PAGE D’ACCUEIL
