@@ -11256,7 +11256,11 @@ function renderReanAntibiotherapieMenu() {
             Modalités d'administration des antibiotiques
           </button>
         </div>
-
+<!-- Bouton rouge : lien direct PDF -->
+      <div style="margin-top:20px;">
+        <button class="btn btn-red" onclick='openPdf("Bactériologie clinique.pdf")'>
+          Bactériologie clinique en réanimation
+        </button>
         <div id="atb-section-root" style="margin-top:16px;"></div>
       </div>
 
