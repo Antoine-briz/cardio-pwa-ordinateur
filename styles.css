@@ -2763,3 +2763,233 @@ body.acr-force-light .acr5-synth-live {
   box-shadow: 0 0 0 3px rgba(0,0,0,0.25);
 }
 
+
+/* ==========================================================
+   Annuaire - Recherche + panneau résultats
+   ========================================================== */
+
+.annuaire-search-wrap {
+  display: flex;
+  gap: 14px;
+  margin: 14px 0 18px 0;
+  align-items: stretch;
+}
+
+.annuaire-search-left {
+  flex: 1.4; /* barre plus large */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.annuaire-search-left input[type="search"] {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+  color: inherit;
+  font-size: 16px;
+}
+
+.annuaire-search-hint {
+  opacity: 0.8;
+  font-size: 13px;
+}
+
+.annuaire-search-right {
+  flex: 1;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.04);
+  padding: 10px;
+  min-height: 58px;
+  max-height: 240px; /* évite un bloc gigantesque */
+  overflow: auto;
+}
+
+.annuaire-results-title {
+  font-weight: 700;
+  margin-bottom: 8px;
+  opacity: 0.9;
+}
+
+.annuaire-results {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.annuaire-result-item {
+  text-align: left;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 10px 12px;
+  cursor: pointer;
+  color: inherit;
+}
+
+.annuaire-result-item:hover {
+  background: rgba(255,255,255,0.09);
+}
+
+.annuaire-result-name {
+  font-weight: 700;
+}
+
+.annuaire-result-meta {
+  opacity: 0.85;
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+.annuaire-results-empty,
+.annuaire-results-more {
+  opacity: 0.8;
+  font-size: 13px;
+}
+
+/* Flash au clic */
+.annuaire-row-flash {
+  outline: 2px solid rgba(124,195,255,0.9);
+  outline-offset: -2px;
+}
+
+/* Responsive : sur mobile, panneau dessous */
+@media (max-width: 820px) {
+  .annuaire-search-wrap {
+    flex-direction: column;
+  }
+  .annuaire-search-right {
+    max-height: 220px;
+  }
+}
+
+/* Surlignage recherche dans l'annuaire */
+mark.annuaire-mark {
+  background: rgba(124,195,255,0.35);
+  color: inherit;
+  padding: 0 2px;
+  border-radius: 4px;
+}
+
+/* Badge encadré dans les résultats */
+.annuaire-result-badge {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 12px;
+  opacity: 0.85;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.05);
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+/* Annuaire - panneaux symétriques */
+.annuaire-search-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 14px 0 18px 0;
+}
+
+.annuaire-panel {
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.04);
+  padding: 12px;
+  min-height: 120px;
+}
+
+.annuaire-panel-title {
+  font-weight: 700;
+  margin-bottom: 10px;
+  opacity: 0.95;
+}
+
+#annuaire-search-input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+  color: inherit;
+  font-size: 16px;
+}
+
+.annuaire-search-hint {
+  margin-top: 8px;
+  opacity: 0.8;
+  font-size: 13px;
+}
+
+/* résultats */
+.annuaire-results {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 260px;
+  overflow: auto;
+}
+
+.annuaire-result-item {
+  text-align: left;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 10px 12px;
+  cursor: pointer;
+  color: inherit;
+}
+
+.annuaire-result-item:hover {
+  background: rgba(255,255,255,0.09);
+}
+
+.annuaire-result-name {
+  font-weight: 700;
+}
+
+.annuaire-result-meta {
+  opacity: 0.85;
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+.annuaire-result-badge {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 12px;
+  opacity: 0.85;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.05);
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+
+.annuaire-results-empty,
+.annuaire-results-more {
+  opacity: 0.8;
+  font-size: 13px;
+}
+
+/* Surlignage dans les tables */
+mark.annuaire-mark {
+  background: rgba(124,195,255,0.35);
+  color: inherit;
+  padding: 0 2px;
+  border-radius: 4px;
+}
+
+/* Flash au clic */
+.annuaire-row-flash {
+  outline: 2px solid rgba(124,195,255,0.9);
+  outline-offset: -2px;
+}
+
+/* Responsive */
+@media (max-width: 820px) {
+  .annuaire-search-wrap {
+    grid-template-columns: 1fr;
+  }
+}
