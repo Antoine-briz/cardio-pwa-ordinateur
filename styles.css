@@ -2995,14 +2995,17 @@ mark.annuaire-mark {
 }
 
 /* ==========================================================
-   Bouton critique Home : Arrêt cardio-respiratoire
+   HOME – Forcer le bouton ACR en rouge (override du bleu global)
    ========================================================== */
 
-.home-btn.home-danger {
-  background-color: #8b1e1e; /* rouge foncé */
+button.btn.home-btn.home-danger:not(.ghost):not(.outline) {
+  background-color: #8b1e1e;
+  border-color: #8b1e1e;
   color: #ffffff;
 }
 
-.home-btn.home-danger:hover {
-  background-color: #a32626; /* rouge plus clair au survol */
+button.btn.home-btn.home-danger:not(.ghost):not(.outline):hover {
+  background-color: #a32626;
+  border-color: #a32626;
 }
+
