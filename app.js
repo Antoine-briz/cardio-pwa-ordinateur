@@ -15852,76 +15852,273 @@ function renderAnnuaire() {
     encadres,
   });
 
-  
-  // ----------------------------------------------------------
-  // Barre de recherche (injectée au-dessus des encadrés)
-  // ----------------------------------------------------------
-  const main = document.querySelector(".intervention-main") || document.getElementById("app");
+// ==========================================================
+// Annuaire - Recherche + Résultats (robuste + diagnostic)
+// ==========================================================
+const rootApp = document.getElementById("app");
 
-  const searchBar = document.createElement("div");
-  searchBar.className = "annuaire-search";
-  searchBar.innerHTML = `
+const esc = (s) =>
+  (s ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
+function norm(s) {
+  return (s || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]/g, "");
+}
+
+// ---------- UI ----------
+const hero = rootApp.querySelector(".hero");
+
+const searchWrap = document.createElement("div");
+searchWrap.className = "annuaire-search-wrap";
+searchWrap.innerHTML = `
+  <div class="annuaire-panel">
+    <div class="annuaire-panel-title">Recherche</div>
     <input id="annuaire-search-input"
            type="search"
-           placeholder="Rechercher un nom, un poste ou un numéro…"
+           placeholder="Nom, poste ou numéro…"
            autocomplete="off" />
-    <button class="btn" id="annuaire-search-clear" type="button">Effacer</button>
-  `;
+    <div class="annuaire-search-hint" id="annuaire-search-hint">Initialisation…</div>
+  </div>
 
-  // On place la barre juste après le titre (hero) si présent
-  const hero = main?.querySelector(".hero");
-  if (hero && hero.parentNode) {
-    hero.insertAdjacentElement("afterend", searchBar);
-  } else if (main) {
-    main.insertAdjacentElement("afterbegin", searchBar);
-  }
+  <div class="annuaire-panel">
+    <div class="annuaire-panel-title">Résultats</div>
+    <div id="annuaire-results" class="annuaire-results"></div>
+  </div>
+`;
 
-  const input = document.getElementById("annuaire-search-input");
-  const clearBtn = document.getElementById("annuaire-search-clear");
+if (hero) hero.insertAdjacentElement("afterend", searchWrap);
+else rootApp.insertAdjacentElement("afterbegin", searchWrap);
 
-  function normalize(s) {
-    return (s || "")
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, ""); // enlève accents
-  }
+const input = document.getElementById("annuaire-search-input");
+const resultsEl = document.getElementById("annuaire-results");
+const hintEl = document.getElementById("annuaire-search-hint");
 
-  function applyFilter() {
-    const q = normalize(input.value.trim());
+function showDiag(msg) {
+  resultsEl.innerHTML = `<div class="annuaire-results-empty" style="white-space:pre-wrap;">${esc(msg)}</div>`;
+}
 
-    const rows = document.querySelectorAll(".annuaire-table tbody tr");
-    rows.forEach((tr) => {
-      const text = normalize(tr.innerText);
-      tr.style.display = q === "" || text.includes(q) ? "" : "none";
-    });
-  }
+if (!input || !resultsEl || !hintEl) {
+  console.error("Annuaire search DOM missing:", { input, resultsEl, hintEl });
+  return;
+}
 
-  input.addEventListener("input", applyFilter);
-  clearBtn.addEventListener("click", () => {
-    input.value = "";
-    input.focus();
-    applyFilter();
+// ---------- Surlignage ----------
+function clearHighlights(container) {
+  (container || document).querySelectorAll("mark.annuaire-mark").forEach((m) => {
+    m.replaceWith(document.createTextNode(m.textContent || ""));
   });
 }
 
-function renderCodesAcces() {
+function highlightInCell(td, queryRaw) {
+  if (!td || !queryRaw) return;
+  const q = queryRaw.trim();
+  if (!q) return;
+
+  const walker = document.createTreeWalker(td, NodeFilter.SHOW_TEXT, null);
+  const nodes = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+
+  const qLower = q.toLowerCase();
+
+  nodes.forEach((node) => {
+    const txt = node.nodeValue || "";
+    const low = txt.toLowerCase();
+    const idx = low.indexOf(qLower);
+    if (idx === -1) return;
+
+    const before = txt.slice(0, idx);
+    const match = txt.slice(idx, idx + q.length);
+    const after = txt.slice(idx + q.length);
+
+    const frag = document.createDocumentFragment();
+    if (before) frag.appendChild(document.createTextNode(before));
+
+    const mark = document.createElement("mark");
+    mark.className = "annuaire-mark";
+    mark.textContent = match;
+    frag.appendChild(mark);
+
+    if (after) frag.appendChild(document.createTextNode(after));
+    node.parentNode.replaceChild(frag, node);
+  });
+}
+
+function flashRow(tr) {
+  tr.classList.add("annuaire-row-flash");
+  setTimeout(() => tr.classList.remove("annuaire-row-flash"), 900);
+}
+
+// ---------- Index + retry ----------
+let index = [];
+
+function buildIndexOnce() {
+  const allRows = Array.from(rootApp.querySelectorAll("tr")).filter(
+    (tr) => tr.querySelectorAll("td").length > 0
+  );
+
+  index = allRows
+    .map((tr) => {
+      const tds = Array.from(tr.querySelectorAll("td"));
+      if (tds.length === 0) return null;
+
+      const details = tr.closest("details.card");
+      const summary = details?.querySelector("summary");
+      const encadre = (summary?.textContent || "").trim(); // <-- textContent
+
+      // ✅ IMPORTANT: textContent (pas innerText) => marche même si <details> fermé
+      const cellsText = tds.map((td) => (td.textContent || "").trim()); // <-- textContent
+      const raw = cellsText.join(" | ");
+
+      return {
+        tr,
+        tds,
+        details,
+        encadre,
+        nom: (cellsText[0] || "").trim(),
+        meta: cellsText.slice(1).filter(Boolean).join(" • "),
+        raw,
+        key: norm(raw),
+      };
+    })
+    .filter(Boolean);
+
+  return index.length;
+}
+
+function renderResults(matches, qRaw) {
+  if (!qRaw) {
+    resultsEl.innerHTML = `<div class="annuaire-results-empty">Aucun filtre appliqué</div>`;
+    resultsEl._matches = [];
+    return;
+  }
+  if (matches.length === 0) {
+    resultsEl.innerHTML = `<div class="annuaire-results-empty">Aucun résultat</div>`;
+    resultsEl._matches = [];
+    return;
+  }
+
+  const MAX = 50;
+  const shown = matches.slice(0, MAX);
+  resultsEl._matches = shown;
+
+  resultsEl.innerHTML = shown
+    .map(
+      (x, i) => `
+        <button class="annuaire-result-item" type="button" data-i="${i}">
+          <div class="annuaire-result-name">${esc(x.nom || x.raw)}</div>
+          <div class="annuaire-result-meta">${esc(x.meta || "")}</div>
+          <div class="annuaire-result-badge">${esc(x.encadre || "")}</div>
+        </button>
+      `
+    )
+    .join("");
+}
+
+function applyFilter() {
+  const qRaw = (input.value || "").trim();
+  const q = norm(qRaw);
+
+  clearHighlights(rootApp);
+
+  if (!q) {
+    hintEl.textContent = "Tape pour filtrer…";
+    index.forEach((x) => (x.tr.style.display = ""));
+    renderResults([], "");
+    return;
+  }
+
+  const matches = [];
+  index.forEach((x) => {
+    const ok = x.key.includes(q);
+    x.tr.style.display = ok ? "" : "none";
+    if (ok) {
+      matches.push(x);
+      x.tds.forEach((td) => highlightInCell(td, qRaw));
+    }
+  });
+
+  hintEl.textContent = `${matches.length} résultat(s)`;
+  renderResults(matches, qRaw);
+
+  // ✅ Test demandé
+  if (norm(qRaw) === "bou") {
+    console.log("TEST 'bou' =>", matches.map((m) => m.nom));
+    if (!matches.some((m) => norm(m.nom).includes("bougle"))) {
+      showDiag(
+        `⚠️ Test "bou" : BOUGLE non trouvé\n` +
+        `Index = ${index.length}\n` +
+        `Exemple 1 = ${index[0]?.raw || "NONE"}\n` +
+        `Exemple 2 = ${index[1]?.raw || "NONE"}\n\n` +
+        `➡️ Si les exemples ne contiennent jamais de noms, alors ce n'est pas le bon DOM qui est indexé.`
+      );
+    }
+  }
+}
+
+// click sur résultat => ouvre l'encadré + scroll
+resultsEl.addEventListener("click", (e) => {
+  const btn = e.target.closest(".annuaire-result-item");
+  if (!btn) return;
+
+  const shown = resultsEl._matches || [];
+  const i = Number(btn.getAttribute("data-i"));
+  const item = shown[i];
+  if (!item) return;
+
+  if (item.details) item.details.open = true;
+  item.tr.scrollIntoView({ behavior: "smooth", block: "center" });
+  flashRow(item.tr);
+});
+
+input.addEventListener("input", applyFilter);
+
+// Retry (attend le rendu)
+let tries = 0;
+const maxTries = 120; // ~2s
+(function waitForRows() {
+  tries += 1;
+  const n = buildIndexOnce();
+
+  if (n > 0) {
+    const hasBougle = index.some((x) => x.key.includes("bougle"));
+    console.log("Annuaire index =", n, "BOUGLE présent =", hasBougle, "first =", index[0]?.raw);
+    hintEl.textContent = `Index prêt (${n} lignes)`;
+    applyFilter(); // affiche "Aucun filtre appliqué" au départ
+    return;
+  }
+
+  hintEl.textContent = `Initialisation… (${tries}/${maxTries})`;
+  if (tries >= maxTries) {
+    showDiag(
+      `❌ Index vide après ${tries} tentatives.\n` +
+      `➡️ Aucun <tr><td> trouvé dans #app au moment du scan.\n` +
+      `Vérifie que l'annuaire est bien rendu dans #app.`
+    );
+    return;
+  }
+  requestAnimationFrame(waitForRows);
+})();
+ }
+ function renderCodesAcces() {
   const encadres = [
     {
-      titre: "Codes d’accès",
+      titre: "",
       sousTitreEncadre: "",
       html: `
         <div style="height:6px;"></div>
-
         <table class="annuaire-table">
           <thead>
-            <tr>
-              <th>Étage</th>
-              <th>Porte</th>
-              <th>Code</th>
-            </tr>
+            <tr><th>Étage</th><th>Porte</th><th>Code</th></tr>
           </thead>
           <tbody>
-            <!-- 3ème étage -->
             <tr><td>3ème étage</td><td>Bloc 3ème</td><td>0582#</td></tr>
             <tr><td>3ème étage</td><td>Vestiaire bloc</td><td>C358</td></tr>
             <tr><td>3ème étage</td><td>Réserve ECMO</td><td>C1375</td></tr>
@@ -15933,17 +16130,11 @@ function renderCodesAcces() {
             <tr><td>3ème étage</td><td>Salle de staff réa</td><td>C25</td></tr>
             <tr><td>3ème étage</td><td>Pharmacie</td><td>C97A</td></tr>
             <tr><td>3ème étage</td><td>Réserve IDE / AS</td><td>C85A / C91A</td></tr>
-
-            <!-- 4ème étage -->
             <tr><td>4ème étage</td><td>Bureau VPA (4ème sud)</td><td>2738</td></tr>
             <tr><td>4ème étage</td><td>Ch. de garde USIP (4ème sud)</td><td>C18</td></tr>
-
-            <!-- 1er étage -->
             <tr><td>1er étage</td><td>Réveil 1er</td><td>52#</td></tr>
             <tr><td>1er étage</td><td>PTI</td><td>80#</td></tr>
             <tr><td>1er étage</td><td>Radiovasc 1er</td><td>2024 / C148</td></tr>
-
-            <!-- Rez-de-chaussée -->
             <tr><td>Rez-de-chaussée</td><td>Radiovasc RDC</td><td>2011#</td></tr>
             <tr><td>Rez-de-chaussée</td><td>Box 18 (consult cardio med)</td><td>C123</td></tr>
           </tbody>
@@ -15958,8 +16149,12 @@ function renderCodesAcces() {
     image: "code.png",
     encadres,
   });
+
+  setTimeout(() => {
+    document.querySelectorAll("#app details.card").forEach((d) => (d.open = true));
+  }, 0);
 }
-  
+
 
 // ============================================================
 //  ACR — Chirurgie cardiaque (version ordinateur)
