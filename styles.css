@@ -2993,3 +2993,13 @@ mark.annuaire-mark {
     grid-template-columns: 1fr;
   }
 }
+
+.btn.btn-red {
+  background-color: #8b1e1e;
+  color: #ffffff;
+  border: none;
+}
+
+.btn.btn-red:hover {
+  background-color: #a32626;
+}
