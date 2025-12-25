@@ -2994,12 +2994,15 @@ mark.annuaire-mark {
   }
 }
 
-.btn.btn-red {
-  background-color: #8b1e1e;
+/* ==========================================================
+   Bouton critique Home : Arrêt cardio-respiratoire
+   ========================================================== */
+
+.home-btn.home-danger {
+  background-color: #8b1e1e; /* rouge foncé */
   color: #ffffff;
-  border: none;
 }
 
-.btn.btn-red:hover {
-  background-color: #a32626;
+.home-btn.home-danger:hover {
+  background-color: #a32626; /* rouge plus clair au survol */
 }
