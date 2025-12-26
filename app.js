@@ -15022,7 +15022,7 @@ function etoHtmlValveMitrale() {
         </li>
         <li>
           Rétrécissement mitral: Gradient moyen
-          <span class="eto-icon" onclick="openImg('eto_rm_gradient.png')">🖥️</span>
+          <span class="eto-icon" onclick="openImg('eto_rm_gdmoyen.png')">🖥️</span>
         </li>
         <li>
           Rétrécissement mitral: Surface mitrale par planimétrie
