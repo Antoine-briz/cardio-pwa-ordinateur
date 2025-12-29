@@ -6445,7 +6445,7 @@ function initEtoFormHandlers(prefix, root) {
   const imInline = root.querySelector(`#${prefix}-eto-im-inline`);
   const papsWrap = root.querySelector(`#${prefix}-eto-paps-wrap`);
 
-  /* ===== SYNTHÈSE LIVE (zone droite) ===== */
+  // ===== SYNTHÈSE LIVE (zone droite) =====
   const liveBox = root.querySelector(`#${prefix}-eto-live`);
   const liveCopyBtn = root.querySelector(`#${prefix}-eto-live-copy`);
   const liveCloseBtn = root.querySelector(`#${prefix}-eto-live-close`);
@@ -6456,22 +6456,22 @@ function initEtoFormHandlers(prefix, root) {
     liveBox.textContent = txt || "—";
   };
 
-  /* ===== Synchronisation affichage champs conditionnels ===== */
+  // ===== Synchronisation affichage champs conditionnels =====
   const sync = () => {
-    if (raInline) raInline.style.display = cbRA?.checked ? "block" : "none";
-    if (iaInline) iaInline.style.display = cbIA?.checked ? "block" : "none";
-    if (rmInline) rmInline.style.display = cbRM?.checked ? "block" : "none";
-    if (imInline) imInline.style.display = cbIM?.checked ? "block" : "none";
-    if (papsWrap) papsWrap.style.display = cbIT?.checked ? "inline-flex" : "none";
+    if (raInline) raInline.style.display = (cbRA && cbRA.checked) ? "block" : "none";
+    if (iaInline) iaInline.style.display = (cbIA && cbIA.checked) ? "block" : "none";
+    if (rmInline) rmInline.style.display = (cbRM && cbRM.checked) ? "block" : "none";
+    if (imInline) imInline.style.display = (cbIM && cbIM.checked) ? "block" : "none";
+    if (papsWrap) papsWrap.style.display = (cbIT && cbIT.checked) ? "inline-flex" : "none";
 
     updateLive();
   };
 
-  [cbRA, cbIA, cbRM, cbIM, cbIT].forEach(el =>
-    el?.addEventListener("change", sync)
-  );
+  [cbRA, cbIA, cbRM, cbIM, cbIT].forEach(el => {
+    if (el) el.addEventListener("change", sync);
+  });
 
-  /* ===== Mise à jour live sur toute saisie ===== */
+  // ===== Mise à jour live sur toute saisie =====
   root.querySelectorAll(
     `#${prefix}-eto-form input,
      #${prefix}-eto-form select,
@@ -6481,57 +6481,71 @@ function initEtoFormHandlers(prefix, root) {
     el.addEventListener("change", updateLive);
   });
 
-  /* ===== Bouton COPIER (zone droite) ===== */
-  liveCopyBtn?.addEventListener("click", async () => {
-    try {
-      await navigator.clipboard.writeText(liveBox?.textContent || "");
-    } catch {
-      const ta = document.createElement("textarea");
-      ta.value = liveBox?.textContent || "";
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      ta.remove();
-    }
-  });
-
-  /* ===== Bouton FERMER (zone droite) ===== */
-  liveCloseBtn?.addEventListener("click", () => {
-    const modal = root.closest(".acr-modal");
-    if (modal) modal.remove();
-  });
-
-  /* ===== Effacer ===== */
-  g("clear")?.addEventListener("click", () => {
-    root.querySelectorAll(
-      `#${prefix}-eto-form input,
-       #${prefix}-eto-form select,
-       #${prefix}-eto-form textarea`
-    ).forEach(el => {
-      if (el.tagName === "SELECT") el.value = "";
-      else if (el.type === "checkbox") el.checked = false;
-      else el.value = "";
+  // ===== Bouton COPIER (zone droite) =====
+  if (liveCopyBtn) {
+    liveCopyBtn.addEventListener("click", async () => {
+      const t = liveBox ? (liveBox.textContent || "") : "";
+      try {
+        await navigator.clipboard.writeText(t);
+      } catch {
+        const ta = document.createElement("textarea");
+        ta.value = t;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+      }
     });
+  }
 
-    // Thorax par défaut
-    const thorax = g("thorax");
-    if (thorax) thorax.value = "Fermé";
+  // ===== Bouton FERMER (zone droite) =====
+  if (liveCloseBtn) {
+    liveCloseBtn.addEventListener("click", () => {
+      const modal = root.closest(".acr-modal");
+      if (modal) modal.remove();
+    });
+  }
 
-    // Recocher valeurs par défaut
-    root.querySelector(`#${prefix}-eto-auricule-libre`)?.checked = true;
-    root.querySelector(`#${prefix}-eto-paroi-aorte-ok`)?.checked = true;
-    root.querySelector(`#${prefix}-eto-fop-absent`)?.checked = true;
+  // ===== Effacer =====
+  const btnClear = g("clear");
+  if (btnClear) {
+    btnClear.addEventListener("click", () => {
+      root.querySelectorAll(
+        `#${prefix}-eto-form input,
+         #${prefix}-eto-form select,
+         #${prefix}-eto-form textarea`
+      ).forEach(el => {
+        if (el.tagName === "SELECT") el.value = "";
+        else if (el.type === "checkbox") el.checked = false;
+        else el.value = "";
+      });
 
-    sync();
-  });
+      // Thorax par défaut
+      const thorax = g("thorax");
+      if (thorax) thorax.value = "Fermé";
 
-  /* ===== Générer (modal synthèse classique) ===== */
-  g("generate")?.addEventListener("click", () => {
-    const txt = buildEtoCompteRenduCompact(prefix, root);
-    openEtoSynthese(txt);
-  });
+      // Recocher valeurs par défaut (sans optional chaining)
+      const aur = root.querySelector(`#${prefix}-eto-auricule-libre`);
+      const paroi = root.querySelector(`#${prefix}-eto-paroi-aorte-ok`);
+      const fop = root.querySelector(`#${prefix}-eto-fop-absent`);
+      if (aur) aur.checked = true;
+      if (paroi) paroi.checked = true;
+      if (fop) fop.checked = true;
 
-  /* ===== Initialisation ===== */
+      sync();
+    });
+  }
+
+  // ===== Générer (modal synthèse classique) =====
+  const btnGen = g("generate");
+  if (btnGen) {
+    btnGen.addEventListener("click", () => {
+      const txt = buildEtoCompteRenduCompact(prefix, root);
+      openEtoSynthese(txt);
+    });
+  }
+
+  // ===== Initialisation =====
   sync();
 }
 
