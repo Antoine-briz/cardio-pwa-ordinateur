@@ -4083,6 +4083,44 @@ body:not(.theme-light) .eto-modal .eto-head-field select {
   margin: 6px 0 2px !important;
 }
 
+/* ===== Colonne 4 : synthèse live ETO ===== */
+.eto-live-th{
+  min-width: 320px;
+}
+
+.eto-live-td{
+  vertical-align: top;
+  background: #f9fafb;
+}
+
+.eto-live-wrap{
+  position: sticky;
+  top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.eto-live-head{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.eto-live-box{
+  background: #fff !important;
+  color: #000 !important;
+  border: 1.5px solid #000;
+  border-radius: 8px;
+  padding: 8px;
+  white-space: pre-wrap;
+  line-height: 1.25;
+  max-height: calc(100vh - 160px);
+  overflow: auto;
+  font-size: 0.9rem;
+}
+
+
 .eto-live-row td {
   padding: 0 !important;
   border: none !important;
