@@ -5969,33 +5969,32 @@ function openEtoFormModal(prefix) {
 
   overlay.innerHTML = `
     <div class="acr-modal-card eto-fullscreen" role="dialog" aria-modal="true">
-      <div class="acr-modal-head eto-head">
-        <div class="eto-head-left">
-          <h3 style="margin:0;">Compte rendu d'ETO</h3>
-        </div>
+      <div class="acr-modal-head eto-head eto-head-inline">
+  <h3 class="eto-head-title">Compte rendu d'ETO</h3>
 
-        <div class="eto-head-right">
-          <label class="eto-head-field">
-            Thorax
-            <select id="${prefix}-eto-thorax">
-              <option value="Fermé" selected>Fermé</option>
-              <option value="Ouvert">Ouvert</option>
-            </select>
-          </label>
+  <div class="eto-head-fields">
+    <label class="eto-head-field">
+      Thorax
+      <select id="${prefix}-eto-thorax">
+        <option value="Fermé" selected>Fermé</option>
+        <option value="Ouvert">Ouvert</option>
+      </select>
+    </label>
 
-          <label class="eto-head-field">
-            Noradrénaline (mg/h)
-            <input type="number" id="${prefix}-eto-nora" step="0.1" min="0"/>
-          </label>
+    <label class="eto-head-field">
+      Noradrénaline (mg/h)
+      <input type="number" id="${prefix}-eto-nora" step="0.1" min="0"/>
+    </label>
 
-          <label class="eto-head-field">
-            Dobutamine (µg/kg/min)
-            <input type="number" id="${prefix}-eto-dobu" step="0.1" min="0"/>
-          </label>
+    <label class="eto-head-field">
+      Dobutamine (µg/kg/min)
+      <input type="number" id="${prefix}-eto-dobu" step="0.1" min="0"/>
+    </label>
 
-          <button class="acr-modal-close" aria-label="Fermer">✖</button>
-        </div>
-      </div>
+    <button class="acr-modal-close" aria-label="Fermer">✖</button>
+  </div>
+</div>
+
 
       <div class="acr-modal-body">${bodyHtml}</div>
     </div>
