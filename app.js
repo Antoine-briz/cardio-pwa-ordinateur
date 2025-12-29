@@ -5596,10 +5596,10 @@ function etoFormHtmlCompact(prefix) {
 
         <thead>
           <tr>
-            <th class="col-ana">Analyse</th>
-            <th class="col-saisie">Saisie</th>
-            <th class="col-img">Coupes / mesures</th>
-            <th class="eto-live-th">Synthèse</th>
+            <th class="col-ana">Fonction/structure</th>
+            <th class="col-saisie">Données/mesures</th>
+            <th class="col-img">Turoriel</th>
+            <th class="eto-live-th">Synthèse CR ETO</th>
           </tr>
         </thead>
 
@@ -5846,17 +5846,16 @@ function openEtoFormModal(prefix) {
   initEtoFormHandlers(prefix, overlay);
 }
 
-
 function etoFormHtmlCompactPlastieAortique(prefix) {
- const p = (id) => `${prefix}-eto-${id}`;
+  const p = (id) => `${prefix}-eto-${id}`;
   return `
   <div id="${prefix}-eto-form" class="eto-compact eto-cr">
 
     <!-- Tableau (scroll horizontal sur smartphone) -->
     <div class="eto-table-wrap">
       <table class="eto-cr-table">
-       <tbody>
 
+        <!-- ✅ (fix structure) : thead AVANT tbody -->
         <thead>
           <tr>
             <th class="col-ana">Fonctions/structures</th>
@@ -5867,6 +5866,21 @@ function etoFormHtmlCompactPlastieAortique(prefix) {
         </thead>
 
         <tbody>
+
+          <!-- ✅ AJOUT : ligne technique neutre qui porte la colonne 4 -->
+          <tr class="eto-live-row">
+            <td colspan="3"></td>
+            <td class="eto-live-td" rowspan="999">
+              <div class="eto-live-wrap">
+                <div class="eto-live-head">
+                  <strong>Synthèse ETO (live)</strong>
+                  <button type="button" class="btn ghost" id="${prefix}-eto-live-copy">Copier</button>
+                </div>
+                <pre id="${prefix}-eto-live" class="eto-live-box"></pre>
+              </div>
+            </td>
+          </tr>
+
           <!-- Fonction VG -->
           <tr>
             <td class="eto-sec">Fonction VG</td>
@@ -6000,48 +6014,47 @@ function etoFormHtmlCompactPlastieAortique(prefix) {
                 </label>
               </div>
 
-             <div class="eto-subtitle">Analyse cuspide par cuspide</div>
+              <div class="eto-subtitle">Analyse cuspide par cuspide</div>
+              <div class="eto-cell eto-subcell">
+                <div class="eto-cusp-line">
+                  <strong>Cusp droite :</strong>
+                  <label>eH (mm)
+                    <input type="number" id="${p("eto-rcc-eh")}" step="1" min="0"/>
+                  </label>
+                  <label>gH (mm)
+                    <input type="number" id="${p("eto-rcc-gh")}" step="1" min="0"/>
+                  </label>
+                  <label>Long. bord libre (mm)
+                    <input type="number" id="${p("eto-rcc-lbl")}" step="1" min="0"/>
+                  </label>
+                </div>
 
-<div class="eto-cell eto-subcell">
-  <div class="eto-cusp-line">
-    <strong>Cusp droite :</strong>
-    <label>eH (mm)
-      <input type="number" id="${p("eto-rcc-eh")}" step="1" min="0"/>
-    </label>
-    <label>gH (mm)
-      <input type="number" id="${p("eto-rcc-gh")}" step="1" min="0"/>
-    </label>
-    <label>Long. bord libre (mm)
-      <input type="number" id="${p("eto-rcc-lbl")}" step="1" min="0"/>
-    </label>
-  </div>
+                <div class="eto-cusp-line">
+                  <strong>Cusp gauche :</strong>
+                  <label>eH (mm)
+                    <input type="number" id="${p("eto-lcc-eh")}" step="1" min="0"/>
+                  </label>
+                  <label>gH (mm)
+                    <input type="number" id="${p("eto-lcc-gh")}" step="1" min="0"/>
+                  </label>
+                  <label>Long. bord libre (mm)
+                    <input type="number" id="${p("eto-lcc-lbl")}" step="1" min="0"/>
+                  </label>
+                </div>
 
-  <div class="eto-cusp-line">
-    <strong>Cusp gauche :</strong>
-    <label>eH (mm)
-      <input type="number" id="${p("eto-lcc-eh")}" step="1" min="0"/>
-    </label>
-    <label>gH (mm)
-      <input type="number" id="${p("eto-lcc-gh")}" step="1" min="0"/>
-    </label>
-    <label>Long. bord libre (mm)
-      <input type="number" id="${p("eto-lcc-lbl")}" step="1" min="0"/>
-    </label>
-  </div>
-
-  <div class="eto-cusp-line">
-    <strong>Cusp non coronaire :</strong>
-    <label>eH (mm)
-      <input type="number" id="${p("eto-ncc-eh")}" step="1" min="0"/>
-    </label>
-    <label>gH (mm)
-      <input type="number" id="${p("eto-ncc-gh")}" step="1" min="0"/>
-    </label>
-    <label>Long. bord libre (mm)
-      <input type="number" id="${p("eto-ncc-lbl")}" step="1" min="0"/>
-    </label>
-  </div>
-</div>
+                <div class="eto-cusp-line">
+                  <strong>Cusp non coronaire :</strong>
+                  <label>eH (mm)
+                    <input type="number" id="${p("eto-ncc-eh")}" step="1" min="0"/>
+                  </label>
+                  <label>gH (mm)
+                    <input type="number" id="${p("eto-ncc-gh")}" step="1" min="0"/>
+                  </label>
+                  <label>Long. bord libre (mm)
+                    <input type="number" id="${p("eto-ncc-lbl")}" step="1" min="0"/>
+                  </label>
+                </div>
+              </div>
 
               <div class="eto-subtitle">Résultat post-plastie</div>
               <div class="eto-cell eto-subcell">
@@ -6055,24 +6068,23 @@ function etoFormHtmlCompactPlastieAortique(prefix) {
                 </label>
 
                 <div id="${prefix}-eto-fuite-details" style="display:none;">
-  <label>Centrage fuite
-    <select id="${prefix}-eto-fuite-centrage">
-      <option value="">—</option>
-      <option>Centrée</option>
-      <option>Excentrée</option>
-    </select>
-  </label>
+                  <label>Centrage fuite
+                    <select id="${prefix}-eto-fuite-centrage">
+                      <option value="">—</option>
+                      <option>Centrée</option>
+                      <option>Excentrée</option>
+                    </select>
+                  </label>
 
-  <label>Sévérité fuite
-    <select id="${prefix}-eto-fuite-sev">
-      <option value="">—</option>
-      <option>Minime</option>
-      <option>Modérée</option>
-      <option>Sévère</option>
-    </select>
-  </label>
-</div>
-
+                  <label>Sévérité fuite
+                    <select id="${prefix}-eto-fuite-sev">
+                      <option value="">—</option>
+                      <option>Minime</option>
+                      <option>Modérée</option>
+                      <option>Sévère</option>
+                    </select>
+                  </label>
+                </div>
               </div>
             </td>
 
@@ -6206,6 +6218,7 @@ function etoFormHtmlCompactPlastieAortique(prefix) {
             </td>
             <td class="eto-imgcol"></td>
           </tr>
+
         </tbody>
       </table>
     </div>
