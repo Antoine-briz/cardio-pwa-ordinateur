@@ -121,6 +121,7 @@ const PRECACHE = [
   "./img/titre2.png",
   "./img/titre3.png",
   "./img/titre4.png",
+  "./img/titre5.png",
   "./img/transplantation2.png",
   "./img/annuaire.png",
   "./img/code.png",
