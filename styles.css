@@ -4254,3 +4254,19 @@ body.screen-square .eto-right{
   gap: 6px;
   white-space: nowrap;
 }
+
+/* Modal ETO : autoriser le scroll vertical */
+.eto-fullscreen .acr-modal-body{
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
+/* Permet au contenu de grandir et scroller */
+.eto-desktop-grid{
+  height: auto !important;      /* au lieu de height:100% */
+  min-height: 100%;
+}
+
+.eto-synth-html{
+  white-space: pre-wrap;
+}
