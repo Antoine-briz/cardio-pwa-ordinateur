@@ -4224,3 +4224,33 @@ body.screen-square .eto-desktop-grid{
 body.screen-square .eto-right{
   height: 320px;
 }
+
+/* En-tête ETO : tout aligné à gauche */
+.eto-head-inline {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* ← IMPORTANT */
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.eto-head-title {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.eto-head-fields {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.eto-head-field {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
