@@ -31,6 +31,14 @@ function sectionHeader(title, imageFile) {
   `;
 }
 
+function applyScreenShapeClass() {
+  const r = window.innerWidth / window.innerHeight;
+  document.body.classList.toggle("screen-square", r < 1.2);
+  document.body.classList.toggle("screen-wide", r >= 1.2);
+}
+
+window.addEventListener("resize", applyScreenShapeClass);
+applyScreenShapeClass();
 
 
 // ==========================
