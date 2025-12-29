@@ -6457,6 +6457,7 @@ function initEtoFormHandlers(prefix, root) {
     openEtoSynthese(txt);
   });
 }
+
 function initEtoFormHandlers(prefix, root) {
   const g = (id) => root.querySelector(`#${prefix}-eto-${id}`);
 
@@ -6478,6 +6479,16 @@ function initEtoFormHandlers(prefix, root) {
   const fuiteCentrage = root.querySelector(`#${prefix}-eto-fuite-centrage`);
   const fuiteSev = root.querySelector(`#${prefix}-eto-fuite-sev`);
 
+  // ✅ Synthèse live (colonne 4 du tableau)
+  const liveBox = root.querySelector(`#${prefix}-eto-live`);
+  const liveCopyBtn = root.querySelector(`#${prefix}-eto-live-copy`);
+
+  const updateLive = () => {
+    if (!liveBox) return;
+    const txt = buildEtoCompteRenduCompact(prefix, root);
+    liveBox.textContent = txt || "";
+  };
+
   const sync = () => {
     if (raInline) raInline.style.display = cbRA?.checked ? "block" : "none";
     if (iaInline) iaInline.style.display = cbIA?.checked ? "block" : "none";
@@ -6494,11 +6505,36 @@ function initEtoFormHandlers(prefix, root) {
         if (fuiteSev) fuiteSev.value = "";
       }
     }
+
+    // ✅ met à jour la synthèse live aussi quand sync est appelé
+    updateLive();
   };
 
   [cbRA, cbIA, cbRM, cbIM, cbIT].forEach(el => el?.addEventListener("change", sync));
   cbFuiteResid?.addEventListener("change", sync);
   sync();
+
+  // ✅ Live update sur toutes les saisies
+  root.querySelectorAll(
+    `#${prefix}-eto-form input, #${prefix}-eto-form select, #${prefix}-eto-form textarea`
+  ).forEach(el => {
+    el.addEventListener("input", updateLive);
+    el.addEventListener("change", updateLive);
+  });
+
+  // ✅ Copier (colonne synthèse live)
+  liveCopyBtn?.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(liveBox?.textContent || "");
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = liveBox?.textContent || "";
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+    }
+  });
 
   // Effacer
   g("clear")?.addEventListener("click", () => {
@@ -6522,16 +6558,20 @@ function initEtoFormHandlers(prefix, root) {
     if (cbParoi) cbParoi.checked = true;
     if (cbFop) cbFop.checked = true;
 
-    // ✅ remet l’affichage cohérent (inclut fuite résiduelle)
+    // ✅ remet l’affichage cohérent (inclut fuite résiduelle) + update live
     sync();
   });
 
-  // Générer
+  // Générer (modal synthèse)
   g("generate")?.addEventListener("click", () => {
     const txt = buildEtoCompteRenduCompact(prefix, root);
     openEtoSynthese(txt);
   });
+
+  // ✅ Init live (utile si valeurs pré-remplies)
+  updateLive();
 }
+
 
 function buildEtoCompteRenduCompact(prefix, root) {
   const q = (suffix) => root.querySelector(`#${prefix}-eto-${suffix}`);
