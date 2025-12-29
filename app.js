@@ -5936,7 +5936,7 @@ function etoFormHtmlCompact(prefix) {
       <aside class="eto-right">
         <div class="eto-synth-panel">
           <div class="eto-synth-title">Synthèse CR ETO</div>
-          <pre id="${prefix}-eto-live" class="eto-synth-box"></pre>
+          <div id="${prefix}-eto-live" class="eto-synth-box eto-synth-html"></div>
 
           <div class="eto-synth-actions" style="display:flex; gap:10px; justify-content:flex-end;">
             <button type="button" class="btn" id="${prefix}-eto-live-copy">Copier</button>
@@ -6386,7 +6386,7 @@ function etoFormHtmlCompactPlastieAortique(prefix) {
       <aside class="eto-right">
         <div class="eto-synth-panel">
           <div class="eto-synth-title">Synthèse CR ETO</div>
-          <pre id="${prefix}-eto-live" class="eto-synth-box"></pre>
+          <div id="${prefix}-eto-live" class="eto-synth-box eto-synth-html"></div>
 
           <div class="eto-synth-actions" style="display:flex; gap:10px; justify-content:flex-end;">
             <button type="button" class="btn" id="${prefix}-eto-live-copy">Copier</button>
@@ -6605,7 +6605,7 @@ function initEtoFormHandlers(prefix, root) {
   const updateLive = () => {
     if (!liveBox) return;
     const txt = buildEtoCompteRenduCompact(prefix, root);
-    liveBox.textContent = txt || "—";
+    liveBox.innerHTML = txt || "—";
   };
 
   // ===== Synchronisation affichage champs conditionnels =====
