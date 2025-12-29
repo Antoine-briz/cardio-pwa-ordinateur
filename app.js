@@ -7132,37 +7132,49 @@ function updateAtb() {
 function renderInterventionRVA() {
   const encadres = [
     {
-      titre: "Caractéristiques patient",
+       titre: "Intervention & caractéristiques patient",
       html: `
-        <div class="form">
-          <div class="row">
-            <label>Poids (kg)
-              <!-- ID standard pour toute la section Anesthésie -->
-              <input type="number" id="anesth-poids" min="30" max="250" step="1" />
-            </label>
-          </div>
-          <div class="row">
-            <label>
-              <input type="checkbox" id="rva-imc50" />
-              IMC &gt; 50 kg/m²
-            </label>
-            <label>
-              <input type="checkbox" id="rva-induction-risque" />
-              Induction à risque (FEVG &lt; 35%, RA serré, IA sévère, HTAP)
-            </label>
-          </div>
-          <div class="row">
-            <label>
-              <input type="checkbox" id="rva-seq-rapide" />
-              Séquence rapide
-            </label>
-            <label>
-              <input type="checkbox" id="rva-allergie-bl" />
-              Allergie aux bêta-lactamines
-            </label>
-          </div>
-        </div>
-      `,
+    <div class="form">
+
+      <div class="row">
+        <label>Type d'intervention
+          <select id="rva-type">
+            <option value="rva" selected>RVA</option>
+            <option value="plastie">Plastie aortique</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="row">
+        <label>Poids (kg)
+          <input type="number" id="anesth-poids" min="30" max="250" step="1" />
+        </label>
+      </div>
+
+      <div class="row">
+        <label>
+          <input type="checkbox" id="rva-imc50" />
+          IMC &gt; 50 kg/m²
+        </label>
+        <label>
+          <input type="checkbox" id="rva-induction-risque" />
+          Induction à risque (FEVG &lt; 35 %, RA serré, IA sévère, HTAP)
+        </label>
+      </div>
+
+      <div class="row">
+        <label>
+          <input type="checkbox" id="rva-seq-rapide" />
+          Séquence rapide
+        </label>
+        <label>
+          <input type="checkbox" id="rva-allergie-bl" />
+          Allergie aux bêta-lactamines
+        </label>
+      </div>
+
+    </div>
+  `,
     },
     {
       titre: "Monitorage",
@@ -7349,46 +7361,49 @@ function setupRvaLogic() {
 function renderInterventionRVM() {
   const encadres = [
     {
-      titre: "Caractéristiques patient",
+      titre: "Intervention & caractéristiques patient",
       html: `
-        <div class="form">
-          <div class="row">
-            <label>Type d'intervention
-              <select id="rvm-type">
-                <option value="rvm">RVM</option>
-                <option value="plastie">Plastie mitrale</option>
-              </select>
-            </label>
-          </div>
-          <div class="row">
-            <label>Poids (kg)
-              <!-- ID commun pour toute l'anesthésie -->
-              <input type="number" id="anesth-poids" min="30" max="250" step="1" />
-            </label>
-          </div>
-          <div class="row">
-            <label>
-              <input type="checkbox" id="rvm-imc50" />
-              IMC &gt; 50 kg/m²
-            </label>
-            <label>
-              <input type="checkbox" id="rvm-induction-risque" />
-              Induction à risque (FEVG &lt; 35%, RM serré, IM sévère, HTAP)
-            </label>
-          </div>
-          <div class="row">
-            <label>
-              <input type="checkbox" id="rvm-seq-rapide" />
-              Séquence rapide
-            </label>
-            <label>
-              <input type="checkbox" id="rvm-allergie-bl" />
-              Allergie aux bêta-lactamines
-            </label>
-          </div>
-        </div>
-      `,
-    },
+    <div class="form">
+
+      <div class="row">
+        <label>Type d'intervention
+          <select id="rvm-type">
+            <option value="rvm" selected>RVM</option>
+            <option value="plastie">Plastie mitrale</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="row">
+        <label>Poids (kg)
+          <input type="number" id="anesth-poids" min="30" max="250" step="1" />
+        </label>
+      </div>
+
+      <div class="row">
+        <label>
+          <input type="checkbox" id="rvm-imc50" />
+          IMC &gt; 50 kg/m²
+        </label>
+        <label>
+          <input type="checkbox" id="rvm-induction-risque" />
+          Induction à risque (FEVG &lt; 35 %, RM serré, IM sévère, HTAP)
+        </label>
+      </div>
+
+      <div class="row">
+        <label>
+          <input type="checkbox" id="rvm-seq-rapide" />
+          Séquence rapide
+        </label>
+        <label>
+          <input type="checkbox" id="rvm-allergie-bl" />
+          Allergie aux bêta-lactamines
+        </label>
+      </div>
+    </div>
+  `,
+},
     {
       titre: "Monitorage",
       html: `
