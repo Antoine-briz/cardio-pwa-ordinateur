@@ -4127,3 +4127,100 @@ body:not(.theme-light) .eto-modal .eto-head-field select {
   height: 0 !important;
 }
 
+/* ===== Modal ETO plein écran (desktop) ===== */
+.eto-fullscreen{
+  width: calc(100vw - 24px) !important;
+  height: calc(100vh - 24px) !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 12px !important;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Body doit prendre la place restante */
+.eto-fullscreen .acr-modal-body{
+  flex: 1 1 auto;
+  overflow: hidden; /* on évite le scroll global */
+  padding: 8px !important;
+}
+
+/* ===== Layout gauche/droite ETO ===== */
+.eto-desktop-grid{
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 360px; /* défaut écran rectangulaire */
+  gap: 10px;
+  align-items: stretch;
+}
+
+/* Zone gauche (tableau) */
+.eto-left{
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Le wrap du tableau prend la place, scroll uniquement si nécessaire */
+.eto-table-wrap{
+  flex: 1 1 auto;
+  overflow: auto; /* si jamais trop grand */
+  border-radius: 10px;
+}
+
+/* Zone droite (synthèse) */
+.eto-right{
+  height: 100%;
+  min-width: 0;
+}
+
+.eto-synth-panel{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  color: #000;
+  border: 1.5px solid #000;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.eto-synth-title{
+  font-weight: 900;
+  font-size: 1.05rem;
+  margin-bottom: 8px;
+}
+
+.eto-synth-box{
+  flex: 1 1 auto;
+  overflow: auto;
+  border: 1px solid #000;
+  border-radius: 8px;
+  padding: 8px;
+  margin: 0;
+  white-space: pre-wrap;
+  line-height: 1.25;
+}
+
+.eto-synth-actions{
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+/* Écran large : synthèse à droite */
+body.screen-wide .eto-desktop-grid{
+  grid-template-columns: 1fr 360px;
+}
+
+/* Écran carré : synthèse en dessous */
+body.screen-square .eto-desktop-grid{
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 320px;
+}
+
+body.screen-square .eto-right{
+  height: 320px;
+}
