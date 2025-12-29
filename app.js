@@ -5555,6 +5555,1475 @@ function formatDoseMgPerKg(poids, mgPerKg) {
   return `${mgPerKg} mg/kg (~${dose.toFixed(0)} mg)`;
 }
 
+
+/* ===========================
+   ETO (tableau 3 colonnes) - Pontages
+   =========================== */
+
+// --- Boutons affichés dans l'encadré "Échographie trans-œsophagienne" (sur la page) ---
+function etoEntryButtonsHtml(prefix) {
+  return `
+    <div class="row" style="gap:12px; flex-wrap:wrap;">
+      <button class="btn" id="${prefix}-eto-goto">Coupes et mesures ETO</button>
+      <button class="btn" id="${prefix}-eto-open">Compte rendu d'ETO</button>
+    </div>
+  `;
+}
+
+function initEtoEntryButtons(prefix) {
+  document.getElementById(`${prefix}-eto-goto`)?.addEventListener("click", () => {
+    location.hash = "#/reanimation/eto";
+  });
+  document.getElementById(`${prefix}-eto-open`)?.addEventListener("click", () => {
+    openEtoFormModal(prefix);
+  });
+}
+
+// --- Petit helper : lien cliquable vers une image (nom affiché) ---
+function etoImgLink(label, imgFile) {
+  if (!imgFile) return "";
+  return `<a href="#" class="eto-imglink" onclick="openImg('${imgFile}');return false;" title="Voir l'image">${label}</a>`;
+}
+
+// --- Formulaire ETO (dans une modal) : TABLEAU 3 colonnes + conditions au-dessus ---
+function etoFormHtmlCompact(prefix) {
+  return `
+  <div id="${prefix}-eto-form" class="eto-compact eto-cr">
+
+    <!-- Tableau (scroll horizontal sur smartphone) -->
+    <div class="eto-table-wrap">
+      <table class="eto-cr-table">
+       <tbody>
+
+        <thead>
+          <tr>
+            <th class="col-ana">Analyse</th>
+            <th class="col-saisie">Saisie</th>
+            <th class="col-img">Coupes / mesures (cliquer)</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <!-- Fonction VG -->
+          <tr>
+            <td class="eto-sec">Fonction VG</td>
+            <td>
+              <div class="eto-cell">
+                <label>FEVG (%)
+                  <input type="number" id="${prefix}-eto-fevg" step="1" min="0" max="100"/>
+                </label>
+
+                <label>ITV CCVG (cm)
+                  <input type="number" id="${prefix}-eto-itv-ccvg" step="0.1" min="0"/>
+                </label>
+
+                <label>DTDVG (mm)
+                  <input type="number" id="${prefix}-eto-dtdvg" step="1" min="0"/>
+                </label>
+
+                <label>SIV (mm)
+                  <input type="number" id="${prefix}-eto-siv" step="1" min="0"/>
+                </label>
+
+                <label class="checkbox">
+                  <input type="checkbox" id="${prefix}-eto-tcseg"/>
+                  Troubles de cinétique segmentaire
+                </label>
+              </div>
+            </td>
+            <td class="eto-imgcol">
+              ${etoImgLink("FEVG", "eto_fevg.png")}
+              ${etoImgLink("ITV CCVG", "eto_ccvg.png")}
+              ${etoImgLink("Cinétique segmentaire", "eto_vg_17segments.png")}
+              ${etoImgLink("DTDVG / SIV", "cf-DTDVG-SIV.png")}
+            </td>
+          </tr>
+
+          <!-- Fonction VD -->
+          <tr>
+            <td class="eto-sec">Fonction VD</td>
+            <td>
+              <div class="eto-cell">
+                <label class="checkbox">
+                  <input type="checkbox" id="${prefix}-eto-vd-alt-syst"/>
+                  Altération systolique
+                </label>
+
+                <label class="checkbox">
+                  <input type="checkbox" id="${prefix}-eto-vd-dilate"/>
+                  VD dilaté
+                </label>
+
+                <label class="checkbox">
+                  <input type="checkbox" id="${prefix}-eto-vd-hypertro"/>
+                  VD hypertrophié
+                </label>
+
+                <label>TAPSE (mm)
+                  <input type="number" id="${prefix}-eto-tapse" step="1" min="0"/>
+                </label>
+
+                <label>Onde S’ (cm/s)
+                  <input type="number" id="${prefix}-eto-sprime" step="0.1" min="0"/>
+                </label>
+              </div>
+            </td>
+            <td class="eto-imgcol">
+              ${etoImgLink("TAPSE", "eto_vd_tapse.png")}
+              ${etoImgLink("Onde S’", "eto_vd_sprime.png")}
+            </td>
+          </tr>
+
+          <!-- Valve aortique -->
+          <tr>
+            <td class="eto-sec">Valve aortique</td>
+            <td>
+              <div class="eto-cell">
+                <label class="checkbox">
+                  <input type="checkbox" id="${prefix}-eto-ra"/>
+                  Rétrécissement aortique (RA)
+                </label>
+
+                <label class="checkbox">
+                  <input type="checkbox" id="${prefix}-eto-ia"/>
+                  Insuffisance aortique (IA)
+                </label>
+
+                <label class="checkbox">
+                  <input type="checkbox" id="${prefix}-eto-bicuspidie"/>
+                  Bicuspide
+                </label>
+              </div>
+
+              <!-- Sous-champs RA -->
+              <div id="${prefix}-eto-ra-inline" style="display:none;">
+                <div class="eto-subtitle">Caractéristiques RA</div>
+                <div class="eto-cell eto-subcell">
+                  <label>Sévérité
+                    <select id="${prefix}-eto-ra-sev">
+                      <option value="">—</option>
+                      <option>Léger</option><option>Modéré</option><option>Sévère</option>
+                    </select>
+                  </label>
+
+                  <label>Vmax (m/s)
+                    <input type="number" id="${prefix}-eto-ra-vmax" step="0.1" min="0"/>
+                  </label>
+
+                  <label>Gd max (mmHg)
+                    <input type="number" id="${prefix}-eto-ra-gdmax" step="1" min="0"/>
+                  </label>
+
+                  <label>ITV VA (cm)
+                    <input type="number" id="${prefix}-eto-ra-itv" step="0.1" min="0"/>
+                  </label>
+
+                  <label>Surface (cm²)
+                    <input type="number" id="${prefix}-eto-ra-surface" step="0.1" min="0"/>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Sous-champs IA -->
+              <div id="${prefix}-eto-ia-inline" style="display:none;">
+                <div class="eto-subtitle">Caractéristiques IA</div>
+                <div class="eto-cell eto-subcell">
+                  <label>Direction
+                    <select id="${prefix}-eto-ia-dir">
+                      <option value="">—</option>
+                      <option>Centrée</option><option>Excentrée</option>
+                    </select>
+                  </label>
+
+                  <label>Sévérité
+                    <select id="${prefix}-eto-ia-sev">
+                      <option value="">—</option>
+                      <option>Légère</option><option>Modérée</option><option>Sévère</option>
+                    </select>
+                  </label>
+
+                  <label>VC (mm)
+                    <input type="number" id="${prefix}-eto-ia-vc" step="1" min="0"/>
+                  </label>
+
+                  <label>P1/2T (ms)
+                    <input type="number" id="${prefix}-eto-ia-p12" step="1" min="0"/>
+                  </label>
+                </div>
+              </div>
+            </td>
+            <td class="eto-imgcol">
+              ${etoImgLink("RA", "eto_ra.png")}
+              ${etoImgLink("Classification IA", "eto_ia_quantification.png")}
+              ${etoImgLink("IA VC", "eto_ia_VC.png")}
+              ${etoImgLink("IA P1/2T", "eto_ia_1.2.png")}
+            </td>
+          </tr>
+
+          <!-- Diamètres aortiques -->
+          <tr>
+            <td class="eto-sec">Diamètres aortiques</td>
+            <td>
+              <div class="eto-cell">
+                <label>Anneau (mm)
+                  <input type="number" id="${prefix}-eto-anneau-mm" step="1" min="0"/>
+                </label>
+
+                <label>Sinus (mm)
+                  <input type="number" id="${prefix}-eto-sinus-mm" step="1" min="0"/>
+                </label>
+
+                <label>Sino-tubulaire (mm)
+                  <input type="number" id="${prefix}-eto-st-mm" step="1" min="0"/>
+                </label>
+
+                <label>Tubulaire (mm)
+                  <input type="number" id="${prefix}-eto-tub-mm" step="1" min="0"/>
+                </label>
+              </div>
+            </td>
+            <td class="eto-imgcol">
+              ${etoImgLink("Diamètres aortiques", "cf-diametre-aortique.png")}
+            </td>
+          </tr>
+
+          <!-- Valve mitrale -->
+          <tr>
+            <td class="eto-sec">Valve mitrale</td>
+            <td>
+              <div class="eto-cell">
+                <label class="checkbox">
+                  <input type="checkbox" id="${prefix}-eto-rm"/>
+                  Rétrécissement mitral (RM)
+                </label>
+
+                <label class="checkbox">
+                  <input type="checkbox" id="${prefix}-eto-im"/>
+                  Insuffisance mitrale (IM)
+                </label>
+
+                <label>Diamètre anneau (mm)
+                  <input type="number" id="${prefix}-eto-anneau-mitral" step="1" min="0"/>
+                </label>
+              </div>
+
+              <!-- Sous-champs RM -->
+              <div id="${prefix}-eto-rm-inline" style="display:none;">
+                <div class="eto-subtitle">Caractéristiques RM</div>
+                <div class="eto-cell eto-subcell">
+                  <label>Sévérité
+                    <select id="${prefix}-eto-rm-sev">
+                      <option value="">—</option>
+                      <option>Léger</option><option>Modéré</option><option>Sévère</option>
+                    </select>
+                  </label>
+
+                  <label>Surface (cm²)
+                    <input type="number" id="${prefix}-eto-rm-surface" step="0.1" min="0"/>
+                  </label>
+
+                  <label>Gd moyen (mmHg)
+                    <input type="number" id="${prefix}-eto-rm-gdmoy" step="1" min="0"/>
+                  </label>
+
+                  <label>P1/2T (ms)
+                    <input type="number" id="${prefix}-eto-rm-p12" step="1" min="0"/>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Sous-champs IM -->
+              <div id="${prefix}-eto-im-inline" style="display:none;">
+                <div class="eto-subtitle">Caractéristiques IM</div>
+                <div class="eto-cell eto-subcell">
+                  <label>Direction
+                    <select id="${prefix}-eto-im-dir">
+                      <option value="">—</option>
+                      <option>Centrée</option><option>Excentrée</option>
+                    </select>
+                  </label>
+
+                  <label>Sévérité
+                    <select id="${prefix}-eto-im-sev">
+                      <option value="">—</option>
+                      <option>Légère</option><option>Modérée</option><option>Sévère</option>
+                    </select>
+                  </label>
+
+                  <label>VC (mm)
+                    <input type="number" id="${prefix}-eto-im-vc" step="1" min="0"/>
+                  </label>
+
+                  <label>P1/2T (ms)
+                    <input type="number" id="${prefix}-eto-im-p12" step="1" min="0"/>
+                  </label>
+                </div>
+              </div>
+            </td>
+            <td class="eto-imgcol">
+              ${etoImgLink("Surface mitrale", "eto_rm_plani.png")}
+              ${etoImgLink("Gd moyen mitral", "eto_rm_gdmoyen.png")}
+              ${etoImgLink("RM P1/2T", "eto_rm_1.2.png")}
+              ${etoImgLink("Classification IM", "eto_im_classif.png")}
+              ${etoImgLink("IM VC", "eto_im_VC.png")}
+              ${etoImgLink("IM P1/2T", "eto_im_1.2.png")}
+            </td>
+          </tr>
+
+          <!-- Valve tricuspide -->
+          <tr>
+            <td class="eto-sec">Valve tricuspide</td>
+            <td>
+              <div class="eto-cell">
+                <label>Diamètre anneau (mm)
+                  <input type="number" id="${prefix}-eto-anneau-tric" step="1" min="0"/>
+                </label>
+
+                <label class="checkbox">
+                  <input type="checkbox" id="${prefix}-eto-it"/>
+                  IT
+                </label>
+
+                <label id="${prefix}-eto-paps-wrap" style="display:none;">
+                  PAPs (mmHg)
+                  <input type="number" id="${prefix}-eto-paps" step="1" min="0"/>
+                </label>
+              </div>
+            </td>
+            <td class="eto-imgcol">
+              ${etoImgLink("PAPs", "eto_htap_paps_it.png")}
+            </td>
+          </tr>
+
+          <!-- Autres -->
+          <tr>
+            <td class="eto-sec">Autres</td>
+            <td>
+              <div class="eto-cell">
+                <label class="checkbox"><input type="checkbox" id="${prefix}-eto-auricule-libre" checked/> Auricule libre</label>
+                <label class="checkbox"><input type="checkbox" id="${prefix}-eto-fop-absent" checked/> Absence de FOP en PEP ≥ 6 cmH2O</label>
+                <label class="checkbox"><input type="checkbox" id="${prefix}-eto-paroi-aorte-ok" checked/> Paroi aortique intègre</label>
+              </div>
+            </td>
+            <td class="eto-imgcol"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Boutons -->
+    <div class="eto-actions">
+      <button class="btn" id="${prefix}-eto-generate">Générer le CR d'ETO</button>
+      <button class="btn ghost" id="${prefix}-eto-clear">Effacer la saisie</button>
+    </div>
+
+  </div>
+  `;
+}
+
+function openEtoFormModal(prefix) {
+  const overlay = document.createElement("div");
+  overlay.className = "acr-modal";
+  overlay.classList.add("eto-modal");
+
+  // ✅ Auto-switch selon le prefix + le select (rva-type / rvm-type)
+  let bodyHtml;
+
+  if (prefix === "rva" && document.getElementById("rva-type")?.value === "plastie") {
+    bodyHtml = etoFormHtmlCompactPlastieAortique(prefix);
+  } else if (prefix === "rvm" && document.getElementById("rvm-type")?.value === "plastie") {
+    bodyHtml = etoFormHtmlCompactPlastieMitrale(prefix);
+  } else {
+    bodyHtml = etoFormHtmlCompact(prefix);
+  }
+
+  overlay.innerHTML = `
+    <div class="acr-modal-card" role="dialog" aria-modal="true" style="max-width:1100px;">
+      <div class="acr-modal-head eto-head">
+        <div class="eto-head-left">
+          <h3 style="margin:0;">Compte rendu d'ETO</h3>
+        </div>
+
+        <div class="eto-head-right">
+          <label class="eto-head-field">
+            Thorax
+            <select id="${prefix}-eto-thorax">
+              <option value="Fermé" selected>Fermé</option>
+              <option value="Ouvert">Ouvert</option>
+            </select>
+          </label>
+
+          <label class="eto-head-field">
+            Noradrénaline (mg/h)
+            <input type="number" id="${prefix}-eto-nora" step="0.1" min="0"/>
+          </label>
+
+          <label class="eto-head-field">
+            Dobutamine (µg/kg/min)
+            <input type="number" id="${prefix}-eto-dobu" step="0.1" min="0"/>
+          </label>
+
+          <button class="acr-modal-close" aria-label="Fermer">✖</button>
+        </div>
+      </div>
+
+      <div class="acr-modal-body">${bodyHtml}</div>
+    </div>
+  `;
+
+  const close = () => overlay.remove();
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
+  overlay.querySelector(".acr-modal-close")?.addEventListener("click", close);
+
+  document.body.appendChild(overlay);
+  initEtoFormHandlers(prefix, overlay);
+}
+
+
+function etoFormHtmlCompactPlastieAortique(prefix) {
+ const p = (id) => `${prefix}-eto-${id}`;
+  return `
+  <div id="${prefix}-eto-form" class="eto-compact eto-cr">
+
+    <!-- Tableau (scroll horizontal sur smartphone) -->
+    <div class="eto-table-wrap">
+      <table class="eto-cr-table">
+       <tbody>
+
+        <thead>
+          <tr>
+            <th class="col-ana">Analyse</th>
+            <th class="col-saisie">Saisie</th>
+            <th class="col-img">Coupes / mesures (cliquer)</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <!-- Fonction VG -->
+          <tr>
+            <td class="eto-sec">Fonction VG</td>
+            <td>
+              <div class="eto-cell">
+                <label>FEVG (%)
+                  <input type="number" id="${prefix}-eto-fevg" step="1" min="0" max="100"/>
+                </label>
+
+                <label>ITV CCVG (cm)
+                  <input type="number" id="${prefix}-eto-itv-ccvg" step="0.1" min="0"/>
+                </label>
+
+                <label>DTDVG (mm)
+                  <input type="number" id="${prefix}-eto-dtdvg" step="1" min="0"/>
+                </label>
+
+                <label>SIV (mm)
+                  <input type="number" id="${prefix}-eto-siv" step="1" min="0"/>
+                </label>
+
+                <label class="checkbox">
+                  <input type="checkbox" id="${prefix}-eto-tcseg"/>
+                  Troubles de cinétique segmentaire
+                </label>
+              </div>
+            </td>
+            <td class="eto-imgcol">
+              ${etoImgLink("FEVG", "eto_fevg.png")}
+              ${etoImgLink("ITV CCVG", "eto_ccvg.png")}
+              ${etoImgLink("Cinétique segmentaire", "eto_vg_17segments.png")}
+              ${etoImgLink("DTDVG / SIV", "cf-DTDVG-SIV.png")}
+            </td>
+          </tr>
+
+          <!-- Fonction VD -->
+          <tr>
+            <td class="eto-sec">Fonction VD</td>
+            <td>
+              <div class="eto-cell">
+                <label class="checkbox">
+                  <input type="checkbox" id="${prefix}-eto-vd-alt-syst"/>
+                  Altération systolique
+                </label>
+
+                <label class="checkbox">
+                  <input type="checkbox" id="${prefix}-eto-vd-dilate"/>
+                  VD dilaté
+                </label>
+
+                <label class="checkbox">
+                  <input type="checkbox" id="${prefix}-eto-vd-hypertro"/>
+                  VD hypertrophié
+                </label>
+
+                <label>TAPSE (mm)
+                  <input type="number" id="${prefix}-eto-tapse" step="1" min="0"/>
+                </label>
+
+                <label>Onde S’ (cm/s)
+                  <input type="number" id="${prefix}-eto-sprime" step="0.1" min="0"/>
+                </label>
+              </div>
+            </td>
+            <td class="eto-imgcol">
+              ${etoImgLink("TAPSE", "eto_vd_tapse.png")}
+              ${etoImgLink("Onde S’", "eto_vd_sprime.png")}
+            </td>
+          </tr>
+
+          <!-- ÉVALUATION AORTIQUE (PLASTIE) : remplace Valve aortique + Diamètres aortiques -->
+          <tr>
+            <td class="eto-sec">Évaluation aortique</td>
+            <td>
+              <div class="eto-cell">
+                <label class="checkbox">
+                  <input type="checkbox" id="${prefix}-eto-bicuspidie"/>
+                  Bicuspide
+                </label>
+
+                <label>Mécanisme IA
+                  <select id="${prefix}-eto-ia-meca">
+                    <option value="">—</option>
+                    <option>Dilatation</option>
+                    <option>Perforation</option>
+                    <option>Prolapsus</option>
+                    <option>Restriction</option>
+                  </select>
+                </label>
+
+                <label>Centrage IA
+                  <select id="${prefix}-eto-ia-centrage">
+                    <option value="">—</option>
+                    <option>Centrée</option>
+                    <option>Excentrée</option>
+                  </select>
+                </label>
+
+                <label>Sévérité IA
+                  <select id="${prefix}-eto-ia-sev">
+                    <option value="">—</option>
+                    <option>Légère</option><option>Modérée</option><option>Sévère</option>
+                  </select>
+                </label>
+
+                <label>VC (mm)
+                  <input type="number" id="${prefix}-eto-ia-vc" step="1" min="0"/>
+                </label>
+
+                <label>P1/2T (ms)
+                  <input type="number" id="${prefix}-eto-ia-p12" step="1" min="0"/>
+                </label>
+              </div>
+
+              <div class="eto-subtitle">Diamètres aortiques</div>
+              <div class="eto-cell eto-subcell">
+                <label>Anneau (mm)
+                  <input type="number" id="${prefix}-eto-anneau-mm" step="1" min="0"/>
+                </label>
+
+                <label>Sinus (mm)
+                  <input type="number" id="${prefix}-eto-sinus-mm" step="1" min="0"/>
+                </label>
+
+                <label>Sino-tubulaire (mm)
+                  <input type="number" id="${prefix}-eto-st-mm" step="1" min="0"/>
+                </label>
+
+                <label>Tubulaire (mm)
+                  <input type="number" id="${prefix}-eto-tub-mm" step="1" min="0"/>
+                </label>
+              </div>
+
+             <div class="eto-subtitle">Analyse cuspide par cuspide</div>
+
+<div class="eto-cell eto-subcell">
+  <div class="eto-cusp-line">
+    <strong>Cusp droite :</strong>
+    <label>eH (mm)
+      <input type="number" id="${p("eto-rcc-eh")}" step="1" min="0"/>
+    </label>
+    <label>gH (mm)
+      <input type="number" id="${p("eto-rcc-gh")}" step="1" min="0"/>
+    </label>
+    <label>Long. bord libre (mm)
+      <input type="number" id="${p("eto-rcc-lbl")}" step="1" min="0"/>
+    </label>
+  </div>
+
+  <div class="eto-cusp-line">
+    <strong>Cusp gauche :</strong>
+    <label>eH (mm)
+      <input type="number" id="${p("eto-lcc-eh")}" step="1" min="0"/>
+    </label>
+    <label>gH (mm)
+      <input type="number" id="${p("eto-lcc-gh")}" step="1" min="0"/>
+    </label>
+    <label>Long. bord libre (mm)
+      <input type="number" id="${p("eto-lcc-lbl")}" step="1" min="0"/>
+    </label>
+  </div>
+
+  <div class="eto-cusp-line">
+    <strong>Cusp non coronaire :</strong>
+    <label>eH (mm)
+      <input type="number" id="${p("eto-ncc-eh")}" step="1" min="0"/>
+    </label>
+    <label>gH (mm)
+      <input type="number" id="${p("eto-ncc-gh")}" step="1" min="0"/>
+    </label>
+    <label>Long. bord libre (mm)
+      <input type="number" id="${p("eto-ncc-lbl")}" step="1" min="0"/>
+    </label>
+  </div>
+</div>
+
+              <div class="eto-subtitle">Résultat post-plastie</div>
+              <div class="eto-cell eto-subcell">
+                <label>cH (mm)
+                  <input type="number" id="${prefix}-eto-plastie-ch" step="1" min="0"/>
+                </label>
+
+                <label class="checkbox">
+                  <input type="checkbox" id="${prefix}-eto-fuite-resid"/>
+                  Fuite résiduelle
+                </label>
+
+                <div id="${prefix}-eto-fuite-details" style="display:none;">
+  <label>Centrage fuite
+    <select id="${prefix}-eto-fuite-centrage">
+      <option value="">—</option>
+      <option>Centrée</option>
+      <option>Excentrée</option>
+    </select>
+  </label>
+
+  <label>Sévérité fuite
+    <select id="${prefix}-eto-fuite-sev">
+      <option value="">—</option>
+      <option>Minime</option>
+      <option>Modérée</option>
+      <option>Sévère</option>
+    </select>
+  </label>
+</div>
+
+              </div>
+            </td>
+
+            <td class="eto-imgcol">
+              ${etoImgLink("Morphologie VA", "eto_ao_morphologie.png")}
+              ${etoImgLink("Classification IA", "eto_ao_quantification.png")}
+              ${etoImgLink("IA VC", "eto_ia_VC.png")}
+              ${etoImgLink("IA P1/2T", "eto_ia_1.2.png")}
+              ${etoImgLink("Diamètres aortiques", "cf-diametre-aortique.png")}
+              ${etoImgLink("Plastie aortique", "cf-plastieaortique.png")}
+            </td>
+          </tr>
+
+          <!-- Valve mitrale (inchangé) -->
+          <tr>
+            <td class="eto-sec">Valve mitrale</td>
+            <td>
+              <div class="eto-cell">
+                <label class="checkbox">
+                  <input type="checkbox" id="${prefix}-eto-rm"/>
+                  Rétrécissement mitral (RM)
+                </label>
+
+                <label class="checkbox">
+                  <input type="checkbox" id="${prefix}-eto-im"/>
+                  Insuffisance mitrale (IM)
+                </label>
+
+                <label>Diamètre anneau (mm)
+                  <input type="number" id="${prefix}-eto-anneau-mitral" step="1" min="0"/>
+                </label>
+              </div>
+
+              <!-- Sous-champs RM -->
+              <div id="${prefix}-eto-rm-inline" style="display:none;">
+                <div class="eto-subtitle">Caractéristiques RM</div>
+                <div class="eto-cell eto-subcell">
+                  <label>Sévérité
+                    <select id="${prefix}-eto-rm-sev">
+                      <option value="">—</option>
+                      <option>Léger</option><option>Modéré</option><option>Sévère</option>
+                    </select>
+                  </label>
+
+                  <label>Surface (cm²)
+                    <input type="number" id="${prefix}-eto-rm-surface" step="0.1" min="0"/>
+                  </label>
+
+                  <label>Gd moyen (mmHg)
+                    <input type="number" id="${prefix}-eto-rm-gdmoy" step="1" min="0"/>
+                  </label>
+
+                  <label>P1/2T (ms)
+                    <input type="number" id="${prefix}-eto-rm-p12" step="1" min="0"/>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Sous-champs IM -->
+              <div id="${prefix}-eto-im-inline" style="display:none;">
+                <div class="eto-subtitle">Caractéristiques IM</div>
+                <div class="eto-cell eto-subcell">
+                  <label>Direction
+                    <select id="${prefix}-eto-im-dir">
+                      <option value="">—</option>
+                      <option>Centrée</option><option>Excentrée</option>
+                    </select>
+                  </label>
+
+                  <label>Sévérité
+                    <select id="${prefix}-eto-im-sev">
+                      <option value="">—</option>
+                      <option>Légère</option><option>Modérée</option><option>Sévère</option>
+                    </select>
+                  </label>
+
+                  <label>VC (mm)
+                    <input type="number" id="${prefix}-eto-im-vc" step="1" min="0"/>
+                  </label>
+
+                  <label>P1/2T (ms)
+                    <input type="number" id="${prefix}-eto-im-p12" step="1" min="0"/>
+                  </label>
+                </div>
+              </div>
+            </td>
+            <td class="eto-imgcol">
+              ${etoImgLink("Surface mitrale", "eto_rm_plani.png")}
+              ${etoImgLink("Gd moyen mitral", "eto_rm_gdmoyen.png")}
+              ${etoImgLink("RM P1/2T", "eto_rm_1.2.png")}
+              ${etoImgLink("Classification IM", "eto_im_classif.png")}
+              ${etoImgLink("IM VC", "eto_im_VC.png")}
+              ${etoImgLink("IM P1/2T", "eto_im_1.2.png")}
+            </td>
+          </tr>
+
+          <!-- Valve tricuspide -->
+          <tr>
+            <td class="eto-sec">Valve tricuspide</td>
+            <td>
+              <div class="eto-cell">
+                <label>Diamètre anneau (mm)
+                  <input type="number" id="${prefix}-eto-anneau-tric" step="1" min="0"/>
+                </label>
+
+                <label class="checkbox">
+                  <input type="checkbox" id="${prefix}-eto-it"/>
+                  IT
+                </label>
+
+                <label id="${prefix}-eto-paps-wrap" style="display:none;">
+                  PAPs (mmHg)
+                  <input type="number" id="${prefix}-eto-paps" step="1" min="0"/>
+                </label>
+              </div>
+            </td>
+            <td class="eto-imgcol">
+              ${etoImgLink("PAPs", "eto_htap_paps_it.png")}
+            </td>
+          </tr>
+
+          <!-- Autres -->
+          <tr>
+            <td class="eto-sec">Autres</td>
+            <td>
+              <div class="eto-cell">
+                <label class="checkbox"><input type="checkbox" id="${prefix}-eto-auricule-libre" checked/> Auricule libre</label>
+                <label class="checkbox"><input type="checkbox" id="${prefix}-eto-fop-absent" checked/> Absence de FOP en PEP ≥ 6 cmH2O</label>
+                <label class="checkbox"><input type="checkbox" id="${prefix}-eto-paroi-aorte-ok" checked/> Paroi aortique intègre</label>
+              </div>
+            </td>
+            <td class="eto-imgcol"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Boutons -->
+    <div class="eto-actions">
+      <button class="btn" id="${prefix}-eto-generate">Générer le CR d'ETO</button>
+      <button class="btn ghost" id="${prefix}-eto-clear">Effacer la saisie</button>
+    </div>
+
+  </div>
+  `;
+}
+
+function etoFormHtmlCompactPlastieMitrale(prefix) {
+  const base = etoFormHtmlCompact(prefix);
+
+  // Remplace UNIQUEMENT le <tr> "Valve mitrale" du formulaire général
+  const mitraleRegex = /<tr>\s*<td class="eto-sec">Valve mitrale<\/td>[\s\S]*?<\/tr>/;
+
+  const plastieMitraleRow = `
+<tr>
+  <td class="eto-sec">Valve mitrale</td>
+
+  <td>
+    <div class="eto-cell">
+
+      <label>Mécanisme IM
+        <select id="${prefix}-eto-im-meca">
+          <option value="">—</option>
+          <option>Dilatation</option>
+          <option>Perforation</option>
+          <option>Prolapsus</option>
+          <option>Restriction</option>
+        </select>
+      </label>
+
+      <label>Centrage IM
+        <select id="${prefix}-eto-im-centrage">
+          <option value="">—</option>
+          <option>Centrée</option>
+          <option>Excentrée</option>
+        </select>
+      </label>
+
+      <label>Sévérité IM
+        <select id="${prefix}-eto-im-sev">
+          <option value="">—</option>
+          <option>Minime</option>
+          <option>Modérée</option>
+          <option>Sévère</option>
+        </select>
+      </label>
+
+      <div class="eto-inline2">
+        <label>VC (mm)
+          <input type="number" id="${prefix}-eto-im-vc" step="1" min="0"/>
+        </label>
+
+        <label>P1/2T (ms)
+          <input type="number" id="${prefix}-eto-im-p12" step="1" min="0"/>
+        </label>
+
+        <label class="checkbox">
+          <input type="checkbox" id="${prefix}-eto-sam"/>
+          SAM
+        </label>
+      </div>
+
+      <hr/>
+
+      <div class="eto-subtitle">Longueurs</div>
+
+<div class="eto-cell eto-subcell">
+  <div class="eto-inline2">
+    <label>Diamètre anneau mitral (mm)
+      <input type="number" id="${prefix}-eto-anneau-mitral" step="1" min="0"/>
+    </label>
+
+    <label>Longueur VM ant. (mm)
+      <input type="number" id="${prefix}-eto-vm-ant-l" step="1" min="0"/>
+    </label>
+
+    <label>Longueur VM post. (mm)
+      <input type="number" id="${prefix}-eto-vm-post-l" step="1" min="0"/>
+    </label>
+  </div>
+</div>
+
+
+<div class="eto-subtitle">Coaptation</div>
+<div class="eto-cell eto-subcell">
+  <div class="eto-inline2">
+    <label>Hauteur de coaptation (mm)
+      <input type="number" id="${prefix}-eto-coap-h" step="1" min="0"/>
+    </label>
+
+    <label>Profondeur de coaptation (mm)
+      <input type="number" id="${prefix}-eto-coap-d" step="1" min="0"/>
+    </label>
+  </div>
+</div>
+
+<div class="eto-subtitle">Cordages</div>
+<div class="eto-cell eto-subcell">
+  <div class="eto-inline2">
+    <label class="checkbox">
+      <input type="checkbox" id="${prefix}-eto-cord-rupt"/>
+      Rupture de cordage
+    </label>
+
+    <label>Longueur cordage VM ant. (mm)
+      <input type="number" id="${prefix}-eto-cord-ant-l" step="1" min="0"/>
+    </label>
+
+    <label>Longueur cordage VM post. (mm)
+      <input type="number" id="${prefix}-eto-cord-post-l" step="1" min="0"/>
+    </label>
+  </div>
+</div>
+
+<div class="eto-subtitle">Risque de SAM</div>
+<div class="eto-cell eto-subcell">
+  <div class="eto-inline2">
+    <label>Distance coaptation – SIV (mm)
+      <input type="number" id="${prefix}-eto-sam-dist" step="1" min="0"/>
+    </label>
+
+    <label>Angle mitro-aortique (°)
+      <input type="number" id="${prefix}-eto-mitro-aort-angle" step="1" min="0"/>
+    </label>
+  </div>
+</div>
+
+<div class="eto-subtitle">Résultat post-plastie</div>
+<div class="eto-cell eto-subcell">
+  <div class="eto-inline2">
+    <label>Gradient moyen (mmHg)
+      <input type="number" id="${prefix}-eto-post-gdmoy" step="1" min="0"/>
+    </label>
+
+    <label>Hauteur de coaptation (cH) (mm)
+      <input type="number" id="${prefix}-eto-post-ch" step="1" min="0"/>
+    </label>
+
+    <label class="checkbox">
+      <input type="checkbox" id="${prefix}-eto-fuite-resid"/>
+      Fuite résiduelle
+    </label>
+  </div>
+
+  <div id="${prefix}-eto-fuite-details" style="display:none;">
+    <label>Centrage fuite
+      <select id="${prefix}-eto-fuite-centrage">
+        <option value="">—</option>
+        <option>Centrée</option>
+        <option>Excentrée</option>
+      </select>
+    </label>
+
+    <label>Sévérité fuite
+      <select id="${prefix}-eto-fuite-sev">
+        <option value="">—</option>
+        <option>Minime</option>
+        <option>Modérée</option>
+        <option>Sévère</option>
+      </select>
+    </label>
+
+    <label class="checkbox">
+      <input type="checkbox" id="${prefix}-eto-post-sam"/>
+      SAM
+    </label>
+  </div>
+</div>
+
+    </div>
+  </td>
+
+  <td class="eto-imgcol">
+    ${etoImgLink("Classification IM 🖥️", "eto_im_classif.png")}
+    ${etoImgLink("IM VC 🖥️", "eto_im_VC.png")}
+    ${etoImgLink("IM P1/2T 🖥️", "eto_im_1.2.png")}
+    ${etoImgLink("Gd moyen mitral 🖥️", "eto_rm_gdmoyen.png")}
+    ${etoImgLink("Plastie mitrale 🖥️", "cf-plastiemitrale.png")}
+  </td>
+</tr>`;
+
+  // Si jamais la regex ne matche pas, on retourne le général (mais ça évite un crash silencieux)
+  if (!mitraleRegex.test(base)) return base;
+
+  return base.replace(mitraleRegex, plastieMitraleRow);
+}
+
+
+function initEtoFormHandlers(prefix, root) {
+  const g = (id) => root.querySelector(`#${prefix}-eto-${id}`);
+
+  const cbRA = g("ra");
+  const cbIA = g("ia");
+  const cbRM = g("rm");
+  const cbIM = g("im");
+  const cbIT = g("it");
+
+  const raInline = root.querySelector(`#${prefix}-eto-ra-inline`);
+  const iaInline = root.querySelector(`#${prefix}-eto-ia-inline`);
+  const rmInline = root.querySelector(`#${prefix}-eto-rm-inline`);
+  const imInline = root.querySelector(`#${prefix}-eto-im-inline`);
+  const papsWrap = root.querySelector(`#${prefix}-eto-paps-wrap`);
+
+  const sync = () => {
+    if (raInline) raInline.style.display = cbRA?.checked ? "block" : "none";
+    if (iaInline) iaInline.style.display = cbIA?.checked ? "block" : "none";
+    if (rmInline) rmInline.style.display = cbRM?.checked ? "block" : "none";
+    if (imInline) imInline.style.display = cbIM?.checked ? "block" : "none";
+    if (papsWrap) papsWrap.style.display = cbIT?.checked ? "inline-flex" : "none";
+  };
+
+  [cbRA, cbIA, cbRM, cbIM, cbIT].forEach(el => el?.addEventListener("change", sync));
+  sync();
+
+  // Effacer
+  g("clear")?.addEventListener("click", () => {
+    root.querySelectorAll(`#${prefix}-eto-form input, #${prefix}-eto-form select, #${prefix}-eto-form textarea`)
+      .forEach(el => {
+        if (el.tagName === "SELECT") el.value = "";
+        else if (el.type === "checkbox") el.checked = false;
+        else el.value = "";
+      });
+
+    // Thorax par défaut : Fermé
+    const thorax = g("thorax");
+    if (thorax) thorax.value = "Fermé";
+
+    // Recocher les 3 items par défaut
+    const cbAur = root.querySelector(`#${prefix}-eto-auricule-libre`);
+    const cbParoi = root.querySelector(`#${prefix}-eto-paroi-aorte-ok`);
+    const cbFop = root.querySelector(`#${prefix}-eto-fop-absent`);
+    if (cbAur) cbAur.checked = true;
+    if (cbParoi) cbParoi.checked = true;
+    if (cbFop) cbFop.checked = true;
+
+    sync();
+  });
+
+  // Générer
+  g("generate")?.addEventListener("click", () => {
+    const txt = buildEtoCompteRenduCompact(prefix, root);
+    openEtoSynthese(txt);
+  });
+}
+function initEtoFormHandlers(prefix, root) {
+  const g = (id) => root.querySelector(`#${prefix}-eto-${id}`);
+
+  const cbRA = g("ra");
+  const cbIA = g("ia");
+  const cbRM = g("rm");
+  const cbIM = g("im");
+  const cbIT = g("it");
+
+  const raInline = root.querySelector(`#${prefix}-eto-ra-inline`);
+  const iaInline = root.querySelector(`#${prefix}-eto-ia-inline`);
+  const rmInline = root.querySelector(`#${prefix}-eto-rm-inline`);
+  const imInline = root.querySelector(`#${prefix}-eto-im-inline`);
+  const papsWrap = root.querySelector(`#${prefix}-eto-paps-wrap`);
+
+  // ✅ Fuite résiduelle (plastie aortique / plastie mitrale) : show/hide centrage + sévérité si présents
+  const cbFuiteResid = root.querySelector(`#${prefix}-eto-fuite-resid`);
+  const fuiteDetails = root.querySelector(`#${prefix}-eto-fuite-details`);
+  const fuiteCentrage = root.querySelector(`#${prefix}-eto-fuite-centrage`);
+  const fuiteSev = root.querySelector(`#${prefix}-eto-fuite-sev`);
+
+  const sync = () => {
+    if (raInline) raInline.style.display = cbRA?.checked ? "block" : "none";
+    if (iaInline) iaInline.style.display = cbIA?.checked ? "block" : "none";
+    if (rmInline) rmInline.style.display = cbRM?.checked ? "block" : "none";
+    if (imInline) imInline.style.display = cbIM?.checked ? "block" : "none";
+    if (papsWrap) papsWrap.style.display = cbIT?.checked ? "inline-flex" : "none";
+
+    // ✅ Gestion fuite résiduelle (générique si les éléments existent dans le DOM)
+    if (cbFuiteResid && fuiteDetails) {
+      const on = !!cbFuiteResid.checked;
+      fuiteDetails.style.display = on ? "" : "none";
+      if (!on) {
+        if (fuiteCentrage) fuiteCentrage.value = "";
+        if (fuiteSev) fuiteSev.value = "";
+      }
+    }
+  };
+
+  [cbRA, cbIA, cbRM, cbIM, cbIT].forEach(el => el?.addEventListener("change", sync));
+  cbFuiteResid?.addEventListener("change", sync);
+  sync();
+
+  // Effacer
+  g("clear")?.addEventListener("click", () => {
+    root.querySelectorAll(
+      `#${prefix}-eto-form input, #${prefix}-eto-form select, #${prefix}-eto-form textarea`
+    ).forEach(el => {
+      if (el.tagName === "SELECT") el.value = "";
+      else if (el.type === "checkbox") el.checked = false;
+      else el.value = "";
+    });
+
+    // Thorax par défaut : Fermé
+    const thorax = g("thorax");
+    if (thorax) thorax.value = "Fermé";
+
+    // Recocher les 3 items par défaut
+    const cbAur = root.querySelector(`#${prefix}-eto-auricule-libre`);
+    const cbParoi = root.querySelector(`#${prefix}-eto-paroi-aorte-ok`);
+    const cbFop = root.querySelector(`#${prefix}-eto-fop-absent`);
+    if (cbAur) cbAur.checked = true;
+    if (cbParoi) cbParoi.checked = true;
+    if (cbFop) cbFop.checked = true;
+
+    // ✅ remet l’affichage cohérent (inclut fuite résiduelle)
+    sync();
+  });
+
+  // Générer
+  g("generate")?.addEventListener("click", () => {
+    const txt = buildEtoCompteRenduCompact(prefix, root);
+    openEtoSynthese(txt);
+  });
+}
+
+function buildEtoCompteRenduCompact(prefix, root) {
+  const q = (suffix) => root.querySelector(`#${prefix}-eto-${suffix}`);
+  const val = (el) => (el && el.value !== "" ? el.value : null);
+
+  const lines = [];
+
+// Conditions
+{
+  const thorax = val(q("thorax")) || "Fermé";
+  const nora = val(q("nora"));
+  const dobu = val(q("dobu"));
+
+  const parts = [`thorax ${thorax.toLowerCase()}`];
+  if (nora) parts.push(`noradrénaline ${nora} mg/h`);
+  if (dobu) parts.push(`dobutamine ${dobu} µg/kg/min`);
+
+  lines.push(`- <strong>Conditions</strong> : ${parts.join(", ")}.`);
+}
+
+// ===== Fonction VG =====
+{
+  const fevg = val(q("fevg"));
+  const itv = val(q("itv-ccvg"));
+  const tc = q("tcseg")?.checked;
+  const dtdvg = val(q("dtdvg"));
+  const siv = val(q("siv"));
+
+  const parts = [];
+
+  if (fevg) parts.push(`FEVG estimée à ${fevg} %`);
+  if (itv) parts.push(`ITV CCVG ${itv} cm`);
+
+  if (dtdvg) {
+    const d = Number(dtdvg);
+    if (!Number.isNaN(d)) {
+      parts.push(d >= 56 ? `VG dilaté (DTDVG ${d} mm)` : `VG non dilaté (DTDVG ${d} mm)`);
+    }
+  }
+
+  if (siv) {
+    const s = Number(siv);
+    if (!Number.isNaN(s)) {
+      parts.push(s >= 13 ? `VG hypertrophié (SIV ${s} mm)` : `VG non hypertrophié (SIV ${s} mm)`);
+    }
+  }
+
+
+  if (tc) {
+    parts.push(`présence de troubles de la cinétique segmentaire`);
+  } else {
+    parts.push(`absence de troubles de la cinétique segmentaire`);
+  }
+
+  if (parts.length) {
+    lines.push(`- <strong>Fonction VG</strong> : ${parts.join(", ")}.`);
+  }
+}
+
+
+
+// ===== Fonction VD =====
+{
+  const alt = q("vd-alt-syst")?.checked;
+  const dil = q("vd-dilate")?.checked;
+  const hyp = q("vd-hypertro")?.checked;
+  const tapse = val(q("tapse"));
+  const sprime = val(q("sprime"));
+
+  const parts = [];
+
+  if (alt) {
+    parts.push("altération de la fonction systolique du VD");
+  } else {
+    parts.push("fonction systolique du VD conservée");
+  }
+
+  if (dil) {
+    parts.push("VD dilaté");
+  } else {
+    parts.push("VD non dilaté");
+  }
+
+  if (hyp) {
+    parts.push("VD hypertrophié");
+  } else {
+    parts.push("VD non hypertrophié");
+  }
+
+  if (tapse) {
+    parts.push(`TAPSE ${tapse} mm`);
+  }
+
+  if (sprime) {
+    parts.push(`onde S’ ${sprime} cm/s`);
+  }
+
+  if (parts.length) {
+    lines.push(`- <strong>Fonction VD</strong> : ${parts.join(", ")}.`);
+  }
+}
+
+// ===== Valve aortique =====
+{
+  const ra = q("ra")?.checked;
+  const ia = q("ia")?.checked;
+  const bic = q("bicuspidie")?.checked;
+
+  const parts = [];
+
+  // Morphologie
+  parts.push(bic ? "valve aortique bicuspide" : "valve aortique tricuspide");
+
+  // Rétrécissement aortique
+  if (ra) {
+    const sev = val(q("ra-sev"));
+    const vmax = val(q("ra-vmax"));
+    const gdmax = val(q("ra-gdmax"));
+    const itvva = val(q("ra-itv"));
+    const surf = val(q("ra-surface"));
+
+    const details = [];
+if (sev) details.push(sev.toLowerCase());
+if (vmax) details.push(`Vmax ${vmax} m/s`);
+if (gdmax) details.push(`gradient max ${gdmax} mmHg`);
+if (itvva) details.push(`ITV VA ${itvva} cm`);
+if (surf) details.push(`surface ${surf} cm²`);
+
+let txt = "rétrécissement aortique";
+if (details.length) {
+  txt += ` (${details.join(", ")})`;
+}
+parts.push(txt);
+  }
+
+  // Insuffisance aortique
+  if (ia) {
+    const dir = val(q("ia-dir"));
+    const sev = val(q("ia-sev"));
+    const vc = val(q("ia-vc"));
+    const p12 = val(q("ia-p12"));
+
+    const details = [];
+
+if (dir) details.push(dir.toLowerCase());
+if (sev) details.push(sev.toLowerCase());
+if (vc) details.push(`VC ${vc} mm`);
+if (p12) details.push(`P1/2T ${p12} ms`);
+
+let txt = "insuffisance aortique";
+if (details.length) {
+  txt += ` (${details.join(", ")})`;
+}
+parts.push(txt);
+
+  }
+
+  // Cas normaux
+  if (!ra && !ia) {
+    parts.push("non fuyante, non sténosante");
+  } else if (!ra && ia) {
+    parts.push("non sténosante");
+  } else if (ra && !ia) {
+    parts.push("non fuyante");
+  }
+
+  // ⚠️ UN SEUL push = UNE SEULE LIGNE
+  if (parts.length) {
+    lines.push(`- <strong>Valve aortique</strong> : ${parts.join(", ")}.`);
+  }
+}
+
+  
+// ===== Diamètres aortiques =====
+{
+  const anneau = val(q("anneau-mm"));
+  const sinus = val(q("sinus-mm"));
+  const st = val(q("st-mm"));
+  const tub = val(q("tub-mm"));
+
+  const parts = [];
+  if (anneau) parts.push(`anneau aortique ${anneau} mm`);
+  if (sinus) parts.push(`sinus de Valsalva ${sinus} mm`);
+  if (st) parts.push(`jonction sino-tubulaire ${st} mm`);
+  if (tub) parts.push(`aorte tubulaire ${tub} mm`);
+
+  if (parts.length) {
+    lines.push(`- Diamètres aortiques : ${parts.join(", ")}.`)
+  }
+}
+
+
+// ===== Valve mitrale =====
+{
+  const anneau = val(q("anneau-mitral"));
+  const rm = q("rm")?.checked;
+  const im = q("im")?.checked;
+
+  const parts = [];
+
+  if (anneau) {
+    parts.push(`anneau mitral ${anneau} mm`);
+  }
+
+  // Rétrécissement mitral
+  if (rm) {
+    const sev = val(q("rm-sev"));
+    const surf = val(q("rm-surface"));
+    const gdm = val(q("rm-gdmoy"));
+    const p12 = val(q("rm-p12"));
+
+    const details = [];
+
+if (sev) details.push(sev.toLowerCase());
+if (surf) details.push(`surface ${surf} cm²`);
+if (gdm) details.push(`gradient moyen ${gdm} mmHg`);
+if (p12) details.push(`P1/2T ${p12} ms`);
+
+let txt = "rétrécissement mitral";
+if (details.length) {
+  txt += ` (${details.join(", ")})`;
+}
+
+parts.push(txt);
+
+  }
+
+  // Insuffisance mitrale
+  if (im) {
+    const dir = val(q("im-dir"));
+    const sev = val(q("im-sev"));
+    const vc = val(q("im-vc"));
+    const p12 = val(q("im-p12"));
+
+    const details = [];
+
+if (dir) details.push(dir.toLowerCase());
+if (sev) details.push(sev.toLowerCase());
+if (vc) details.push(`VC ${vc} mm`);
+if (p12) details.push(`P1/2T ${p12} ms`);
+
+let txt = "insuffisance mitrale";
+if (details.length) {
+  txt += ` (${details.join(", ")})`;
+}
+
+parts.push(txt);
+
+  }
+
+  // Cas normaux
+  if (!rm && !im) {
+    parts.push("non fuyante, non sténosante");
+  } else if (!rm && im) {
+    parts.push("non sténosante");
+  } else if (rm && !im) {
+    parts.push("non fuyante");
+  }
+
+  if (parts.length) {
+    lines.push(`- <strong>Diamètres aortiques</strong> :${parts.join(", ")}.`);
+  }
+}
+
+
+// ===== Tricuspide / PAPs =====
+{
+  const anneau = val(q("anneau-tric"));
+  const it = q("it")?.checked;
+  const paps = val(q("paps"));
+
+  const parts = [];
+
+  if (anneau) {
+    parts.push(`anneau tricuspide ${anneau} mm`);
+  }
+
+  if (it) {
+    if (paps) {
+      parts.push(`insuffisance tricuspide avec PAPs estimée à ${paps} mmHg`);
+    } else {
+      parts.push("insuffisance tricuspide");
+    }
+  } else {
+    parts.push("valve tricuspide non fuyante");
+  }
+
+  if (parts.length) {
+    lines.push(`- <strong>Tricuspide / PAPs</strong> :  ${parts.join(", ")}.`);
+  }
+}
+
+// ===== Autres =====
+{
+  const parts = [];
+
+  if (q("auricule-libre")?.checked) {
+    parts.push("auricule gauche libre");
+  }
+
+  if (q("fop-absent")?.checked) {
+    parts.push("absence de foramen ovale perméable");
+  }
+
+  if (q("paroi-aorte-ok")?.checked) {
+    parts.push("intégrité de la paroi aortique");
+  }
+
+  if (parts.length) {
+    lines.push(`- <strong>Autres</strong> :  ${parts.join(", ")}.`);
+  }
+}
+
+  // ✅ IMPORTANT : sinon la synthèse est vide (undefined)
+  return lines.join("\n");
+}
+
+// --- Synthèse CR (avec Copier + Fermer) ---
+function openEtoSynthese(text) {
+  const overlay = document.createElement("div");
+  overlay.className = "acr-modal";
+  overlay.classList.add("eto-modal");
+  overlay.innerHTML = `
+    <div class="acr-modal-card" role="dialog" aria-modal="true">
+      <div class="acr-modal-head">
+        <h3>Compte rendu d'ETO</h3>
+        <button class="acr-modal-close" aria-label="Fermer">✖</button>
+      </div>
+      <pre class="acr-modal-body" id="eto-synth-text" style="white-space:pre-wrap;">${(text || "—")}</pre>
+      <div class="acr-modal-actions" style="display:flex; gap:10px; justify-content:flex-end;">
+        <button class="btn" id="eto-copy">Copier</button>
+        <button class="btn ghost" id="eto-close">Fermer</button>
+      </div>
+    </div>
+  `;
+
+  const close = () => overlay.remove();
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
+  overlay.querySelector(".acr-modal-close")?.addEventListener("click", close);
+  overlay.querySelector("#eto-close")?.addEventListener("click", close);
+
+  overlay.querySelector("#eto-copy")?.addEventListener("click", async () => {
+    const t = overlay.querySelector("#eto-synth-text")?.textContent || "";
+    try {
+      await navigator.clipboard.writeText(t);
+    } catch (e) {
+      const ta = document.createElement("textarea");
+      ta.value = t;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+    }
+  });
+
+  document.body.appendChild(overlay);
+}
+
+
+
 function renderInterventionPontages() {
   const encadres = [
     {
@@ -5655,15 +7124,9 @@ function renderInterventionPontages() {
       `,
     },
     {
-  titre: "Coupes et mesures ETO",
+  titre: "Échographie trans-œsophagienne",
   html: `
-    ${etoHtmlFonctionVG()}
-    ${etoHtmlVGSegmentaire()}
-    ${etoHtmlValveAortique()}
-    ${etoHtmlValveMitrale()}
-    ${etoHtmlPTDVG()}
-    ${etoHtmlFonctionVD()}
-    ${etoHtmlHTAP()}
+    ${etoEntryButtonsHtml("pc")}
   `,
 },
     {
@@ -5690,6 +7153,10 @@ function renderInterventionPontages() {
     encadres,
   });
 
+initEtoEntryButtons("pc");
+  // IMPORTANT : initialise les 3 boutons + logique conditionnelle (RA/IA/RM/IM/IT) + modal
+  initEtoFormHandlers("pc", document);
+  
   expandPatientCharacteristics(); 
   // Calculs mg/kg globaux (Kétamine, Exacyl, Ropivacaïne, Héparine…)
   setupAnesthGlobalDoseLogic();
@@ -5876,15 +7343,9 @@ function renderInterventionRVA() {
       `,
     },
     {
-      titre: "Coupes et mesures ETO",
+     titre: "Échographie trans-œsophagienne",
   html: `
-    ${etoHtmlFonctionVG()}
-    ${etoHtmlVGSegmentaire()}
-    ${etoHtmlValveAortique()}
-    ${etoHtmlValveMitrale()}
-    ${etoHtmlPTDVG()}
-    ${etoHtmlFonctionVD()}
-    ${etoHtmlHTAP()}
+    ${etoEntryButtonsHtml("rva")}
   `,
 },
     {
@@ -5912,6 +7373,8 @@ function renderInterventionRVA() {
     encadres,
   });
 
+initEtoEntryButtons("rva");
+  
   expandPatientCharacteristics(); 
   // Calcul Kétamine / Exacyl / Ropivacaïne / Héparine à partir du poids
   setupAnesthGlobalDoseLogic();
@@ -6105,15 +7568,9 @@ function renderInterventionRVM() {
       `,
     },
     {
-      titre: "Coupes et mesures ETO",
+     titre: "Échographie trans-œsophagienne",
   html: `
-    ${etoHtmlFonctionVG()}
-    ${etoHtmlVGSegmentaire()}
-    ${etoHtmlValveAortique()}
-    ${etoHtmlValveMitrale()}
-    ${etoHtmlPTDVG()}
-    ${etoHtmlFonctionVD()}
-    ${etoHtmlHTAP()}
+    ${etoEntryButtonsHtml("rvm")}
   `,
 },
     {
@@ -6146,6 +7603,8 @@ function renderInterventionRVM() {
     encadres,
   });
 
+initEtoEntryButtons("rvm");
+  
   expandPatientCharacteristics(); 
   // Calcul global des doses (Kétamine / Exacyl / Ropi max / Héparine…)
   setupAnesthGlobalDoseLogic();
@@ -6343,15 +7802,9 @@ function renderInterventionRVT() {
       `,
     },
     {
-      titre: "Coupes et mesures ETO",
+     titre: "Échographie trans-œsophagienne",
   html: `
-    ${etoHtmlFonctionVG()}
-    ${etoHtmlVGSegmentaire()}
-    ${etoHtmlValveAortique()}
-    ${etoHtmlValveMitrale()}
-    ${etoHtmlPTDVG()}
-    ${etoHtmlFonctionVD()}
-    ${etoHtmlHTAP()}
+    ${etoEntryButtonsHtml("pc")}
   `,
 },
     {
@@ -6386,6 +7839,10 @@ function renderInterventionRVT() {
     encadres,
   });
 
+  initEtoEntryButtons("pc");
+  // IMPORTANT : initialise les 3 boutons + logique conditionnelle (RA/IA/RM/IM/IT) + modal
+  initEtoFormHandlers("pc", document);
+  
   expandPatientCharacteristics(); 
   // Calcul global poids → Kétamine / Exacyl / Ropivacaïne / Héparine
   setupAnesthGlobalDoseLogic();
@@ -6575,15 +8032,9 @@ function renderInterventionAorteAsc() {
       `,
     },
     {
-      titre: "Coupes et mesures ETO",
+      titre: "Échographie trans-œsophagienne",
   html: `
-    ${etoHtmlFonctionVG()}
-    ${etoHtmlVGSegmentaire()}
-    ${etoHtmlValveAortique()}
-    ${etoHtmlValveMitrale()}
-    ${etoHtmlPTDVG()}
-    ${etoHtmlFonctionVD()}
-    ${etoHtmlHTAP()}
+    ${etoEntryButtonsHtml("pc")}
   `,
 },
     {
@@ -6618,6 +8069,10 @@ function renderInterventionAorteAsc() {
     encadres,
   });
 
+  initEtoEntryButtons("pc");
+  // IMPORTANT : initialise les 3 boutons + logique conditionnelle (RA/IA/RM/IM/IT) + modal
+  initEtoFormHandlers("pc", document);
+  
   expandPatientCharacteristics(); 
   setupAnesthGlobalDoseLogic();
   setupAorteAscLogic();
@@ -6990,15 +8445,9 @@ function renderInterventionDissectionAo() {
       `,
     },
     {
-      titre: "Coupes et mesures ETO",
+     titre: "Échographie trans-œsophagienne",
   html: `
-    ${etoHtmlFonctionVG()}
-    ${etoHtmlVGSegmentaire()}
-    ${etoHtmlValveAortique()}
-    ${etoHtmlValveMitrale()}
-    ${etoHtmlPTDVG()}
-    ${etoHtmlFonctionVD()}
-    ${etoHtmlHTAP()}
+    ${etoEntryButtonsHtml("pc")}
   `,
 },
     {
@@ -7055,6 +8504,10 @@ function renderInterventionDissectionAo() {
     encadres,
   });
 
+initEtoEntryButtons("pc");
+  // IMPORTANT : initialise les 3 boutons + logique conditionnelle (RA/IA/RM/IM/IT) + modal
+  initEtoFormHandlers("pc", document);
+  
   expandPatientCharacteristics(); 
   setupAnesthGlobalDoseLogic();
   setupDissectionAoLogic();
@@ -7243,15 +8696,9 @@ function renderInterventionTransplantAnesth() {
       `,
     },
     {
-      titre: "Coupes et mesures ETO",
+      titre: "Échographie trans-œsophagienne",
   html: `
-    ${etoHtmlFonctionVG()}
-    ${etoHtmlVGSegmentaire()}
-    ${etoHtmlValveAortique()}
-    ${etoHtmlValveMitrale()}
-    ${etoHtmlPTDVG()}
-    ${etoHtmlFonctionVD()}
-    ${etoHtmlHTAP()}
+    ${etoEntryButtonsHtml("pc")}
   `,
 },
     {
@@ -7316,6 +8763,10 @@ function renderInterventionTransplantAnesth() {
     encadres,
   });
 
+  initEtoEntryButtons("pc");
+  // IMPORTANT : initialise les 3 boutons + logique conditionnelle (RA/IA/RM/IM/IT) + modal
+  initEtoFormHandlers("pc", document);
+  
   expandPatientCharacteristics(); 
   // Met à jour tous les spans [data-per-kg] éventuels de la partie Anesthésie
   setupAnesthGlobalDoseLogic();
