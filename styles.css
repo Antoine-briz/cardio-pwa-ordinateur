@@ -4385,14 +4385,14 @@ body.screen-square .eto-right{
 
 @media (min-width: 1024px) {
 
-  /* Layout global : tableau + synthèse */
-  .eto-desktop-grid{
-    display: grid;
-    grid-template-columns: 1fr clamp(220px, 24vw, 340px); /* synthèse */
-    gap: 12px;
-    align-items: stretch;
-    min-width: 0;
-  }
+/* ===== Layout desktop ETO corrigé ===== */
+.eto-desktop-grid{
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(380px, 34%);
+  gap: 16px;
+  align-items: stretch;
+}
+
 
   /* Tableau */
   .eto-cr-table{
@@ -4504,4 +4504,18 @@ body.screen-square .eto-right{
   display: flex;
   flex-direction: column;   /* l’un au-dessus de l’autre */
   gap: 10px;                /* ✅ espace entre boutons */
+}
+
+/* Encadré synthèse : largeur lisible garantie */
+.eto-synth-panel{
+  min-width: 380px;
+  max-width: 520px;
+  width: 100%;
+}
+
+/* Écrans carrés : synthèse un peu plus étroite mais lisible */
+@media (min-width: 1024px) and (max-aspect-ratio: 6/5){
+  .eto-desktop-grid{
+    grid-template-columns: minmax(0, 1fr) minmax(340px, 30%);
+  }
 }
