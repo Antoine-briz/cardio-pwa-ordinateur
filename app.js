@@ -6785,7 +6785,11 @@ function buildEtoCompteRenduCompact(prefix, root) {
   // ===== Valve aortique =====
   {
     const ra = q("ra") ? q("ra").checked : false;
-    const ia = q("ia") ? q("ia").checked : false;
+    const isPlastieAortique =
+  !!root.querySelector(`#${prefix}-eto-ia-meca`) ||   // champ spécifique plastie ao
+  !!root.querySelector(`#${prefix}-eto-eto-rcc-eh`);  // champs cuspides
+
+const ia = (q("ia") ? q("ia").checked : false) || isPlastieAortique;
     const bic = q("bicuspidie") ? q("bicuspidie").checked : false;
 
     const parts = [];
@@ -6811,22 +6815,26 @@ function buildEtoCompteRenduCompact(prefix, root) {
       parts.push(txt);
     }
 
-    if (ia) {
-      const dir = val(q("ia-dir"));
-      const sev = val(q("ia-sev"));
-      const vc = val(q("ia-vc"));
-      const p12 = val(q("ia-p12"));
+    // IA (général OU plastie aortique)
+if (ia) {
+  const dir = val(q("ia-dir")) || val(q("ia-centrage")); // général vs plastie
+  const sev = val(q("ia-sev"));
+  const vc  = val(q("ia-vc"));
+  const p12 = val(q("ia-p12"));
+  const meca = val(q("ia-meca")); // plastie aortique
 
-      const details = [];
-      if (dir) details.push(dir.toLowerCase());
-      if (sev) details.push(sev.toLowerCase());
-      if (vc) details.push(`VC ${vc} mm`);
-      if (p12) details.push(`P1/2T ${p12} ms`);
+  const details = [];
+  if (meca) details.push(meca.toLowerCase());
+  if (dir)  details.push(dir.toLowerCase());
+  if (sev)  details.push(sev.toLowerCase());
+  if (vc)   details.push(`VC ${vc} mm`);
+  if (p12)  details.push(`P1/2T ${p12} ms`);
 
-      let txt = "insuffisance aortique";
-      if (details.length) txt += ` (${details.join(", ")})`;
-      parts.push(txt);
-    }
+  let txt = "insuffisance aortique";
+  if (details.length) txt += ` (${details.join(", ")})`;
+  parts.push(txt);
+}
+
 
     if (!ra && !ia) parts.push("non fuyante, non sténosante");
     else if (!ra && ia) parts.push("non sténosante");
@@ -6887,7 +6895,12 @@ function buildEtoCompteRenduCompact(prefix, root) {
   {
     const anneau = val(q("anneau-mitral"));
     const rm = q("rm") ? q("rm").checked : false;
-    const im = q("im") ? q("im").checked : false;
+    const isPlastieMitrale =
+  !!root.querySelector(`#${prefix}-eto-im-meca`) ||   // si tu as ce champ en plastie
+  !!root.querySelector(`#${prefix}-eto-coaptation`);  // ou un champ spécifique existant
+
+const im = (q("im") ? q("im").checked : false) || isPlastieMitrale;
+
 
     const parts = [];
 
@@ -7245,7 +7258,7 @@ function renderInterventionRVA() {
     <div class="form">
 
       <div class="row">
-        <label>Type d'intervention
+        <label>Type&nbsp;d'intervention
           <select id="rva-type">
             <option value="rva" selected>RVA</option>
             <option value="plastie">Plastie aortique</option>
@@ -7474,7 +7487,7 @@ function renderInterventionRVM() {
     <div class="form">
 
       <div class="row">
-        <label>Type d'intervention
+        <label>Type&nbsp;d'intervention
           <select id="rvm-type">
             <option value="rvm" selected>RVM</option>
             <option value="plastie">Plastie mitrale</option>
