@@ -4477,3 +4477,10 @@ body.screen-square .eto-right{
   flex-wrap: wrap;
   margin-top: 14px;
 }
+
+.btn-danger{
+  background-color: #c62828;
+  border-color: #c62828;
+  color: #fff;
+}
+.btn-danger:hover{ background-color:#b71c1c; }
