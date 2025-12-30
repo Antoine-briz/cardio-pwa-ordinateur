@@ -4453,3 +4453,27 @@ body.screen-square .eto-right{
     width: clamp(110px, 16vw, 210px);
   }
 }
+
+/* Menu Anesthésie : grille 2x2 */
+.anesth-cards{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  align-items: stretch;
+}
+
+/* Sur petit écran, repasse en 1 colonne si nécessaire */
+@media (max-width: 520px){
+  .anesth-cards{
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Boutons sous les cartes : centrés + espacés */
+.anesth-top-row{
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
