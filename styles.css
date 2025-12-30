@@ -4499,3 +4499,9 @@ body.screen-square .eto-right{
   margin: 0 !important;
   line-height: 1.2;
 }
+
+.antibio-btn-group{
+  display: flex;
+  flex-direction: column;   /* l’un au-dessus de l’autre */
+  gap: 10px;                /* ✅ espace entre boutons */
+}
