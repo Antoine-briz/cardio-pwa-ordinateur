@@ -4376,3 +4376,80 @@ body.screen-square .eto-right{
   }
 
 }
+
+/* ===========================
+   ETO Desktop – Adaptation automatique largeur écran
+   - Col 2 (saisie) préservée
+   - Col 1 + Col 3 + Synthèse se compressent
+   =========================== */
+
+@media (min-width: 1024px) {
+
+  /* Layout global : tableau + synthèse */
+  .eto-desktop-grid{
+    display: grid;
+    grid-template-columns: 1fr clamp(220px, 24vw, 340px); /* synthèse */
+    gap: 12px;
+    align-items: stretch;
+    min-width: 0;
+  }
+
+  /* Tableau */
+  .eto-cr-table{
+    width: 100%;
+    table-layout: fixed; /* 🔑 indispensable */
+  }
+
+  /* Colonne 1 : Fonction/structure (réductible) */
+  .eto-cr-table col.eto-col-1{
+    width: clamp(120px, 16vw, 220px);
+  }
+
+  /* Colonne 2 : Donnée/mesure (NE PAS TOUCHER) */
+  .eto-cr-table col.eto-col-2{
+    width: auto;
+  }
+
+  /* Colonne 3 : Tutoriel (réductible) */
+  .eto-cr-table col.eto-col-3{
+    width: clamp(130px, 18vw, 240px);
+  }
+
+  /* Encadré synthèse */
+  .eto-synth-panel{
+    width: 100%;
+    min-width: 0;
+  }
+
+  /* Sécurité anti-débordement */
+  .eto-left,
+  .eto-right,
+  .eto-table-wrap{
+    min-width: 0;
+  }
+
+  .eto-imgcol a{
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+/* ===========================
+   Écrans carrés (plus étroits)
+   =========================== */
+@media (min-width: 1024px) and (max-aspect-ratio: 6/5) {
+
+  .eto-desktop-grid{
+    grid-template-columns: 1fr clamp(200px, 22vw, 280px);
+  }
+
+  .eto-cr-table col.eto-col-1{
+    width: clamp(100px, 14vw, 180px);
+  }
+
+  .eto-cr-table col.eto-col-3{
+    width: clamp(110px, 16vw, 210px);
+  }
+}
