@@ -4326,3 +4326,53 @@ body.screen-square .eto-right{
 #rva-eto-open, #rvm-eto-open {
   margin-left: 10px;    /* espace entre les 2 boutons si sur même ligne */
 }
+
+/* ===== Desktop : Type d'intervention visible en thème clair ===== */
+@media (min-width: 1024px) {
+
+  /* RVA / Plastie aortique */
+  #rva-type,
+  #rvm-type {
+    background: #fff !important;
+    color: #000 !important;
+    border: 2px solid #000 !important;
+  }
+
+}
+/* ===== Desktop : réduire colonne gauche tableau ETO ===== */
+@media (min-width: 1024px) {
+
+  .eto-cr table col.eto-col-left {
+    width: 22% !important;   /* ≈ -40% (au lieu de ~36%) */
+  }
+
+  .eto-cr table col.eto-col-middle {
+    width: auto;             /* laisse respirer */
+  }
+
+  .eto-cr table col.eto-col-right {
+    width: 20%;
+  }
+
+}
+@media (min-width: 1024px) {
+
+  .eto-cr table td:first-child {
+    width: 22% !important;
+    white-space: nowrap;
+  }
+
+}
+/* ===== Desktop : réduire encadré synthèse ETO ===== */
+@media (min-width: 1024px) {
+
+  .eto-synth-panel {
+    width: 28% !important;     /* ≈ -20% (ex : 35% → 28%) */
+    min-width: 260px;          /* garde lisibilité */
+  }
+
+  .eto-cr-panel {
+    flex: 1 1 auto;            /* tableau prend le reste */
+  }
+
+}
