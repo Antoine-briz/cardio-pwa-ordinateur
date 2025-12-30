@@ -154,17 +154,8 @@ function renderHome() {
 function renderAnesthMenu() {
   $app.innerHTML = `
     <section class="anesth-menu">
-    <div class="title-strip">
+      <div class="title-strip">
         <img src="img/titre3.png" alt="Titre de l'application" class="title-strip-img">
-      </div>
-
-      <div class="anesth-top-row">
-        <button class="btn" onclick="location.hash = '#/anesthesie/consultations'">
-          Consultations
-        </button>
-        <button class="btn" onclick="location.hash = '#/anesthesie/antibiopro'">
-          Antibioprophylaxie
-        </button>
       </div>
 
       <div class="anesth-cards">
@@ -188,9 +179,21 @@ function renderAnesthMenu() {
           <h3>Radio-vasculaire</h3>
         </div>
       </div>
+
+      <!-- ✅ Boutons déplacés sous les encadrés -->
+      <div class="anesth-top-row">
+        <button class="btn" onclick="location.hash = '#/anesthesie/consultations'">
+          Consultations
+        </button>
+        <button class="btn" onclick="location.hash = '#/anesthesie/antibiopro'">
+          Antibioprophylaxie
+        </button>
+      </div>
+
     </section>
   `;
 }
+
 
 
 // Lance tout après chargement du DOM
