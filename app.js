@@ -116,24 +116,31 @@ function renderHome() {
         </div>
       </div>
 
-      <div class="home-actions">
-  <button class="btn" onclick="openHopiaPlanning()">
-    Planning médical
+     <div class="home-buttons">
+  <button
+  class="btn home-btn home-primary"
+  onclick="openHopiaPlanning()">
+  Planning médical
+</button>
+
+  <button
+    class="btn home-btn home-primary"
+    onclick="location.hash = '#/annuaire'">
+    Annuaire
   </button>
 
-  <button class="btn" onclick="location.hash='#/anesthesie'">
-    Anesthésie
+  <button
+    class="btn home-btn home-primary"
+    onclick="location.hash = '#/codes'">
+    Codes d’accès
   </button>
 
-  <button class="btn" onclick="location.hash='#/reanimation'">
-    Réanimation
-  </button>
-
-  <button class="btn" onclick="location.hash='#/consultations'">
-    Consultations
+  <button
+    class="btn home-btn home-danger"
+    onclick="location.hash = '#/acr'">
+    Arrêt cardio-respiratoire
   </button>
 </div>
-
     </section>
   `;
 }
