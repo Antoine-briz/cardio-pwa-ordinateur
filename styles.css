@@ -4484,3 +4484,18 @@ body.screen-square .eto-right{
   color: #fff;
 }
 .btn-danger:hover{ background-color:#b71c1c; }
+
+/* ===== Alignement parfait boutons ETO (RVA / RVM) ===== */
+.eto-entry-buttons{
+  display: flex !important;
+  align-items: center !important;   /* 🔑 même ligne verticale */
+  justify-content: flex-start;
+  gap: 12px;
+  flex-wrap: nowrap;                /* 🔑 empêche le décalage */
+}
+
+/* Sécurité : mêmes dimensions visuelles */
+.eto-entry-buttons .btn{
+  margin: 0 !important;
+  line-height: 1.2;
+}
