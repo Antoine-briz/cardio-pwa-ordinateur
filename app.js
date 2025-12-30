@@ -182,12 +182,12 @@ function renderAnesthMenu() {
 
       <!-- ✅ Boutons déplacés sous les encadrés -->
       <div class="anesth-top-row">
-        <button class="btn" onclick="location.hash = '#/anesthesie/consultations'">
-          Consultations
-        </button>
-        <button class="btn" onclick="location.hash = '#/anesthesie/antibiopro'">
-          Antibioprophylaxie
-        </button>
+        <button class="btn btn-danger" onclick="location.hash = '#/anesthesie/consultations'">
+  Consultations
+</button>
+<button class="btn btn-danger" onclick="location.hash = '#/anesthesie/antibiopro'">
+  Antibioprophylaxie
+</button>
       </div>
 
     </section>
@@ -7038,8 +7038,6 @@ function openEtoSynthese(text) {
 
   document.body.appendChild(overlay);
 }
-
-
 
 function renderInterventionPontages() {
   const encadres = [
