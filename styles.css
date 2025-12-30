@@ -4270,3 +4270,15 @@ body.screen-square .eto-right{
 .eto-synth-html{
   white-space: pre-wrap;
 }
+
+/* ===========================
+   Plastie aortique – cuspides
+   Champs eH / gH / LBL plus étroits
+   =========================== */
+
+.eto-cusp-line input[type="number"] {
+  width: 48px !important;   /* ≈ moitié des inputs standards */
+  min-width: 48px !important;
+  padding: 2px 4px !important;
+  font-size: 0.85em;
+}
