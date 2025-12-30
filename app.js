@@ -117,11 +117,9 @@ function renderHome() {
       </div>
 
       <div class="home-buttons">
-  <button
-    class="btn home-btn home-primary"
-    onclick="window.open('files/planning_medical.xlsx')">
-    Planning médical
-  </button>
+  <button class="btn" onclick="openHopiaPlanning()">
+  Planning médical
+</button>
 
   <button
     class="btn home-btn home-primary"
@@ -16679,28 +16677,26 @@ function renderCecMenu() {
 //  PAGES “PLANNING” ET “ANNUAIRE” (PLACEHOLDERS)
 // =====================================================================
 
-function renderPlanning() {
-  $app.innerHTML = `
-    <section>
-      ${sectionHeader("Planning médical", "planning.png")}
+function openHopiaPlanning() {
+  const hopiaWebUrl = "https://app.hopia.eu/app/my-plannings";
 
-      <div class="card">
-        <p>Le planning médical s’affiche ci-dessous. Vous pouvez le faire défiler ou l’ouvrir dans un nouvel onglet.</p>
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-        <div style="margin-top:12px; height:70vh;">
-          <iframe
-            src="planning-medical.pdf"
-            style="width:100%; height:100%; border:none;"
-          ></iframe>
-        </div>
+  if (isMobile) {
+    // Tentative ouverture app Hopia (deep link)
+    const hopiaAppUrl = "hopia://app/my-plannings";
 
-        <p style="margin-top:8px; font-size:0.9rem;">
-          Si le document ne s’affiche pas, vous pouvez le
-          <a href="planning-medical.pdf" target="_blank" rel="noopener noreferrer">télécharger ici</a>.
-        </p>
-      </div>
-    </section>
-  `;
+    // Fallback vers web si l'app n'est pas installée
+    const timeout = setTimeout(() => {
+      window.location.href = hopiaWebUrl;
+    }, 800);
+
+    // Si l'app s'ouvre, le navigateur perd le focus → timeout annulé implicitement
+    window.location.href = hopiaAppUrl;
+  } else {
+    // Ordinateur → site web direct
+    window.open(hopiaWebUrl, "_blank");
+  }
 }
 
 function renderAnnuaire() {
