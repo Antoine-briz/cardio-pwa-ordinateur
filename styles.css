@@ -4282,3 +4282,28 @@ body.screen-square .eto-right{
   padding: 2px 4px !important;
   font-size: 0.85em;
 }
+
+/* === Plastie aortique : cuspides sur 1 ligne === */
+.eto-cr .eto-cusp-line{
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: nowrap !important;     /* ✅ interdit de passer à la ligne */
+  gap: 8px !important;
+}
+
+.eto-cr .eto-cusp-line label{
+  display: inline-flex !important;  /* ✅ évite les labels en bloc */
+  align-items: center !important;
+  gap: 6px !important;
+  white-space: nowrap !important;
+  margin: 0 !important;
+}
+
+/* ✅ Surcharge la largeur par une règle PLUS spécifique que .eto-compact input[...] */
+.eto-cr .eto-cusp-line input[type="number"]{
+  width: 40px !important;           /* ~ moitié */
+  min-width: 40px !important;
+  padding: 0 4px !important;
+  height: 22px !important;
+  box-sizing: border-box !important;
+}
