@@ -5605,7 +5605,11 @@ function etoFormHtmlCompact(prefix) {
 
         <div class="eto-table-wrap">
           <table class="eto-cr-table">
-
+<colgroup>
+  <col class="eto-col-1">
+  <col class="eto-col-2">
+  <col class="eto-col-3">
+</colgroup>
             <thead>
               <tr>
                 <th class="col-ana">Fonction/structure</th>
@@ -6021,6 +6025,11 @@ function etoFormHtmlCompactPlastieAortique(prefix) {
         <!-- Tableau (scroll horizontal sur smartphone) -->
         <div class="eto-table-wrap">
           <table class="eto-cr-table">
+<colgroup>
+  <col class="eto-col-1">
+  <col class="eto-col-2">
+  <col class="eto-col-3">
+</colgroup>
 
             <thead>
               <tr>
