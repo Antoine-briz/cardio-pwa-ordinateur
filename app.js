@@ -12739,6 +12739,7 @@ function renderReanAntibiotherapieMenu() {
         </div>
 
         <!-- Bouton rouge PDF -->
+         <div style="margin-top:20px;">
         <div class="antibio-btn-group">
   <button class="btn btn-red"
           onclick="window.open('files/MITIC.pdf', '_blank')">
