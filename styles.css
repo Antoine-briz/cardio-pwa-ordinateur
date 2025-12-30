@@ -4505,3 +4505,24 @@ body.screen-square .eto-right{
   flex-direction: column;   /* l’un au-dessus de l’autre */
   gap: 10px;                /* ✅ espace entre boutons */
 }
+
+/* ===========================
+   Menu anesthésie – cartes +30%
+   =========================== */
+
+.anesth-card{
+  transform: scale(1.3);          /* +30% */
+  transform-origin: center;
+}
+
+/* Corrige les espacements pour éviter chevauchement */
+.anesth-cards{
+  gap: 24px;                      /* augmente l’espace entre cartes */
+}
+
+/* Sécurité : évite débordement sur petits écrans */
+@media (max-width: 768px){
+  .anesth-card{
+    transform: scale(1.15);       /* un peu moins sur mobile */
+  }
+}
