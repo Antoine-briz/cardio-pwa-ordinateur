@@ -4307,3 +4307,22 @@ body.screen-square .eto-right{
   height: 22px !important;
   box-sizing: border-box !important;
 }
+
+/* ETO – boutons d’entrée (Coupes/Mesures + Compte rendu) : espace et gap */
+.eto-entry-buttons {
+  display: flex;
+  gap: 10px;            /* espace entre les 2 boutons */
+  margin-top: 8px;      /* espace sous le titre */
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+/* Si ton HTML n’a pas de wrapper .eto-entry-buttons, alors cible directement les IDs */
+#rva-eto-goto, #rva-eto-open,
+#rvm-eto-goto, #rvm-eto-open {
+  margin-top: 8px;
+}
+
+#rva-eto-open, #rvm-eto-open {
+  margin-left: 10px;    /* espace entre les 2 boutons si sur même ligne */
+}
