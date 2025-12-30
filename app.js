@@ -12739,15 +12739,18 @@ function renderReanAntibiotherapieMenu() {
         </div>
 
         <!-- Bouton rouge PDF -->
-        <div class="atb-pdf-link">
-          <button class="btn btn-danger"
-        onclick="window.open('files/MITIC.pdf', '_blank')">
-  Protocoles MITIC
-</button>
-          <button class="btn btn-red" onclick='openPdf("Bactériologie clinique.pdf")'>
-            Bactériologie clinique en réanimation
-          </button>
-        </div>
+        <div class="antibio-btn-group">
+  <button class="btn btn-red"
+          onclick="window.open('files/MITIC.pdf', '_blank')">
+    Protocoles MITIC
+  </button>
+
+  <button class="btn btn-red"
+          onclick='openPdf("Bactériologie clinique.pdf")'>
+    Bactériologie clinique en réanimation
+  </button>
+</div>
+
 
         <div id="atb-section-root"></div>
       </div>
