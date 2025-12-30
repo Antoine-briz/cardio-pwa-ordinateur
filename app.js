@@ -6175,7 +6175,7 @@ function etoFormHtmlCompactPlastieAortique(prefix) {
                       <label>gH (mm)
                         <input type="number" id="${p("eto-rcc-gh")}" step="1" min="0"/>
                       </label>
-                      <label>Long. bord libre (mm)
+                      <label>Bord libre (mm)
                         <input type="number" id="${p("eto-rcc-lbl")}" step="1" min="0"/>
                       </label>
                     </div>
@@ -6188,7 +6188,7 @@ function etoFormHtmlCompactPlastieAortique(prefix) {
                       <label>gH (mm)
                         <input type="number" id="${p("eto-lcc-gh")}" step="1" min="0"/>
                       </label>
-                      <label>Long. bord libre (mm)
+                      <label>Bord libre (mm)
                         <input type="number" id="${p("eto-lcc-lbl")}" step="1" min="0"/>
                       </label>
                     </div>
@@ -6201,7 +6201,7 @@ function etoFormHtmlCompactPlastieAortique(prefix) {
                       <label>gH (mm)
                         <input type="number" id="${p("eto-ncc-gh")}" step="1" min="0"/>
                       </label>
-                      <label>Long. bord libre (mm)
+                      <label>Bord libre (mm)
                         <input type="number" id="${p("eto-ncc-lbl")}" step="1" min="0"/>
                       </label>
                     </div>
@@ -6868,7 +6868,7 @@ function buildEtoCompteRenduCompact(prefix, root) {
       const items = [];
       if (eh) items.push(`eH ${eh} mm`);
       if (gh) items.push(`gH ${gh} mm`);
-      if (lbl) items.push(`long. bord libre ${lbl} mm`);
+      if (lbl) items.push(`Bord libre ${lbl} mm`);
 
       return `- <strong>${label}</strong> : ${items.join(", ")}.`;
     };
