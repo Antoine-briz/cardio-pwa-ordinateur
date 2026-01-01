@@ -17115,37 +17115,27 @@ function renderAnnuaire() {
         <tr><td>Réanimation chirurgicale — 3ème étage</td><td>Unité 2 (Ch 307 à 312)</td><td>65 649</td></tr>
         <tr><td>Réanimation chirurgicale — 3ème étage</td><td>Unité 3 (Ch 314 à 319)</td><td>65 650</td></tr>
 
-        <!-- ================= ÉQUIPE PARAMÉDICALE DAR ================= -->
-        <tr>
-          <td colspan="3" style="font-weight:bold; background:#f2f2f2;">
-            Équipe paramédicale — DAR
-          </td>
-        </tr>
-        <tr><td>DAR</td><td>CP DMU</td><td>27 865</td></tr>
-        <tr><td>DAR</td><td>CSS IADE</td><td>27 727</td></tr>
-        <tr><td>DAR</td><td>Cadre de santé IADE — MEALLAN Marilyn</td><td>63 901</td></tr>
-        <tr><td>DAR</td><td>Cadre de santé IADE — ANGELI Nicolas</td><td>27 270</td></tr>
-        <tr><td>DAR</td><td>IADE bloc chirurgie cardiaque</td><td>26 283</td></tr>
-        <tr><td>DAR</td><td>IADE PTT 1er étage</td><td>28 110</td></tr>
-        <tr><td>DAR</td><td>Fax bureau IADE</td><td>63 902</td></tr>
-        <tr><td>DAR</td><td>AS anesthésie</td><td>27 200</td></tr>
+       <!-- ================= ÉQUIPE PARAMÉDICALE DAR ================= -->
+        <tr><td>Equipe paramédicale DAR</td><td>CP DMU</td><td>27 865</td></tr>
+        <tr><td>Equipe paramédicale DAR</td><td>CSS IADE</td><td>27 727</td></tr>
+        <tr><td>Equipe paramédicale DAR</td><td>Cadre de santé IADE — MEALLAN Marilyn</td><td>63 901</td></tr>
+        <tr><td>Equipe paramédicale DAR</td><td>Cadre de santé IADE — ANGELI Nicolas</td><td>27 270</td></tr>
+        <tr><td>Equipe paramédicale DAR</td><td>IADE bloc chirurgie cardiaque</td><td>26 283</td></tr>
+        <tr><td>Equipe paramédicale DAR</td><td>IADE PTT 1er étage</td><td>28 110</td></tr>
+        <tr><td>Equipe paramédicale DAR</td><td>Fax bureau IADE</td><td>63 902</td></tr>
+        <tr><td>Equipe paramédicale DAR</td><td>AS anesthésie</td><td>27 200</td></tr>
 
         <!-- ================= BLOC CARDIO-VASCULAIRE ================= -->
-        <tr>
-          <td colspan="3" style="font-weight:bold; background:#f2f2f2;">
-            Bloc de chirurgie cardio-vasculaire — 3ème étage
-          </td>
-        </tr>
-        <tr><td>Bloc cardio-vasculaire</td><td>Coordination</td><td>27 383 ou 66 638</td></tr>
-        <tr><td>Bloc cardio-vasculaire</td><td>Consultation — Accueil</td><td>65 638</td></tr>
-        <tr><td>Bloc cardio-vasculaire</td><td>Consultation — Fax</td><td>65 639</td></tr>
-        <tr><td>Bloc cardio-vasculaire</td><td>POUPON Estelle</td><td>27 994</td></tr>
-        <tr><td>Bloc cardio-vasculaire</td><td>IBODE chirurgie cardiaque</td><td>27 311</td></tr>
-        <tr><td>Bloc cardio-vasculaire</td><td>IBODE chirurgie vasculaire</td><td>75 705</td></tr>
-        <tr><td>Bloc cardio-vasculaire</td><td>AS chirurgie cardiaque</td><td>26 400 / 80 568 / 26 099</td></tr>
-        <tr><td>Bloc cardio-vasculaire</td><td>AS chirurgie vasculaire</td><td>80 878</td></tr>
-        <tr><td>Bloc cardio-vasculaire</td><td>Brancardier vasculaire / salle 6</td><td>26 427</td></tr>
-        <tr><td>Bloc cardio-vasculaire</td><td>Salles 1 à 9 / Couloir</td><td>65 611 à 65 618</td></tr>
+        <tr><td>Bloc cardio-vasculaire 3ème</td><td>Coordination</td><td>27 383 ou 66 638</td></tr>
+        <tr><td>Bloc cardio-vasculaire 3ème</td><td>Consultation — Accueil</td><td>65 638</td></tr>
+        <tr><td>Bloc cardio-vasculaire 3ème</td><td>Consultation — Fax</td><td>65 639</td></tr>
+        <tr><td>Bloc cardio-vasculaire 3ème</td><td>POUPON Estelle</td><td>27 994</td></tr>
+        <tr><td>Bloc cardio-vasculaire 3ème</td><td>IBODE chirurgie cardiaque</td><td>27 311</td></tr>
+        <tr><td>Bloc cardio-vasculaire 3ème</td><td>IBODE chirurgie vasculaire</td><td>75 705</td></tr>
+        <tr><td>Bloc cardio-vasculaire 3ème</td><td>AS chirurgie cardiaque</td><td>26 400 / 80 568 / 26 099</td></tr>
+        <tr><td>Bloc cardio-vasculaire 3ème</td><td>AS chirurgie vasculaire</td><td>80 878</td></tr>
+        <tr><td>Bloc cardio-vasculaire 3ème</td><td>Brancardier vasculaire / salle 6</td><td>26 427</td></tr>
+        <tr><td>Bloc cardio-vasculaire 3ème</td><td>Salles 1 à 9 / Couloir</td><td>65 611 à 65 618</td></tr>
 
       </tbody>
     </table>
