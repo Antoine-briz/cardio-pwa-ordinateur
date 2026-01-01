@@ -16695,6 +16695,66 @@ function openHopiaPlanning() {
   }
 }
 
+// Fusion automatique de la colonne "Nom" (1ère colonne) sur les répétitions consécutives
+function mergeAnnuaireFirstColumn(table) {
+  if (!table) return;
+  const tbody = table.querySelector("tbody");
+  if (!tbody) return;
+
+  const rows = Array.from(tbody.querySelectorAll("tr"));
+
+  let lastText = null;
+  let lastCell = null;
+  let span = 1;
+
+  const flush = () => {
+    if (lastCell && span > 1) lastCell.rowSpan = span;
+    span = 1;
+  };
+
+  for (const tr of rows) {
+    // Ignore les lignes "titre de sous-section" (colspan=3)
+    const tdAll = tr.querySelectorAll("td");
+    if (tdAll.length === 1 && tdAll[0].hasAttribute("colspan")) {
+      flush();
+      lastText = null;
+      lastCell = null;
+      continue;
+    }
+
+    const firstTd = tr.querySelector("td:first-child");
+    if (!firstTd) continue;
+
+    const txt = (firstTd.textContent || "").trim();
+
+    // Si cellule vide ou très courte, on ne fusionne pas
+    if (!txt) {
+      flush();
+      lastText = null;
+      lastCell = null;
+      continue;
+    }
+
+    if (txt === lastText) {
+      span += 1;
+      // On supprime la cellule "Nom" répétée sur les lignes suivantes
+      firstTd.remove();
+    } else {
+      flush();
+      lastText = txt;
+      lastCell = firstTd;
+      span = 1;
+    }
+  }
+
+  flush();
+}
+
+function mergeAllAnnuaireTables(root = document) {
+  root.querySelectorAll("table.annuaire-table").forEach(mergeAnnuaireFirstColumn);
+}
+
+
 function renderAnnuaire() {
   const encadres = [
 
@@ -17370,6 +17430,8 @@ function renderAnnuaire() {
     encadres,
   });
 
+  setTimeout(() => mergeAllAnnuaireTables($app), 0);
+  
 // ==========================================================
 // Annuaire - Recherche + Résultats (robuste + diagnostic)
 // ==========================================================
