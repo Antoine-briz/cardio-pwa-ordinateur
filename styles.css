@@ -4554,3 +4554,34 @@ body.screen-square .eto-right{
   line-height: 1.35;
   white-space: pre-wrap;
 }
+
+/* =====================================================
+   Anesthésie – Uniformisation taille de police
+   Encadrés interventionPage (toutes spécialités)
+   ===================================================== */
+
+/* Encadrés principaux des pages d’intervention */
+.intervention-page .card,
+.intervention-page .encadre,
+.intervention-shell .card,
+.intervention-shell .encadre {
+  font-size: 1rem;        /* taille de référence (identique cardio / struct) */
+  line-height: 1.4;
+}
+
+/* Titres d’encadrés */
+.intervention-page .card h3,
+.intervention-page .encadre h3,
+.intervention-shell .card h3,
+.intervention-shell .encadre h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+/* Sécurité : labels et texte interne */
+.intervention-page label,
+.intervention-shell label,
+.intervention-page p,
+.intervention-shell p {
+  font-size: 1rem;
+}
