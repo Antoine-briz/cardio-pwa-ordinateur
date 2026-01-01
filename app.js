@@ -12707,10 +12707,6 @@ function renderReanAssistCardioWest() {
   });
 }
 
-// =====================================================================
-//  RÉANIMATION – ANTIBIOTHÉRAPIE (5 sous-parties existantes ATB)
-// =====================================================================
-
 function renderReanAntibiotherapieMenu() {
   $app.innerHTML = `
     <section class="intervention-shell">
@@ -12738,20 +12734,20 @@ function renderReanAntibiotherapieMenu() {
           </button>
         </div>
 
-        <!-- Bouton rouge PDF -->
-         <div style="margin-top:20px;">
-        <div class="antibio-btn-group">
-  <button class="btn btn-red"
-          onclick="window.open('files/MITIC.pdf', '_blank')">
-    Protocoles MITIC
-  </button>
+        <!-- Boutons rouges PDF -->
+        <div style="margin-top:20px;">
+          <div class="antibio-btn-group">
+            <button class="btn btn-red"
+                    onclick="window.open('files/MITIC.pdf', '_blank')">
+              Protocoles MITIC
+            </button>
 
-  <button class="btn btn-red"
-          onclick='openPdf("Bactériologie clinique.pdf")'>
-    Bactériologie clinique en réanimation
-  </button>
-</div>
-
+            <button class="btn btn-red"
+                    onclick='openPdf("Bactériologie clinique.pdf")'>
+              Bactériologie clinique en réanimation
+            </button>
+          </div>
+        </div>
 
         <div id="atb-section-root"></div>
       </div>
