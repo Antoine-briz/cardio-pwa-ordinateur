@@ -140,6 +140,7 @@ const PRECACHE = [
 "./img/cf-sciatique.png",
 "./img/cf-supra-claviculaire.png",
 "./img/cf-plastieaortique.png",
+"./img/cf-plastiemitrale.png",
 "./img/cf-diametre-aortique.png",
 "./img/objectifs-tensionnels.png",
 
