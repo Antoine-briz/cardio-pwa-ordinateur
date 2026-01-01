@@ -4519,3 +4519,38 @@ body.screen-square .eto-right{
     grid-template-columns: minmax(0, 1fr) minmax(340px, 30%);
   }
 }
+
+/* =====================================================
+   ARRÊT CARDIAQUE – Synthèse toujours lisible
+   (desktop + mobile, thème clair/sombre)
+   ===================================================== */
+
+.acr-synthese,
+.acr-synthese *,
+.eto-synth-panel,
+.eto-synth-panel *,
+#acr-synth-text,
+#eto-synth-text {
+  background-color: #ffffff !important; /* fond clair forcé */
+  color: #000000 !important;            /* texte noir forcé */
+  border-color: #000000 !important;
+}
+
+/* Encadré synthèse : apparence homogène */
+.acr-synthese,
+.eto-synth-panel {
+  border: 2px solid #000;
+  border-radius: 10px;
+  padding: 12px 14px;
+  box-shadow: none;
+}
+
+/* Texte de synthèse : lisible partout */
+.acr-synthese pre,
+#acr-synth-text,
+#eto-synth-text {
+  background: transparent !important;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  white-space: pre-wrap;
+}
