@@ -11286,10 +11286,38 @@ function renderReanEto() {
   });
 }
 
-function openImg(name) {
-  document.getElementById("popup-img").src = `img/${name}`;
-  document.getElementById("img-popup").style.display = "flex";
+function openImg(imgFile) {
+  const overlay = document.createElement("div");
+  overlay.className = "acr-modal img-modal";
+
+  overlay.innerHTML = `
+    <div class="acr-modal-card" role="dialog" aria-modal="true"
+         style="max-width:95vw; max-height:95vh;">
+      <div class="acr-modal-head">
+        <h3>${imgFile.replace(".png", "")}</h3>
+        <button class="acr-modal-close" aria-label="Fermer">✖</button>
+      </div>
+
+      <div class="acr-modal-body">
+        <div class="img-scroll-wrap">
+          <img src="img/${imgFile}" alt="${imgFile}">
+        </div>
+      </div>
+    </div>
+  `;
+
+  const close = () => overlay.remove();
+
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) close();
+  });
+
+  overlay.querySelector(".acr-modal-close")
+    ?.addEventListener("click", close);
+
+  document.body.appendChild(overlay);
 }
+
 
 function closePopup() {
   document.getElementById("img-popup").style.display = "none";
