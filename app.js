@@ -198,7 +198,7 @@ function ensureActusOverlay() {
           ${[2,3,4,5,6,7].map(n => `
             <div class="actus-salle-line">
               <div class="actus-salle-label">Salle ${n}:</div>
-              <textarea id="actus-salle-${n}" class="actus-salle-field" rows="1" readonly></textarea>
+              <textarea id="actus-salle-${n}" class="actus-salle-field" rows="3" readonly></textarea>
             </div>
           `).join("")}
         </div>
