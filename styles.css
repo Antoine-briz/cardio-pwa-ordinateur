@@ -5161,3 +5161,35 @@ body.screen-square .eto-right{
   font-size: 16px;
   line-height: 1.45;
 }
+
+/* =========================================
+   INTERVENTION PAGE — TITRES RESTAURÉS
+   + TEXTE UNIFORMISÉ UNIQUEMENT DANS ENCADRÉS
+   (à coller TOUT EN BAS du styles.css)
+========================================= */
+
+/* 1) Restaure les titres (même si une règle globale avec !important existe) */
+.intervention-page :is(h1, h2, h3, h4),
+.intervention-page :is(.page-title, .section-title, .card-title, .title){
+  font-size: revert !important;   /* revient au style d'origine (UA/ton CSS précédent) */
+  line-height: revert !important;
+  font-weight: revert !important;
+}
+
+/* Si "revert" ne te redonne pas assez gros (selon ton CSS), force des tailles lisibles : */
+.intervention-page h1{ font-size: 34px !important; line-height: 1.15 !important; }
+.intervention-page h2{ font-size: 26px !important; line-height: 1.2  !important; }
+.intervention-page h3{ font-size: 20px !important; line-height: 1.25 !important; }
+
+/* 2) Uniformisation UNIQUEMENT du contenu dans les encadrés
+   -> on exclut explicitement les titres */
+.intervention-page .card :is(p, li, ul, ol, div, span, table, td, th){
+  font-size: 16px !important;
+  line-height: 1.45 !important;
+}
+
+/* Ne PAS toucher aux titres à l'intérieur des cards */
+.intervention-page .card :is(h1, h2, h3, h4, .card-title, .section-title, .title){
+  font-size: inherit !important;
+  line-height: inherit !important;
+}
