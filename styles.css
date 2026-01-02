@@ -5064,3 +5064,89 @@ body.screen-square .eto-right{
   max-height: 94vh;
   padding: 18px;
 }
+
+/* Police moderne */
+.actus-modal{
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* Thème clair : fond clair, texte sombre (lisible) */
+@media (prefers-color-scheme: light) {
+  .actus-modal{
+    background: #f6f7f9;
+    color: #111;
+    border: 1px solid rgba(0,0,0,0.10);
+  }
+  .actus-card{
+    background: #ffffff;
+    border: 1px solid rgba(0,0,0,0.10);
+  }
+}
+
+/* Thème sombre : fond sombre, texte clair (lisible) */
+@media (prefers-color-scheme: dark) {
+  .actus-modal{
+    background: rgba(20,20,20,0.96);
+    color: #f2f2f2;
+    border: 1px solid rgba(255,255,255,0.14);
+  }
+  .actus-card{
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.14);
+  }
+}
+
+/* Zones éditables */
+.actus-editable{
+  border-radius: 10px;
+  padding: 10px;
+  min-height: 3.6em;           /* ≈ 3 lignes */
+  outline: none;
+  white-space: pre-wrap;       /* retours à la ligne */
+  word-break: break-word;
+}
+
+/* Style lecture (contenteditable=false) + édition (contenteditable=true) */
+@media (prefers-color-scheme: light) {
+  .actus-editable{
+    background: rgba(0,0,0,0.03);
+    border: 1px solid rgba(0,0,0,0.12);
+  }
+  .actus-editable[contenteditable="true"]{
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.20);
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .actus-editable{
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.14);
+  }
+  .actus-editable[contenteditable="true"]{
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.22);
+  }
+}
+
+/* Toolbar */
+.actus-toolbar{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(127,127,127,0.25);
+}
+.actus-tool{
+  width: 40px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+.actus-color{
+  height: 36px;
+  border-radius: 10px;
+  padding: 0 10px;
+}
