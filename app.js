@@ -268,16 +268,16 @@ function saveActusNow() {
   });
   localStorage.setItem(blocKey, JSON.stringify(bloc));
 }
+
 function initActusInlineEditing() {
   const notes = document.getElementById("actus-notes");
   if (!notes) return;
 
-  // évite double init si overlay recréé
+  // évite double init
   if (notes.dataset.inlineInit === "1") return;
   notes.dataset.inlineInit = "1";
 
   function autoGrow(el) {
-    // Auto-hauteur (utile pour les textarea des salles)
     if (!el || el.tagName !== "TEXTAREA") return;
     el.style.height = "auto";
     el.style.height = el.scrollHeight + "px";
@@ -287,12 +287,10 @@ function initActusInlineEditing() {
     el.disabled = false;
     el.focus();
 
-    // met le curseur en fin (textarea/input)
-    if (typeof el.value === "string") {
+    if (typeof el.value === "string" && el.setSelectionRange) {
       const len = el.value.length;
-      if (el.setSelectionRange) el.setSelectionRange(len, len);
+      el.setSelectionRange(len, len);
     }
-
     autoGrow(el);
   }
 
@@ -302,36 +300,63 @@ function initActusInlineEditing() {
     saveActusNow();
   }
 
-  // -------- Notes : double clic => edit ; blur => save
-  notes.addEventListener("dblclick", () => enable(notes));
+  // ---- Détecteur double tap/clic universel (souris + tactile)
+  function onDoublePointerActivate(targetEl, cb) {
+    let lastUp = 0;
+    let lastX = 0;
+    let lastY = 0;
+
+    targetEl.addEventListener("pointerup", (e) => {
+      const now = Date.now();
+      const dt = now - lastUp;
+      const dx = Math.abs(e.clientX - lastX);
+      const dy = Math.abs(e.clientY - lastY);
+
+      // double tap/clic si < 300ms et pas de gros déplacement
+      if (dt > 0 && dt < 300 && dx < 12 && dy < 12) {
+        cb();
+        lastUp = 0;
+        return;
+      }
+
+      lastUp = now;
+      lastX = e.clientX;
+      lastY = e.clientY;
+    });
+  }
+
+  // ---- Notes : activer via double-tap/clic sur la carte
+  const notesCard = notes.closest(".actus-card") || notes.parentElement;
+  if (notesCard) {
+    onDoublePointerActivate(notesCard, () => enable(notes));
+  }
   notes.addEventListener("blur", () => disableAndSave(notes));
 
-  // -------- Salles : textarea auto-hauteur, double clic => edit ; blur => save
-  [2, 3, 4, 5, 6, 7].forEach((n) => {
+  // ---- Salles : textarea autoGrow + double activation sur la ligne
+  [2,3,4,5,6,7].forEach((n) => {
     const field = document.getElementById(`actus-salle-${n}`);
     if (!field) return;
 
-    // Ajuste la hauteur au chargement (lecture)
+    // initial + autoGrow
     autoGrow(field);
-
-    // Pendant la saisie, on agrandit
     field.addEventListener("input", () => autoGrow(field));
-
-    // Activation / sauvegarde
-    field.addEventListener("dblclick", () => enable(field));
     field.addEventListener("blur", () => disableAndSave(field));
 
-    // Enter = enregistrer (comme ton comportement précédent)
-    // Shift+Enter = retour à la ligne (utile si texte long)
+    const line = field.closest(".actus-salle-line") || field.parentElement;
+    if (line) {
+      onDoublePointerActivate(line, () => enable(field));
+    }
+
+    // Enter = save (Shift+Enter = nouvelle ligne)
     field.addEventListener("keydown", (e) => {
       if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
-        field.blur(); // déclenche save
+        field.blur();
       }
     });
   });
 
-  // -------- Clic ailleurs dans la modale => enregistre si un champ est en édition
+  // ---- clic ailleurs dans la modale => blur => save
   const modal = document.querySelector("#actus-overlay .actus-modal");
   if (modal) {
     modal.addEventListener("pointerdown", (e) => {
@@ -340,13 +365,13 @@ function initActusInlineEditing() {
         active?.id === "actus-notes" ||
         (active?.id || "").startsWith("actus-salle-");
 
-      // si on clique ailleurs que le champ actif, on force blur => save
       if (isEditable && active && e.target !== active) {
         active.blur();
       }
     });
   }
 }
+
 
 function setActusEditMode(isEdit) {
   const notesEl = document.getElementById("actus-notes");
