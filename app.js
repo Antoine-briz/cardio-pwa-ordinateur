@@ -149,6 +149,138 @@ function renderHome() {
   `;
 }
 
+// ===============================
+//  ACTUALITÉS (PC) — stockage partagé
+//  ✅ Même origine (domaine+protocole+port) => synchro PC ↔ mobile via localStorage
+//  ❌ Origines différentes => prévoir backend (voir plus bas)
+// ===============================
+
+const ACTUS_NOTES_KEY = "saric_actus_notes_service_v1";
+const ACTUS_BLOC_KEY_PREFIX = "saric_actus_bloc3_"; // + YYYY-MM-DD (date de demain)
+
+function getTomorrowISO() {
+  const d = new Date();
+  d.setDate(d.getDate() + 1);
+  return d.toISOString().slice(0, 10); // YYYY-MM-DD
+}
+function formatDateFR(iso) {
+  const [y, m, d] = iso.split("-");
+  return `${d}/${m}/${y}`;
+}
+function getBlocKeyForTomorrow() {
+  return ACTUS_BLOC_KEY_PREFIX + getTomorrowISO();
+}
+
+function ensureActusOverlay() {
+  if (document.getElementById("actus-overlay")) return;
+
+  const overlay = document.createElement("div");
+  overlay.id = "actus-overlay";
+  overlay.className = "actus-overlay";
+  overlay.innerHTML = `
+    <div class="actus-modal" role="dialog" aria-modal="true">
+      <div class="actus-modal-header">
+        <div class="actus-modal-title">Actualités</div>
+        <button class="btn actus-close-btn" type="button" onclick="closeActus()">✕</button>
+      </div>
+
+      <div class="actus-card">
+        <div class="actus-card-title">Notes de service</div>
+        <textarea id="actus-notes" class="actus-textarea" rows="5" disabled></textarea>
+      </div>
+
+      <div class="actus-card">
+        <div class="actus-card-title" id="actus-bloc-title"></div>
+
+        <div class="actus-salles">
+          ${[2,3,4,5,6,7].map(n => `
+            <div class="actus-salle-row">
+              <div class="actus-salle-label">Salle ${n}:</div>
+              <input id="actus-salle-${n}" class="actus-input" type="text" disabled />
+            </div>
+          `).join("")}
+        </div>
+      </div>
+
+      <div class="actus-actions">
+        <button id="actus-btn-edit" class="btn" type="button" onclick="setActusEditMode(true)">Modifier</button>
+        <button id="actus-btn-save" class="btn" type="button" onclick="saveActus()" disabled>Enregistrer</button>
+      </div>
+    </div>
+  `;
+
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) closeActus();
+  });
+
+  document.body.appendChild(overlay);
+
+  // Sync live si une autre fenêtre/onglet (ou autre appareil même origine) modifie localStorage
+  window.addEventListener("storage", (e) => {
+    if (!document.getElementById("actus-overlay")?.classList.contains("is-open")) return;
+    if (e.key === ACTUS_NOTES_KEY || e.key?.startsWith(ACTUS_BLOC_KEY_PREFIX)) {
+      fillActusFromStorage();
+    }
+  });
+}
+
+function openActus() {
+  ensureActusOverlay();
+  fillActusFromStorage();
+  setActusEditMode(false);
+  document.getElementById("actus-overlay").classList.add("is-open");
+}
+
+function closeActus() {
+  const ov = document.getElementById("actus-overlay");
+  if (ov) ov.classList.remove("is-open");
+  // Si tu veux revenir au menu après #/actus :
+  if (location.hash === "#/actus") location.hash = "#/";
+}
+
+function fillActusFromStorage() {
+  const tomorrowISO = getTomorrowISO();
+  const blocTitle = `Organisation bloc 3ème du ${formatDateFR(tomorrowISO)}`;
+  document.getElementById("actus-bloc-title").textContent = blocTitle;
+
+  const notes = localStorage.getItem(ACTUS_NOTES_KEY) || "";
+  document.getElementById("actus-notes").value = notes;
+
+  const blocKey = getBlocKeyForTomorrow();
+  let bloc = {};
+  try { bloc = JSON.parse(localStorage.getItem(blocKey) || "{}"); } catch { bloc = {}; }
+
+  [2,3,4,5,6,7].forEach(n => {
+    document.getElementById(`actus-salle-${n}`).value = bloc[String(n)] || "";
+  });
+}
+
+function setActusEditMode(isEdit) {
+  const notesEl = document.getElementById("actus-notes");
+  const saveBtn  = document.getElementById("actus-btn-save");
+
+  notesEl.disabled = !isEdit;
+  [2,3,4,5,6,7].forEach(n => {
+    document.getElementById(`actus-salle-${n}`).disabled = !isEdit;
+  });
+
+  saveBtn.disabled = !isEdit;
+}
+
+function saveActus() {
+  // Notes
+  localStorage.setItem(ACTUS_NOTES_KEY, document.getElementById("actus-notes").value || "");
+
+  // Bloc du lendemain (clé datée)
+  const blocKey = getBlocKeyForTomorrow();
+  const bloc = {};
+  [2,3,4,5,6,7].forEach(n => {
+    bloc[String(n)] = document.getElementById(`actus-salle-${n}`).value || "";
+  });
+  localStorage.setItem(blocKey, JSON.stringify(bloc));
+
+  setActusEditMode(false);
+}
 
 
 // =====================================================================
@@ -18041,6 +18173,7 @@ function renderNotFound() {
 
 const routes = {
   "#/": renderHome,
+  "#/actus": () => { renderHome(); openActus(); },
 
   // Anesthésie
   "#/anesthesie": renderAnesthMenu,
