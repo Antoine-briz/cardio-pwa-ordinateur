@@ -96,13 +96,19 @@ function openPdf(file) {
 function renderHome() {
   $app.innerHTML = `
     <section class="home">
-    <div class="title-strip">
+      <div class="title-strip">
         <img src="img/titre2.png" alt="Titre de l'application" class="title-strip-img">
+
+        <!-- LOGO ACTUALITÉS (superposé à titre2.png) -->
+        <button id="saricnews-logo"
+                class="home-actus-btn home-actus-btn--anchored"
+                type="button"
+                onclick="openActus()"
+                aria-label="Actualités">
+          <img src="img/saricnews.png" alt="SARIC News">
+        </button>
       </div>
-      <!-- BOUTON ACTUALITÉS (logo journal) -->
-<button id="saricnews-logo" class="home-actus-btn" type="button" onclick="openActus()" aria-label="Actualités">
-  <img src="img/saricnews.png" alt="SARIC News">
-</button>
+
       <div class="home-cards">
         <div class="card card-home" onclick="location.hash = '#/anesthesie'">
           <h3>Protocoles d’anesthésie</h3>
@@ -120,35 +126,30 @@ function renderHome() {
         </div>
       </div>
 
-     <div class="home-buttons">
-  <button
-  class="btn home-btn home-primary"
-  onclick="openHopiaPlanning()">
-  Planning médical
-</button>
+      <div class="home-buttons">
+        <button class="btn home-btn home-primary" onclick="openHopiaPlanning()">
+          Planning médical
+        </button>
 
-  <button
-    class="btn home-btn home-primary"
-    onclick="location.hash = '#/annuaire'">
-    Annuaire
-  </button>
+        <button class="btn home-btn home-primary" onclick="location.hash = '#/annuaire'">
+          Annuaire
+        </button>
 
-  <button
-    class="btn home-btn home-primary"
-    onclick="location.hash = '#/codes'">
-    Codes d’accès
-  </button>
+        <button class="btn home-btn home-primary" onclick="location.hash = '#/codes'">
+          Codes d’accès
+        </button>
 
-  <button
-    class="btn home-btn home-danger"
-    onclick="location.hash = '#/acr'">
-    Arrêt cardio-respiratoire
-  </button>
-</div>
+        <button class="btn home-btn home-danger" onclick="location.hash = '#/acr'">
+          Arrêt cardio-respiratoire
+        </button>
+      </div>
     </section>
   `;
-  initDraggableSaricLogo();
+
+  // ✅ IMPORTANT : utiliser la version "ancrée" (dans title-strip), pas le draggable fixed plein écran
+  initAnchoredDraggableSaricLogo();
 }
+
 
 // =======================================================
 //  ACTUALITÉS (PC) + PURGE BLOC À 12:00
