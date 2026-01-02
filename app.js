@@ -100,8 +100,11 @@ function renderHome() {
         <img src="img/titre2.png" alt="Titre de l'application" class="title-strip-img">
       </div>
       <!-- BOUTON ACTUALITÉS (logo journal) -->
-<button class="home-actus-btn" type="button" onclick="openActus()" title="Actualités">
-  <img src="img/journal.png" alt="Actualités">
+<button class="home-actus-btn"
+        type="button"
+        onclick="openActus()"
+        aria-label="Actualités">
+  <img src="img/saricnews.png" alt="SARIC News">
 </button>
       <div class="home-cards">
         <div class="card card-home" onclick="location.hash = '#/anesthesie'">
