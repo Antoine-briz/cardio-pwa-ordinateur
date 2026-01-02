@@ -5150,3 +5150,14 @@ body.screen-square .eto-right{
   border-radius: 10px;
   padding: 0 10px;
 }
+
+/* Titres Intervention : restent grands (comme avant) */
+.intervention-page :where(h1, h2, h3){
+  font-size: revert;
+}
+
+/* Contenu des encadrés uniquement */
+.intervention-page .card :where(p, li, ul, ol, div){
+  font-size: 16px;
+  line-height: 1.45;
+}
