@@ -4669,3 +4669,115 @@ body.screen-square .eto-right{
 .intervention-shell span {
   font-size: inherit !important;
 }
+
+/* ===============================
+   ACTUALITÉS (PC)
+=============================== */
+
+/* Bouton journal en haut à droite sous le header, sans bouger la mise en page */
+.home { position: relative; }
+
+.home-actus-btn{
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 5;
+}
+.home-actus-btn img{
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+
+/* Overlay */
+.actus-overlay{
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+}
+.actus-overlay.is-open{ display: flex; }
+
+.actus-modal{
+  width: min(920px, 100%);
+  max-height: 92vh;
+  overflow: auto;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(20,20,20,0.92);
+  padding: 14px;
+}
+
+.actus-modal-header{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.actus-modal-title{ font-weight: 800; font-size: 18px; }
+.actus-close-btn{ padding: 6px 10px; }
+
+.actus-card{
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.05);
+  padding: 12px;
+  margin-bottom: 12px;
+}
+.actus-card-title{
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.actus-textarea{
+  width: 100%;
+  resize: vertical;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  padding: 10px;
+}
+
+.actus-salles{ display:flex; flex-direction: column; gap: 8px; }
+
+.actus-salle-row{
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 10px;
+  align-items: center;
+}
+.actus-salle-label{
+  text-align: right;
+  opacity: 0.9;
+  font-weight: 700;
+}
+
+.actus-input{
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  padding: 10px;
+}
+
+.actus-actions{
+  display:flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 6px;
+}
