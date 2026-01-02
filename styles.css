@@ -5193,3 +5193,97 @@ body.screen-square .eto-right{
   font-size: inherit !important;
   line-height: inherit !important;
 }
+
+/* ✅ Corrige les décalages : mêmes règles de box-sizing partout */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* ✅ Conteneur des 2 boutons : colonne, stretch */
+.eto-menu,
+.eto-actions,
+.cr-eto-actions,
+.rva-actions,
+.rvm-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 14px;
+}
+
+/* ✅ Les boutons prennent exactement la même largeur */
+.eto-menu button,
+.eto-actions button,
+.cr-eto-actions button,
+.rva-actions button,
+.rvm-actions button,
+.eto-menu .btn,
+.eto-actions .btn,
+.cr-eto-actions .btn,
+.rva-actions .btn,
+.rvm-actions .btn {
+  width: 100%;
+  margin: 0;
+  display: block;
+}
+
+/* ✅ Overlay centré (le fond) */
+.cr-eto-overlay,
+.eto-overlay,
+.popup-overlay {
+  display: none;                /* affiché quand ouvert */
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0,0,0,0.55);
+
+  align-items: center;          /* ✅ centre vertical */
+  justify-content: center;      /* ✅ centre horizontal */
+  padding: 16px;
+}
+
+.cr-eto-overlay.is-open,
+.eto-overlay.is-open,
+.popup-overlay.is-open {
+  display: flex;
+}
+
+/* ✅ Fenêtre : hauteur auto, centrée, pas plein écran */
+.cr-eto-modal,
+.eto-modal,
+.popup-content {
+  width: min(980px, 96vw);
+  height: auto !important;      /* ✅ force auto */
+  min-height: 0 !important;     /* ✅ empêche le 100vh caché */
+  max-height: 92vh;             /* ✅ limite pour petits écrans */
+  overflow-y: auto;             /* ✅ scroll si contenu long */
+  border-radius: 16px;
+}
+
+/* ✅ Très important : si un parent interne impose 100%/flex */
+.cr-eto-modal * {
+  min-height: 0;
+}
+
+/* ✅ Empêche une zone interne de forcer la hauteur */
+.cr-eto-modal .content,
+.cr-eto-modal .body,
+.eto-modal .content,
+.eto-modal .body {
+  height: auto !important;
+  min-height: 0 !important;
+  flex: 0 0 auto !important;
+}
+
+/* ✅ Les boutons restent en bas du contenu, sans étirer le reste */
+.cr-eto-modal {
+  display: flex;
+  flex-direction: column;
+}
+
+.cr-eto-modal .cr-eto-actions {
+  margin-top: 14px;
+  flex: 0 0 auto;
+}
