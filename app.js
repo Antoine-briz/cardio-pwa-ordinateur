@@ -18421,6 +18421,8 @@ const routes = {
   "#/acr": renderAcrChirCardiaque,
 };
 
+let currentRoute = null;
+
 function navigate() {
   const hash = window.location.hash || "#/";
 
