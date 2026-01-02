@@ -287,7 +287,7 @@ function fillActusFromStorage() {
   document.getElementById("actus-bloc-title").textContent =
     `Organisation bloc 3ème du ${formatDateFR(tomorrowISO)}`;
 
-  document.getElementById("actus-notes").value =
+  document.getElementById("actus-notes").innerHTML =
     localStorage.getItem(ACTUS_NOTES_KEY) || "";
 
   const blocKey = getBlocKeyForTomorrow();
@@ -296,113 +296,98 @@ function fillActusFromStorage() {
 
   [2,3,4,5,6,7].forEach(n => {
     const el = document.getElementById(`actus-salle-${n}`);
-    if (el) el.value = bloc[String(n)] || "";
+    if (el) el.innerHTML = bloc[String(n)] || "";
   });
 }
 
 function saveActusNow() {
   // Notes
-  localStorage.setItem(ACTUS_NOTES_KEY, document.getElementById("actus-notes")?.value || "");
+  localStorage.setItem(ACTUS_NOTES_KEY, document.getElementById("actus-notes")?.innerHTML || "");
 
   // Bloc du lendemain
   const blocKey = getBlocKeyForTomorrow();
   const bloc = {};
   [2,3,4,5,6,7].forEach(n => {
-    bloc[String(n)] = document.getElementById(`actus-salle-${n}`)?.value || "";
+    bloc[String(n)] = document.getElementById(`actus-salle-${n}`)?.innerHTML || "";
   });
   localStorage.setItem(blocKey, JSON.stringify(bloc));
+}
+
+let actusActiveEl = null;
+
+function actusCmd(cmd) {
+  if (!actusActiveEl) return;
+  actusActiveEl.focus();
+  document.execCommand(cmd, false, null); // marche bien pour bold/italic/underline
+  saveActusNow();
+}
+
+function actusColor(color) {
+  if (!actusActiveEl || !color) return;
+  actusActiveEl.focus();
+  document.execCommand("foreColor", false, color);
+  saveActusNow();
 }
 
 function initActusInlineEditing() {
   const notes = document.getElementById("actus-notes");
   if (!notes) return;
-
   if (notes.dataset.inlineInit === "1") return;
   notes.dataset.inlineInit = "1";
 
-  function autoGrow(el) {
-    if (!el || el.tagName !== "TEXTAREA") return;
-    el.style.height = "auto";
-    el.style.height = el.scrollHeight + "px";
-  }
-
   function enable(el) {
-    el.readOnly = false;       // ✅ au lieu de disabled=false
+    el.contentEditable = "true";
     el.focus();
-
-    if (typeof el.value === "string" && el.setSelectionRange) {
-      const len = el.value.length;
-      el.setSelectionRange(len, len);
-    }
-    autoGrow(el);
+    actusActiveEl = el;
   }
-
   function disableAndSave(el) {
-    el.readOnly = true;        // ✅ au lieu de disabled=true
-    autoGrow(el);
+    el.contentEditable = "false";
+    if (actusActiveEl === el) actusActiveEl = null;
     saveActusNow();
   }
 
-  // Détection double-tap / double-clic universelle
-  function onDoublePointerActivate(targetEl, cb) {
+  // Double-tap/clic universel (au lieu de dblclick)
+  function onDoubleActivate(targetEl, cb) {
     let lastUp = 0, lastX = 0, lastY = 0;
-
     targetEl.addEventListener("pointerup", (e) => {
       const now = Date.now();
       const dt = now - lastUp;
       const dx = Math.abs(e.clientX - lastX);
       const dy = Math.abs(e.clientY - lastY);
-
-      // fenêtre un peu plus large (mobile)
       if (dt > 0 && dt < 450 && dx < 14 && dy < 14) {
         cb();
         lastUp = 0;
         return;
       }
-      lastUp = now;
-      lastX = e.clientX;
-      lastY = e.clientY;
+      lastUp = now; lastX = e.clientX; lastY = e.clientY;
     });
   }
 
-  // Notes : double tap/clic sur la carte => edit ; blur => save
+  // Notes
   const notesCard = notes.closest(".actus-card") || notes.parentElement;
-  if (notesCard) onDoublePointerActivate(notesCard, () => enable(notes));
+  if (notesCard) onDoubleActivate(notesCard, () => enable(notes));
   notes.addEventListener("blur", () => disableAndSave(notes));
 
   // Salles
-  [2,3,4,5,6,7].forEach((n) => {
-    const field = document.getElementById(`actus-salle-${n}`);
-    if (!field) return;
+  [2,3,4,5,6,7].forEach(n => {
+    const el = document.getElementById(`actus-salle-${n}`);
+    if (!el) return;
 
-    autoGrow(field);
-    field.addEventListener("input", () => autoGrow(field));
-    field.addEventListener("blur", () => disableAndSave(field));
+    const line = el.closest(".actus-salle-line") || el.parentElement;
+    if (line) onDoubleActivate(line, () => enable(el));
 
-    const line = field.closest(".actus-salle-line") || field.parentElement;
-    if (line) onDoublePointerActivate(line, () => enable(field));
-
-    // Enter = save (Shift+Enter = nouvelle ligne)
-    field.addEventListener("keydown", (e) => {
-  if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
-    e.preventDefault();
-    field.blur(); // blur => save
-  }
-});
+    el.addEventListener("focus", () => { actusActiveEl = el; });
+    el.addEventListener("blur", () => disableAndSave(el));
   });
 
-  // clic ailleurs dans la modale => blur => save
+  // clic ailleurs dans la modale => save
   const modal = document.querySelector("#actus-overlay .actus-modal");
   if (modal) {
     modal.addEventListener("pointerdown", (e) => {
       const active = document.activeElement;
-      const isEditable =
-        active?.id === "actus-notes" ||
-        (active?.id || "").startsWith("actus-salle-");
-
-      if (isEditable && active && e.target !== active) {
-        active.blur();
-      }
+      const isActusField =
+        active?.id === "actus-notes" || (active?.id || "").startsWith("actus-salle-");
+      if (isActusField && active && e.target !== active) active.blur();
     });
   }
 }
