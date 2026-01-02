@@ -339,11 +339,11 @@ function initActusInlineEditing() {
 
     // Enter = save (Shift+Enter = nouvelle ligne)
     field.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        field.blur();
-      }
-    });
+  if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+    e.preventDefault();
+    field.blur(); // blur => save
+  }
+});
   });
 
   // clic ailleurs dans la modale => blur => save
