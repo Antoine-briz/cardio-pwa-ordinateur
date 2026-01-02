@@ -4853,3 +4853,124 @@ body.screen-square .eto-right{
   margin-top: 8px;
 }
 
+/* ===============================
+   LOGO SARIC NEWS — position par défaut bas droite
+=============================== */
+.home-actus-btn{
+  position: fixed;
+  bottom: 18px;              /* ✅ bas droite */
+  right: 18px;
+  top: auto;                 /* important */
+  left: auto;                /* important */
+
+  z-index: 99999;
+  width: 132px;
+  height: 132px;
+
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+
+  display: block;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: none;
+}
+.home-actus-btn img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+}
+.home-actus-btn:active{
+  cursor: grabbing;
+  transform: scale(0.98);
+}
+
+/* ===============================
+   MODAL HEADER — titre centré gros, croix carrée petite
+=============================== */
+.actus-modal-header{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;   /* ✅ centre le titre */
+  margin-bottom: 14px;
+}
+.actus-modal-title{
+  font-weight: 900;
+  font-size: 26px;           /* ✅ plus gros */
+  text-align: center;
+}
+.actus-close-btn{
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 34px;               /* ✅ petit carré */
+  height: 34px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+/* ===============================
+   SALLES — labels à gauche + champ à droite (dans le 2ème encadré)
+=============================== */
+.actus-salles{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.actus-salle-line{
+  display: grid;
+  grid-template-columns: 90px 1fr;  /* ✅ “Salle X:” à gauche */
+  gap: 10px;
+  align-items: center;
+}
+.actus-salle-label{
+  text-align: left;          /* ✅ gauche */
+  font-weight: 800;
+  opacity: 0.95;
+}
+
+/* ===============================
+   CHAMPS — lisibles en clair/sombre via prefers-color-scheme
+=============================== */
+.actus-textarea,
+.actus-salle-field{
+  width: 100%;
+  border-radius: 10px;
+  padding: 10px;
+  color: inherit;
+}
+
+/* Thème clair (par défaut) */
+.actus-textarea,
+.actus-salle-field{
+  border: 1px solid rgba(0,0,0,0.12);
+  background: rgba(0,0,0,0.03);
+}
+
+/* Thème sombre */
+@media (prefers-color-scheme: dark) {
+  .actus-textarea,
+  .actus-salle-field{
+    border: 1px solid rgba(255,255,255,0.14);
+    background: rgba(255,255,255,0.06);
+  }
+}
+
+/* Quand désactivé : on garde lisible */
+.actus-textarea:disabled,
+.actus-salle-field:disabled{
+  opacity: 1;
+}
+
