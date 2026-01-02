@@ -149,14 +149,14 @@ function renderHome() {
   `;
 }
 
-// ===============================
-//  ACTUALITÉS (PC) — stockage partagé
-//  ✅ Même origine (domaine+protocole+port) => synchro PC ↔ mobile via localStorage
-//  ❌ Origines différentes => prévoir backend (voir plus bas)
-// ===============================
+// =======================================================
+//  ACTUALITÉS (PC) + PURGE BLOC À 12:00
+//  À coller dans app.js (sans bouton, sans route)
+// =======================================================
 
 const ACTUS_NOTES_KEY = "saric_actus_notes_service_v1";
 const ACTUS_BLOC_KEY_PREFIX = "saric_actus_bloc3_"; // + YYYY-MM-DD (date de demain)
+const ACTUS_BLOC_LAST_RESET_KEY = "saric_actus_bloc3_last_reset_day_v1"; // YYYY-MM-DD
 
 function getTomorrowISO() {
   const d = new Date();
@@ -215,10 +215,11 @@ function ensureActusOverlay() {
 
   document.body.appendChild(overlay);
 
-  // Sync live si une autre fenêtre/onglet (ou autre appareil même origine) modifie localStorage
+  // Sync si une autre fenêtre/onglet modifie localStorage (ou autre appareil si même origine)
   window.addEventListener("storage", (e) => {
-    if (!document.getElementById("actus-overlay")?.classList.contains("is-open")) return;
-    if (e.key === ACTUS_NOTES_KEY || e.key?.startsWith(ACTUS_BLOC_KEY_PREFIX)) {
+    const ov = document.getElementById("actus-overlay");
+    if (!ov || !ov.classList.contains("is-open")) return;
+    if (e.key === ACTUS_NOTES_KEY || (e.key && e.key.startsWith(ACTUS_BLOC_KEY_PREFIX))) {
       fillActusFromStorage();
     }
   });
@@ -226,6 +227,7 @@ function ensureActusOverlay() {
 
 function openActus() {
   ensureActusOverlay();
+  maybeResetBlocAtNoon();      // rattrapage avant affichage
   fillActusFromStorage();
   setActusEditMode(false);
   document.getElementById("actus-overlay").classList.add("is-open");
@@ -234,53 +236,103 @@ function openActus() {
 function closeActus() {
   const ov = document.getElementById("actus-overlay");
   if (ov) ov.classList.remove("is-open");
-  // Si tu veux revenir au menu après #/actus :
   if (location.hash === "#/actus") location.hash = "#/";
 }
 
 function fillActusFromStorage() {
   const tomorrowISO = getTomorrowISO();
-  const blocTitle = `Organisation bloc 3ème du ${formatDateFR(tomorrowISO)}`;
-  document.getElementById("actus-bloc-title").textContent = blocTitle;
+  document.getElementById("actus-bloc-title").textContent =
+    `Organisation bloc 3ème du ${formatDateFR(tomorrowISO)}`;
 
-  const notes = localStorage.getItem(ACTUS_NOTES_KEY) || "";
-  document.getElementById("actus-notes").value = notes;
+  document.getElementById("actus-notes").value =
+    localStorage.getItem(ACTUS_NOTES_KEY) || "";
 
   const blocKey = getBlocKeyForTomorrow();
   let bloc = {};
   try { bloc = JSON.parse(localStorage.getItem(blocKey) || "{}"); } catch { bloc = {}; }
 
   [2,3,4,5,6,7].forEach(n => {
-    document.getElementById(`actus-salle-${n}`).value = bloc[String(n)] || "";
+    const el = document.getElementById(`actus-salle-${n}`);
+    if (el) el.value = bloc[String(n)] || "";
   });
 }
 
 function setActusEditMode(isEdit) {
   const notesEl = document.getElementById("actus-notes");
-  const saveBtn  = document.getElementById("actus-btn-save");
+  const saveBtn = document.getElementById("actus-btn-save");
 
-  notesEl.disabled = !isEdit;
+  if (notesEl) notesEl.disabled = !isEdit;
   [2,3,4,5,6,7].forEach(n => {
-    document.getElementById(`actus-salle-${n}`).disabled = !isEdit;
+    const el = document.getElementById(`actus-salle-${n}`);
+    if (el) el.disabled = !isEdit;
   });
 
-  saveBtn.disabled = !isEdit;
+  if (saveBtn) saveBtn.disabled = !isEdit;
 }
 
 function saveActus() {
-  // Notes
-  localStorage.setItem(ACTUS_NOTES_KEY, document.getElementById("actus-notes").value || "");
+  localStorage.setItem(ACTUS_NOTES_KEY, document.getElementById("actus-notes")?.value || "");
 
-  // Bloc du lendemain (clé datée)
   const blocKey = getBlocKeyForTomorrow();
   const bloc = {};
   [2,3,4,5,6,7].forEach(n => {
-    bloc[String(n)] = document.getElementById(`actus-salle-${n}`).value || "";
+    bloc[String(n)] = document.getElementById(`actus-salle-${n}`)?.value || "";
   });
   localStorage.setItem(blocKey, JSON.stringify(bloc));
 
   setActusEditMode(false);
 }
+
+// -------------------------------
+//  Purge quotidienne à 12:00
+// -------------------------------
+
+function todayISO() {
+  const d = new Date();
+  return d.toISOString().slice(0, 10);
+}
+function isAfterNoonNow() {
+  const now = new Date();
+  return (now.getHours() > 12) || (now.getHours() === 12 && now.getMinutes() >= 0);
+}
+function resetBlocForTomorrow() {
+  localStorage.removeItem(getBlocKeyForTomorrow());
+}
+function maybeResetBlocAtNoon() {
+  const day = todayISO();
+  const last = localStorage.getItem(ACTUS_BLOC_LAST_RESET_KEY);
+
+  if (last !== day && isAfterNoonNow()) {
+    resetBlocForTomorrow();
+    localStorage.setItem(ACTUS_BLOC_LAST_RESET_KEY, day);
+
+    const ov = document.getElementById("actus-overlay");
+    if (ov && ov.classList.contains("is-open")) fillActusFromStorage();
+  }
+}
+function scheduleNoonReset() {
+  const now = new Date();
+  const target = new Date(now);
+  target.setHours(12, 0, 0, 0);
+  if (now >= target) target.setDate(target.getDate() + 1);
+
+  const delay = target.getTime() - now.getTime();
+  setTimeout(() => {
+    maybeResetBlocAtNoon();
+    scheduleNoonReset();
+  }, delay);
+}
+
+// À appeler UNE FOIS au démarrage de l'app (PC)
+function initActusNoonReset() {
+  maybeResetBlocAtNoon();
+  scheduleNoonReset();
+
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) maybeResetBlocAtNoon();
+  });
+}
+
 
 
 // =====================================================================
@@ -18244,3 +18296,5 @@ function navigate() {
 
 window.addEventListener("hashchange", navigate);
 window.addEventListener("load", navigate);
+
+initActusNoonReset();
