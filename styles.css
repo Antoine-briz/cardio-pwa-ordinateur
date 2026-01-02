@@ -4616,3 +4616,20 @@ body.screen-square .eto-right{
   max-width: none !important;
   display: block;
 }
+
+/* Scroll H/V UNIQUEMENT quand openImg met l'image dans .img-scroll-wrap */
+#img-popup .img-scroll-wrap{
+  width: min(95vw, 1200px);
+  height: 85vh;
+  overflow: auto;             /* scroll horizontal + vertical */
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+/* Empêche l'image agrandie d'être contrainte */
+#img-popup .img-scroll-wrap img{
+  max-width: none !important;
+  display: block;
+}
