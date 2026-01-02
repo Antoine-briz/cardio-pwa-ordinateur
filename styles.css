@@ -4974,3 +4974,32 @@ body.screen-square .eto-right{
   opacity: 1;
 }
 
+/* ===============================
+   NOTES DE SERVICE : scroll interne
+=============================== */
+
+/* On fixe une hauteur max au textarea + scroll interne */
+.actus-textarea{
+  width: 100%;
+  resize: none;          /* optionnel : empêche de casser la mise en page */
+  overflow-y: auto;      /* ✅ scroll vertical à l'intérieur */
+  max-height: 220px;     /* ✅ ajuste si tu veux (ex: 200–300px) */
+  min-height: 140px;
+}
+
+/* (Optionnel) si tu préfères garder la possibilité de redimensionner */
+ /* .actus-textarea{ resize: vertical; } */
+
+/* ===============================
+   ORGANISATION : tout visible (pas de scroll interne)
+=============================== */
+
+/* Les inputs n'ont pas de scroll, ils s'agrandissent horizontalement (si long texte) */
+.actus-salle-field{
+  overflow: visible;     /* pas de scroll interne */
+  white-space: nowrap;   /* le texte reste sur une ligne */
+}
+
+/* Et si tu veux voir le texte long sans qu'il soit coupé :
+   -> tu peux autoriser le retour à la ligne avec textarea (voir option ci-dessous) */
+
