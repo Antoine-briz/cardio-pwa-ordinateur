@@ -4633,3 +4633,39 @@ body.screen-square .eto-right{
   max-width: none !important;
   display: block;
 }
+
+/* =====================================================
+   UNIFORMISATION POLICE – INTERVENTION PAGES
+   (Anesthésie / Réanimation / Chirurgie)
+   ===================================================== */
+
+/* Taille de référence unique pour toutes les pages intervention */
+.intervention-shell,
+.intervention-main,
+.intervention-shell .encadre,
+.intervention-shell .card {
+  font-size: 1rem;            /* ← valeur de référence */
+  line-height: 1.35;
+}
+
+/* Force l’héritage pour tout le contenu interne */
+.intervention-shell *,
+.intervention-main *,
+.intervention-shell .encadre *,
+.intervention-shell .card * {
+  font-size: inherit !important;
+  line-height: inherit;
+}
+
+/* Labels, tableaux, inputs : homogènes */
+.intervention-shell label,
+.intervention-shell td,
+.intervention-shell th,
+.intervention-shell input,
+.intervention-shell select,
+.intervention-shell textarea,
+.intervention-shell button,
+.intervention-shell p,
+.intervention-shell span {
+  font-size: inherit !important;
+}
