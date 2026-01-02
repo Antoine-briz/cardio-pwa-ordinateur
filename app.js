@@ -182,31 +182,75 @@ function ensureActusOverlay() {
 
   overlay.innerHTML = `
     <div class="actus-modal" role="dialog" aria-modal="true">
+
+      <!-- HEADER -->
       <div class="actus-modal-header">
         <div class="actus-modal-title">Actualités</div>
-        <button class="btn actus-close-btn" type="button" onclick="closeActus()">✕</button>
+        <button class="btn actus-close-btn"
+                type="button"
+                onclick="closeActus()"
+                aria-label="Fermer">
+          ✕
+        </button>
       </div>
 
+      <!-- CARD 1 : NOTES DE SERVICE -->
       <div class="actus-card">
         <div class="actus-card-title">Notes de service</div>
-        <textarea id="actus-notes" class="actus-textarea" rows="5" readonly></textarea>
+
+        <div id="actus-notes"
+             class="actus-editable actus-notes"
+             contenteditable="false"
+             role="textbox"
+             aria-multiline="true">
+        </div>
       </div>
 
+      <!-- CARD 2 : ORGANISATION BLOC -->
       <div class="actus-card">
         <div class="actus-card-title" id="actus-bloc-title"></div>
 
         <div class="actus-salles">
           ${[2,3,4,5,6,7].map(n => `
             <div class="actus-salle-line">
-              <div class="actus-salle-label">Salle ${n}:</div>
-              <textarea id="actus-salle-${n}" class="actus-salle-field" rows="3" readonly></textarea>
+              <div class="actus-salle-label">Salle ${n} :</div>
+
+              <div id="actus-salle-${n}"
+                   class="actus-editable actus-salle-field"
+                   contenteditable="false"
+                   role="textbox"
+                   aria-multiline="true">
+              </div>
             </div>
           `).join("")}
         </div>
       </div>
+
+      <!-- TOOLBAR (MISE EN FORME) -->
+      <div class="actus-toolbar">
+        <button class="btn actus-tool" type="button" onclick="actusCmd('bold')" title="Gras"><b>B</b></button>
+        <button class="btn actus-tool" type="button" onclick="actusCmd('italic')" title="Italique"><i>I</i></button>
+        <button class="btn actus-tool" type="button" onclick="actusCmd('underline')" title="Souligné"><u>U</u></button>
+
+        <select class="actus-color" onchange="actusColor(this.value)">
+          <option value="">Couleur…</option>
+          <option value="#ffffff">⬜ Blanc</option>
+          <option value="#000000">⬛ Noir</option>
+          <option value="#e53935">🟥 Rouge</option>
+          <option value="#1e88e5">🟦 Bleu</option>
+          <option value="#fdd835">🟨 Jaune</option>
+          <option value="#fb8c00">🟧 Orange</option>
+          <option value="#43a047">🟩 Vert</option>
+          <option value="#8e24aa">🟪 Violet</option>
+          <option value="#6d4c41">🟫 Marron</option>
+          <option value="#757575">⬜ Gris</option>
+        </select>
+      </div>
+
     </div>
   `;
 
+  // clic sur le fond sombre = fermer
   overlay.addEventListener("click", (e) => {
     if (e.target === overlay) closeActus();
   });
