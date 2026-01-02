@@ -188,7 +188,7 @@ function ensureActusOverlay() {
 
       <div class="actus-card">
         <div class="actus-card-title">Notes de service</div>
-        <textarea id="actus-notes" class="actus-textarea" rows="5" disabled></textarea>
+        <textarea id="actus-notes" class="actus-textarea" rows="5" readonly></textarea>
       </div>
 
       <div class="actus-card">
@@ -198,7 +198,7 @@ function ensureActusOverlay() {
           ${[2,3,4,5,6,7].map(n => `
             <div class="actus-salle-line">
               <div class="actus-salle-label">Salle ${n}:</div>
-              <textarea id="actus-salle-${n}" class="actus-salle-field" rows="1" disabled></textarea>
+              <textarea id="actus-salle-${n}" class="actus-salle-field" rows="1" readonly></textarea>
             </div>
           `).join("")}
         </div>
@@ -228,7 +228,6 @@ function openActus() {
   maybeResetBlocAtNoon();      // rattrapage avant affichage
   fillActusFromStorage();
   initActusInlineEditing();
-  setActusEditMode(false);
   document.getElementById("actus-overlay").classList.add("is-open");
 }
 
@@ -273,7 +272,6 @@ function initActusInlineEditing() {
   const notes = document.getElementById("actus-notes");
   if (!notes) return;
 
-  // évite double init
   if (notes.dataset.inlineInit === "1") return;
   notes.dataset.inlineInit = "1";
 
@@ -284,7 +282,7 @@ function initActusInlineEditing() {
   }
 
   function enable(el) {
-    el.disabled = false;
+    el.readOnly = false;       // ✅ au lieu de disabled=false
     el.focus();
 
     if (typeof el.value === "string" && el.setSelectionRange) {
@@ -295,16 +293,14 @@ function initActusInlineEditing() {
   }
 
   function disableAndSave(el) {
-    el.disabled = true;
+    el.readOnly = true;        // ✅ au lieu de disabled=true
     autoGrow(el);
     saveActusNow();
   }
 
-  // ---- Détecteur double tap/clic universel (souris + tactile)
+  // Détection double-tap / double-clic universelle
   function onDoublePointerActivate(targetEl, cb) {
-    let lastUp = 0;
-    let lastX = 0;
-    let lastY = 0;
+    let lastUp = 0, lastX = 0, lastY = 0;
 
     targetEl.addEventListener("pointerup", (e) => {
       const now = Date.now();
@@ -312,40 +308,34 @@ function initActusInlineEditing() {
       const dx = Math.abs(e.clientX - lastX);
       const dy = Math.abs(e.clientY - lastY);
 
-      // double tap/clic si < 300ms et pas de gros déplacement
-      if (dt > 0 && dt < 300 && dx < 12 && dy < 12) {
+      // fenêtre un peu plus large (mobile)
+      if (dt > 0 && dt < 450 && dx < 14 && dy < 14) {
         cb();
         lastUp = 0;
         return;
       }
-
       lastUp = now;
       lastX = e.clientX;
       lastY = e.clientY;
     });
   }
 
-  // ---- Notes : activer via double-tap/clic sur la carte
+  // Notes : double tap/clic sur la carte => edit ; blur => save
   const notesCard = notes.closest(".actus-card") || notes.parentElement;
-  if (notesCard) {
-    onDoublePointerActivate(notesCard, () => enable(notes));
-  }
+  if (notesCard) onDoublePointerActivate(notesCard, () => enable(notes));
   notes.addEventListener("blur", () => disableAndSave(notes));
 
-  // ---- Salles : textarea autoGrow + double activation sur la ligne
+  // Salles
   [2,3,4,5,6,7].forEach((n) => {
     const field = document.getElementById(`actus-salle-${n}`);
     if (!field) return;
 
-    // initial + autoGrow
     autoGrow(field);
     field.addEventListener("input", () => autoGrow(field));
     field.addEventListener("blur", () => disableAndSave(field));
 
     const line = field.closest(".actus-salle-line") || field.parentElement;
-    if (line) {
-      onDoublePointerActivate(line, () => enable(field));
-    }
+    if (line) onDoublePointerActivate(line, () => enable(field));
 
     // Enter = save (Shift+Enter = nouvelle ligne)
     field.addEventListener("keydown", (e) => {
@@ -356,7 +346,7 @@ function initActusInlineEditing() {
     });
   });
 
-  // ---- clic ailleurs dans la modale => blur => save
+  // clic ailleurs dans la modale => blur => save
   const modal = document.querySelector("#actus-overlay .actus-modal");
   if (modal) {
     modal.addEventListener("pointerdown", (e) => {
@@ -372,19 +362,6 @@ function initActusInlineEditing() {
   }
 }
 
-
-function setActusEditMode(isEdit) {
-  const notesEl = document.getElementById("actus-notes");
-  const saveBtn = document.getElementById("actus-btn-save");
-
-  if (notesEl) notesEl.disabled = !isEdit;
-  [2,3,4,5,6,7].forEach(n => {
-    const el = document.getElementById(`actus-salle-${n}`);
-    if (el) el.disabled = !isEdit;
-  });
-
-  if (saveBtn) saveBtn.disabled = !isEdit;
-}
 
 function saveActus() {
   localStorage.setItem(ACTUS_NOTES_KEY, document.getElementById("actus-notes")?.value || "");
