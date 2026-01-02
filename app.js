@@ -268,7 +268,6 @@ function saveActusNow() {
   });
   localStorage.setItem(blocKey, JSON.stringify(bloc));
 }
-
 function initActusInlineEditing() {
   const notes = document.getElementById("actus-notes");
   if (!notes) return;
@@ -277,41 +276,62 @@ function initActusInlineEditing() {
   if (notes.dataset.inlineInit === "1") return;
   notes.dataset.inlineInit = "1";
 
+  function autoGrow(el) {
+    // Auto-hauteur (utile pour les textarea des salles)
+    if (!el || el.tagName !== "TEXTAREA") return;
+    el.style.height = "auto";
+    el.style.height = el.scrollHeight + "px";
+  }
+
   function enable(el) {
     el.disabled = false;
     el.focus();
-    // met le curseur en fin
-    if (el.setSelectionRange && typeof el.value === "string") {
+
+    // met le curseur en fin (textarea/input)
+    if (typeof el.value === "string") {
       const len = el.value.length;
-      el.setSelectionRange(len, len);
+      if (el.setSelectionRange) el.setSelectionRange(len, len);
     }
+
+    autoGrow(el);
   }
 
   function disableAndSave(el) {
     el.disabled = true;
+    autoGrow(el);
     saveActusNow();
   }
 
-  // Notes : double clic => edit ; blur => save
+  // -------- Notes : double clic => edit ; blur => save
   notes.addEventListener("dblclick", () => enable(notes));
   notes.addEventListener("blur", () => disableAndSave(notes));
 
-  // Salles : double clic => edit ; blur => save ; Enter => save
-  [2,3,4,5,6,7].forEach(n => {
-    const inp = document.getElementById(`actus-salle-${n}`);
-    if (!inp) return;
+  // -------- Salles : textarea auto-hauteur, double clic => edit ; blur => save
+  [2, 3, 4, 5, 6, 7].forEach((n) => {
+    const field = document.getElementById(`actus-salle-${n}`);
+    if (!field) return;
 
-    inp.addEventListener("dblclick", () => enable(inp));
-    inp.addEventListener("blur", () => disableAndSave(inp));
-    inp.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
+    // Ajuste la hauteur au chargement (lecture)
+    autoGrow(field);
+
+    // Pendant la saisie, on agrandit
+    field.addEventListener("input", () => autoGrow(field));
+
+    // Activation / sauvegarde
+    field.addEventListener("dblclick", () => enable(field));
+    field.addEventListener("blur", () => disableAndSave(field));
+
+    // Enter = enregistrer (comme ton comportement précédent)
+    // Shift+Enter = retour à la ligne (utile si texte long)
+    field.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
-        inp.blur();
+        field.blur(); // déclenche save
       }
     });
   });
 
-  // Clic ailleurs dans la modale => enregistre si un champ est en édition
+  // -------- Clic ailleurs dans la modale => enregistre si un champ est en édition
   const modal = document.querySelector("#actus-overlay .actus-modal");
   if (modal) {
     modal.addEventListener("pointerdown", (e) => {
@@ -327,7 +347,6 @@ function initActusInlineEditing() {
     });
   }
 }
-
 
 function setActusEditMode(isEdit) {
   const notesEl = document.getElementById("actus-notes");
@@ -403,6 +422,11 @@ function initActusNoonReset() {
   document.addEventListener("visibilitychange", () => {
     if (!document.hidden) maybeResetBlocAtNoon();
   });
+}
+
+function autoGrow(el){
+  el.style.height = "auto";
+  el.style.height = el.scrollHeight + "px";
 }
 
 // =======================================================
