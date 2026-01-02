@@ -5006,3 +5006,61 @@ body.screen-square .eto-right{
 .actus-salle-field{
   min-height: 3.6em; /* ~3 lignes */
 }
+
+.title-strip { position: relative; }
+.home-actus-btn--anchored { position: absolute; /* + top/left */ }
+
+/* Le wrapper devient la référence pour l'absolu */
+.home-hero{
+  position: relative;
+}
+
+.home-hero-img{
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Position de base du logo au-dessus de titre2.png */
+.home-actus-btn--anchored{
+  position: absolute;
+  z-index: 10;
+
+  /* ⚠️ Ajuste ces 2 valeurs une fois pour tomber exactement au bon endroit */
+  top: 38px;
+  left: 260px;
+
+  width: 56px;
+  height: 56px;
+
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  cursor: grab;
+
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: none;
+}
+
+.home-actus-btn--anchored img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+}
+
+.home-actus-btn--anchored:active{
+  cursor: grabbing;
+  transform: scale(0.98);
+}
+
+/* PC : modale plus large */
+.actus-modal{
+  width: min(1240px, 96vw);
+  max-height: 94vh;
+  padding: 18px;
+}
