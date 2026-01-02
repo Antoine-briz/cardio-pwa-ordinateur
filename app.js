@@ -11286,36 +11286,57 @@ function renderReanEto() {
   });
 }
 
-function openImg(imgFile) {
-  const overlay = document.createElement("div");
-  overlay.className = "acr-modal img-modal";
+function openImg(name) {
+  const popup = document.getElementById("img-popup");
+  const imgEl = document.getElementById("popup-img");
 
-  overlay.innerHTML = `
-    <div class="acr-modal-card" role="dialog" aria-modal="true"
-         style="max-width:95vw; max-height:95vh;">
-      <div class="acr-modal-head">
-        <h3>${imgFile.replace(".png", "")}</h3>
-        <button class="acr-modal-close" aria-label="Fermer">✖</button>
-      </div>
+  // Sécurité
+  if (!popup || !imgEl) return;
 
-      <div class="acr-modal-body">
-        <div class="img-scroll-wrap">
-          <img src="img/${imgFile}" alt="${imgFile}">
-        </div>
-      </div>
-    </div>
-  `;
+  // 🔁 reset
+  imgEl.src = "";
+  imgEl.style.width = "";
+  imgEl.style.height = "";
+  imgEl.style.maxWidth = "";
+  imgEl.style.display = "";
 
-  const close = () => overlay.remove();
+  // On va utiliser un wrapper scroll UNIQUEMENT pour ces 2 images
+  const isTableauACR = name === "tableauacr.png";
+  const isSFAR = name === "aidecognitiveSFAR.png";
 
-  overlay.addEventListener("click", (e) => {
-    if (e.target === overlay) close();
-  });
+  // Cherche (ou crée) le wrapper scroll autour de l'image
+  let wrap = popup.querySelector(".img-scroll-wrap");
 
-  overlay.querySelector(".acr-modal-close")
-    ?.addEventListener("click", close);
+  if (isTableauACR || isSFAR) {
+    // Crée le wrapper si absent
+    if (!wrap) {
+      wrap = document.createElement("div");
+      wrap.className = "img-scroll-wrap";
 
-  document.body.appendChild(overlay);
+      // On place le wrapper à la place de l'image dans la popup
+      // => on "déplace" l'image existante dedans
+      imgEl.parentNode.insertBefore(wrap, imgEl);
+      wrap.appendChild(imgEl);
+    }
+
+    // Applique le facteur d'agrandissement
+    const scale = isTableauACR ? 3 : 2;
+
+    imgEl.src = `img/${name}`;
+    imgEl.style.width = `${scale * 100}%`;   // 300% ou 200%
+    imgEl.style.height = "auto";
+    imgEl.style.maxWidth = "none";
+  } else {
+    // ✅ Toutes les autres images : affichage EXACTEMENT comme avant
+    if (wrap) {
+      // Si wrapper présent, on remet l'image hors wrapper pour revenir au mode normal
+      wrap.parentNode.insertBefore(imgEl, wrap);
+      wrap.remove();
+    }
+    imgEl.src = `img/${name}`;
+  }
+
+  popup.style.display = "flex";
 }
 
 
