@@ -178,6 +178,7 @@ function ensureActusOverlay() {
   const overlay = document.createElement("div");
   overlay.id = "actus-overlay";
   overlay.className = "actus-overlay";
+
   overlay.innerHTML = `
     <div class="actus-modal" role="dialog" aria-modal="true">
       <div class="actus-modal-header">
@@ -193,10 +194,13 @@ function ensureActusOverlay() {
       <div class="actus-card">
         <div class="actus-card-title" id="actus-bloc-title"></div>
 
-        <div class="actus-salle-line">
-  <div class="actus-salle-label">Salle ${n}:</div>
-  <input id="actus-salle-${n}" class="actus-salle-field" type="text" disabled />
-</div>
+        <div class="actus-salles">
+          ${[2,3,4,5,6,7].map(n => `
+            <div class="actus-salle-line">
+              <div class="actus-salle-label">Salle ${n}:</div>
+              <input id="actus-salle-${n}" class="actus-salle-field" type="text" disabled />
+            </div>
+          `).join("")}
         </div>
       </div>
     </div>
@@ -208,7 +212,7 @@ function ensureActusOverlay() {
 
   document.body.appendChild(overlay);
 
-  // Sync si une autre fenêtre/onglet modifie localStorage (ou autre appareil si même origine)
+  // Optionnel mais utile : si une autre fenêtre/onglet modifie localStorage, on rafraîchit l'overlay ouvert
   window.addEventListener("storage", (e) => {
     const ov = document.getElementById("actus-overlay");
     if (!ov || !ov.classList.contains("is-open")) return;
@@ -217,6 +221,7 @@ function ensureActusOverlay() {
     }
   });
 }
+
 
 function openActus() {
   ensureActusOverlay();
