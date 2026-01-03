@@ -5162,3 +5162,177 @@ body.screen-square .eto-right{
   line-height: 1.45;
 }
 
+.actus-color{
+  height: 32px;
+  font-size: 14px;
+  padding: 0 8px;
+  max-width: 180px;
+}
+
+/* =========================================================
+   ✅ OVERRIDES FORTS (à coller TOUT EN BAS du styles.css)
+   - Intervention pages : titres à nouveau grands
+   - RVA/RVM : 2 boutons parfaitement alignés (pas de décalage)
+   - Modal CR ETO : centrée, largeur OK, hauteur = contenu (pas de grand vide)
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   1) INTERVENTION PAGES : garder titres/sous-titres grands
+   + uniformiser seulement le texte DANS les encadrés
+   --------------------------------------------------------- */
+
+/* Titres pages (hero) : priorité maximale */
+.intervention-shell .hero h2,
+.intervention-main .hero h2{
+  font-size: 2.4rem !important;
+  line-height: 1.15 !important;
+  font-weight: 900 !important;
+}
+
+.intervention-shell .hero h3,
+.intervention-main .hero h3{
+  font-size: 1.25rem !important;
+  line-height: 1.2 !important;
+  font-weight: 800 !important;
+}
+
+/* Si tu utilises renderInterventionPage avec <section class="intervention-page"> */
+.intervention-page .hero h2{
+  font-size: 2.4rem !important;
+  line-height: 1.15 !important;
+  font-weight: 900 !important;
+}
+.intervention-page .hero h3{
+  font-size: 1.25rem !important;
+  line-height: 1.2 !important;
+  font-weight: 800 !important;
+}
+
+/* Encadrés (cards/encadre) : on touche UNIQUEMENT le contenu interne */
+.intervention-page details.card .card-body,
+.intervention-page .encadre,
+.intervention-shell details.card .card-body,
+.intervention-shell .encadre{
+  font-size: 1rem !important;
+  line-height: 1.45 !important;
+}
+
+/* Titres d’encadrés (summary) : on les remet bien plus visibles */
+.intervention-page details.card > summary,
+.intervention-shell details.card > summary{
+  font-size: 1.15rem !important;
+  font-weight: 900 !important;
+}
+
+/* (optionnel) titres dans les encadrés si tu as des h3 dedans */
+.intervention-page .card-body h3,
+.intervention-shell .card-body h3{
+  font-size: 1.1rem !important;
+  font-weight: 900 !important;
+}
+
+
+/* ---------------------------------------------------------
+   2) RVA/RVM : corriger le décalage largeur des 2 boutons
+   (tes fichiers contiennent plusieurs règles concurrentes)
+   --------------------------------------------------------- */
+
+/* Wrapper officiel si présent */
+.eto-entry-buttons{
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 12px !important;
+  flex-wrap: nowrap !important;
+  width: 100% !important;
+}
+
+/* Boutons : mêmes dimensions visuelles + pas de marges parasites */
+.eto-entry-buttons .btn,
+#rva-eto-goto, #rva-eto-open,
+#rvm-eto-goto, #rvm-eto-open{
+  margin: 0 !important;
+  flex: 0 0 auto !important;
+  line-height: 1.2 !important;
+}
+
+/* Si un margin-left “historique” traîne sur open */
+#rva-eto-open, #rvm-eto-open{
+  margin-left: 0 !important;
+}
+
+
+/* ---------------------------------------------------------
+   3) Modal "Compte rendu ETO" : centrée et hauteur = contenu
+   Objectif :
+   - plus de fenêtre qui prend toute la hauteur avec vide
+   - la carte reste centrée
+   - le scroll se fait dans la zone utile (table/synthèse)
+   --------------------------------------------------------- */
+
+/* L’overlay centre déjà via .acr-modal (flex) dans ton CSS :
+   on sécurise juste que la carte ne s’étire pas en “plein écran”. */
+.eto-modal.eto-fullscreen{
+  width: min(1100px, 96vw) !important;      /* au lieu de 100vw */
+  height: auto !important;                  /* ✅ stop plein écran */
+  max-height: calc(100vh - 32px) !important;
+  margin: 16px auto !important;
+  display: block !important;                /* ✅ pas de flex colonne forcée */
+}
+
+/* La carte doit rester centrée et ne pas “coller à gauche” */
+.eto-modal.eto-fullscreen .acr-modal-card{
+  width: 100% !important;
+  margin: 0 auto !important;
+  max-height: calc(100vh - 32px) !important;
+  overflow: hidden !important;              /* le scroll se fait dedans (zones) */
+}
+
+/* Body : ne PAS prendre toute la hauteur inutilement */
+.eto-modal.eto-fullscreen .acr-modal-body{
+  flex: initial !important;                 /* ✅ annule ton flex:1 */
+  overflow: visible !important;             /* le scroll = dans .eto-table-wrap / .eto-synth-box */
+  max-height: none !important;
+  padding-bottom: 10px !important;
+}
+
+/* Desktop grid : ne force pas 100% hauteur */
+.eto-modal.eto-fullscreen .eto-desktop-grid{
+  height: auto !important;
+  min-height: 0 !important;
+  align-items: start !important;
+}
+
+/* La zone tableau scrolle si nécessaire (plutôt que la modale entière) */
+.eto-modal.eto-fullscreen .eto-table-wrap{
+  max-height: 62vh !important;              /* ✅ stop le “vide” global */
+  overflow: auto !important;
+}
+
+/* Synthèse : scrolle aussi si nécessaire */
+.eto-modal.eto-fullscreen .eto-synth-panel{
+  height: auto !important;
+  max-height: 62vh !important;
+}
+.eto-modal.eto-fullscreen .eto-synth-box{
+  max-height: 50vh !important;
+  overflow: auto !important;
+}
+
+/* Mobile : on garde le plein écran (c’est souvent voulu) */
+@media (max-width: 700px){
+  .eto-modal.eto-fullscreen{
+    width: 100vw !important;
+    max-height: 100vh !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+  }
+  .eto-modal.eto-fullscreen .acr-modal-card{
+    max-height: 100vh !important;
+    border-radius: 0 !important;
+  }
+  .eto-modal.eto-fullscreen .eto-table-wrap{
+    max-height: 58vh !important;
+  }
+}
+
