@@ -289,18 +289,24 @@ async function saveActusNow() {
     notes: document.getElementById("actus-notes")?.innerHTML || "",
     bloc: {}
   };
-
   [2,3,4,5,6,7].forEach(n => {
-    payload.bloc[n] =
-      document.getElementById(`actus-salle-${n}`)?.innerHTML || "";
+    payload.bloc[n] = document.getElementById(`actus-salle-${n}`)?.innerHTML || "";
   });
 
   try {
-    await fetch(ACTUS_API_URL, {
+    // ✅ form-urlencoded => évite le preflight CORS
+    const body = new URLSearchParams();
+    body.set("payload", JSON.stringify(payload));
+
+    const res = await fetch(ACTUS_API_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
+      body
     });
+
+    if (!res.ok) {
+      const txt = await res.text();
+      console.error("Erreur sauvegarde actus:", res.status, txt);
+    }
   } catch (e) {
     console.error("Erreur sauvegarde actus", e);
   }
