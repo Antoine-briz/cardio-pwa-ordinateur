@@ -454,7 +454,7 @@ function maybeResetBlocAtNoon() {
     localStorage.setItem(ACTUS_BLOC_LAST_RESET_KEY, day);
 
     const ov = document.getElementById("actus-overlay");
-    if (ov && ov.classList.contains("is-open")) fillActusFromStorage();
+    if (ov && ov.classList.contains("is-open")) loadActusFromServer();
   }
 }
 function scheduleNoonReset() {
