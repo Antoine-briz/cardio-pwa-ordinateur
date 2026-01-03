@@ -5348,3 +5348,40 @@ body.screen-square .eto-right{
   display: block;
 }
 
+/* ======================================================
+   Footer - Logo Actualités : plus grand, sans cadre
+   (à mettre en fin de styles.css)
+====================================================== */
+
+#app-footer .footer-actus-btn{
+  width: 120px;          /* ~2-3x */
+  height: 120px;
+  padding: 0;
+  margin: 0;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  outline: none !important;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+#app-footer .footer-actus-btn img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Option : un peu plus petit si écran très étroit */
+@media (max-width: 600px){
+  #app-footer .footer-actus-btn{
+    width: 96px;
+    height: 96px;
+  }
+}
+
