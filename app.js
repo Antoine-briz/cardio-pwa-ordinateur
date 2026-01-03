@@ -239,8 +239,8 @@ function ensureActusOverlay() {
 
   // clic sur le fond sombre = fermer
   overlay.addEventListener("click", (e) => {
-    if (e.target === overlay) closeActus();
-  });
+  if (e.target === overlay) closeActus(); // fond uniquement
+});
 
   document.body.appendChild(overlay);
 
@@ -296,11 +296,23 @@ function setActusLoading(isLoading) {
 }
 
 
-function closeActus() {
-  const ov = document.getElementById("actus-overlay");
-  if (ov) ov.classList.remove("is-open");
-  if (location.hash === "#/actus") location.hash = "#/";
+async function closeActus() {
+  // Désactive l'édition en cours (sans déclencher d'events blur)
+  const fields = document.querySelectorAll("#actus-notes, [id^='actus-salle-']");
+  fields.forEach(el => {
+    if (el) el.contentEditable = "false";
+  });
+
+  // Sauvegarde une seule fois à la fermeture
+  await saveActusNow();
+
+  const overlay = document.getElementById("actus-overlay");
+  if (overlay) overlay.classList.remove("is-open");
+
+  actusActiveEl = null;
+  actusSavedRange = null;
 }
+
 
 async function loadActusFromServer() {
   try {
@@ -384,6 +396,7 @@ function actusColor(color) {
   saveActusNow();
 }
 
+
 function initActusInlineEditing() {
   const notes = document.getElementById("actus-notes");
   if (!notes) return;
@@ -397,19 +410,18 @@ function initActusInlineEditing() {
     el.addEventListener("touchend", actusSaveSelection);
   }
 
-  function enable(el) {
+  function activate(el) {
+    // désactive l'ancien champ si on en active un autre
+    if (actusActiveEl && actusActiveEl !== el) {
+      actusActiveEl.contentEditable = "false";
+    }
+
     el.contentEditable = "true";
     el.focus();
-    actusActiveEl = el;
 
+    actusActiveEl = el;
     wireSelectionSaving(el);
     actusSaveSelection();
-  }
-
-  function disableAndSave(el) {
-    el.contentEditable = "false";
-    if (actusActiveEl === el) actusActiveEl = null;
-    saveActusNow();
   }
 
   // Double-tap/clic universel (au lieu de dblclick)
@@ -431,13 +443,13 @@ function initActusInlineEditing() {
 
   // Notes
   const notesCard = notes.closest(".actus-card") || notes.parentElement;
-  if (notesCard) onDoubleActivate(notesCard, () => enable(notes));
+  if (notesCard) onDoubleActivate(notesCard, () => activate(notes));
 
   notes.addEventListener("focus", () => {
     actusActiveEl = notes;
     actusSaveSelection();
   });
-  notes.addEventListener("blur", () => disableAndSave(notes));
+  wireSelectionSaving(notes);
 
   // Salles
   [2,3,4,5,6,7].forEach(n => {
@@ -445,7 +457,7 @@ function initActusInlineEditing() {
     if (!el) return;
 
     const line = el.closest(".actus-salle-line") || el.parentElement;
-    if (line) onDoubleActivate(line, () => enable(el));
+    if (line) onDoubleActivate(line, () => activate(el));
 
     el.addEventListener("focus", () => {
       actusActiveEl = el;
@@ -453,20 +465,31 @@ function initActusInlineEditing() {
     });
 
     wireSelectionSaving(el);
-    el.addEventListener("blur", () => disableAndSave(el));
   });
 
-  // clic ailleurs dans la modale => save
-  const modal = document.querySelector("#actus-overlay .actus-modal");
-  if (modal) {
-    modal.addEventListener("pointerdown", (e) => {
-      const active = document.activeElement;
-      const isActusField =
-        active?.id === "actus-notes" || (active?.id || "").startsWith("actus-salle-");
-      if (isActusField && active && e.target !== active) active.blur();
+  // ✅ IMPORTANT :
+  // - plus de blur => save
+  // - plus de "clic ailleurs => blur"
+  // => la sauvegarde se fait UNIQUEMENT dans closeActus()
+
+  // ✅ Toolbar : empêche de perdre la sélection au clic
+  const toolbar = document.querySelector("#actus-overlay .actus-toolbar");
+  if (toolbar && toolbar.dataset.keepSel !== "1") {
+    toolbar.dataset.keepSel = "1";
+    toolbar.addEventListener("pointerdown", (e) => {
+      e.preventDefault(); // garde la sélection active
     });
   }
+  // Si tu veux : Escape = fermer (et donc sauvegarder)
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      const overlay = document.getElementById("actus-overlay");
+      if (overlay && overlay.classList.contains("is-open")) closeActus();
+    }
+  }, { once: true });
 }
+
+
 
 function isAfterNoonNow() {
   const now = new Date();
