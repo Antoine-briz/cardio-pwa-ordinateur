@@ -5385,3 +5385,48 @@ body.screen-square .eto-right{
   }
 }
 
+/* =====================================================
+   PATCH — ETO: supprimer le "plein écran" qui crée le grand blanc
+   (la carte s'ajuste au contenu + scroll vertical si besoin)
+   À COLLER TOUT EN BAS DU CSS
+   ===================================================== */
+
+/* 1) Ne plus forcer la carte à faire 100vh */
+.eto-modal .acr-modal-card.eto-fullscreen{
+  height: auto !important;
+  max-height: 92vh !important;          /* limite raisonnable */
+  width: min(1400px, calc(100vw - 24px)) !important;
+  margin: 12px auto !important;         /* centré */
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* 2) Rendre le body scrollable (au lieu de overflow:hidden) */
+.eto-modal .eto-fullscreen .acr-modal-body{
+  flex: 0 1 auto !important;
+  overflow: auto !important;            /* ✅ scroll vertical si nécessaire */
+  padding: 8px !important;
+}
+
+/* 3) Ne plus étirer la grille et la colonne droite sur toute la hauteur */
+.eto-modal .eto-desktop-grid{
+  height: auto !important;
+  align-items: start !important;
+}
+
+.eto-modal .eto-left,
+.eto-modal .eto-right{
+  height: auto !important;
+}
+
+/* 4) La synthèse à droite ne doit pas "remplir" 100% */
+.eto-modal .eto-synth-panel{
+  height: auto !important;
+  max-height: none !important;
+}
+
+/* 5) Si tu veux que la zone tableau puisse scroller sans étirer tout le modal */
+.eto-modal .eto-table-wrap{
+  flex: 0 1 auto !important;
+  max-height: none !important;
+}
