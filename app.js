@@ -145,9 +145,6 @@ function renderHome() {
       </div>
     </section>
   `;
-
-  // ✅ IMPORTANT : utiliser la version "ancrée" (dans title-strip), pas le draggable fixed plein écran
-  initAnchoredDraggableSaricLogo();
 }
 
 
@@ -18599,11 +18596,6 @@ function navigate() {
     view();
   } else {
     renderNotFound();
-  }
-
-  // Sécurité : seulement si la fonction existe
-  if (typeof initDraggableSaricLogo === "function") {
-    initDraggableSaricLogo();
   }
 }
 
