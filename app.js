@@ -18584,7 +18584,7 @@ function navigate() {
 
   // 🔒 Si on QUITTE la page ACR, on nettoie
   if (currentRoute === "#/acr" && hash !== "#/acr") {
-    disableAcrWakeLock();
+    if (typeof disableAcrWakeLock === "function") disableAcrWakeLock();
     setAcrTheme(false);
   }
 
