@@ -272,6 +272,23 @@ async function openActus() {
   }
 }
 
+function setActusLoading(isLoading) {
+  const modal = document.querySelector("#actus-overlay .actus-modal");
+  if (!modal) return;
+
+  modal.classList.toggle("is-loading", !!isLoading);
+
+  // Désactive la toolbar pendant chargement (optionnel)
+  const tools = modal.querySelectorAll(".actus-tool, .actus-color");
+  tools.forEach(el => el.disabled = !!isLoading);
+
+  // Empêche l’édition pendant chargement
+  const fields = modal.querySelectorAll("#actus-notes, [id^='actus-salle-']");
+  fields.forEach(el => {
+    if (isLoading) el.setAttribute("contenteditable", "false");
+  });
+}
+
 
 function closeActus() {
   const ov = document.getElementById("actus-overlay");
