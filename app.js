@@ -3,7 +3,7 @@
 // =====================================================================
 //  ROUTER DE BASE
 // =====================================================================
-
+const ACTUS_API_URL = "https://script.google.com/macros/s/AKfycbzyNf3XddrkPfjfk7fJZqqEoj7geuTUMEfq7DCKgwwWExALcam15U1XsRfHXiWDCpCf/exec";
 const $app = document.getElementById("app");
 
 function h(cls, html) {
@@ -249,7 +249,7 @@ function ensureActusOverlay() {
     const ov = document.getElementById("actus-overlay");
     if (!ov || !ov.classList.contains("is-open")) return;
     if (e.key === ACTUS_NOTES_KEY || (e.key && e.key.startsWith(ACTUS_BLOC_KEY_PREFIX))) {
-      fillActusFromStorage();
+      loadActusFromServer();
     }
   });
 }
@@ -258,7 +258,7 @@ function ensureActusOverlay() {
 function openActus() {
   ensureActusOverlay();
   maybeResetBlocAtNoon();      // rattrapage avant affichage
-  fillActusFromStorage();
+  loadActusFromServer();
   initActusInlineEditing();
   document.getElementById("actus-overlay").classList.add("is-open");
 }
@@ -269,36 +269,44 @@ function closeActus() {
   if (location.hash === "#/actus") location.hash = "#/";
 }
 
-function fillActusFromStorage() {
-  const tomorrowISO = getTomorrowISO();
-  document.getElementById("actus-bloc-title").textContent =
-    `Organisation bloc 3ème du ${formatDateFR(tomorrowISO)}`;
+async function loadActusFromServer() {
+  try {
+    const res = await fetch(ACTUS_API_URL);
+    const data = await res.json();
 
-  document.getElementById("actus-notes").innerHTML =
-    localStorage.getItem(ACTUS_NOTES_KEY) || "";
+    document.getElementById("actus-notes").innerHTML = data.notes || "";
 
-  const blocKey = getBlocKeyForTomorrow();
-  let bloc = {};
-  try { bloc = JSON.parse(localStorage.getItem(blocKey) || "{}"); } catch { bloc = {}; }
-
-  [2,3,4,5,6,7].forEach(n => {
-    const el = document.getElementById(`actus-salle-${n}`);
-    if (el) el.innerHTML = bloc[String(n)] || "";
-  });
+    [2,3,4,5,6,7].forEach(n => {
+      const el = document.getElementById(`actus-salle-${n}`);
+      if (el) el.innerHTML = data.bloc?.[n] || "";
+    });
+  } catch (e) {
+    console.error("Erreur chargement actus", e);
+  }
 }
 
-function saveActusNow() {
-  // Notes
-  localStorage.setItem(ACTUS_NOTES_KEY, document.getElementById("actus-notes")?.innerHTML || "");
+async function saveActusNow() {
+  const payload = {
+    notes: document.getElementById("actus-notes")?.innerHTML || "",
+    bloc: {}
+  };
 
-  // Bloc du lendemain
-  const blocKey = getBlocKeyForTomorrow();
-  const bloc = {};
   [2,3,4,5,6,7].forEach(n => {
-    bloc[String(n)] = document.getElementById(`actus-salle-${n}`)?.innerHTML || "";
+    payload.bloc[n] =
+      document.getElementById(`actus-salle-${n}`)?.innerHTML || "";
   });
-  localStorage.setItem(blocKey, JSON.stringify(bloc));
+
+  try {
+    await fetch(ACTUS_API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+  } catch (e) {
+    console.error("Erreur sauvegarde actus", e);
+  }
 }
+
 
 let actusActiveEl = null;
 let actusSavedRange = null;
