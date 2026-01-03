@@ -5446,3 +5446,30 @@ body.screen-square .eto-right{
   opacity: 0.8;
   text-align: center;
 }
+
+/* Swatches couleurs dans la toolbar */
+.actus-color-swatches{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.actus-swatch{
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border-radius: 6px;
+  border: 1px solid rgba(127,127,127,0.35);
+  background: var(--c);
+  cursor: pointer;
+}
+
+.actus-swatch:active{
+  transform: scale(0.96);
+}
+
+/* Pour le blanc : bordure un peu plus visible */
+.actus-swatch[style*="#ffffff"]{
+  border: 1px solid rgba(127,127,127,0.7);
+}
