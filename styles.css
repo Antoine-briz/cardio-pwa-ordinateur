@@ -5430,3 +5430,19 @@ body.screen-square .eto-right{
   flex: 0 1 auto !important;
   max-height: none !important;
 }
+
+/* Actus: état chargement (simple) */
+.actus-modal.is-loading{
+  opacity: 0.92;
+}
+
+.actus-modal.is-loading::after{
+  content: "Chargement…";
+  position: sticky;
+  bottom: 0;
+  display: block;
+  padding: 10px 0 0;
+  font-size: 14px;
+  opacity: 0.8;
+  text-align: center;
+}
