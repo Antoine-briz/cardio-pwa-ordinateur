@@ -11801,7 +11801,7 @@ function openImg(name) {
     }
 
     // Applique le facteur d'agrandissement
-    const scale = isTableauACR ? 3 : 2;
+    const scale = isTableauACR ? 1.5 : 1;
 
     imgEl.src = `img/${name}`;
     imgEl.style.width = `${scale * 100}%`;   // 300% ou 200%
