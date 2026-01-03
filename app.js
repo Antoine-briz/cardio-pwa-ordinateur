@@ -219,19 +219,18 @@ function ensureActusOverlay() {
         <button class="btn actus-tool" type="button" onclick="actusCmd('italic')" title="Italique"><i>I</i></button>
         <button class="btn actus-tool" type="button" onclick="actusCmd('underline')" title="Souligné"><u>U</u></button>
 
-        <select class="actus-color" onchange="actusColor(this.value)">
-          <option value="">Couleur…</option>
-          <option value="#ffffff">⬜ Blanc</option>
-          <option value="#000000">⬛ Noir</option>
-          <option value="#e53935">🟥 Rouge</option>
-          <option value="#1e88e5">🟦 Bleu</option>
-          <option value="#fdd835">🟨 Jaune</option>
-          <option value="#fb8c00">🟧 Orange</option>
-          <option value="#43a047">🟩 Vert</option>
-          <option value="#8e24aa">🟪 Violet</option>
-          <option value="#6d4c41">🟫 Marron</option>
-          <option value="#757575">⬜ Gris</option>
-        </select>
+        <<div class="actus-color-swatches" aria-label="Couleur du texte">
+  <button class="actus-swatch" type="button" style="--c:#ffffff" onclick="actusColor('#ffffff')" aria-label="Blanc"></button>
+  <button class="actus-swatch" type="button" style="--c:#000000" onclick="actusColor('#000000')" aria-label="Noir"></button>
+  <button class="actus-swatch" type="button" style="--c:#e53935" onclick="actusColor('#e53935')" aria-label="Rouge"></button>
+  <button class="actus-swatch" type="button" style="--c:#1e88e5" onclick="actusColor('#1e88e5')" aria-label="Bleu"></button>
+  <button class="actus-swatch" type="button" style="--c:#fdd835" onclick="actusColor('#fdd835')" aria-label="Jaune"></button>
+  <button class="actus-swatch" type="button" style="--c:#fb8c00" onclick="actusColor('#fb8c00')" aria-label="Orange"></button>
+  <button class="actus-swatch" type="button" style="--c:#43a047" onclick="actusColor('#43a047')" aria-label="Vert"></button>
+  <button class="actus-swatch" type="button" style="--c:#8e24aa" onclick="actusColor('#8e24aa')" aria-label="Violet"></button>
+  <button class="actus-swatch" type="button" style="--c:#6d4c41" onclick="actusColor('#6d4c41')" aria-label="Marron"></button>
+  <button class="actus-swatch" type="button" style="--c:#757575" onclick="actusColor('#757575')" aria-label="Gris"></button>
+</div>
       </div>
 
     </div>
