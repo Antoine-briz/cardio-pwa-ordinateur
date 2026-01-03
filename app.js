@@ -260,17 +260,23 @@ async function openActus() {
   const overlay = document.getElementById("actus-overlay");
   overlay.classList.add("is-open"); // ✅ ouvre tout de suite
 
-  // (optionnel) affiche un état "chargement"
   setActusLoading(true);
+
+  // ✅ met le bon titre immédiatement
+  updateActusBlocTitle();
 
   try {
     await maybeResetBlocAtNoon();
     await loadActusFromServer();
+
+    // ✅ resécurise le titre après chargement/purge
+    updateActusBlocTitle();
   } finally {
     setActusLoading(false);
     initActusInlineEditing();
   }
 }
+
 
 function setActusLoading(isLoading) {
   const modal = document.querySelector("#actus-overlay .actus-modal");
