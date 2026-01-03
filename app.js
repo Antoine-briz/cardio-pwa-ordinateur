@@ -256,11 +256,22 @@ function ensureActusOverlay() {
 
 async function openActus() {
   ensureActusOverlay();
-  await maybeResetBlocAtNoon();      // rattrapage avant affichage
-  await loadActusFromServer();
-  initActusInlineEditing();
-  document.getElementById("actus-overlay").classList.add("is-open");
+
+  const overlay = document.getElementById("actus-overlay");
+  overlay.classList.add("is-open"); // ✅ ouvre tout de suite
+
+  // (optionnel) affiche un état "chargement"
+  setActusLoading(true);
+
+  try {
+    await maybeResetBlocAtNoon();
+    await loadActusFromServer();
+  } finally {
+    setActusLoading(false);
+    initActusInlineEditing();
+  }
 }
+
 
 function closeActus() {
   const ov = document.getElementById("actus-overlay");
