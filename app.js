@@ -18584,20 +18584,27 @@ function navigate() {
 
   // 🔒 Si on QUITTE la page ACR, on nettoie
   if (currentRoute === "#/acr" && hash !== "#/acr") {
-    if (typeof disableAcrWakeLock === "function") disableAcrWakeLock();
-    setAcrTheme(false);
+    if (typeof disableAcrWakeLock === "function") {
+      disableAcrWakeLock();
+    }
+    if (typeof setAcrTheme === "function") {
+      setAcrTheme(false);
+    }
   }
 
   currentRoute = hash;
 
   const view = routes[hash];
-  if (view) {
+  if (typeof view === "function") {
     view();
   } else {
     renderNotFound();
   }
 
-  initDraggableSaricLogo();
+  // Sécurité : seulement si la fonction existe
+  if (typeof initDraggableSaricLogo === "function") {
+    initDraggableSaricLogo();
+  }
 }
 
 
