@@ -96,19 +96,9 @@ function openPdf(file) {
 function renderHome() {
   $app.innerHTML = `
     <section class="home">
-      <div class="title-strip">
+    <div class="title-strip">
         <img src="img/titre2.png" alt="Titre de l'application" class="title-strip-img">
-
-        <!-- LOGO ACTUALITÉS (superposé à titre2.png) -->
-        <button id="saricnews-logo"
-                class="home-actus-btn home-actus-btn--anchored"
-                type="button"
-                onclick="openActus()"
-                aria-label="Actualités">
-          <img src="img/saricnews.png" alt="SARIC News">
-        </button>
       </div>
-
       <div class="home-cards">
         <div class="card card-home" onclick="location.hash = '#/anesthesie'">
           <h3>Protocoles d’anesthésie</h3>
