@@ -258,7 +258,7 @@ function ensureActusOverlay() {
 function openActus() {
   ensureActusOverlay();
   maybeResetBlocAtNoon();      // rattrapage avant affichage
-  loadActusFromServer();
+  await loadActusFromServer();
   initActusInlineEditing();
   document.getElementById("actus-overlay").classList.add("is-open");
 }
