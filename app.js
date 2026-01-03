@@ -314,17 +314,38 @@ function saveActusNow() {
 }
 
 let actusActiveEl = null;
+let actusSavedRange = null;
+
+function actusSaveSelection() {
+  const sel = window.getSelection();
+  if (!sel || sel.rangeCount === 0) return;
+  actusSavedRange = sel.getRangeAt(0).cloneRange();
+}
+
+function actusRestoreSelection() {
+  if (!actusSavedRange) return;
+  const sel = window.getSelection();
+  if (!sel) return;
+  sel.removeAllRanges();
+  sel.addRange(actusSavedRange);
+}
 
 function actusCmd(cmd) {
   if (!actusActiveEl) return;
+
   actusActiveEl.focus();
-  document.execCommand(cmd, false, null); // marche bien pour bold/italic/underline
+  actusRestoreSelection();
+
+  document.execCommand(cmd, false, null);
   saveActusNow();
 }
 
 function actusColor(color) {
   if (!actusActiveEl || !color) return;
+
   actusActiveEl.focus();
+  actusRestoreSelection();
+
   document.execCommand("foreColor", false, color);
   saveActusNow();
 }
@@ -335,11 +356,22 @@ function initActusInlineEditing() {
   if (notes.dataset.inlineInit === "1") return;
   notes.dataset.inlineInit = "1";
 
+  function wireSelectionSaving(el) {
+    el.addEventListener("mouseup", actusSaveSelection);
+    el.addEventListener("keyup", actusSaveSelection);
+    el.addEventListener("pointerup", actusSaveSelection);
+    el.addEventListener("touchend", actusSaveSelection);
+  }
+
   function enable(el) {
     el.contentEditable = "true";
     el.focus();
     actusActiveEl = el;
+
+    wireSelectionSaving(el);
+    actusSaveSelection();
   }
+
   function disableAndSave(el) {
     el.contentEditable = "false";
     if (actusActiveEl === el) actusActiveEl = null;
@@ -366,6 +398,11 @@ function initActusInlineEditing() {
   // Notes
   const notesCard = notes.closest(".actus-card") || notes.parentElement;
   if (notesCard) onDoubleActivate(notesCard, () => enable(notes));
+
+  notes.addEventListener("focus", () => {
+    actusActiveEl = notes;
+    actusSaveSelection();
+  });
   notes.addEventListener("blur", () => disableAndSave(notes));
 
   // Salles
@@ -376,7 +413,12 @@ function initActusInlineEditing() {
     const line = el.closest(".actus-salle-line") || el.parentElement;
     if (line) onDoubleActivate(line, () => enable(el));
 
-    el.addEventListener("focus", () => { actusActiveEl = el; });
+    el.addEventListener("focus", () => {
+      actusActiveEl = el;
+      actusSaveSelection();
+    });
+
+    wireSelectionSaving(el);
     el.addEventListener("blur", () => disableAndSave(el));
   });
 
@@ -392,19 +434,6 @@ function initActusInlineEditing() {
   }
 }
 
-
-function saveActus() {
-  localStorage.setItem(ACTUS_NOTES_KEY, document.getElementById("actus-notes")?.value || "");
-
-  const blocKey = getBlocKeyForTomorrow();
-  const bloc = {};
-  [2,3,4,5,6,7].forEach(n => {
-    bloc[String(n)] = document.getElementById(`actus-salle-${n}`)?.value || "";
-  });
-  localStorage.setItem(blocKey, JSON.stringify(bloc));
-
-  setActusEditMode(false);
-}
 
 // -------------------------------
 //  Purge quotidienne à 12:00
