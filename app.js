@@ -3070,6 +3070,13 @@ Surveillance:
     if (el) el.innerHTML = html || "";
   };
 
+  function antibioticCefazVancomy() {
+  // Prioritaire : allergie bêta-lactamines
+  if (cbAll?.checked) return "Vancomycine 30mg/kg IVL une injection 30min avant incision";
+  // Sinon Céfazoline selon IMC
+  if (cbImc?.checked) return "Céfazoline 4g puis 2g toutes les 4h";
+  return "Céfazoline 2g puis 1g toutes les 4h";
+}
 
   function applyConditions(interventionName, rawText) {
     let t = rawText ?? "";
