@@ -5550,3 +5550,60 @@ body.light-theme .actus-spinner{
 body.light-theme .actus-saving-text{
   color: #000;
 }
+
+/* ======================================================
+   ACTUALITÉS — Spinner de sauvegarde (AU-DESSUS de tout)
+   ====================================================== */
+
+.actus-saving{
+  position: absolute;
+  inset: 0;
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+
+  background: rgba(0,0,0,0.45);
+
+  /* 🔥 clé du problème */
+  z-index: 9999;
+
+  pointer-events: all; /* bloque les clics derrière */
+}
+
+.actus-modal.is-saving .actus-saving{
+  display: flex;
+}
+
+.actus-spinner{
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 4px solid rgba(255,255,255,0.35);
+  border-top-color: #ffffff;
+  animation: actus-spin 0.9s linear infinite;
+}
+
+.actus-saving-text{
+  font-size: 14px;
+  opacity: 0.9;
+  color: #fff;
+}
+
+@keyframes actus-spin{
+  to{ transform: rotate(360deg); }
+}
+
+/* Thème clair */
+body.light-theme .actus-saving{
+  background: rgba(255,255,255,0.65);
+}
+body.light-theme .actus-spinner{
+  border-color: rgba(0,0,0,0.25);
+  border-top-color: #000;
+}
+body.light-theme .actus-saving-text{
+  color: #000;
+}
