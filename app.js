@@ -2534,6 +2534,12 @@ Surveillance:
   return (s ?? "").replace(/\n/g, "<br>");
 }
 
+function antibioticCefazVancomy() {
+  if (cbAll?.checked) return "Vancomycine 30mg/kg IVL une injection 30min avant incision";
+  if (cbImc?.checked) return "Céfazoline 4g puis 2g toutes les 4h";
+  return "Céfazoline 2g puis 1g toutes les 4h";
+}
+  
   function applyProtocolConditions(rawText) {
     // 1) Induction à risque
     // Base : "AIVOC Propofol/Sufentanil (Remplacé par : « Etomidate ... » si induction à risque coché)"
@@ -2556,16 +2562,8 @@ Surveillance:
     // On reconstruit uniquement la partie concernée.
     // Repérage simple sur la phrase du tableau.
     t = t.replace(
-  /(^|\n)\s*Antibioprophylaxie\s*:\s*[^\n]*/i,
-  (m, start) => {
-    const line =
-      cbAll?.checked
-        ? "Antibioprophylaxie: Vancomycine 30mg/kg IVL une injection 30min avant incision"
-        : cbImc?.checked
-          ? "Antibioprophylaxie: Céfazoline 4g puis 2g toutes les 4h"
-          : "Antibioprophylaxie: Céfazoline 2g puis 1g toutes les 4h";
-    return `${start}${line}`;
-  }
+  /(Antibioprophylaxie\s*:)([\s\S]*?)(?=<br>|\n|$)/i,
+  (m, label) => `${label} ${antibioticCefazVancomy()}`
 );
 
     // retire les mentions résiduelles "Si ... coché" si jamais
