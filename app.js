@@ -3071,11 +3071,13 @@ Surveillance:
   // ----------------------------------------------------------
   // Conditions : remplacer sans afficher les consignes
   // ----------------------------------------------------------
-  function antibioticCefazVancomy() {
-    if (cbAll?.checked) return "Vancomycine 30mg/kg IVL une injection 30min avant incision";
-    if (cbImc?.checked) return "Céfazoline 4g puis 2g toutes les 4h.";
-    return "Céfazoline 2g puis 1g toutes les 4h";
-  }
+function antibioticCefazVancomy() {
+  // Prioritaire : allergie bêta-lactamines
+  if (cbAll?.checked) return "Vancomycine 30mg/kg IVL une injection 30min avant incision";
+  // Sinon Céfazoline selon IMC
+  if (cbImc?.checked) return "Céfazoline 4g puis 2g toutes les 4h";
+  return "Céfazoline 2g puis 1g toutes les 4h";
+}
 
   function applyConditions(interventionName, rawText) {
     let t = rawText ?? "";
@@ -3092,10 +3094,14 @@ Surveillance:
     }
 
     // Antibioprophylaxie cefaz/vancomy (ligne standard du tableau)
-    t = t.replace(
-      /Antibioprophylaxie:\s*Céfazoline 2g puis 1g toutes les 4h\s*Si IMC > 50 coché:\s*Céfazoline 4g puis 2g toutes les 4h\.\s*Si allergie cochée:\s*Vancomycine 30mg\/kg IVL une injection 30min avant incision/gi,
-      () => `Antibioprophylaxie: ${antibioticCefazVancomy()}`
-    );
+   t = t.replace(
+  /(<strong>\s*)?Antibioprophylaxie\s*:?(<\/strong>)?\s*([^\n<]*)(?:<br>)?/i,
+  (m, s1, s2) => {
+    const strongOpen = s1 ? "<strong>" : "";
+    const strongClose = s2 ? "</strong>" : "";
+    return `${strongOpen}Antibioprophylaxie:${strongClose} ${antibioticCefazVancomy()}<br>`;
+  }
+);
 
     // Amputation (Augmentin vs Clinda+Genta si allergie) : on remplace uniquement la fin conditionnelle
     if (interventionName === "Amputation") {
@@ -3157,7 +3163,18 @@ Surveillance:
     if (varRow) varRow.style.display = key === "Varices" ? "" : "none";
 
     setHtml("vmi-gestion", linkifyImgs(nl2brRaw(row.gestion)));
-    setHtml("vmi-monitorage", linkifyImgs(nl2brRaw(row.monitorage)));
+
+let mon = row.monitorage || "";
+
+// retire la consigne écrite entre parenthèses (sans toucher au reste)
+mon = mon.replace(/\s*\(Si induction à risque coché remplacer[^)]*\)\s*/gi, "");
+
+// applique la règle : PNI -> KTa si induction à risque
+if (cbRisk?.checked) {
+  mon = mon.replace(/\bPNI\b/g, "KTa");
+}
+
+setHtml("vmi-monitorage", linkifyImgs(nl2brRaw(mon)));
 
     const prot = applyConditions(key, row.protocole);
     const protHtml = augmentPerKg(linkifyImgs(nl2brRaw(prot)));
@@ -3359,10 +3376,18 @@ function renderInterventionEndoprotheses() {
   };
 
   function antibioticText() {
-    if (cbAll?.checked) return "Vancomycine 30mg/kg IVL une injection 30min avant incision";
-    if (cbImc?.checked) return "Céfazoline 4g puis 2g toutes les 4h.";
-    return "Céfazoline 2g puis 1g toutes les 4h";
+  // Priorité ABSOLUE : allergie aux bêta-lactamines
+  if (cbAll?.checked) {
+    return "Vancomycine 30 mg/kg IVL (injection 30 min avant incision)";
   }
+
+  // Sinon, céfazoline selon IMC
+  if (cbImc?.checked) {
+    return "Céfazoline 4 g puis 2 g toutes les 4 h";
+  }
+
+  return "Céfazoline 2 g puis 1 g toutes les 4 h";
+}
 
 function applyConditions(html, interventionName) {
   let t = html || "";
