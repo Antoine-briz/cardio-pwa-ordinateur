@@ -2556,13 +2556,17 @@ Surveillance:
     // On reconstruit uniquement la partie concernée.
     // Repérage simple sur la phrase du tableau.
     t = t.replace(
-      /Antibioprophylaxie:\s*Céfazoline 2g puis 1g toutes les 4h\s*Si IMC > 50 coché:\s*Céfazoline 4g puis 2g toutes les 4h\.\s*Si allergie cochée:\s*Vancomycine 30mg\/kg IVL une injection 30min avant incision/gi,
-      () => {
-        if (cbAll?.checked) return "Antibioprophylaxie: Vancomycine 30mg/kg IVL une injection 30min avant incision";
-        if (cbImc?.checked) return "Antibioprophylaxie: Céfazoline 4g puis 2g toutes les 4h.";
-        return "Antibioprophylaxie: Céfazoline 2g puis 1g toutes les 4h";
-      }
-    );
+  /(^|\n)\s*Antibioprophylaxie\s*:\s*[^\n]*/i,
+  (m, start) => {
+    const line =
+      cbAll?.checked
+        ? "Antibioprophylaxie: Vancomycine 30mg/kg IVL une injection 30min avant incision"
+        : cbImc?.checked
+          ? "Antibioprophylaxie: Céfazoline 4g puis 2g toutes les 4h"
+          : "Antibioprophylaxie: Céfazoline 2g puis 1g toutes les 4h";
+    return `${start}${line}`;
+  }
+);
 
     // retire les mentions résiduelles "Si ... coché" si jamais
     t = t.replace(/Si IMC > 50 coché:\s*/g, "");
