@@ -5473,3 +5473,29 @@ body.screen-square .eto-right{
 .actus-swatch[style*="#ffffff"]{
   border: 1px solid rgba(127,127,127,0.7);
 }
+
+/* ======================================================
+   FOOTER – logo SARIC News plus grand (PC uniquement)
+   sans modifier la hauteur du footer
+   ====================================================== */
+
+@media (min-width: 900px) {
+  #app-footer .footer-actus-btn{
+    all: unset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    pointer-events: auto;
+  }
+
+  #app-footer .footer-actus-btn img{
+    height: 80px;          /* ≈ x2 par rapport au mobile */
+    width: auto;
+    max-height: none;
+    object-fit: contain;
+
+    /* optionnel : petit effet "flottant" */
+    transform: translateY(-10px);
+  }
+}
