@@ -232,7 +232,10 @@ function ensureActusOverlay() {
   <button class="actus-swatch" type="button" style="--c:#757575" onclick="actusColor('#757575')" aria-label="Gris"></button>
 </div>
       </div>
-
+<div class="actus-saving" aria-hidden="true">
+  <div class="actus-spinner"></div>
+  <div class="actus-saving-text">Enregistrement…</div>
+</div>
     </div>
   `;
 
@@ -252,6 +255,35 @@ function ensureActusOverlay() {
     }
   });
 }
+
+async function closeActus() {
+  const overlay = document.getElementById("actus-overlay");
+  if (!overlay) return;
+
+  // Affiche le spinner
+  const modal = overlay.querySelector(".actus-modal");
+  if (modal) modal.classList.add("is-saving");
+
+  // Désactive l'édition
+  const fields = document.querySelectorAll("#actus-notes, [id^='actus-salle-']");
+  fields.forEach(el => {
+    if (el) el.contentEditable = "false";
+  });
+
+  actusActiveEl = null;
+  actusSavedRange = null;
+
+  try {
+    await saveActusNow();   // ⏳ attente réelle de l'enregistrement
+  } catch (e) {
+    console.error("Erreur sauvegarde actus", e);
+  }
+
+  // Ferme vraiment
+  if (modal) modal.classList.remove("is-saving");
+  overlay.classList.remove("is-open");
+}
+
 
 async function openActus() {
   ensureActusOverlay();
