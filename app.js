@@ -2562,9 +2562,10 @@ function antibioticCefazVancomy() {
     // On reconstruit uniquement la partie concernée.
     // Repérage simple sur la phrase du tableau.
     t = t.replace(
-  /(Antibioprophylaxie\s*:)([\s\S]*?)(?=<br>|\n|$)/i,
-  (m, label) => `${label} ${antibioticCefazVancomy()}`
+  /(Antibioprophylaxie\s*:)[^\n]*/i,
+  (_, label) => `${label} ${antibioticCefazVancomy()}`
 );
+
 
     // retire les mentions résiduelles "Si ... coché" si jamais
     t = t.replace(/Si IMC > 50 coché:\s*/g, "");
@@ -3098,7 +3099,7 @@ Surveillance:
   (m, s1, s2) => {
     const strongOpen = s1 ? "<strong>" : "";
     const strongClose = s2 ? "</strong>" : "";
-    return `${strongOpen}Antibioprophylaxie:${strongClose} ${antibioticCefazVancomy()}<br>`;
+    return `${strongOpen}Antibioprophylaxie:${strongClose} ${antibioticCefazVancomy()}`;
   }
 );
 
