@@ -92,13 +92,15 @@ function openPdf(file) {
 //  PAGE D’ACCUEIL
 // =====================================================================
 
-
 function renderHome() {
   $app.innerHTML = `
     <section class="home">
-    <div class="title-strip">
+
+      <div class="title-strip">
         <img src="img/titre2.png" alt="Titre de l'application" class="title-strip-img">
       </div>
+
+      <!-- Ligne 1 -->
       <div class="home-cards">
         <div class="card card-home" onclick="location.hash = '#/anesthesie'">
           <h3>Protocoles d’anesthésie</h3>
@@ -116,6 +118,25 @@ function renderHome() {
         </div>
       </div>
 
+      <!-- Ligne 2 : NOUVEAUX -->
+      <div class="home-cards">
+        <div class="card card-home" onclick="location.hash = '#/enseignement'">
+          <h3>Enseignement</h3>
+          <img src="img/enseignement.png" alt="Enseignement" class="menu-section-img" />
+        </div>
+
+        <div class="card card-home" onclick="location.hash = '#/bibliographie'">
+          <h3>Bibliographie</h3>
+          <img src="img/bibliographie.png" alt="Bibliographie" class="menu-section-img" />
+        </div>
+
+        <div class="card card-home" onclick="location.hash = '#/recherche'">
+          <h3>Recherche</h3>
+          <img src="img/recherche.png" alt="Recherche" class="menu-section-img" />
+        </div>
+      </div>
+
+      <!-- Boutons -->
       <div class="home-buttons">
         <button class="btn home-btn home-primary" onclick="openHopiaPlanning()">
           Planning médical
@@ -133,10 +154,10 @@ function renderHome() {
           Arrêt cardio-respiratoire
         </button>
       </div>
+
     </section>
   `;
 }
-
 
 // =======================================================
 //  ACTUALITÉS (PC) + PURGE BLOC À 12:00
