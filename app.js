@@ -17333,39 +17333,34 @@ function renderEtoBibliotheque() {
 
 function renderCEC() {
   $app.innerHTML = `
-    <section class="intervention-page">
+    <section class="intervention-shell">
 
-      <header class="intervention-header">
-        <h2>Circulation extra-corporelle</h2>
-      </header>
+      <div class="intervention-main">
+        <div class="hero">
+          <h2>Circulation extra-corporelle</h2>
+        </div>
 
-      <div class="intervention-layout">
+        <img src="img/cec1.png" alt="CEC" style="width:100%; border-radius:14px; margin: 10px 0 16px;">
 
-        <div class="intervention-left">
-          <button class="btn home-btn home-primary"
-                  onclick="location.hash = '#/cec-protocoles'">
+        <div class="grid">
+          <button class="btn" onclick="location.hash = '#/cec-protocoles'">
             Protocoles de CEC
           </button>
 
-          <button class="btn home-btn home-primary"
-                  onclick="location.hash = '#/cec-urgences'">
+          <button class="btn" onclick="location.hash = '#/cec-urgences'">
             Situations d'urgence
           </button>
 
-          <button class="btn home-btn home-primary"
-                  onclick="location.hash = '#/cec-procedures'">
+          <button class="btn" onclick="location.hash = '#/cec-procedures'">
             Procédures spécifiques
           </button>
         </div>
-
-        <div class="intervention-right">
-          <img src="img/cec2.png" alt="CEC" class="intervention-img">
-        </div>
-
       </div>
+
     </section>
   `;
 }
+
 
 function renderCecProtocoles() {
   $app.innerHTML = `
