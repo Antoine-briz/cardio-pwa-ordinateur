@@ -17567,6 +17567,7 @@ function renderCecUrgenceHypotension() {
   });
 }
 
+window.renderCecUrgenceHypotension = renderCecUrgenceHypotension;
 
 function renderCecProcedures() {
   $app.innerHTML = `
