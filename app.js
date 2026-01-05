@@ -17413,13 +17413,12 @@ function renderCecUrgencesMenu() {
     </section>
   `;
 }
-
 function renderCecUrgenceHypotension() {
-
   const encadres = [
     {
       titre: "Étiologies",
-      texte: `
+      ouvert: true,
+      html: `
         <ul class="cec-etiol">
           <li>Hémodilution au départ de CEC</li>
           <li>Vasodilatation induite par les agents anesthésiques</li>
@@ -17432,7 +17431,8 @@ function renderCecUrgenceHypotension() {
     },
     {
       titre: "Conséquences",
-      texte: `
+      ouvert: true,
+      html: `
         <p class="cec-consq">
           Une PAM comprise entre 50 et 80 mmHg est habituellement la cible acceptée en CEC.<br>
           Une valeur de PAM inférieure peut nécessiter un traitement
@@ -17441,7 +17441,8 @@ function renderCecUrgenceHypotension() {
     },
     {
       titre: "Algorithme de prise en charge",
-      texte: `
+      ouvert: true,
+      html: `
         <div class="cec-flow-wrap">
           <div class="cec-flow-left">
 
@@ -17546,11 +17547,8 @@ function renderCecUrgenceHypotension() {
     image: "cec1.png",
     encadres,
   });
-
-  // ✅ Ouvre tous les encadrés de cette page
-  const cards = document.querySelectorAll("details.card");
-  cards.forEach(c => c.open = true);
 }
+
 
 window.renderCecUrgenceHypotension = renderCecUrgenceHypotension;
 
