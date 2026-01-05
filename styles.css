@@ -5607,3 +5607,7 @@ body.light-theme .actus-spinner{
 body.light-theme .actus-saving-text{
   color: #000;
 }
+
+.home .home-cards:first-of-type {
+  margin-bottom: 12px;
+}
