@@ -18995,6 +18995,17 @@ const routes = {
   "#/cec": renderCEC,
 "#/cec-protocoles": renderCecProtocoles,
 "#/cec-urgences": renderCecUrgencesMenu,
+"#/cec-urgence-01": renderCecUrgence01, // Hypotension artérielle per CEC
+"#/cec-urgence-02": renderCecUrgence02, // Retour veineux insuffisant
+"#/cec-urgence-03": renderCecUrgence03, // Résistance à l’Héparine
+"#/cec-urgence-04": renderCecUrgence04, // Cardioplégie inefficace
+"#/cec-urgence-05": renderCecUrgence05, // Décanulation veineuse accidentelle
+"#/cec-urgence-06": renderCecUrgence06, // Dissection aortique sur la canulation
+"#/cec-urgence-07": renderCecUrgence07, // Changement de circuit de CEC
+"#/cec-urgence-08": renderCecUrgence08, // Entrée d’air / arrêt de pompe
+"#/cec-urgence-09": renderCecUrgence09, // Embolie gazeuse massive
+"#/cec-urgence-10": renderCecUrgence10, // Arrêt CEC impossible
+"#/cec-urgence-11": renderCecUrgence11, // Sevrage de CEC difficile
 "#/cec-procedures": renderCecProcedures,
 
   "#/enseignement": renderEnseignement,
