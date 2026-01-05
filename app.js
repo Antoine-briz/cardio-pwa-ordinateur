@@ -260,28 +260,27 @@ async function closeActus() {
   const overlay = document.getElementById("actus-overlay");
   if (!overlay) return;
 
-  // Affiche le spinner
   const modal = overlay.querySelector(".actus-modal");
   if (modal) modal.classList.add("is-saving");
 
   // Désactive l'édition
   const fields = document.querySelectorAll("#actus-notes, [id^='actus-salle-']");
-  fields.forEach(el => {
-    if (el) el.contentEditable = "false";
-  });
+  fields.forEach(el => { if (el) el.contentEditable = "false"; });
 
   actusActiveEl = null;
   actusSavedRange = null;
 
+  // ✅ laisse le temps au navigateur d'afficher le spinner AVANT le fetch
+  await new Promise(requestAnimationFrame);
+
   try {
-    await saveActusNow();   // ⏳ attente réelle de l'enregistrement
+    await saveActusNow();
   } catch (e) {
     console.error("Erreur sauvegarde actus", e);
+  } finally {
+    if (modal) modal.classList.remove("is-saving");
+    overlay.classList.remove("is-open");
   }
-
-  // Ferme vraiment
-  if (modal) modal.classList.remove("is-saving");
-  overlay.classList.remove("is-open");
 }
 
 
@@ -324,24 +323,6 @@ function setActusLoading(isLoading) {
   fields.forEach(el => {
     if (isLoading) el.setAttribute("contenteditable", "false");
   });
-}
-
-
-async function closeActus() {
-  // Désactive l'édition en cours (sans déclencher d'events blur)
-  const fields = document.querySelectorAll("#actus-notes, [id^='actus-salle-']");
-  fields.forEach(el => {
-    if (el) el.contentEditable = "false";
-  });
-
-  // Sauvegarde une seule fois à la fermeture
-  await saveActusNow();
-
-  const overlay = document.getElementById("actus-overlay");
-  if (overlay) overlay.classList.remove("is-open");
-
-  actusActiveEl = null;
-  actusSavedRange = null;
 }
 
 
