@@ -5903,3 +5903,128 @@ body.theme-dark .cec-box{ color:#111; }
 /* Thème sombre : garder lisible (même rendu) */
 body.theme-dark .cec-b{ color:#111; }
 .cec-algo { font-size: 16px; }
+
+/* ======================================================
+   CEC — Hypotension — Algorithme 2 colonnes (PC)
+====================================================== */
+
+/* Le wrapper force un min-width pour garder 2 colonnes.
+   Si l'encadré est trop étroit => scroll horizontal (sans casser). */
+.cec-algo2{
+  overflow-x: auto;
+  padding-bottom: 6px;
+}
+
+.cec-algo2-inner{
+  display: grid;
+  grid-template-columns: 560px 320px; /* gauche / droite */
+  gap: 26px;
+  align-items: start;
+  min-width: 920px; /* force 2 colonnes même si la card est étroite */
+  position: relative;
+}
+
+/* boîtes */
+.cec-b{
+  background: #fff;
+  color: #111;
+  border: 2px solid #6aa8ff;
+  border-radius: 0;
+  padding: 10px 12px;
+  line-height: 1.25;
+  box-sizing: border-box;
+}
+.cec-blue{ border-color:#6aa8ff; }
+.cec-green{ background:#dff3d6; }
+.cec-g2b{ font-weight: 800; text-align:center; }
+
+/* colonne */
+.cec-col-left{ position: relative; }
+.cec-col-right{ position: relative; }
+
+/* espacements + labels */
+.cec-v-gap{ height: 16px; }
+.cec-v-gap-big{ height: 22px; }
+.cec-v-label-mid{
+  font-weight: 800;
+  margin: 2px 0 10px;
+}
+.cec-v-label-oui{
+  font-weight: 800;
+  margin: 8px 0 8px 140px; /* centré sous la flèche */
+}
+
+/* rangée "PAM corrigée" -> flèche vers boîte verte */
+.cec-h-row{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 6px 0 10px;
+}
+.cec-h-label-left{
+  font-weight: 800;
+  min-width: 120px;
+}
+.cec-h-label-non{
+  font-weight: 800;
+  min-width: 40px;
+}
+
+/* flèche horizontale simple */
+.cec-h-arrow{
+  flex: 1;
+  height: 0;
+  border-top: 4px solid #6aa8ff;
+  position: relative;
+}
+.cec-h-arrow::after{
+  content:"";
+  position:absolute;
+  right: -1px;
+  top: -7px;
+  width:0;height:0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 10px solid #6aa8ff;
+}
+
+/* flèche horizontale vers la colonne droite */
+.cec-h-arrow-to-right{
+  width: 220px;
+  height: 0;
+  border-top: 4px solid #6aa8ff;
+  position: relative;
+}
+.cec-h-arrow-to-right::after{
+  content:"";
+  position:absolute;
+  right: -1px;
+  top: -7px;
+  width:0;height:0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 10px solid #6aa8ff;
+}
+
+/* bloc rouge */
+.cec-redbox{
+  background:#ff9ea1;
+  border: 2px solid #ff9ea1;
+  padding: 18px;
+  margin-top: 210px; /* aligne à hauteur des "NON" (ajustable) */
+}
+.cec-red-title{
+  font-weight: 900;
+  text-align:center;
+  margin-bottom: 18px;
+}
+.cec-red-item{
+  display:flex;
+  gap: 10px;
+  margin: 16px 0;
+  font-weight: 650;
+}
+.cec-check{ font-size: 18px; line-height: 1; }
+
+/* thème sombre : garde le texte lisible */
+body.theme-dark .cec-b{ color:#111; }
