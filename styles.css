@@ -5620,3 +5620,174 @@ body.light-theme .actus-saving-text{
 .home .home-cards + .home-cards {
   margin-top: 0 !important;
 }
+
+/* ======================================================
+   CEC — Urgences — Diapo 1 (flowchart)
+   ====================================================== */
+
+.cec-urg-text{ margin-bottom: 16px; }
+.cec-urg-block{ margin-bottom: 14px; }
+.cec-urg-label{ font-weight: 700; margin-bottom: 6px; }
+.cec-underline{ text-decoration: underline; }
+.cec-urg-list{ margin: 0 0 0 18px; }
+.cec-urg-p{ margin: 0; }
+
+/* Layout global flow */
+.cec-flow{
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 22px;
+  align-items: start;
+}
+
+/* Colonne gauche (suite des rectangles) */
+.cec-flow-left{ max-width: 520px; }
+
+/* Boîtes */
+.cec-box{
+  border-radius: 0;               /* rectangles (comme la diapo) */
+  padding: 10px 12px;
+  line-height: 1.25;
+  font-weight: 500;
+  background: #fff;
+  color: #111;
+}
+
+.cec-box-blue{
+  border: 2px solid #6aa8ff;      /* bleu clair diapo */
+}
+
+.cec-box-green{
+  border: 2px solid #6aa8ff;
+  background: #dff3d6;            /* vert clair */
+}
+
+.cec-box-green-strong{
+  background: #cfecc3;
+  font-weight: 700;
+  text-align: center;
+}
+
+.cec-box-red{
+  background: #ff9ea1;            /* rouge/rose */
+  border: 2px solid #ff9ea1;
+  padding: 18px 18px;
+}
+
+.cec-red-title{
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 18px;
+  letter-spacing: 0.3px;
+}
+
+.cec-red-item{
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 14px 0;
+  font-weight: 600;
+}
+
+.cec-check{ font-size: 18px; line-height: 1; }
+
+/* Flèche verticale (ligne + triangle) */
+.cec-v-arrow{
+  position: relative;
+  height: 24px;
+  margin: 2px 0;
+}
+
+.cec-v-arrow::before{
+  content:"";
+  position:absolute;
+  left: 50%;
+  top: 0;
+  bottom: 8px;
+  width: 0;
+  border-left: 3px solid #6aa8ff;
+  transform: translateX(-50%);
+}
+
+.cec-v-arrow::after{
+  content:"";
+  position:absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 10px solid #6aa8ff;
+}
+
+.cec-v-label{
+  position: absolute;
+  right: -6px;
+  top: 2px;
+  font-weight: 700;
+  font-size: 13px;
+  color: #111;
+  background: transparent;
+}
+
+/* Ligne horizontale vers une boîte (résolution ou traitement) */
+.cec-row-with-right{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 14px;
+  align-items: center;
+}
+
+.cec-right-pack{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 260px;
+}
+
+.cec-right-pack-to-red{
+  min-width: 160px; /* juste le connecteur, la grande boîte rouge est à droite */
+}
+
+.cec-h-conn{
+  position: relative;
+  width: 140px;
+  height: 28px;
+}
+
+.cec-h-label{
+  position: absolute;
+  left: 0;
+  top: -18px;
+  font-weight: 700;
+  font-size: 13px;
+  color: #111;
+}
+
+.cec-h-line{
+  position: absolute;
+  left: 0;
+  top: 12px;
+  right: 10px;
+  height: 0;
+  border-top: 3px solid #6aa8ff;
+}
+
+.cec-h-head{
+  position: absolute;
+  right: 0;
+  top: 7px;
+  width: 0; height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 10px solid #6aa8ff;
+}
+
+/* Colonne droite : encadré rouge aligné à partir de DO2i */
+.cec-flow-right{
+  padding-top: 170px; /* aligne visuellement sur la diapo */
+}
+
+/* Thème sombre : garde le même rendu lisible */
+body.theme-dark .cec-box{ color:#111; }
