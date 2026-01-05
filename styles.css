@@ -5608,6 +5608,15 @@ body.light-theme .actus-saving-text{
   color: #000;
 }
 
-.home .home-cards:first-of-type {
-  margin-bottom: 12px;
+/* ===== HOME – réduire l’espace entre les 2 lignes de cartes ===== */
+
+/* Supprime l’espace excessif entre les deux groupes */
+.home .home-cards {
+  margin-bottom: 12px !important;
+  padding-bottom: 0 !important;
+}
+
+/* Réduction spécifique entre la 1ère et la 2ème ligne */
+.home .home-cards + .home-cards {
+  margin-top: 0 !important;
 }
