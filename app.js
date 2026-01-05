@@ -17367,7 +17367,6 @@ function renderCEC() {
   `;
 }
 
-
 function renderCecProtocoles() {
   $app.innerHTML = `
     <section class="page">
@@ -17384,13 +17383,13 @@ function renderCecProtocoles() {
   `;
 }
 
-function renderCecProtocoles() {
+function renderCecUrgences() {
   $app.innerHTML = `
     <section class="page">
-      <h2>Protocoles de CEC</h2>
+      <h2>Situations d'urgence – CEC</h2>
 
       <p>
-        Cette section regroupera les protocoles liés à la circulation extra-corporelle.
+        Cette section regroupera les conduites à tenir en situation d'urgence sous CEC.
       </p>
 
       <p>
@@ -17415,6 +17414,7 @@ function renderCecProcedures() {
     </section>
   `;
 }
+
 
 function renderEnseignement() {
   $app.innerHTML = `
