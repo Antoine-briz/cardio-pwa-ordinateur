@@ -17343,6 +17343,34 @@ function renderCecMenu() {
   `;
 }
 
+
+function renderEnseignement() {
+  $app.innerHTML = `
+    <section class="page">
+      <h2>Enseignement</h2>
+      <p>Contenus pédagogiques, cours, supports et formations.</p>
+    </section>
+  `;
+}
+
+function renderBibliographie() {
+  $app.innerHTML = `
+    <section class="page">
+      <h2>Bibliographie</h2>
+      <p>Références, articles, recommandations et lectures utiles.</p>
+    </section>
+  `;
+}
+
+function renderRecherche() {
+  $app.innerHTML = `
+    <section class="page">
+      <h2>Recherche</h2>
+      <p>Protocoles de recherche, essais cliniques et projets en cours.</p>
+    </section>
+  `;
+}
+
 // =====================================================================
 //  PAGES “PLANNING” ET “ANNUAIRE” (PLACEHOLDERS)
 // =====================================================================
@@ -18715,6 +18743,10 @@ const routes = {
   // CEC
   "#/cec": renderCecMenu,
 
+  "#/enseignement": renderEnseignement,
+  "#/bibliographie": renderBibliographie,
+  "#/recherche": renderRecherche,
+  
   // Divers
   "#/annuaire": renderAnnuaire,
   "#/codes": renderCodesAcces,
