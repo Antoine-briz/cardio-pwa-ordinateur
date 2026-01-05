@@ -17417,10 +17417,9 @@ function renderCecUrgencesMenu() {
 function renderCecUrgenceHypotension() {
 
   const encadres = [
-
     {
       titre: "Étiologies",
-      contenu: `
+      texte: `
         <ul class="cec-etiol">
           <li>Hémodilution au départ de CEC</li>
           <li>Vasodilatation induite par les agents anesthésiques</li>
@@ -17431,22 +17430,19 @@ function renderCecUrgenceHypotension() {
         </ul>
       `
     },
-
     {
       titre: "Conséquences",
-      contenu: `
+      texte: `
         <p class="cec-consq">
           Une PAM comprise entre 50 et 80 mmHg est habituellement la cible acceptée en CEC.<br>
           Une valeur de PAM inférieure peut nécessiter un traitement
         </p>
       `
     },
-
     {
       titre: "Algorithme de prise en charge",
-      contenu: `
+      texte: `
         <div class="cec-flow-wrap">
-
           <div class="cec-flow-left">
 
             <div class="cec-box cec-box-blue">PAM &lt; 50 mmHg</div>
@@ -17469,14 +17465,10 @@ function renderCecUrgenceHypotension() {
               </div>
             </div>
 
-            <div class="cec-v-arrow">
-              <span class="cec-v-label">PAM inchangée</span>
-            </div>
+            <div class="cec-v-arrow"><span class="cec-v-label">PAM inchangée</span></div>
 
             <div class="cec-step-row">
-              <div class="cec-box cec-box-blue">
-                DO<sub>2</sub>i &gt; 300 mL/min/kg
-              </div>
+              <div class="cec-box cec-box-blue">DO<sub>2</sub>i &gt; 300 mL/min/kg</div>
               <div class="cec-h-conn cec-h-conn-non">
                 <div class="cec-h-label">NON</div>
                 <div class="cec-h-line"></div>
@@ -17488,8 +17480,7 @@ function renderCecUrgenceHypotension() {
 
             <div class="cec-step-row">
               <div class="cec-box cec-box-blue">
-                NIRS cérébrale :<br>
-                rSO<sub>2</sub> &gt; 50 de manière bilatérale
+                NIRS cérébrale :<br>rSO<sub>2</sub> &gt; 50 de manière bilatérale
               </div>
               <div class="cec-h-conn cec-h-conn-non">
                 <div class="cec-h-label">NON</div>
@@ -17515,8 +17506,7 @@ function renderCecUrgenceHypotension() {
 
             <div class="cec-step-row">
               <div class="cec-box cec-box-blue">
-                Cause rapidement curable :<br>
-                cardioplégie, déclampage
+                Cause rapidement curable :<br>cardioplégie, déclampage
               </div>
               <div class="cec-h-conn cec-h-conn-non">
                 <div class="cec-h-label">NON</div>
@@ -17527,17 +17517,12 @@ function renderCecUrgenceHypotension() {
 
             <div class="cec-v-arrow"><span class="cec-v-label">OUI</span></div>
 
-            <div class="cec-box cec-box-green">
-              Abstention thérapeutique
-            </div>
-
+            <div class="cec-box cec-box-green">Abstention thérapeutique</div>
           </div>
 
           <div class="cec-flow-right">
             <div class="cec-box cec-box-red">
-              <div class="cec-red-title">
-                TRAITEMENT<br>VASOPRESSEUR
-              </div>
+              <div class="cec-red-title">TRAITEMENT<br>VASOPRESSEUR</div>
 
               <div class="cec-red-item">
                 <span class="cec-check">✓</span>
@@ -17546,14 +17531,10 @@ function renderCecUrgenceHypotension() {
 
               <div class="cec-red-item">
                 <span class="cec-check">✓</span>
-                <span>
-                  Si &gt; 5 répétitions en 30 min,<br>
-                  débuter une PSE de noradrénaline
-                </span>
+                <span>Si &gt; 5 répétitions en 30 min,<br>débuter une PSE de noradrénaline</span>
               </div>
             </div>
           </div>
-
         </div>
       `
     }
@@ -17563,8 +17544,12 @@ function renderCecUrgenceHypotension() {
     titre: "Hypotension artérielle per CEC",
     sousTitre: "",
     image: "cec1.png",
-    encadres
+    encadres,
   });
+
+  // ✅ Ouvre tous les encadrés de cette page
+  const cards = document.querySelectorAll("details.card");
+  cards.forEach(c => c.open = true);
 }
 
 window.renderCecUrgenceHypotension = renderCecUrgenceHypotension;
