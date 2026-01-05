@@ -17443,88 +17443,101 @@ function renderCecUrgenceHypotension() {
   titre: "Algorithme de prise en charge",
   ouvert: true,
   html: `
-    <div class="cec-algo" aria-label="Algorithme hypotension per CEC">
-      <!-- COLONNE GAUCHE : BOITES -->
-      <div class="cec-b cec-blue cec-b1">PAM &lt; 50 mmHg</div>
+  <div class="cec-algo2">
+    <div class="cec-algo2-inner">
 
-      <div class="cec-b cec-blue cec-b2">
-        Evaluer la profondeur<br>
-        d’anesthésie et au besoin<br>
-        diminuer les hypnotiques
+      <!-- COLONNE GAUCHE -->
+      <div class="cec-col-left">
+        <div class="cec-b cec-blue cec-g1">PAM &lt; 50 mmHg</div>
+        <div class="cec-v-gap"></div>
+
+        <div class="cec-b cec-blue cec-g2">
+          Evaluer la profondeur d’anesthésie et au besoin diminuer les hypnotiques
+        </div>
+
+        <div class="cec-h-row">
+          <div class="cec-h-label-left">PAM corrigée</div>
+          <div class="cec-h-arrow"></div>
+        </div>
+
+        <div class="cec-b cec-green cec-g2b">Résolution du problème</div>
+
+        <div class="cec-v-gap cec-v-gap-big"></div>
+        <div class="cec-v-label-mid">PAM inchangée</div>
+
+        <div class="cec-b cec-blue cec-g3">DO<sub>2</sub>i &gt; 300 mL/min/kg</div>
+
+        <div class="cec-h-row">
+          <div class="cec-h-label-non">NON</div>
+          <div class="cec-h-arrow-to-right"></div>
+        </div>
+
+        <div class="cec-v-label-oui">OUI</div>
+        <div class="cec-v-gap"></div>
+
+        <div class="cec-b cec-blue cec-g4">
+          NIRS cérébrale :<br>
+          rSO<sub>2</sub> &gt; 50 de manière bilatérale
+        </div>
+
+        <div class="cec-h-row">
+          <div class="cec-h-label-non">NON</div>
+          <div class="cec-h-arrow-to-right"></div>
+        </div>
+
+        <div class="cec-v-label-oui">OUI</div>
+        <div class="cec-v-gap"></div>
+
+        <div class="cec-b cec-blue cec-g5">
+          NIRS cérébrale :<br>
+          Diminution &lt; 25% de la rSO<sub>2</sub> vs. Ligne de base
+        </div>
+
+        <div class="cec-h-row">
+          <div class="cec-h-label-non">NON</div>
+          <div class="cec-h-arrow-to-right"></div>
+        </div>
+
+        <div class="cec-v-label-oui">OUI</div>
+        <div class="cec-v-gap"></div>
+
+        <div class="cec-b cec-blue cec-g6">
+          Cause rapidement curable :<br>
+          Cardioplégie, déclampage
+        </div>
+
+        <div class="cec-h-row">
+          <div class="cec-h-label-non">NON</div>
+          <div class="cec-h-arrow-to-right"></div>
+        </div>
+
+        <div class="cec-v-label-oui">OUI</div>
+        <div class="cec-v-gap"></div>
+
+        <div class="cec-b cec-green cec-g7">Abstention thérapeutique</div>
       </div>
 
-      <div class="cec-b cec-blue cec-b3">DO<sub>2</sub>i &gt; 300 mL/min/kg</div>
-
-      <div class="cec-b cec-blue cec-b4">
-        NIRS cérébrale:<br>
-        rSO<sub>2</sub>&gt; 50 de manière<br>
-        bilatérale
+      <!-- COLONNE DROITE -->
+      <div class="cec-col-right">
+        <div class="cec-redbox">
+          <div class="cec-red-title">TRAITEMENT<br>VASOPRESSEUR:</div>
+          <div class="cec-red-item"><span class="cec-check">✓</span> Bolus noradrénaline 16µg</div>
+          <div class="cec-red-item"><span class="cec-check">✓</span> Si &gt; 5 répétitions en 30 min, débuter un PSE de noradrénaline</div>
+        </div>
       </div>
 
-      <div class="cec-b cec-blue cec-b5">
-        NIRS cérébrale:<br>
-        Diminution &lt; 25% de la<br>
-        rSO<sub>2</sub> vs. Ligne de base
-      </div>
-
-      <div class="cec-b cec-blue cec-b6">
-        Cause rapidement curable:<br>
-        Cardioplégie, déclampage
-      </div>
-
-      <div class="cec-b cec-green cec-b7">Abstention thérapeutique</div>
-
-      <!-- BOITE VERTE A DROITE -->
-      <div class="cec-b cec-green cec-b8">Résolution du problème</div>
-
-      <!-- BOITE ROUGE A DROITE -->
-      <div class="cec-b cec-red cec-b9">
-        <div class="cec-red-title">TRAITEMENT<br>VASOPRESSEUR:</div>
-        <div class="cec-red-line"><span class="cec-check">✓</span> Bolus noradrénaline 16µg</div>
-        <div class="cec-red-line"><span class="cec-check">✓</span> Si &gt; 5 répétitions en 30 min, débuter un PSE de noradrénaline</div>
-      </div>
-
-      <!-- LABELS -->
-      <div class="cec-l cec-l-pam-corr">PAM corrigée</div>
-      <div class="cec-l cec-l-pam-inch">PAM inchangée</div>
-
-      <div class="cec-l cec-l-oui1">OUI</div>
-      <div class="cec-l cec-l-oui2">OUI</div>
-      <div class="cec-l cec-l-oui3">OUI</div>
-      <div class="cec-l cec-l-oui4">OUI</div>
-      <div class="cec-l cec-l-oui5">OUI</div>
-
-      <div class="cec-l cec-l-non1">NON</div>
-      <div class="cec-l cec-l-non2">NON</div>
-      <div class="cec-l cec-l-non3">NON</div>
-      <div class="cec-l cec-l-non4">NON</div>
-
-      <!-- SVG FLECHES (AU DESSUS DU CONTENU) -->
-      <svg class="cec-algo-svg" viewBox="0 0 760 720" preserveAspectRatio="none" aria-hidden="true">
+      <!-- FLÈCHES VERTICALES (SVG) -->
+      <svg class="cec-v-svg" viewBox="0 0 10 100" preserveAspectRatio="none" aria-hidden="true">
         <defs>
-          <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-            <path d="M 0 0 L 10 5 L 0 10 z" fill="#6aa8ff"></path>
+          <marker id="vArrow2" viewBox="0 0 10 10" refX="5" refY="9" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,0 L10,0 L5,10 Z" fill="#6aa8ff"></path>
           </marker>
         </defs>
-
-        <!-- Verticales colonne gauche -->
-        <line x1="140" y1="70"  x2="140" y2="115" stroke="#6aa8ff" stroke-width="4" marker-end="url(#arrow)"/>
-        <line x1="140" y1="215" x2="140" y2="260" stroke="#6aa8ff" stroke-width="4" marker-end="url(#arrow)"/>
-        <line x1="140" y1="325" x2="140" y2="370" stroke="#6aa8ff" stroke-width="4" marker-end="url(#arrow)"/>
-        <line x1="140" y1="470" x2="140" y2="515" stroke="#6aa8ff" stroke-width="4" marker-end="url(#arrow)"/>
-        <line x1="140" y1="615" x2="140" y2="660" stroke="#6aa8ff" stroke-width="4" marker-end="url(#arrow)"/>
-
-        <!-- Horizontal vers Résolution du problème -->
-        <line x1="280" y1="165" x2="470" y2="165" stroke="#6aa8ff" stroke-width="4" marker-end="url(#arrow)"/>
-
-        <!-- Horizontales NON vers bloc rouge -->
-        <line x1="280" y1="305" x2="470" y2="305" stroke="#6aa8ff" stroke-width="4" marker-end="url(#arrow)"/>
-        <line x1="280" y1="415" x2="470" y2="415" stroke="#6aa8ff" stroke-width="4" marker-end="url(#arrow)"/>
-        <line x1="280" y1="560" x2="470" y2="560" stroke="#6aa8ff" stroke-width="4" marker-end="url(#arrow)"/>
-        <line x1="280" y1="665" x2="470" y2="665" stroke="#6aa8ff" stroke-width="4" marker-end="url(#arrow)"/>
       </svg>
+
     </div>
-  `
+  </div>
+`
 }
   ];
 
