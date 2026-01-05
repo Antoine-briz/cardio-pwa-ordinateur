@@ -5612,7 +5612,7 @@ body.light-theme .actus-saving-text{
 
 /* Supprime l’espace excessif entre les deux groupes */
 .home .home-cards {
-  margin-bottom: 12px !important;
+  margin-bottom: 16px !important;
   padding-bottom: 0 !important;
 }
 
