@@ -5804,3 +5804,11 @@ body.theme-dark .cec-box{ color:#111; }
   height: auto;
   margin: 0 auto;
 }
+
+/* Algorithmes CEC : taille réduite et centrage */
+.cec-algo-image {
+  display: block;
+  max-width: 50%;      /* ← division par 2 */
+  height: auto;
+  margin: 0 auto;      /* ← centrage horizontal */
+}
