@@ -144,6 +144,25 @@ const PRECACHE = [
 "./img/cf-diametre-aortique.png",
 "./img/objectifs-tensionnels.png",
   "./img/saricnews.png",
+   "img/algo-1.png",
+  "img/algo-2.png",
+  "img/algo-3.png",
+  "img/algo-4.png",
+  "img/algo-5.png",
+  "img/algo-6.png",
+  "img/algo-7.png",
+  "img/algo-8.png",
+  "img/algo-9.png",
+  "img/algo-10.png",
+  "img/algo-11.png",
+
+  // Menu principal
+  "img/enseignement.png",
+  "img/bibliographie.png",
+  "img/recherche.png",
+
+  // CEC
+  "img/cec1.png",
 
   // Files
   "./files/Infections des prothèses vasculaires.pdf",
