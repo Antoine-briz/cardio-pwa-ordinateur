@@ -11607,7 +11607,7 @@ function renderReanSaignementsPostOp() {
     {
       titre: "Hémostase médicale basée sur le Quantra",
       html: `
-        <p>Utilisation des différents tests (CTR, fibrinogène, plaquettes…) pour guider :</p>
+        <p>Utilisation des différents tests (CTR, fibrinogène, plaquettes…) pour guider : ${imgLink("Cf algorithme Quantra", "cf-algorithme-quantra.png")}</p>
         <ul>
           <li>CTR > 1,4: Protamine 30 UI/kg</li>
           <li>FCS < 1,9 hPa (fibrinogène < 2g/L): fibrinogène 20-50mg/kg</li>
