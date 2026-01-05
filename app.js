@@ -17443,101 +17443,12 @@ function renderCecUrgenceHypotension() {
   titre: "Algorithme de prise en charge",
   ouvert: true,
   html: `
-  <div class="cec-algo2">
-    <div class="cec-algo2-inner">
-
-      <!-- COLONNE GAUCHE -->
-      <div class="cec-col-left">
-        <div class="cec-b cec-blue cec-g1">PAM &lt; 50 mmHg</div>
-        <div class="cec-v-gap"></div>
-
-        <div class="cec-b cec-blue cec-g2">
-          Evaluer la profondeur d’anesthésie et au besoin diminuer les hypnotiques
-        </div>
-
-        <div class="cec-h-row">
-          <div class="cec-h-label-left">PAM corrigée</div>
-          <div class="cec-h-arrow"></div>
-        </div>
-
-        <div class="cec-b cec-green cec-g2b">Résolution du problème</div>
-
-        <div class="cec-v-gap cec-v-gap-big"></div>
-        <div class="cec-v-label-mid">PAM inchangée</div>
-
-        <div class="cec-b cec-blue cec-g3">DO<sub>2</sub>i &gt; 300 mL/min/kg</div>
-
-        <div class="cec-h-row">
-          <div class="cec-h-label-non">NON</div>
-          <div class="cec-h-arrow-to-right"></div>
-        </div>
-
-        <div class="cec-v-label-oui">OUI</div>
-        <div class="cec-v-gap"></div>
-
-        <div class="cec-b cec-blue cec-g4">
-          NIRS cérébrale :<br>
-          rSO<sub>2</sub> &gt; 50 de manière bilatérale
-        </div>
-
-        <div class="cec-h-row">
-          <div class="cec-h-label-non">NON</div>
-          <div class="cec-h-arrow-to-right"></div>
-        </div>
-
-        <div class="cec-v-label-oui">OUI</div>
-        <div class="cec-v-gap"></div>
-
-        <div class="cec-b cec-blue cec-g5">
-          NIRS cérébrale :<br>
-          Diminution &lt; 25% de la rSO<sub>2</sub> vs. Ligne de base
-        </div>
-
-        <div class="cec-h-row">
-          <div class="cec-h-label-non">NON</div>
-          <div class="cec-h-arrow-to-right"></div>
-        </div>
-
-        <div class="cec-v-label-oui">OUI</div>
-        <div class="cec-v-gap"></div>
-
-        <div class="cec-b cec-blue cec-g6">
-          Cause rapidement curable :<br>
-          Cardioplégie, déclampage
-        </div>
-
-        <div class="cec-h-row">
-          <div class="cec-h-label-non">NON</div>
-          <div class="cec-h-arrow-to-right"></div>
-        </div>
-
-        <div class="cec-v-label-oui">OUI</div>
-        <div class="cec-v-gap"></div>
-
-        <div class="cec-b cec-green cec-g7">Abstention thérapeutique</div>
-      </div>
-
-      <!-- COLONNE DROITE -->
-      <div class="cec-col-right">
-        <div class="cec-redbox">
-          <div class="cec-red-title">TRAITEMENT<br>VASOPRESSEUR:</div>
-          <div class="cec-red-item"><span class="cec-check">✓</span> Bolus noradrénaline 16µg</div>
-          <div class="cec-red-item"><span class="cec-check">✓</span> Si &gt; 5 répétitions en 30 min, débuter un PSE de noradrénaline</div>
-        </div>
-      </div>
-
-      <!-- FLÈCHES VERTICALES (SVG) -->
-      <svg class="cec-v-svg" viewBox="0 0 10 100" preserveAspectRatio="none" aria-hidden="true">
-        <defs>
-          <marker id="vArrow2" viewBox="0 0 10 10" refX="5" refY="9" markerWidth="6" markerHeight="6" orient="auto">
-            <path d="M0,0 L10,0 L5,10 Z" fill="#6aa8ff"></path>
-          </marker>
-        </defs>
-      </svg>
-
+    <div class="cec-algo-image-wrap">
+      <img src="img/algo-1.png"
+           alt="Algorithme de prise en charge de l'hypotension artérielle en CEC"
+           class="cec-algo-image">
     </div>
-  </div>
-`
+  `
 }
   ];
 
