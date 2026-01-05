@@ -17382,19 +17382,201 @@ function renderCecProtocoles() {
 
 function renderCecUrgences() {
   $app.innerHTML = `
-    <section class="page">
-      <h2>Situations d'urgence – CEC</h2>
+    <section class="intervention-shell">
 
-      <p>
-        Cette section regroupera les conduites à tenir en situation d'urgence sous CEC.
-      </p>
+      <div class="intervention-main">
+        <div class="hero">
+          <h2>Situations d'urgence — CEC</h2>
+        </div>
 
-      <p>
-        (Contenu en cours de construction)
-      </p>
+        <div class="grid">
+          <button class="btn" onclick="location.hash = '#/cec-urgence-01'">Hypotension artérielle per CEC</button>
+          <button class="btn" onclick="location.hash = '#/cec-urgence-02'">Retour veineux insuffisant</button>
+          <button class="btn" onclick="location.hash = '#/cec-urgence-03'">Résistance à l’Héparine</button>
+          <button class="btn" onclick="location.hash = '#/cec-urgence-04'">Cardioplégie inefficace</button>
+          <button class="btn" onclick="location.hash = '#/cec-urgence-05'">Décanulation veineuse accidentelle</button>
+          <button class="btn" onclick="location.hash = '#/cec-urgence-06'">Dissection aortique sur la canulation</button>
+          <button class="btn" onclick="location.hash = '#/cec-urgence-07'">Changement de circuit de CEC</button>
+          <button class="btn" onclick="location.hash = '#/cec-urgence-08'">Entrée d’air dans l’oxygénateur</button>
+          <button class="btn" onclick="location.hash = '#/cec-urgence-09'">Embolie gazeuse massive</button>
+          <button class="btn" onclick="location.hash = '#/cec-urgence-10'">Arrêt CEC impossible</button>
+          <button class="btn" onclick="location.hash = '#/cec-urgence-11'">Sevrage de CEC difficile</button>
+        </div>
+      </div>
+
+      <aside class="intervention-side">
+        <img src="img/cec1.png" alt="CEC">
+      </aside>
+
     </section>
   `;
 }
+
+function renderCecUrgence01() {
+  $app.innerHTML = `
+    <section class="intervention-shell">
+
+      <div class="intervention-main">
+        <div class="hero">
+          <h2>Hypotension artérielle per CEC</h2>
+        </div>
+
+        <div class="cec-urg-text">
+          <div class="cec-urg-block">
+            <div class="cec-urg-label">Etiologies:</div>
+            <ul class="cec-urg-list">
+              <li>Hémodilution au départ de CEC</li>
+              <li>Vasodilatation induite par les agents anesthésiques</li>
+              <li>Administration de cardioplégie</li>
+              <li>Choc septique (endocardite), ou syndrome inflammatoire (CEC longue++)</li>
+              <li>Réchauffement après hypothermie profonde</li>
+              <li>Diminution des résistances vasculaires systémiques après déclampage aortique</li>
+            </ul>
+          </div>
+
+          <div class="cec-urg-block">
+            <div class="cec-urg-label cec-underline">Conséquences:</div>
+            <p class="cec-urg-p">
+              Une PAM comprise entre 50 et 80 mmHg est habituellement la cible acceptée en CEC.
+              Une valeur de PAM inférieure peut nécessiter un traitement
+            </p>
+          </div>
+        </div>
+
+        <!-- FLOWCHART -->
+        <div class="cec-flow">
+          <!-- Colonne gauche : étapes -->
+          <div class="cec-flow-left">
+
+            <div class="cec-box cec-box-blue">PAM &lt; 50 mmHg</div>
+            <div class="cec-v-arrow"></div>
+
+            <div class="cec-row-with-right">
+              <div class="cec-box cec-box-blue">
+                Evaluer la profondeur d’anesthésie et au besoin diminuer les hypnotiques
+              </div>
+
+              <div class="cec-right-pack">
+                <div class="cec-h-conn">
+                  <span class="cec-h-label">PAM corrigée</span>
+                  <span class="cec-h-line"></span>
+                  <span class="cec-h-head"></span>
+                </div>
+                <div class="cec-box cec-box-green cec-box-green-strong">Résolution du problème</div>
+              </div>
+            </div>
+
+            <div class="cec-v-arrow">
+              <span class="cec-v-label">PAM inchangée</span>
+            </div>
+
+            <div class="cec-row-with-right">
+              <div class="cec-box cec-box-blue">DO<sub>2</sub>i &gt; 300 mL/min/kg</div>
+
+              <div class="cec-right-pack cec-right-pack-to-red">
+                <div class="cec-h-conn">
+                  <span class="cec-h-label">NON</span>
+                  <span class="cec-h-line"></span>
+                  <span class="cec-h-head"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="cec-v-arrow">
+              <span class="cec-v-label">OUI</span>
+            </div>
+
+            <div class="cec-row-with-right">
+              <div class="cec-box cec-box-blue">
+                NIRS cérébrale:<br>
+                rSO<sub>2</sub>&gt; 50 de manière bilatérale
+              </div>
+
+              <div class="cec-right-pack cec-right-pack-to-red">
+                <div class="cec-h-conn">
+                  <span class="cec-h-label">NON</span>
+                  <span class="cec-h-line"></span>
+                  <span class="cec-h-head"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="cec-v-arrow">
+              <span class="cec-v-label">OUI</span>
+            </div>
+
+            <div class="cec-row-with-right">
+              <div class="cec-box cec-box-blue">
+                NIRS cérébrale:<br>
+                Diminution &lt; 25% de la rSO<sub>2</sub> vs. Ligne de base
+              </div>
+
+              <div class="cec-right-pack cec-right-pack-to-red">
+                <div class="cec-h-conn">
+                  <span class="cec-h-label">NON</span>
+                  <span class="cec-h-line"></span>
+                  <span class="cec-h-head"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="cec-v-arrow">
+              <span class="cec-v-label">OUI</span>
+            </div>
+
+            <div class="cec-row-with-right">
+              <div class="cec-box cec-box-blue">
+                Cause rapidement curable:<br>
+                Cardioplégie, déclampage
+              </div>
+
+              <div class="cec-right-pack cec-right-pack-to-red">
+                <div class="cec-h-conn">
+                  <span class="cec-h-label">NON</span>
+                  <span class="cec-h-line"></span>
+                  <span class="cec-h-head"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="cec-v-arrow">
+              <span class="cec-v-label">OUI</span>
+            </div>
+
+            <div class="cec-box cec-box-green">Abstention thérapeutique</div>
+
+          </div>
+
+          <!-- Colonne droite : grand encadré rouge -->
+          <div class="cec-flow-right">
+            <div class="cec-box cec-box-red">
+              <div class="cec-red-title">TRAITEMENT<br>VASOPRESSEUR:</div>
+
+              <div class="cec-red-item">
+                <span class="cec-check">✓</span>
+                <span>Bolus noradrénaline 16µg</span>
+              </div>
+
+              <div class="cec-red-item">
+                <span class="cec-check">✓</span>
+                <span>Si &gt; 5 répétitions en 30 min, débuter un PSE de noradrénaline</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Colonne droite image (comme demandé) -->
+      <aside class="intervention-side">
+        <img src="img/cec1.png" alt="CEC">
+      </aside>
+
+    </section>
+  `;
+}
+
+
 
 function renderCecProcedures() {
   $app.innerHTML = `
