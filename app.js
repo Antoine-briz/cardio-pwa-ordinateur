@@ -17397,15 +17397,15 @@ function renderCecUrgencesMenu() {
           <button class="btn" onclick="location.hash = '#/cec-urgence-05'">Décanulation veineuse accidentelle</button>
           <button class="btn" onclick="location.hash = '#/cec-urgence-06'">Dissection aortique sur la canulation</button>
           <button class="btn" onclick="location.hash = '#/cec-urgence-07'">Changement de circuit de CEC</button>
-          <button class="btn" onclick="location.hash = '#/cec-urgence-08'">Entrée d’air dans l’oxygénateur</button>
-          <button class="btn" onclick="location.hash = '#/cec-urgence-09'">Embolie gazeuse massive</button>
-          <button class="btn" onclick="location.hash = '#/cec-urgence-10'">Arrêt CEC impossible</button>
-          <button class="btn" onclick="location.hash = '#/cec-urgence-11'">Sevrage de CEC difficile</button>
+          <button class="btn" onclick="location.hash = '#/cec-urgence-08'">Arrêt de pompe</button>
+          <button class="btn" onclick="location.hash = '#/cec-urgence-09'">Air dans le circuit</button>
+          <button class="btn" onclick="location.hash = '#/cec-urgence-10'">Hémolyse</button>
+          <button class="btn" onclick="location.hash = '#/cec-urgence-11'">Hyperkaliémie per CEC</button>
         </div>
       </div>
 
       <aside class="intervention-side">
-        <img src="img/cec1.png" alt="CEC">
+        <img src="img/cec1.png" alt="Circulation extra-corporelle">
       </aside>
 
     </section>
