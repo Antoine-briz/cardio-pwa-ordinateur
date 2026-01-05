@@ -17368,6 +17368,54 @@ function renderCEC() {
 }
 
 
+function renderCecProtocoles() {
+  $app.innerHTML = `
+    <section class="page">
+      <h2>Protocoles de CEC</h2>
+
+      <p>
+        Cette section regroupera les protocoles liés à la circulation extra-corporelle.
+      </p>
+
+      <p>
+        (Contenu en cours de construction)
+      </p>
+    </section>
+  `;
+}
+
+function renderCecProtocoles() {
+  $app.innerHTML = `
+    <section class="page">
+      <h2>Protocoles de CEC</h2>
+
+      <p>
+        Cette section regroupera les protocoles liés à la circulation extra-corporelle.
+      </p>
+
+      <p>
+        (Contenu en cours de construction)
+      </p>
+    </section>
+  `;
+}
+
+function renderCecProcedures() {
+  $app.innerHTML = `
+    <section class="page">
+      <h2>Procédures spécifiques – CEC</h2>
+
+      <p>
+        Cette section regroupera les procédures spécifiques liées à la CEC.
+      </p>
+
+      <p>
+        (Contenu en cours de construction)
+      </p>
+    </section>
+  `;
+}
+
 function renderEnseignement() {
   $app.innerHTML = `
     <section class="page">
