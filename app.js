@@ -17380,7 +17380,7 @@ function renderCecProtocoles() {
   `;
 }
 
-function renderCecUrgences() {
+function renderCecUrgencesMenu() {
   $app.innerHTML = `
     <section class="intervention-shell">
 
@@ -18994,7 +18994,7 @@ const routes = {
   // CEC
   "#/cec": renderCEC,
 "#/cec-protocoles": renderCecProtocoles,
-"#/cec-urgences": renderCecUrgences,
+"#/cec-urgences": renderCecUrgencesMenu,
 "#/cec-procedures": renderCecProcedures,
 
   "#/enseignement": renderEnseignement,
