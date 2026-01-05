@@ -17390,7 +17390,9 @@ function renderCecUrgencesMenu() {
         </div>
 
         <div class="grid">
-          <button class="btn" onclick="location.hash = '#/cec-urgence-01'">Hypotension artérielle per CEC</button>
+          <button class="btn" onclick="renderCecUrgenceHypotension()">
+  Hypotension artérielle per CEC
+</button>
           <button class="btn" onclick="location.hash = '#/cec-urgence-02'">Retour veineux insuffisant</button>
           <button class="btn" onclick="location.hash = '#/cec-urgence-03'">Résistance à l’Héparine</button>
           <button class="btn" onclick="location.hash = '#/cec-urgence-04'">Cardioplégie inefficace</button>
@@ -17412,57 +17414,58 @@ function renderCecUrgencesMenu() {
   `;
 }
 
-function renderCecUrgence01() {
-  $app.innerHTML = `
-    <section class="intervention-shell">
+function renderCecUrgenceHypotension() {
 
-      <div class="intervention-main">
-        <div class="hero">
-          <h2>Hypotension artérielle per CEC</h2>
-        </div>
+  const encadres = [
 
-        <div class="cec-urg-text">
-          <div class="cec-urg-block">
-            <div class="cec-urg-label">Etiologies:</div>
-            <ul class="cec-urg-list">
-              <li>Hémodilution au départ de CEC</li>
-              <li>Vasodilatation induite par les agents anesthésiques</li>
-              <li>Administration de cardioplégie</li>
-              <li>Choc septique (endocardite), ou syndrome inflammatoire (CEC longue++)</li>
-              <li>Réchauffement après hypothermie profonde</li>
-              <li>Diminution des résistances vasculaires systémiques après déclampage aortique</li>
-            </ul>
-          </div>
+    {
+      titre: "Étiologies",
+      contenu: `
+        <ul class="cec-etiol">
+          <li>Hémodilution au départ de CEC</li>
+          <li>Vasodilatation induite par les agents anesthésiques</li>
+          <li>Administration de cardioplégie</li>
+          <li>Choc septique (endocardite), ou syndrome inflammatoire (CEC longue++)</li>
+          <li>Réchauffement après hypothermie profonde</li>
+          <li>Diminution des résistances vasculaires systémiques après déclampage aortique</li>
+        </ul>
+      `
+    },
 
-          <div class="cec-urg-block">
-            <div class="cec-urg-label cec-underline">Conséquences:</div>
-            <p class="cec-urg-p">
-              Une PAM comprise entre 50 et 80 mmHg est habituellement la cible acceptée en CEC.
-              Une valeur de PAM inférieure peut nécessiter un traitement
-            </p>
-          </div>
-        </div>
+    {
+      titre: "Conséquences",
+      contenu: `
+        <p class="cec-consq">
+          Une PAM comprise entre 50 et 80 mmHg est habituellement la cible acceptée en CEC.<br>
+          Une valeur de PAM inférieure peut nécessiter un traitement
+        </p>
+      `
+    },
 
-        <!-- FLOWCHART -->
-        <div class="cec-flow">
-          <!-- Colonne gauche : étapes -->
+    {
+      titre: "Algorithme de prise en charge",
+      contenu: `
+        <div class="cec-flow-wrap">
+
           <div class="cec-flow-left">
 
             <div class="cec-box cec-box-blue">PAM &lt; 50 mmHg</div>
             <div class="cec-v-arrow"></div>
 
-            <div class="cec-row-with-right">
+            <div class="cec-step-row">
               <div class="cec-box cec-box-blue">
-                Evaluer la profondeur d’anesthésie et au besoin diminuer les hypnotiques
+                Évaluer la profondeur d’anesthésie et au besoin diminuer les hypnotiques
               </div>
 
-              <div class="cec-right-pack">
+              <div class="cec-side-inline">
                 <div class="cec-h-conn">
-                  <span class="cec-h-label">PAM corrigée</span>
-                  <span class="cec-h-line"></span>
-                  <span class="cec-h-head"></span>
+                  <div class="cec-h-label">PAM corrigée</div>
+                  <div class="cec-h-line"></div>
+                  <div class="cec-h-head"></div>
                 </div>
-                <div class="cec-box cec-box-green cec-box-green-strong">Résolution du problème</div>
+                <div class="cec-box cec-box-green cec-box-green-strong">
+                  Résolution du problème
+                </div>
               </div>
             </div>
 
@@ -17470,112 +17473,99 @@ function renderCecUrgence01() {
               <span class="cec-v-label">PAM inchangée</span>
             </div>
 
-            <div class="cec-row-with-right">
-              <div class="cec-box cec-box-blue">DO<sub>2</sub>i &gt; 300 mL/min/kg</div>
-
-              <div class="cec-right-pack cec-right-pack-to-red">
-                <div class="cec-h-conn">
-                  <span class="cec-h-label">NON</span>
-                  <span class="cec-h-line"></span>
-                  <span class="cec-h-head"></span>
-                </div>
-              </div>
-            </div>
-
-            <div class="cec-v-arrow">
-              <span class="cec-v-label">OUI</span>
-            </div>
-
-            <div class="cec-row-with-right">
+            <div class="cec-step-row">
               <div class="cec-box cec-box-blue">
-                NIRS cérébrale:<br>
-                rSO<sub>2</sub>&gt; 50 de manière bilatérale
+                DO<sub>2</sub>i &gt; 300 mL/min/kg
               </div>
-
-              <div class="cec-right-pack cec-right-pack-to-red">
-                <div class="cec-h-conn">
-                  <span class="cec-h-label">NON</span>
-                  <span class="cec-h-line"></span>
-                  <span class="cec-h-head"></span>
-                </div>
+              <div class="cec-h-conn cec-h-conn-non">
+                <div class="cec-h-label">NON</div>
+                <div class="cec-h-line"></div>
+                <div class="cec-h-head"></div>
               </div>
             </div>
 
-            <div class="cec-v-arrow">
-              <span class="cec-v-label">OUI</span>
-            </div>
+            <div class="cec-v-arrow"><span class="cec-v-label">OUI</span></div>
 
-            <div class="cec-row-with-right">
+            <div class="cec-step-row">
               <div class="cec-box cec-box-blue">
-                NIRS cérébrale:<br>
-                Diminution &lt; 25% de la rSO<sub>2</sub> vs. Ligne de base
+                NIRS cérébrale :<br>
+                rSO<sub>2</sub> &gt; 50 de manière bilatérale
               </div>
-
-              <div class="cec-right-pack cec-right-pack-to-red">
-                <div class="cec-h-conn">
-                  <span class="cec-h-label">NON</span>
-                  <span class="cec-h-line"></span>
-                  <span class="cec-h-head"></span>
-                </div>
+              <div class="cec-h-conn cec-h-conn-non">
+                <div class="cec-h-label">NON</div>
+                <div class="cec-h-line"></div>
+                <div class="cec-h-head"></div>
               </div>
             </div>
 
-            <div class="cec-v-arrow">
-              <span class="cec-v-label">OUI</span>
-            </div>
+            <div class="cec-v-arrow"><span class="cec-v-label">OUI</span></div>
 
-            <div class="cec-row-with-right">
+            <div class="cec-step-row">
               <div class="cec-box cec-box-blue">
-                Cause rapidement curable:<br>
-                Cardioplégie, déclampage
+                Diminution &lt; 25 % de la rSO<sub>2</sub> vs ligne de base
               </div>
-
-              <div class="cec-right-pack cec-right-pack-to-red">
-                <div class="cec-h-conn">
-                  <span class="cec-h-label">NON</span>
-                  <span class="cec-h-line"></span>
-                  <span class="cec-h-head"></span>
-                </div>
+              <div class="cec-h-conn cec-h-conn-non">
+                <div class="cec-h-label">NON</div>
+                <div class="cec-h-line"></div>
+                <div class="cec-h-head"></div>
               </div>
             </div>
 
-            <div class="cec-v-arrow">
-              <span class="cec-v-label">OUI</span>
+            <div class="cec-v-arrow"><span class="cec-v-label">OUI</span></div>
+
+            <div class="cec-step-row">
+              <div class="cec-box cec-box-blue">
+                Cause rapidement curable :<br>
+                cardioplégie, déclampage
+              </div>
+              <div class="cec-h-conn cec-h-conn-non">
+                <div class="cec-h-label">NON</div>
+                <div class="cec-h-line"></div>
+                <div class="cec-h-head"></div>
+              </div>
             </div>
 
-            <div class="cec-box cec-box-green">Abstention thérapeutique</div>
+            <div class="cec-v-arrow"><span class="cec-v-label">OUI</span></div>
+
+            <div class="cec-box cec-box-green">
+              Abstention thérapeutique
+            </div>
 
           </div>
 
-          <!-- Colonne droite : grand encadré rouge -->
           <div class="cec-flow-right">
             <div class="cec-box cec-box-red">
-              <div class="cec-red-title">TRAITEMENT<br>VASOPRESSEUR:</div>
-
-              <div class="cec-red-item">
-                <span class="cec-check">✓</span>
-                <span>Bolus noradrénaline 16µg</span>
+              <div class="cec-red-title">
+                TRAITEMENT<br>VASOPRESSEUR
               </div>
 
               <div class="cec-red-item">
                 <span class="cec-check">✓</span>
-                <span>Si &gt; 5 répétitions en 30 min, débuter un PSE de noradrénaline</span>
+                <span>Bolus noradrénaline 16 µg</span>
+              </div>
+
+              <div class="cec-red-item">
+                <span class="cec-check">✓</span>
+                <span>
+                  Si &gt; 5 répétitions en 30 min,<br>
+                  débuter une PSE de noradrénaline
+                </span>
               </div>
             </div>
           </div>
+
         </div>
+      `
+    }
+  ];
 
-      </div>
-
-      <!-- Colonne droite image (comme demandé) -->
-      <aside class="intervention-side">
-        <img src="img/cec1.png" alt="CEC">
-      </aside>
-
-    </section>
-  `;
+  renderInterventionPage({
+    titre: "Hypotension artérielle per CEC",
+    sousTitre: "",
+    image: "cec1.png",
+    encadres
+  });
 }
-
 
 
 function renderCecProcedures() {
