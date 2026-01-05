@@ -17340,8 +17340,6 @@ function renderCEC() {
           <h2>Circulation extra-corporelle</h2>
         </div>
 
-        <img src="img/cec1.png" alt="CEC" style="width:100%; border-radius:14px; margin: 10px 0 16px;">
-
         <div class="grid">
           <button class="btn" onclick="location.hash = '#/cec-protocoles'">
             Protocoles de CEC
@@ -17356,6 +17354,10 @@ function renderCEC() {
           </button>
         </div>
       </div>
+
+<aside class="intervention-side">
+        <img src="img/cec1.png" alt="Circulation extra-corporelle">
+      </aside>
 
     </section>
   `;
