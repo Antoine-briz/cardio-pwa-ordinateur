@@ -18032,7 +18032,14 @@ function renderEnseignement() {
 
   // Base API optionnelle (ex: window.ENSEIGNEMENT_API_BASE = "https://tonserveur")
   const API_BASE = (window.ENSEIGNEMENT_API_BASE || "").replace(/\/$/, "");
-
+const resolveFileUrl = (u) => {
+  if (!u) return "";
+  // Déjà absolu (http/https) -> on garde
+  if (/^https?:\/\//i.test(u)) return u;
+  // Relatif "/files/..." -> on préfixe par l'API_BASE
+  return `${API_BASE}${u.startsWith("/") ? "" : "/"}${u}`;
+};
+  
   const PAGE_SIZE = 20;
 
   let allDocs = [];
@@ -18072,12 +18079,12 @@ function renderEnseignement() {
 
   const openInNewTab = (url) => {
     if (!url) return;
-    window.open(url, "_blank", "noopener,noreferrer");
+    window.open(resolveFileUrl(url), "_blank", "noopener,noreferrer");
   };
 
   const downloadUrl = (url, filename) => {
     const a = document.createElement("a");
-    a.href = url;
+    a.href = resolveFileUrl(url);
     if (filename) a.download = filename;
     a.rel = "noopener";
     document.body.appendChild(a);
@@ -18292,7 +18299,7 @@ function renderEnseignement() {
           <div class="ens-preview-title">${doc.title || ""}</div>
           <button class="btn" id="ens-open-doc">Ouvrir</button>
         </div>
-        <iframe class="ens-preview-frame" src="${doc.fileUrl}" title="Aperçu PDF"></iframe>
+        <iframe class="ens-preview-frame" src="${resolveFileUrl(doc.fileUrl)}" ...></iframe>
       `;
       document.getElementById("ens-open-doc")
         .addEventListener("click", () => openInNewTab(doc.fileUrl));
