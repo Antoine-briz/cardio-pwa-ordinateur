@@ -10,6 +10,16 @@ function h(cls, html) {
   return `<div class="${cls}">${html}</div>`;
 }
 
+// Normalisation texte (utilisée par la recherche, comme dans l'annuaire)
+function norm(s) {
+  return (s ?? "")
+    .toString()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // enlève les accents
+    .toLowerCase()
+    .trim();
+}
+
 function sectionHeader(title, imageFile) {
   // Si pas d'image, on garde l'ancien comportement simple
   if (!imageFile) {
