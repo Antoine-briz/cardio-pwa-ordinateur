@@ -6089,3 +6089,24 @@ body.theme-dark .cec-box{ color:#111; }
   font-weight: 800;
   margin: 10px 0 16px;
 }
+
+/* =========================
+   Enseignement – largeur recherche réduite
+========================= */
+
+/* Barre du haut toujours en ligne */
+.enseignement-page .enseignement-toolbar {
+  justify-content: flex-start;
+}
+
+/* Recherche : largeur divisée par deux */
+.enseignement-page .enseignement-toolbar input[type="search"] {
+  flex: 0 0 50%;          /* prend 50% de la largeur au lieu de 100% */
+  max-width: 420px;       /* limite visuelle (ajuste si besoin) */
+}
+
+/* Les autres éléments restent collés à gauche */
+.enseignement-page .enseignement-toolbar select,
+.enseignement-page .enseignement-toolbar .btn {
+  flex: 0 0 auto;
+}
