@@ -5813,193 +5813,210 @@ body.theme-dark .cec-box{ color:#111; }
   margin: 0 auto;      /* ← centrage horizontal */
 }
 
+/* =========================================================
+   ENSEIGNEMENT – VERSION SYNTHÉTISÉE (PPT-like)
+   Clair et lisible en thème sombre comme clair
+========================================================= */
+
+.enseignement-page .muted { opacity: 0.7; }
+
 /* =========================
-   Enseignement
+   TOOLBAR (haut)
 ========================= */
-
-.enseignement-page .muted { opacity: 0.75; }
-
-.enseignement-toolbar {
+.enseignement-page .enseignement-toolbar {
   display: flex;
-  gap: 10px;
   align-items: center;
-  flex-wrap: wrap;
-  margin: 12px 0 12px;
+  gap: 12px;
+  flex-wrap: nowrap;
+  margin: 12px 0;
 }
 
-.enseignement-toolbar input[type="search"] {
+.enseignement-page .enseignement-toolbar input[type="search"] {
   flex: 1;
-  min-width: 240px;
+  min-width: 280px;
   padding: 10px 12px;
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid #000000;
   border-radius: 10px;
-  border: 1px solid rgba(0,0,0,0.12);
 }
 
-.enseignement-toolbar select {
+.enseignement-page .enseignement-toolbar select {
+  width: 220px;
   padding: 10px 12px;
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid #000000;
   border-radius: 10px;
-  border: 1px solid rgba(0,0,0,0.12);
 }
 
-.enseignement-layout {
+.enseignement-page .enseignement-toolbar .btn {
+  width: auto;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+.enseignement-page .enseignement-layout {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 14px;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: 16px;
+  align-items: start;
 }
 
 @media (max-width: 980px) {
-  .enseignement-layout { grid-template-columns: 1fr; }
+  .enseignement-page .enseignement-layout {
+    grid-template-columns: 1fr;
+  }
+  .enseignement-page .enseignement-toolbar {
+    flex-wrap: wrap;
+  }
 }
 
-.table-wrap {
-  overflow: auto;
-  border: 1px solid rgba(0,0,0,0.10);
-  border-radius: 12px;
+/* =========================
+   CARTE TABLEAU
+========================= */
+.enseignement-page .table-wrap {
+  background: #f5f5f5;
+  border: 2px solid #000;
+  border-radius: 16px;
+  overflow: hidden;
 }
 
-.enseignement-table {
+.enseignement-page .enseignement-table {
   width: 100%;
-  border-collapse: collapse;
   min-width: 820px;
-}
-
-.enseignement-table thead th {
-  position: sticky;
-  top: 0;
-  background: rgba(255,255,255,0.95);
-  backdrop-filter: blur(4px);
-  border-bottom: 1px solid rgba(0,0,0,0.10);
-  padding: 10px;
-  text-align: left;
-  font-weight: 700;
-  font-size: 13px;
-}
-
-.enseignement-table tbody td {
-  padding: 10px;
-  border-bottom: 1px solid rgba(0,0,0,0.06);
-  font-size: 13px;
-}
-
-.ens-row { cursor: pointer; }
-.ens-row.selected { background: rgba(0,0,0,0.06); }
-
-.ens-badge {
-  display: inline-block;
-  font-weight: 800;
-  font-size: 11px;
-  padding: 4px 8px;
-  border-radius: 999px;
-  border: 1px solid rgba(0,0,0,0.15);
-}
-.ens-badge.pdf { }
-.ens-badge.ppt { }
-.ens-badge.file { }
-
-.btn.small {
-  padding: 6px 10px;
-  border-radius: 10px;
-}
-
-/* Actions bas */
-.enseignement-actions {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 12px;
-}
-
-/* Pagination */
-.enseignement-pagination {
-  display: flex;
-  justify-content: center;
-  margin: 10px 0 6px;
-}
-
-.ens-pages {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.ens-page {
-  border: 1px solid rgba(0,0,0,0.15);
-  padding: 6px 10px;
-  border-radius: 10px;
+  border-collapse: collapse;
   background: transparent;
+  color: #000;
+}
+
+.enseignement-page .enseignement-table thead th {
+  background: #f5f5f5;
+  color: #000;
+  padding: 10px;
+  font-weight: 700;
+  border-bottom: 2px solid #000;
+}
+
+.enseignement-page .enseignement-table tbody tr {
+  background: #ffffff;
+}
+
+.enseignement-page .enseignement-table tbody td {
+  padding: 10px;
+  border-bottom: 1px solid #000;
+}
+
+.enseignement-page .ens-row {
   cursor: pointer;
 }
 
-.ens-page.active {
-  font-weight: 800;
-  transform: translateY(-1px);
+.enseignement-page .ens-row.selected {
+  background: #e6e6e6;
 }
 
-.ens-page:disabled {
-  opacity: 0.5;
-  cursor: default;
+.enseignement-page .ens-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #000;
+  border: 1px solid #000;
 }
 
-/* Preview */
-.enseignement-preview {
-  border: 1px solid rgba(0,0,0,0.10);
-  border-radius: 12px;
+/* =========================
+   ACTIONS BAS
+========================= */
+.enseignement-page .enseignement-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+  flex-wrap: nowrap;
+}
+
+@media (max-width: 980px) {
+  .enseignement-page .enseignement-actions {
+    flex-wrap: wrap;
+  }
+}
+
+/* =========================
+   CARTE APERÇU
+========================= */
+.enseignement-page .enseignement-preview {
+  background: #f5f5f5;
+  border: 2px solid #000;
+  border-radius: 16px;
   padding: 12px;
   min-height: 420px;
-}
-
-.ens-preview-head {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.ens-preview-title { font-weight: 800; }
-
-.ens-preview-frame {
-  width: 100%;
-  height: 520px;
-  border: 0;
-  margin-top: 10px;
-  border-radius: 10px;
-}
-
-/* Modal + dropzone */
-.ens-modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.35);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 18px;
+}
+
+.enseignement-page .ens-preview-empty {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: #000;
+  opacity: 0.7;
+}
+
+.enseignement-page .ens-preview-head {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.enseignement-page .ens-preview-frame {
+  width: 100%;
+  height: 520px;
+  margin-top: 10px;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 0;
+}
+
+/* =========================
+   MODALE AJOUT / MODIF
+========================= */
+.ens-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 9999;
 }
+
 .ens-modal-backdrop.hidden { display: none; }
 
 .ens-modal {
-  width: min(720px, 98vw);
-  background: #fff;
+  width: min(720px, 95vw);
+  background: #f5f5f5;
+  color: #000;
+  border: 2px solid #000;
   border-radius: 16px;
-  padding: 14px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.22);
+  padding: 16px;
 }
 
 .ens-modal-head {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  align-items: center;
 }
 
 .ens-modal-close {
-  font-size: 26px;
-  line-height: 1;
-  background: transparent;
+  background: none;
   border: none;
+  font-size: 26px;
   cursor: pointer;
+  color: #000;
 }
 
 .ens-form {
@@ -6009,251 +6026,33 @@ body.theme-dark .cec-box{ color:#111; }
 }
 
 .ens-form label span {
-  display: block;
   font-size: 12px;
   font-weight: 700;
-  margin-bottom: 6px;
-  opacity: 0.9;
 }
 
 .ens-form input[type="text"],
 .ens-form select {
   width: 100%;
   padding: 10px 12px;
+  background: #ffffff;
+  color: #000;
+  border: 1px solid #000;
   border-radius: 10px;
-  border: 1px solid rgba(0,0,0,0.12);
 }
 
 .ens-dropzone {
-  position: relative;
-  border: 2px dashed rgba(0,0,0,0.18);
+  background: #ffffff;
+  border: 2px dashed #000;
   border-radius: 14px;
   padding: 14px;
+  text-align: center;
 }
-
-.ens-dropzone.dragover { border-color: rgba(0,0,0,0.38); }
-
-.ens-dropzone input[type="file"] {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.ens-browse { text-decoration: underline; }
-.ens-file-name { margin-top: 6px; font-size: 12px; opacity: 0.75; }
 
 .ens-form-actions {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-  margin-top: 4px;
 }
 
-/* ===== Fix layout Enseignement (PPT-like) ===== */
-
-/* Barre du haut en ligne */
-.enseignement-page .enseignement-toolbar{
-  display:flex;
-  flex-direction:row;
-  align-items:center;
-  gap:12px;
-  flex-wrap:nowrap;            /* en ligne comme PPT */
-}
-
-.enseignement-page .enseignement-toolbar input[type="search"]{
-  flex:1 1 auto;
-  min-width:280px;
-  width:auto !important;       /* neutralise width:100% global */
-}
-
-.enseignement-page .enseignement-toolbar select{
-  flex:0 0 220px;
-  width:220px !important;      /* neutralise width:100% global */
-}
-
-/* Bouton Ajouter taille normale (pas full width) */
-.enseignement-page .enseignement-toolbar .btn{
-  flex:0 0 auto;
-  width:auto !important;
-  display:inline-flex !important;
-}
-
-/* Layout tableau + aperçu */
-.enseignement-page .enseignement-layout{
-  display:grid;
-  grid-template-columns: 1.25fr 0.75fr;
-  gap:16px;
-  align-items:start;
-}
-
-/* Boutons du bas en ligne */
-.enseignement-page .enseignement-actions{
-  display:flex;
-  flex-direction:row;
-  gap:12px;
-  flex-wrap:nowrap;            /* comme PPT */
-  justify-content:flex-start;
-}
-
-.enseignement-page .enseignement-actions .btn{
-  width:auto !important;       /* neutralise width:100% global */
-  display:inline-flex !important;
-}
-
-/* Sur petits écrans, on autorise le retour à la ligne */
-@media (max-width: 980px){
-  .enseignement-page .enseignement-toolbar{
-    flex-wrap:wrap;
-  }
-  .enseignement-page .enseignement-toolbar select{
-    flex:1 1 220px;
-  }
-  .enseignement-page .enseignement-actions{
-    flex-wrap:wrap;
-  }
-  .enseignement-page .enseignement-layout{
-    grid-template-columns: 1fr;
-  }
-}
-
-/* =========================================================
-   Enseignement : style clair (table + modale) même en thème sombre
-   - Fond clair
-   - Texte noir
-   - Bordures noires
-   - Boutons bleus conservés (on ne les override pas)
-========================================================= */
-
-/* Zone gauche/droite : fond clair + texte noir */
-.enseignement-page .enseignement-left,
-.enseignement-page .enseignement-right,
-.enseignement-page .table-wrap,
-.enseignement-page .enseignement-preview {
-  background: #ffffff !important;
-  color: #000000 !important;
-  border: 1px solid #000000 !important;
-}
-
-/* Toolbar : on garde la disposition en ligne mais style clair lisible */
-.enseignement-page .enseignement-toolbar {
-  background: transparent !important;
-}
-
-.enseignement-page .enseignement-toolbar input[type="search"],
-.enseignement-page .enseignement-toolbar select {
-  background: #ffffff !important;
-  color: #000000 !important;
-  border: 1px solid #000000 !important;
-}
-
-/* Tableau : clair avec contours noirs */
-.enseignement-page .enseignement-table {
-  background: #ffffff !important;
-  color: #000000 !important;
-}
-
-.enseignement-page .enseignement-table thead th {
-  background: #ffffff !important;
-  color: #000000 !important;
-  border-bottom: 2px solid #000000 !important;
-}
-
-.enseignement-page .enseignement-table tbody td {
-  color: #000000 !important;
-  border-bottom: 1px solid #000000 !important;
-}
-
-/* Lignes sélectionnées : gris clair visible */
-.enseignement-page .ens-row.selected {
-  background: #eaeaea !important;
-}
-
-/* Badge fichier : reste lisible (texte noir) */
-.enseignement-page .ens-badge {
-  background: #ffffff !important;
-  color: #000000 !important;
-  border: 1px solid #000000 !important;
-}
-
-/* Pagination : clair + contour noir */
-.enseignement-page .ens-page {
-  background: #ffffff !important;
-  color: #000000 !important;
-  border: 1px solid #000000 !important;
-}
-.enseignement-page .ens-page.active {
-  background: #eaeaea !important;
-}
-
-/* Aperçu (iframe) : bordure noire */
-.enseignement-page .ens-preview-frame {
-  border: 1px solid #000000 !important;
-  background: #ffffff !important;
-}
-
-/* -------------------------
-   MODALE Ajouter / Modifier
--------------------------- */
-.enseignement-page .ens-modal-backdrop {
-  background: rgba(0,0,0,0.45) !important;
-}
-
-.enseignement-page .ens-modal {
-  background: #ffffff !important;
-  color: #000000 !important;
-  border: 2px solid #000000 !important;
-}
-
-.enseignement-page .ens-modal-head h3 {
-  color: #000000 !important;
-}
-
-/* Croix visible */
-.enseignement-page .ens-modal-close {
-  color: #000000 !important;
-}
-
-/* Champs : fond blanc + bordures noires + texte noir */
-.enseignement-page .ens-form label span {
-  color: #000000 !important;
-  opacity: 1 !important;
-}
-
-.enseignement-page .ens-form input[type="text"],
-.enseignement-page .ens-form select {
-  background: #ffffff !important;
-  color: #000000 !important;
-  border: 1px solid #000000 !important;
-}
-
-/* Dropzone : clair et lisible */
-.enseignement-page .ens-dropzone {
-  background: #ffffff !important;
-  color: #000000 !important;
-  border: 2px dashed #000000 !important;
-}
-
-.enseignement-page .ens-dropzone .muted,
-.enseignement-page .ens-file-name {
-  color: #000000 !important;
-  opacity: 0.75 !important;
-}
-
-/* IMPORTANT : on ne force PAS les .btn ici
-   => tes boutons restent en bleu foncé comme tu veux */
-/* Aperçu vide : toujours visible */
-.enseignement-page .enseignement-preview {
-  min-height: 420px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.enseignement-page .ens-preview-empty {
-  color: #000000;
-  font-size: 14px;
-  font-weight: 500;
-  text-align: center;
-  opacity: 0.7;
-}
+/* ⚠️ Les .btn ne sont PAS modifiés :
+   → tes boutons bleus restent inchangés */
