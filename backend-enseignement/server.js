@@ -25,8 +25,21 @@ app.use(express.json());
 
 app.use("/files", express.static(UPLOAD_DIR, {
   fallthrough: false,
-  setHeaders(res) {
+  setHeaders(res, filePath) {
     res.setHeader("X-Content-Type-Options", "nosniff");
+
+    // Force l’ouverture dans le navigateur (ou via l’OS) au lieu du téléchargement
+    const lower = filePath.toLowerCase();
+    if (lower.endsWith(".pdf")) {
+      res.setHeader("Content-Disposition", "inline");
+      res.setHeader("Content-Type", "application/pdf");
+    } else if (lower.endsWith(".ppt")) {
+      res.setHeader("Content-Disposition", "inline");
+      res.setHeader("Content-Type", "application/vnd.ms-powerpoint");
+    } else if (lower.endsWith(".pptx")) {
+      res.setHeader("Content-Disposition", "inline");
+      res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.presentationml.presentation");
+    }
   }
 }));
 
