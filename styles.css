@@ -6056,3 +6056,25 @@ body.theme-dark .cec-box{ color:#111; }
 
 /* ⚠️ Les .btn ne sont PAS modifiés :
    → tes boutons bleus restent inchangés */
+
+/* Aperçu : l’iframe doit prendre toute la carte */
+.enseignement-page .enseignement-preview {
+  padding: 0 !important;          /* supprime le padding qui crée des marges */
+  overflow: hidden !important;     /* coins propres */
+  display: block !important;       /* plus de centrage flex */
+}
+
+/* Iframe pleine largeur/hauteur */
+.enseignement-page .ens-preview-frame {
+  display: block;
+  width: 100%;
+  height: 650px;                  /* ajuste si tu veux plus/moins haut */
+  border: 0;
+  border-radius: 16px;            /* suit les coins de la carte */
+}
+
+/* Message vide : recentrer (car preview n’est plus flex) */
+.enseignement-page .ens-preview-empty {
+  padding: 20px;
+  text-align: center;
+}
