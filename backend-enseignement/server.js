@@ -7,6 +7,10 @@ import archiver from "archiver";
 
 const app = express();
 const PORT = 3000;
+function baseUrl(req) {
+  return `${req.protocol}://${req.get("host")}`;
+}
+
 const BASE_URL = `http://localhost:${PORT}`;
 
 const ROOT = path.resolve(".");
@@ -87,7 +91,7 @@ app.post("/api/teaching", upload.single("file"), (req, res) => {
     addedAt: new Date().toISOString(),
     fileName: req.file.originalname,
     storedName: req.file.filename,
-    fileUrl: `${BASE_URL}/files/${req.file.filename}`
+    fileUrl: `${baseUrl(req)}/files/${req.file.filename}`
   };
 
   data.unshift(item);
@@ -111,7 +115,7 @@ app.put("/api/teaching/:id", upload.single("file"), (req, res) => {
     }
     item.fileName = req.file.originalname;
     item.storedName = req.file.filename;
-    item.fileUrl = `${BASE_URL}/files/${req.file.filename}`;
+    item.fileUrl = `${baseUrl(req)}/files/${req.file.filename}`;
   }
 
   writeDB(data);
