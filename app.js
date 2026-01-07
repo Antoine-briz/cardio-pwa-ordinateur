@@ -18040,7 +18040,7 @@ const resolveFileUrl = (u) => {
   return `${API_BASE}${u.startsWith("/") ? "" : "/"}${u}`;
 };
   
-  const PAGE_SIZE = 20;
+  const PAGE_SIZE = 10;
 
   let allDocs = [];
   let filteredDocs = [];
