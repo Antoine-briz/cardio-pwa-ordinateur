@@ -6116,3 +6116,144 @@ body.theme-dark .cec-box{ color:#111; }
     grid-template-columns: 1fr;
   }
 }
+
+/* =========================================================
+   Enseignement : style clair (table + modale) même en thème sombre
+   - Fond clair
+   - Texte noir
+   - Bordures noires
+   - Boutons bleus conservés (on ne les override pas)
+========================================================= */
+
+/* Zone gauche/droite : fond clair + texte noir */
+.enseignement-page .enseignement-left,
+.enseignement-page .enseignement-right,
+.enseignement-page .table-wrap,
+.enseignement-page .enseignement-preview {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #000000 !important;
+}
+
+/* Toolbar : on garde la disposition en ligne mais style clair lisible */
+.enseignement-page .enseignement-toolbar {
+  background: transparent !important;
+}
+
+.enseignement-page .enseignement-toolbar input[type="search"],
+.enseignement-page .enseignement-toolbar select {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #000000 !important;
+}
+
+/* Tableau : clair avec contours noirs */
+.enseignement-page .enseignement-table {
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+.enseignement-page .enseignement-table thead th {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-bottom: 2px solid #000000 !important;
+}
+
+.enseignement-page .enseignement-table tbody td {
+  color: #000000 !important;
+  border-bottom: 1px solid #000000 !important;
+}
+
+/* Lignes sélectionnées : gris clair visible */
+.enseignement-page .ens-row.selected {
+  background: #eaeaea !important;
+}
+
+/* Badge fichier : reste lisible (texte noir) */
+.enseignement-page .ens-badge {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #000000 !important;
+}
+
+/* Pagination : clair + contour noir */
+.enseignement-page .ens-page {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #000000 !important;
+}
+.enseignement-page .ens-page.active {
+  background: #eaeaea !important;
+}
+
+/* Aperçu (iframe) : bordure noire */
+.enseignement-page .ens-preview-frame {
+  border: 1px solid #000000 !important;
+  background: #ffffff !important;
+}
+
+/* -------------------------
+   MODALE Ajouter / Modifier
+-------------------------- */
+.enseignement-page .ens-modal-backdrop {
+  background: rgba(0,0,0,0.45) !important;
+}
+
+.enseignement-page .ens-modal {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 2px solid #000000 !important;
+}
+
+.enseignement-page .ens-modal-head h3 {
+  color: #000000 !important;
+}
+
+/* Croix visible */
+.enseignement-page .ens-modal-close {
+  color: #000000 !important;
+}
+
+/* Champs : fond blanc + bordures noires + texte noir */
+.enseignement-page .ens-form label span {
+  color: #000000 !important;
+  opacity: 1 !important;
+}
+
+.enseignement-page .ens-form input[type="text"],
+.enseignement-page .ens-form select {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #000000 !important;
+}
+
+/* Dropzone : clair et lisible */
+.enseignement-page .ens-dropzone {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 2px dashed #000000 !important;
+}
+
+.enseignement-page .ens-dropzone .muted,
+.enseignement-page .ens-file-name {
+  color: #000000 !important;
+  opacity: 0.75 !important;
+}
+
+/* IMPORTANT : on ne force PAS les .btn ici
+   => tes boutons restent en bleu foncé comme tu veux */
+/* Aperçu vide : toujours visible */
+.enseignement-page .enseignement-preview {
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.enseignement-page .ens-preview-empty {
+  color: #000000;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  opacity: 0.7;
+}
