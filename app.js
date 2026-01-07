@@ -18283,8 +18283,8 @@ const resolveFileUrl = (u) => {
     });
   };
 
-  const renderPreview = (doc) => {
-    if (!doc) {
+const renderPreview = (doc) => {
+  if (!doc) {
     $preview.innerHTML = `
       <div class="ens-preview-empty">
         Sélectionnez un fichier pour afficher un aperçu
@@ -18292,32 +18292,31 @@ const resolveFileUrl = (u) => {
     `;
     return;
   }
-    const kind = fileKind(doc.fileName || doc.title || "");
-    if (kind === "pdf") {
-      $preview.innerHTML = `
-        <div class="ens-preview-head">
-          <div class="ens-preview-title">${doc.title || ""}</div>
-          <button class="btn" id="ens-open-doc">Ouvrir</button>
-        </div>
-        <iframe class="ens-preview-frame" src="${resolveFileUrl(doc.fileUrl)}" ...></iframe>
-      `;
-      document.getElementById("ens-open-doc")
-        .addEventListener("click", () => openInNewTab(doc.fileUrl));
-    } else {
-      $preview.innerHTML = `
-        <div class="ens-preview-head">
-          <div class="ens-preview-title">${doc.title || ""}</div>
-          <button class="btn" id="ens-open-doc">Ouvrir</button>
-        </div>
-        <div class="muted" style="margin-top:10px;">
-          Aperçu intégré non disponible pour PowerPoint. Clique sur <strong>Ouvrir</strong> pour accéder au fichier.
-        </div>
-      `;
-      document.getElementById("ens-open-doc")
-        .addEventListener("click", () => openInNewTab(doc.fileUrl));
-    }
-  };
 
+  const kind = fileKind(doc.fileName || doc.title || "");
+
+  // ===== PDF : aperçu plein cadre =====
+  if (kind === "pdf") {
+    $preview.innerHTML = `
+      <iframe
+        class="ens-preview-frame"
+        src="${resolveFileUrl(doc.fileUrl)}"
+        title="Aperçu PDF">
+      </iframe>
+    `;
+    return;
+  }
+
+  // ===== PPT / PPTX : pas d’aperçu intégré =====
+  $preview.innerHTML = `
+    <div class="ens-preview-empty">
+      Aperçu non disponible pour PowerPoint.<br>
+      Utilisez la colonne <strong>Ouvrir</strong> du tableau.
+    </div>
+  `;
+};
+
+  
   const renderTable = () => {
     applyFilters();
 
