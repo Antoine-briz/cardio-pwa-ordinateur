@@ -11,52 +11,63 @@
 </head>
 <body>
   <div id="img-popup" class="img-popup" onclick="closePopup()">
-  <img id="popup-img" src="" alt="">
-</div>
+    <img id="popup-img" src="" alt="">
+  </div>
+
   <header class="appbar app-header">
-  <div class="header-logo-left">
-    <img src="img/logocardio.png" alt="Institut de cardiologie">
-  </div>
-  <div class="header-text">
-    <div class="header-title">Protocoles du SARIC</div>
-    <div class="header-subtitle">Groupe hospitalier Pitié-Salpêtrière</div>
-  </div>
-  <div class="header-logo-right">
-    <img src="img/logosaric.png" alt="SARIC">
-  </div>
-</header>
+    <div class="header-logo-left">
+      <img src="img/logocardio.png" alt="Institut de cardiologie">
+    </div>
+    <div class="header-text">
+      <div class="header-title">Protocoles du SARIC</div>
+      <div class="header-subtitle">Groupe hospitalier Pitié-Salpêtrière</div>
+    </div>
+    <div class="header-logo-right">
+      <img src="img/logosaric.png" alt="SARIC">
+    </div>
+  </header>
 
   <main class="container">
     <div id="app"></div>
   </main>
 
-<footer id="app-footer">
-  <div class="theme-switcher">
-    <span>Thème :</span>
-    <label>
-      <input type="radio" name="theme" id="theme-dark" value="dark">
-      Sombre
-    </label>
-    <label>
-      <input type="radio" name="theme" id="theme-light" value="light">
-      Clair
-    </label>
-  </div>
-<button id="saricnews-logo"
-        class="footer-actus-btn"
-        type="button"
-        onclick="openActus()"
-        aria-label="Actualités">
-  <img src="img/saricnews.png" alt="SARIC News">
-</button>
+  <footer id="app-footer">
+    <div class="theme-switcher">
+      <span>Thème :</span>
+      <label>
+        <input type="radio" name="theme" id="theme-dark" value="dark">
+        Sombre
+      </label>
+      <label>
+        <input type="radio" name="theme" id="theme-light" value="light">
+        Clair
+      </label>
+    </div>
 
-  <div class="footer-actions">
-    <button id="back-button" class="back-btn">⮜ Retour</button>
-  </div>
-</footer>
+    <button id="saricnews-logo"
+            class="footer-actus-btn"
+            type="button"
+            onclick="openActus()"
+            aria-label="Actualités">
+      <img src="img/saricnews.png" alt="SARIC News">
+    </button>
 
+    <div class="footer-actions">
+      <button id="back-button" class="back-btn">⮜ Retour</button>
+    </div>
+  </footer>
+
+  <!-- ✅ AJOUT IMPORTANT : URL DU BACKEND ENSEIGNEMENT -->
+  <script>
+    // 1) En dev local (backend Express sur ta machine)
+    window.ENSEIGNEMENT_API_BASE = "http://localhost:3000";
+
+    // 2) Plus tard, quand tu hébergeras ton backend, remplace par :
+    // window.ENSEIGNEMENT_API_BASE = "https://ton-backend.domaine.tld";
+  </script>
 
   <script src="./app.js?v=1.0.0"></script>
+
   <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
