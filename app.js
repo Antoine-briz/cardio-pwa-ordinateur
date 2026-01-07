@@ -18135,8 +18135,10 @@ function renderEnseignement() {
 
         <div class="enseignement-right">
           <div class="enseignement-preview" id="ens-preview">
-            <div class="muted">Clique sur un fichier pour afficher un aperçu.</div>
-          </div>
+  <div class="ens-preview-empty">
+    Sélectionnez un fichier pour afficher un aperçu
+  </div>
+</div>
         </div>
       </div>
 
@@ -18276,9 +18278,13 @@ function renderEnseignement() {
 
   const renderPreview = (doc) => {
     if (!doc) {
-      $preview.innerHTML = `<div class="muted">Clique sur un fichier pour afficher un aperçu.</div>`;
-      return;
-    }
+    $preview.innerHTML = `
+      <div class="ens-preview-empty">
+        Sélectionnez un fichier pour afficher un aperçu
+      </div>
+    `;
+    return;
+  }
     const kind = fileKind(doc.fileName || doc.title || "");
     if (kind === "pdf") {
       $preview.innerHTML = `
