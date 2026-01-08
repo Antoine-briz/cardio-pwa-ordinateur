@@ -20,6 +20,31 @@ function norm(s) {
     .trim();
 }
 
+async function ensureWriteAuth() {
+  // Déjà connecté pendant la session
+  if (window.auth?.currentUser) return true;
+
+  // Si on a déjà validé dans cette session, on tente une reconnexion silencieuse
+  const cachedOk = sessionStorage.getItem("saric_write_ok") === "1";
+  if (cachedOk) {
+    // Firebase garde souvent la session, mais au cas où :
+    if (window.auth.currentUser) return true;
+  }
+
+  const code = prompt("Code SARIC (Ajouter/Modifier/Supprimer/Télécharger) :");
+  if (!code) return false;
+
+  try {
+    await window.auth.signInWithEmailAndPassword(window.SARIC_WRITE_EMAIL, code);
+    sessionStorage.setItem("saric_write_ok", "1");
+    return true;
+  } catch (e) {
+    sessionStorage.removeItem("saric_write_ok");
+    alert("Code incorrect.");
+    return false;
+  }
+}
+
 function sectionHeader(title, imageFile) {
   // Si pas d'image, on garde l'ancien comportement simple
   if (!imageFile) {
