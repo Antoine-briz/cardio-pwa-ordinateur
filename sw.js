@@ -15,10 +15,8 @@ const PRECACHE = [
   "./icons/icon-512.png",
 
   // Images
-  "./img/BLSE.png",
   "./img/SARM.png",
   "./img/abdo.png",
-  "./img/acineto.png",
   "./img/adaptee.png",
   "./img/ampC.png",
   "./img/anesthesie.png",
