@@ -18232,9 +18232,6 @@ const norm = (s) => (s ?? "")
             <button class="btn" id="ens-download" disabled>Télécharger</button>
             <button class="btn" id="ens-download-all">Tout télécharger</button>
           </div>
-          <div class="ens-code-hint">
-  Code à saisir : <strong>SARIC2026</strong>
-</div>
         </div>
 
         <div class="enseignement-right">
