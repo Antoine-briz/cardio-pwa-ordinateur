@@ -27,7 +27,6 @@ const PRECACHE = [
   "./img/cec.png",
   "./img/dermohypodermite.png",
   "./img/dialyse.png",
-  "./img/duree.png",
   "./img/ecmo.png",
   "./img/endocardite.png",
   "./img/erv.png",
