@@ -18082,7 +18082,18 @@ const uploadToStorage = async (file) => {
   const ref = window.storage.ref().child(path);
 
   try {
-    await ref.put(file);
+    const ext = (file.name || "").toLowerCase().split(".").pop();
+
+let contentType = file.type; // ex: "application/pdf"
+if (!contentType || contentType === "application/octet-stream") {
+  if (ext === "pdf") contentType = "application/pdf";
+  else if (ext === "ppt") contentType = "application/vnd.ms-powerpoint";
+  else if (ext === "pptx") contentType = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+}
+
+// ⚠️ on force le contentType
+await ref.put(file, { contentType });
+
     const fileUrl = await ref.getDownloadURL();
 
     return {
