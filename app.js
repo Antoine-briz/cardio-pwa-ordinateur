@@ -18203,7 +18203,6 @@ const norm = (s) => (s ?? "")
         <select id="ens-filter-author">
           <option value="">Tous les auteurs</option>
         </select>
-        <button class="btn" id="ens-add">Ajouter</button>
       </div>
 
       <div class="enseignement-layout">
@@ -18227,6 +18226,7 @@ const norm = (s) => (s ?? "")
           <div class="enseignement-pagination" id="ens-pagination"></div>
 
           <div class="enseignement-actions">
+            <button class="btn" id="ens-add">Ajouter</button>
             <button class="btn" id="ens-edit" disabled>Modifier</button>
             <button class="btn danger" id="ens-delete" disabled>Supprimer</button>
             <button class="btn" id="ens-download" disabled>Télécharger</button>
