@@ -65,6 +65,26 @@
     // 2) Plus tard, quand tu hébergeras ton backend, remplace par :
     // window.ENSEIGNEMENT_API_BASE = "https://ton-backend.domaine.tld";
   </script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+
+<script>
+  // Colle ici la config Firebase (Project settings → Web app → firebaseConfig)
+  const firebaseConfig = {
+    apiKey: "…",
+    authDomain: "…",
+    projectId: "…",
+    // etc
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  window.db = firebase.firestore();
+  window.auth = firebase.auth();
+
+  // Compte partagé (email fixe) : le "code" demandé = mot de passe
+  window.SARIC_WRITE_EMAIL = "saric@protocoles.local";
+</script>
 
   <script src="./app.js?v=1.0.0"></script>
 
