@@ -18064,6 +18064,14 @@ const resolveFileUrl = (u) => {
   // Relatif "/files/..." -> on préfixe par l'API_BASE
   return `${API_BASE}${u.startsWith("/") ? "" : "/"}${u}`;
 };
+
+  // Helper recherche (robuste même si "norm" global n'existe pas)
+const norm = (s) => (s ?? "")
+  .toString()
+  .normalize("NFD")
+  .replace(/[\u0300-\u036f]/g, "")
+  .toLowerCase()
+  .trim();
   
   const PAGE_SIZE = 10;
 
@@ -18470,17 +18478,23 @@ const renderPreview = (doc) => {
   $filterDomain.addEventListener("change", () => { currentPage = 1; renderTable(); });
   $filterAuthor.addEventListener("change", () => { currentPage = 1; renderTable(); });
 
-  $btnAdd.addEventListener("click", () => openModal("add"));
+ $btnAdd.addEventListener("click", async () => {
+  if (!(await ensureWriteAuth())) return;
+  openModal("add");
+});
 
-  $btnEdit.addEventListener("click", () => {
-    if (selectedIds.size !== 1) return;
-    const id = Array.from(selectedIds)[0];
-    const doc = allDocs.find(d => d.id === id);
-    if (doc) openModal("edit", doc);
-  });
+ $btnEdit.addEventListener("click", async () => {
+  if (selectedIds.size !== 1) return;
+  if (!(await ensureWriteAuth())) return;
+
+  const id = Array.from(selectedIds)[0];
+  const doc = allDocs.find(d => d.id === id);
+  if (doc) openModal("edit", doc);
+});
 
   $btnDelete.addEventListener("click", async () => {
     if (selectedIds.size === 0) return;
+      if (!(await ensureWriteAuth())) return;
     if (!confirm("Supprimer les fichiers sélectionnés ?")) return;
 
     const ids = Array.from(selectedIds);
@@ -18495,22 +18509,27 @@ const renderPreview = (doc) => {
     await load();
   });
 
-  $btnDownload.addEventListener("click", () => {
-    if (selectedIds.size === 0) return;
-    Array.from(selectedIds).forEach(id => {
-      const doc = allDocs.find(d => d.id === id);
-      if (doc?.fileUrl) downloadUrl(doc.fileUrl, doc.fileName || undefined);
-    });
+  $btnDownload.addEventListener("click", async () => {
+  if (selectedIds.size === 0) return;
+  if (!(await ensureWriteAuth())) return;
+
+  Array.from(selectedIds).forEach(id => {
+    const doc = allDocs.find(d => d.id === id);
+    if (doc?.fileUrl) downloadUrl(doc.fileUrl, doc.fileName || undefined);
   });
+});
 
   // ZIP côté serveur
-  $btnDownloadAll.addEventListener("click", () => {
-    openInNewTab(`${API_BASE}/api/teaching/zip`);
-  });
+  $btnDownloadAll.addEventListener("click", async () => {
+  if (!(await ensureWriteAuth())) return;
+  openInNewTab(`${API_BASE}/api/teaching/zip`);
+});
+
 
   // Save add/edit
   $form.addEventListener("submit", async (e) => {
     e.preventDefault();
+     if (!(await ensureWriteAuth())) return;
 
     const id = ($formId.value || "").trim();
     const title = ($formTitle.value || "").trim();
