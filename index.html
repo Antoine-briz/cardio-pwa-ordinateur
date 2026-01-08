@@ -70,24 +70,27 @@
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 
   <script>
-    // 🔁 REMPLACE par TA vraie config Firebase
-    const firebaseConfig = {
-      apiKey: "…",
-      authDomain: "…",
-      projectId: "…",
-      storageBucket: "…",
-      messagingSenderId: "…",
-      appId: "…"
-    };
+  const firebaseConfig = {
+    apiKey: "AIzaSyAQQBo6D3bsdvhpM4lmcKQgX9KxnyP1d0g",
+    authDomain: "protocoles-saric-91f94.firebaseapp.com",
+    projectId: "protocoles-saric-91f94",
 
-    firebase.initializeApp(firebaseConfig);
+    // ⚠️ IMPORTANT : bucket CORRIGÉ
+    storageBucket: "protocoles-saric-91f94.appspot.com",
 
-    // Exposition globale pour app.js
-    window.db = firebase.firestore();
-    window.storage = firebase.storage();
+    messagingSenderId: "229468365316",
+    appId: "1:229468365316:web:356d54110b1956d6494b51"
+  };
 
-    console.log("✅ Firebase initialisé :", firebase.app().options.projectId);
-  </script>
+  firebase.initializeApp(firebaseConfig);
+
+  // Exposition globale pour app.js
+  window.db = firebase.firestore();
+  window.storage = firebase.storage();
+
+  console.log("✅ Firebase OK – bucket =", firebase.app().options.storageBucket);
+</script>
+
 
   <!-- Application -->
   <script src="./app.js?v=1.0.0"></script>
