@@ -16,6 +16,7 @@ const PRECACHE = [
 
   // Images
   "./img/BLSE.png",
+  "./img/hepatite.png",
   "./img/SARM.png",
   "./img/abdo.png",
   "./img/adaptee.png",
@@ -87,6 +88,8 @@ const PRECACHE = [
   "./img/prescription.png",
   "./img/radiovasc.png",
   "./img/vasculaire.png",
+  "./img/vasculaire2.png",
+  "./img/scarpa.png",
 
   "./img/aidecognitiveSFAR.png",
   "./img/antibiotherapie2.png",
