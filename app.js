@@ -39,10 +39,11 @@ async function ensureWriteAuth() {
     sessionStorage.setItem("saric_write_ok", "1");
     return true;
   } catch (e) {
-    sessionStorage.removeItem("saric_write_ok");
-    alert("Code incorrect.");
-    return false;
-  }
+  sessionStorage.removeItem("saric_write_ok");
+  console.error("Firebase Auth error:", e);
+  alert(`Erreur auth: ${e.code || ""}\n${e.message || e}`);
+  return false;
+}
 }
 
 function sectionHeader(title, imageFile) {
