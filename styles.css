@@ -6118,3 +6118,57 @@ body.theme-dark .cec-box{ color:#111; }
   color: #000;
   opacity: 0.7;
 }
+
+/* ====== MODALE AJOUTER / MODIFIER : toujours claire et lisible ====== */
+
+/* Fond de la modale */
+.enseignement-page .ens-modal{
+  background: #f7f7f7 !important;   /* clair, pas blanc agressif */
+  color: #000 !important;
+  border: 2px solid #000 !important;
+}
+
+/* Titres/labels */
+.enseignement-page .ens-modal-head h3,
+.enseignement-page .ens-form label span{
+  color: #000 !important;
+  opacity: 1 !important;
+}
+
+/* Croix */
+.enseignement-page .ens-modal-close{
+  color: #000 !important;
+}
+
+/* Champs (titre/auteur/domaine) : clairs */
+.enseignement-page .ens-form input[type="text"],
+.enseignement-page .ens-form select{
+  background: #fff !important;
+  color: #000 !important;
+  border: 1px solid #000 !important;
+}
+
+/* Dropzone : clair + bordure noire + texte noir */
+.enseignement-page .ens-dropzone{
+  background: #fff !important;
+  color: #000 !important;
+  border: 2px dashed #000 !important;
+}
+
+.enseignement-page .ens-dropzone .muted,
+.enseignement-page .ens-file-name{
+  color: #000 !important;
+  opacity: 0.75 !important;
+}
+
+.enseignement-page .enseignement-actions{
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;               /* ✅ 2 lignes si écran petit */
+  justify-content: flex-start;
+}
+
+.enseignement-page .enseignement-actions .btn{
+  width: auto !important;
+  display: inline-flex !important;
+}
