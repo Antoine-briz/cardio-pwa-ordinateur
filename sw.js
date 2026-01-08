@@ -31,7 +31,6 @@ const PRECACHE = [
   "./img/erv.png",
   "./img/fabrice.png",
   "./img/modalite.png",
-  "./img/modalites.png",
   "./img/neuro.png",
   "./img/pneumonie.png",
   "./img/proba.png",
