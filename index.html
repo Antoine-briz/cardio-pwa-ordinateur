@@ -81,7 +81,7 @@
     };
 
     firebase.initializeApp(firebaseConfig);
-
+console.log("Firebase projectId:", firebase.app().options.projectId);
     // Exposition globale pour app.js
     window.db = firebase.firestore();
     window.auth = firebase.auth();
