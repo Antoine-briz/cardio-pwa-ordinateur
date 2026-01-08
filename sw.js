@@ -23,7 +23,6 @@ const PRECACHE = [
   "./img/ampC.png",
   "./img/anesthesie.png",
   "./img/antibioprophylaxie.png",
-  "./img/antibioprophylaxies.png",
   "./img/bandeau.png",
   "./img/carba.png",
   "./img/cec.png",
