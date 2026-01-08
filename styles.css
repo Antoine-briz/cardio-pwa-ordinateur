@@ -6110,3 +6110,11 @@ body.theme-dark .cec-box{ color:#111; }
 .enseignement-page .enseignement-toolbar .btn {
   flex: 0 0 auto;
 }
+
+/* Indication du code SARIC */
+.enseignement-page .ens-code-hint {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #000;
+  opacity: 0.7;
+}
