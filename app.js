@@ -601,6 +601,10 @@ function isAfterNoonNow() {
 function resetBlocForTomorrow() {
   localStorage.removeItem(getBlocKeyForTomorrow());
 }
+// Version "sans serveur" : on reset uniquement en local
+async function resetBlocForTomorrowServer() {
+  resetBlocForTomorrow();
+}
 
 async function maybeResetBlocAtNoon() {
   const day = todayISO(); // ta fonction existante (YYYY-MM-DD)
