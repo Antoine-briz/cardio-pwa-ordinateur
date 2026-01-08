@@ -18057,6 +18057,37 @@ function renderEnseignement() {
 
   // Base API optionnelle (ex: window.ENSEIGNEMENT_API_BASE = "https://tonserveur")
   const API_BASE = (window.ENSEIGNEMENT_API_BASE || "").replace(/\/$/, "");
+  // ==============================
+// Firebase helpers (Firestore + Storage)
+// ==============================
+const teachingCol = () => window.db.collection("teaching");
+
+const fileExt = (name = "") => {
+  const m = String(name).toLowerCase().match(/\.([a-z0-9]+)$/);
+  return m ? m[1] : "";
+};
+
+const uploadToStorage = async (file) => {
+  const safeName = String(file.name || "fichier")
+    .replace(/[^\w.\-]+/g, "_");
+  const path = `teaching/${Date.now()}__${safeName}`;
+  const ref = window.storage.ref().child(path);
+
+  await ref.put(file);
+  const fileUrl = await ref.getDownloadURL();
+  return { fileUrl, storagePath: path, fileName: file.name };
+};
+
+const deleteFromStorage = async (storagePath) => {
+  if (!storagePath) return;
+  try {
+    await window.storage.ref().child(storagePath).delete();
+  } catch (e) {
+    // Si déjà supprimé / inexistant, on ignore
+    console.warn("Storage delete warning:", e?.message || e);
+  }
+};
+
 const resolveFileUrl = (u) => {
   if (!u) return "";
   // Déjà absolu (http/https) -> on garde
@@ -18495,22 +18526,32 @@ const renderPreview = (doc) => {
   if (doc) openModal("edit", doc);
 });
 
-  $btnDelete.addEventListener("click", async () => {
-    if (selectedIds.size === 0) return;
-      if (!(await ensureWriteAuth())) return;
-    if (!confirm("Supprimer les fichiers sélectionnés ?")) return;
+ $btnDelete.addEventListener("click", async () => {
+  if (selectedIds.size === 0) return;
+  if (!(await ensureWriteAuth())) return;
+  if (!confirm("Supprimer les fichiers sélectionnés ?")) return;
 
+  try {
     const ids = Array.from(selectedIds);
-    await api("/api/teaching", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ids }),
-    });
+
+    for (const id of ids) {
+      const docRef = teachingCol().doc(id);
+      const snap = await docRef.get();
+      if (snap.exists) {
+        const data = snap.data() || {};
+        await deleteFromStorage(data.storagePath);
+        await docRef.delete();
+      }
+    }
 
     selectedIds.clear();
     activeDocId = null;
     await load();
-  });
+  } catch (err) {
+    console.error(err);
+    alert("Erreur : suppression impossible.");
+  }
+});
 
   $btnDownload.addEventListener("click", async () => {
   if (selectedIds.size === 0) return;
@@ -18525,54 +18566,130 @@ const renderPreview = (doc) => {
   // ZIP côté serveur
   $btnDownloadAll.addEventListener("click", async () => {
   if (!(await ensureWriteAuth())) return;
-  openInNewTab(`${API_BASE}/api/teaching/zip`);
+
+  try {
+    const zip = new JSZip();
+    const docs = allDocs.slice(); // tous
+
+    for (const d of docs) {
+      if (!d.fileUrl) continue;
+      const res = await fetch(d.fileUrl);
+      const blob = await res.blob();
+
+      const ext = fileExt(d.fileName || d.title || "fichier");
+      const base = (d.title || d.fileName || "document").replace(/[^\w.\-]+/g, "_");
+      const name = ext ? `${base}.${ext}` : base;
+
+      zip.file(name, blob);
+    }
+
+    const zipBlob = await zip.generateAsync({ type: "blob" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(zipBlob);
+    a.download = "enseignement.zip";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+  } catch (err) {
+    console.error(err);
+    alert("Erreur : impossible de créer le ZIP.");
+  }
 });
 
 
-  // Save add/edit
-  $form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-     if (!(await ensureWriteAuth())) return;
+// Save add/edit (Firebase)
+$form.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-    const id = ($formId.value || "").trim();
-    const title = ($formTitle.value || "").trim();
-    const author = ($formAuthor.value || "").trim();
-    const domain = ($formDomain.value || "").trim();
-    const file = $formFile.files?.[0] || null;
+  if (!(await ensureWriteAuth())) return;
 
-    const fd = new FormData();
-    fd.append("title", title);
-    fd.append("author", author);
-    fd.append("domain", domain);
-    if (file) fd.append("file", file);
+  const id = ($formId.value || "").trim();
+  const title = ($formTitle.value || "").trim();
+  const author = ($formAuthor.value || "").trim();
+  const domain = ($formDomain.value || "").trim();
+  const file = $formFile.files?.[0] || null;
 
+  try {
     if (!id) {
-      await api("/api/teaching", { method: "POST", body: fd });
+      // ===== ADD =====
+      if (!file) { alert("Veuillez sélectionner un fichier."); return; }
+
+      const up = await uploadToStorage(file);
+
+      await teachingCol().add({
+        title,
+        author,
+        domain,
+        addedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        fileUrl: up.fileUrl,
+        fileName: up.fileName,
+        storagePath: up.storagePath,
+      });
+
     } else {
-      await api(`/api/teaching/${encodeURIComponent(id)}`, { method: "PUT", body: fd });
+      // ===== EDIT =====
+      const docRef = teachingCol().doc(id);
+      const beforeSnap = await docRef.get();
+      const before = beforeSnap.exists ? (beforeSnap.data() || {}) : {};
+
+      let patch = { title, author, domain };
+
+      if (file) {
+        // Remplacement du fichier
+        await deleteFromStorage(before.storagePath);
+        const up = await uploadToStorage(file);
+        patch = {
+          ...patch,
+          fileUrl: up.fileUrl,
+          fileName: up.fileName,
+          storagePath: up.storagePath,
+        };
+      }
+
+      await docRef.set(patch, { merge: true });
     }
 
     closeModal();
     await load();
-  });
+  } catch (err) {
+    console.error(err);
+    alert("Erreur : impossible d'enregistrer.");
+  }
+});
+
 
   const load = async () => {
-    try {
-      allDocs = await api("/api/teaching");
-      refreshFilterOptions();
-      currentPage = 1;
-      filteredDocs = [];
-      selectedIds.clear();
-      activeDocId = null;
-      renderPreview(null);
-      renderTable();
-    } catch (err) {
-      console.error(err);
-      $tbody.innerHTML = `<tr><td colspan="6"><span class="muted">Erreur de chargement.</span></td></tr>`;
-      $pagination.innerHTML = "";
-      setButtonsState();
-    }
-  };
+  try {
+    const snap = await teachingCol().orderBy("addedAt", "desc").get();
+    allDocs = snap.docs.map(d => {
+      const data = d.data() || {};
+      return {
+        id: d.id,
+        title: data.title || "",
+        author: data.author || "",
+        domain: data.domain || "",
+        addedAt: data.addedAt?.toDate ? data.addedAt.toDate().toISOString() : (data.addedAt || ""),
+        fileUrl: data.fileUrl || "",
+        fileName: data.fileName || "",
+        storagePath: data.storagePath || "",
+      };
+    });
+
+    refreshFilterOptions();
+    currentPage = 1;
+    filteredDocs = [];
+    selectedIds.clear();
+    activeDocId = null;
+    renderPreview(null);
+    renderTable();
+  } catch (err) {
+    console.error(err);
+    $tbody.innerHTML = `<tr><td colspan="6"><span class="muted">Erreur de chargement.</span></td></tr>`;
+    $pagination.innerHTML = "";
+    setButtonsState();
+  }
+};
 
   load();
 }
