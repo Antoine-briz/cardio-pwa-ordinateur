@@ -57,34 +57,39 @@
     </div>
   </footer>
 
-  <!-- ✅ AJOUT IMPORTANT : URL DU BACKEND ENSEIGNEMENT -->
+  <!-- =========================
+       Firebase SDK (Compat)
+       + Storage (fichiers)
+       + JSZip (tout télécharger)
+  ========================== -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+
   <script>
-    // 1) En dev local (backend Express sur ta machine)
-    window.ENSEIGNEMENT_API_BASE = "http://localhost:3000";
+    // 🔁 Remplace par ta config Firebase réelle (Project settings → Web app)
+    const firebaseConfig = {
+      apiKey: "…",
+      authDomain: "…",
+      projectId: "…",
+      storageBucket: "…",
+      messagingSenderId: "…",
+      appId: "…"
+    };
 
-    // 2) Plus tard, quand tu hébergeras ton backend, remplace par :
-    // window.ENSEIGNEMENT_API_BASE = "https://ton-backend.domaine.tld";
+    firebase.initializeApp(firebaseConfig);
+
+    // Exposition globale pour app.js
+    window.db = firebase.firestore();
+    window.auth = firebase.auth();
+    window.storage = firebase.storage();
+
+    // Compte partagé : le "code" demandé dans la PWA = mot de passe Firebase
+    window.SARIC_WRITE_EMAIL = "saric@protocoles.local";
   </script>
-<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
-
-<script>
-  // Colle ici la config Firebase (Project settings → Web app → firebaseConfig)
-  const firebaseConfig = {
-    apiKey: "…",
-    authDomain: "…",
-    projectId: "…",
-    // etc
-  };
-
-  firebase.initializeApp(firebaseConfig);
-  window.db = firebase.firestore();
-  window.auth = firebase.auth();
-
-  // Compte partagé (email fixe) : le "code" demandé = mot de passe
-  window.SARIC_WRITE_EMAIL = "saric@protocoles.local";
-</script>
 
   <script src="./app.js?v=1.0.0"></script>
 
