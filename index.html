@@ -9,6 +9,7 @@
   <link rel="icon" href="icons/icon-192.png" sizes="300x300">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
 </head>
+
 <body>
   <div id="img-popup" class="img-popup" onclick="closePopup()">
     <img id="popup-img" src="" alt="">
@@ -59,18 +60,17 @@
 
   <!-- =========================
        Firebase SDK (Compat)
-       + Storage (fichiers)
-       + JSZip (tout télécharger)
+       Firestore + Storage ONLY
   ========================== -->
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
 
+  <!-- ZIP client-side -->
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 
   <script>
-    // 🔁 Remplace par ta config Firebase réelle (Project settings → Web app)
+    // 🔁 REMPLACE par TA vraie config Firebase
     const firebaseConfig = {
       apiKey: "…",
       authDomain: "…",
@@ -81,25 +81,25 @@
     };
 
     firebase.initializeApp(firebaseConfig);
-console.log("Firebase projectId:", firebase.app().options.projectId);
+
     // Exposition globale pour app.js
     window.db = firebase.firestore();
-    window.auth = firebase.auth();
     window.storage = firebase.storage();
 
-    // Compte partagé : le "code" demandé dans la PWA = mot de passe Firebase
-    window.SARIC_WRITE_EMAIL = "saric@protocoles.local";
+    console.log("✅ Firebase initialisé :", firebase.app().options.projectId);
   </script>
 
+  <!-- Application -->
   <script src="./app.js?v=1.0.0"></script>
 
+  <!-- Service Worker -->
   <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
         navigator.serviceWorker
           .register("./sw.js", { scope: "./" })
           .then(reg => console.log("✅ Service Worker enregistré :", reg.scope))
-          .catch(err => console.error("❌ Erreur SW :", err));
+          .catch(err => console.error("❌ Erreur Service Worker :", err));
       });
     }
   </script>
