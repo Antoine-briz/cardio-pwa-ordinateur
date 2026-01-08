@@ -20,31 +20,6 @@ function norm(s) {
     .trim();
 }
 
-async function ensureWriteAuth() {
-  // Déjà connecté pendant la session
-  if (window.auth?.currentUser) return true;
-
-  // Si on a déjà validé dans cette session, on tente une reconnexion silencieuse
-  const cachedOk = sessionStorage.getItem("saric_write_ok") === "1";
-  if (cachedOk) {
-    // Firebase garde souvent la session, mais au cas où :
-    if (window.auth.currentUser) return true;
-  }
-
-  const code = prompt("Code SARIC (Ajouter/Modifier/Supprimer/Télécharger) :");
-  if (!code) return false;
-
-  try {
-    await window.auth.signInWithEmailAndPassword(window.SARIC_WRITE_EMAIL, code);
-    sessionStorage.setItem("saric_write_ok", "1");
-    return true;
-  } catch (e) {
-  sessionStorage.removeItem("saric_write_ok");
-  console.error("Firebase Auth error:", e);
-  alert(`Erreur auth: ${e.code || ""}\n${e.message || e}`);
-  return false;
-}
-}
 
 function sectionHeader(title, imageFile) {
   // Si pas d'image, on garde l'ancien comportement simple
@@ -18073,15 +18048,54 @@ const fileExt = (name = "") => {
 };
 
 const uploadToStorage = async (file) => {
-  const safeName = String(file.name || "fichier")
-    .replace(/[^\w.\-]+/g, "_");
+  // ===== LIMITES =====
+  const MAX_PDF = 40 * 1024 * 1024;   // 40 Mo
+  const MAX_PPT = 80 * 1024 * 1024;   // 80 Mo
+
+  if (!file) {
+    throw new Error("Aucun fichier sélectionné.");
+  }
+
+  const name = String(file.name || "fichier");
+  const ext = name.toLowerCase().split(".").pop();
+
+  const isPdf = ext === "pdf";
+  const isPpt = ext === "ppt" || ext === "pptx";
+
+  // ===== TYPE =====
+  if (!isPdf && !isPpt) {
+    throw new Error("Format non autorisé. Seuls PDF et PPT/PPTX sont acceptés.");
+  }
+
+  // ===== TAILLE =====
+  if (isPdf && file.size > MAX_PDF) {
+    throw new Error("PDF trop volumineux (limite 40 Mo).");
+  }
+
+  if (isPpt && file.size > MAX_PPT) {
+    throw new Error("PPT/PPTX trop volumineux (limite 80 Mo).");
+  }
+
+  // ===== UPLOAD =====
+  const safeName = name.replace(/[^\w.\-]+/g, "_");
   const path = `teaching/${Date.now()}__${safeName}`;
   const ref = window.storage.ref().child(path);
 
-  await ref.put(file);
-  const fileUrl = await ref.getDownloadURL();
-  return { fileUrl, storagePath: path, fileName: file.name };
+  try {
+    await ref.put(file);
+    const fileUrl = await ref.getDownloadURL();
+
+    return {
+      fileUrl,
+      storagePath: path,
+      fileName: name
+    };
+  } catch (err) {
+    console.error("Erreur upload Firebase Storage:", err);
+    throw new Error("Erreur lors de l'envoi du fichier vers le serveur.");
+  }
 };
+
 
 const deleteFromStorage = async (storagePath) => {
   if (!storagePath) return;
@@ -18518,13 +18532,11 @@ const renderPreview = (doc) => {
   $filterAuthor.addEventListener("change", () => { currentPage = 1; renderTable(); });
 
  $btnAdd.addEventListener("click", async () => {
-  if (!(await ensureWriteAuth())) return;
   openModal("add");
 });
 
  $btnEdit.addEventListener("click", async () => {
   if (selectedIds.size !== 1) return;
-  if (!(await ensureWriteAuth())) return;
 
   const id = Array.from(selectedIds)[0];
   const doc = allDocs.find(d => d.id === id);
@@ -18533,7 +18545,6 @@ const renderPreview = (doc) => {
 
  $btnDelete.addEventListener("click", async () => {
   if (selectedIds.size === 0) return;
-  if (!(await ensureWriteAuth())) return;
   if (!confirm("Supprimer les fichiers sélectionnés ?")) return;
 
   try {
@@ -18560,7 +18571,6 @@ const renderPreview = (doc) => {
 
   $btnDownload.addEventListener("click", async () => {
   if (selectedIds.size === 0) return;
-  if (!(await ensureWriteAuth())) return;
 
   Array.from(selectedIds).forEach(id => {
     const doc = allDocs.find(d => d.id === id);
@@ -18570,7 +18580,6 @@ const renderPreview = (doc) => {
 
   // ZIP côté serveur
   $btnDownloadAll.addEventListener("click", async () => {
-  if (!(await ensureWriteAuth())) return;
 
   try {
     const zip = new JSZip();
@@ -18607,7 +18616,6 @@ const renderPreview = (doc) => {
 $form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  if (!(await ensureWriteAuth())) return;
 
   const id = ($formId.value || "").trim();
   const title = ($formTitle.value || "").trim();
@@ -18658,9 +18666,9 @@ $form.addEventListener("submit", async (e) => {
     closeModal();
     await load();
   } catch (err) {
-    console.error(err);
-    alert("Erreur : impossible d'enregistrer.");
-  }
+  console.error(err);
+  alert(err.message || "Erreur lors de l'enregistrement.");
+}
 });
 
 
