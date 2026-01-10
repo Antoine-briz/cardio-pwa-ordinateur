@@ -58,19 +58,16 @@
     </div>
   </footer>
 
-  <!-- =========================
-       Firebase SDK (Compat)
-       Firestore + Storage ONLY
-  ========================== -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
+<!-- Firebase SDK (Compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-check-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
 
-  <!-- ZIP client-side -->
-  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<!-- ZIP client-side -->
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 
-  <script>
-  // ✅ Config Firebase (Compat)
+<script>
   const firebaseConfig = {
     apiKey: "AIzaSyAQQBo6D3bsdvhpM4lmcKQgX9KxnyP1d0g",
     authDomain: "protocoles-saric-91f94.firebaseapp.com",
@@ -79,24 +76,23 @@
     messagingSenderId: "229468365316",
     appId: "1:229468365316:web:356d54110b1956d6494b51"
   };
+
   firebase.initializeApp(firebaseConfig);
-  // ✅ App Check (reCAPTCHA v3)
+
+  // ✅ App Check (reCAPTCHA v3) — ICI tu mets la *clé du site*
   const appCheck = firebase.appCheck();
-  appCheck.activate(
-    "TON_SITE_KEY_RECAPTCHA_V3",
-    true // auto refresh token
-  );
-    
-  // ✅ Exposition globale pour app.js
+  appCheck.activate("TON_SITE_KEY_RECAPTCHA_V3", true);
+
   window.db = firebase.firestore();
   window.storage = firebase.storage();
+
   console.log("✅ Firebase OK – bucket =", firebase.app().options.storageBucket);
+  console.log("✅ AppCheck OK =", typeof firebase.appCheck);
 </script>
-<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-check-compat.js"></script>
 
+<!-- Application -->
+<script src="./app.js?v=1.0.0"></script>
 
-  <!-- Application -->
-  <script src="./app.js?v=1.0.0"></script>
 
   <!-- Service Worker -->
   <script>
