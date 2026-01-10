@@ -18539,11 +18539,13 @@ const renderPreview = (doc) => {
   $filterDomain.addEventListener("change", () => { currentPage = 1; renderTable(); });
   $filterAuthor.addEventListener("change", () => { currentPage = 1; renderTable(); });
 
- $btnAdd.addEventListener("click", async () => {
+$btnAdd.addEventListener("click", async () => {
+  if (!(await ensureEnsAdminCodeOnce())) return;
   openModal("add");
 });
 
- $btnEdit.addEventListener("click", async () => {
+$btnEdit.addEventListener("click", async () => {
+  if (!(await ensureEnsAdminCodeOnce())) return;
   if (selectedIds.size !== 1) return;
 
   const id = Array.from(selectedIds)[0];
@@ -18551,7 +18553,8 @@ const renderPreview = (doc) => {
   if (doc) openModal("edit", doc);
 });
 
- $btnDelete.addEventListener("click", async () => {
+$btnDelete.addEventListener("click", async () => {
+  if (!(await ensureEnsAdminCodeOnce())) return;
   if (selectedIds.size === 0) return;
   if (!confirm("Supprimer les fichiers sélectionnés ?")) return;
 
@@ -18576,6 +18579,7 @@ const renderPreview = (doc) => {
     alert("Erreur : suppression impossible.");
   }
 });
+
 
   $btnDownload.addEventListener("click", async () => {
   if (selectedIds.size === 0) return;
@@ -18712,6 +18716,29 @@ $form.addEventListener("submit", async (e) => {
   }
 };
 
+// ===== Enseignement : code admin (1 fois par session) =====
+const SARIC_ADMIN_CODE = "SARIC2026";
+const SARIC_ADMIN_SESSION_KEY = "saric_admin_ok";
+
+function isEnsAdminSession() {
+  return sessionStorage.getItem(SARIC_ADMIN_SESSION_KEY) === "1";
+}
+
+async function ensureEnsAdminCodeOnce() {
+  if (isEnsAdminSession()) return true;
+
+  const code = prompt("Code requis pour cette action :");
+  if (!code) return false;
+
+  if (code.trim() === SARIC_ADMIN_CODE) {
+    sessionStorage.setItem(SARIC_ADMIN_SESSION_KEY, "1");
+    return true;
+  }
+
+  alert("Code incorrect.");
+  return false;
+}
+  
   load();
 }
 
