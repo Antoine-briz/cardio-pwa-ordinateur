@@ -18028,11 +18028,11 @@ function renderEnseignement() {
   const DOMAINS = [
     "Réanimation",
     "Anesthésie",
+    "ETO",
     "CEC",
     "Infectiologie",
     "Cardiologie",
-    "Neurologie",
-    "Métabolique",
+    "Autre",
   ];
 
   // Base API optionnelle (ex: window.ENSEIGNEMENT_API_BASE = "https://tonserveur")
@@ -18232,6 +18232,9 @@ const norm = (s) => (s ?? "")
             <button class="btn" id="ens-download" disabled>Télécharger</button>
             <button class="btn" id="ens-download-all">Tout télécharger</button>
           </div>
+          <div class="muted" style="margin-top:8px; font-size:12px;">
+  Code requis pour Ajouter / Modifier / Supprimer : <strong>SARIC2026</strong>
+</div>
         </div>
 
         <div class="enseignement-right">
