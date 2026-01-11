@@ -18020,6 +18020,31 @@ function renderCecProcedures() {
   `;
 }
 
+
+// ===== Enseignement : code admin (1 fois par session) =====
+const SARIC_ADMIN_CODE = "SARIC2026";
+const SARIC_ADMIN_SESSION_KEY = "saric_admin_ok";
+
+function isEnsAdminSession() {
+  return sessionStorage.getItem(SARIC_ADMIN_SESSION_KEY) === "1";
+}
+
+async function ensureEnsAdminCodeOnce() {
+  if (isEnsAdminSession()) return true;
+
+  const code = prompt("Code requis pour cette action :");
+  if (!code) return false;
+
+  if (code.trim() === SARIC_ADMIN_CODE) {
+    sessionStorage.setItem(SARIC_ADMIN_SESSION_KEY, "1");
+    return true;
+  }
+
+  alert("Code incorrect.");
+  return false;
+}
+
+
 /* =========================
    PAGE ENSEIGNEMENT
 ========================= */
