@@ -18781,13 +18781,653 @@ function renderBibliographie() {
 }
 
 function renderRecherche() {
+  // ==============================
+  // Firestore collections
+  // ==============================
+  const protoCol = () => window.db.collection("researchProtocols");
+  const docsCol = () => window.db.collection("researchDocs");
+
+  // ==============================
+  // Helpers
+  // ==============================
+  const esc = (s) =>
+    String(s ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+
+  const fileKind = (name) => {
+    const n = String(name || "").toLowerCase();
+    if (n.endsWith(".pdf")) return "pdf";
+    if (n.endsWith(".ppt") || n.endsWith(".pptx")) return "ppt";
+    return "file";
+  };
+
+  const resolveFileUrl = (fileUrl) => fileUrl || "";
+
+  const openInNewTab = (url) => {
+    if (!url) return;
+    window.open(resolveFileUrl(url), "_blank", "noopener");
+  };
+
+  const safeFileName = (name) =>
+    String(name || "fichier").replace(/[^\w.\-]+/g, "_");
+
+  const uploadToStorage = async (file, protocolId) => {
+    if (!file) throw new Error("Aucun fichier sélectionné.");
+
+    // Limites (mêmes que ce que tu voulais)
+    const isPdf = file.type === "application/pdf" || String(file.name).toLowerCase().endsWith(".pdf");
+    const max = isPdf ? 40 * 1024 * 1024 : 80 * 1024 * 1024;
+    if (file.size > max) {
+      throw new Error(isPdf ? "PDF trop volumineux (max 40 Mo)." : "Fichier trop volumineux (max 80 Mo).");
+    }
+
+    const path = `research/${protocolId}/${Date.now()}__${safeFileName(file.name)}`;
+    const ref = window.storage.ref().child(path);
+    await ref.put(file);
+    const fileUrl = await ref.getDownloadURL();
+    return { fileUrl, storagePath: path, fileName: file.name };
+  };
+
+  const deleteFromStorage = async (storagePath) => {
+    if (!storagePath) return;
+    try {
+      await window.storage.ref().child(storagePath).delete();
+    } catch (e) {
+      // Si le fichier est déjà absent, on ne bloque pas
+      console.warn("deleteFromStorage:", e?.message || e);
+    }
+  };
+
+  // ==============================
+  // State
+  // ==============================
+  let protocols = [];
+  let currentProtocolId = "";
+  let currentProtocolName = "";
+  let allDocs = [];
+
+  let activeDocId = null;
+  let selectedIds = new Set();
+
+  const PAGE_SIZE = 10;
+  let currentPage = 1;
+
+  // ==============================
+  // UI
+  // ==============================
   $app.innerHTML = `
-    <section class="page">
-      <h2>Recherche</h2>
-      <p>Protocoles de recherche, essais cliniques et projets en cours.</p>
+    <section class="page recherche-page enseignement-page">
+      <div class="enseignement-head">
+        <div style="width:100%;">
+          <h2 style="text-align:center; font-size:36px;">Recherche</h2>
+          <p class="muted" style="text-align:center;">Documents de protocoles de recherche (PDF / PPT)</p>
+        </div>
+      </div>
+
+      <!-- Sélection protocole -->
+      <div class="recherche-proto-bar">
+        <div class="recherche-proto-label">Sélection du protocole de recherche :</div>
+        <select id="rch-protocol-select">
+          <option value="">— Choisir un protocole —</option>
+        </select>
+        <button class="btn" id="rch-add-protocol">Ajouter un protocole</button>
+      </div>
+
+      <!-- Zone qui n'apparait qu'après sélection -->
+      <div id="rch-body" class="hidden">
+        <div class="enseignement-layout">
+          <div class="enseignement-left">
+            <div class="table-wrap">
+              <table class="enseignement-table">
+                <thead>
+                  <tr>
+                    <th style="width:110px;">Fichier</th>
+                    <th>Titre</th>
+                    <th style="width:130px;">Date d’ajout</th>
+                    <th style="width:110px;">Ouvrir</th>
+                  </tr>
+                </thead>
+                <tbody id="rch-tbody"></tbody>
+              </table>
+            </div>
+
+            <div class="enseignement-pagination" id="rch-pagination"></div>
+
+            <div class="enseignement-actions">
+              <button class="btn" id="rch-add">Ajouter</button>
+              <button class="btn" id="rch-edit" disabled>Modifier</button>
+              <button class="btn danger" id="rch-delete" disabled>Supprimer</button>
+              <button class="btn" id="rch-download" disabled>Télécharger</button>
+            </div>
+
+            <div class="muted" style="margin-top:8px; font-size:12px;">
+              Code requis pour Ajouter / Modifier / Supprimer : <strong>SARIC2026</strong>
+            </div>
+          </div>
+
+          <div class="enseignement-right">
+            <div class="enseignement-preview" id="rch-preview">
+              <div class="ens-preview-empty">Sélectionnez un fichier pour afficher un aperçu</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal protocole -->
+      <div class="ens-modal-backdrop hidden" id="rch-proto-modal-backdrop">
+        <div class="ens-modal" role="dialog" aria-modal="true">
+          <div class="ens-modal-head">
+            <h3>Ajouter un protocole</h3>
+            <button class="ens-modal-close" id="rch-proto-modal-close" aria-label="Fermer">×</button>
+          </div>
+
+          <form id="rch-proto-form" class="ens-form">
+            <label>
+              <span>Nom du protocole</span>
+              <input id="rch-proto-name" type="text" required />
+            </label>
+
+            <div class="ens-form-actions">
+              <button type="button" class="btn" id="rch-proto-cancel">Annuler</button>
+              <button type="submit" class="btn primary">Enregistrer</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Modal document -->
+      <div class="ens-modal-backdrop hidden" id="rch-doc-modal-backdrop">
+        <div class="ens-modal" role="dialog" aria-modal="true">
+          <div class="ens-modal-head">
+            <h3 id="rch-doc-modal-title">Ajouter un fichier</h3>
+            <button class="ens-modal-close" id="rch-doc-modal-close" aria-label="Fermer">×</button>
+          </div>
+
+          <form id="rch-doc-form" class="ens-form">
+            <input type="hidden" id="rch-doc-id" value="" />
+
+            <label>
+              <span>Titre</span>
+              <input id="rch-doc-title" type="text" required />
+            </label>
+
+            <div class="ens-dropzone" id="rch-dropzone">
+              <div class="ens-dropzone-text">
+                <strong>Fichier</strong>
+                <div class="muted">Glisser-déposer ici, ou <span class="ens-browse">parcourir</span></div>
+                <div class="ens-file-name" id="rch-file-name">Aucun fichier sélectionné</div>
+              </div>
+              <input id="rch-doc-file" type="file"
+                accept=".pdf,.ppt,.pptx,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation" />
+            </div>
+
+            <div class="ens-form-actions">
+              <button type="button" class="btn" id="rch-doc-cancel">Annuler</button>
+              <button type="submit" class="btn primary" id="rch-doc-save">Enregistrer</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </section>
   `;
+
+  // ==============================
+  // DOM refs
+  // ==============================
+  const $select = document.getElementById("rch-protocol-select");
+  const $body = document.getElementById("rch-body");
+
+  const $btnAddProtocol = document.getElementById("rch-add-protocol");
+  const $protoModalBackdrop = document.getElementById("rch-proto-modal-backdrop");
+  const $protoModalClose = document.getElementById("rch-proto-modal-close");
+  const $protoCancel = document.getElementById("rch-proto-cancel");
+  const $protoForm = document.getElementById("rch-proto-form");
+  const $protoName = document.getElementById("rch-proto-name");
+
+  const $tbody = document.getElementById("rch-tbody");
+  const $pagination = document.getElementById("rch-pagination");
+  const $preview = document.getElementById("rch-preview");
+
+  const $btnAdd = document.getElementById("rch-add");
+  const $btnEdit = document.getElementById("rch-edit");
+  const $btnDelete = document.getElementById("rch-delete");
+  const $btnDownload = document.getElementById("rch-download");
+
+  const $docModalBackdrop = document.getElementById("rch-doc-modal-backdrop");
+  const $docModalClose = document.getElementById("rch-doc-modal-close");
+  const $docCancel = document.getElementById("rch-doc-cancel");
+  const $docForm = document.getElementById("rch-doc-form");
+  const $docModalTitle = document.getElementById("rch-doc-modal-title");
+  const $docId = document.getElementById("rch-doc-id");
+  const $docTitle = document.getElementById("rch-doc-title");
+  const $docFile = document.getElementById("rch-doc-file");
+  const $dropzone = document.getElementById("rch-dropzone");
+  const $fileName = document.getElementById("rch-file-name");
+
+  // ==============================
+  // Modal helpers
+  // ==============================
+  const showProtoModal = () => {
+    $protoName.value = "";
+    $protoModalBackdrop.classList.remove("hidden");
+    setTimeout(() => $protoName.focus(), 0);
+  };
+  const hideProtoModal = () => $protoModalBackdrop.classList.add("hidden");
+
+  const showDocModal = (mode, doc) => {
+    $docFile.value = "";
+    $fileName.textContent = "Aucun fichier sélectionné";
+
+    if (mode === "add") {
+      $docModalTitle.textContent = "Ajouter un fichier";
+      $docId.value = "";
+      $docTitle.value = "";
+    } else {
+      $docModalTitle.textContent = "Modifier un fichier";
+      $docId.value = doc?.id || "";
+      $docTitle.value = doc?.title || "";
+    }
+
+    $docModalBackdrop.classList.remove("hidden");
+    setTimeout(() => $docTitle.focus(), 0);
+  };
+  const hideDocModal = () => $docModalBackdrop.classList.add("hidden");
+
+  // Close buttons
+  $protoModalClose.addEventListener("click", hideProtoModal);
+  $protoCancel.addEventListener("click", hideProtoModal);
+  $protoModalBackdrop.addEventListener("click", (e) => {
+    if (e.target === $protoModalBackdrop) hideProtoModal();
+  });
+
+  $docModalClose.addEventListener("click", hideDocModal);
+  $docCancel.addEventListener("click", hideDocModal);
+  $docModalBackdrop.addEventListener("click", (e) => {
+    if (e.target === $docModalBackdrop) hideDocModal();
+  });
+
+  // Dropzone UI
+  $docFile.addEventListener("change", () => {
+    const f = $docFile.files?.[0];
+    $fileName.textContent = f ? f.name : "Aucun fichier sélectionné";
+  });
+
+  $dropzone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    $dropzone.classList.add("dragover");
+  });
+  $dropzone.addEventListener("dragleave", () => $dropzone.classList.remove("dragover"));
+  $dropzone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    $dropzone.classList.remove("dragover");
+    const f = e.dataTransfer?.files?.[0];
+    if (f) {
+      // inject dans l'input file (pas supporté partout -> on garde juste l'affichage)
+      $fileName.textContent = f.name;
+      // Certains navigateurs n'autorisent pas de setter files; donc on garde la sélection via "parcourir" si besoin.
+      // On tente quand même :
+      try {
+        const dt = new DataTransfer();
+        dt.items.add(f);
+        $docFile.files = dt.files;
+      } catch (_) {}
+    }
+  });
+
+  // ==============================
+  // Rendering
+  // ==============================
+  const renderPreview = (doc) => {
+    if (!doc) {
+      $preview.innerHTML = `<div class="ens-preview-empty">Sélectionnez un fichier pour afficher un aperçu</div>`;
+      return;
+    }
+
+    const url = resolveFileUrl(doc.fileUrl);
+    const kind = fileKind(doc.fileName || doc.title || "");
+
+    if (kind === "pdf") {
+      // ✅ Aperçu PDF = iframe (comme ton autre appli), fiable mobile
+      $preview.innerHTML = `
+        <div class="ens-preview-head">
+          <div class="ens-preview-title">${esc(doc.title || "")}</div>
+        </div>
+        <div class="ens-preview-iframe-wrap">
+          <iframe class="ens-preview-frame" src="${url}#view=FitH&toolbar=0&navpanes=0" loading="lazy"></iframe>
+        </div>
+        <div class="ens-preview-fallback muted" style="margin-top:10px;font-size:12px;">
+          Si l’aperçu ne s’affiche pas, <a href="${url}" target="_blank" rel="noopener">ouvrir le PDF</a>.
+        </div>
+      `;
+      return;
+    }
+
+    // PPT/PPTX : pas d'aperçu intégré fiable → on invite à ouvrir
+    $preview.innerHTML = `
+      <div class="ens-preview-head">
+        <div class="ens-preview-title">${esc(doc.title || "")}</div>
+      </div>
+      <div class="muted" style="margin-top:10px;">
+        Aperçu intégré non disponible pour PowerPoint.
+        <br/>Clique pour <a href="${url}" target="_blank" rel="noopener">ouvrir le fichier</a>.
+      </div>
+    `;
+  };
+
+  const updateButtons = () => {
+    $btnEdit.disabled = selectedIds.size !== 1;
+    $btnDelete.disabled = selectedIds.size === 0;
+    $btnDownload.disabled = selectedIds.size !== 1;
+  };
+
+  const renderPagination = (total) => {
+    const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+    if (currentPage > pages) currentPage = pages;
+
+    const btns = [];
+    for (let p = 1; p <= pages; p++) {
+      btns.push(`
+        <button class="ens-page ${p === currentPage ? "active" : ""}" data-page="${p}">
+          ${p}
+        </button>
+      `);
+    }
+
+    $pagination.innerHTML = `
+      <div class="ens-pages">
+        ${btns.join("")}
+      </div>
+    `;
+
+    $pagination.querySelectorAll("[data-page]").forEach((b) => {
+      b.addEventListener("click", () => {
+        currentPage = Number(b.dataset.page);
+        renderTable();
+      });
+    });
+  };
+
+  const renderTable = () => {
+    // tri : plus récent d'abord
+    const docs = [...allDocs].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+    const total = docs.length;
+    renderPagination(total);
+
+    const start = (currentPage - 1) * PAGE_SIZE;
+    const pageDocs = docs.slice(start, start + PAGE_SIZE);
+
+    $tbody.innerHTML = pageDocs
+      .map((d) => {
+        const kind = fileKind(d.fileName || d.title || "");
+        const badge = kind === "pdf" ? "pdf" : (kind === "ppt" ? "ppt" : "file");
+
+        const icon = kind === "pdf" ? "PDF" : (kind === "ppt" ? "PPT" : "FILE");
+        const dateStr = d.createdAt
+          ? new Date(d.createdAt).toLocaleDateString("fr-FR")
+          : "";
+
+        const selected = selectedIds.has(d.id) ? "selected" : "";
+
+        return `
+          <tr class="ens-row ${selected}" data-id="${d.id}">
+            <td><span class="ens-badge ${badge}">${icon}</span></td>
+            <td title="${esc(d.title || "")}">${esc(d.title || "")}</td>
+            <td>${esc(dateStr)}</td>
+            <td><button class="btn small" data-open="${d.id}">Ouvrir</button></td>
+          </tr>
+        `;
+      })
+      .join("");
+
+    // Row selection + preview
+    $tbody.querySelectorAll(".ens-row").forEach((row) => {
+      row.addEventListener("click", (e) => {
+        const id = row.dataset.id;
+
+        // ctrl/cmd multi-select
+        const multi = e.ctrlKey || e.metaKey;
+
+        if (!multi) selectedIds.clear();
+
+        if (selectedIds.has(id)) selectedIds.delete(id);
+        else selectedIds.add(id);
+
+        activeDocId = id;
+        updateButtons();
+        renderTable();
+
+        const doc = allDocs.find((x) => x.id === id);
+        renderPreview(doc);
+      });
+    });
+
+    // Open buttons
+    $tbody.querySelectorAll("[data-open]").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const id = btn.dataset.open;
+        const doc = allDocs.find((x) => x.id === id);
+        if (doc?.fileUrl) openInNewTab(doc.fileUrl);
+      });
+    });
+  };
+
+  // ==============================
+  // Data
+  // ==============================
+  const loadProtocols = async () => {
+    const snap = await protoCol().orderBy("name").get();
+    protocols = snap.docs.map((d) => ({ id: d.id, ...(d.data() || {}) }));
+
+    $select.innerHTML = `
+      <option value="">— Choisir un protocole —</option>
+      ${protocols.map((p) => `<option value="${p.id}">${esc(p.name || "")}</option>`).join("")}
+    `;
+  };
+
+  const loadDocs = async () => {
+    if (!currentProtocolId) return;
+
+    const snap = await docsCol()
+      .where("protocolId", "==", currentProtocolId)
+      .get();
+
+    allDocs = snap.docs.map((d) => ({ id: d.id, ...(d.data() || {}) }));
+
+    // reset selection
+    selectedIds.clear();
+    activeDocId = null;
+    currentPage = 1;
+
+    renderPreview(null);
+    renderTable();
+  };
+
+  // ==============================
+  // Events: protocol selection
+  // ==============================
+  $select.addEventListener("change", async () => {
+    currentProtocolId = $select.value || "";
+    const p = protocols.find((x) => x.id === currentProtocolId);
+    currentProtocolName = p?.name || "";
+
+    if (!currentProtocolId) {
+      $body.classList.add("hidden");
+      return;
+    }
+
+    $body.classList.remove("hidden");
+    await loadDocs();
+  });
+
+  // Add protocol
+  $btnAddProtocol.addEventListener("click", async () => {
+    // (Optionnel) je protège aussi l'ajout de protocole pour éviter le spam
+    if (!(await ensureEnsAdminCodeOnce())) return;
+    showProtoModal();
+  });
+
+  $protoForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = $protoName.value.trim();
+    if (!name) return;
+
+    try {
+      await protoCol().add({
+        name,
+        createdAt: Date.now(),
+      });
+
+      hideProtoModal();
+      await loadProtocols();
+
+      // auto-select le nouveau protocole si possible
+      const last = protocols.find((p) => p.name === name);
+      if (last) {
+        $select.value = last.id;
+        $select.dispatchEvent(new Event("change"));
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Erreur : impossible d'ajouter le protocole.");
+    }
+  });
+
+  // ==============================
+  // Events: documents actions
+  // ==============================
+  $btnAdd.addEventListener("click", async () => {
+    if (!currentProtocolId) return;
+    if (!(await ensureEnsAdminCodeOnce())) return;
+    showDocModal("add");
+  });
+
+  $btnEdit.addEventListener("click", async () => {
+    if (!currentProtocolId) return;
+    if (!(await ensureEnsAdminCodeOnce())) return;
+    if (selectedIds.size !== 1) return;
+
+    const id = Array.from(selectedIds)[0];
+    const doc = allDocs.find((d) => d.id === id);
+    if (doc) showDocModal("edit", doc);
+  });
+
+  $btnDelete.addEventListener("click", async () => {
+    if (!currentProtocolId) return;
+    if (!(await ensureEnsAdminCodeOnce())) return;
+    if (selectedIds.size === 0) return;
+    if (!confirm("Supprimer les fichiers sélectionnés ?")) return;
+
+    try {
+      const ids = Array.from(selectedIds);
+
+      for (const id of ids) {
+        const ref = docsCol().doc(id);
+        const snap = await ref.get();
+        if (snap.exists) {
+          const data = snap.data() || {};
+          await deleteFromStorage(data.storagePath);
+          await ref.delete();
+        }
+      }
+
+      selectedIds.clear();
+      activeDocId = null;
+      await loadDocs();
+    } catch (err) {
+      console.error(err);
+      alert("Erreur : suppression impossible.");
+    }
+  });
+
+  $btnDownload.addEventListener("click", async () => {
+    if (selectedIds.size !== 1) return;
+    const id = Array.from(selectedIds)[0];
+    const doc = allDocs.find((d) => d.id === id);
+    if (doc?.fileUrl) openInNewTab(doc.fileUrl);
+  });
+
+  // Submit doc modal
+  $docForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!currentProtocolId) return;
+    if (!(await ensureEnsAdminCodeOnce())) return;
+
+    const mode = $docId.value ? "edit" : "add";
+    const title = $docTitle.value.trim();
+    if (!title) return;
+
+    try {
+      const existing = mode === "edit" ? allDocs.find((d) => d.id === $docId.value) : null;
+
+      let fileMeta = {};
+      const f = $docFile.files?.[0];
+
+      if (mode === "add") {
+        if (!f) {
+          alert("Veuillez sélectionner un fichier.");
+          return;
+        }
+        fileMeta = await uploadToStorage(f, currentProtocolId);
+      } else {
+        // En edit : fichier optionnel
+        if (f) {
+          // supprime ancien fichier si présent
+          if (existing?.storagePath) await deleteFromStorage(existing.storagePath);
+          fileMeta = await uploadToStorage(f, currentProtocolId);
+        } else {
+          fileMeta = {
+            fileUrl: existing?.fileUrl || "",
+            storagePath: existing?.storagePath || "",
+            fileName: existing?.fileName || "",
+          };
+        }
+      }
+
+      const payload = {
+        protocolId: currentProtocolId,
+        protocolName: currentProtocolName || "",
+        title,
+        createdAt: existing?.createdAt || Date.now(),
+        updatedAt: Date.now(),
+        ...fileMeta,
+      };
+
+      if (mode === "add") {
+        await docsCol().add(payload);
+      } else {
+        await docsCol().doc($docId.value).set(payload, { merge: true });
+      }
+
+      hideDocModal();
+      await loadDocs();
+    } catch (err) {
+      console.error(err);
+      alert(err?.message || "Erreur lors de l'enregistrement.");
+    }
+  });
+
+  // ==============================
+  // Init
+  // ==============================
+  (async () => {
+    try {
+      await loadProtocols();
+      // Tant qu'aucun protocole sélectionné : on masque le body
+      $body.classList.add("hidden");
+      renderPreview(null);
+    } catch (err) {
+      console.error(err);
+      alert("Erreur : impossible de charger la page Recherche.");
+    }
+  })();
 }
+
 
 // =====================================================================
 //  PAGES “PLANNING” ET “ANNUAIRE” (PLACEHOLDERS)
