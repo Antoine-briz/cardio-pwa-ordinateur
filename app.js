@@ -18842,6 +18842,30 @@ function renderRecherche() {
     }
   };
 
+  const showEditProtocolsModal = async () => {
+  if (!(await ensureEnsAdminCodeOnce())) return;
+
+  // Recharge proprement
+  await loadProtocols();
+
+  $protoEditList.innerHTML = protocols.map(p => `
+    <div style="display:flex; gap:8px; align-items:center;">
+      <input type="text"
+             value="${esc(p.name || "")}"
+             data-id="${p.id}"
+             class="rch-proto-edit-input" />
+      <button class="btn small" data-save="${p.id}">💾</button>
+      <button class="btn danger small" data-delete="${p.id}">🗑</button>
+    </div>
+  `).join("");
+
+  $protoEditBackdrop.classList.remove("hidden");
+};
+
+const hideEditProtocolsModal = () => {
+  $protoEditBackdrop.classList.add("hidden");
+};
+
   // ==============================
   // State
   // ==============================
@@ -18875,6 +18899,7 @@ function renderRecherche() {
           <option value="">— Choisir un protocole —</option>
         </select>
         <button class="btn" id="rch-add-protocol">Ajouter un protocole</button>
+<button class="btn" id="rch-edit-protocols">Éditer les protocoles</button>
       </div>
 
       <!-- Zone qui n'apparait qu'après sélection -->
@@ -18939,6 +18964,24 @@ function renderRecherche() {
         </div>
       </div>
 
+<!-- Modal édition protocoles -->
+<div class="ens-modal-backdrop hidden" id="rch-proto-edit-backdrop">
+  <div class="ens-modal" role="dialog" aria-modal="true">
+    <div class="ens-modal-head">
+      <h3>Éditer les protocoles</h3>
+      <button class="ens-modal-close" id="rch-proto-edit-close">×</button>
+    </div>
+
+    <div id="rch-proto-edit-list" class="ens-form">
+      <!-- injecté en JS -->
+    </div>
+
+    <div class="ens-form-actions">
+      <button class="btn" id="rch-proto-edit-cancel">Fermer</button>
+    </div>
+  </div>
+</div>
+
       <!-- Modal document -->
       <div class="ens-modal-backdrop hidden" id="rch-doc-modal-backdrop">
         <div class="ens-modal" role="dialog" aria-modal="true">
@@ -18988,6 +19031,12 @@ function renderRecherche() {
   const $protoForm = document.getElementById("rch-proto-form");
   const $protoName = document.getElementById("rch-proto-name");
 
+const $btnEditProtocols = document.getElementById("rch-edit-protocols");
+const $protoEditBackdrop = document.getElementById("rch-proto-edit-backdrop");
+const $protoEditClose = document.getElementById("rch-proto-edit-close");
+const $protoEditCancel = document.getElementById("rch-proto-edit-cancel");
+const $protoEditList = document.getElementById("rch-proto-edit-list");
+  
   const $tbody = document.getElementById("rch-tbody");
   const $pagination = document.getElementById("rch-pagination");
   const $preview = document.getElementById("rch-preview");
@@ -19050,6 +19099,97 @@ function renderRecherche() {
     if (e.target === $docModalBackdrop) hideDocModal();
   });
 
+// ==============================
+// Events: édition des protocoles (renommer / supprimer)
+// ==============================
+
+// Ouvrir la modale
+$btnEditProtocols.addEventListener("click", async () => {
+  await showEditProtocolsModal();
+});
+
+// Fermer la modale
+$protoEditClose.addEventListener("click", hideEditProtocolsModal);
+$protoEditCancel.addEventListener("click", hideEditProtocolsModal);
+$protoEditBackdrop.addEventListener("click", (e) => {
+  if (e.target === $protoEditBackdrop) hideEditProtocolsModal();
+});
+
+// Actions (💾 renommer / 🗑 supprimer)
+$protoEditList.addEventListener("click", async (e) => {
+  const saveId = e.target?.dataset?.save;
+  const deleteId = e.target?.dataset?.delete;
+
+  // Sécurité : code requis
+  if ((saveId || deleteId) && !(await ensureEnsAdminCodeOnce())) return;
+
+  // ===== Renommer =====
+  if (saveId) {
+    const input = $protoEditList.querySelector(`input[data-id="${saveId}"]`);
+    const newName = (input?.value || "").trim();
+    if (!newName) {
+      alert("Nom invalide.");
+      return;
+    }
+
+    try {
+      await protoCol().doc(saveId).update({ name: newName });
+
+      // Recharge la liste dans le select + la modale
+      await loadProtocols();
+
+      // Garde la sélection actuelle
+      if (currentProtocolId) $select.value = currentProtocolId;
+
+      // Ré-ouvre la modale (liste à jour)
+      await showEditProtocolsModal();
+
+      alert("Protocole renommé.");
+    } catch (err) {
+      console.error(err);
+      alert("Erreur : renommage impossible.");
+    }
+    return;
+  }
+
+  // ===== Supprimer =====
+  if (deleteId) {
+    try {
+      // Vérifie si le protocole contient des documents
+      const snap = await docsCol()
+        .where("protocolId", "==", deleteId)
+        .limit(1)
+        .get();
+
+      if (!snap.empty) {
+        alert("Impossible de supprimer : ce protocole contient des documents.");
+        return;
+      }
+
+      if (!confirm("Supprimer définitivement ce protocole ?")) return;
+
+      await protoCol().doc(deleteId).delete();
+
+      // Si on a supprimé le protocole en cours, on reset l'écran
+      if (currentProtocolId === deleteId) {
+        currentProtocolId = "";
+        currentProtocolName = "";
+        $select.value = "";
+        $body.classList.add("hidden");
+        renderPreview(null);
+      }
+
+      await loadProtocols();
+      await showEditProtocolsModal(); // rafraîchit la liste
+      alert("Protocole supprimé.");
+    } catch (err) {
+      console.error(err);
+      alert("Erreur : suppression impossible.");
+    }
+  }
+});
+
+  
   // Dropzone UI
   $docFile.addEventListener("change", () => {
     const f = $docFile.files?.[0];
