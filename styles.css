@@ -6172,3 +6172,41 @@ body.theme-dark .cec-box{ color:#111; }
   width: auto !important;
   display: inline-flex !important;
 }
+
+/* =========================
+   Recherche : sélection protocole
+========================= */
+.recherche-page .recherche-proto-bar{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  flex-wrap:wrap;
+  margin: 12px 0 14px;
+}
+
+.recherche-page .recherche-proto-label{
+  font-weight: 800;
+}
+
+.recherche-page #rch-protocol-select{
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #000;
+  background: #fff;
+  color:#000;
+  min-width: 260px;
+}
+
+.recherche-page #rch-add-protocol{
+  width: auto !important;
+}
+
+/* Cache utilitaire */
+.hidden{ display:none !important; }
+
+/* Evite débordement preview iframe */
+.recherche-page .ens-preview-iframe-wrap{
+  width:100%;
+  max-width:100%;
+  overflow:hidden;
+}
