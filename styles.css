@@ -6210,3 +6210,18 @@ body.theme-dark .cec-box{ color:#111; }
   max-width:100%;
   overflow:hidden;
 }
+
+.rch-proto-edit-input{
+  flex:1;
+  padding:8px 10px;
+  border-radius:8px;
+  border:1px solid #000;
+}
+/* Centrage du titre des pages (Enseignement, Recherche, etc.) */
+.page > .enseignement-head h2 {
+  text-align: center;
+}
+
+.page > .enseignement-head p {
+  text-align: center;
+}
