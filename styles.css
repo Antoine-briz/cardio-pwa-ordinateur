@@ -6225,3 +6225,33 @@ body.theme-dark .cec-box{ color:#111; }
 .page > .enseignement-head p {
   text-align: center;
 }
+
+.rch-proto-edit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rch-proto-edit-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  background: #f1f5f9;
+}
+
+.rch-proto-edit-item input[type="radio"] {
+  transform: scale(1.2);
+}
+
+.rch-proto-edit-name {
+  flex: 1;
+  font-weight: 600;
+}
+.recherche-proto-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
