@@ -18866,43 +18866,73 @@ const showEditProtocolsModal = async () => {
   $protoEditBackdrop.classList.remove("hidden");
 };
 
-  document.getElementById("rch-proto-rename").addEventListener("click", async () => {
-  if (!selectedProtoEditId) {
-    alert("Sélectionne un protocole.");
-    return;
-  }
+// ==============================
+// Events: boutons Modifier / Supprimer protocole (modale édition)
+// ==============================
+const $protoRename = document.getElementById("rch-proto-rename");
+const $protoRemove = document.getElementById("rch-proto-remove");
 
-  const proto = protocols.find(p => p.id === selectedProtoEditId);
-  const newName = prompt("Nouveau nom du protocole :", proto?.name || "");
-  if (!newName) return;
+if ($protoRename) {
+  $protoRename.addEventListener("click", async () => {
+    if (!selectedProtoEditId) {
+      alert("Sélectionne un protocole.");
+      return;
+    }
 
-  await protoCol().doc(selectedProtoEditId).update({ name: newName });
-  await loadProtocols();
-  $protoEditBackdrop.classList.add("hidden");
-});
+    const proto = protocols.find(p => p.id === selectedProtoEditId);
+    const newName = prompt("Nouveau nom du protocole :", proto?.name || "");
+    if (!newName) return;
 
-document.getElementById("rch-proto-remove").addEventListener("click", async () => {
-  if (!selectedProtoEditId) {
-    alert("Sélectionne un protocole.");
-    return;
-  }
+    try {
+      await protoCol().doc(selectedProtoEditId).update({ name: newName.trim() });
+      await loadProtocols();
+      hideEditProtocolsModal();
+      alert("Protocole modifié.");
+    } catch (err) {
+      console.error(err);
+      alert("Erreur : modification impossible.");
+    }
+  });
+}
 
-  if (!confirm("Supprimer définitivement ce protocole ?")) return;
+if ($protoRemove) {
+  $protoRemove.addEventListener("click", async () => {
+    if (!selectedProtoEditId) {
+      alert("Sélectionne un protocole.");
+      return;
+    }
 
-  // Supprime aussi les documents liés
-  const snap = await docsCol().where("protocolId", "==", selectedProtoEditId).get();
-  for (const d of snap.docs) {
-    const data = d.data();
-    await deleteFromStorage(data.storagePath);
-    await d.ref.delete();
-  }
+    if (!confirm("Supprimer définitivement ce protocole ?")) return;
 
-  await protoCol().doc(selectedProtoEditId).delete();
-  await loadProtocols();
+    try {
+      // Supprime aussi les documents liés + fichiers Storage
+      const snap = await docsCol().where("protocolId", "==", selectedProtoEditId).get();
+      for (const d of snap.docs) {
+        const data = d.data() || {};
+        await deleteFromStorage(data.storagePath);
+        await d.ref.delete();
+      }
 
-  $protoEditBackdrop.classList.add("hidden");
-});
+      await protoCol().doc(selectedProtoEditId).delete();
 
+      // si protocole courant supprimé, reset UI
+      if (currentProtocolId === selectedProtoEditId) {
+        currentProtocolId = "";
+        currentProtocolName = "";
+        $select.value = "";
+        $body.classList.add("hidden");
+        renderPreview(null);
+      }
+
+      await loadProtocols();
+      hideEditProtocolsModal();
+      alert("Protocole supprimé.");
+    } catch (err) {
+      console.error(err);
+      alert("Erreur : suppression impossible.");
+    }
+  });
+}
 
 const hideEditProtocolsModal = () => {
   $protoEditBackdrop.classList.add("hidden");
