@@ -19008,22 +19008,25 @@ const hideEditProtocolsModal = () => {
       </div>
     </div>
 
-    <!-- Modal édition protocoles -->
-    <div class="ens-modal-backdrop hidden" id="rch-proto-edit-backdrop">
-      <div class="ens-modal" role="dialog" aria-modal="true">
-        <div class="ens-modal-head">
-          <h3>Éditer les protocoles</h3>
-          <button class="ens-modal-close" id="rch-proto-edit-close" aria-label="Fermer">×</button>
-        </div>
-
-        <div id="rch-proto-edit-list" class="ens-form" style="margin-top:12px;"></div>
-
-        <div class="ens-form-actions" style="justify-content:flex-end;">
-          <button class="btn" id="rch-proto-rename" type="button">Modifier</button>
-          <button class="btn danger" id="rch-proto-remove" type="button">Supprimer</button>
-        </div>
-      </div>
+   <!-- Modal édition protocoles -->
+<div class="ens-modal-backdrop hidden" id="rch-proto-edit-backdrop">
+  <div class="ens-modal" role="dialog" aria-modal="true">
+    <div class="ens-modal-head">
+      <h3>Éditer les protocoles</h3>
+      <button class="ens-modal-close" id="rch-proto-edit-close" aria-label="Fermer">×</button>
     </div>
+
+    <div id="rch-proto-edit-list" class="ens-form">
+      <!-- injecté en JS -->
+    </div>
+
+    <div class="enseignement-actions" style="justify-content:flex-end; margin-top:12px;">
+      <button class="btn" id="rch-proto-rename">Modifier</button>
+      <button class="btn danger" id="rch-proto-remove">Supprimer</button>
+    </div>
+  </div>
+</div>
+
 
     <!-- Modal document -->
     <div class="ens-modal-backdrop hidden" id="rch-doc-modal-backdrop">
