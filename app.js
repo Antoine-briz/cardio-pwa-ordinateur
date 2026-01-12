@@ -19041,7 +19041,7 @@ const hideEditProtocolsModal = () => {
     </div>
 
     <!-- Sélection protocole -->
-    <div class="recherche-proto-bar">
+    <div class="recherche-proto-bar recherche-proto-actions">
       <div class="recherche-proto-label">Sélection du protocole de recherche :</div>
 
       <select id="rch-protocol-select">
