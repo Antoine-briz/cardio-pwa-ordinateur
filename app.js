@@ -18842,25 +18842,67 @@ function renderRecherche() {
     }
   };
 
-  const showEditProtocolsModal = async () => {
+let selectedProtoEditId = "";
+
+const showEditProtocolsModal = async () => {
   if (!(await ensureEnsAdminCodeOnce())) return;
 
-  // Recharge proprement
   await loadProtocols();
+  selectedProtoEditId = "";
 
   $protoEditList.innerHTML = protocols.map(p => `
-    <div style="display:flex; gap:8px; align-items:center;">
-      <input type="text"
-             value="${esc(p.name || "")}"
-             data-id="${p.id}"
-             class="rch-proto-edit-input" />
-      <button class="btn small" data-save="${p.id}">💾</button>
-      <button class="btn danger small" data-delete="${p.id}">🗑</button>
-    </div>
+    <label class="rch-proto-edit-item">
+      <input type="radio" name="rch-proto-edit" value="${p.id}">
+      <span class="rch-proto-edit-name">${esc(p.name || "")}</span>
+    </label>
   `).join("");
+
+  $protoEditList.querySelectorAll("input[type=radio]").forEach(r => {
+    r.addEventListener("change", () => {
+      selectedProtoEditId = r.value;
+    });
+  });
 
   $protoEditBackdrop.classList.remove("hidden");
 };
+
+  document.getElementById("rch-proto-rename").addEventListener("click", async () => {
+  if (!selectedProtoEditId) {
+    alert("Sélectionne un protocole.");
+    return;
+  }
+
+  const proto = protocols.find(p => p.id === selectedProtoEditId);
+  const newName = prompt("Nouveau nom du protocole :", proto?.name || "");
+  if (!newName) return;
+
+  await protoCol().doc(selectedProtoEditId).update({ name: newName });
+  await loadProtocols();
+  $protoEditBackdrop.classList.add("hidden");
+});
+
+document.getElementById("rch-proto-remove").addEventListener("click", async () => {
+  if (!selectedProtoEditId) {
+    alert("Sélectionne un protocole.");
+    return;
+  }
+
+  if (!confirm("Supprimer définitivement ce protocole ?")) return;
+
+  // Supprime aussi les documents liés
+  const snap = await docsCol().where("protocolId", "==", selectedProtoEditId).get();
+  for (const d of snap.docs) {
+    const data = d.data();
+    await deleteFromStorage(data.storagePath);
+    await d.ref.delete();
+  }
+
+  await protoCol().doc(selectedProtoEditId).delete();
+  await loadProtocols();
+
+  $protoEditBackdrop.classList.add("hidden");
+});
+
 
 const hideEditProtocolsModal = () => {
   $protoEditBackdrop.classList.add("hidden");
@@ -18894,13 +18936,18 @@ const hideEditProtocolsModal = () => {
 
       <!-- Sélection protocole -->
       <div class="recherche-proto-bar">
-        <div class="recherche-proto-label">Sélection du protocole de recherche :</div>
-        <select id="rch-protocol-select">
-          <option value="">— Choisir un protocole —</option>
-        </select>
-        <button class="btn" id="rch-add-protocol">Ajouter un protocole</button>
-<button class="btn" id="rch-edit-protocols">Éditer les protocoles</button>
-      </div>
+  <div class="recherche-proto-label">Sélection du protocole de recherche :</div>
+
+  <div class="recherche-proto-controls">
+    <select id="rch-protocol-select">
+      <option value="">— Choisir un protocole —</option>
+    </select>
+
+    <button class="btn" id="rch-add-protocol">Ajouter un protocole</button>
+    <button class="btn secondary" id="rch-edit-protocols">Éditer les protocoles</button>
+  </div>
+</div>
+
 
       <!-- Zone qui n'apparait qu'après sélection -->
       <div id="rch-body" class="hidden">
@@ -18972,13 +19019,15 @@ const hideEditProtocolsModal = () => {
       <button class="ens-modal-close" id="rch-proto-edit-close">×</button>
     </div>
 
-    <div id="rch-proto-edit-list" class="ens-form">
-      <!-- injecté en JS -->
-    </div>
+    <div id="rch-proto-edit-list" class="rch-proto-edit-list">
+  <!-- injecté en JS -->
+</div>
 
-    <div class="ens-form-actions">
-      <button class="btn" id="rch-proto-edit-cancel">Fermer</button>
-    </div>
+<div class="ens-form-actions">
+  <button class="btn" id="rch-proto-rename">Modifier</button>
+  <button class="btn danger" id="rch-proto-remove">Supprimer</button>
+</div>
+
   </div>
 </div>
 
@@ -19034,7 +19083,6 @@ const hideEditProtocolsModal = () => {
 const $btnEditProtocols = document.getElementById("rch-edit-protocols");
 const $protoEditBackdrop = document.getElementById("rch-proto-edit-backdrop");
 const $protoEditClose = document.getElementById("rch-proto-edit-close");
-const $protoEditCancel = document.getElementById("rch-proto-edit-cancel");
 const $protoEditList = document.getElementById("rch-proto-edit-list");
   
   const $tbody = document.getElementById("rch-tbody");
@@ -19110,7 +19158,6 @@ $btnEditProtocols.addEventListener("click", async () => {
 
 // Fermer la modale
 $protoEditClose.addEventListener("click", hideEditProtocolsModal);
-$protoEditCancel.addEventListener("click", hideEditProtocolsModal);
 $protoEditBackdrop.addEventListener("click", (e) => {
   if (e.target === $protoEditBackdrop) hideEditProtocolsModal();
 });
