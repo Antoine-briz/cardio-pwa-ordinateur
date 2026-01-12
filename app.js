@@ -18926,146 +18926,140 @@ const hideEditProtocolsModal = () => {
   // UI
   // ==============================
   $app.innerHTML = `
-    <section class="page recherche-page enseignement-page">
-      <div class="enseignement-head">
-        <div style="width:100%;">
-          <h2 style="text-align:center; font-size:36px;">Recherche</h2>
-          <p class="muted" style="text-align:center;">Documents de protocoles de recherche (PDF / PPT)</p>
-        </div>
+  <section class="page recherche-page enseignement-page">
+    <div class="enseignement-head">
+      <div style="width:100%;">
+        <h2 style="text-align:center; font-size:36px;">Recherche</h2>
+        <p class="muted" style="text-align:center;">Documents de protocoles de recherche (PDF / PPT)</p>
       </div>
-
-      <!-- Sélection protocole -->
-      <div class="recherche-proto-bar">
-  <div class="recherche-proto-label">Sélection du protocole de recherche :</div>
-
-  <div class="recherche-proto-controls">
-    <select id="rch-protocol-select">
-      <option value="">— Choisir un protocole —</option>
-    </select>
-
-    <button class="btn" id="rch-add-protocol">Ajouter un protocole</button>
-    <button class="btn secondary" id="rch-edit-protocols">Éditer les protocoles</button>
-  </div>
-</div>
-
-
-      <!-- Zone qui n'apparait qu'après sélection -->
-      <div id="rch-body" class="hidden">
-        <div class="enseignement-layout">
-          <div class="enseignement-left">
-            <div class="table-wrap">
-              <table class="enseignement-table">
-                <thead>
-                  <tr>
-                    <th style="width:110px;">Fichier</th>
-                    <th>Titre</th>
-                    <th style="width:130px;">Date d’ajout</th>
-                    <th style="width:110px;">Ouvrir</th>
-                  </tr>
-                </thead>
-                <tbody id="rch-tbody"></tbody>
-              </table>
-            </div>
-
-            <div class="enseignement-pagination" id="rch-pagination"></div>
-
-            <div class="enseignement-actions">
-              <button class="btn" id="rch-add">Ajouter</button>
-              <button class="btn" id="rch-edit" disabled>Modifier</button>
-              <button class="btn danger" id="rch-delete" disabled>Supprimer</button>
-              <button class="btn" id="rch-download" disabled>Télécharger</button>
-            </div>
-
-            <div class="muted" style="margin-top:8px; font-size:12px;">
-              Code requis pour Ajouter / Modifier / Supprimer : <strong>Contactez Antoine BRIZARD</strong>
-            </div>
-          </div>
-
-          <div class="enseignement-right">
-            <div class="enseignement-preview" id="rch-preview">
-              <div class="ens-preview-empty">Sélectionnez un fichier pour afficher un aperçu</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Modal protocole -->
-      <div class="ens-modal-backdrop hidden" id="rch-proto-modal-backdrop">
-        <div class="ens-modal" role="dialog" aria-modal="true">
-          <div class="ens-modal-head">
-            <h3>Ajouter un protocole</h3>
-            <button class="ens-modal-close" id="rch-proto-modal-close" aria-label="Fermer">×</button>
-          </div>
-
-          <form id="rch-proto-form" class="ens-form">
-            <label>
-              <span>Nom du protocole</span>
-              <input id="rch-proto-name" type="text" required />
-            </label>
-
-            <div class="ens-form-actions">
-              <button type="button" class="btn" id="rch-proto-cancel">Annuler</button>
-              <button type="submit" class="btn primary">Enregistrer</button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-<!-- Modal édition protocoles -->
-<div class="ens-modal-backdrop hidden" id="rch-proto-edit-backdrop">
-  <div class="ens-modal" role="dialog" aria-modal="true">
-    <div class="ens-modal-head">
-      <h3>Éditer les protocoles</h3>
-      <button class="ens-modal-close" id="rch-proto-edit-close">×</button>
     </div>
 
-    <div id="rch-proto-edit-list" class="rch-proto-edit-list">
-  <!-- injecté en JS -->
-</div>
+    <!-- Sélection protocole -->
+    <div class="recherche-proto-bar">
+      <div class="recherche-proto-label">Sélection du protocole de recherche :</div>
 
-<div class="ens-form-actions">
-  <button class="btn" id="rch-proto-rename">Modifier</button>
-  <button class="btn danger" id="rch-proto-remove">Supprimer</button>
-</div>
+      <select id="rch-protocol-select">
+        <option value="">— Choisir un protocole —</option>
+      </select>
 
-  </div>
-</div>
+      <button class="btn" id="rch-add-protocol">Ajouter un protocole</button>
+      <button class="btn" id="rch-edit-protocols">Éditer les protocoles</button>
+    </div>
 
-      <!-- Modal document -->
-      <div class="ens-modal-backdrop hidden" id="rch-doc-modal-backdrop">
-        <div class="ens-modal" role="dialog" aria-modal="true">
-          <div class="ens-modal-head">
-            <h3 id="rch-doc-modal-title">Ajouter un fichier</h3>
-            <button class="ens-modal-close" id="rch-doc-modal-close" aria-label="Fermer">×</button>
+    <!-- Zone qui n'apparait qu'après sélection -->
+    <div id="rch-body" class="hidden">
+      <div class="enseignement-layout">
+        <div class="enseignement-left">
+          <div class="table-wrap">
+            <table class="enseignement-table">
+              <thead>
+                <tr>
+                  <th style="width:110px;">Fichier</th>
+                  <th>Titre</th>
+                  <th style="width:130px;">Date d’ajout</th>
+                  <th style="width:110px;">Ouvrir</th>
+                </tr>
+              </thead>
+              <tbody id="rch-tbody"></tbody>
+            </table>
           </div>
 
-          <form id="rch-doc-form" class="ens-form">
-            <input type="hidden" id="rch-doc-id" value="" />
+          <div class="enseignement-pagination" id="rch-pagination"></div>
 
-            <label>
-              <span>Titre</span>
-              <input id="rch-doc-title" type="text" required />
-            </label>
+          <div class="enseignement-actions">
+            <button class="btn" id="rch-add">Ajouter</button>
+            <button class="btn" id="rch-edit" disabled>Modifier</button>
+            <button class="btn danger" id="rch-delete" disabled>Supprimer</button>
+            <button class="btn" id="rch-download" disabled>Télécharger</button>
+          </div>
 
-            <div class="ens-dropzone" id="rch-dropzone">
-              <div class="ens-dropzone-text">
-                <strong>Fichier</strong>
-                <div class="muted">Glisser-déposer ici, ou <span class="ens-browse">parcourir</span></div>
-                <div class="ens-file-name" id="rch-file-name">Aucun fichier sélectionné</div>
-              </div>
-              <input id="rch-doc-file" type="file"
-                accept=".pdf,.ppt,.pptx,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation" />
-            </div>
+          <div class="muted" style="margin-top:8px; font-size:12px;">
+            Code requis pour Ajouter / Modifier / Supprimer : <strong>SARIC2026</strong>
+          </div>
+        </div>
 
-            <div class="ens-form-actions">
-              <button type="button" class="btn" id="rch-doc-cancel">Annuler</button>
-              <button type="submit" class="btn primary" id="rch-doc-save">Enregistrer</button>
-            </div>
-          </form>
+        <div class="enseignement-right">
+          <div class="enseignement-preview" id="rch-preview">
+            <div class="ens-preview-empty">Sélectionnez un fichier pour afficher un aperçu</div>
+          </div>
         </div>
       </div>
-    </section>
-  `;
+    </div>
+
+    <!-- Modal protocole (ajout) -->
+    <div class="ens-modal-backdrop hidden" id="rch-proto-modal-backdrop">
+      <div class="ens-modal" role="dialog" aria-modal="true">
+        <div class="ens-modal-head">
+          <h3>Ajouter un protocole</h3>
+          <button class="ens-modal-close" id="rch-proto-modal-close" aria-label="Fermer">×</button>
+        </div>
+
+        <form id="rch-proto-form" class="ens-form">
+          <label>
+            <span>Nom du protocole</span>
+            <input id="rch-proto-name" type="text" required />
+          </label>
+
+          <div class="ens-form-actions">
+            <button type="button" class="btn" id="rch-proto-cancel">Annuler</button>
+            <button type="submit" class="btn primary">Enregistrer</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal édition protocoles -->
+    <div class="ens-modal-backdrop hidden" id="rch-proto-edit-backdrop">
+      <div class="ens-modal" role="dialog" aria-modal="true">
+        <div class="ens-modal-head">
+          <h3>Éditer les protocoles</h3>
+          <button class="ens-modal-close" id="rch-proto-edit-close" aria-label="Fermer">×</button>
+        </div>
+
+        <div id="rch-proto-edit-list" class="ens-form" style="margin-top:12px;"></div>
+
+        <div class="ens-form-actions" style="justify-content:flex-end;">
+          <button class="btn" id="rch-proto-rename" type="button">Modifier</button>
+          <button class="btn danger" id="rch-proto-remove" type="button">Supprimer</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal document -->
+    <div class="ens-modal-backdrop hidden" id="rch-doc-modal-backdrop">
+      <div class="ens-modal" role="dialog" aria-modal="true">
+        <div class="ens-modal-head">
+          <h3 id="rch-doc-modal-title">Ajouter un fichier</h3>
+          <button class="ens-modal-close" id="rch-doc-modal-close" aria-label="Fermer">×</button>
+        </div>
+
+        <form id="rch-doc-form" class="ens-form">
+          <input type="hidden" id="rch-doc-id" value="" />
+
+          <label>
+            <span>Titre</span>
+            <input id="rch-doc-title" type="text" required />
+          </label>
+
+          <div class="ens-dropzone" id="rch-dropzone">
+            <div class="ens-dropzone-text">
+              <strong>Fichier</strong>
+              <div class="muted">Glisser-déposer ici, ou <span class="ens-browse">parcourir</span></div>
+              <div class="ens-file-name" id="rch-file-name">Aucun fichier sélectionné</div>
+            </div>
+            <input id="rch-doc-file" type="file"
+              accept=".pdf,.ppt,.pptx,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation" />
+          </div>
+
+          <div class="ens-form-actions">
+            <button type="button" class="btn" id="rch-doc-cancel">Annuler</button>
+            <button type="submit" class="btn primary" id="rch-doc-save">Enregistrer</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+`;
 
   // ==============================
   // DOM refs
