@@ -18258,7 +18258,7 @@ const norm = (s) => (s ?? "")
             <button class="btn" id="ens-download-all">Tout télécharger</button>
           </div>
           <div class="muted" style="margin-top:10px; font-size:12px; text-align:center;">
-  Code requis pour <strong>Ajouter / Modifier / Supprimer</strong> : Rapprochez vous d'Antoine Brizard 
+  Code requis pour <strong>Ajouter / Modifier / Supprimer</strong> : Contactez Antoine Brizard 
 </div>
         </div>
 
@@ -18930,7 +18930,7 @@ const hideEditProtocolsModal = () => {
             </div>
 
             <div class="muted" style="margin-top:8px; font-size:12px;">
-              Code requis pour Ajouter / Modifier / Supprimer : <strong>SARIC2026</strong>
+              Code requis pour Ajouter / Modifier / Supprimer : <strong>Contactez Antoine BRIZARD</strong>
             </div>
           </div>
 
