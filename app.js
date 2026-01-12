@@ -18863,6 +18863,82 @@ const showEditProtocolsModal = async () => {
     });
   });
 
+  // Attache (ou ré-attache) les actions sur les boutons du modal
+const bindProtoEditActions = () => {
+  const $protoRename = document.getElementById("rch-proto-rename");
+  const $protoRemove = document.getElementById("rch-proto-remove");
+
+  console.log("[Recherche] bind actions", { protoRename: !!$protoRename, protoRemove: !!$protoRemove });
+
+  if ($protoRename) {
+    $protoRename.onclick = async (e) => {
+      e.preventDefault();
+
+      if (!selectedProtoEditId) {
+        alert("Sélectionne un protocole à modifier.");
+        return;
+      }
+
+      const proto = protocols.find(p => p.id === selectedProtoEditId);
+      const newName = prompt("Nouveau nom du protocole :", proto?.name || "");
+      if (!newName) return;
+
+      try {
+        await protoCol().doc(selectedProtoEditId).update({ name: newName.trim() });
+        await loadProtocols();
+        await showEditProtocolsModal(); // refresh liste modale
+      } catch (err) {
+        console.error(err);
+        alert("Erreur : modification impossible.");
+      }
+    };
+  }
+
+  if ($protoRemove) {
+    $protoRemove.onclick = async (e) => {
+      e.preventDefault();
+
+      if (!selectedProtoEditId) {
+        alert("Sélectionne un protocole à supprimer.");
+        return;
+      }
+
+      if (!confirm("Supprimer définitivement ce protocole ?")) return;
+
+      try {
+        // Supprime docs + fichiers
+        const snap = await docsCol().where("protocolId", "==", selectedProtoEditId).get();
+        for (const d of snap.docs) {
+          const data = d.data() || {};
+          await deleteFromStorage(data.storagePath);
+          await d.ref.delete();
+        }
+
+        await protoCol().doc(selectedProtoEditId).delete();
+
+        // reset si supprimé = protocole courant
+        if (currentProtocolId === selectedProtoEditId) {
+          currentProtocolId = "";
+          currentProtocolName = "";
+          $select.value = "";
+          $body.classList.add("hidden");
+          renderPreview(null);
+        }
+
+        await loadProtocols();
+        hideEditProtocolsModal();
+        alert("Protocole supprimé.");
+      } catch (err) {
+        console.error(err);
+        alert("Erreur : suppression impossible.");
+      }
+    };
+  }
+};
+
+bindProtoEditActions();
+
+  
   $protoEditBackdrop.classList.remove("hidden");
 };
 
@@ -19051,8 +19127,8 @@ const hideEditProtocolsModal = () => {
     </div>
 
     <div class="enseignement-actions" style="justify-content:flex-end; margin-top:12px;">
-      <button class="btn" id="rch-proto-rename">Modifier</button>
-      <button class="btn danger" id="rch-proto-remove">Supprimer</button>
+      <button class="btn" id="rch-proto-rename" type="button">Modifier</button>
+<button class="btn danger" id="rch-proto-remove" type="button">Supprimer</button>
     </div>
   </div>
 </div>
