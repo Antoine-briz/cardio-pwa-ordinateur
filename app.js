@@ -19082,10 +19082,10 @@ const hideEditProtocolsModal = () => {
             <button class="btn" id="rch-download" disabled>Télécharger</button>
           </div>
 
-          <div class="muted" style="margin-top:8px; font-size:12px;">
+          <div class="muted" style="margin-top:8px; font-size:18px;">
             Code requis pour Ajouter / Modifier / Supprimer : <strong>Contactez Antoine BRIZARD</strong>
           </div>
-          <div class="muted" style="margin-top:8px; font-size:12px;">
+          <div class="muted" style="margin-top:8px; font-size:18px;">
             Vos documents ne doivent pas comporter de données sensibles ou d'informations patients.
           </div>
         </div>
