@@ -18799,8 +18799,6 @@ function renderBibliographie() {
 
           <!-- ✅ Tableau Revues médicales -->
 <div class="biblio-box">
-  <div class="biblio-box-title">Revues médicales</div>
-
   <div class="biblio-table-wrap">
     <table class="biblio-table">
       <thead>
@@ -18980,7 +18978,7 @@ function renderBibliographie() {
     </table>
   </div>
 </div>
-
+</div> 
 
         <div class="biblio-right" aria-hidden="true">
           <img src="img/bibliographie2.png" alt="Bibliographie">
