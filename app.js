@@ -18045,6 +18045,95 @@ async function ensureEnsAdminCodeOnce() {
 }
 
 
+// ===== PDF.js preview helpers (multipage scroll) =====
+let currentPdfRenderToken = 0;
+
+function isMobilePreview() {
+  return window.matchMedia && window.matchMedia("(max-width: 980px)").matches;
+}
+
+async function renderPdfWithPdfjs(container, pdfUrl) {
+  const pdfjs = window.pdfjsLib || globalThis.pdfjsLib;
+
+  if (!pdfjs) {
+    container.innerHTML = `
+      <div class="ens-preview-loading">
+        Aperçu PDF indisponible (PDF.js non chargé).<br/>
+        <a href="${pdfUrl}" target="_blank" rel="noopener">Ouvrir le PDF</a>
+      </div>
+    `;
+    return;
+  }
+
+  // worker
+  if (!pdfjs.GlobalWorkerOptions.workerSrc) {
+    pdfjs.GlobalWorkerOptions.workerSrc =
+      "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.worker.min.js";
+  }
+
+  const myToken = ++currentPdfRenderToken;
+
+  container.innerHTML = `
+    <div class="ens-preview-pdf">
+      <div class="ens-preview-loading">Chargement du PDF…</div>
+      <div class="ens-preview-pages"></div>
+    </div>
+  `;
+
+  const pagesWrap = container.querySelector(".ens-preview-pages");
+  const loadingEl = container.querySelector(".ens-preview-loading");
+
+  try {
+    const loadingTask = pdfjs.getDocument({ url: pdfUrl, withCredentials: false });
+    const pdf = await loadingTask.promise;
+
+    if (myToken !== currentPdfRenderToken) return;
+
+    const availableWidth = Math.max(280, container.clientWidth - 2);
+    loadingEl.textContent = `Rendu des pages (0 / ${pdf.numPages})…`;
+
+    const dpr = window.devicePixelRatio || 1;
+
+    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+      if (myToken !== currentPdfRenderToken) return;
+
+      const page = await pdf.getPage(pageNum);
+      const viewport1 = page.getViewport({ scale: 1 });
+
+      const cssScale = availableWidth / viewport1.width;
+      const viewport = page.getViewport({ scale: cssScale * dpr });
+
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d", { alpha: false });
+
+      canvas.width = Math.floor(viewport.width);
+      canvas.height = Math.floor(viewport.height);
+
+      // taille CSS (pour que ça rentre pile dans le panneau)
+      canvas.style.width = Math.floor(viewport.width / dpr) + "px";
+      canvas.style.height = Math.floor(viewport.height / dpr) + "px";
+      canvas.style.display = "block";
+      canvas.style.margin = "0 auto 12px auto";
+
+      pagesWrap.appendChild(canvas);
+
+      await page.render({ canvasContext: ctx, viewport }).promise;
+      loadingEl.textContent = `Rendu des pages (${pageNum} / ${pdf.numPages})…`;
+    }
+
+    loadingEl.remove();
+  } catch (err) {
+    console.error("PDF.js render error:", err);
+    container.innerHTML = `
+      <div class="ens-preview-loading">
+        Impossible d’afficher l’aperçu PDF.<br/>
+        <a href="${pdfUrl}" target="_blank" rel="noopener">Ouvrir le PDF</a>
+      </div>
+    `;
+  }
+}
+
+
 /* =========================
    PAGE ENSEIGNEMENT
 ========================= */
@@ -18407,35 +18496,34 @@ const norm = (s) => (s ?? "")
     });
   };
 
-const renderPreview = (doc) => {
+const renderPreview = async (doc) => {
   if (!doc) {
-    $preview.innerHTML = `
-      <div class="ens-preview-empty">
-        Sélectionnez un fichier pour afficher un aperçu
-      </div>
-    `;
+    $preview.innerHTML = `<div class="ens-preview-empty">Sélectionnez un fichier pour afficher un aperçu</div>`;
     return;
   }
 
+  const url = resolveFileUrl(doc.fileUrl);
   const kind = fileKind(doc.fileName || doc.title || "");
 
-  // ===== PDF : aperçu plein cadre =====
   if (kind === "pdf") {
     $preview.innerHTML = `
-      <iframe
-        class="ens-preview-frame"
-        src="${resolveFileUrl(doc.fileUrl)}"
-        title="Aperçu PDF">
-      </iframe>
+      <div class="ens-preview-head">
+        <div class="ens-preview-title">${esc(doc.title || "")}</div>
+      </div>
+      <div class="ens-preview-body"></div>
     `;
+    const body = $preview.querySelector(".ens-preview-body");
+    await renderPdfWithPdfjs(body, url);
     return;
   }
 
-  // ===== PPT / PPTX : pas d’aperçu intégré =====
   $preview.innerHTML = `
-    <div class="ens-preview-empty">
-      Aperçu non disponible pour PowerPoint.<br>
-      Utilisez la colonne <strong>Ouvrir</strong> du tableau.
+    <div class="ens-preview-head">
+      <div class="ens-preview-title">${esc(doc.title || "")}</div>
+    </div>
+    <div class="muted" style="margin-top:10px;">
+      Aperçu intégré non disponible pour PowerPoint.
+      <br/>Clique pour <a href="${url}" target="_blank" rel="noopener">ouvrir le fichier</a>.
     </div>
   `;
 };
@@ -19381,37 +19469,39 @@ function renderTeachingClonePage(cfg) {
     });
   };
 
-  const renderPreview = (doc) => {
-    if (!doc) {
-      $preview.innerHTML = `
-        <div class="ens-preview-empty">
-          Sélectionnez un fichier pour afficher un aperçu
-        </div>
-      `;
-      return;
-    }
+const renderPreview = async (doc) => {
+  if (!doc) {
+    $preview.innerHTML = `<div class="ens-preview-empty">Sélectionnez un fichier pour afficher un aperçu</div>`;
+    return;
+  }
 
-    const kind = fileKind(doc.fileName || doc.title || "");
+  const url = resolveFileUrl(doc.fileUrl);
+  const kind = fileKind(doc.fileName || doc.title || "");
 
-    if (kind === "pdf") {
-      $preview.innerHTML = `
-        <iframe
-          class="ens-preview-frame"
-          src="${resolveFileUrl(doc.fileUrl)}"
-          title="Aperçu PDF">
-        </iframe>
-      `;
-      return;
-    }
-
+  if (kind === "pdf") {
     $preview.innerHTML = `
-      <div class="ens-preview-empty">
-        Aperçu non disponible pour PowerPoint.<br>
-        Utilisez la colonne <strong>Ouvrir</strong> du tableau.
+      <div class="ens-preview-head">
+        <div class="ens-preview-title">${esc(doc.title || "")}</div>
       </div>
+      <div class="ens-preview-body"></div>
     `;
-  };
+    const body = $preview.querySelector(".ens-preview-body");
+    await renderPdfWithPdfjs(body, url);
+    return;
+  }
 
+  $preview.innerHTML = `
+    <div class="ens-preview-head">
+      <div class="ens-preview-title">${esc(doc.title || "")}</div>
+    </div>
+    <div class="muted" style="margin-top:10px;">
+      Aperçu intégré non disponible pour PowerPoint.
+      <br/>Clique pour <a href="${url}" target="_blank" rel="noopener">ouvrir le fichier</a>.
+    </div>
+  `;
+};
+
+  
   const renderTable = () => {
     applyFilters();
 
@@ -20321,42 +20411,42 @@ $protoEditList.addEventListener("click", async (e) => {
   // ==============================
   // Rendering
   // ==============================
-  const renderPreview = (doc) => {
-    if (!doc) {
-      $preview.innerHTML = `<div class="ens-preview-empty">Sélectionnez un fichier pour afficher un aperçu</div>`;
-      return;
-    }
 
-    const url = resolveFileUrl(doc.fileUrl);
-    const kind = fileKind(doc.fileName || doc.title || "");
+  const renderPreview = async (doc) => {
+  if (!doc) {
+    $preview.innerHTML = `<div class="ens-preview-empty">Sélectionnez un fichier pour afficher un aperçu</div>`;
+    return;
+  }
 
-    if (kind === "pdf") {
-      // ✅ Aperçu PDF = iframe (comme ton autre appli), fiable mobile
-      $preview.innerHTML = `
-        <div class="ens-preview-head">
-          <div class="ens-preview-title">${esc(doc.title || "")}</div>
-        </div>
-        <div class="ens-preview-iframe-wrap">
-          <iframe class="ens-preview-frame" src="${url}#view=FitH&toolbar=0&navpanes=0" loading="lazy"></iframe>
-        </div>
-        <div class="ens-preview-fallback muted" style="margin-top:10px;font-size:12px;">
-          Si l’aperçu ne s’affiche pas, <a href="${url}" target="_blank" rel="noopener">ouvrir le PDF</a>.
-        </div>
-      `;
-      return;
-    }
+  const url = resolveFileUrl(doc.fileUrl);
+  const kind = fileKind(doc.fileName || doc.title || "");
 
-    // PPT/PPTX : pas d'aperçu intégré fiable → on invite à ouvrir
+  if (kind === "pdf") {
+    // ✅ Affichage initial : multipage PDF.js (scroll dans le panneau)
     $preview.innerHTML = `
       <div class="ens-preview-head">
         <div class="ens-preview-title">${esc(doc.title || "")}</div>
       </div>
-      <div class="muted" style="margin-top:10px;">
-        Aperçu intégré non disponible pour PowerPoint.
-        <br/>Clique pour <a href="${url}" target="_blank" rel="noopener">ouvrir le fichier</a>.
-      </div>
+      <div class="ens-preview-body"></div>
     `;
-  };
+    const body = $preview.querySelector(".ens-preview-body");
+    // (Tu peux garder la logique "mobile only" si tu veux, mais là on remet le rendu multipage)
+    await renderPdfWithPdfjs(body, url);
+    return;
+  }
+
+  // PPT/PPTX : pas d'aperçu intégré fiable → on invite à ouvrir
+  $preview.innerHTML = `
+    <div class="ens-preview-head">
+      <div class="ens-preview-title">${esc(doc.title || "")}</div>
+    </div>
+    <div class="muted" style="margin-top:10px;">
+      Aperçu intégré non disponible pour PowerPoint.
+      <br/>Clique pour <a href="${url}" target="_blank" rel="noopener">ouvrir le fichier</a>.
+    </div>
+  `;
+};
+
 
   const updateButtons = () => {
     $btnEdit.disabled = selectedIds.size !== 1;
