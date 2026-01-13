@@ -18773,15 +18773,783 @@ async function ensureEnsAdminCodeOnce() {
   load();
 }
 
+/* =========================================================
+   BIBLIOGRAPHIE
+   - Menu + 2 pages type "Enseignement"
+========================================================= */
 
 function renderBibliographie() {
   $app.innerHTML = `
-    <section class="page">
-      <h2>Bibliographie</h2>
-      <p>Références, articles, recommandations et lectures utiles.</p>
+    <section class="container">
+      <div class="biblio-split">
+        <!-- Colonne gauche -->
+        <div class="biblio-left">
+          <h2 class="page-title">Bibliographie</h2>
+
+          <div class="biblio-actions">
+            <button class="btn btn-darkblue" id="btnBiblioJuniors">
+              Biblio et staff juniors
+            </button>
+
+            <button class="btn btn-darkblue" id="btnBiblioHebdo">
+              Biblio. hebdomadaire : BiBL 4
+            </button>
+          </div>
+
+          <!-- Encadré toujours ouvert -->
+          <div class="biblio-box">
+            <div class="biblio-box-title">Revues médicales</div>
+            <div class="biblio-box-content">
+              <!-- Vide pour le moment : on remplira après -->
+              <p class="muted">Contenu à venir…</p>
+
+              <!-- (Structure prête pour images/liens internes)
+              <div class="biblio-links">
+                <a class="biblio-link" href="#/xxx">
+                  <img src="img/xxx.png" alt="">
+                  <span>Nom</span>
+                </a>
+              </div>
+              -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Colonne droite -->
+        <div class="biblio-right" aria-hidden="true">
+          <img src="img/bibliographie2.png" alt="Bibliographie">
+        </div>
+      </div>
     </section>
   `;
+
+  document.getElementById("btnBiblioJuniors")?.addEventListener("click", () => {
+    location.hash = "#/biblio-juniors";
+  });
+
+  document.getElementById("btnBiblioHebdo")?.addEventListener("click", () => {
+    location.hash = "#/biblio-hebdo";
+  });
 }
+
+/* =========================================================
+   Page 1 : Biblio et staff juniors (type Enseignement)
+========================================================= */
+function renderBiblioJuniors() {
+  return renderBiblioDocManagerPage({
+    pageTitle: "Biblio et staff juniors",
+    pageSubtitle: "Documents partagés (PDF / PPT) — ajout/édition/suppression avec code SARIC2026",
+    collectionName: "biblioJuniors",
+    storagePrefix: "biblioJuniors",
+    backHash: "#/bibliographie",
+    // optionnel si tu utilises un serveur pour servir /files/...
+    apiBase: (window.BIBLIO_API_BASE || window.ENSEIGNEMENT_API_BASE || "").replace(/\/$/, ""),
+  });
+}
+
+/* =========================================================
+   Page 2 : Biblio hebdomadaire : BiBL 4 (type Enseignement)
+========================================================= */
+function renderBiblioHebdo() {
+  return renderBiblioDocManagerPage({
+    pageTitle: "Biblio. hebdomadaire : BiBL 4",
+    pageSubtitle: "Ajout manuel des fichiers + tableau + filtres + recherche + aperçu (code SARIC2026)",
+    collectionName: "biblioHebdo",
+    storagePrefix: "biblioHebdo",
+    backHash: "#/bibliographie",
+    apiBase: (window.BIBLIO_API_BASE || window.ENSEIGNEMENT_API_BASE || "").replace(/\/$/, ""),
+  });
+}
+
+/* =========================================================
+   Helper : page de gestion de documents (copie+++ Enseignement)
+   - Firestore collection : cfg.collectionName
+   - Storage folder : cfg.storagePrefix/
+========================================================= */
+function renderBiblioDocManagerPage(cfg) {
+  const DOMAINS = [
+    "Réanimation",
+    "Anesthésie",
+    "ETO",
+    "CEC",
+    "Infectiologie",
+    "Cardiologie",
+    "Autre",
+  ];
+
+  const API_BASE = cfg.apiBase || "";
+
+  // ==============================
+  // Firebase helpers (Firestore + Storage)
+  // ==============================
+  const col = () => window.db.collection(cfg.collectionName);
+
+  const MAX_PDF = 30 * 1024 * 1024; // 30 Mo
+  const MAX_PPT = 80 * 1024 * 1024; // 80 Mo
+
+  const isPdf = (name) => (name || "").toLowerCase().endsWith(".pdf");
+  const isPpt = (name) => {
+    const n = (name || "").toLowerCase();
+    return n.endsWith(".ppt") || n.endsWith(".pptx");
+  };
+
+  const resolveFileUrl = (u) => {
+    if (!u) return "";
+    if (/^https?:\/\//i.test(u)) return u;
+    return `${API_BASE}${u.startsWith("/") ? "" : "/"}${u}`;
+  };
+
+  const norm = (s) =>
+    (s ?? "")
+      .toString()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .trim();
+
+  const openInNewTab = (url) => {
+    if (!url) return;
+    window.open(resolveFileUrl(url), "_blank", "noopener,noreferrer");
+  };
+
+  const uploadToStorage = async (file, name) => {
+    if (!file) throw new Error("Fichier manquant");
+    if (!name) throw new Error("Nom manquant");
+
+    if (isPdf(name) && file.size > MAX_PDF) {
+      throw new Error("PDF trop volumineux (limite 30 Mo).");
+    }
+    if (isPpt(name) && file.size > MAX_PPT) {
+      throw new Error("PPT/PPTX trop volumineux (limite 80 Mo).");
+    }
+
+    const safeName = name.replace(/[^\w.\-]+/g, "_");
+    const path = `${cfg.storagePrefix}/${Date.now()}__${safeName}`;
+    const ref = window.storage.ref().child(path);
+
+    try {
+      const ext = (file.name || "").toLowerCase().split(".").pop();
+      let contentType = file.type;
+
+      if (!contentType) {
+        if (ext === "pdf") contentType = "application/pdf";
+        else if (ext === "ppt") contentType = "application/vnd.ms-powerpoint";
+        else if (ext === "pptx")
+          contentType =
+            "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+      }
+
+      await ref.put(file, { contentType });
+      const fileUrl = await ref.getDownloadURL();
+
+      return { fileUrl, storagePath: path, fileName: safeName };
+    } catch (err) {
+      console.error("Storage upload error:", err);
+      throw new Error("Erreur upload fichier.");
+    }
+  };
+
+  const deleteFromStorage = async (storagePath) => {
+    if (!storagePath) return;
+    try {
+      await window.storage.ref().child(storagePath).delete();
+    } catch (e) {
+      console.warn("Storage delete warning:", e?.message || e);
+    }
+  };
+
+  const fmtDate = (iso) => {
+    try {
+      const d = new Date(iso);
+      if (Number.isNaN(d.getTime())) return "";
+      return d.toLocaleDateString("fr-FR");
+    } catch {
+      return "";
+    }
+  };
+
+  const fileKind = (doc) => {
+    const n = (doc?.fileName || "").toLowerCase();
+    if (n.endsWith(".pdf")) return "PDF";
+    if (n.endsWith(".ppt") || n.endsWith(".pptx")) return "PPT";
+    return "DOC";
+  };
+
+  // ==============================
+  // UI
+  // ==============================
+  $app.innerHTML = `
+    <section class="page enseignement-page">
+      <div class="enseignement-head">
+        <div>
+          <h2>${cfg.pageTitle}</h2>
+          <p class="muted">${cfg.pageSubtitle || ""}</p>
+        </div>
+        <div class="enseignement-head-actions">
+          <button class="btn btn-outline" id="biblio-back">← Retour</button>
+          <button class="btn btn-primary" id="ens-add-btn">+ Ajouter</button>
+        </div>
+      </div>
+
+      <div class="enseignement-toolbar">
+        <input id="ens-search" type="search" placeholder="Rechercher dans les titres…" autocomplete="off" />
+        <select id="ens-filter-domain">
+          <option value="">Tous les domaines</option>
+        </select>
+        <select id="ens-filter-author">
+          <option value="">Tous les auteurs</option>
+        </select>
+        <button class="btn btn-ghost" id="ens-reset">Réinitialiser</button>
+      </div>
+
+      <div class="enseignement-layout">
+        <div class="enseignement-left">
+          <div class="table-wrap">
+            <table class="enseignement-table">
+              <thead>
+                <tr>
+                  <th style="width:110px;">Fichier</th>
+                  <th>Titre</th>
+                  <th style="width:130px;">Date d’ajout</th>
+                  <th style="width:180px;">Auteur</th>
+                  <th style="width:160px;">Domaine</th>
+                  <th style="width:110px;">Ouvrir</th>
+                  <th style="width:130px;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="ens-tbody"></tbody>
+            </table>
+          </div>
+          <div class="ens-pagination" id="ens-pagination"></div>
+        </div>
+
+        <div class="enseignement-right">
+          <div class="ens-preview-card">
+            <div class="ens-preview-head">
+              <div>
+                <div class="ens-preview-title" id="ens-preview-title">Aperçu</div>
+                <div class="ens-preview-sub muted" id="ens-preview-sub">Sélectionne un document.</div>
+              </div>
+              <div class="ens-preview-actions">
+                <button class="btn btn-ghost" id="ens-open-selected" disabled>Ouvrir</button>
+              </div>
+            </div>
+            <div class="ens-preview-body" id="ens-preview-body">
+              <div class="muted">Aucun document sélectionné.</div>
+            </div>
+          </div>
+
+          <div class="ens-hint muted">
+            Modifications (ajout/édition/suppression) protégées par code <b>SARIC2026</b>.
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Ajouter/Éditer -->
+      <div class="modal" id="ens-modal" style="display:none;">
+        <div class="modal-backdrop" data-close="1"></div>
+        <div class="modal-content">
+          <div class="modal-head">
+            <h3 id="ens-modal-title">Ajouter un document</h3>
+            <button class="modal-x" data-close="1">✕</button>
+          </div>
+
+          <div class="modal-body">
+            <div class="form-grid">
+              <label>
+                <span>Titre</span>
+                <input id="ens-form-title" type="text" placeholder="Titre du document" />
+              </label>
+
+              <label>
+                <span>Auteur</span>
+                <input id="ens-form-author" type="text" placeholder="Nom / Prénom" />
+              </label>
+
+              <label>
+                <span>Domaine</span>
+                <select id="ens-form-domain"></select>
+              </label>
+
+              <label>
+                <span>Fichier (PDF / PPT)</span>
+                <input id="ens-form-file" type="file" accept=".pdf,.ppt,.pptx,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation" />
+              </label>
+            </div>
+
+            <div class="muted" id="ens-form-file-hint" style="margin-top:8px;">
+              Limites : PDF 30 Mo • PPT/PPTX 80 Mo.
+            </div>
+          </div>
+
+          <div class="modal-foot">
+            <button class="btn btn-ghost" data-close="1">Annuler</button>
+            <button class="btn btn-primary" id="ens-save-btn">Enregistrer</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal confirmation suppression -->
+      <div class="modal" id="ens-del-modal" style="display:none;">
+        <div class="modal-backdrop" data-close="1"></div>
+        <div class="modal-content">
+          <div class="modal-head">
+            <h3>Supprimer ce document ?</h3>
+            <button class="modal-x" data-close="1">✕</button>
+          </div>
+          <div class="modal-body">
+            <p>Cette action est définitive.</p>
+          </div>
+          <div class="modal-foot">
+            <button class="btn btn-ghost" data-close="1">Annuler</button>
+            <button class="btn btn-danger" id="ens-confirm-del">Supprimer</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  `;
+
+  // Back
+  document.getElementById("biblio-back")?.addEventListener("click", () => {
+    location.hash = cfg.backHash || "#/bibliographie";
+  });
+
+  // Fill selects
+  const $domainFilter = document.getElementById("ens-filter-domain");
+  const $authorFilter = document.getElementById("ens-filter-author");
+  const $formDomain = document.getElementById("ens-form-domain");
+
+  DOMAINS.forEach((d) => {
+    const opt1 = document.createElement("option");
+    opt1.value = d;
+    opt1.textContent = d;
+    $domainFilter.appendChild(opt1);
+
+    const opt2 = document.createElement("option");
+    opt2.value = d;
+    opt2.textContent = d;
+    $formDomain.appendChild(opt2);
+  });
+
+  // State
+  let docs = [];
+  let filteredDocs = [];
+  let selectedId = null;
+
+  let modalMode = "add"; // add | edit
+  let activeDocId = null;
+
+  const PAGE_SIZE = 12;
+  let currentPage = 1;
+
+  // DOM refs
+  const $tbody = document.getElementById("ens-tbody");
+  const $search = document.getElementById("ens-search");
+  const $reset = document.getElementById("ens-reset");
+  const $pagination = document.getElementById("ens-pagination");
+
+  const $previewTitle = document.getElementById("ens-preview-title");
+  const $previewSub = document.getElementById("ens-preview-sub");
+  const $previewBody = document.getElementById("ens-preview-body");
+  const $openSelected = document.getElementById("ens-open-selected");
+
+  const $modal = document.getElementById("ens-modal");
+  const $modalTitle = document.getElementById("ens-modal-title");
+  const $saveBtn = document.getElementById("ens-save-btn");
+  const $addBtn = document.getElementById("ens-add-btn");
+
+  const $formTitle = document.getElementById("ens-form-title");
+  const $formAuthor = document.getElementById("ens-form-author");
+  const $formFile = document.getElementById("ens-form-file");
+
+  const $delModal = document.getElementById("ens-del-modal");
+  const $confirmDel = document.getElementById("ens-confirm-del");
+
+  // Modal close handlers
+  const bindModalClose = (modalEl) => {
+    modalEl.querySelectorAll("[data-close='1']").forEach((el) => {
+      el.addEventListener("click", () => hideModal(modalEl));
+    });
+  };
+  const showModal = (modalEl) => (modalEl.style.display = "block");
+  const hideModal = (modalEl) => (modalEl.style.display = "none");
+
+  bindModalClose($modal);
+  bindModalClose($delModal);
+
+  // Load docs
+  const loadDocs = async () => {
+    const snap = await col().orderBy("createdAt", "desc").get();
+    docs = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    rebuildAuthorFilter();
+    applyFilters();
+    renderTable();
+    renderPreview();
+  };
+
+  const rebuildAuthorFilter = () => {
+    const authors = Array.from(
+      new Set(docs.map((d) => (d.author || "").trim()).filter(Boolean))
+    ).sort((a, b) => a.localeCompare(b, "fr"));
+
+    // Reset options except first
+    $authorFilter.innerHTML = `<option value="">Tous les auteurs</option>`;
+    authors.forEach((a) => {
+      const o = document.createElement("option");
+      o.value = a;
+      o.textContent = a;
+      $authorFilter.appendChild(o);
+    });
+  };
+
+  const applyFilters = () => {
+    const q = norm($search.value);
+    const dom = $domainFilter.value || "";
+    const auth = $authorFilter.value || "";
+
+    filteredDocs = docs.filter((d) => {
+      if (dom && (d.domain || "") !== dom) return false;
+      if (auth && (d.author || "") !== auth) return false;
+      if (!q) return true;
+
+      const hay = norm(
+        `${d.title || ""} ${d.author || ""} ${d.domain || ""} ${d.fileName || ""}`
+      );
+      return hay.includes(q);
+    });
+
+    const totalPages = Math.max(1, Math.ceil(filteredDocs.length / PAGE_SIZE));
+    if (currentPage > totalPages) currentPage = totalPages;
+    if (currentPage < 1) currentPage = 1;
+  };
+
+  const renderPagination = () => {
+    const totalPages = Math.max(1, Math.ceil(filteredDocs.length / PAGE_SIZE));
+    if (totalPages <= 1) {
+      $pagination.innerHTML = "";
+      return;
+    }
+    let html = `<div class="ens-pages">`;
+    for (let p = 1; p <= totalPages; p++) {
+      html += `
+        <button class="ens-page ${p === currentPage ? "active" : ""}" data-page="${p}">
+          ${p}
+        </button>`;
+    }
+    html += `</div>`;
+    $pagination.innerHTML = html;
+
+    $pagination.querySelectorAll("[data-page]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        currentPage = Number(btn.getAttribute("data-page")) || 1;
+        renderTable();
+      });
+    });
+  };
+
+  const renderTable = () => {
+    applyFilters();
+    renderPagination();
+
+    const start = (currentPage - 1) * PAGE_SIZE;
+    const pageDocs = filteredDocs.slice(start, start + PAGE_SIZE);
+
+    if (!pageDocs.length) {
+      $tbody.innerHTML = `
+        <tr>
+          <td colspan="7" class="muted" style="padding:16px;">Aucun document.</td>
+        </tr>`;
+      return;
+    }
+
+    $tbody.innerHTML = pageDocs
+      .map((d) => {
+        const isSelected = d.id === selectedId;
+        return `
+          <tr class="${isSelected ? "selected" : ""}" data-id="${d.id}">
+            <td><span class="ens-badge">${fileKind(d)}</span></td>
+            <td class="ens-title-cell">${escapeHtml(d.title || "")}</td>
+            <td>${fmtDate(d.createdAt)}</td>
+            <td>${escapeHtml(d.author || "")}</td>
+            <td>${escapeHtml(d.domain || "")}</td>
+            <td>
+              <button class="btn btn-ghost btn-sm" data-open="${d.id}">Ouvrir</button>
+            </td>
+            <td>
+              <button class="btn btn-ghost btn-sm" data-edit="${d.id}">Éditer</button>
+              <button class="btn btn-ghost btn-sm" data-del="${d.id}">Suppr.</button>
+            </td>
+          </tr>`;
+      })
+      .join("");
+
+    // row select
+    $tbody.querySelectorAll("tr[data-id]").forEach((tr) => {
+      tr.addEventListener("click", (e) => {
+        // avoid selecting when clicking action buttons (but ok if it selects)
+        selectedId = tr.getAttribute("data-id");
+        renderTable();
+        renderPreview();
+      });
+    });
+
+    // open
+    $tbody.querySelectorAll("[data-open]").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const id = btn.getAttribute("data-open");
+        const d = docs.find((x) => x.id === id);
+        openInNewTab(d?.fileUrl || "");
+      });
+    });
+
+    // edit
+    $tbody.querySelectorAll("[data-edit]").forEach((btn) => {
+      btn.addEventListener("click", async (e) => {
+        e.stopPropagation();
+        const ok = await ensureEnsAdminCodeOnce(); // code SARIC2026 (même logique qu’Enseignement)
+        if (!ok) return;
+        const id = btn.getAttribute("data-edit");
+        const d = docs.find((x) => x.id === id);
+        if (!d) return;
+        openEditModal(d);
+      });
+    });
+
+    // delete
+    $tbody.querySelectorAll("[data-del]").forEach((btn) => {
+      btn.addEventListener("click", async (e) => {
+        e.stopPropagation();
+        const ok = await ensureEnsAdminCodeOnce();
+        if (!ok) return;
+        activeDocId = btn.getAttribute("data-del");
+        showModal($delModal);
+      });
+    });
+  };
+
+  const renderPreview = () => {
+    const d = docs.find((x) => x.id === selectedId);
+    if (!d) {
+      $previewTitle.textContent = "Aperçu";
+      $previewSub.textContent = "Sélectionne un document.";
+      $previewBody.innerHTML = `<div class="muted">Aucun document sélectionné.</div>`;
+      $openSelected.disabled = true;
+      $openSelected.onclick = null;
+      return;
+    }
+
+    $previewTitle.textContent = d.title || "Sans titre";
+    $previewSub.textContent = `${d.author || "—"} • ${d.domain || "—"} • ${fmtDate(d.createdAt) || ""}`;
+
+    const url = resolveFileUrl(d.fileUrl || "");
+    const kind = fileKind(d);
+
+    if (kind === "PDF") {
+      $previewBody.innerHTML = `
+        <div class="ens-preview-frame">
+          <iframe src="${escapeAttr(url)}" title="Aperçu PDF"></iframe>
+        </div>
+      `;
+    } else {
+      $previewBody.innerHTML = `
+        <div class="muted" style="padding:12px;">
+          Aperçu direct non disponible pour ce type de fichier (${escapeHtml(kind)}).
+        </div>
+      `;
+    }
+
+    $openSelected.disabled = false;
+    $openSelected.onclick = () => openInNewTab(d.fileUrl || "");
+  };
+
+  // Add button
+  $addBtn.addEventListener("click", async () => {
+    const ok = await ensureEnsAdminCodeOnce();
+    if (!ok) return;
+    openAddModal();
+  });
+
+  // Save
+  $saveBtn.addEventListener("click", async () => {
+    const ok = await ensureEnsAdminCodeOnce();
+    if (!ok) return;
+
+    const title = ($formTitle.value || "").trim();
+    const author = ($formAuthor.value || "").trim();
+    const domain = ($formDomain.value || "").trim();
+    const file = $formFile.files?.[0] || null;
+
+    if (!title) return alert("Titre requis.");
+    if (!author) return alert("Auteur requis.");
+    if (!domain) return alert("Domaine requis.");
+
+    try {
+      $saveBtn.disabled = true;
+      $saveBtn.textContent = "Enregistrement…";
+
+      if (modalMode === "add") {
+        if (!file) return alert("Fichier requis.");
+        const up = await uploadToStorage(file, file.name);
+
+        await col().add({
+          title,
+          author,
+          domain,
+          fileUrl: up.fileUrl,
+          storagePath: up.storagePath,
+          fileName: up.fileName,
+          createdAt: new Date().toISOString(),
+        });
+
+        hideModal($modal);
+        await loadDocs();
+        alert("Document ajouté.");
+        return;
+      }
+
+      // edit
+      if (!activeDocId) return;
+
+      const current = docs.find((x) => x.id === activeDocId);
+      if (!current) return;
+
+      let next = {
+        title,
+        author,
+        domain,
+      };
+
+      // if file replaced
+      if (file) {
+        // delete old storage
+        await deleteFromStorage(current.storagePath);
+        const up = await uploadToStorage(file, file.name);
+        next.fileUrl = up.fileUrl;
+        next.storagePath = up.storagePath;
+        next.fileName = up.fileName;
+      }
+
+      await col().doc(activeDocId).update(next);
+      hideModal($modal);
+      await loadDocs();
+      alert("Document modifié.");
+    } catch (err) {
+      console.error(err);
+      alert(err?.message || "Erreur.");
+    } finally {
+      $saveBtn.disabled = false;
+      $saveBtn.textContent = "Enregistrer";
+    }
+  });
+
+  // Confirm delete
+  $confirmDel.addEventListener("click", async () => {
+    const ok = await ensureEnsAdminCodeOnce();
+    if (!ok) return;
+
+    if (!activeDocId) return;
+    const d = docs.find((x) => x.id === activeDocId);
+    if (!d) return;
+
+    try {
+      $confirmDel.disabled = true;
+      $confirmDel.textContent = "Suppression…";
+
+      await col().doc(activeDocId).delete();
+      await deleteFromStorage(d.storagePath);
+
+      if (selectedId === activeDocId) selectedId = null;
+      activeDocId = null;
+
+      hideModal($delModal);
+      await loadDocs();
+      alert("Document supprimé.");
+    } catch (err) {
+      console.error(err);
+      alert(err?.message || "Erreur suppression.");
+    } finally {
+      $confirmDel.disabled = false;
+      $confirmDel.textContent = "Supprimer";
+    }
+  });
+
+  // Filters
+  $search.addEventListener("input", () => {
+    currentPage = 1;
+    renderTable();
+    renderPreview();
+  });
+
+  $domainFilter.addEventListener("change", () => {
+    currentPage = 1;
+    renderTable();
+    renderPreview();
+  });
+
+  $authorFilter.addEventListener("change", () => {
+    currentPage = 1;
+    renderTable();
+    renderPreview();
+  });
+
+  $reset.addEventListener("click", () => {
+    $search.value = "";
+    $domainFilter.value = "";
+    $authorFilter.value = "";
+    currentPage = 1;
+    renderTable();
+    renderPreview();
+  });
+
+  // Modal open helpers
+  function openAddModal() {
+    modalMode = "add";
+    activeDocId = null;
+
+    $modalTitle.textContent = "Ajouter un document";
+    $formTitle.value = "";
+    $formAuthor.value = "";
+    $formDomain.value = DOMAINS[0] || "";
+    $formFile.value = "";
+
+    showModal($modal);
+  }
+
+  function openEditModal(doc) {
+    modalMode = "edit";
+    activeDocId = doc.id;
+
+    $modalTitle.textContent = "Éditer le document";
+    $formTitle.value = doc.title || "";
+    $formAuthor.value = doc.author || "";
+    $formDomain.value = doc.domain || (DOMAINS[0] || "");
+    $formFile.value = "";
+
+    showModal($modal);
+  }
+
+  function escapeHtml(str) {
+    return (str ?? "")
+      .toString()
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function escapeAttr(str) {
+    return escapeHtml(str).replace(/`/g, "&#096;");
+  }
+
+  // Init
+  loadDocs().catch((e) => {
+    console.error(e);
+    alert("Erreur chargement documents.");
+  });
+}
+
 
 function renderRecherche() {
   // ==============================
