@@ -18257,10 +18257,10 @@ const norm = (s) => (s ?? "")
             <button class="btn" id="ens-download" disabled>Télécharger</button>
             <button class="btn" id="ens-download-all">Tout télécharger</button>
           </div>
-          <div class="muted" style="margin-top:10px; font-size:12px;">
+          <div class="muted" style="margin-top:10px; font-size:18px;">
   Code requis pour <strong>Ajouter / Modifier / Supprimer</strong> : Contactez Antoine Brizard 
 </div>
-<div class="muted" style="margin-top:8px; font-size:12px;">
+<div class="muted" style="margin-top:8px; font-size:18px;">
             Vos documents ne doivent pas comporter de données sensibles ou d'informations patients.
           </div>
         </div>
