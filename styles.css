@@ -6509,22 +6509,6 @@ padding-right: clamp(8px, 2vw, 24px);
   font-weight: 700;
   line-height: 1.2;
 }
-/* Desktop: 5 revues sur UNE seule ligne (scroll horizontal si besoin) */
-.biblio-journal-list{
-  display: flex;
-  flex-wrap: nowrap;       /* <-- pas de retour à la ligne */
-  gap: 12px;
-  overflow-x: auto;        /* <-- si ça dépasse, on scroll horizontal */
-  overflow-y: hidden;
-  padding-bottom: 6px;     /* pour éviter que la scrollbar touche */
-  -webkit-overflow-scrolling: touch;
-}
-
-.biblio-journal{
-  flex: 0 0 auto;          /* <-- chaque item garde sa taille */
-  white-space: nowrap;     /* <-- le texte ne casse pas en 2 lignes */
-  max-width: none;         /* <-- important si tu avais un max-width */
-}
 
 /* Optionnel: scrollbar discrète (Chrome/Safari) */
 .biblio-journal-list::-webkit-scrollbar{ height: 8px; }
@@ -6614,4 +6598,88 @@ padding-right: clamp(8px, 2vw, 24px);
 }
 @media (max-width: 980px){
   .biblio-journal-grid{ grid-template-columns: repeat(3, minmax(90px, 1fr)); }
+}
+
+/* =========================================
+   FIX FINAL — Tableau revues bibliographie
+   - Empêche le nowrap qui casse tout
+   - Force texte noir lisible en thème sombre
+========================================= */
+
+/* Force la table à ne jamais hériter de texte clair */
+.biblio-box .biblio-table,
+.biblio-box .biblio-table *{
+  color: #000 !important;
+}
+
+/* IMPORTANT : dans le tableau, on annule le "one-line nowrap" */
+.biblio-table .biblio-journal-list{
+  flex-wrap: wrap !important;
+  overflow-x: visible !important;
+  white-space: normal !important;
+}
+
+/* Dans le tableau, on passe en carte verticale : logo puis texte dessous */
+.biblio-table .biblio-journal{
+  display: inline-flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  gap: 8px !important;
+
+  white-space: normal !important;   /* autorise le retour à la ligne */
+  max-width: 140px !important;      /* empêche de s’étirer */
+  padding: 8px 6px !important;
+}
+
+/* Titre sous l’image, compact */
+.biblio-table .biblio-journal span{
+  display: block !important;
+  font-size: 12.5px !important;
+  line-height: 1.2 !important;
+  font-weight: 700 !important;
+}
+
+/* Images un peu plus grandes */
+.biblio-table .biblio-journal img{
+  width: 52px !important;
+  height: 52px !important;
+}
+/* =========================================
+   BIBLIOGRAPHIE — TEXTE TOUJOURS NOIR
+   (lisible même en thème sombre)
+========================================= */
+
+/* Force le noir pour TOUT le tableau */
+.biblio-box,
+.biblio-box table,
+.biblio-box thead,
+.biblio-box tbody,
+.biblio-box tr,
+.biblio-box th,
+.biblio-box td,
+.biblio-box span,
+.biblio-box a{
+  color: #000 !important;
+}
+
+/* Titres de colonnes bien lisibles */
+.biblio-box thead th{
+  font-weight: 800;
+}
+
+/* Noms de spécialités */
+.biblio-spec{
+  color: #000 !important;
+  font-weight: 800;
+}
+
+/* Titres sous les logos */
+.biblio-journal span{
+  color: #000 !important;
+}
+
+/* Sécurité : liens visités */
+.biblio-box a:visited{
+  color: #000 !important;
 }
