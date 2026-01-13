@@ -153,6 +153,7 @@ const PRECACHE = [
   // Menu principal
   "img/enseignement.png",
   "img/bibliographie.png",
+  "img/bibliographie2.png",
   "img/recherche.png",
 
   // CEC
