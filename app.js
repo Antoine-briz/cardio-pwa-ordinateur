@@ -19017,6 +19017,7 @@ function renderBiblioHebdo() {
     title: " BiBL.",
     collectionName: "biblioHebdo",
     storageFolder: "biblioHebdo",
+    showBiblNewsletter: true   // ✅ flag spécifique BiBL
   });
 }
 
@@ -19176,12 +19177,20 @@ function renderTeachingClonePage(cfg) {
 
   // ===== HTML STRICTEMENT IDENTIQUE à Enseignement =====
   $app.innerHTML = `
-    <section class="page enseignement-page">
-      <div class="enseignement-head">
-        <div>
-          <h2>${cfg.title}</h2>
+    <section class="page enseignement-page enseignement-page--mobile">
+    <div class="enseignement-head">
+      <div><h2>${cfg.title}</h2></div>
+    </div>
+
+    ${
+      cfg.showBiblNewsletter
+        ? `
+        <div class="bibl-newsletter">
+          Abonnez-vous à la newsletter hebdomadaire :
+          <a href="https://www.bibl.fr/" target="_blank" rel="noopener noreferrer">
+            https://www.bibl.fr/
+          </a>
         </div>
-      </div>
 
       <div class="enseignement-toolbar">
         <input id="ens-search" type="search" placeholder="Rechercher dans les titres…" autocomplete="off" />
