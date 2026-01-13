@@ -6412,3 +6412,13 @@ body.theme-dark .cec-box{ color:#111; }
   text-align: center;       /* centré */
   margin-bottom: 10px;
 }
+
+/* Titre encadré "Revues médicales" */
+.biblio-box-title{
+  color: #000;              /* noir franc */
+  font-weight: 800;
+}
+.biblio-box-title{
+  color: var(--fg, #000);   /* couleur texte principale */
+  font-weight: 800;
+}
