@@ -18508,55 +18508,41 @@ function esc(s) {
     .replaceAll("'", "&#039;");
 }
   
-const renderPreview = async (doc) => {
+const renderPreview = (doc) => {
   if (!doc) {
-    $preview.innerHTML = `<div class="muted">Clique sur un fichier pour afficher un aperçu.</div>`;
+    $preview.innerHTML = `<div class="ens-preview-empty">Sélectionnez un fichier pour afficher un aperçu</div>`;
     return;
   }
 
   const kind = fileKind(doc.fileName || doc.title || "");
-
-  // ✅ URL robuste : on préfère storagePath si dispo (Firebase régénère une URL valide)
-  let url = doc.fileUrl || "";
-  try {
-    if (doc.storagePath) {
-      url = await window.storage.ref().child(doc.storagePath).getDownloadURL();
-    }
-  } catch (e) {
-    console.warn("Preview: getDownloadURL failed, fallback to doc.fileUrl", e);
-  }
-
-  if (!url) {
-    $preview.innerHTML = `<div class="muted">Lien du fichier introuvable.</div>`;
-    return;
-  }
+  const url = resolveFileUrl(doc.fileUrl);
 
   if (kind === "pdf") {
+    // ✅ IMPORTANT : navpanes=1 + toolbar=1 => panneau multipage visible
+    const pdfUrl = `${url}#view=FitH&toolbar=1&navpanes=1`;
+
     $preview.innerHTML = `
       <div class="ens-preview-head">
         <div class="ens-preview-title">${esc(doc.title || "")}</div>
-        <button class="btn" id="ens-open-doc" type="button">Ouvrir</button>
       </div>
-      <iframe class="ens-preview-frame" src="${url}" title="Aperçu PDF"></iframe>
+      <div class="ens-preview-iframe-wrap">
+        <iframe class="ens-preview-frame" src="${pdfUrl}" title="Aperçu PDF"></iframe>
+      </div>
     `;
-    document.getElementById("ens-open-doc").addEventListener("click", () => openInNewTab(url));
     return;
   }
 
-  // PPT/PPTX : pas d'aperçu fiable → uniquement ouverture
+  // PPT/PPTX : pas d’aperçu intégré fiable
   $preview.innerHTML = `
     <div class="ens-preview-head">
       <div class="ens-preview-title">${esc(doc.title || "")}</div>
-      <button class="btn" id="ens-open-doc" type="button">Ouvrir</button>
     </div>
-    <div class="muted" style="margin-top:10px;">
-      Aperçu intégré non disponible pour PowerPoint.
-      Clique sur <strong>Ouvrir</strong> pour accéder au fichier.
+    <div class="ens-preview-empty" style="margin-top:10px;">
+      Aperçu non disponible pour PowerPoint.<br/>
+      Utilisez la colonne <strong>Ouvrir</strong> du tableau.
     </div>
   `;
-  document.getElementById("ens-open-doc").addEventListener("click", () => openInNewTab(url));
 };
-
   
   const renderTable = () => {
     applyFilters();
@@ -19497,53 +19483,40 @@ function renderTeachingClonePage(cfg) {
     });
   };
 
-const renderPreview = async (doc) => {
+const renderPreview = (doc) => {
   if (!doc) {
-    $preview.innerHTML = `<div class="muted">Clique sur un fichier pour afficher un aperçu.</div>`;
+    $preview.innerHTML = `<div class="ens-preview-empty">Sélectionnez un fichier pour afficher un aperçu</div>`;
     return;
   }
 
   const kind = fileKind(doc.fileName || doc.title || "");
-
-  // ✅ URL robuste : on préfère storagePath si dispo (Firebase régénère une URL valide)
-  let url = doc.fileUrl || "";
-  try {
-    if (doc.storagePath) {
-      url = await window.storage.ref().child(doc.storagePath).getDownloadURL();
-    }
-  } catch (e) {
-    console.warn("Preview: getDownloadURL failed, fallback to doc.fileUrl", e);
-  }
-
-  if (!url) {
-    $preview.innerHTML = `<div class="muted">Lien du fichier introuvable.</div>`;
-    return;
-  }
+  const url = resolveFileUrl(doc.fileUrl);
 
   if (kind === "pdf") {
+    // ✅ IMPORTANT : navpanes=1 + toolbar=1 => panneau multipage visible
+    const pdfUrl = `${url}#view=FitH&toolbar=1&navpanes=1`;
+
     $preview.innerHTML = `
       <div class="ens-preview-head">
         <div class="ens-preview-title">${esc(doc.title || "")}</div>
-        <button class="btn" id="ens-open-doc" type="button">Ouvrir</button>
       </div>
-      <iframe class="ens-preview-frame" src="${url}" title="Aperçu PDF"></iframe>
+      <div class="ens-preview-iframe-wrap">
+        <iframe class="ens-preview-frame" src="${pdfUrl}" title="Aperçu PDF"></iframe>
+      </div>
     `;
-    document.getElementById("ens-open-doc").addEventListener("click", () => openInNewTab(url));
     return;
   }
 
-  // PPT/PPTX : pas d'aperçu fiable → uniquement ouverture
+  // PPT/PPTX : pas d’aperçu intégré fiable
   $preview.innerHTML = `
     <div class="ens-preview-head">
       <div class="ens-preview-title">${esc(doc.title || "")}</div>
-      <button class="btn" id="ens-open-doc" type="button">Ouvrir</button>
     </div>
-    <div class="muted" style="margin-top:10px;">
-      Aperçu intégré non disponible pour PowerPoint.
-      Clique sur <strong>Ouvrir</strong> pour accéder au fichier.
+    <div class="ens-preview-empty" style="margin-top:10px;">
+      Aperçu non disponible pour PowerPoint.<br/>
+      Utilisez la colonne <strong>Ouvrir</strong> du tableau.
     </div>
   `;
-  document.getElementById("ens-open-doc").addEventListener("click", () => openInNewTab(url));
 };
 
 
@@ -20459,54 +20432,42 @@ $protoEditList.addEventListener("click", async (e) => {
   // Rendering
   // ==============================
 
-const renderPreview = async (doc) => {
+const renderPreview = (doc) => {
   if (!doc) {
-    $preview.innerHTML = `<div class="muted">Clique sur un fichier pour afficher un aperçu.</div>`;
+    $preview.innerHTML = `<div class="ens-preview-empty">Sélectionnez un fichier pour afficher un aperçu</div>`;
     return;
   }
 
   const kind = fileKind(doc.fileName || doc.title || "");
-
-  // ✅ URL robuste : on préfère storagePath si dispo (Firebase régénère une URL valide)
-  let url = doc.fileUrl || "";
-  try {
-    if (doc.storagePath) {
-      url = await window.storage.ref().child(doc.storagePath).getDownloadURL();
-    }
-  } catch (e) {
-    console.warn("Preview: getDownloadURL failed, fallback to doc.fileUrl", e);
-  }
-
-  if (!url) {
-    $preview.innerHTML = `<div class="muted">Lien du fichier introuvable.</div>`;
-    return;
-  }
+  const url = resolveFileUrl(doc.fileUrl);
 
   if (kind === "pdf") {
+    // ✅ IMPORTANT : navpanes=1 + toolbar=1 => panneau multipage visible
+    const pdfUrl = `${url}#view=FitH&toolbar=1&navpanes=1`;
+
     $preview.innerHTML = `
       <div class="ens-preview-head">
         <div class="ens-preview-title">${esc(doc.title || "")}</div>
-        <button class="btn" id="ens-open-doc" type="button">Ouvrir</button>
       </div>
-      <iframe class="ens-preview-frame" src="${url}" title="Aperçu PDF"></iframe>
+      <div class="ens-preview-iframe-wrap">
+        <iframe class="ens-preview-frame" src="${pdfUrl}" title="Aperçu PDF"></iframe>
+      </div>
     `;
-    document.getElementById("ens-open-doc").addEventListener("click", () => openInNewTab(url));
     return;
   }
 
-  // PPT/PPTX : pas d'aperçu fiable → uniquement ouverture
+  // PPT/PPTX : pas d’aperçu intégré fiable
   $preview.innerHTML = `
     <div class="ens-preview-head">
       <div class="ens-preview-title">${esc(doc.title || "")}</div>
-      <button class="btn" id="ens-open-doc" type="button">Ouvrir</button>
     </div>
-    <div class="muted" style="margin-top:10px;">
-      Aperçu intégré non disponible pour PowerPoint.
-      Clique sur <strong>Ouvrir</strong> pour accéder au fichier.
+    <div class="ens-preview-empty" style="margin-top:10px;">
+      Aperçu non disponible pour PowerPoint.<br/>
+      Utilisez la colonne <strong>Ouvrir</strong> du tableau.
     </div>
   `;
-  document.getElementById("ens-open-doc").addEventListener("click", () => openInNewTab(url));
 };
+
 
   const updateButtons = () => {
     $btnEdit.disabled = selectedIds.size !== 1;
@@ -21578,7 +21539,7 @@ function renderAnnuaire() {
 const rootApp = document.getElementById("app");
 
 const esc = (s) =>
-  (s ?? "")
+  String(s ?? "")
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
