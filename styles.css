@@ -6683,3 +6683,65 @@ padding-right: clamp(8px, 2vw, 24px);
 .biblio-box a:visited{
   color: #000 !important;
 }
+
+/* =========================================
+   BIBLIOGRAPHIE — Split gauche/droite FORCÉ
+   (empêche l'image de passer dessous)
+========================================= */
+
+.biblio-split{
+  display: grid !important;
+  grid-template-columns: 1fr 0.75fr !important;  /* image ~25% moins large */
+  gap: 18px !important;
+  align-items: stretch !important;
+}
+
+/* évite que le contenu du tableau pousse la grille */
+.biblio-left{ min-width: 0 !important; }
+.biblio-right{ min-width: 0 !important; width: 100% !important; }
+
+/* image pleine hauteur de la colonne droite */
+.biblio-right img{
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 16px;
+}
+
+/* mobile: on repasse en 1 colonne */
+@media (max-width: 900px){
+  .biblio-split{
+    grid-template-columns: 1fr !important;
+  }
+  .biblio-right img{
+    height: auto !important;
+  }
+}
+/* =========================================
+   BIBLIOGRAPHIE — Bordures tableau (propres)
+========================================= */
+
+.biblio-table{
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* lignes horizontales */
+.biblio-table thead th{
+  border-bottom: 2px solid rgba(0,0,0,0.18) !important;
+}
+.biblio-table tbody td{
+  border-bottom: 1px solid rgba(0,0,0,0.12) !important;
+}
+.biblio-table tbody tr:last-child td{
+  border-bottom: none !important;
+}
+
+/* ligne verticale entre colonnes */
+.biblio-table th:first-child,
+.biblio-table td:first-child{
+  border-right: 2px solid rgba(0,0,0,0.18) !important;
+}
