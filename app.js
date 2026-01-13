@@ -19470,7 +19470,11 @@ function renderTeachingClonePage(cfg) {
 
 const renderPreview = async (doc) => {
   if (!doc) {
-    $preview.innerHTML = `<div class="ens-preview-empty">Sélectionnez un fichier pour afficher un aperçu</div>`;
+    $preview.innerHTML = `
+      <div class="ens-preview-empty">
+        Sélectionnez un fichier pour afficher un aperçu
+      </div>
+    `;
     return;
   }
 
@@ -19480,10 +19484,11 @@ const renderPreview = async (doc) => {
   if (kind === "pdf") {
     $preview.innerHTML = `
       <div class="ens-preview-head">
-        <div class="ens-preview-title">${esc(doc.title || "")}</div>
+        <div class="ens-preview-title">${doc.title || ""}</div>
       </div>
       <div class="ens-preview-body"></div>
     `;
+
     const body = $preview.querySelector(".ens-preview-body");
     await renderPdfWithPdfjs(body, url);
     return;
@@ -19491,14 +19496,16 @@ const renderPreview = async (doc) => {
 
   $preview.innerHTML = `
     <div class="ens-preview-head">
-      <div class="ens-preview-title">${esc(doc.title || "")}</div>
+      <div class="ens-preview-title">${doc.title || ""}</div>
     </div>
     <div class="muted" style="margin-top:10px;">
       Aperçu intégré non disponible pour PowerPoint.
-      <br/>Clique pour <a href="${url}" target="_blank" rel="noopener">ouvrir le fichier</a>.
+      <br/>
+      Cliquez pour <a href="${url}" target="_blank" rel="noopener noreferrer">ouvrir le fichier</a>.
     </div>
   `;
 };
+
 
   
   const renderTable = () => {
