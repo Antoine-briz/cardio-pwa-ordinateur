@@ -6428,3 +6428,39 @@ body.theme-dark .cec-box{ color:#111; }
   letter-spacing: 1px;
   font-size: 1.05rem;
 }
+
+/* =========================================================
+   BIBLIOGRAPHIE — LAYOUT PLEINE LARGEUR (comme Recherche)
+   ========================================================= */
+
+/* Les pages Bibliographie ne doivent PAS être limitées par .container */
+.page.enseignement-page {
+  width: 100vw;
+  max-width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+/* Grille interne : gauche (table) + droite (aperçu) */
+.page.enseignement-page .enseignement-layout {
+  display: grid;
+  grid-template-columns: minmax(520px, 55%) minmax(0, 45%);
+  width: 100%;
+  max-width: 100%;
+  gap: 20px;
+}
+
+/* Colonne aperçu */
+.page.enseignement-page .enseignement-right {
+  width: 100%;
+  max-width: none;
+}
+
+/* Aperçu PDF */
+.page.enseignement-page .enseignement-preview,
+.page.enseignement-page .ens-preview-frame {
+  width: 100%;
+  height: 100%;
+}
