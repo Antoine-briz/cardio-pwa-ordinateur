@@ -6804,3 +6804,29 @@ padding-right: clamp(8px, 2vw, 24px);
   min-height: 520px;       /* clé : empêche l’iframe “minuscule” */
   border: 0;
 }
+
+/* ===== FIX espace blanc au-dessus de l'iframe PDF ===== */
+
+/* supprime toute marge/padding parasite */
+.ens-preview-head {
+  display: none !important; /* on supprime totalement l'en-tête */
+}
+
+.enseignement-preview {
+  padding: 0 !important;
+}
+
+.ens-preview-iframe-wrap {
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 100% !important;
+}
+
+.ens-preview-frame {
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+}
