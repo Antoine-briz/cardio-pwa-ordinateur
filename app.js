@@ -19014,7 +19014,7 @@ function renderBiblioJuniors() {
 
 function renderBiblioHebdo() {
   return renderTeachingClonePage({
-    title: "Biblio. hebdomadaire : BiBL 4",
+    title: " BiBL.",
     collectionName: "biblioHebdo",
     storageFolder: "biblioHebdo",
   });
