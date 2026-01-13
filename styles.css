@@ -6757,3 +6757,16 @@ padding-right: clamp(8px, 2vw, 24px);
   text-decoration: underline;
   word-break: break-all;
 }
+
+/* =========================================================
+   RECHERCHE — rétablir marges latérales (comme Enseignement)
+========================================================= */
+
+/* Marges internes de sécurité */
+.page.recherche-page > .recherche-head,
+.page.recherche-page > .recherche-toolbar,
+.page.recherche-page > .recherche-layout,
+.page.recherche-page > .recherche-content{
+  padding-left: clamp(8px, 2vw, 24px);
+  padding-right: clamp(8px, 2vw, 24px);
+}
