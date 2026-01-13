@@ -18498,40 +18498,52 @@ const norm = (s) => (s ?? "")
 
 const renderPreview = async (doc) => {
   if (!doc) {
-    $preview.innerHTML = `
-      <div class="ens-preview-empty">
-        Sélectionnez un fichier pour afficher un aperçu
-      </div>
-    `;
+    $preview.innerHTML = `<div class="muted">Clique sur un fichier pour afficher un aperçu.</div>`;
     return;
   }
 
-  const url = resolveFileUrl(doc.fileUrl);
   const kind = fileKind(doc.fileName || doc.title || "");
+
+  // ✅ URL robuste : on préfère storagePath si dispo (Firebase régénère une URL valide)
+  let url = doc.fileUrl || "";
+  try {
+    if (doc.storagePath) {
+      url = await window.storage.ref().child(doc.storagePath).getDownloadURL();
+    }
+  } catch (e) {
+    console.warn("Preview: getDownloadURL failed, fallback to doc.fileUrl", e);
+  }
+
+  if (!url) {
+    $preview.innerHTML = `<div class="muted">Lien du fichier introuvable.</div>`;
+    return;
+  }
 
   if (kind === "pdf") {
     $preview.innerHTML = `
       <div class="ens-preview-head">
-        <div class="ens-preview-title">${doc.title || ""}</div>
+        <div class="ens-preview-title">${esc(doc.title || "")}</div>
+        <button class="btn" id="ens-open-doc" type="button">Ouvrir</button>
       </div>
-      <div class="ens-preview-body"></div>
+      <iframe class="ens-preview-frame" src="${url}" title="Aperçu PDF"></iframe>
     `;
-    const body = $preview.querySelector(".ens-preview-body");
-    await renderPdfWithPdfjs(body, url);
+    document.getElementById("ens-open-doc").addEventListener("click", () => openInNewTab(url));
     return;
   }
 
+  // PPT/PPTX : pas d'aperçu fiable → uniquement ouverture
   $preview.innerHTML = `
     <div class="ens-preview-head">
-      <div class="ens-preview-title">${doc.title || ""}</div>
+      <div class="ens-preview-title">${esc(doc.title || "")}</div>
+      <button class="btn" id="ens-open-doc" type="button">Ouvrir</button>
     </div>
     <div class="muted" style="margin-top:10px;">
       Aperçu intégré non disponible pour PowerPoint.
-      <br/>Clique pour <a href="${url}" target="_blank" rel="noopener noreferrer">ouvrir le fichier</a>.
+      Clique sur <strong>Ouvrir</strong> pour accéder au fichier.
     </div>
   `;
+  document.getElementById("ens-open-doc").addEventListener("click", () => openInNewTab(url));
 };
-
 
   
   const renderTable = () => {
@@ -18566,7 +18578,7 @@ const renderPreview = async (doc) => {
     $tbody.querySelectorAll("tr.ens-row").forEach(tr => {
       const id = tr.getAttribute("data-id");
 
-      tr.addEventListener("click", (ev) => {
+      tr.addEventListener("click", async (ev) => {
         const multi = ev.ctrlKey || ev.metaKey;
 
         if (!multi) {
@@ -18583,7 +18595,7 @@ const renderPreview = async (doc) => {
         });
 
         const doc = allDocs.find(d => d.id === id);
-        renderPreview(doc);
+        await renderPreview(doc);
         setButtonsState();
       });
 
@@ -19475,41 +19487,53 @@ function renderTeachingClonePage(cfg) {
 
 const renderPreview = async (doc) => {
   if (!doc) {
-    $preview.innerHTML = `
-      <div class="ens-preview-empty">
-        Sélectionnez un fichier pour afficher un aperçu
-      </div>
-    `;
+    $preview.innerHTML = `<div class="muted">Clique sur un fichier pour afficher un aperçu.</div>`;
     return;
   }
 
-  const url = resolveFileUrl(doc.fileUrl);
   const kind = fileKind(doc.fileName || doc.title || "");
+
+  // ✅ URL robuste : on préfère storagePath si dispo (Firebase régénère une URL valide)
+  let url = doc.fileUrl || "";
+  try {
+    if (doc.storagePath) {
+      url = await window.storage.ref().child(doc.storagePath).getDownloadURL();
+    }
+  } catch (e) {
+    console.warn("Preview: getDownloadURL failed, fallback to doc.fileUrl", e);
+  }
+
+  if (!url) {
+    $preview.innerHTML = `<div class="muted">Lien du fichier introuvable.</div>`;
+    return;
+  }
 
   if (kind === "pdf") {
     $preview.innerHTML = `
       <div class="ens-preview-head">
-        <div class="ens-preview-title">${doc.title || ""}</div>
+        <div class="ens-preview-title">${esc(doc.title || "")}</div>
+        <button class="btn" id="ens-open-doc" type="button">Ouvrir</button>
       </div>
-      <div class="ens-preview-body"></div>
+      <iframe class="ens-preview-frame" src="${url}" title="Aperçu PDF"></iframe>
     `;
-
-    const body = $preview.querySelector(".ens-preview-body");
-    await renderPdfWithPdfjs(body, url);
+    document.getElementById("ens-open-doc").addEventListener("click", () => openInNewTab(url));
     return;
   }
 
+  // PPT/PPTX : pas d'aperçu fiable → uniquement ouverture
   $preview.innerHTML = `
     <div class="ens-preview-head">
-      <div class="ens-preview-title">${doc.title || ""}</div>
+      <div class="ens-preview-title">${esc(doc.title || "")}</div>
+      <button class="btn" id="ens-open-doc" type="button">Ouvrir</button>
     </div>
     <div class="muted" style="margin-top:10px;">
       Aperçu intégré non disponible pour PowerPoint.
-      <br/>
-      Cliquez pour <a href="${url}" target="_blank" rel="noopener noreferrer">ouvrir le fichier</a>.
+      Clique sur <strong>Ouvrir</strong> pour accéder au fichier.
     </div>
   `;
+  document.getElementById("ens-open-doc").addEventListener("click", () => openInNewTab(url));
 };
+
 
 
   
@@ -19544,7 +19568,7 @@ const renderPreview = async (doc) => {
     $tbody.querySelectorAll("tr.ens-row").forEach(tr => {
       const id = tr.getAttribute("data-id");
 
-      tr.addEventListener("click", (ev) => {
+      tr.addEventListener("click", async (ev) => {
         const multi = ev.ctrlKey || ev.metaKey;
 
         if (!multi) {
@@ -19561,7 +19585,7 @@ const renderPreview = async (doc) => {
         });
 
         const doc = allDocs.find(d => d.id === id);
-        renderPreview(doc);
+        await renderPreview(doc);
         setButtonsState();
       });
 
@@ -20423,41 +20447,54 @@ $protoEditList.addEventListener("click", async (e) => {
   // Rendering
   // ==============================
 
-  const renderPreview = async (doc) => {
+const renderPreview = async (doc) => {
   if (!doc) {
-    $preview.innerHTML = `<div class="ens-preview-empty">Sélectionnez un fichier pour afficher un aperçu</div>`;
+    $preview.innerHTML = `<div class="muted">Clique sur un fichier pour afficher un aperçu.</div>`;
     return;
   }
 
-  const url = resolveFileUrl(doc.fileUrl);
   const kind = fileKind(doc.fileName || doc.title || "");
 
+  // ✅ URL robuste : on préfère storagePath si dispo (Firebase régénère une URL valide)
+  let url = doc.fileUrl || "";
+  try {
+    if (doc.storagePath) {
+      url = await window.storage.ref().child(doc.storagePath).getDownloadURL();
+    }
+  } catch (e) {
+    console.warn("Preview: getDownloadURL failed, fallback to doc.fileUrl", e);
+  }
+
+  if (!url) {
+    $preview.innerHTML = `<div class="muted">Lien du fichier introuvable.</div>`;
+    return;
+  }
+
   if (kind === "pdf") {
-    // ✅ Affichage initial : multipage PDF.js (scroll dans le panneau)
     $preview.innerHTML = `
       <div class="ens-preview-head">
         <div class="ens-preview-title">${esc(doc.title || "")}</div>
+        <button class="btn" id="ens-open-doc" type="button">Ouvrir</button>
       </div>
-      <div class="ens-preview-body"></div>
+      <iframe class="ens-preview-frame" src="${url}" title="Aperçu PDF"></iframe>
     `;
-    const body = $preview.querySelector(".ens-preview-body");
-    // (Tu peux garder la logique "mobile only" si tu veux, mais là on remet le rendu multipage)
-    await renderPdfWithPdfjs(body, url);
+    document.getElementById("ens-open-doc").addEventListener("click", () => openInNewTab(url));
     return;
   }
 
-  // PPT/PPTX : pas d'aperçu intégré fiable → on invite à ouvrir
+  // PPT/PPTX : pas d'aperçu fiable → uniquement ouverture
   $preview.innerHTML = `
     <div class="ens-preview-head">
       <div class="ens-preview-title">${esc(doc.title || "")}</div>
+      <button class="btn" id="ens-open-doc" type="button">Ouvrir</button>
     </div>
     <div class="muted" style="margin-top:10px;">
       Aperçu intégré non disponible pour PowerPoint.
-      <br/>Clique pour <a href="${url}" target="_blank" rel="noopener">ouvrir le fichier</a>.
+      Clique sur <strong>Ouvrir</strong> pour accéder au fichier.
     </div>
   `;
+  document.getElementById("ens-open-doc").addEventListener("click", () => openInNewTab(url));
 };
-
 
   const updateButtons = () => {
     $btnEdit.disabled = selectedIds.size !== 1;
@@ -20527,7 +20564,7 @@ $protoEditList.addEventListener("click", async (e) => {
 
     // Row selection + preview
     $tbody.querySelectorAll(".ens-row").forEach((row) => {
-      row.addEventListener("click", (e) => {
+      row.addEventListener("click", async (e) => {
         const id = row.dataset.id;
 
         // ctrl/cmd multi-select
@@ -20543,7 +20580,7 @@ $protoEditList.addEventListener("click", async (e) => {
         renderTable();
 
         const doc = allDocs.find((x) => x.id === id);
-        renderPreview(doc);
+        await renderPreview(doc);
       });
     });
 
