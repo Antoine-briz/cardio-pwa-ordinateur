@@ -18820,6 +18820,8 @@ function renderBibliographie() {
   document.getElementById("btnBiblioHebdo")?.addEventListener("click", () => {
     location.hash = "#/bibliographie/hebdo";
   });
+  // ✅ FIX scroll
+  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 }
 
 /* =========================
