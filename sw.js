@@ -192,7 +192,7 @@ const PRECACHE = [
 "img/journals/cid.png",
 "img/journals/nature_reviews_microbiology.png",
 "img/journals/eid.png",
-"img/journals/journal_of_infection.png"
+"img/journals/journal_of_infection.png",
 
 
   // Files
