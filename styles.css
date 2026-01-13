@@ -6745,3 +6745,15 @@ padding-right: clamp(8px, 2vw, 24px);
 .biblio-table td:first-child{
   border-right: 2px solid rgba(0,0,0,0.18) !important;
 }
+/* BiBL — newsletter */
+.bibl-newsletter{
+  margin: 6px 0 10px 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.bibl-newsletter a{
+  color: #0b2f6b;
+  text-decoration: underline;
+  word-break: break-all;
+}
