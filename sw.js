@@ -1,6 +1,6 @@
 // ------- sw.js : PWA hors-ligne pour l'app de réanimation -------
 
-const CACHE_NAME = "saric-cache-v20260113-03";
+const CACHE_NAME = "saric-cache-v20260113-04";
 
 // Tous les fichiers à pré-cacher (HTML, CSS, JS, images, Excel)
 const PRECACHE = [
