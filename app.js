@@ -18793,7 +18793,7 @@ function renderBibliographie() {
             </button>
 
             <button class="btn btn-darkblue btn-bibl-typewriter" id="btnBiblioHebdo">
-  BiBL.
+  Newsletter BiBL.
 </button>
           </div>
 
@@ -19014,7 +19014,7 @@ function renderBiblioJuniors() {
 
 function renderBiblioHebdo() {
   return renderTeachingClonePage({
-    title: " BiBL.",
+    title: " Newsletter BiBL.",
     collectionName: "biblioHebdo",
     storageFolder: "biblioHebdo",
     showBiblNewsletter: true   // ✅ flag spécifique BiBL
