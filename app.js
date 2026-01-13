@@ -18496,6 +18496,18 @@ const norm = (s) => (s ?? "")
     });
   };
 
+  // ==============================
+// Helper global : échappement HTML
+// ==============================
+function esc(s) {
+  return String(s ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+  
 const renderPreview = async (doc) => {
   if (!doc) {
     $preview.innerHTML = `<div class="muted">Clique sur un fichier pour afficher un aperçu.</div>`;
