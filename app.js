@@ -18260,6 +18260,9 @@ const norm = (s) => (s ?? "")
           <div class="muted" style="margin-top:10px; font-size:12px; text-align:center;">
   Code requis pour <strong>Ajouter / Modifier / Supprimer</strong> : Contactez Antoine Brizard 
 </div>
+<div class="muted" style="margin-top:8px; font-size:12px;">
+            Vos documents ne doivent pas comporter de données sensibles ou d'informations patients.
+          </div>
         </div>
 
         <div class="enseignement-right">
@@ -19080,7 +19083,10 @@ const hideEditProtocolsModal = () => {
           </div>
 
           <div class="muted" style="margin-top:8px; font-size:12px;">
-            Code requis pour Ajouter / Modifier / Supprimer : <strong>SARIC2026</strong>
+            Code requis pour Ajouter / Modifier / Supprimer : <strong>Contactez Antoine BRIZARD</strong>
+          </div>
+          <div class="muted" style="margin-top:8px; font-size:12px;">
+            Vos documents ne doivent pas comporter de données sensibles ou d'informations patients.
           </div>
         </div>
 
