@@ -18797,13 +18797,190 @@ function renderBibliographie() {
 </button>
           </div>
 
-          <div class="biblio-box">
-            <div class="biblio-box-title">Revues médicales</div>
-            <div class="biblio-box-content">
-              <p class="muted">Contenu à venir…</p>
+          <!-- ✅ Tableau Revues médicales -->
+<div class="biblio-box">
+  <div class="biblio-box-title">Revues médicales</div>
+
+  <div class="biblio-table-wrap">
+    <table class="biblio-table">
+      <thead>
+        <tr>
+          <th>Spécialité</th>
+          <th>Revues médicales</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <!-- 1) Anesthésie cardio -->
+        <tr>
+          <td class="biblio-spec">Anesthésie (cardiaque)</td>
+          <td>
+            <div class="biblio-journal-list">
+              <a class="biblio-journal" href="https://www.bjanaesthesia.org" target="_blank" rel="noopener noreferrer">
+                <img src="img/journals/bja.png" alt="BJA logo">
+                <span>British Journal of Anaesthesia (BJA)</span>
+              </a>
+
+              <a class="biblio-journal" href="https://pubs.asahq.org/anesthesiology" target="_blank" rel="noopener noreferrer">
+                <img src="img/journals/anesthesiology.png" alt="Anesthesiology logo">
+                <span>Anesthesiology</span>
+              </a>
+
+              <a class="biblio-journal" href="https://journals.lww.com/anesthesia-analgesia" target="_blank" rel="noopener noreferrer">
+                <img src="img/journals/anesthesia_analgesia.png" alt="Anesthesia & Analgesia logo">
+                <span>Anesthesia &amp; Analgesia</span>
+              </a>
+
+              <a class="biblio-journal" href="https://www.jcvaonline.com" target="_blank" rel="noopener noreferrer">
+                <img src="img/journals/jcva.png" alt="JCVA logo">
+                <span>Journal of Cardiothoracic and Vascular Anesthesia (JCVA)</span>
+              </a>
+
+              <a class="biblio-journal" href="https://journals.lww.com/ejanaesthesiology" target="_blank" rel="noopener noreferrer">
+                <img src="img/journals/eja.png" alt="European Journal of Anaesthesiology logo">
+                <span>European Journal of Anaesthesiology</span>
+              </a>
             </div>
-          </div>
-        </div>
+          </td>
+        </tr>
+
+        <!-- 2) Réanimation -->
+        <tr>
+          <td class="biblio-spec">Réanimation</td>
+          <td>
+            <div class="biblio-journal-list">
+              <a class="biblio-journal" href="https://www.atsjournals.org/journal/ajrccm" target="_blank" rel="noopener noreferrer">
+                <img src="img/journals/ajrccm.png" alt="AJRCCM logo">
+                <span>AJRCCM</span>
+              </a>
+
+              <a class="biblio-journal" href="https://journals.lww.com/ccmjournal" target="_blank" rel="noopener noreferrer">
+                <img src="img/journals/critical_care_medicine.png" alt="Critical Care Medicine logo">
+                <span>Critical Care Medicine</span>
+              </a>
+
+              <a class="biblio-journal" href="https://www.springer.com/journal/134" target="_blank" rel="noopener noreferrer">
+                <img src="img/journals/intensive_care_medicine.png" alt="Intensive Care Medicine logo">
+                <span>Intensive Care Medicine</span>
+              </a>
+
+              <a class="biblio-journal" href="https://ccforum.biomedcentral.com" target="_blank" rel="noopener noreferrer">
+                <img src="img/journals/critical_care.png" alt="Critical Care logo">
+                <span>Critical Care</span>
+              </a>
+
+              <a class="biblio-journal" href="https://annalsofintensivecare.springeropen.com" target="_blank" rel="noopener noreferrer">
+                <img src="img/journals/annals_intensive_care.png" alt="Annals of Intensive Care logo">
+                <span>Annals of Intensive Care</span>
+              </a>
+            </div>
+          </td>
+        </tr>
+
+        <!-- 3) Chirurgie cardio-thoracique -->
+        <tr>
+          <td class="biblio-spec">Chirurgie cardiaque &amp; thoracique</td>
+          <td>
+            <div class="biblio-journal-list">
+              <a class="biblio-journal" href="https://www.jtcvs.org" target="_blank" rel="noopener noreferrer">
+                <img src="img/journals/jtcvs.png" alt="JTCVS logo">
+                <span>JTCVS</span>
+              </a>
+
+              <a class="biblio-journal" href="https://academic.oup.com/ejcts" target="_blank" rel="noopener noreferrer">
+                <img src="img/journals/ejcts.png" alt="EJCTS logo">
+                <span>European Journal of Cardio-Thoracic Surgery (EJCTS)</span>
+              </a>
+
+              <a class="biblio-journal" href="https://www.annalsthoracicsurgery.org" target="_blank" rel="noopener noreferrer">
+                <img src="img/journals/annals_thoracic_surgery.png" alt="Annals of Thoracic Surgery logo">
+                <span>Annals of Thoracic Surgery</span>
+              </a>
+
+              <a class="biblio-journal" href="https://www.ahajournals.org/journal/circinterventions" target="_blank" rel="noopener noreferrer">
+                <img src="img/journals/circ_interventions.png" alt="Circulation: Cardiovascular Interventions logo">
+                <span>Circulation: Cardiovascular Interventions</span>
+              </a>
+
+              <a class="biblio-journal" href="https://www.journals.elsevier.com/seminars-in-thoracic-and-cardiovascular-surgery" target="_blank" rel="noopener noreferrer">
+                <img src="img/journals/seminars_tcv_surgery.png" alt="Seminars in Thoracic and Cardiovascular Surgery logo">
+                <span>Seminars in Thoracic &amp; Cardiovascular Surgery</span>
+              </a>
+            </div>
+          </td>
+        </tr>
+
+        <!-- 4) Cardiologie -->
+        <tr>
+          <td class="biblio-spec">Cardiologie</td>
+          <td>
+            <div class="biblio-journal-list">
+              <a class="biblio-journal" href="https://www.ahajournals.org/journal/circ" target="_blank" rel="noopener noreferrer">
+                <img src="img/journals/circulation.png" alt="Circulation logo">
+                <span>Circulation</span>
+              </a>
+
+              <a class="biblio-journal" href="https://academic.oup.com/eurheartj" target="_blank" rel="noopener noreferrer">
+                <img src="img/journals/ehj.png" alt="European Heart Journal logo">
+                <span>European Heart Journal</span>
+              </a>
+
+              <a class="biblio-journal" href="https://www.jacc.org" target="_blank" rel="noopener noreferrer">
+                <img src="img/journals/jacc.png" alt="JACC logo">
+                <span>Journal of the American College of Cardiology (JACC)</span>
+              </a>
+
+              <a class="biblio-journal" href="https://www.nature.com/nrcardio" target="_blank" rel="noopener noreferrer">
+                <img src="img/journals/nature_reviews_cardiology.png" alt="Nature Reviews Cardiology logo">
+                <span>Nature Reviews Cardiology</span>
+              </a>
+
+              <a class="biblio-journal" href="https://jamanetwork.com/journals/jamacardiology" target="_blank" rel="noopener noreferrer">
+                <img src="img/journals/jama_cardiology.png" alt="JAMA Cardiology logo">
+                <span>JAMA Cardiology</span>
+              </a>
+            </div>
+          </td>
+        </tr>
+
+        <!-- 5) Infectiologie -->
+        <tr>
+          <td class="biblio-spec">Infectiologie</td>
+          <td>
+            <div class="biblio-journal-list">
+              <a class="biblio-journal" href="https://www.thelancet.com/journals/laninf/home" target="_blank" rel="noopener noreferrer">
+                <img src="img/journals/laninf.png" alt="The Lancet Infectious Diseases logo">
+                <span>The Lancet Infectious Diseases</span>
+              </a>
+
+              <a class="biblio-journal" href="https://academic.oup.com/cid" target="_blank" rel="noopener noreferrer">
+                <img src="img/journals/cid.png" alt="Clinical Infectious Diseases logo">
+                <span>Clinical Infectious Diseases (CID)</span>
+              </a>
+
+              <a class="biblio-journal" href="https://www.nature.com/nrmicro" target="_blank" rel="noopener noreferrer">
+                <img src="img/journals/nature_reviews_microbiology.png" alt="Nature Reviews Microbiology logo">
+                <span>Nature Reviews Microbiology</span>
+              </a>
+
+              <a class="biblio-journal" href="https://wwwnc.cdc.gov/eid" target="_blank" rel="noopener noreferrer">
+                <img src="img/journals/eid.png" alt="Emerging Infectious Diseases logo">
+                <span>Emerging Infectious Diseases</span>
+              </a>
+
+              <a class="biblio-journal" href="https://www.journals.elsevier.com/journal-of-infection" target="_blank" rel="noopener noreferrer">
+                <img src="img/journals/journal_of_infection.png" alt="Journal of Infection logo">
+                <span>Journal of Infection</span>
+              </a>
+            </div>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>
+
 
         <div class="biblio-right" aria-hidden="true">
           <img src="img/bibliographie2.png" alt="Bibliographie">
@@ -19542,8 +19719,6 @@ function renderTeachingClonePage(cfg) {
 
   load();
 }
-
-
 
 
 function renderRecherche() {
