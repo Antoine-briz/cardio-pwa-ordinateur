@@ -159,6 +159,41 @@ const PRECACHE = [
   // CEC
   "img/cec1.png",
 
+  // === Anesthésie (chirurgie cardiaque)
+"img/journals/bja.png",
+"img/journals/anesthesiology.png",
+"img/journals/anesthesia_analgesia.png",
+"img/journals/jcva.png",
+"img/journals/eja.png",
+
+// === Réanimation
+"img/journals/ajrccm.png",
+"img/journals/critical_care_medicine.png",
+"img/journals/intensive_care_medicine.png",
+"img/journals/critical_care.png",
+"img/journals/annals_intensive_care.png",
+
+// === Chirurgie cardiaque & thoracique
+"img/journals/jtcvs.png",
+"img/journals/ejcts.png",
+"img/journals/annals_thoracic_surgery.png",
+"img/journals/circ_interventions.png",
+"img/journals/seminars_tcv_surgery.png",
+
+// === Cardiologie
+"img/journals/ehj.png",
+"img/journals/jacc.png",
+"img/journals/nature_reviews_cardiology.png",
+"img/journals/jama_cardiology.png",
+
+// === Infectiologie
+"img/journals/laninf.png",
+"img/journals/cid.png",
+"img/journals/nature_reviews_microbiology.png",
+"img/journals/eid.png",
+"img/journals/journal_of_infection.png"
+
+
   // Files
   "./files/Infections des prothèses vasculaires.pdf",
 "./files/Antibiothérapies des amputations de membre.pdf",
