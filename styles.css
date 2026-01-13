@@ -6443,22 +6443,31 @@ body.theme-dark .cec-box{ color:#111; }
   margin-left: -50vw;
   margin-right: -50vw;
 }
-/* Grille interne : gauche (table) + droite (aperçu) */
-.page.enseignement-page .enseignement-layout {
-  display: grid;
-  grid-template-columns: minmax(520px, 55%) minmax(0, 45%);
-  width: 100%;
-  max-width: 100%;
-  gap: 20px;
+
+/* Marges internes de sécurité (comme Recherche) */
+.page.enseignement-page > .enseignement-head,
+.page.enseignement-page > .enseignement-toolbar,
+.page.enseignement-page > .enseignement-layout {
+  padding-left: clamp(16px, 4vw, 48px);
+  padding-right: clamp(16px, 4vw, 48px);
 }
 
-/* Colonne aperçu */
+/* Grille interne équilibrée */
+.page.enseignement-page .enseignement-layout {
+  display: grid;
+  grid-template-columns: minmax(520px, 60%) minmax(360px, 40%);
+  gap: 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Colonne droite (aperçu) */
 .page.enseignement-page .enseignement-right {
   width: 100%;
   max-width: none;
 }
 
-/* Aperçu PDF */
+/* Aperçu */
 .page.enseignement-page .enseignement-preview,
 .page.enseignement-page .ens-preview-frame {
   width: 100%;
