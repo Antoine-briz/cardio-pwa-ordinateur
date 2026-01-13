@@ -6317,10 +6317,11 @@ body.theme-dark .cec-box{ color:#111; }
 
 .biblio-split{
   display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
+  grid-template-columns: 1.3fr 0.7fr; /* image ≈ 25% plus étroite */
   gap: 16px;
   align-items: stretch;
 }
+
 
 .biblio-left{
   display: flex;
@@ -6402,4 +6403,12 @@ body.theme-dark .cec-box{ color:#111; }
   .biblio-split{ grid-template-columns: 1fr; }
   .biblio-right{ min-height: 240px; }
   .biblio-links{ grid-template-columns: 1fr; }
+}
+
+/* Titre page Bibliographie */
+.biblio-left .page-title{
+  font-size: 2.2rem;        /* plus grand */
+  font-weight: 800;
+  text-align: center;       /* centré */
+  margin-bottom: 10px;
 }
