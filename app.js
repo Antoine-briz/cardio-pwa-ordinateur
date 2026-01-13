@@ -20382,7 +20382,7 @@ function renderAnnuaire() {
             <tr><td>Interne maxillo-faciale</td><td>—</td><td>27 368</td></tr>
             <tr><td>Interne garde neurochir</td><td>—</td><td>63 690</td></tr>
             <tr><td>Interne chir ortho</td><td>—</td><td>27 393</td></tr>
-            <tr><td>Interne orthophoniste</td><td>—</td><td>67 531 ou 67 506</td></tr>
+            <tr><td>Interne orthopédie</td><td>—</td><td>67 531 ou 67 506</td></tr>
             <tr><td>Interne stomatologie</td><td>—</td><td>61 452</td></tr>
             <tr><td>Maternité chef de garde</td><td>—</td><td>77 734</td></tr>
             <tr><td>Neuro vasculaire</td><td>(avis/urgence)</td><td>27 013</td></tr>
