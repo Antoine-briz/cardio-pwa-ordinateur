@@ -6509,3 +6509,24 @@ padding-right: clamp(8px, 2vw, 24px);
   font-weight: 700;
   line-height: 1.2;
 }
+/* Desktop: 5 revues sur UNE seule ligne (scroll horizontal si besoin) */
+.biblio-journal-list{
+  display: flex;
+  flex-wrap: nowrap;       /* <-- pas de retour à la ligne */
+  gap: 12px;
+  overflow-x: auto;        /* <-- si ça dépasse, on scroll horizontal */
+  overflow-y: hidden;
+  padding-bottom: 6px;     /* pour éviter que la scrollbar touche */
+  -webkit-overflow-scrolling: touch;
+}
+
+.biblio-journal{
+  flex: 0 0 auto;          /* <-- chaque item garde sa taille */
+  white-space: nowrap;     /* <-- le texte ne casse pas en 2 lignes */
+  max-width: none;         /* <-- important si tu avais un max-width */
+}
+
+/* Optionnel: scrollbar discrète (Chrome/Safari) */
+.biblio-journal-list::-webkit-scrollbar{ height: 8px; }
+.biblio-journal-list::-webkit-scrollbar-thumb{ background: rgba(0,0,0,0.18); border-radius: 99px; }
+.biblio-journal-list::-webkit-scrollbar-track{ background: rgba(0,0,0,0.06); border-radius: 99px; }
