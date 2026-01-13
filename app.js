@@ -18790,12 +18790,12 @@ function renderBibliographie() {
 
           <div class="biblio-actions">
             <button class="btn btn-darkblue" id="btnBiblioJuniors">
-              Biblio et staff juniors
+             Internes: Biblio & staff juniors
             </button>
 
-            <button class="btn btn-darkblue" id="btnBiblioHebdo">
-              Biblio. hebdomadaire : BiBL 4
-            </button>
+            <button class="btn btn-darkblue btn-bibl-typewriter" id="btnBiblioHebdo">
+  BiBL.
+</button>
           </div>
 
           <div class="biblio-box">
@@ -18830,7 +18830,7 @@ function renderBibliographie() {
 
 function renderBiblioJuniors() {
   return renderTeachingClonePage({
-    title: "Biblio et staff juniors",
+    title: "Internes: Biblio & staff juniors",
     collectionName: "biblioJuniors",
     storageFolder: "biblioJuniors",
   });
