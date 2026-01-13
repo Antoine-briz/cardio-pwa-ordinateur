@@ -6473,3 +6473,39 @@ padding-right: clamp(8px, 2vw, 24px);
   width: 100%;
   height: 100%;
 }
+/* Liste de revues dans une cellule */
+.biblio-journal-list{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 12px;
+}
+
+.biblio-journal{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+  padding: 6px 8px;
+  border-radius: 12px;
+  max-width: 420px;        /* évite que ça devienne trop large */
+}
+
+.biblio-journal:hover{
+  background: rgba(0,0,0,0.06);
+}
+
+.biblio-journal img{
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.12);
+  flex: 0 0 auto;
+}
+
+.biblio-journal span{
+  font-weight: 700;
+  line-height: 1.2;
+}
