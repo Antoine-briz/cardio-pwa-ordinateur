@@ -181,7 +181,8 @@ const PRECACHE = [
 "img/journals/seminars_tcv_surgery.png",
 
 // === Cardiologie
-"img/journals/ehj.png",
+"img/journals/circulation.png",
+  "img/journals/ehj.png",
 "img/journals/jacc.png",
 "img/journals/nature_reviews_cardiology.png",
 "img/journals/jama_cardiology.png",
