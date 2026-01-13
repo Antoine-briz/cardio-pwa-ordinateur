@@ -6422,3 +6422,9 @@ body.theme-dark .cec-box{ color:#111; }
   color: var(--fg, #000);   /* couleur texte principale */
   font-weight: 800;
 }
+/* Bouton BiBL. – style machine à écrire */
+.btn-bibl-typewriter{
+  font-family: 'Special Elite', 'Courier New', Courier, monospace;
+  letter-spacing: 1px;
+  font-size: 1.05rem;
+}
