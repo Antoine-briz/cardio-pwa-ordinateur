@@ -19265,30 +19265,29 @@ function renderTeachingClonePage(cfg) {
 
   // ===== HTML STRICTEMENT IDENTIQUE à Enseignement =====
   $app.innerHTML = `
-    <section class="page enseignement-page enseignement-page--mobile">
+  <section class="page enseignement-page enseignement-page--mobile">
     <div class="enseignement-head">
       <div><h2>${cfg.title}</h2></div>
     </div>
 
-    ${
-      cfg.showBiblNewsletter
-        ? `
-        <div class="bibl-newsletter">
-          Abonnez-vous à la newsletter hebdomadaire :
-          <a href="https://www.bibl.fr/" target="_blank" rel="noopener noreferrer">
-            https://www.bibl.fr/
-          </a>
-        </div>
-
-      <div class="enseignement-toolbar">
-        <input id="ens-search" type="search" placeholder="Rechercher dans les titres…" autocomplete="off" />
-        <select id="ens-filter-domain">
-          <option value="">Tous les domaines</option>
-        </select>
-        <select id="ens-filter-author">
-          <option value="">Tous les auteurs</option>
-        </select>
+    ${cfg.showBiblNewsletter ? `
+      <div class="bibl-newsletter">
+        Abonnez-vous à la newsletter hebdomadaire :
+        <a href="https://www.bibl.fr/" target="_blank" rel="noopener noreferrer">
+          https://www.bibl.fr/
+        </a>
       </div>
+    ` : ""}
+
+    <div class="enseignement-toolbar">
+      <input id="ens-search" type="search" placeholder="Rechercher dans les titres…" autocomplete="off" />
+      <select id="ens-filter-domain">
+        <option value="">Tous les domaines</option>
+      </select>
+      <select id="ens-filter-author">
+        <option value="">Tous les auteurs</option>
+      </select>
+    </div>
 
       <div class="enseignement-layout">
         <div class="enseignement-left">
