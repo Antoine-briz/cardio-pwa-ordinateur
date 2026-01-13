@@ -19005,7 +19005,6 @@ function renderTeachingClonePage(cfg) {
       <div class="enseignement-head">
         <div>
           <h2>${cfg.title}</h2>
-          <p class="muted">Supports pédagogiques partagés (PDF / PPT)</p>
         </div>
       </div>
 
