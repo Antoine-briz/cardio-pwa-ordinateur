@@ -60,6 +60,9 @@ function applyScreenShapeClass() {
 window.addEventListener("resize", applyScreenShapeClass);
 applyScreenShapeClass();
 
+if ("scrollRestoration" in history) {
+  history.scrollRestoration = "manual";
+}
 
 // ==========================
 //  GESTION DU THÈME GLOBAL
@@ -19081,6 +19084,11 @@ function renderBibliographie() {
     </section>
   `;
 
+ // ✅ TOUJOURS REMONTER EN HAUT APRÈS RENDU
+  requestAnimationFrame(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  });
+  
   document.getElementById("btnBiblioJuniors")?.addEventListener("click", () => {
     location.hash = "#/bibliographie/juniors";
   });
@@ -19386,6 +19394,11 @@ function renderTeachingClonePage(cfg) {
     </section>
   `;
 
+  // ✅ FORCE SCROLL EN HAUT (ENSEIGNEMENT)
+  requestAnimationFrame(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  });
+  
   // ===== mêmes sélecteurs / mêmes comportements =====
   const $search = document.getElementById("ens-search");
   const $filterDomain = document.getElementById("ens-filter-domain");
