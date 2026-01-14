@@ -19287,7 +19287,7 @@ function renderTeachingClonePage(cfg) {
 
     ${cfg.showBiblNewsletter ? `
       <div class="bibl-newsletter">
-        Abonnez-vous à la newsletter hebdomadaire :
+        Abonnez-vous gratuitement à la newsletter hebdo. :
         <a href="https://www.bibl.fr/" target="_blank" rel="noopener noreferrer">
           https://www.bibl.fr/
         </a>
