@@ -17342,9 +17342,6 @@ function renderCEC() {
     </div>
 
     <div class="intervention-main">
-        <div class="hero">
-          <h2>Circulation extra-corporelle</h2>
-        </div>
 
         <div class="grid">
           <button class="btn" onclick="location.hash = '#/cec-protocoles'">
@@ -18298,12 +18295,6 @@ const norm = (s) => (s ?? "")
       <img src="img/titre6.png" alt="Titre" class="title-strip-img">
     </div>
 
-    <div class="enseignement-head">
-        <div>
-          <h2>Enseignement</h2>
-        </div>
-      </div>
-
       <div class="enseignement-toolbar">
         <input id="ens-search" type="search" placeholder="Rechercher dans les titres…" autocomplete="off" />
         <select id="ens-filter-domain">
@@ -18889,7 +18880,6 @@ function renderBibliographie() {
 
     <div class="biblio-split">
         <div class="biblio-left">
-          <h2 class="page-title page-title--biblio">Bibliographie</h2>
 
           <div class="biblio-actions">
             <button class="btn btn-darkblue" id="btnBiblioJuniors">
@@ -20095,12 +20085,6 @@ const hideEditProtocolsModal = () => {
 
     <div class="title-strip">
       <img src="img/titre8.png" alt="Titre" class="title-strip-img">
-    </div>
-
-    <div class="enseignement-head">
-      <div style="width:100%;">
-        <h2 style="text-align:center; font-size:36px;">Recherche</h2>
-      </div>
     </div>
 
     <!-- Sélection protocole -->
