@@ -13423,21 +13423,31 @@ function renderReanAntibiotherapieMenu() {
         </div>
 
         <div class="grid">
-          <button class="btn" onclick="renderProbaMenu()">
-            Antibiothérapie probabiliste
-          </button>
-          <button class="btn" onclick="renderAdapteeMenu()">
-            Traitement des BMR et BHRe
-          </button>
-          <button class="btn" onclick="renderDureesForm()">
-            Durée d'antibiothérapie
-          </button>
-          <button class="btn" onclick="renderReinForm()">
-            Adaptation posologique à la fonction rénale
-          </button>
-          <button class="btn" onclick="renderModalitesForm()">
-            Modalités d'administration des antibiotiques
-          </button>
+         <button class="btn"
+  onclick="openSubPage(renderProbaMenu, renderReanAntibiotherapieMenu)">
+  Antibiothérapie probabiliste
+</button>
+
+<button class="btn"
+  onclick="openSubPage(renderAdapteeMenu, renderReanAntibiotherapieMenu)">
+  Traitement des BMR et BHRe
+</button>
+
+<button class="btn"
+  onclick="openSubPage(renderDureesForm, renderReanAntibiotherapieMenu)">
+  Durée d'antibiothérapie
+</button>
+
+<button class="btn"
+  onclick="openSubPage(renderReinForm, renderReanAntibiotherapieMenu)">
+  Adaptation posologique à la fonction rénale
+</button>
+
+<button class="btn"
+  onclick="openSubPage(renderModalitesForm, renderReanAntibiotherapieMenu)">
+  Modalités d'administration des antibiotiques
+</button>
+
         </div>
 
         <!-- Boutons rouges PDF -->
