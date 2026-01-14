@@ -850,7 +850,7 @@ function renderAnesthConsultations() {
             Calcul de l’EuroScore II
           </button>
 
-          <button class="btn" onclick="renderAnesthConsultTraitements()">
+          <button class="btn" onclick="openSubPage(renderAnesthConsultTraitements, renderAnesthConsultationsMenu)">
             Gestion pré-opératoire des traitements
           </button>
         </div>
@@ -1122,35 +1122,35 @@ function renderAnesthChirCecMenu() {
 
         <h3>Chirurgies programmées sous CEC</h3>
         <div class="grid">
-          <button class="btn" onclick="renderInterventionPontages()">
+          <button class="btn" onclick="openSubPage(renderInterventionPontages, renderAnesthChirSousCECMenu)">
             Pontages coronaires
           </button>
-          <button class="btn" onclick="renderInterventionRVA()">
+          <button class="btn" onclick="openSubPage(renderInterventionRVA, renderAnesthChirSousCECMenu)">
             RVA ou plastie aortique
           </button>
-          <button class="btn" onclick="renderInterventionRVM()">
+          <button class="btn" onclick="openSubPage(renderInterventionRVM, renderAnesthChirSousCECMenu)">
             RVM ou plastie mitrale
           </button>
-          <button class="btn" onclick="renderInterventionRVT()">
+          <button class="btn" onclick="openSubPage(renderInterventionRVT, renderAnesthChirSousCECMenu)">
             RVT ou plastie tricuspide
           </button>
-          <button class="btn" onclick="renderInterventionAorteAsc()">
+          <button class="btn" onclick="openSubPage(renderInterventionAorteAsc, renderAnesthChirSousCECMenu)">
             Chirurgie de l’aorte ascendante (hors dissection)
           </button>
         </div>
 
         <h3 style="margin-top:24px;">Chirurgies urgentes et assistances circulatoires</h3>
         <div class="grid">
-          <button class="btn" onclick="renderInterventionDrainagePericardique()">
+          <button class="btn" onclick="openSubPage(renderInterventionDrainagePericardique, renderAnesthChirSousCECMenu)">
             Drainage péricardique
           </button>
-          <button class="btn" onclick="renderInterventionDissectionAo()">
+          <button class="btn" onclick="openSubPage(renderInterventionDissectionAo, renderAnesthChirSousCECMenu)">
             Dissection aortique
           </button>
-          <button class="btn" onclick="renderInterventionTransplantAnesth()">
+          <button class="btn" onclick="openSubPage(renderInterventionTransplantAnesth, renderAnesthChirSousCECMenu)">
             Transplantation cardiaque
           </button>
-          <button class="btn" onclick="renderInterventionAssistancesCEC()">
+          <button class="btn" onclick="openSubPage(renderInterventionAssistancesCEC, renderAnesthChirSousCECMenu)">
             Assistances circulatoires (implantation / explantation)
           </button>
         </div>
@@ -1178,15 +1178,15 @@ function renderAnesthCardioStructMenu() {
         <!-- Groupe 1 : Cardiologie structurelle -->
         <h3>Cardiologie structurelle</h3>
         <div class="grid">
-          <button class="btn" onclick="renderInterventionTAVI()">
+          <button class="btn" onclick="openSubPage(renderInterventionTAVI, renderAnesthCardioStructMenu)">
             TAVI
           </button>
 
-          <button class="btn" onclick="renderInterventionMitraClip()">
+          <button class="btn" onclick="openSubPage(renderInterventionMitraClip, renderAnesthCardioStructMenu)">
             Mitra-clip
           </button>
 
-          <button class="btn" onclick="renderInterventionFOPCIA()">
+          <button class="btn" onclick="openSubPage(renderInterventionFOPCIA, renderAnesthCardioStructMenu)">
             Fermeture FOP / CIA
           </button>
         </div>
@@ -1194,15 +1194,15 @@ function renderAnesthCardioStructMenu() {
         <!-- Groupe 2 : Rythmologie interventionnelle -->
         <h3 style="margin-top:24px;">Rythmologie interventionnelle</h3>
         <div class="grid">
-          <button class="btn" onclick="renderInterventionPacemakerDAI()">
+          <button class="btn" onclick="openSubPage(renderInterventionPacemakerDAI, renderAnesthCardioStructMenu)">
             Pacemaker &amp; DAI
           </button>
 
-          <button class="btn" onclick="renderInterventionAblationDroit()">
+          <button class="btn" onclick="openSubPage(renderInterventionAblationDroit, renderAnesthCardioStructMenu)">
             Ablations du cœur droit
           </button>
 
-          <button class="btn" onclick="renderInterventionAblationGauche()">
+          <button class="btn" onclick="openSubPage(renderInterventionAblationGauche, renderAnesthCardioStructMenu)">
             Ablations du cœur gauche
           </button>
         </div>
@@ -1230,23 +1230,23 @@ function renderAnesthVasculaireMenu() {
         <!-- Groupe : Chirurgies vasculaires -->
         <h3 style="margin-top:24px;">Chirurgies vasculaires</h3>
         <div class="grid">
-          <button class="btn btn-blue" onclick="renderInterventionCarotide()">
+          <button class="btn btn-blue" onclick="openSubPage(renderInterventionCarotide, renderAnesthVasculaireMenu)">
             Chirurgies de la carotide et des TSA
           </button>
 
-          <button class="btn btn-blue" onclick="renderInterventionAorteThoracique()">
+          <button class="btn btn-blue" onclick="openSubPage(renderInterventionAorteThoracique, renderAnesthVasculaireMenu)">
             Chirurgies de l’aorte thoracique et thoraco-abdominale
           </button>
 
-          <button class="btn btn-blue" onclick="renderInterventionAorteAbdominale()">
+          <button class="btn btn-blue" onclick="openSubPage(renderInterventionAorteAbdominale, renderAnesthVasculaireMenu)">
             Chirurgies de l’aorte abdominale et artères viscérales
           </button>
 
-          <button class="btn btn-blue" onclick="renderInterventionMembreInferieur()">
+          <button class="btn btn-blue" onclick="openSubPage(renderInterventionMembreInferieur, renderAnesthVasculaireMenu)">
             Chirurgies du membre inférieur
           </button>
 
-          <button class="btn btn-blue" onclick="renderInterventionEndoprotheses()">
+          <button class="btn btn-blue" onclick="openSubPage(renderInterventionEndoprotheses, renderAnesthVasculaireMenu)">
             Endoprothèses aortiques
           </button>
         </div>
@@ -1254,7 +1254,7 @@ function renderAnesthVasculaireMenu() {
 <!-- Bouton protocoles spécifiques -->
         <h3>Protocoles transversaux</h3>
         <div class="grid">
-          <button class="btn btn-red" onclick="renderVasculaireProtocoles()">
+          <button class="btn btn-red" onclick="openSubPage(renderVasculaireProtocoles, renderAnesthVasculaireMenu)">
             Protocoles spécifiques
           </button>
         </div>
@@ -3530,13 +3530,40 @@ function renderAnesthRadioVascMenu() {
           <h2>Radio-vasculaire</h2>
         </div>
         <div class="grid">
-          <button class="btn" onclick="renderInterventionRadioVascFAV()">Angioplastie de FAV humérale</button>
-          <button class="btn" onclick="renderInterventionRadioVascMI()">Angioplastie des membres inférieurs</button>
-          <button class="btn" onclick="renderInterventionRadioVascEmbol()">Embolisation pelvienne</button>
-          <button class="btn" onclick="renderInterventionRadioVascAbdo()">Ablations intra-abdominales</button>
-          <button class="btn" onclick="renderInterventionRadioVascTIPS()">TIPS</button>
-          <button class="btn" onclick="renderInterventionRadioVascBiliaire()">Drainage biliaire percutané</button>
-          <button class="btn" onclick="renderInterventionRadioVascNephro()">Néphrostomie percutanée</button>
+          <button class="btn"
+  onclick="openSubPage(renderInterventionRadioVascFAV, renderAnesthRadioVasculaireMenu)">
+  Angioplastie de FAV humérale
+</button>
+
+<button class="btn"
+  onclick="openSubPage(renderInterventionRadioVascMI, renderAnesthRadioVasculaireMenu)">
+  Angioplastie des membres inférieurs
+</button>
+
+<button class="btn"
+  onclick="openSubPage(renderInterventionRadioVascEmbol, renderAnesthRadioVasculaireMenu)">
+  Embolisation pelvienne
+</button>
+
+<button class="btn"
+  onclick="openSubPage(renderInterventionRadioVascAbdo, renderAnesthRadioVasculaireMenu)">
+  Ablations intra-abdominales
+</button>
+
+<button class="btn"
+  onclick="openSubPage(renderInterventionRadioVascTIPS, renderAnesthRadioVasculaireMenu)">
+  TIPS
+</button>
+
+<button class="btn"
+  onclick="openSubPage(renderInterventionRadioVascBiliaire, renderAnesthRadioVasculaireMenu)">
+  Drainage biliaire percutané
+</button>
+
+<button class="btn"
+  onclick="openSubPage(renderInterventionRadioVascNephro, renderAnesthRadioVasculaireMenu)">
+  Néphrostomie percutanée
+</button>
         </div>
 
         <div class="actions">
