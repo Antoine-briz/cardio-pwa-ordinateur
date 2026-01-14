@@ -6849,3 +6849,12 @@ padding-right: clamp(8px, 2vw, 24px);
   border-radius: 16px !important;
   background: #fff !important;
 }
+.bibl-newsletter{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  text-align: center;
+  margin: 12px 0 16px;
+}
