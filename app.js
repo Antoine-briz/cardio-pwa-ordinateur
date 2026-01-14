@@ -20,6 +20,15 @@ function norm(s) {
     .trim();
 }
 
+function imgLink(label, file) {
+  return `<a href="javascript:void(0)" class="inline-img-link"
+            onclick="openImg('${file}')">${label}</a>`;
+}
+
+function imgIcon(file) {
+  return `<span class="eto-icon"
+            onclick="openImg('${file}')">🖥️</span>`;
+}
 
 function sectionHeader(title, imageFile) {
   // Si pas d'image, on garde l'ancien comportement simple
@@ -1339,11 +1348,6 @@ function renderInterventionCarotide() {
   const mgKgH = (perKg) =>
     `${String(perKg).replace(".", ",")}mg/kg/h (${doseSpan(perKg, "mg/h")} mg/h)`;
 
-  const imgLink = (label, file) =>
-    `<a href="javascript:void(0)" class="inline-img-link" onclick="openImg('${file}')">${label}</a>`;
-
-  const imgIcon = (file) =>
-    `<span class="eto-icon" onclick="openImg('${file}')">🖥️</span>`;
 
   // Remplace uniquement les "Cf ..." en lien image + icône écran (sans changer la mise en forme autour)
   function linkifyImgs(html) {
@@ -1831,11 +1835,6 @@ function renderInterventionAorteThoracique() {
   const mgKgH = (perKg) =>
     `${String(perKg).replace(".", ",")}mg/kg/h (~${doseSpan(perKg, "mg/h")})`;
 
-  const imgLink = (label, file) =>
-    `<a href="javascript:void(0)" class="inline-img-link" onclick="openImg('${file}')">${label}</a>`;
-
-  const imgIcon = (file) =>
-    `<span class="eto-icon" onclick="openImg('${file}')">🖥️</span>`;
 
   // Remplacements "Cf ..." -> lien + icône (sans changer le reste)
   function linkifyImgs(html) {
@@ -2236,10 +2235,6 @@ function renderInterventionAorteAbdominale() {
     return html;
   }
 
-  const imgLink = (label, file) =>
-    `<a href="javascript:void(0)" class="inline-img-link" onclick="openImg('${file}')">${label}</a>`;
-  const imgIcon = (file) =>
-    `<span class="eto-icon" onclick="openImg('${file}')">🖥️</span>`;
 
   function linkifyImgs(html) {
     if (!html) return "";
@@ -2698,10 +2693,6 @@ function renderInterventionMembreInferieur() {
     return html;
   }
 
-  const imgLink = (label, file) =>
-    `<a href="javascript:void(0)" class="inline-img-link" onclick="openImg('${file}')">${label}</a>`;
-  const imgIcon = (file) =>
-    `<span class="eto-icon" onclick="openImg('${file}')">🖥️</span>`;
 
   function linkifyImgs(html) {
     if (!html) return "";
@@ -3283,10 +3274,6 @@ function renderInterventionEndoprotheses() {
     return html;
   }
 
-  const imgLink = (label, file) =>
-    `<a href="javascript:void(0)" class="inline-img-link" onclick="openImg('${file}')">${label}</a>`;
-  const imgIcon = (file) =>
-    `<span class="eto-icon" onclick="openImg('${file}')">🖥️</span>`;
 
   // Remplacement des "Cf ..." en lien + icône écran (sans changer le reste)
   function linkifyImgs(html) {
