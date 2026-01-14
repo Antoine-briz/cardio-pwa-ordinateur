@@ -19236,7 +19236,7 @@ async function renderBiBLWeeklyJsonPage() {
     // 2) on fetch le JSON
     // ⚠️ IMPORTANT: si ton Service Worker est "cache-first", il peut servir un JSON ancien.
     // On met quand même "no-store" ici, et on corrigera SW juste après (voir section 1.C).
-    const resp = await fetch(downloadUrl, { cache: "no-store" });
+    const resp = await fetch(`${downloadUrl}&v=${Date.now()}`, { cache: "no-store" });
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
 
     const data = await resp.json();
