@@ -6879,3 +6879,10 @@ padding-right: clamp(8px, 2vw, 24px);
   color: #444;
   text-align: left;
 }
+
+/* Boutons ETO (RVA / RVM) */
+.eto-buttons{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;   /* espace entre les 2 boutons */
+}
