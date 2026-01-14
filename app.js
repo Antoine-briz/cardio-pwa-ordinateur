@@ -19272,7 +19272,7 @@ try {
   console.error(e);
   $tbody.innerHTML = `<tr><td colspan="5"><span class="muted">Erreur de chargement du fichier hebdomadaire.</span></td></tr>`;
 }
-
+}
 
 
 /* =========================
