@@ -19228,58 +19228,49 @@ async function renderBiBLWeeklyJsonPage() {
       .replaceAll('"', "&quot;")
       .replaceAll("'", "&#039;");
 
-  try {
-    // 1) on récupère l’URL du fichier dans Firebase Storage
-    const ref = window.storage.ref().child("bibliography/bibl_weekly.json");
-    const downloadUrl = await ref.getDownloadURL();
+try {
+  // 1) on récupère l’URL du fichier dans Firebase Storage
+  const ref = window.storage.ref().child("bibliography/bibl_weekly.json");
+  let downloadUrl = await ref.getDownloadURL();
 
-    // 2) on fetch le JSON
-    // ⚠️ IMPORTANT: si ton Service Worker est "cache-first", il peut servir un JSON ancien.
-    // On met quand même "no-store" ici, et on corrigera SW juste après (voir section 1.C).
-    let downloadUrl = await ref.getDownloadURL();
+  // ✅ Fix CORS : on force le domaine "appspot.com" (compatible CORS)
+  downloadUrl = downloadUrl.replace(
+    /\/b\/([^/]+)\.firebasestorage\.app\//,
+    "/b/$1.appspot.com/"
+  );
 
-// ✅ Fix CORS : on force le domaine "appspot.com" (compatible CORS)
-downloadUrl = downloadUrl.replace(
-  /\/b\/([^/]+)\.firebasestorage\.app\//,
-  "/b/$1.appspot.com/"
-);
+  // ✅ anti-cache
+  const resp = await fetch(`${downloadUrl}&v=${Date.now()}`, { cache: "no-store" });
+  if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
 
-// ✅ anti-cache
-const resp = await fetch(`${downloadUrl}&v=${Date.now()}`, { cache: "no-store" });
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+  const data = await resp.json();
 
-    const data = await resp.json();
-
-    const articles = Array.isArray(data.articles) ? data.articles : [];
-    if (!articles.length) {
-      $tbody.innerHTML = `<tr><td colspan="5"><span class="muted">Aucun article cette semaine.</span></td></tr>`;
-      return;
-    }
-
-    $tbody.innerHTML = articles.map((a) => {
-      const domain = escHtml(a.domain);
-      const journal = escHtml(a.journal);
-      const title = escHtml(a.title);
-      const abs = escHtml(a.abstract);
-      const url = String(a.url || "");
-
-      // abstract en wrap (pas “trop vertical” mais lisible)
-      return `
-        <tr>
-          <td>${domain}</td>
-          <td>${journal}</td>
-          <td>${title}</td>
-          <td class="bibl-abs">${abs}</td>
-          <td>
-            ${url ? `<a href="${url}" target="_blank" rel="noopener noreferrer">Ouvrir</a>` : ``}
-          </td>
-        </tr>
-      `;
-    }).join("");
-  } catch (e) {
-    console.error(e);
-    $tbody.innerHTML = `<tr><td colspan="5"><span class="muted">Erreur de chargement du fichier hebdomadaire.</span></td></tr>`;
+  const articles = Array.isArray(data.articles) ? data.articles : [];
+  if (!articles.length) {
+    $tbody.innerHTML = `<tr><td colspan="5"><span class="muted">Aucun article cette semaine.</span></td></tr>`;
+    return;
   }
+
+  $tbody.innerHTML = articles.map((a) => {
+    const domain = escHtml(a.domain);
+    const journal = escHtml(a.journal);
+    const title = escHtml(a.title);
+    const abs = escHtml(a.abstract);
+    const url = String(a.url || "");
+
+    return `
+      <tr>
+        <td>${domain}</td>
+        <td>${journal}</td>
+        <td>${title}</td>
+        <td class="bibl-abs">${abs}</td>
+        <td>${url ? `<a href="${url}" target="_blank" rel="noopener noreferrer">Ouvrir</a>` : ``}</td>
+      </tr>
+    `;
+  }).join("");
+} catch (e) {
+  console.error(e);
+  $tbody.innerHTML = `<tr><td colspan="5"><span class="muted">Erreur de chargement du fichier hebdomadaire.</span></td></tr>`;
 }
 
 
