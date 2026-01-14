@@ -217,57 +217,76 @@ self.addEventListener("install", (event) => {
     // On tente d'ajouter tout, mais on n'échoue pas si un item est absent (404)
     const UNIQUE = [...new Set(PRECACHE)];
 
-await Promise.allSettled(
-  UNIQUE.map((url) =>
-    cache.add(url).catch((err) => {
-      console.warn("[SW] Precaching failed:", url, err);
-    })
-  )
-);
+    await Promise.allSettled(
+      UNIQUE.map((url) =>
+        cache.add(url).catch((err) => {
+          console.warn("[SW] Precaching failed:", url, err);
+        })
+      )
+    );
 
     await self.skipWaiting();
   })());
 });
 
-// FETCH : stratégie hors-ligne (cache d'abord pour le local)
+// FETCH : stratégie hors-ligne
 self.addEventListener("fetch", (event) => {
   const req = event.request;
   const url = new URL(req.url);
 
-  // On laisse tranquilles les requêtes externes (Euroscore 2, etc.)
+  // =========================================
+  // ✅ EXCEPTION : JSON BiBL hebdo
+  // - on ne le met jamais en cache
+  // - on force le réseau
+  // IMPORTANT : ce JSON est souvent servi via firebasestorage.googleapis.com
+  // donc il peut être "externe". Dans ce cas, on le laisse passer au navigateur,
+  // mais si jamais tu changes pour une URL locale, on le gère aussi.
+  // =========================================
+  const isBiBLWeeklyJson =
+    url.href.includes("bibl_weekly.json") ||
+    url.href.includes("bibliography%2Fbibl_weekly.json") ||
+    url.pathname.endsWith("/bibliography/bibl_weekly.json");
+
+  if (isBiBLWeeklyJson) {
+    event.respondWith(fetch(req, { cache: "no-store" }));
+    return;
+  }
+
+  // =========================================
+  // Requêtes externes : on ne les intercepte pas
+  // (Euroscore, Firebase Storage, etc.)
+  // =========================================
   if (url.origin !== self.location.origin) {
     return;
   }
 
-  // Navigation (documents HTML) : on essaie le réseau puis le cache
+  // =========================================
+  // Navigation (documents HTML) : réseau puis cache
+  // =========================================
   if (req.mode === "navigate" || req.destination === "document") {
-    event.respondWith(
-      (async () => {
-        try {
-          const networkResp = await fetch(req);
-          const cache = await caches.open(CACHE_NAME);
-          cache.put("./index.html", networkResp.clone());
-          return networkResp;
-        } catch (e) {
-          const cached = await caches.match("./index.html");
-          if (cached) return cached;
-          return new Response("Offline", {
-            status: 503,
-            statusText: "Offline",
-          });
-        }
-      })()
-    );
+    event.respondWith((async () => {
+      try {
+        const networkResp = await fetch(req, { cache: "no-store" });
+        const cache = await caches.open(CACHE_NAME);
+        await cache.put("./index.html", networkResp.clone());
+        return networkResp;
+      } catch (e) {
+        const cached = await caches.match("./index.html");
+        if (cached) return cached;
+        return new Response("Offline", { status: 503, statusText: "Offline" });
+      }
+    })());
     return;
   }
 
-  // Pour le reste (CSS, JS, images, Excel, etc.) : cache d'abord, puis réseau
-    // Pour le reste : on différencie JS/CSS (network-first) et assets (cache-first)
+  // =========================================
+  // Ressources : JS/CSS en network-first, le reste cache-first
+  // =========================================
   event.respondWith((async () => {
     const isJS = req.destination === "script" || url.pathname.endsWith(".js");
     const isCSS = req.destination === "style" || url.pathname.endsWith(".css");
 
-    // ✅ JS/CSS : NETWORK FIRST (sinon tu restes bloqué sur un vieux app.js)
+    // ✅ JS/CSS : NETWORK FIRST (évite d'être bloqué sur un vieux app.js)
     if (isJS || isCSS) {
       try {
         const networkResp = await fetch(req, { cache: "no-store" });
@@ -291,6 +310,7 @@ self.addEventListener("fetch", (event) => {
       return cached;
     }
 
+    // Pas en cache : réseau puis cache
     try {
       const networkResp = await fetch(req);
       const cache = await caches.open(CACHE_NAME);
@@ -300,13 +320,14 @@ self.addEventListener("fetch", (event) => {
       return new Response("", { status: 504, statusText: "Offline" });
     }
   })());
-
 });
 
 self.addEventListener("activate", (event) => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
-    await Promise.all(keys.map(k => (k !== CACHE_NAME ? caches.delete(k) : Promise.resolve())));
+    await Promise.all(
+      keys.map((k) => (k !== CACHE_NAME ? caches.delete(k) : Promise.resolve()))
+    );
     await self.clients.claim();
   })());
 });
