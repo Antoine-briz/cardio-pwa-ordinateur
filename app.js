@@ -6231,7 +6231,7 @@ function formatDoseMgPerKg(poids, mgPerKg) {
 // --- Boutons affichés dans l'encadré "Échographie trans-œsophagienne" (sur la page) ---
 function etoEntryButtonsHtml(prefix) {
   return `
-    <div class="row" style="gap:12px; flex-wrap:wrap;">
+    <div class="eto-buttons">
       <button class="btn" id="${prefix}-eto-goto">Coupes et mesures ETO</button>
       <button class="btn" id="${prefix}-eto-open">Compte rendu d'ETO</button>
     </div>
