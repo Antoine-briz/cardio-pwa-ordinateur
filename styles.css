@@ -6871,3 +6871,11 @@ padding-right: clamp(8px, 2vw, 24px);
   position: relative;
   z-index: 1;
 }
+
+.cec-credit{
+  margin-top: 12px;
+  font-style: italic;
+  font-size: 14px;
+  color: #444;
+  text-align: left;
+}
