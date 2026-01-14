@@ -6858,3 +6858,16 @@ padding-right: clamp(8px, 2vw, 24px);
   text-align: center;
   margin: 12px 0 16px;
 }
+
+/* Assure que le contenu commence sous l'image de titre */
+.intervention-content {
+  margin-top: 24px;          /* espace sous l'image titre */
+  display: grid;
+  grid-template-columns: 1fr 0.8fr;
+  gap: 24px;
+}
+
+.title-strip {
+  position: relative;
+  z-index: 1;
+}
