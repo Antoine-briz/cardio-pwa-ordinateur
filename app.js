@@ -17337,7 +17337,11 @@ function renderCEC() {
   $app.innerHTML = `
     <section class="intervention-shell">
 
-      <div class="intervention-main">
+    <div class="title-strip">
+      <img src="img/titre5.png" alt="Titre" class="title-strip-img">
+    </div>
+
+    <div class="intervention-main">
         <div class="hero">
           <h2>Circulation extra-corporelle</h2>
         </div>
@@ -18289,7 +18293,12 @@ const norm = (s) => (s ?? "")
 
   $app.innerHTML = `
     <section class="page enseignement-page">
-      <div class="enseignement-head">
+
+    <div class="title-strip">
+      <img src="img/titre6.png" alt="Titre" class="title-strip-img">
+    </div>
+
+    <div class="enseignement-head">
         <div>
           <h2>Enseignement</h2>
         </div>
@@ -18873,7 +18882,12 @@ async function ensureEnsAdminCodeOnce() {
 function renderBibliographie() {
   $app.innerHTML = `
     <section class="container">
-      <div class="biblio-split">
+
+    <div class="title-strip">
+      <img src="img/titre7.png" alt="Titre" class="title-strip-img">
+    </div>
+
+    <div class="biblio-split">
         <div class="biblio-left">
           <h2 class="page-title page-title--biblio">Bibliographie</h2>
 
@@ -20078,6 +20092,11 @@ const hideEditProtocolsModal = () => {
   // ==============================
   $app.innerHTML = `
   <section class="page recherche-page enseignement-page">
+
+    <div class="title-strip">
+      <img src="img/titre8.png" alt="Titre" class="title-strip-img">
+    </div>
+
     <div class="enseignement-head">
       <div style="width:100%;">
         <h2 style="text-align:center; font-size:36px;">Recherche</h2>
