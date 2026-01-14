@@ -3531,37 +3531,37 @@ function renderAnesthRadioVascMenu() {
         </div>
         <div class="grid">
           <button class="btn"
-  onclick="openSubPage(renderInterventionRadioVascFAV, renderAnesthRadioVasculaireMenu)">
+  onclick="openSubPage(renderInterventionRadioVascFAV, renderAnesthRadioVascMenu)">
   Angioplastie de FAV humérale
 </button>
 
 <button class="btn"
-  onclick="openSubPage(renderInterventionRadioVascMI, renderAnesthRadioVasculaireMenu)">
+  onclick="openSubPage(renderInterventionRadioVascMI, renderAnesthRadioVascMenu)">
   Angioplastie des membres inférieurs
 </button>
 
 <button class="btn"
-  onclick="openSubPage(renderInterventionRadioVascEmbol, renderAnesthRadioVasculaireMenu)">
+  onclick="openSubPage(renderInterventionRadioVascEmbol, renderAnesthRadioVascMenu)">
   Embolisation pelvienne
 </button>
 
 <button class="btn"
-  onclick="openSubPage(renderInterventionRadioVascAbdo, renderAnesthRadioVasculaireMenu)">
+  onclick="openSubPage(renderInterventionRadioVascAbdo, renderAnesthRadioVascuMenu)">
   Ablations intra-abdominales
 </button>
 
 <button class="btn"
-  onclick="openSubPage(renderInterventionRadioVascTIPS, renderAnesthRadioVasculaireMenu)">
+  onclick="openSubPage(renderInterventionRadioVascTIPS, renderAnesthRadioVascMenu)">
   TIPS
 </button>
 
 <button class="btn"
-  onclick="openSubPage(renderInterventionRadioVascBiliaire, renderAnesthRadioVasculaireMenu)">
+  onclick="openSubPage(renderInterventionRadioVascBiliaire, renderAnesthRadioVascMenu)">
   Drainage biliaire percutané
 </button>
 
 <button class="btn"
-  onclick="openSubPage(renderInterventionRadioVascNephro, renderAnesthRadioVasculaireMenu)">
+  onclick="openSubPage(renderInterventionRadioVascNephro, renderAnesthRadioVascMenu)">
   Néphrostomie percutanée
 </button>
         </div>
