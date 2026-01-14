@@ -10534,19 +10534,19 @@ function renderReanMenu() {
         </div>
 
         <!-- 2. Prescriptions post-opératoires -->
-        <div class="card rean-card" onclick="renderReanPrescriptionsPostOp()">
+        <div class="card rean-card" onclick="openSubPage(renderReanPrescriptionsPostOp, renderReanMenu)">
           <img src="img/prescription.png" alt="Prescriptions post-opératoires" class="menu-section-img" />
           <h3>Prescriptions post-opératoires</h3>
         </div>
 
         <!-- 3. Saignements post-opératoires -->
-        <div class="card rean-card" onclick="renderReanSaignementsPostOp()">
+        <div class="card rean-card" onclick="openSubPage(renderReanSaignementsPostOp, renderReanMenu)">
           <img src="img/saignement.png" alt="Saignements post-opératoires" class="menu-section-img" />
           <h3>Saignements post-opératoires</h3>
         </div>
 
         <!-- 4. FA post-opératoire -->
-        <div class="card rean-card" onclick="renderReanFAPostOp()">
+        <div class="card rean-card" onclick="openSubPage(renderReanFAPostOp, renderReanMenu)">
           <img src="img/fa.png" alt="FA post-opératoire" class="menu-section-img" />
           <h3>FA post-opératoire</h3>
         </div>
@@ -10558,7 +10558,7 @@ function renderReanMenu() {
         </div>
 
         <!-- 6. Antibiothérapies -->
-        <div class="card rean-card" onclick="renderReanAntibiotherapieMenu()">
+        <div class="card rean-card" onclick="openSubPage(renderReanAntibiotherapieMenu, renderReanMenu)">
           <img src="img/antibiotherapie.png" alt="Antibiothérapie en réanimation" class="menu-section-img" />
           <h3>Antibiothérapies</h3>
         </div>
