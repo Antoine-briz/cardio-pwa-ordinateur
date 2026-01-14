@@ -18398,6 +18398,11 @@ const norm = (s) => (s ?? "")
     </section>
   `;
 
+  // ✅ FORCE SCROLL EN HAUT (RECHERCHE)
+  requestAnimationFrame(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  });
+  
   const $search = document.getElementById("ens-search");
   const $filterDomain = document.getElementById("ens-filter-domain");
   const $filterAuthor = document.getElementById("ens-filter-author");
