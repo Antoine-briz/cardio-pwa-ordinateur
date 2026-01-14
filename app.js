@@ -1122,35 +1122,35 @@ function renderAnesthChirCecMenu() {
 
         <h3>Chirurgies programmées sous CEC</h3>
         <div class="grid">
-          <button class="btn" onclick="openSubPage(renderInterventionPontages, renderAnesthChirCECMenu)">
+          <button class="btn" onclick="openSubPage(renderInterventionPontages, renderAnesthChirCecMenu)">
             Pontages coronaires
           </button>
-          <button class="btn" onclick="openSubPage(renderInterventionRVA, renderAnesthChirCECMenu)">
+          <button class="btn" onclick="openSubPage(renderInterventionRVA, renderAnesthChirCecMenu)">
             RVA ou plastie aortique
           </button>
-          <button class="btn" onclick="openSubPage(renderInterventionRVM, renderAnesthChirCECMenu)">
+          <button class="btn" onclick="openSubPage(renderInterventionRVM, renderAnesthChirCecMenu)">
             RVM ou plastie mitrale
           </button>
-          <button class="btn" onclick="openSubPage(renderInterventionRVT, renderAnesthChirCECMenu)">
+          <button class="btn" onclick="openSubPage(renderInterventionRVT, renderAnesthChirCecMenu)">
             RVT ou plastie tricuspide
           </button>
-          <button class="btn" onclick="openSubPage(renderInterventionAorteAsc, renderAnesthChirCECMenu)">
+          <button class="btn" onclick="openSubPage(renderInterventionAorteAsc, renderAnesthChirCecMenu)">
             Chirurgie de l’aorte ascendante (hors dissection)
           </button>
         </div>
 
         <h3 style="margin-top:24px;">Chirurgies urgentes et assistances circulatoires</h3>
         <div class="grid">
-          <button class="btn" onclick="openSubPage(renderInterventionDrainagePericardique, renderAnesthChirCECMenu)">
+          <button class="btn" onclick="openSubPage(renderInterventionDrainagePericardique, renderAnesthChirCecMenu)">
             Drainage péricardique
           </button>
-          <button class="btn" onclick="openSubPage(renderInterventionDissectionAo, renderAnesthChirCECMenu)">
+          <button class="btn" onclick="openSubPage(renderInterventionDissectionAo, renderAnesthChirCecMenu)">
             Dissection aortique
           </button>
-          <button class="btn" onclick="openSubPage(renderInterventionTransplantAnesth, renderAnesthChirCECMenu)">
+          <button class="btn" onclick="openSubPage(renderInterventionTransplantAnesth, renderAnesthChirCecMenu)">
             Transplantation cardiaque
           </button>
-          <button class="btn" onclick="openSubPage(renderInterventionAssistancesCEC, renderAnesthChirCECMenu)">
+          <button class="btn" onclick="openSubPage(renderInterventionAssistancesCEC, renderAnesthChirCecMenu)">
             Assistances circulatoires (implantation / explantation)
           </button>
         </div>
