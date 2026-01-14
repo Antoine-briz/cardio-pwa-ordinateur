@@ -17377,34 +17377,39 @@ function renderCEC() {
   $app.innerHTML = `
     <section class="intervention-shell">
 
-    <div class="title-strip">
-      <img src="img/titre5.png" alt="Titre" class="title-strip-img">
-    </div>
-
-    <div class="intervention-main">
-
-        <div class="grid">
-          <button class="btn" onclick="location.hash = '#/cec-protocoles'">
-            Protocoles de CEC
-          </button>
-
-          <button class="btn" onclick="location.hash = '#/cec-urgences'">
-            Situations d'urgence
-          </button>
-
-          <button class="btn" onclick="location.hash = '#/cec-procedures'">
-            Procédures spécifiques
-          </button>
-        </div>
+      <!-- Bandeau titre -->
+      <div class="title-strip">
+        <img src="img/titre5.png" alt="Titre" class="title-strip-img">
       </div>
 
-<aside class="intervention-side">
-        <img src="img/cec1.png" alt="Circulation extra-corporelle">
-      </aside>
+      <!-- CONTENU décallé sous le titre -->
+      <div class="intervention-content">
 
+        <div class="intervention-main">
+          <div class="grid">
+            <button class="btn" onclick="location.hash = '#/cec-protocoles'">
+              Protocoles de CEC
+            </button>
+
+            <button class="btn" onclick="location.hash = '#/cec-urgences'">
+              Situations d'urgence
+            </button>
+
+            <button class="btn" onclick="location.hash = '#/cec-procedures'">
+              Procédures spécifiques
+            </button>
+          </div>
+        </div>
+
+        <aside class="intervention-side">
+          <img src="img/cec1.png" alt="Circulation extra-corporelle">
+        </aside>
+
+      </div>
     </section>
   `;
 }
+
 
 
 function renderCecProtocoles() {
