@@ -7859,17 +7859,8 @@ if (cbRisk && swanGanzLine) {
   const updateSwanGanz = () => {
     swanGanzLine.style.display = cbRisk.checked ? "inline" : "none";
   };
-
-  // état initial + mise à jour
   updateSwanGanz();
   cbRisk.addEventListener("change", updateSwanGanz);
-}
-
-  // état initial
-  updateSwanGanz();
-
-  // mise à jour dynamique
-  inductionCheckbox.addEventListener("change", updateSwanGanz);
 }
 
   
@@ -8106,25 +8097,17 @@ function setupRvaLogic() {
   const liCefaObese = document.getElementById("rva-cefazoline-obese");
   const liVanco = document.getElementById("rva-vancomycine");
   const spanVanco = document.getElementById("rva-vanco-dose");
-// === Règle Swan-Ganz conditionnelle (uniquement si "Induction à risque" cochée) ===
+// === Règle Swan-Ganz conditionnelle ===
 const swanGanzLine = document.getElementById("monitorage-swanganz");
 
 if (cbRisk && swanGanzLine) {
   const updateSwanGanz = () => {
     swanGanzLine.style.display = cbRisk.checked ? "inline" : "none";
   };
-
-  // état initial + mise à jour
   updateSwanGanz();
   cbRisk.addEventListener("change", updateSwanGanz);
 }
 
-  // état initial
-  updateSwanGanz();
-
-  // mise à jour dynamique
-  inductionCheckbox.addEventListener("change", updateSwanGanz);
-}
   
   function updateInduction() {
     const poids = parseKg(poidsId);
@@ -8244,8 +8227,8 @@ function renderInterventionRVM() {
         <p>
           Scope ECG 5 branches, SpO₂, KTa radial gauche, KTC 5 voies JID (gauche si mitrale vidéo avec canulation JID), BIS, NIRS si FdR, ETO
           <span id="monitorage-swanganz" style="display:none;">
-      , discuter Swan-Ganz si FEVG &lt; 35% ou HTAP
-    </span>.
+        , discuter Swan-Ganz si FEVG &lt; 35% ou HTAP
+      </span>.
         </p>
         <p><strong>Objectif IM :</strong> Plein, rapide, ouvert.</p>
         <p><strong>Objectif RM :</strong> Fermé, vide, lent.</p>
@@ -8363,24 +8346,15 @@ function setupRvmLogic() {
   const liCefaObese = document.getElementById("rvm-cefazoline-obese");
   const liVanco = document.getElementById("rvm-vancomycine");
   const spanVanco = document.getElementById("rvm-vanco-dose");
-// === Règle Swan-Ganz conditionnelle (uniquement si "Induction à risque" cochée) ===
+// === Règle Swan-Ganz conditionnelle ===
 const swanGanzLine = document.getElementById("monitorage-swanganz");
 
 if (cbRisk && swanGanzLine) {
   const updateSwanGanz = () => {
     swanGanzLine.style.display = cbRisk.checked ? "inline" : "none";
   };
-
-  // état initial + mise à jour
   updateSwanGanz();
   cbRisk.addEventListener("change", updateSwanGanz);
-}
-
-  // état initial
-  updateSwanGanz();
-
-  // mise à jour dynamique
-  inductionCheckbox.addEventListener("change", updateSwanGanz);
 }
 
   
@@ -8732,8 +8706,8 @@ function renderInterventionAorteAsc() {
           Scope ECG 5 branches, SpO₂, KTa radial gauche, KTc 5 voies, BIS,
           NIRS <strong>systématique</strong>, ETO
           <span id="monitorage-swanganz" style="display:none;">
-      , discuter Swan-Ganz si FEVG &lt; 35% ou HTAP
-    </span>.
+        , discuter Swan-Ganz si FEVG &lt; 35% ou HTAP
+      </span>.
         </p>
         <p>
           <strong>Objectif :</strong> Plein, mou, ouvert, lent. Éviter les pics hypertensifs&nbsp;!
@@ -8849,24 +8823,15 @@ function setupAorteAscLogic() {
   const liCefaObese = document.getElementById("aoasc-cefazoline-obese");
   const liVanco = document.getElementById("aoasc-vancomycine");
   const spanVanco = document.getElementById("aoasc-vanco-dose");
-// === Règle Swan-Ganz conditionnelle (uniquement si "Induction à risque" cochée) ===
+// === Règle Swan-Ganz conditionnelle ===
 const swanGanzLine = document.getElementById("monitorage-swanganz");
 
 if (cbRisk && swanGanzLine) {
   const updateSwanGanz = () => {
     swanGanzLine.style.display = cbRisk.checked ? "inline" : "none";
   };
-
-  // état initial + mise à jour
   updateSwanGanz();
   cbRisk.addEventListener("change", updateSwanGanz);
-}
-
-  // état initial
-  updateSwanGanz();
-
-  // mise à jour dynamique
-  inductionCheckbox.addEventListener("change", updateSwanGanz);
 }
 
   
