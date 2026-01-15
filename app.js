@@ -7853,7 +7853,7 @@ function setupPcLogic() {
   const liVanco = document.getElementById("pc-vancomycine");
   const spanVanco = document.getElementById("pc-vanco-dose");
 // === Règle Swan-Ganz conditionnelle ===
-const inductionCheckbox = document.getElementById("induction-risque");
+const inductionCheckbox = document.getElementById("pc-induction-risque");
 const swanGanzLine = document.getElementById("monitorage-swanganz");
 
 if (inductionCheckbox && swanGanzLine) {
