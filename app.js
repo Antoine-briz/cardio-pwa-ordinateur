@@ -17430,18 +17430,19 @@ function renderEtoBibliotheque() {
 
 function renderCEC() {
   $app.innerHTML = `
-    <section class="intervention-shell">
+    <section class="cec-page">
 
       <!-- Bandeau titre -->
-      <div class="title-strip">
-        <img src="img/titre5.png" alt="Titre" class="title-strip-img">
+      <div class="cec-title-strip">
+        <img src="img/titre5.png" alt="CEC" class="cec-title-img">
       </div>
 
-      <!-- CONTENU décallé sous le titre -->
-      <div class="intervention-content">
+      <!-- Contenu CEC -->
+      <div class="cec-content">
 
-        <div class="intervention-main">
-          <div class="grid">
+        <!-- Colonne gauche : boutons -->
+        <div class="cec-main">
+          <div class="grid cec-grid">
             <button class="btn" onclick="location.hash = '#/cec-protocoles'">
               Protocoles de CEC
             </button>
@@ -17454,21 +17455,23 @@ function renderCEC() {
               Procédures spécifiques
             </button>
           </div>
-            <!-- ✅ Mention contribution -->
-  <div class="cec-credit">
-    Avec l'aimable contribution du Dr Florent LAVERDURE
-  </div>
+
+          <div class="cec-credit">
+            Avec l'aimable contribution du Dr Florent LAVERDURE
+          </div>
         </div>
 
-        <aside class="intervention-side">
+        <!-- Colonne droite : image -->
+        <aside class="cec-side">
           <img src="img/cec1.png" alt="Circulation extra-corporelle">
         </aside>
 
       </div>
     </section>
   `;
-}
 
+  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+}
 
 
 function renderCecProtocoles() {
