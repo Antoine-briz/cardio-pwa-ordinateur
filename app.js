@@ -18993,7 +18993,8 @@ function renderBibliographie() {
             </button>
 
             <button class="btn btn-darkblue btn-bibl-typewriter" id="btnBiblioHebdo">
-              BiBL.
+              <p><strong>Newsletter hebdo. BiBL.</strong></p>
+              <p>Découvrez de nouveaux articles chaque mardi</p>
             </button>
           </div>
 
