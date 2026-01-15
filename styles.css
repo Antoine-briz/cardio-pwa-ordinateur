@@ -6970,3 +6970,76 @@ padding-right: clamp(8px, 2vw, 24px);
     opacity: 0.85;
   }
 }
+/* ================================
+   CEC — FIX STRUCTURE & LAYOUT
+================================ */
+
+/* page globale */
+.cec-page{
+  width: 100%;
+}
+
+/* bandeau titre */
+.cec-title-strip{
+  width: 100%;
+  overflow: hidden;
+}
+
+.cec-title-img{
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* contenu sous le titre */
+.cec-content{
+  display: grid;
+  grid-template-columns: 1fr 0.9fr;
+  gap: 32px;
+  padding: 32px clamp(12px, 2vw, 32px);
+  align-items: start;
+}
+
+/* colonne gauche */
+.cec-main{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* boutons */
+.cec-grid{
+  display: grid;
+  gap: 14px;
+}
+
+/* image à droite */
+.cec-side img{
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  object-fit: cover;
+}
+
+/* crédit */
+.cec-credit{
+  margin-top: 6px;
+  font-style: italic;
+  font-size: 14px;
+  color: #666;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 900px){
+  .cec-content{
+    grid-template-columns: 1fr;
+  }
+
+  .cec-side{
+    order: 2;
+  }
+
+  .cec-main{
+    order: 1;
+  }
+}
