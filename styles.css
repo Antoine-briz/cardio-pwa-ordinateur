@@ -6915,3 +6915,58 @@ padding-right: clamp(8px, 2vw, 24px);
     min-height: 60px;
   }
 }
+
+/* =================================================
+   BIBLIOGRAPHIE — DESKTOP : boutons & newsletter
+================================================= */
+
+@media (min-width: 901px){
+
+  /* ===== Zone boutons ===== */
+  .biblio-actions{
+    display: grid;
+    gap: 14px;                 /* espace ENTRE boutons */
+    margin-bottom: 28px;       /* espace SOUS les boutons */
+  }
+
+  /* Les deux boutons STRICTEMENT identiques */
+  .biblio-actions .btn{
+    min-height: 64px;          /* même hauteur */
+    font-size: 1.15rem;        /* même taille de police */
+    font-weight: 800;
+    letter-spacing: 0.4px;
+    border-radius: 16px;
+  }
+
+  /* On neutralise toute différence résiduelle */
+  .btn-bibl-typewriter{
+    font-family: inherit;      /* même police */
+    font-size: inherit;
+    min-height: inherit;
+  }
+
+  /* Séparation claire boutons / tableau */
+  .biblio-box{
+    margin-top: 16px;
+  }
+
+  /* ===== Newsletter BiBL ===== */
+  .bibl-newsletter{
+    font-size: 1.05rem;
+    line-height: 1.4;
+  }
+
+  /* Force la phrase secondaire à la ligne */
+  .bibl-newsletter::after{
+    content: "";
+    display: block;
+    height: 6px;
+  }
+
+  .bibl-newsletter span,
+  .bibl-newsletter small{
+    display: block;
+    margin-top: 4px;
+    opacity: 0.85;
+  }
+}
