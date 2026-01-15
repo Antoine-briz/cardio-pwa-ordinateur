@@ -20,6 +20,59 @@ function norm(s) {
     .trim();
 }
 
+function openImg(name) {
+  const popup = document.getElementById("img-popup");
+  const imgEl = document.getElementById("popup-img");
+
+  // Sécurité
+  if (!popup || !imgEl) return;
+
+  // 🔁 reset
+  imgEl.src = "";
+  imgEl.style.width = "";
+  imgEl.style.height = "";
+  imgEl.style.maxWidth = "";
+  imgEl.style.display = "";
+
+  // On va utiliser un wrapper scroll UNIQUEMENT pour ces 2 images
+  const isTableauACR = name === "tableauacr.png";
+  const isSFAR = name === "aidecognitiveSFAR.png";
+
+  // Cherche (ou crée) le wrapper scroll autour de l'image
+  let wrap = popup.querySelector(".img-scroll-wrap");
+
+  if (isTableauACR || isSFAR) {
+    // Crée le wrapper si absent
+    if (!wrap) {
+      wrap = document.createElement("div");
+      wrap.className = "img-scroll-wrap";
+
+      // On place le wrapper à la place de l'image dans la popup
+      // => on "déplace" l'image existante dedans
+      imgEl.parentNode.insertBefore(wrap, imgEl);
+      wrap.appendChild(imgEl);
+    }
+
+    // Applique le facteur d'agrandissement
+    const scale = isTableauACR ? 1 : 1;
+
+    imgEl.src = `img/${name}`;
+    imgEl.style.width = `${scale * 100}%`;   // 300% ou 200%
+    imgEl.style.height = "auto";
+    imgEl.style.maxWidth = "none";
+  } else {
+    // ✅ Toutes les autres images : affichage EXACTEMENT comme avant
+    if (wrap) {
+      // Si wrapper présent, on remet l'image hors wrapper pour revenir au mode normal
+      wrap.parentNode.insertBefore(imgEl, wrap);
+      wrap.remove();
+    }
+    imgEl.src = `img/${name}`;
+  }
+
+  popup.style.display = "flex";
+}
+
 function imgLink(label, file) {
   return `<a href="javascript:void(0)" class="inline-img-link"
             onclick="openImg('${file}')">${label}</a>`;
@@ -12027,60 +12080,6 @@ function renderReanEto() {
     encadres,
   });
 }
-
-function openImg(name) {
-  const popup = document.getElementById("img-popup");
-  const imgEl = document.getElementById("popup-img");
-
-  // Sécurité
-  if (!popup || !imgEl) return;
-
-  // 🔁 reset
-  imgEl.src = "";
-  imgEl.style.width = "";
-  imgEl.style.height = "";
-  imgEl.style.maxWidth = "";
-  imgEl.style.display = "";
-
-  // On va utiliser un wrapper scroll UNIQUEMENT pour ces 2 images
-  const isTableauACR = name === "tableauacr.png";
-  const isSFAR = name === "aidecognitiveSFAR.png";
-
-  // Cherche (ou crée) le wrapper scroll autour de l'image
-  let wrap = popup.querySelector(".img-scroll-wrap");
-
-  if (isTableauACR || isSFAR) {
-    // Crée le wrapper si absent
-    if (!wrap) {
-      wrap = document.createElement("div");
-      wrap.className = "img-scroll-wrap";
-
-      // On place le wrapper à la place de l'image dans la popup
-      // => on "déplace" l'image existante dedans
-      imgEl.parentNode.insertBefore(wrap, imgEl);
-      wrap.appendChild(imgEl);
-    }
-
-    // Applique le facteur d'agrandissement
-    const scale = isTableauACR ? 1 : 1;
-
-    imgEl.src = `img/${name}`;
-    imgEl.style.width = `${scale * 100}%`;   // 300% ou 200%
-    imgEl.style.height = "auto";
-    imgEl.style.maxWidth = "none";
-  } else {
-    // ✅ Toutes les autres images : affichage EXACTEMENT comme avant
-    if (wrap) {
-      // Si wrapper présent, on remet l'image hors wrapper pour revenir au mode normal
-      wrap.parentNode.insertBefore(imgEl, wrap);
-      wrap.remove();
-    }
-    imgEl.src = `img/${name}`;
-  }
-
-  popup.style.display = "flex";
-}
-
 
 function closePopup() {
   document.getElementById("img-popup").style.display = "none";
