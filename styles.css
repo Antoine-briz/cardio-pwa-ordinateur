@@ -6886,3 +6886,32 @@ padding-right: clamp(8px, 2vw, 24px);
   flex-direction: column;
   gap: 12px;   /* espace entre les 2 boutons */
 }
+
+/* =========================================
+   BIBLIOGRAPHIE — DESKTOP : boutons mis en valeur
+========================================= */
+
+@media (min-width: 901px){
+
+  /* Conteneur des boutons */
+  .biblio-actions{
+    display: grid;
+    gap: 14px;              /* espace ENTRE les deux boutons */
+    margin-bottom: 22px;    /* espace AVANT le tableau */
+  }
+
+  /* Boutons Bibliographie (desktop) */
+  .biblio-actions .btn{
+    min-height: 56px;       /* boutons plus hauts */
+    font-size: 1.1rem;     /* texte plus grand */
+    font-weight: 800;
+    letter-spacing: 0.3px;
+    border-radius: 14px;
+  }
+
+  /* Bouton BiBL. encore plus visible */
+  .btn-bibl-typewriter{
+    font-size: 1.15rem;
+    min-height: 60px;
+  }
+}
