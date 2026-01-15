@@ -7826,7 +7826,7 @@ function renderInterventionPontages() {
   <strong>ALR :</strong>
   Bloc thoracique transverse
   <span class="alr-screen"
-        onclick="openImage('img/cf-bloc-thoracique-transverse.png')">
+        onclick="openImg ('img/cf-bloc-thoracique-transverse.png')">
     🖥️
   </span>,
   Ropivacaïne 3,75 mg/mL 15–20 mL x2
@@ -8077,7 +8077,7 @@ function renderInterventionRVA() {
   <strong>ALR :</strong>
   Bloc thoracique transverse
   <span class="alr-screen"
-        onclick="openImage('img/cf-bloc-thoracique-transverse.png')">
+        onclick="openImg('img/cf-bloc-thoracique-transverse.png')">
     🖥️
   </span>,
   Ropivacaïne 3,75 mg/mL 15–20 mL x2
@@ -8319,8 +8319,8 @@ function renderInterventionRVM() {
           Exacyl 20 mg/kg
           (<span data-per-kg="20" data-unit="mg"></span>) puis 2 mg/kg/h (sauf CI).
         </p>
-        <p> <strong>ALR :</strong> Bloc thoracique transverse Ropivacaïne 3,75 mg/mL 15–20 mL x2 (dose max 3 mg/kg ≈ <span data-per-kg="3" data-unit="mg"></span>). <span class="alr-screen" onclick="openImage('img/cf-bloc-thoracique-transverse.png')"> 🖥️ </span>, 
-        Si plastie mitrale vidéo: bloc paravertébral Ropivacaïne 3,75 mg/mL 15–20 mL avec cathéter <span class="alr-screen" onclick="openImage('img/cf-bpv.png')"> 🖥️ </span>
+        <p> <strong>ALR :</strong> Bloc thoracique transverse Ropivacaïne 3,75 mg/mL 15–20 mL x2 (dose max 3 mg/kg ≈ <span data-per-kg="3" data-unit="mg"></span>). <span class="alr-screen" onclick="openImg('img/cf-bloc-thoracique-transverse.png')"> 🖥️ </span>, 
+        Si plastie mitrale vidéo: bloc paravertébral Ropivacaïne 3,75 mg/mL 15–20 mL avec cathéter <span class="alr-screen" onclick="openImg('img/cf-bpv.png')"> 🖥️ </span>
         </p>
         
       `,
@@ -8562,7 +8562,7 @@ function renderInterventionRVT() {
   <strong>ALR :</strong>
   Bloc thoracique transverse
   <span class="alr-screen"
-        onclick="openImage('img/cf-bloc-thoracique-transverse.png')">
+        onclick="openImg('img/cf-bloc-thoracique-transverse.png')">
     🖥️
   </span>,
   Ropivacaïne 3,75 mg/mL 15–20 mL x2
@@ -8801,7 +8801,7 @@ function renderInterventionAorteAsc() {
   <strong>ALR :</strong>
   Bloc thoracique transverse
   <span class="alr-screen"
-        onclick="openImage('img/cf-
+        onclick="openImg('img/cf-
         bloc-thoracique-transverse.png')">
     🖥️
   </span>,
