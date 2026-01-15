@@ -10121,25 +10121,25 @@ function renderInterventionFOPCIA() {
       `,
     },
     {
-      titre: "Antibioprophylaxie",
-      html: `
-        <ul>
-          <li id="mitra-augm-standard">
-            <strong>Augmentin :</strong>
-            2 g IVL, puis 1 g après 2 h (1 g toutes les 2 h).
-          </li>
-          <li id="mitra-augm-obese" style="display:none;">
-            <strong>Augmentin (IMC &gt; 50) :</strong>
-            4 g IVL, puis 2 g après 2 h (2 g toutes les 2 h).
-          </li>
-          <li id="mitra-vanco" style="display:none;">
-            <strong>Allergie BL :</strong>
-            Vancomycine <span id="mitra-vanco-dose">30 mg/kg</span> IVL,
-            une injection 30 min avant incision.
-          </li>
-        </ul>
-      `,
-    },
+       titre: "Antibioprophylaxie",
+  html: `
+    <ul>
+      <li id="fop-augm-standard">
+        <strong>Augmentin :</strong>
+        2 g IVL, puis 1 g après 2 h (1 g toutes les 2 h).
+      </li>
+      <li id="fop-augm-obese" style="display:none;">
+        <strong>Augmentin (IMC &gt; 50) :</strong>
+        4 g IVL, puis 2 g après 2 h (2 g toutes les 2 h).
+      </li>
+      <li id="fop-vanco" style="display:none;">
+        <strong>Allergie BL :</strong>
+        Vancomycine <span id="fop-vanco-dose">30 mg/kg</span> IVL,
+        une injection 30 min avant incision.
+      </li>
+    </ul>
+  `,
+},
     {
       titre: "Coupes et mesures ETO",
       html: `
@@ -10178,6 +10178,13 @@ function renderInterventionFOPCIA() {
 function setupFOPLogic() {
   const poidsId = "fop-poids";
   const cbRisk = document.getElementById("fop-induction-risque");
+  const cbImc = document.getElementById("fop-imc50");
+  const cbAllergie = document.getElementById("fop-allergie-bl");
+
+  const liAugmStd = document.getElementById("fop-augm-standard");
+  const liAugmObese = document.getElementById("fop-augm-obese");
+  const liVanco = document.getElementById("fop-vanco");
+  const spanVanco = document.getElementById("fop-vanco-dose");
   const cbSeq = document.getElementById("fop-seq-rapide");
 
   const indText = document.getElementById("fop-induction-text");
@@ -10206,37 +10213,33 @@ function setupFOPLogic() {
     if (indText) indText.innerHTML = txt;
   }
 
-function updateATB() {
-  const poids = parseKg(poidsId);
+  function updateATB() {
+    const poids = parseKg(poidsId);
 
-  // --- Gestion IMC (si pas allergique) ---
-  if (cbImc && cbImc.checked) {
-    if (liAugmStd)   liAugmStd.style.display   = "none";
-    if (liAugmObese) liAugmObese.style.display = "";
-  } else {
-    if (liAugmStd)   liAugmStd.style.display   = "";
-    if (liAugmObese) liAugmObese.style.display = "none";
-  }
+    const allergie = !!(cbAllergie && cbAllergie.checked);
+    const obese = !!(cbImc && cbImc.checked);
 
-  // --- Allergie BL : remplace totalement par Vancomycine ---
-  if (cbAllergie && cbAllergie.checked) {
-    if (liAugmStd)   liAugmStd.style.display   = "none";
-    if (liAugmObese) liAugmObese.style.display = "none";
-    if (liVanco)     liVanco.style.display     = "";
-    if (spanVanco)   spanVanco.textContent     = formatDoseMgPerKg(poids, 30);
-  } else {
+    // Si allergie BL => Vancomycine uniquement
+    if (allergie) {
+      if (liAugmStd) liAugmStd.style.display = "none";
+      if (liAugmObese) liAugmObese.style.display = "none";
+      if (liVanco) liVanco.style.display = "";
+      if (spanVanco) spanVanco.textContent = formatDoseMgPerKg(poids, 30);
+      return;
+    }
+
+    // Sinon => Augmentin selon IMC
     if (liVanco) liVanco.style.display = "none";
 
-    // Réafficher la bonne version de l’Augmentin selon IMC
-    if (cbImc && cbImc.checked) {
-      if (liAugmStd)   liAugmStd.style.display   = "none";
+    if (obese) {
+      if (liAugmStd) liAugmStd.style.display = "none";
       if (liAugmObese) liAugmObese.style.display = "";
     } else {
-      if (liAugmStd)   liAugmStd.style.display   = "";
+      if (liAugmStd) liAugmStd.style.display = "";
       if (liAugmObese) liAugmObese.style.display = "none";
     }
   }
-}
+
 
   function updateMonitor() {
     if (!monitorText) return;
@@ -10259,7 +10262,7 @@ function updateATB() {
 
   const poidsEl = document.getElementById(poidsId);
   if (poidsEl) poidsEl.addEventListener("input", updateAll);
-  [cbRisk, cbSeq].forEach(el => {
+  [cbRisk, cbSeq, cbImc, cbAllergie].forEach(el => {
     if (el) el.addEventListener("change", updateAll);
   });
 
@@ -10383,15 +10386,23 @@ function setupPacemakerLogic() {
     }
   }
 
-  function updateATB() {
-    // IMC > 50 n'est pas explicitement dans la cellule caracs pour cette ligne,
-    // on garde donc les posologies textuelles, avec uniquement l'allergie :
-    if (cbAllergie && cbAllergie.checked) {
-      if (liVanco) liVanco.style.display = "";
-    } else {
-      if (liVanco) liVanco.style.display = "none";
-    }
+ function updateATB() {
+  const allergie = !!(cbAllergie && cbAllergie.checked);
+
+  if (allergie) {
+    // ✅ Allergie BL : on masque toute céfazoline
+    if (liCefaStd) liCefaStd.style.display = "none";
+    if (liCefaObese) liCefaObese.style.display = "none";
+    // ✅ et on affiche la vancomycine
+    if (liVanco) liVanco.style.display = "";
+  } else {
+    // ✅ Pas allergique : on ré-affiche la céfazoline (standard par défaut)
+    if (liCefaStd) liCefaStd.style.display = "";
+    if (liCefaObese) liCefaObese.style.display = "none"; // pas d'IMC dans cette page
+    // ✅ et on masque la vancomycine
+    if (liVanco) liVanco.style.display = "none";
   }
+}
 
   function updateAll() {
     updateMonitor();
@@ -10438,11 +10449,11 @@ function renderInterventionAblationDroit() {
     },
     {
       titre: "Antibioprophylaxie",
-      html: `<p>Non indiquée.</p>`,
+      html: `<p>Uniquement si dispositif intra-vasculaire (PM/DAI ou valve prothétique): Cefazoline 2g (Vancomycine 30mg/kg si allergie aux béta-lactamines).</p>`,
     },
     {
       titre: "Coupes et mesures ETO",
-      html: `<p>Non indiquée.</p>`,
+      html: `<p>Non indiquée</p>`,
     },
   ];
 
@@ -10504,7 +10515,7 @@ function renderInterventionAblationGauche() {
     },
     {
       titre: "Antibioprophylaxie",
-      html: `<p>Non indiquée.</p>`,
+      html: `<p>Uniquement si dispositif intra-vasculaire (PM/DAI ou valve prothétique): Cefazoline 2g (Vancomycine 30mg/kg si allergie aux béta-lactamines).</p>`,
     },
     {
       titre: "Coupes et mesures ETO",
