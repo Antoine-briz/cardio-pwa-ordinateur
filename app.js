@@ -19154,15 +19154,6 @@ function renderBibliographie() {
             </div>
           </div>
         </div>
-
-        ${
-          mobile
-            ? ""
-            : `
-          <div class="biblio-right" aria-hidden="true">
-            <img src="img/bibliographie2.png" alt="Bibliographie">
-          </div>`
-        }
       </div>
     </section>
   `;
