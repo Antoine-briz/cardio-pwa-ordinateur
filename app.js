@@ -7773,7 +7773,7 @@ function renderInterventionPontages() {
   <strong>ALR :</strong>
   Bloc thoracique transverse
   <span class="alr-screen"
-        onclick="openImage('img/blocs/bloc-thoracique-transverse.png')">
+        onclick="openImage('img/bloc-thoracique-transverse.png')">
     🖥️
   </span>,
   Ropivacaïne 3,75 mg/mL 15–20 mL x2
@@ -8024,7 +8024,7 @@ function renderInterventionRVA() {
   <strong>ALR :</strong>
   Bloc thoracique transverse
   <span class="alr-screen"
-        onclick="openImage('img/blocs/bloc-thoracique-transverse.png')">
+        onclick="openImage('img/bloc-thoracique-transverse.png')">
     🖥️
   </span>,
   Ropivacaïne 3,75 mg/mL 15–20 mL x2
@@ -8270,7 +8270,7 @@ function renderInterventionRVM() {
   <strong>ALR :</strong>
   Bloc thoracique transverse
   <span class="alr-screen"
-        onclick="openImage('img/blocs/bloc-thoracique-transverse.png')">
+        onclick="openImage('img/bloc-thoracique-transverse.png')">
     🖥️
   </span>,
   Ropivacaïne 3,75 mg/mL 15–20 mL x2
@@ -8516,7 +8516,7 @@ function renderInterventionRVT() {
   <strong>ALR :</strong>
   Bloc thoracique transverse
   <span class="alr-screen"
-        onclick="openImage('img/blocs/bloc-thoracique-transverse.png')">
+        onclick="openImage('img/bloc-thoracique-transverse.png')">
     🖥️
   </span>,
   Ropivacaïne 3,75 mg/mL 15–20 mL x2
@@ -8755,7 +8755,7 @@ function renderInterventionAorteAsc() {
   <strong>ALR :</strong>
   Bloc thoracique transverse
   <span class="alr-screen"
-        onclick="openImage('img/blocs/bloc-thoracique-transverse.png')">
+        onclick="openImage('img/bloc-thoracique-transverse.png')">
     🖥️
   </span>,
   Ropivacaïne 3,75 mg/mL 15–20 mL x2
