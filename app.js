@@ -7852,7 +7852,7 @@ function setupPcLogic() {
   const liCefaObese = document.getElementById("pc-cefazoline-obese");
   const liVanco = document.getElementById("pc-vancomycine");
   const spanVanco = document.getElementById("pc-vanco-dose");
-// === Règle Swan-Ganz conditionnelle (uniquement si "Induction à risque" cochée) ===
+// === Règle Swan-Ganz conditionnelle ===
 const swanGanzLine = document.getElementById("monitorage-swanganz");
 
 if (cbRisk && swanGanzLine) {
@@ -8107,7 +8107,6 @@ if (cbRisk && swanGanzLine) {
   updateSwanGanz();
   cbRisk.addEventListener("change", updateSwanGanz);
 }
-
   
   function updateInduction() {
     const poids = parseKg(poidsId);
@@ -8833,7 +8832,6 @@ if (cbRisk && swanGanzLine) {
   updateSwanGanz();
   cbRisk.addEventListener("change", updateSwanGanz);
 }
-
   
   function updateInduction() {
     const poids = parseKg(poidsId);
