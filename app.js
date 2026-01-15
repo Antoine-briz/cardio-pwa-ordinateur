@@ -7852,14 +7852,18 @@ function setupPcLogic() {
   const liCefaObese = document.getElementById("pc-cefazoline-obese");
   const liVanco = document.getElementById("pc-vancomycine");
   const spanVanco = document.getElementById("pc-vanco-dose");
-// === Règle Swan-Ganz conditionnelle ===
-const inductionCheckbox = document.getElementById("pc-induction-risque");
+// === Règle Swan-Ganz conditionnelle (uniquement si "Induction à risque" cochée) ===
 const swanGanzLine = document.getElementById("monitorage-swanganz");
 
-if (inductionCheckbox && swanGanzLine) {
+if (cbRisk && swanGanzLine) {
   const updateSwanGanz = () => {
-    swanGanzLine.style.display = inductionCheckbox.checked ? "list-item" : "none";
+    swanGanzLine.style.display = cbRisk.checked ? "inline" : "none";
   };
+
+  // état initial + mise à jour
+  updateSwanGanz();
+  cbRisk.addEventListener("change", updateSwanGanz);
+}
 
   // état initial
   updateSwanGanz();
@@ -8102,14 +8106,18 @@ function setupRvaLogic() {
   const liCefaObese = document.getElementById("rva-cefazoline-obese");
   const liVanco = document.getElementById("rva-vancomycine");
   const spanVanco = document.getElementById("rva-vanco-dose");
-// === Règle Swan-Ganz conditionnelle ===
-const inductionCheckbox = document.getElementById("induction-risque");
+// === Règle Swan-Ganz conditionnelle (uniquement si "Induction à risque" cochée) ===
 const swanGanzLine = document.getElementById("monitorage-swanganz");
 
-if (inductionCheckbox && swanGanzLine) {
+if (cbRisk && swanGanzLine) {
   const updateSwanGanz = () => {
-    swanGanzLine.style.display = inductionCheckbox.checked ? "list-item" : "none";
+    swanGanzLine.style.display = cbRisk.checked ? "inline" : "none";
   };
+
+  // état initial + mise à jour
+  updateSwanGanz();
+  cbRisk.addEventListener("change", updateSwanGanz);
+}
 
   // état initial
   updateSwanGanz();
@@ -8355,14 +8363,18 @@ function setupRvmLogic() {
   const liCefaObese = document.getElementById("rvm-cefazoline-obese");
   const liVanco = document.getElementById("rvm-vancomycine");
   const spanVanco = document.getElementById("rvm-vanco-dose");
-// === Règle Swan-Ganz conditionnelle ===
-const inductionCheckbox = document.getElementById("induction-risque");
+// === Règle Swan-Ganz conditionnelle (uniquement si "Induction à risque" cochée) ===
 const swanGanzLine = document.getElementById("monitorage-swanganz");
 
-if (inductionCheckbox && swanGanzLine) {
+if (cbRisk && swanGanzLine) {
   const updateSwanGanz = () => {
-    swanGanzLine.style.display = inductionCheckbox.checked ? "list-item" : "none";
+    swanGanzLine.style.display = cbRisk.checked ? "inline" : "none";
   };
+
+  // état initial + mise à jour
+  updateSwanGanz();
+  cbRisk.addEventListener("change", updateSwanGanz);
+}
 
   // état initial
   updateSwanGanz();
@@ -8837,14 +8849,18 @@ function setupAorteAscLogic() {
   const liCefaObese = document.getElementById("aoasc-cefazoline-obese");
   const liVanco = document.getElementById("aoasc-vancomycine");
   const spanVanco = document.getElementById("aoasc-vanco-dose");
-// === Règle Swan-Ganz conditionnelle ===
-const inductionCheckbox = document.getElementById("induction-risque");
+// === Règle Swan-Ganz conditionnelle (uniquement si "Induction à risque" cochée) ===
 const swanGanzLine = document.getElementById("monitorage-swanganz");
 
-if (inductionCheckbox && swanGanzLine) {
+if (cbRisk && swanGanzLine) {
   const updateSwanGanz = () => {
-    swanGanzLine.style.display = inductionCheckbox.checked ? "list-item" : "none";
+    swanGanzLine.style.display = cbRisk.checked ? "inline" : "none";
   };
+
+  // état initial + mise à jour
+  updateSwanGanz();
+  cbRisk.addEventListener("change", updateSwanGanz);
+}
 
   // état initial
   updateSwanGanz();
