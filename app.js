@@ -1114,6 +1114,10 @@ function renderAnesthConsultTraitements() {
               Poursuivre jusqu’au matin de l’intervention (risque d’hypoglycémie faible).
             </li>
             <li>
+              Agonistes GLP1 (Semaglutide, Dulaglutide, Liraglutide)&nbsp;:
+              Arrêt J-6 car inhibiteur de la vidange gastrique (considérer estomac plein sinon)
+            </li>
+            <li>
               Inhibiteurs SGLT2 (gliflozines&nbsp;: dapagliflozine, empagliflozine…)&nbsp;:
               Arrêt à 72h de l’intervention (risque d’acidocétose euglycémique).
             </li>
