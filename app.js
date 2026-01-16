@@ -56,7 +56,13 @@ function openImg(name) {
     // Applique le facteur d'agrandissement
     const scale = isTableauACR ? 1 : 1;
 
-    imgEl.src = `img/${name}`;
+    const src =
+  /^(https?:)?\/\//.test(name) || name.startsWith("img/") || name.startsWith("./img/")
+    ? name
+    : `img/${name}`;
+
+imgEl.src = src;
+
     imgEl.style.width = `${scale * 100}%`;   // 300% ou 200%
     imgEl.style.height = "auto";
     imgEl.style.maxWidth = "none";
@@ -67,7 +73,13 @@ function openImg(name) {
       wrap.parentNode.insertBefore(imgEl, wrap);
       wrap.remove();
     }
-    imgEl.src = `img/${name}`;
+    const src =
+  /^(https?:)?\/\//.test(name) || name.startsWith("img/") || name.startsWith("./img/")
+    ? name
+    : `img/${name}`;
+
+imgEl.src = src;
+
   }
 
   popup.style.display = "flex";
