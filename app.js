@@ -6939,30 +6939,30 @@ function etoFormHtmlCompactPlastieAortique(prefix) {
       <div class="eto-cusp-line">
         <strong>Cusp droite :</strong>
         <label>eH (mm)
-          <input type="number" id="${p("eto-rcc-eh")}" step="1" min="0"/>
+          <input type="number" id="${p("rcc-eh")}" step="1" min="0"/>
         </label>
         <label>gH (mm)
-          <input type="number" id="${p("eto-rcc-gh")}" step="1" min="0"/>
+          <input type="number" id="${p("rcc-gh")}" step="1" min="0"/>
         </label>
       </div>
 
       <div class="eto-cusp-line">
         <strong>Cusp gauche :</strong>
         <label>eH (mm)
-          <input type="number" id="${p("eto-lcc-eh")}" step="1" min="0"/>
+          <input type="number" id="${p("lcc-eh")}" step="1" min="0"/>
         </label>
         <label>gH (mm)
-          <input type="number" id="${p("eto-lcc-gh")}" step="1" min="0"/>
+          <input type="number" id="${p("lcc-gh")}" step="1" min="0"/>
         </label>
       </div>
 
       <div class="eto-cusp-line">
         <strong>Cusp non coronaire :</strong>
         <label>eH (mm)
-          <input type="number" id="${p("eto-ncc-eh")}" step="1" min="0"/>
+          <input type="number" id="${p("ncc-eh")}" step="1" min="0"/>
         </label>
         <label>gH (mm)
-          <input type="number" id="${p("eto-ncc-gh")}" step="1" min="0"/>
+          <input type="number" id="${p("ncc-gh")}" step="1" min="0"/>
         </label>
       </div>
     </div>
