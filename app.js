@@ -915,7 +915,7 @@ function renderAnesthConsultations() {
             Calcul de l’EuroScore II
           </button>
 
-          <button class="btn" onclick="openSubPage(renderAnesthConsultTraitements, renderAnesthConsultationsMenu)">
+          <button class="btn" onclick="openSubPage(renderAnesthConsultTraitements, renderAnesthConsultations)">
             Gestion pré-opératoire des traitements
           </button>
         </div>
