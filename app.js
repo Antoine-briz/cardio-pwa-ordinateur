@@ -1115,7 +1115,7 @@ function renderAnesthConsultTraitements() {
             </li>
             <li>
               Agonistes GLP1 (Semaglutide, Dulaglutide, Liraglutide)&nbsp;:
-              Arrêt J-6 car inhibiteur de la vidange gastrique (considérer estomac plein sinon)
+              Arrêt J-6, inhibe la vidange gastrique (considérer estomac plein)
             </li>
             <li>
               Inhibiteurs SGLT2 (gliflozines&nbsp;: dapagliflozine, empagliflozine…)&nbsp;:
