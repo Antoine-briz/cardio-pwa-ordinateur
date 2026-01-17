@@ -7585,7 +7585,7 @@ function buildEtoCompteRenduCompact(prefix, root) {
     const ra = q("ra") ? q("ra").checked : false;
     const isPlastieAortique =
   !!root.querySelector(`#${prefix}-eto-ia-meca`) ||   // champ spécifique plastie ao
-  !!root.querySelector(`#${prefix}-eto-eto-rcc-eh`);  // champs cuspides
+  !!root.querySelector(`#${prefix}-eto-rcc-eh`);      // champ cuspide (ID réel)
 
 const ia = (q("ia") ? q("ia").checked : false) || isPlastieAortique;
 
@@ -7627,11 +7627,16 @@ if (valveType) {
 
     // IA (général OU plastie aortique)
 if (ia) {
-  const dir = val(q("ia-dir")) || val(q("ia-centrage")); // général vs plastie
-  const sev = val(q("ia-sev"));
-  const vc  = val(q("ia-vc"));
-  const p12 = val(q("ia-p12"));
+  const dir  = val(q("ia-dir")) || val(q("ia-centrage")); // général vs plastie
+  const sev  = val(q("ia-sev"));
+  const vc   = val(q("ia-vc"));
+  const p12  = val(q("ia-p12"));
   const meca = val(q("ia-meca")); // plastie aortique
+
+  // ✅ nouveaux marqueurs
+  const sor = val(q("ia-sor"));
+  const vr  = val(q("ia-vr"));
+  const fr  = val(q("ia-fr"));
 
   const details = [];
   if (meca) details.push(meca.toLowerCase());
@@ -7639,6 +7644,9 @@ if (ia) {
   if (sev)  details.push(sev.toLowerCase());
   if (vc)   details.push(`VC ${vc} mm`);
   if (p12)  details.push(`P1/2T ${p12} ms`);
+  if (sor)  details.push(`SOR ${sor} cm²`);
+  if (vr)   details.push(`VR ${vr} mL`);
+  if (fr)   details.push(`FR ${fr} %`);
 
   let txt = "insuffisance aortique";
   if (details.length) txt += ` (${details.join(", ")})`;
@@ -7676,31 +7684,57 @@ if (ia) {
   // ✅ AJOUT : Analyse cuspide par cuspide (PLASTIE AORTIQUE)
   // (ne sort des lignes que si au moins une valeur est saisie)
   {
-    const makeCuspLine = (label, ehId, ghId, lblId) => {
-      const eh = val(q(ehId));
-      const gh = val(q(ghId));
-      const lbl = val(q(lblId));
+    const makeCuspLine = (label, ehId, ghId) => {
+  const eh = val(q(ehId));
+  const gh = val(q(ghId));
+  if (!eh && !gh) return null;
 
-      if (!eh && !gh && !lbl) return null;
+  const items = [];
+  if (eh) items.push(`eH ${eh} mm`);
+  if (gh) items.push(`gH ${gh} mm`);
+  return `- <strong>${label}</strong> : ${items.join(", ")}.`;
+};
 
-      const items = [];
-      if (eh) items.push(`eH ${eh} mm`);
-      if (gh) items.push(`gH ${gh} mm`);
-      if (lbl) items.push(`Bord libre ${lbl} mm`);
-
-      return `- <strong>${label}</strong> : ${items.join(", ")}.`;
-    };
-
-    // IDs attendus (ceux de ton formulaire plastie aortique)
-    const l1 = makeCuspLine("Cusp droite", "eto-rcc-eh", "eto-rcc-gh", "eto-rcc-lbl");
-    const l2 = makeCuspLine("Cusp gauche", "eto-lcc-eh", "eto-lcc-gh", "eto-lcc-lbl");
-    const l3 = makeCuspLine("Cusp non coronaire", "eto-ncc-eh", "eto-ncc-gh", "eto-ncc-lbl");
+const l1 = makeCuspLine("Cusp droite", "rcc-eh", "rcc-gh");
+const l2 = makeCuspLine("Cusp gauche", "lcc-eh", "lcc-gh");
+const l3 = makeCuspLine("Cusp non coronaire", "ncc-eh", "ncc-gh");
 
     if (l1) lines.push(l1);
     if (l2) lines.push(l2);
     if (l3) lines.push(l3);
   }
 
+// ✅ AJOUT : Résultat post-plastie (PLASTIE AORTIQUE)
+{
+  const postAnneau = val(q("post-anneau"));
+  const postCoapt  = val(q("post-coapt"));
+  const postEh     = val(q("post-eh"));
+  const postGmoy   = val(q("post-gmoy"));
+  const postGmax   = val(q("post-gmax"));
+
+  const fuite = q("fuite-resid") ? q("fuite-resid").checked : false;
+  const fuiteC = val(q("fuite-centrage"));
+  const fuiteS = val(q("fuite-sev"));
+
+  const parts = [];
+  if (postAnneau) parts.push(`anneau ${postAnneau} mm`);
+  if (postCoapt)  parts.push(`hauteur de coaptation ${postCoapt} mm`);
+  if (postEh)     parts.push(`hauteur effective ${postEh} mm`);
+  if (postGmoy)   parts.push(`gradient moyen ${postGmoy} mmHg`);
+  if (postGmax)   parts.push(`gradient max ${postGmax} mmHg`);
+
+  if (fuite) {
+    const d = [];
+    if (fuiteC) d.push(fuiteC.toLowerCase());
+    if (fuiteS) d.push(fuiteS.toLowerCase());
+    parts.push(`fuite résiduelle${d.length ? ` (${d.join(", ")})` : ""}`);
+  }
+
+  if (parts.length) {
+    lines.push(`- <strong>Résultat post-plastie</strong> : ${parts.join(", ")}.`);
+  }
+}
+  
   // ===== Valve mitrale =====
   {
     const anneau = val(q("anneau-mitral"));
