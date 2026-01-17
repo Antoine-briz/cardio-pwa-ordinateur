@@ -6840,13 +6840,15 @@ function etoFormHtmlCompactPlastieAortique(prefix) {
                 </td>
               </tr>
 
-              <!-- ÉVALUATION AORTIQUE (PLASTIE) : remplace Valve aortique + Diamètres aortiques -->
+<!-- ÉVALUATION AORTIQUE (PLASTIE) : remplace Valve aortique + Diamètres aortiques -->
 <tr>
   <td class="eto-sec">Évaluation aortique</td>
+
+  <!-- Colonne centrale : données/mesures -->
   <td>
     <div class="eto-cell">
 
-      <!-- ✅ MODIF #1 : remplacement checkbox "Bicuspide" par SELECT "Type de valve" -->
+      <!-- Type de valve (remplace bicuspidie) -->
       <label>Type de valve
         <select id="${prefix}-eto-valve-type">
           <option value="">—</option>
@@ -6858,7 +6860,7 @@ function etoFormHtmlCompactPlastieAortique(prefix) {
         </select>
       </label>
 
-      <!-- ✅ MODIF #2 : Angle commisural affiché seulement si BAV sélectionné -->
+      <!-- Angle commisural (affiché seulement si BAV) -->
       <div id="${prefix}-eto-comm-angle-wrap" style="display:none;">
         <label>Angle commisural (°)
           <input type="number" id="${prefix}-eto-comm-angle" step="1" min="0" max="180"/>
@@ -6900,7 +6902,6 @@ function etoFormHtmlCompactPlastieAortique(prefix) {
         <input type="number" id="${prefix}-eto-ia-p12" step="1" min="0"/>
       </label>
 
-      <!-- ✅ MODIF #3 : IDs uniques pour SOR / VR / FR (au lieu de réutiliser -eto-ia-p12) -->
       <label>SOR (cm²)
         <input type="number" id="${prefix}-eto-ia-sor" step="0.01" min="0"/>
       </label>
@@ -6970,7 +6971,6 @@ function etoFormHtmlCompactPlastieAortique(prefix) {
     <div class="eto-subtitle">Résultat post-plastie</div>
     <div class="eto-cell eto-subcell">
 
-      <!-- ✅ MODIF #4 : IDs uniques (avant tout était ...-eto-plastie-ch) -->
       <label>Anneau aortique (mm)
         <input type="number" id="${prefix}-eto-post-anneau" step="1" min="0"/>
       </label>
@@ -7017,18 +7017,18 @@ function etoFormHtmlCompactPlastieAortique(prefix) {
 
     </div>
   </td>
+
+  <!-- ✅ Colonne droite : tutoriel (DOIT être dans le même <tr>) -->
+  <td class="eto-imgcol">
+    ${etoImgLink("Morphologie VA", "eto_ao_morphologie.png")}
+    ${etoImgLink("Classification IA", "eto_ao_quantification.png")}
+    ${etoImgLink("IA VC", "eto_ia_VC.png")}
+    ${etoImgLink("IA P1/2T", "eto_ia_1.2.png")}
+    ${etoImgLink("Diamètres aortiques", "cf-diametre-aortique.png")}
+    ${etoImgLink("Plastie aortique", "cf-plastieaortique.png")}
+  </td>
 </tr>
 
-
-                <td class="eto-imgcol">
-                  ${etoImgLink("Morphologie VA", "eto_ao_morphologie.png")}
-                  ${etoImgLink("Classification IA", "eto_ao_quantification.png")}
-                  ${etoImgLink("IA VC", "eto_ia_VC.png")}
-                  ${etoImgLink("IA P1/2T", "eto_ia_1.2.png")}
-                  ${etoImgLink("Diamètres aortiques", "cf-diametre-aortique.png")}
-                  ${etoImgLink("Plastie aortique", "cf-plastieaortique.png")}
-                </td>
-              </tr>
 
               <!-- Valve mitrale (inchangé) -->
               <tr>
