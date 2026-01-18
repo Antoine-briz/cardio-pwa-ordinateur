@@ -6502,6 +6502,7 @@ function etoFormHtmlCompact(prefix) {
                   ${etoImgLink("Classification IA", "eto_ia_quantification.png")}
                   ${etoImgLink("IA VC", "eto_ia_VC.png")}
                   ${etoImgLink("IA P1/2T", "eto_ia_1.2.png")}
+                  ${etoImgLink("IA PISA", "eto_ia_PISA.png")}
                 </td>
               </tr>
 
@@ -7355,11 +7356,12 @@ const plastieMitraleRow = `
   </td>
 
   <td class="eto-imgcol">
-    ${etoImgLink("Classification IM 🖥️", "eto_im_classif.png")}
-    ${etoImgLink("IM VC 🖥️", "eto_im_VC.png")}
-    ${etoImgLink("IM P1/2T 🖥️", "eto_im_1.2.png")}
-    ${etoImgLink("Gd moyen mitral 🖥️", "eto_rm_gdmoyen.png")}
-    ${etoImgLink("Plastie mitrale 🖥️", "cf-plastiemitrale.png")}
+    ${etoImgLink("Classification IM", "eto_im_classif.png")}
+    ${etoImgLink("IM VC", "eto_im_VC.png")}
+    ${etoImgLink("IM P1/2T", "eto_im_1.2.png")}
+    ${etoImgLink("IM PISA", "eto_im_PISA.png")}
+    ${etoImgLink("Gd moyen mitral", "eto_rm_gdmoyen.png")}
+    ${etoImgLink("Plastie mitrale", "cf-plastiemitrale.png")}
   </td>
 </tr>`;
 
@@ -7828,6 +7830,14 @@ const l3 = makeCuspLine("Cusp non coronaire", "ncc-eh", "ncc-gh");
     if (risks.length) {
       lines.push(`- <strong>Risque de SAM</strong> : ${risks.join(", ")}.`);
     }
+    // ✅ AJOUT : SAM post-plastie (résultat)
+{
+  const samPost = q("post-sam") ? q("post-sam").checked : false;
+
+  if (samPost) {
+    lines.push(`- <strong>Résultat post-plastie mitrale</strong> : SAM post-opératoire.`);
+  }
+}
   }
 
   // ✅ AJOUT : SAM post-plastie (si coché)
@@ -7838,7 +7848,6 @@ const l3 = makeCuspLine("Cusp non coronaire", "ncc-eh", "ncc-gh");
     }
   }
 }
-
 
   // ===== Tricuspide / PAPs =====
   {
