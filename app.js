@@ -7389,6 +7389,25 @@ const valveTypeSel = root.querySelector(`#${prefix}-eto-valve-type`);
 const commAngleWrap = root.querySelector(`#${prefix}-eto-comm-angle-wrap`);
 const commAngleInput = root.querySelector(`#${prefix}-eto-comm-angle`);
 
+// ===== FUITE RÉSIDUELLE : affiche/masque les détails =====
+const cbFuite = g("fuite-resid");
+const fuiteDetails = root.querySelector(`#${prefix}-eto-fuite-details`);
+
+const syncFuite = () => {
+  if (!fuiteDetails) return;
+
+  const show = !!(cbFuite && cbFuite.checked);
+  fuiteDetails.style.display = show ? "block" : "none";
+
+  // si on décoche, on reset centrage/sévérité (évite une synthèse “fantôme”)
+  if (!show) {
+    const c = g("fuite-centrage");
+    const s = g("fuite-sev");
+    if (c) c.value = "";
+    if (s) s.value = "";
+  }
+};
+  
   // ===== SYNTHÈSE LIVE (zone droite) =====
   const liveBox = root.querySelector(`#${prefix}-eto-live`);
   const liveCopyBtn = root.querySelector(`#${prefix}-eto-live-copy`);
@@ -7408,6 +7427,8 @@ const commAngleInput = root.querySelector(`#${prefix}-eto-comm-angle`);
     if (imInline) imInline.style.display = (cbIM && cbIM.checked) ? "block" : "none";
     if (papsWrap) papsWrap.style.display = (cbIT && cbIT.checked) ? "inline-flex" : "none";
 
+
+    
 // ✅ PLASTIE AORTIQUE : afficher l’angle commisural uniquement si BAV sélectionné
 if (commAngleWrap && valveTypeSel) {
   const v = (valveTypeSel.value || "").trim();
@@ -7422,11 +7443,21 @@ if (commAngleWrap && valveTypeSel) {
 
     
     updateLive();
+    syncFuite();
   };
 
   [cbRA, cbIA, cbRM, cbIM, cbIT].forEach(el => {
     if (el) el.addEventListener("change", sync);
   });
+
+  // ===== Listener fuite résiduelle =====
+  if (cbFuite) {
+    cbFuite.addEventListener("change", () => {
+      syncFuite();
+      updateLive();
+    });
+  }
+
 if (valveTypeSel) valveTypeSel.addEventListener("change", sync);
   
   // ===== Mise à jour live sur toute saisie =====
