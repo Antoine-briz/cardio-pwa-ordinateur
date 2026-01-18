@@ -7189,7 +7189,7 @@ function etoFormHtmlCompactPlastieMitrale(prefix) {
   // Remplace UNIQUEMENT le <tr> "Valve mitrale" du formulaire général
   const mitraleRegex = /<tr>\s*<td class="eto-sec">Valve mitrale<\/td>[\s\S]*?<\/tr>/;
 
-  const plastieMitraleRow = `
+const plastieMitraleRow = `
 <tr>
   <td class="eto-sec">Valve mitrale</td>
 
@@ -7232,118 +7232,124 @@ function etoFormHtmlCompactPlastieMitrale(prefix) {
           <input type="number" id="${prefix}-eto-im-p12" step="1" min="0"/>
         </label>
 
-        <label class="checkbox">
-          <input type="checkbox" id="${prefix}-eto-sam"/>
-          SAM
+        <!-- ✅ AJOUT : critères quantitatifs IM -->
+        <label>SOR (cm²)
+          <input type="number" id="${prefix}-eto-im-sor" step="0.01" min="0"/>
+        </label>
+
+        <label>VR (mL)
+          <input type="number" id="${prefix}-eto-im-vr" step="1" min="0"/>
+        </label>
+
+        <label>FR (%)
+          <input type="number" id="${prefix}-eto-im-fr" step="1" min="0" max="100"/>
         </label>
       </div>
 
       <hr/>
 
       <div class="eto-subtitle">Longueurs</div>
+      <div class="eto-cell eto-subcell">
+        <div class="eto-inline2">
+          <label>Diamètre anneau mitral (mm)
+            <input type="number" id="${prefix}-eto-anneau-mitral" step="1" min="0"/>
+          </label>
 
-<div class="eto-cell eto-subcell">
-  <div class="eto-inline2">
-    <label>Diamètre anneau mitral (mm)
-      <input type="number" id="${prefix}-eto-anneau-mitral" step="1" min="0"/>
-    </label>
+          <label>Longueur VM ant. (mm)
+            <input type="number" id="${prefix}-eto-vm-ant-l" step="1" min="0"/>
+          </label>
 
-    <label>Longueur VM ant. (mm)
-      <input type="number" id="${prefix}-eto-vm-ant-l" step="1" min="0"/>
-    </label>
+          <label>Longueur VM post. (mm)
+            <input type="number" id="${prefix}-eto-vm-post-l" step="1" min="0"/>
+          </label>
+        </div>
+      </div>
 
-    <label>Longueur VM post. (mm)
-      <input type="number" id="${prefix}-eto-vm-post-l" step="1" min="0"/>
-    </label>
-  </div>
-</div>
+      <div class="eto-subtitle">Coaptation</div>
+      <div class="eto-cell eto-subcell">
+        <div class="eto-inline2">
+          <label>Hauteur de coaptation (mm)
+            <input type="number" id="${prefix}-eto-coap-h" step="1" min="0"/>
+          </label>
 
+          <label>Profondeur de coaptation (mm)
+            <input type="number" id="${prefix}-eto-coap-d" step="1" min="0"/>
+          </label>
+        </div>
+      </div>
 
-<div class="eto-subtitle">Coaptation</div>
-<div class="eto-cell eto-subcell">
-  <div class="eto-inline2">
-    <label>Hauteur de coaptation (mm)
-      <input type="number" id="${prefix}-eto-coap-h" step="1" min="0"/>
-    </label>
+      <!-- ✅ MODIF : suppression totale section cordages -->
+      <!-- ✅ MODIF : remplacement par facteurs de risque de SAM -->
+      <div class="eto-subtitle">Facteurs de risque de SAM</div>
+      <div class="eto-cell eto-subcell">
+        <label class="checkbox">
+          <input type="checkbox" id="${prefix}-eto-sam-risk-angle"/>
+          Angle mitro-aortique &lt; 120°
+        </label>
 
-    <label>Profondeur de coaptation (mm)
-      <input type="number" id="${prefix}-eto-coap-d" step="1" min="0"/>
-    </label>
-  </div>
-</div>
+        <label class="checkbox">
+          <input type="checkbox" id="${prefix}-eto-sam-risk-dist"/>
+          Distance coaptation–SIV &lt; 25 mm
+        </label>
 
-<div class="eto-subtitle">Cordages</div>
-<div class="eto-cell eto-subcell">
-  <div class="eto-inline2">
-    <label class="checkbox">
-      <input type="checkbox" id="${prefix}-eto-cord-rupt"/>
-      Rupture de cordage
-    </label>
+        <label class="checkbox">
+          <input type="checkbox" id="${prefix}-eto-sam-risk-leaflet"/>
+          Longueur feuillet postérieur &gt; 15 mm
+        </label>
 
-    <label>Longueur cordage VM ant. (mm)
-      <input type="number" id="${prefix}-eto-cord-ant-l" step="1" min="0"/>
-    </label>
+        <label class="checkbox">
+          <input type="checkbox" id="${prefix}-eto-sam-risk-siv"/>
+          Épaisseur SIV ≥ 15 mm
+        </label>
 
-    <label>Longueur cordage VM post. (mm)
-      <input type="number" id="${prefix}-eto-cord-post-l" step="1" min="0"/>
-    </label>
-  </div>
-</div>
+        <label class="checkbox">
+          <input type="checkbox" id="${prefix}-eto-sam-risk-dtdvg"/>
+          DTDVG &lt; 45 mm
+        </label>
+      </div>
 
-<div class="eto-subtitle">Risque de SAM</div>
-<div class="eto-cell eto-subcell">
-  <div class="eto-inline2">
-    <label>Distance coaptation – SIV (mm)
-      <input type="number" id="${prefix}-eto-sam-dist" step="1" min="0"/>
-    </label>
+      <div class="eto-subtitle">Résultat post-plastie</div>
+      <div class="eto-cell eto-subcell">
+        <div class="eto-inline2">
+          <label>Gradient moyen (mmHg)
+            <input type="number" id="${prefix}-eto-post-gdmoy" step="1" min="0"/>
+          </label>
 
-    <label>Angle mitro-aortique (°)
-      <input type="number" id="${prefix}-eto-mitro-aort-angle" step="1" min="0"/>
-    </label>
-  </div>
-</div>
+          <label>Hauteur de coaptation (cH) (mm)
+            <input type="number" id="${prefix}-eto-post-ch" step="1" min="0"/>
+          </label>
 
-<div class="eto-subtitle">Résultat post-plastie</div>
-<div class="eto-cell eto-subcell">
-  <div class="eto-inline2">
-    <label>Gradient moyen (mmHg)
-      <input type="number" id="${prefix}-eto-post-gdmoy" step="1" min="0"/>
-    </label>
+          <label class="checkbox">
+            <input type="checkbox" id="${prefix}-eto-fuite-resid"/>
+            Fuite résiduelle
+          </label>
 
-    <label>Hauteur de coaptation (cH) (mm)
-      <input type="number" id="${prefix}-eto-post-ch" step="1" min="0"/>
-    </label>
+          <!-- ✅ MODIF : SAM déplacé ici (toujours visible) -->
+          <label class="checkbox">
+            <input type="checkbox" id="${prefix}-eto-post-sam"/>
+            SAM
+          </label>
+        </div>
 
-    <label class="checkbox">
-      <input type="checkbox" id="${prefix}-eto-fuite-resid"/>
-      Fuite résiduelle
-    </label>
-  </div>
+        <div id="${prefix}-eto-fuite-details" style="display:none;">
+          <label>Centrage fuite
+            <select id="${prefix}-eto-fuite-centrage">
+              <option value="">—</option>
+              <option>Centrée</option>
+              <option>Excentrée</option>
+            </select>
+          </label>
 
-  <div id="${prefix}-eto-fuite-details" style="display:none;">
-    <label>Centrage fuite
-      <select id="${prefix}-eto-fuite-centrage">
-        <option value="">—</option>
-        <option>Centrée</option>
-        <option>Excentrée</option>
-      </select>
-    </label>
-
-    <label>Sévérité fuite
-      <select id="${prefix}-eto-fuite-sev">
-        <option value="">—</option>
-        <option>Minime</option>
-        <option>Modérée</option>
-        <option>Sévère</option>
-      </select>
-    </label>
-
-    <label class="checkbox">
-      <input type="checkbox" id="${prefix}-eto-post-sam"/>
-      SAM
-    </label>
-  </div>
-</div>
+          <label>Sévérité fuite
+            <select id="${prefix}-eto-fuite-sev">
+              <option value="">—</option>
+              <option>Minime</option>
+              <option>Modérée</option>
+              <option>Sévère</option>
+            </select>
+          </label>
+        </div>
+      </div>
 
     </div>
   </td>
@@ -7735,64 +7741,104 @@ const l3 = makeCuspLine("Cusp non coronaire", "ncc-eh", "ncc-gh");
   }
 }
   
-  // ===== Valve mitrale =====
+// ===== Valve mitrale =====
+{
+  const anneau = val(q("anneau-mitral"));
+  const rm = q("rm") ? q("rm").checked : false;
+
+  const isPlastieMitrale =
+    !!root.querySelector(`#${prefix}-eto-im-meca`) ||  // champ plastie mitrale
+    !!root.querySelector(`#${prefix}-eto-coap-h`) ||   // coaptation (plastie)
+    !!root.querySelector(`#${prefix}-eto-sam-risk-angle`); // facteurs SAM (plastie)
+
+  const im = (q("im") ? q("im").checked : false) || isPlastieMitrale;
+
+  const parts = [];
+
+  if (anneau) parts.push(`anneau mitral ${anneau} mm`);
+
+  // --- RM ---
+  if (rm) {
+    const sev = val(q("rm-sev"));
+    const surf = val(q("rm-surface"));
+    const gdm = val(q("rm-gdmoy"));
+    const p12 = val(q("rm-p12"));
+
+    const details = [];
+    if (sev) details.push(sev.toLowerCase());
+    if (surf) details.push(`surface ${surf} cm²`);
+    if (gdm) details.push(`gradient moyen ${gdm} mmHg`);
+    if (p12) details.push(`P1/2T ${p12} ms`);
+
+    let txt = "rétrécissement mitral";
+    if (details.length) txt += ` (${details.join(", ")})`;
+    parts.push(txt);
+  }
+
+  // --- IM (général OU plastie mitrale) ---
+  if (im) {
+    const dir = val(q("im-dir")) || val(q("im-centrage")); // général vs plastie
+    const sev = val(q("im-sev"));
+    const vc  = val(q("im-vc"));
+    const p12 = val(q("im-p12"));
+
+    // ✅ nouveaux champs quantitatifs (plastie mitrale)
+    const sor = val(q("im-sor"));
+    const vr  = val(q("im-vr"));
+    const fr  = val(q("im-fr"));
+
+    const details = [];
+    if (dir) details.push(dir.toLowerCase());
+    if (sev) details.push(sev.toLowerCase());
+    if (vc)  details.push(`VC ${vc} mm`);
+    if (p12) details.push(`P1/2T ${p12} ms`);
+    if (sor) details.push(`SOR ${sor} cm²`);
+    if (vr)  details.push(`VR ${vr} mL`);
+    if (fr)  details.push(`FR ${fr} %`);
+
+    let txt = "insuffisance mitrale";
+    if (details.length) txt += ` (${details.join(", ")})`;
+    parts.push(txt);
+  }
+
+  if (!rm && !im) parts.push("non fuyante, non sténosante");
+  else if (!rm && im) parts.push("non sténosante");
+  else if (rm && !im) parts.push("non fuyante");
+
+  if (parts.length) {
+    lines.push(`- <strong>Valve mitrale</strong> : ${parts.join(", ")}.`);
+  }
+
+  // ✅ AJOUT : Facteurs de risque de SAM (plastie mitrale) — version SAFE (sans ?.)
   {
-    const anneau = val(q("anneau-mitral"));
-    const rm = q("rm") ? q("rm").checked : false;
-    const isPlastieMitrale =
-  !!root.querySelector(`#${prefix}-eto-im-meca`) ||   // si tu as ce champ en plastie
-  !!root.querySelector(`#${prefix}-eto-coaptation`);  // ou un champ spécifique existant
+    const risks = [];
 
-const im = (q("im") ? q("im").checked : false) || isPlastieMitrale;
+    const el1 = q("sam-risk-angle");
+    const el2 = q("sam-risk-dist");
+    const el3 = q("sam-risk-leaflet");
+    const el4 = q("sam-risk-siv");
+    const el5 = q("sam-risk-dtdvg");
 
+    if (el1 && el1.checked) risks.push("angle mitro-aortique < 120°");
+    if (el2 && el2.checked) risks.push("distance coaptation–SIV < 25 mm");
+    if (el3 && el3.checked) risks.push("longueur feuillet postérieur > 15 mm");
+    if (el4 && el4.checked) risks.push("épaisseur SIV ≥ 15 mm");
+    if (el5 && el5.checked) risks.push("DTDVG < 45 mm");
 
-    const parts = [];
-
-    if (anneau) parts.push(`anneau mitral ${anneau} mm`);
-
-    if (rm) {
-      const sev = val(q("rm-sev"));
-      const surf = val(q("rm-surface"));
-      const gdm = val(q("rm-gdmoy"));
-      const p12 = val(q("rm-p12"));
-
-      const details = [];
-      if (sev) details.push(sev.toLowerCase());
-      if (surf) details.push(`surface ${surf} cm²`);
-      if (gdm) details.push(`gradient moyen ${gdm} mmHg`);
-      if (p12) details.push(`P1/2T ${p12} ms`);
-
-      let txt = "rétrécissement mitral";
-      if (details.length) txt += ` (${details.join(", ")})`;
-      parts.push(txt);
-    }
-
-    if (im) {
-      const dir = val(q("im-dir"));
-      const sev = val(q("im-sev"));
-      const vc = val(q("im-vc"));
-      const p12 = val(q("im-p12"));
-
-      const details = [];
-      if (dir) details.push(dir.toLowerCase());
-      if (sev) details.push(sev.toLowerCase());
-      if (vc) details.push(`VC ${vc} mm`);
-      if (p12) details.push(`P1/2T ${p12} ms`);
-
-      let txt = "insuffisance mitrale";
-      if (details.length) txt += ` (${details.join(", ")})`;
-      parts.push(txt);
-    }
-
-    if (!rm && !im) parts.push("non fuyante, non sténosante");
-    else if (!rm && im) parts.push("non sténosante");
-    else if (rm && !im) parts.push("non fuyante");
-
-    if (parts.length) {
-      // ✅ FIX : c'était "Diamètres aortiques" par erreur dans ta version
-      lines.push(`- <strong>Valve mitrale</strong> : ${parts.join(", ")}.`);
+    if (risks.length) {
+      lines.push(`- <strong>Risque de SAM</strong> : ${risks.join(", ")}.`);
     }
   }
+
+  // ✅ AJOUT : SAM post-plastie (si coché)
+  {
+    const postSam = q("post-sam") ? q("post-sam").checked : false;
+    if (postSam) {
+      lines.push(`- <strong>Résultat post-plastie</strong> : SAM.`);
+    }
+  }
+}
+
 
   // ===== Tricuspide / PAPs =====
   {
