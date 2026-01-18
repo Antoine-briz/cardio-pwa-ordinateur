@@ -17537,6 +17537,10 @@ function etoHtmlValveAortique() {
           <span class="eto-icon" onclick="openImg('eto_ao_morphologie.png')">🖥️</span>
         </li>
         <li>
+          Mesure des diamètres aortiques
+          <span class="eto-icon" onclick="openImg('cf-diametre-aortique.png')">🖥️</span>
+        </li>
+        <li>
           Insuffisance aortique : Classification
           <span class="eto-icon" onclick="openImg('eto_ia_quantification.png')">🖥️</span>
         </li>
@@ -17591,6 +17595,10 @@ function etoHtmlValveMitrale() {
         <li>
           Insuffisance mitrale: Quantification par temps de 1/2 pression (PHT)
           <span class="eto-icon" onclick="openImg('eto_im_1.2.png')">🖥️</span>
+        </li>
+        <li>
+          Insuffisance mitrale: Mesures pour plastie mitrale
+          <span class="eto-icon" onclick="openImg('cf-plastiemitrale.png')">🖥️</span>
         </li>
         <li>
           Rétrécissement mitral: Gradient moyen
