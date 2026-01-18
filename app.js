@@ -6997,7 +6997,7 @@ function etoFormHtmlCompactPlastieAortique(prefix) {
         Fuite résiduelle
       </label>
 
-      <div id="${prefix}-eto-fuite-details" style="display:none;">
+      <div id="${prefix}-eto-ao-fuite-details" style="display:none;">
         <label>Centrage fuite
           <select id="${prefix}-eto-ao-fuite-centrage">
             <option value="">—</option>
@@ -7025,6 +7025,7 @@ function etoFormHtmlCompactPlastieAortique(prefix) {
     ${etoImgLink("Classification IA", "eto_ao_quantification.png")}
     ${etoImgLink("IA VC", "eto_ia_VC.png")}
     ${etoImgLink("IA P1/2T", "eto_ia_1.2.png")}
+    ${etoImgLink("IA PISA", "eto_ia_PISA.png")}
     ${etoImgLink("Diamètres aortiques", "cf-diametre-aortique.png")}
     ${etoImgLink("Plastie aortique", "cf-plastieaortique.png")}
   </td>
@@ -7111,6 +7112,7 @@ function etoFormHtmlCompactPlastieAortique(prefix) {
                   ${etoImgLink("Classification IM", "eto_im_classif.png")}
                   ${etoImgLink("IM VC", "eto_im_VC.png")}
                   ${etoImgLink("IM P1/2T", "eto_im_1.2.png")}
+                  ${etoImgLink("IM PISA", "eto_im_PISA.png")}
                 </td>
               </tr>
 
@@ -7332,7 +7334,7 @@ const plastieMitraleRow = `
           </label>
         </div>
 
-        <div id="${prefix}-eto-fuite-details" style="display:none;">
+        <div id="${prefix}-eto-mi-fuite-details" style="display:none;">
           <label>Centrage fuite
             <select id="${prefix}-eto-mi-fuite-centrage">
               <option value="">—</option>
