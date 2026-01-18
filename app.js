@@ -6993,13 +6993,13 @@ function etoFormHtmlCompactPlastieAortique(prefix) {
       </label>
 
       <label class="checkbox">
-        <input type="checkbox" id="${prefix}-eto-fuite-resid"/>
+        <input type="checkbox" id="${prefix}-eto-ao-fuite-resid"/>
         Fuite résiduelle
       </label>
 
       <div id="${prefix}-eto-fuite-details" style="display:none;">
         <label>Centrage fuite
-          <select id="${prefix}-eto-fuite-centrage">
+          <select id="${prefix}-eto-ao-fuite-centrage">
             <option value="">—</option>
             <option>Centrée</option>
             <option>Excentrée</option>
@@ -7007,7 +7007,7 @@ function etoFormHtmlCompactPlastieAortique(prefix) {
         </label>
 
         <label>Sévérité fuite
-          <select id="${prefix}-eto-fuite-sev">
+          <select id="${prefix}-eto-ao-fuite-sev">
             <option value="">—</option>
             <option>Minime</option>
             <option>Modérée</option>
@@ -7321,7 +7321,7 @@ const plastieMitraleRow = `
           </label>
 
           <label class="checkbox">
-            <input type="checkbox" id="${prefix}-eto-fuite-resid"/>
+            <input type="checkbox" id="${prefix}-eto-mi-fuite-resid"/>
             Fuite résiduelle
           </label>
 
@@ -7334,7 +7334,7 @@ const plastieMitraleRow = `
 
         <div id="${prefix}-eto-fuite-details" style="display:none;">
           <label>Centrage fuite
-            <select id="${prefix}-eto-fuite-centrage">
+            <select id="${prefix}-eto-mi-fuite-centrage">
               <option value="">—</option>
               <option>Centrée</option>
               <option>Excentrée</option>
@@ -7342,7 +7342,7 @@ const plastieMitraleRow = `
           </label>
 
           <label>Sévérité fuite
-            <select id="${prefix}-eto-fuite-sev">
+            <select id="${prefix}-eto-mi-fuite-sev">
               <option value="">—</option>
               <option>Minime</option>
               <option>Modérée</option>
@@ -7385,29 +7385,45 @@ function initEtoFormHandlers(prefix, root) {
   const rmInline = root.querySelector(`#${prefix}-eto-rm-inline`);
   const imInline = root.querySelector(`#${prefix}-eto-im-inline`);
   const papsWrap = root.querySelector(`#${prefix}-eto-paps-wrap`);
-const valveTypeSel = root.querySelector(`#${prefix}-eto-valve-type`);
-const commAngleWrap = root.querySelector(`#${prefix}-eto-comm-angle-wrap`);
-const commAngleInput = root.querySelector(`#${prefix}-eto-comm-angle`);
 
-// ===== FUITE RÉSIDUELLE : affiche/masque les détails =====
-const cbFuite = g("fuite-resid");
-const fuiteDetails = root.querySelector(`#${prefix}-eto-fuite-details`);
+  // ===== PLASTIE AORTIQUE : type de valve -> angle commisural conditionnel =====
+  const valveTypeSel = root.querySelector(`#${prefix}-eto-valve-type`);
+  const commAngleWrap = root.querySelector(`#${prefix}-eto-comm-angle-wrap`);
+  const commAngleInput = root.querySelector(`#${prefix}-eto-comm-angle`);
 
-const syncFuite = () => {
-  if (!fuiteDetails) return;
+  // ===== FUITE RÉSIDUELLE (Ao + Mi) : affiche/masque les détails =====
+  const cbFuiteAo = root.querySelector(`#${prefix}-eto-ao-fuite-resid`);
+  const fuiteAoDetails = root.querySelector(`#${prefix}-eto-ao-fuite-details`);
+  const selFuiteAoC = root.querySelector(`#${prefix}-eto-ao-fuite-centrage`);
+  const selFuiteAoS = root.querySelector(`#${prefix}-eto-ao-fuite-sev`);
 
-  const show = !!(cbFuite && cbFuite.checked);
-  fuiteDetails.style.display = show ? "block" : "none";
+  const cbFuiteMi = root.querySelector(`#${prefix}-eto-mi-fuite-resid`);
+  const fuiteMiDetails = root.querySelector(`#${prefix}-eto-mi-fuite-details`);
+  const selFuiteMiC = root.querySelector(`#${prefix}-eto-mi-fuite-centrage`);
+  const selFuiteMiS = root.querySelector(`#${prefix}-eto-mi-fuite-sev`);
 
-  // si on décoche, on reset centrage/sévérité (évite une synthèse “fantôme”)
-  if (!show) {
-    const c = g("fuite-centrage");
-    const s = g("fuite-sev");
-    if (c) c.value = "";
-    if (s) s.value = "";
+  function syncFuiteAo() {
+    if (!cbFuiteAo || !fuiteAoDetails) return;
+    const show = !!cbFuiteAo.checked;
+    fuiteAoDetails.style.display = show ? "block" : "none";
+
+    if (!show) {
+      if (selFuiteAoC) selFuiteAoC.value = "";
+      if (selFuiteAoS) selFuiteAoS.value = "";
+    }
   }
-};
-  
+
+  function syncFuiteMi() {
+    if (!cbFuiteMi || !fuiteMiDetails) return;
+    const show = !!cbFuiteMi.checked;
+    fuiteMiDetails.style.display = show ? "block" : "none";
+
+    if (!show) {
+      if (selFuiteMiC) selFuiteMiC.value = "";
+      if (selFuiteMiS) selFuiteMiS.value = "";
+    }
+  }
+
   // ===== SYNTHÈSE LIVE (zone droite) =====
   const liveBox = root.querySelector(`#${prefix}-eto-live`);
   const liveCopyBtn = root.querySelector(`#${prefix}-eto-live-copy`);
@@ -7427,45 +7443,43 @@ const syncFuite = () => {
     if (imInline) imInline.style.display = (cbIM && cbIM.checked) ? "block" : "none";
     if (papsWrap) papsWrap.style.display = (cbIT && cbIT.checked) ? "inline-flex" : "none";
 
+    // ✅ PLASTIE AORTIQUE : afficher l’angle commisural uniquement si BAV sélectionné
+    if (commAngleWrap && valveTypeSel) {
+      const v = (valveTypeSel.value || "").trim();
+      const show =
+        v === "Fused BAV" ||
+        v === "Non fused BAV" ||
+        v === "Partial fused BAV";
 
-    
-// ✅ PLASTIE AORTIQUE : afficher l’angle commisural uniquement si BAV sélectionné
-if (commAngleWrap && valveTypeSel) {
-  const v = (valveTypeSel.value || "").trim();
-  const show =
-    v === "Fused BAV" ||
-    v === "Non fused BAV" ||
-    v === "Partial fused BAV";
+      commAngleWrap.style.display = show ? "" : "none";
+      if (!show && commAngleInput) commAngleInput.value = "";
+    }
 
-  commAngleWrap.style.display = show ? "" : "none";
-  if (!show && commAngleInput) commAngleInput.value = "";
-}
+    // ✅ FUITE Ao + Mi
+    syncFuiteAo();
+    syncFuiteMi();
 
-    
     updateLive();
-    syncFuite();
   };
 
-  [cbRA, cbIA, cbRM, cbIM, cbIT].forEach(el => {
+  // ===== Listeners checkboxes principaux (RA/IA/RM/IM/IT) =====
+  [cbRA, cbIA, cbRM, cbIM, cbIT].forEach((el) => {
     if (el) el.addEventListener("change", sync);
   });
 
-  // ===== Listener fuite résiduelle =====
-  if (cbFuite) {
-    cbFuite.addEventListener("change", () => {
-      syncFuite();
-      updateLive();
-    });
-  }
+  // ===== Listener valve type (plastie aortique) =====
+  if (valveTypeSel) valveTypeSel.addEventListener("change", sync);
 
-if (valveTypeSel) valveTypeSel.addEventListener("change", sync);
-  
+  // ===== Listeners fuites Ao + Mi =====
+  if (cbFuiteAo) cbFuiteAo.addEventListener("change", () => { syncFuiteAo(); updateLive(); });
+  if (cbFuiteMi) cbFuiteMi.addEventListener("change", () => { syncFuiteMi(); updateLive(); });
+
   // ===== Mise à jour live sur toute saisie =====
   root.querySelectorAll(
     `#${prefix}-eto-form input,
      #${prefix}-eto-form select,
      #${prefix}-eto-form textarea`
-  ).forEach(el => {
+  ).forEach((el) => {
     el.addEventListener("input", updateLive);
     el.addEventListener("change", updateLive);
   });
@@ -7503,7 +7517,7 @@ if (valveTypeSel) valveTypeSel.addEventListener("change", sync);
         `#${prefix}-eto-form input,
          #${prefix}-eto-form select,
          #${prefix}-eto-form textarea`
-      ).forEach(el => {
+      ).forEach((el) => {
         if (el.tagName === "SELECT") el.value = "";
         else if (el.type === "checkbox") el.checked = false;
         else el.value = "";
@@ -7513,13 +7527,19 @@ if (valveTypeSel) valveTypeSel.addEventListener("change", sync);
       const thorax = g("thorax");
       if (thorax) thorax.value = "Fermé";
 
-      // Recocher valeurs par défaut (sans optional chaining)
+      // Recocher valeurs par défaut
       const aur = root.querySelector(`#${prefix}-eto-auricule-libre`);
       const paroi = root.querySelector(`#${prefix}-eto-paroi-aorte-ok`);
       const fop = root.querySelector(`#${prefix}-eto-fop-absent`);
       if (aur) aur.checked = true;
       if (paroi) paroi.checked = true;
       if (fop) fop.checked = true;
+
+      // ⚠️ reset fuite Ao/Mi (évite reste visuel)
+      if (cbFuiteAo) cbFuiteAo.checked = false;
+      if (cbFuiteMi) cbFuiteMi.checked = false;
+      syncFuiteAo();
+      syncFuiteMi();
 
       sync();
     });
@@ -7537,6 +7557,7 @@ if (valveTypeSel) valveTypeSel.addEventListener("change", sync);
   // ===== Initialisation =====
   sync();
 }
+
 
 function buildEtoCompteRenduCompact(prefix, root) {
   const q = (suffix) => root.querySelector(`#${prefix}-eto-${suffix}`);
@@ -7756,9 +7777,9 @@ const l3 = makeCuspLine("Cusp non coronaire", "ncc-eh", "ncc-gh");
     const postGmoy   = val(q("post-gmoy"));
     const postGmax   = val(q("post-gmax"));
 
-    const fuite  = q("fuite-resid") ? q("fuite-resid").checked : false;
-    const fuiteC = val(q("fuite-centrage"));
-    const fuiteS = val(q("fuite-sev"));
+    const fuite  = q("ao-fuite-resid") ? q("ao-fuite-resid").checked : false;
+const fuiteC = val(q("ao-fuite-centrage"));
+const fuiteS = val(q("ao-fuite-sev"));
 
     const parts = [];
     if (postAnneau) parts.push(`anneau ${postAnneau} mm`);
@@ -7873,9 +7894,10 @@ const l3 = makeCuspLine("Cusp non coronaire", "ncc-eh", "ncc-gh");
   const postGmoy = val(q("post-gdmoy")); // Gradient moyen (mmHg)
   const postCh   = val(q("post-ch"));   // Hauteur de coaptation (cH) (mm)
 
-  const fuite = q("fuite-resid") ? q("fuite-resid").checked : false;
-  const fuiteC = val(q("fuite-centrage"));
-  const fuiteS = val(q("fuite-sev"));
+  const fuite  = q("mi-fuite-resid") ? q("mi-fuite-resid").checked : false;
+const fuiteC = val(q("mi-fuite-centrage"));
+const fuiteS = val(q("mi-fuite-sev"));
+
 
   const samPost = q("post-sam") ? q("post-sam").checked : false;
 
