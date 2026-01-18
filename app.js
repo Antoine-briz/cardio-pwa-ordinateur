@@ -7830,22 +7830,34 @@ const l3 = makeCuspLine("Cusp non coronaire", "ncc-eh", "ncc-gh");
     if (risks.length) {
       lines.push(`- <strong>Risque de SAM</strong> : ${risks.join(", ")}.`);
     }
-    // ✅ AJOUT : SAM post-plastie (résultat)
+// ✅ Résultat post-plastie (PLASTIE MITRALE) — une seule ligne, toujours au bon endroit
 {
+  const postGmoy = val(q("post-gdmoy")); // Gradient moyen (mmHg)
+  const postCh   = val(q("post-ch"));   // Hauteur de coaptation (cH) (mm)
+
+  const fuite = q("fuite-resid") ? q("fuite-resid").checked : false;
+  const fuiteC = val(q("fuite-centrage"));
+  const fuiteS = val(q("fuite-sev"));
+
   const samPost = q("post-sam") ? q("post-sam").checked : false;
 
-  if (samPost) {
-    lines.push(`- <strong>Résultat post-plastie mitrale</strong> : SAM post-opératoire.`);
-  }
-}
+  const parts = [];
+  if (postGmoy) parts.push(`gradient moyen ${postGmoy} mmHg`);
+  if (postCh)   parts.push(`hauteur de coaptation (cH) ${postCh} mm`);
+
+  if (fuite) {
+    const d = [];
+    if (fuiteC) d.push(fuiteC.toLowerCase());
+    if (fuiteS) d.push(fuiteS.toLowerCase());
+    parts.push(`fuite résiduelle${d.length ? ` (${d.join(", ")})` : ""}`);
   }
 
-  // ✅ AJOUT : SAM post-plastie (si coché)
-  {
-    const postSam = q("post-sam") ? q("post-sam").checked : false;
-    if (postSam) {
-      lines.push(`- <strong>Résultat post-plastie</strong> : SAM.`);
-    }
+  if (samPost) parts.push("SAM post-plastie");
+
+  if (parts.length) {
+    lines.push(`- <strong>Résultat post-plastie</strong> : ${parts.join(", ")}.`);
+  }
+}
   }
 }
 
