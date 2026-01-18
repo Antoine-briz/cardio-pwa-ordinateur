@@ -7744,35 +7744,42 @@ const l3 = makeCuspLine("Cusp non coronaire", "ncc-eh", "ncc-gh");
   }
 
 // ✅ AJOUT : Résultat post-plastie (PLASTIE AORTIQUE)
+// ⚠️ Important : ne doit s'exécuter QUE sur la plastie aortique
 {
-  const postAnneau = val(q("post-anneau"));
-  const postCoapt  = val(q("post-coapt"));
-  const postEh     = val(q("post-eh"));
-  const postGmoy   = val(q("post-gmoy"));
-  const postGmax   = val(q("post-gmax"));
+  const isAorticPost =
+    !!q("post-anneau") || !!q("post-coapt") || !!q("post-eh") || !!q("post-gmax");
 
-  const fuite = q("fuite-resid") ? q("fuite-resid").checked : false;
-  const fuiteC = val(q("fuite-centrage"));
-  const fuiteS = val(q("fuite-sev"));
+  if (isAorticPost) {
+    const postAnneau = val(q("post-anneau"));
+    const postCoapt  = val(q("post-coapt"));
+    const postEh     = val(q("post-eh"));
+    const postGmoy   = val(q("post-gmoy"));
+    const postGmax   = val(q("post-gmax"));
 
-  const parts = [];
-  if (postAnneau) parts.push(`anneau ${postAnneau} mm`);
-  if (postCoapt)  parts.push(`hauteur de coaptation ${postCoapt} mm`);
-  if (postEh)     parts.push(`hauteur effective ${postEh} mm`);
-  if (postGmoy)   parts.push(`gradient moyen ${postGmoy} mmHg`);
-  if (postGmax)   parts.push(`gradient max ${postGmax} mmHg`);
+    const fuite  = q("fuite-resid") ? q("fuite-resid").checked : false;
+    const fuiteC = val(q("fuite-centrage"));
+    const fuiteS = val(q("fuite-sev"));
 
-  if (fuite) {
-    const d = [];
-    if (fuiteC) d.push(fuiteC.toLowerCase());
-    if (fuiteS) d.push(fuiteS.toLowerCase());
-    parts.push(`fuite résiduelle${d.length ? ` (${d.join(", ")})` : ""}`);
-  }
+    const parts = [];
+    if (postAnneau) parts.push(`anneau ${postAnneau} mm`);
+    if (postCoapt)  parts.push(`hauteur de coaptation ${postCoapt} mm`);
+    if (postEh)     parts.push(`hauteur effective ${postEh} mm`);
+    if (postGmoy)   parts.push(`gradient moyen ${postGmoy} mmHg`);
+    if (postGmax)   parts.push(`gradient max ${postGmax} mmHg`);
 
-  if (parts.length) {
-    lines.push(`- <strong>Résultat post-plastie</strong> : ${parts.join(", ")}.`);
+    if (fuite) {
+      const d = [];
+      if (fuiteC) d.push(fuiteC.toLowerCase());
+      if (fuiteS) d.push(fuiteS.toLowerCase());
+      parts.push(`fuite résiduelle${d.length ? ` (${d.join(", ")})` : ""}`);
+    }
+
+    if (parts.length) {
+      lines.push(`- <strong>Résultat post-plastie</strong> : ${parts.join(", ")}.`);
+    }
   }
 }
+
   
 // ===== Valve mitrale =====
 {
