@@ -3135,20 +3135,16 @@ Gestion des traitements :
 
 Pré-commande : Aucune`,
   monitorage: `Scope 5 branches, SpO2, VVP, PNI`,
-  protocole: `<strong>Induction:</strong>
-Si Laser/Radiofréquence seul: Anesthésie locale + Sédation AIVOC Rémifentanil (sauf cas particuliers).
-Si Eveinage/Stripping/Crossectomie/Phlébectomies multiples: Anesthésie générale AIVOC propofol/Rémifentanil (IOT ou ML). Position en décubitus dorsal.
-Si saphène externe: Anesthésie générale AIVOC propofol/Rémifentanil IOT OU Rachianesthésie. Position en décubitus dorsal.
+  // ⚠️ Ici on met des "placeholders" que applyConditions va remplacer selon le choix utilisateur
+  protocole: `<strong>Induction:</strong> __VARICES_INDUCTION__
 
-<strong>Antibioprophylaxie</strong> (Uniquement si abord chirurgical du scarpa):
-Céfazoline 2g IVL. Si IMC > 50 cochée: Céfazoline 4g. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision`,
+<strong>Antibioprophylaxie</strong> (Uniquement si abord chirurgical du scarpa): __VARICES_ATB__`,
   alr: `Pas d’ALR`,
   orientation: `SSPI 1h minimum
 Ambulatoire
 
 Pas d’examen particulier`,
 },
-
 
     "Sympathectomie lombaire": {
       gestion: `Examens complémentaires : 
@@ -3209,7 +3205,7 @@ Surveillance:
 
           <!-- Varices : choix unique -->
           <div class="row" id="vmi-varices-row" style="display:none;">
-            <label>Choix unique
+            <label>Technique
               <select id="vmi-varices-type" class="select">
                 <option value="Laser/Radiofréquence seul">Laser/Radiofréquence seul</option>
                 <option value="Eveinage/Stripping/Crossectomie/Phlébectomies multiples">Eveinage/Stripping/Crossectomie/Phlébectomies multiples</option>
@@ -3330,41 +3326,46 @@ Surveillance:
       }
     }
 
-    // Varices : choix unique + ATB seulement si abord chirurgical scarpa
     if (interventionName === "Varices") {
-      const choice = varSel?.value || "Laser/Radiofréquence seul";
+  const choice = varSel?.value || "Laser/Radiofréquence seul";
 
-      // Induction : on sélectionne le segment correspondant
-      // (on évite d’inventer : on garde la formulation existante et on enlève le reste)
-      if (choice === "Laser/Radiofréquence seul") {
-        t = t.replace(
-          /Induction:\s*Si Laser\/Radiofréquence seul:\s*/i,
-          "Induction: "
-        );
-      } else {
-        // si ce n’est pas laser, on supprime le préfixe conditionnel sans changer le contenu ensuite
-        t = t.replace(/Induction:\s*Si Laser\/Radiofréquence seul:\s*/i, "Induction: ");
-      }
+  // 1) Induction : on remplace le placeholder par UN seul protocole
+  let induction = "";
+  if (choice === "Laser/Radiofréquence seul") {
+    induction =
+      "Anesthésie locale + Sédation AIVOC Rémifentanil (sauf cas particuliers).";
+  } else if (choice === "Eveinage/Stripping/Crossectomie/Phlébectomies multiples") {
+    induction =
+      "Anesthésie générale AIVOC Propofol/Rémifentanil (IOT ou ML). Position en décubitus dorsal.";
+  } else if (choice === "Saphène externe") {
+    induction =
+      "Anesthésie générale AIVOC Propofol/Rémifentanil IOT OU Rachianesthésie. Position en décubitus dorsal.";
+  } else {
+    // fallback safe
+    induction =
+      "Anesthésie générale AIVOC Propofol/Rémifentanil.";
+  }
 
-           // Antibioprophylaxie : uniquement si abord scarpa → donc pas pour Laser/RF seul
-      const atbVarices = () => {
-        if (cbAll?.checked) return "Vancomycine 30mg/kg IVL une injection 30min avant incision";
-        if (cbImc?.checked) return "Céfazoline 4g IVL";
-        return "Céfazoline 2g IVL";
-      };
+  t = t.replace("__VARICES_INDUCTION__", induction);
 
-      if (choice === "Laser/Radiofréquence seul") {
-        // on retire la ligne ATB (sans ajouter de texte)
-        t = t.replace(/\n?<strong>Antibioprophylaxie<\/strong>\s*\(Uniquement si abord chirurgical du scarpa\):[\s\S]*$/i, "");
-        t = t.replace(/\n?Antibioprophylaxie\s*\(Uniquement si abord chirurgical du scarpa\):[\s\S]*$/i, "");
-      } else {
-        // si abord scarpa : remplace toute la section ATB par la bonne (dose unique)
-        t = t.replace(
-          /(<strong>\s*)?Antibioprophylaxie\s*(<\/strong>)?\s*\(Uniquement si abord chirurgical du scarpa\)\s*:?\s*([\s\S]*?)(?=(\n\s*<strong>|$))/i,
-          () => `<strong>Antibioprophylaxie</strong> (Uniquement si abord chirurgical du scarpa): ${atbVarices()}`
-        );
-      }
-    }
+  // 2) Antibioprophylaxie : uniquement si abord scarpa (= pas Laser/RF seul)
+  //    Logique identique aux autres : Allergie > IMC50 > standard
+  const atb = () => {
+    if (cbAll?.checked) return "Vancomycine 30mg/kg IVL une injection 30min avant incision";
+    if (cbImc?.checked) return "Céfazoline 4g IVL";
+    return "Céfazoline 2g IVL";
+  };
+
+  if (choice === "Laser/Radiofréquence seul") {
+    // On SUPPRIME complètement la ligne ATB (elle n’est pas indiquée)
+    t = t.replace(/\n?<strong>Antibioprophylaxie<\/strong>[\s\S]*$/i, "");
+    t = t.replace(/\n?Antibioprophylaxie[\s\S]*$/i, "");
+  } else {
+    // On garde la ligne mais on remplace par la bonne molécule/dose (et UNE seule)
+    t = t.replace("__VARICES_ATB__", atb());
+  }
+}
+
 
     // nettoyage éventuel de reliquats "Si ... coché"
     t = t.replace(/Si IMC > 50 coché:\s*/g, "");
