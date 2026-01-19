@@ -3138,7 +3138,7 @@ Pré-commande : Aucune`,
   // ⚠️ Ici on met des "placeholders" que applyConditions va remplacer selon le choix utilisateur
   protocole: `<strong>Induction:</strong> __VARICES_INDUCTION__
 
-<strong>Antibioprophylaxie</strong> (Uniquement si abord chirurgical du scarpa): __VARICES_ATB__`,
+<strong>Antibioprophylaxie (si abord chirurgical du scarpa)</strong> __VARICES_ATB__`,
   alr: `Pas d’ALR`,
   orientation: `SSPI 1h minimum
 Ambulatoire
