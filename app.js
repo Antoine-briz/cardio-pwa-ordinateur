@@ -1946,17 +1946,18 @@ function renderInterventionAorteThoracique() {
     "Remplacement de l’aorte ascendante et de la crosse aortique (Sous CEC)": {
       gestion:
         "<strong>Examens complémentaires&nbsp;: </strong><br>" +
-        "Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)<br>" +
-        "ECG<br>" +
-        "Radiographie de thorax de référence<br>" +
-        "EDTSA<br><br>" +
+        "- Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)<br>" +
+        "- ECG<br>" +
+        "- ETT de repos<br>" +
+        "- CoroTDM ou coronarographie<br>" +
+        "- EDTSA<br><br>" +
         "<strong>&nbsp;Gestion des traitements&nbsp;: </strong><br>" +
-        "Arrêt Kardégic J-5<br>" +
-        "Arrêt Clopidogrel J-5<br>" +
-        "Arrêt Ticagrélor J-5<br>" +
-        "Arrêt Prasugrel J-7<br>" +
-        "Arrêt AOD J-5<br><br>" +
-        "Pré-commande: 6 CGR + 8 PFC + 1 CPA",
+        "- Arrêt Kardégic J-5<br>" +
+        "- Arrêt Clopidogrel J-5<br>" +
+        "- Arrêt Ticagrélor J-5<br>" +
+        "- Arrêt Prasugrel J-7<br>" +
+        "- Arrêt AOD J-5<br><br>" +
+        "Pré-commande: 20 CGR + 20 PFC + 4 CPA",
       monitorage:
         "Scope 5 branches, SpO2, VVP, TOF,  KTa (nombre et site selon geste), BIS, NIRS, SU, ETO, Cell-saver, accélérateur/réchauffeur",
       alr:
@@ -1969,28 +1970,29 @@ function renderInterventionAorteThoracique() {
         "- Radio de thorax&nbsp;&nbsp;<br>" +
         "- GDS-lact, NFS, ionogramme, BHC, troponinémie, TP/TCA<br><br>" +
         "Surveillance:<br>" +
-        "Saignement<br>" +
-        "Défaillance respiratoire<br>" +
-        "Examen neuro<br>" +
-        "Obj PAS &lt; 160 mmHg",
+        "- Saignement<br>" +
+        "- Défaillance respiratoire<br>" +
+        "- Examen neuro<br>" +
+        "- Obj PAS &lt; 160 mmHg",
       type: "ASC_CROSSE_CEC",
     },
 
     "ATA I, II et III (Sous CEC)": {
       gestion:
         "<strong>Examens complémentaires&nbsp;: </strong><br>" +
-        "Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)<br>" +
-        "ECG<br>" +
-        "Radiographie de thorax de référence<br>" +
-        "EDTSA<br>" +
-        "Artériographie médullaire<br><br>" +
+        "- Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)<br>" +
+        "- ECG<br>" +
+        "- ETT de repos<br>" +
+        "- CoroTDM ou coronarographie<br>" +
+        "- EDTSA<br>" +
+        "- Artériographie médullaire<br><br>" +
         "<strong>&nbsp;Gestion des traitements&nbsp;: </strong><br>" +
-        "Arrêt Kardégic J-5<br>" +
-        "Arrêt Clopidogrel J-5<br>" +
-        "Arrêt Ticagrélor J-5<br>" +
-        "Arrêt Prasugrel J-7<br>" +
-        "Arrêt AOD J-5<br><br>" +
-        "Pré-commande: 6 CGR + 8 PFC + 1 CPA",
+        "- Arrêt Kardégic J-5<br>" +
+        "- Arrêt Clopidogrel J-5<br>" +
+        "- Arrêt Ticagrélor J-5<br>" +
+        "- Arrêt Prasugrel J-7<br>" +
+        "- Arrêt AOD J-5<br><br>" +
+        "Pré-commande: 20 CGR + 20 PFC + 4 CPA",
       monitorage:
         "Scope 5 branches, SpO2, VVP, DLE, TOF, IOT sélective, KTa x2 (radial droit + fémoral), BIS +/- NIRS, SU, SNG,  ETO, Cell-saver, accélérateur/réchauffeur",
       alr:
@@ -2010,28 +2012,29 @@ function renderInterventionAorteThoracique() {
         "- Radio de thorax&nbsp;&nbsp;<br>" +
         "- GDS-lact, NFS, ionogramme, BHC, troponinémie, TP/TCA<br><br>" +
         "Surveillance:<br>" +
-        "Saignement<br>" +
-        "Défaillance respiratoire<br>" +
-        "Diurèse&nbsp;&nbsp;<br>" +
-        "Obj PAS &lt; 160 mmHg<br><br>" +
-        "Si déficit neuro: Drainage 5-10mL QSP PAM &gt; 90",
+        "- Saignement<br>" +
+        "- Défaillance respiratoire<br>" +
+        "- Diurèse&nbsp;&nbsp;<br>" +
+        "- Obj PAS &lt; 160 mmHg<br><br>" +
+        "Si déficit neuro: Drainage 5-10mL QSP PAM &gt; 90, Cf protocole DLE",
       type: "ATA_123_CEC",
     },
 
     "ATA IV (sans CEC)": {
       gestion:
         "<strong>Examens complémentaires&nbsp;: </strong><br>" +
-        "Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)<br>" +
-        "ECG<br>" +
-        "Radiographie de thorax de référence<br>" +
-        "EDTSA<br><br>" +
+        "- Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)<br>" +
+        "- ECG<br>" +
+        "- ETT de repos<br>" +
+        "- CoroTDM ou coronarographie<br>" +
+        "- EDTSA<br><br>" +
         "<strong>&nbsp;Gestion des traitements&nbsp;: </strong><br>" +
-        "Arrêt Kardégic J-5<br>" +
-        "Arrêt Clopidogrel J-5<br>" +
-        "Arrêt Ticagrélor J-5<br>" +
-        "Arrêt Prasugrel J-7<br>" +
-        "Arrêt AOD J-5<br><br>" +
-        "Pré-commande: 4 CGR",
+        "- Arrêt Kardégic J-5<br>" +
+        "- Arrêt Clopidogrel J-5<br>" +
+        "- Arrêt Ticagrélor J-5<br>" +
+        "- Arrêt Prasugrel J-7<br>" +
+        "- Arrêt AOD J-5<br><br>" +
+        "Pré-commande: 10 CGR + 10 PFC + 2 CUP",
       monitorage:
         "Scope 5 branches, SpO2, VVP, TOF, KTa, BIS +/- NIRS, SU, SNG, Cell-saver,  accélérateur/réchauffeur",
       alr:
@@ -2051,10 +2054,10 @@ function renderInterventionAorteThoracique() {
         "- Radio de thorax&nbsp;&nbsp;<br>" +
         "- GDS-lact, NFS, ionogramme, BHC, troponinémie, TP/TCA<br><br>" +
         "Surveillance:<br>" +
-        "Saignement<br>" +
-        "Défaillance respiratoire<br>" +
-        "Diurèse&nbsp;&nbsp;<br>" +
-        "Obj PAS &lt; 160 mmHg",
+        "- Saignement<br>" +
+        "- Défaillance respiratoire<br>" +
+        "- Diurèse&nbsp;&nbsp;<br>" +
+        "- Obj PAS &lt; 160 mmHg",
       type: "ATA4_SANS_CEC",
     },
   };
