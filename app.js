@@ -2348,16 +2348,19 @@ function renderInterventionAorteAbdominale() {
       gestion: `Examens complémentaires :
 - Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
 - ECG
+- ETT de repos
+- CodoTDM ou coronarographie
+- EDTSA
 
 Gestion des traitements :
-- Maintien Kardégic
+- Arrêt Kardégic J-3
 - Arrêt Clopidogrel J-5
 - Arrêt Ticagrélor J-5
 - Arrêt Prasugrel J-7
 - Arrêt AOD J-5
 
-Pré-commande : 4 CGR`,
-      monitorage: `Scope 5 branches, SpO2, VVP, TOF, KTa, BIS +/- NIRS, SU, réchauffeur/transfuseur`,
+Pré-commande : 5 CGR + 5 PFC + 1 CPA`,
+      monitorage: `Scope 5 branches, SpO2, VVP x2, KTa, TOF, BIS +/- NIRS, SU, SNG, Cell-saver, réchauffeur/transfuseur`,
       protocole: `<strong>Induction:</strong> Anesthésie générale AIVOC Propofol/Sufentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
 
 <strong>Antibioprophylaxie:</strong> Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
@@ -2374,34 +2377,40 @@ Pré-commande : 4 CGR`,
       alr: `TAP-bloc ou QLB2 ou Péridurale thoracique
 Cf TAP-bloc 🖥️
 Cf QLB 🖥️`,
-      orientation: `USIP/Réa
+      orientation: `SSPI 24h
 
 Examens:
-- ECG
-- Radio de thorax
-- Bilan complet à l’admission
+- ECG + biologie à l'admission
+- GdS à 20h
+- ECG + biologie à J1
 
-Surveillance:
+Surveillance: 
+- Ischémie MI
 - Saignement
-- Ischémie digestive
-- Insuffisance rénale
-- Douleur`,
+- Obj PAS < 160 mmHg
+
+PEC en SSPI: 
+- Douleur: Paracétamol, Acupan, PCA Morphine
+- VNI + Triflo`,
     },
 
     "Pontage aorto-bifémoral (carrefour)": {
       gestion: `Examens complémentaires :
 - Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
 - ECG
+- ETT de repos
+- CodoTDM ou coronarographie
+- EDTSA
 
 Gestion des traitements :
-- Maintien Kardégic
+- Arrêt Kardégic J-3
 - Arrêt Clopidogrel J-5
 - Arrêt Ticagrélor J-5
 - Arrêt Prasugrel J-7
 - Arrêt AOD J-5
 
-Pré-commande : 4 CGR`,
-      monitorage: `Scope 5 branches, SpO2, VVP, TOF, KTa, BIS, SU, réchauffeur/transfuseur`,
+Pré-commande : 5 CGR + 5 PFC + 1 CPA`,
+      monitorage: `Scope 5 branches, SpO2, VVP x2, KTa, TOF, BIS +/- NIRS, SU, SNG, Cell-saver, réchauffeur/transfuseur`,
       protocole: `<strong>Induction:</strong> Anesthésie générale AIVOC Propofol/Sufentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
 
 <strong>Antibioprophylaxie:</strong> Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
@@ -2416,33 +2425,40 @@ Pré-commande : 4 CGR`,
       alr: `TAP-bloc ou QLB2 ou Péridurale thoracique
 Cf TAP-bloc 🖥️
 Cf QLB 🖥️`,
-      orientation: `USIP/Réa
+      orientation: `SSPI 24h
 
 Examens:
-- ECG
-- Bilan complet à l’admission
+- ECG + biologie à l'admission
+- GdS à 20h
+- ECG + biologie à J1
 
-Surveillance:
+Surveillance: 
+- Ischémie MI
 - Saignement
-- Ischémie digestive
-- Insuffisance rénale
-- Douleur`,
+- Obj PAS < 160 mmHg
+
+PEC en SSPI: 
+- Douleur: Paracétamol, Acupan, PCA Morphine
+- VNI + Triflo`,
     },
 
     "Allogreffe de l’aorte abdominale": {
       gestion: `Examens complémentaires :
 - Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
 - ECG
+- ETT de repos
+- CodoTDM ou coronarographie (généralement non disponible car contexte d'urgence)
+- EDTSA
 
 Gestion des traitements :
-- Maintien Kardégic
+- Arrêt Kardégic J-3
 - Arrêt Clopidogrel J-5
 - Arrêt Ticagrélor J-5
 - Arrêt Prasugrel J-7
 - Arrêt AOD J-5
 
-Pré-commande : 4 CGR`,
-      monitorage: `Scope 5 branches, SpO2, VVP, TOF, KTa, BIS, SU, réchauffeur/transfuseur`,
+Pré-commande : 10 CGR + 10 PFC + 2 CUP`,
+      monitorage: `Scope 5 branches, SpO2, VVP, KTc JID, KTa, TOF, BIS +/- NIRS, SU, SNG, Cell-saver, réchauffeur/transfuseur`,
       protocole: `<strong>Induction:</strong> Anesthésie générale AIVOC Propofol/Sufentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
 
 <strong>Antibioprophylaxie:</strong> Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
@@ -2457,17 +2473,20 @@ Pré-commande : 4 CGR`,
       alr: `TAP-bloc ou QLB2 ou Péridurale thoracique
 Cf TAP-bloc 🖥️
 Cf QLB 🖥️`,
-      orientation: `USIP/Réa
+      orientation: `Réanimation
 
 Examens:
 - ECG
+- Radiographie de thorax
 - Bilan complet à l’admission
 
 Surveillance:
+- Ischémie des MI
+- Signes de sepsis
 - Saignement
-- Ischémie digestive
-- Insuffisance rénale
-- Douleur`,
+- Défaillance respiratoire
+- Diurèse 
+- Obj PAS < 160 mmHg`,
     },
 
     "Syndrome de Nutcracker": {
@@ -2476,14 +2495,14 @@ Surveillance:
 - ECG
 
 Gestion des traitements :
-- Maintien Kardégic
+- Arrêt Kardégic J-3
 - Arrêt Clopidogrel J-5
 - Arrêt Ticagrélor J-5
 - Arrêt Prasugrel J-7
 - Arrêt AOD J-5
 
-Pré-commande : 4 CGR`,
-      monitorage: `Scope 5 branches, SpO2, VVP, TOF, KTa, BIS, SU, réchauffeur/transfuseur`,
+Pré-commande : 5 CGR + 5 PFC + 1 CPA`,
+      monitorage: `Scope 5 branches, SpO2, VVPx2, KTa, TOF, BIS +/- NIRS, SU, SNG, réchauffeur/transfuseur`,
       protocole: `<strong>Induction:</strong> Anesthésie générale AIVOC Propofol/Sufentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
 
 <strong>Antibioprophylaxie:</strong> Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
@@ -2498,17 +2517,16 @@ Pré-commande : 4 CGR`,
       alr: `TAP-bloc ou QLB2 ou Péridurale thoracique
 Cf TAP-bloc 🖥️
 Cf QLB 🖥️`,
-      orientation: `USIP/Réa
+      orientation: `SSPI 24h
 
 Examens:
-- ECG
-- Bilan complet à l’admission
+- Bilan à l'admission
+- GdS 20h
+- Bilan complet J1
 
 Surveillance:
-- Saignement
-- Ischémie digestive
-- Insuffisance rénale
-- Douleur`,
+- Douleur abdominales
+- PCA morphine systématique`,
     },
 
     // ligne “référence” des 3 dernières (contenu identique pour toutes les colonnes)
@@ -2516,16 +2534,19 @@ Surveillance:
       gestion: `Examens complémentaires :
 - Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
 - ECG
+- ETT de repos
+- CodoTDM ou coronarographie selon le terrain
+- EDTSA
 
 Gestion des traitements :
-- Maintien Kardégic
+- Arrêt Kardégic J-3
 - Arrêt Clopidogrel J-5
 - Arrêt Ticagrélor J-5
 - Arrêt Prasugrel J-7
 - Arrêt AOD J-5
 
-Pré-commande : 4 CGR`,
-      monitorage: `Scope 5 branches, SpO2, VVP, TOF, KTa, BIS, SU, réchauffeur/transfuseur`,
+Pré-commande : 5 CGR + 5 PFC + 1 CPA`,
+      monitorage: `Scope 5 branches, SpO2, VVPx2, KTa, TOF, BIS +/- NIRS, SU, SNG, réchauffeur/transfuseur`,
       protocole: `<strong>Induction:</strong> Anesthésie générale AIVOC Propofol/Sufentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
 
 <strong>Antibioprophylaxie:</strong> Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
@@ -2537,20 +2558,24 @@ Pré-commande : 4 CGR`,
 <strong>Hémostase:</strong>
 - Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)
 - Transfusion guidée par le Quantra Cf algorithme Quantra`,
-      alr: `TAP-bloc ou QLB2 ou Péridurale thoracique
+      alr: `TAP-bloc ou QLB2/3
 Cf TAP-bloc 🖥️
 Cf QLB 🖥️`,
-      orientation: `USIP/Réa
+      orientation: `SSPI 24h
 
 Examens:
-- ECG
-- Bilan complet à l’admission
+- ECG + Biologie à l’admission
+- GdS à 20h
+- Biologie + ECG à J1
 
-Surveillance:
-- Saignement
-- Ischémie digestive
-- Insuffisance rénale
-- Douleur`,
+Surveillance: 
+- Douleur abdominale, ischémie digestive
+- Saignement 
+- Obj PAS < 160 mmHg
+
+PEC en SSPI: 
+- Douleur: Paracétamol, Acupan, PCA Morphine
+- VNI + Triflo`,
     },
 
     // 2 lignes suivantes : cellules vides dans PPT => même contenu que la ligne précédente
@@ -2804,11 +2829,14 @@ function renderInterventionMembreInferieur() {
   // ----------------------------------------------------------
   // Données (strictement tableau, avec héritage des cellules fusionnées)
   // ----------------------------------------------------------
-  const DATA = {
+ const DATA = {
     "Trépied fémoral": {
       gestion: `Examens complémentaires : 
 - Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
 - ECG
+- ETT de repos
+- Dépistage coronaire si MET < 4 ou anomalie segmentaire à l’ETT
+- EDTSA à la discrétion du chirurgien
 
 Gestion des traitements :
 - Maintien Kardégic
@@ -2817,8 +2845,8 @@ Gestion des traitements :
 - Arrêt Prasugrel J-7
 - Arrêt AOD J-5
 
-Pré-commande : 4 CGR`,
-      monitorage: `Scope 5 branches, SpO2, VVP, PNI (Si induction à risque coché remplacer « PNI » par « KTa »), TOF, BIS, SU, réchauffeur/transfuseur`,
+Pré-commande : 2 CGR (parfois plus selon le geste)`,
+      monitorage: `Scope 5 branches, SpO2, VVP, PNI (+/- KTa si induction à risque), TOF, BIS, SU, cell-saver uniquement si redux/bilatéral/ATL associée`,
       protocole: `<strong>Induction:</strong> Anesthésie générale IOT ou masque laryngé, AIVOC propofol/rémifentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
 
 <strong>Antibioprophylaxie:</strong> Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
@@ -2839,7 +2867,7 @@ Examens à l’entrée:
 
 Surveillance: 
 - Saignement
-- Douleur`,
+- Ischémie de MI`,
     },
 
     "Pontage ilio-fémoral externe": {},
@@ -2848,6 +2876,9 @@ Surveillance:
       gestion: `Examens complémentaires : 
 - Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
 - ECG
+- ETT de repos
+- Dépistage coronaire si MET < 4 ou anomalie segmentaire à l’ETT
+- EDTSA à la discrétion du chirurgien
 
 Gestion des traitements :
 - Maintien Kardégic
@@ -2856,8 +2887,8 @@ Gestion des traitements :
 - Arrêt Prasugrel J-7
 - Arrêt AOD J-5
 
-Pré-commande : 4 CGR`,
-      monitorage: `Scope 5 branches, SpO2, VVP, PNI (Si induction à risque coché remplacer « PNI » par « KTa »), TOF, BIS, SU, réchauffeur/transfuseur`,
+Pré-commande : 2 CGR (parfois plus selon le geste)`,
+      monitorage: `Scope 5 branches, SpO2, VVP, PNI (+/- KTa si induction à risque), TOF, BIS, SU, cell-saver uniquement si redux/bilatéral/ATL associée`,
       protocole: `<strong>Induction:</strong> Anesthésie générale IOT ou masque laryngé, AIVOC propofol/rémifentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
 
 <strong>Antibioprophylaxie:</strong> Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
@@ -2865,8 +2896,46 @@ Pré-commande : 4 CGR`,
 <strong>Entretien:</strong> AIVOC propofol/rémifentanil
 
 <strong>Hémostase:</strong> Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)`,
-      alr: `
-Bloc QLB 2 ou 3
+      alr: `Au choix:
+QLB2/3 OU TAP-bloc
+Cf QLB 🖥️
+Cf TAP-bloc 🖥️`,
+      orientation: `SSPI 2h minimum
+
+Examens à l’entrée: 
+- ECG
+- GDS ou Hemocue
+
+Surveillance: 
+- Saignement
+- Ischémie de MI`,
+    },
+
+    "Pontage croisé fémoro-fémoral": {
+gestion: `Examens complémentaires : 
+- Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
+- ECG
+- ETT de repos
+- Dépistage coronaire si MET < 4 ou anomalie segmentaire à l’ETT
+- EDTSA à la discrétion du chirurgien
+
+Gestion des traitements :
+- Maintien Kardégic
+- Arrêt Clopidogrel J-5
+- Arrêt Ticagrélor J-5
+- Arrêt Prasugrel J-7
+- Arrêt AOD J-5
+
+Pré-commande : 2 CGR (parfois plus selon le geste)`,
+      monitorage: `Scope 5 branches, SpO2, VVP, PNI (+/- KTa si induction à risque), TOF, BIS, SU, cell-saver uniquement si redux/bilatéral/ATL associée`,
+      protocole: `<strong>Induction:</strong> Anesthésie générale IOT ou masque laryngé, AIVOC propofol/rémifentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
+
+<strong>Antibioprophylaxie:</strong> Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
+
+<strong>Entretien:</strong> AIVOC propofol/rémifentanil
+
+<strong>Hémostase:</strong> Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)`,
+      alr: `QLB2/3 
 Cf QLB 🖥️`,
       orientation: `SSPI 2h minimum
 
@@ -2876,15 +2945,16 @@ Examens à l’entrée:
 
 Surveillance: 
 - Saignement
-- Douleur`,
+- Ischémie de MI`,
     },
-
-    "Pontage croisé fémoro-fémoral": {},
-
+    
     "Pontage fémoro-poplité": {
       gestion: `Examens complémentaires : 
 - Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
 - ECG
+- ETT de repos
+- Dépistage coronaire si MET < 4 ou anomalie segmentaire à l’ETT
+- EDTSA à la discrétion du chirurgien
 
 Gestion des traitements :
 - Maintien Kardégic
@@ -2893,8 +2963,8 @@ Gestion des traitements :
 - Arrêt Prasugrel J-7
 - Arrêt AOD J-5
 
-Pré-commande : 4 CGR`,
-      monitorage: `Scope 5 branches, SpO2, VVP, PNI (Si induction à risque coché remplacer « PNI » par « KTa »), TOF, BIS, SU, réchauffeur/transfuseur`,
+Pré-commande : 2 CGR (parfois plus selon les cas)`,
+      monitorage: `Scope 5 branches, SpO2, VVP, PNI (+/- KTa si induction à risque), TOF, BIS, SU, cell-saver uniquement si redux/bilatéral/ATL associée`,
       protocole: `<strong>Induction:</strong> Anesthésie générale IOT ou masque laryngé, AIVOC propofol/rémifentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
 
 <strong>Antibioprophylaxie:</strong> Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
@@ -2913,13 +2983,16 @@ Examens à l’entrée:
 
 Surveillance: 
 - Saignement
-- Douleur`,
+- Ischémie de MI`,
     },
 
     "Pontage axillo-bifémoral": {
       gestion: `Examens complémentaires : 
 - Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
 - ECG
+- ETT de repos
+- Dépistage coronaire si MET < 4 ou anomalie segmentaire à l’ETT
+- EDTSA à la discrétion du chirurgien
 
 Gestion des traitements :
 - Maintien Kardégic
@@ -2928,8 +3001,8 @@ Gestion des traitements :
 - Arrêt Prasugrel J-7
 - Arrêt AOD J-5
 
-Pré-commande : 4 CGR`,
-      monitorage: `Scope 5 branches, SpO2, VVP, PNI (Si induction à risque coché remplacer « PNI » par « KTa »), TOF, BIS, SU, réchauffeur/transfuseur`,
+Pré-commande : 2 CGR (parfois plus selon les cas)`,
+      monitorage: `Scope 5 branches, SpO2, VVP, PNI (+/- KTa si induction à risque), TOF, BIS, SU, cell-saver uniquement si redux/bilatéral/ATL associée`,
       protocole: `<strong>Induction:</strong> Anesthésie générale IOT ou masque laryngé, AIVOC propofol/rémifentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
 
 <strong>Antibioprophylaxie:</strong> Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
@@ -2947,13 +3020,16 @@ Examens à l’entrée:
 
 Surveillance: 
 - Saignement
-- Douleur`,
+- Ischémie de MI`,
     },
 
     "Pontage distal en veine": {
       gestion: `Examens complémentaires : 
 - Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
 - ECG
+- ETT de repos
+- Dépistage coronaire si MET < 4 ou anomalie segmentaire à l’ETT
+- EDTSA à la discrétion du chirurgien
 
 Gestion des traitements :
 - Maintien Kardégic
@@ -2962,8 +3038,8 @@ Gestion des traitements :
 - Arrêt Prasugrel J-7
 - Arrêt AOD J-5
 
-Pré-commande : 4 CGR`,
-      monitorage: `Scope 5 branches, SpO2, VVP, PNI (Si induction à risque coché remplacer « PNI » par « KTa »), TOF, BIS, SU, réchauffeur/transfuseur`,
+Pré-commande : 5 CGR + 5 PFC + 1 CPA`,
+      monitorage: `Scope 5 branches, SpO2, VVPx2, KTa, TOF, BIS, SU, Cell-saver +/- réchauffeur/transfuseur`,
       protocole: `<strong>Induction:</strong> Anesthésie générale IOT ou masque laryngé, AIVOC propofol/rémifentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
 
 <strong>Antibioprophylaxie:</strong> Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
@@ -2981,7 +3057,7 @@ Examens à l’entrée:
 
 Surveillance: 
 - Saignement
-- Douleur`,
+- Ischémie de MI`,
     },
 
     "Angioplastie": {
@@ -3000,14 +3076,17 @@ Pré-commande : 2 CGR`,
       monitorage: `Scope 5 branches, SpO2, VVP, PNI, BIS`,
       protocole: `<strong>Induction:</strong> Anesthésie générale AIVOC propofol/rémifentanil ou Sédation
 
-<strong>Antibioprophylaxie:</strong> Pas d’antibioprophylaxie
+<strong>Antibioprophylaxie:</strong>  Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
 
 <strong>Entretien:</strong> AIVOC propofol/rémifentanil`,
       alr: `Pas d’ALR`,
-      orientation: `SSPI 1h minimum
-Ambulatoire
+      orientation: `SSPI 2h minimum
 
-Pas d’examen particulier`,
+Examens à l’entrée: Aucun systématique
+
+Surveillance: 
+- Saignement
+- Ischémie de MI`,
     },
 
     "Amputation": {
@@ -3022,11 +3101,11 @@ Gestion des traitements :
 - Arrêt Prasugrel J-7
 - Arrêt AOD J-5
 
-Pré-commande : 2 CGR`,
-      monitorage: `Scope 5 branches, SpO2, VVP, PNI (Si induction à risque coché remplacer « PNI » par « KTa »), BIS, SU`,
+Pré-commande : 2 CGR (4 CGR si trans-fémorale)`,
+      monitorage: `Scope 5 branches, SpO2, VVP, PNI, SU (+/- TOF et BIS si AG)`,
       protocole: `<strong>Induction:</strong> Privilégier ALR avec cathéter périnerveux (bloc sciatique poplité ou fémoral selon le niveau d’amputation)
 
-<strong>Antibioprophylaxie</strong> (adapter selon documentation): Augmentin 2g/2...ergie cochée: Clindamycine 900 mg IVL + Gentamicine 6-7mg/kg IVL`,
+<strong>Antibioprophylaxie</strong> (adapter selon documentation): Augmentin 2g/200mg IVL puis 1g/100mg toutes les 2h. Si allergie cochée: Clindamycine 900 mg IVL + Gentamicine 6-7mg/kg IVL`,
       alr: `Amputation d’orteil: Sciatique poplité +/- saphène si premier orteils 
       Amputation trans-métatarsienne: Sciatique poplité
       Amputation trans-tibiale: Sciatique + fémoral
@@ -3034,27 +3113,42 @@ Pré-commande : 2 CGR`,
 Cf sciatique 🖥️ Cf fémoral 🖥️`,
       orientation: `SSPI 2h minimum
 
-Examens:
-- ECG
-- GDS ou Hemocue
+Examens à l’entrée: Aucun systématique
 
-Surveillance:
+Surveillance: 
 - Saignement
-- Douleur`,
+- Douleur
+
+Antibiothérapie: Poursuite Augmentin 50mg/kg/j pendant 48h. Si allergie cochée: Poursuivre Clindamycine 600mg x4/j IVL pendant 48h + Gentamicine 6-7mg/kg à 24h `,
     },
 
     "Varices": {
-      gestion: `...`,
-      monitorage: `...`,
-      protocole: `<strong>Induction:</strong> Si Laser/Radiofréquence seul: Anesthésie locale + Séd...fentanil IOT OU Rachianesthésie. Position en  décubitus ventral.
+  gestion: `Examens complémentaires :
+- Pas de bilan (sauf rachi-anesthésie ou diathèse hémorragique)
 
-<strong>Antibioprophylaxie</strong> (Uniquement si abord chirurgical du scarpa): ...chée: Vancomycine 30mg/kg IVL une injection 30min avant incision`,
-      alr: `Pas d’ALR`,
-      orientation: `SSPI 1h minimum
+Gestion des traitements :
+- Maintien Kardégic
+- Arrêt Clopidogrel J-5
+- Arrêt Ticagrélor J-5
+- Arrêt Prasugrel J-7
+- Arrêt AOD J-3
+
+Pré-commande : Aucune`,
+  monitorage: `Scope 5 branches, SpO2, VVP, PNI`,
+  protocole: `<strong>Induction:</strong>
+Si Laser/Radiofréquence seul: Anesthésie locale + Sédation AIVOC Rémifentanil (sauf cas particuliers).
+Si Eveinage/Stripping/Crossectomie/Phlébectomies multiples: Anesthésie générale AIVOC propofol/Rémifentanil (IOT ou ML). Position en décubitus dorsal.
+Si saphène externe: Anesthésie générale AIVOC propofol/Rémifentanil IOT OU Rachianesthésie. Position en décubitus dorsal.
+
+<strong>Antibioprophylaxie</strong> (Uniquement si abord chirurgical du scarpa):
+Céfazoline 2g IVL. Si IMC > 50 cochée: Céfazoline 4g. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision`,
+  alr: `Pas d’ALR`,
+  orientation: `SSPI 1h minimum
 Ambulatoire
 
 Pas d’examen particulier`,
-    },
+},
+
 
     "Sympathectomie lombaire": {
       gestion: `Examens complémentaires : 
@@ -3062,17 +3156,17 @@ Pas d’examen particulier`,
 - ECG
 
 Gestion des traitements :
-- Maintien Kardégic
+- Arrêt Kardégic J-3
 - Arrêt Clopidogrel J-5
 - Arrêt Ticagrélor J-5
 - Arrêt Prasugrel J-7
 - Arrêt AOD J-5
 
-Pré-commande : 2 CGR`,
-      monitorage: `Scope 5 branches, SpO2, VVP, PNI, BIS`,
-      protocole: `<strong>Induction:</strong> Anesthésie générale AIVOC propofol/rémifentanil
+Pré-commande : 5 CGR + 5 PFC + 1 CPA`,
+      monitorage: `Scope 5 branches, SpO2, VVPx2, KTa, BIS, Cell-saver`,
+      protocole: `<strong>Induction:</strong> Anesthésie générale IOT, AIVOC propofol/rémifentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
 
-<strong>Antibioprophylaxie:</strong> Pas d’antibioprophylaxie
+<strong>Antibioprophylaxie:</strong> Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
 
 <strong>Entretien:</strong> AIVOC propofol/rémifentanil`,
       alr: `Au choix: BPV OU érecteur du rachis
@@ -3084,6 +3178,7 @@ Examens à l’entrée:
 - GDS ou Hemocue
 
 Surveillance:
+- Saignement
 - Douleur`,
     },
   };
@@ -3251,15 +3346,22 @@ Surveillance:
         t = t.replace(/Induction:\s*Si Laser\/Radiofréquence seul:\s*/i, "Induction: ");
       }
 
-      // Antibioprophylaxie : uniquement si abord scarpa → donc pas pour Laser/RF seul
+           // Antibioprophylaxie : uniquement si abord scarpa → donc pas pour Laser/RF seul
+      const atbVarices = () => {
+        if (cbAll?.checked) return "Vancomycine 30mg/kg IVL une injection 30min avant incision";
+        if (cbImc?.checked) return "Céfazoline 4g IVL";
+        return "Céfazoline 2g IVL";
+      };
+
       if (choice === "Laser/Radiofréquence seul") {
         // on retire la ligne ATB (sans ajouter de texte)
+        t = t.replace(/\n?<strong>Antibioprophylaxie<\/strong>\s*\(Uniquement si abord chirurgical du scarpa\):[\s\S]*$/i, "");
         t = t.replace(/\n?Antibioprophylaxie\s*\(Uniquement si abord chirurgical du scarpa\):[\s\S]*$/i, "");
       } else {
-        // si abord scarpa : applique cefaz/vancomy (sans afficher les consignes)
+        // si abord scarpa : remplace toute la section ATB par la bonne (dose unique)
         t = t.replace(
-          /Antibioprophylaxie\s*\(Uniquement si abord chirurgical du scarpa\):[\s\S]*Si allergie cochée:\s*Vancomycine 30mg\/kg IVL une injection 30min avant incision/gi,
-          () => `Antibioprophylaxie (Uniquement si abord chirurgical du scarpa): ${antibioticCefazVancomy()}`
+          /(<strong>\s*)?Antibioprophylaxie\s*(<\/strong>)?\s*\(Uniquement si abord chirurgical du scarpa\)\s*:?\s*([\s\S]*?)(?=(\n\s*<strong>|$))/i,
+          () => `<strong>Antibioprophylaxie</strong> (Uniquement si abord chirurgical du scarpa): ${atbVarices()}`
         );
       }
     }
