@@ -7439,15 +7439,25 @@ const plastieMitraleRow = `
           <input type="checkbox" id="${prefix}-eto-sam-risk-angle"/>
           Angle mitro-aortique &lt; 120°
         </label>
-
         <label class="checkbox">
           <input type="checkbox" id="${prefix}-eto-sam-risk-dist"/>
-          Distance coaptation–SIV &lt; 25 mm
+          C-sept &lt; 25 mm
         </label>
-
+        <label class="checkbox">
+          <input type="checkbox" id="${prefix}-eto-sam-risk-dist2"/>
+          T-sept &lt; 13 mm
+        </label>
         <label class="checkbox">
           <input type="checkbox" id="${prefix}-eto-sam-risk-leaflet"/>
-          Longueur feuillet postérieur &gt; 15 mm
+          Feuillet ant. &gt; 25 mm
+        </label>
+        <label class="checkbox">
+          <input type="checkbox" id="${prefix}-eto-sam-risk-leaflet2"/>
+          Feuillet post. &gt; 15 mm
+        </label>
+        <label class="checkbox">
+          <input type="checkbox" id="${prefix}-eto-sam-risk-ratio"/>
+          Ratio ant/post &lt; 1,3
         </label>
 
         <label class="checkbox">
@@ -8030,15 +8040,21 @@ const fuiteS = val(q("ao-fuite-sev"));
 
     const el1 = q("sam-risk-angle");
     const el2 = q("sam-risk-dist");
-    const el3 = q("sam-risk-leaflet");
-    const el4 = q("sam-risk-siv");
-    const el5 = q("sam-risk-dtdvg");
+    const el3 = q("sam-risk-dist2");
+    const el4 = q("sam-risk-leaflet");
+    const el5 = q("sam-risk-leaflet2");
+    const el6 = q("sam-risk-ratio");
+    const el7 = q("sam-risk-siv");
+    const el8 = q("sam-risk-dtdvg");
 
     if (el1 && el1.checked) risks.push("angle mitro-aortique < 120°");
-    if (el2 && el2.checked) risks.push("distance coaptation–SIV < 25 mm");
-    if (el3 && el3.checked) risks.push("longueur feuillet postérieur > 15 mm");
-    if (el4 && el4.checked) risks.push("épaisseur SIV ≥ 15 mm");
-    if (el5 && el5.checked) risks.push("DTDVG < 45 mm");
+    if (el2 && el2.checked) risks.push("C-sept < 25 mm");
+    if (el3 && el3.checked) risks.push("T-sept < 13 mm");
+    if (el4 && el4.checked) risks.push("longueur feuillet antérieur > 25 mm");
+    if (el5 && el5.checked) risks.push("longueur feuillet postérieur > 15 mm");
+    if (el6 && el6.checked) risks.push("ratio feuillet ant/post < 1,3");
+    if (el7 && el7.checked) risks.push("épaisseur SIV ≥ 15 mm");
+    if (el8 && el8.checked) risks.push("DTDVG < 45 mm");
 
     if (risks.length) {
       lines.push(`- <strong>Risque de SAM</strong> : ${risks.join(", ")}.`);
