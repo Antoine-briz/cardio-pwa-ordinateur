@@ -14012,16 +14012,51 @@ function renderProbaMenu() {
         `)}
 
         ${h("grid cols-2", `
-          <button class="btn" onclick="location.hash='#/proba/pneumonies'">Pneumonies</button>
-          <button class="btn" onclick="location.hash='#/proba/mediastinite'">Médiastinites post-opératoires</button>
-          <button class="btn" onclick="location.hash='#/proba/scarpa'">Infections de Scarpa</button>
-          <button class="btn" onclick="location.hash='#/proba/endocardite'">Endocardites infectieuses</button>
-          <button class="btn" onclick="location.hash='#/proba/iu'">Infections urinaires</button>
-          <button class="btn" onclick="location.hash='#/proba/abdo'">Infections intra-abdominales</button>
-          <button class="btn" onclick="location.hash='#/proba/dermohypo'">Infections des parties molles</button>
-          <button class="btn" onclick="location.hash='#/proba/neuro'">Infections neuro-méningées</button>
-          <button class="btn" onclick="location.hash='#/proba/sepsis'">Sepsis sans porte d'entrée</button>
-        `)}
+  <button type="button" class="btn"
+    onclick="openSubPage(renderProbaPneumonies, renderProbaMenu)">
+    Pneumonies
+  </button>
+
+  <button type="button" class="btn"
+    onclick="openSubPage(renderProbaMediastinite, renderProbaMenu)">
+    Médiastinites post-opératoires
+  </button>
+
+  <button type="button" class="btn"
+    onclick="openSubPage(renderProbaScarpa, renderProbaMenu)">
+    Infections de Scarpa
+  </button>
+
+  <button type="button" class="btn"
+    onclick="openSubPage(renderProbaEndocardite, renderProbaMenu)">
+    Endocardites infectieuses
+  </button>
+
+  <button type="button" class="btn"
+    onclick="openSubPage(renderProbaIU, renderProbaMenu)">
+    Infections urinaires
+  </button>
+
+  <button type="button" class="btn"
+    onclick="openSubPage(renderProbaAbdo, renderProbaMenu)">
+    Infections intra-abdominales
+  </button>
+
+  <button type="button" class="btn"
+    onclick="openSubPage(renderProbaDermohypo, renderProbaMenu)">
+    Infections des parties molles
+  </button>
+
+  <button type="button" class="btn"
+    onclick="openSubPage(renderProbaNeuro, renderProbaMenu)">
+    Infections neuro-méningées
+  </button>
+
+  <button type="button" class="btn"
+    onclick="openSubPage(renderProbaSepsis, renderProbaMenu)">
+    Sepsis sans porte d'entrée
+  </button>
+`)}
 
         ${h("card", `
           <button class="btn ghost" onclick="history.back()">← Retour</button>
@@ -14049,46 +14084,47 @@ function renderAdapteeMenu() {
         </div>
 
         <div class="grid cols-2">
-          <button class="btn" onclick="location.hash='#/adaptee/sensibles'">
-            Germes multisensibles
-          </button>
+          <button type="button" class="btn" onclick="openSubPage(renderAdapteeSensibles, renderAdapteeMenu)">
+  Germes multisensibles
+</button>
 
-          <button class="btn" onclick="location.hash='#/adaptee/SARM'">
-            SARM
-          </button>
+<button type="button" class="btn" onclick="openSubPage(renderAdapteeSARM, renderAdapteeMenu)">
+  SARM
+</button>
 
-          <button class="btn" onclick="location.hash='#/adaptee/ampC'">
-            Entérobactéries ampC
-          </button>
+<button type="button" class="btn" onclick="openSubPage(renderAdapteeAmpC, renderAdapteeMenu)">
+  Entérobactéries ampC
+</button>
 
-          <button class="btn" onclick="location.hash='#/adaptee/BLSE'">
-            BLSE
-          </button>
+<button type="button" class="btn" onclick="openSubPage(renderAdapteeBLSE, renderAdapteeMenu)">
+  BLSE
+</button>
 
-          <button class="btn" onclick="location.hash='#/adaptee/pyo'">
-            Pseudomonas aeruginosa MDR/XDR
-          </button>
+<button type="button" class="btn" onclick="openSubPage(renderAdapteePyo, renderAdapteeMenu)">
+  Pseudomonas aeruginosa MDR/XDR
+</button>
 
-          <button class="btn" onclick="location.hash='#/adaptee/acineto'">
-            Acinetobacter baumannii Imipénème-R
-          </button>
+<button type="button" class="btn" onclick="openSubPage(renderAdapteeAcineto, renderAdapteeMenu)">
+  Acinetobacter baumannii Imipénème-R
+</button>
 
-          <button class="btn" onclick="location.hash='#/adaptee/steno'">
-            Stenotrophomonas maltophilia
-          </button>
+<button type="button" class="btn" onclick="openSubPage(renderAdapteeSteno, renderAdapteeMenu)">
+  Stenotrophomonas maltophilia
+</button>
 
-          <button class="btn" onclick="location.hash='#/adaptee/carba'">
-            Entérobactéries carbapénémases
-          </button>
+<button type="button" class="btn" onclick="openSubPage(renderAdapteeCarba, renderAdapteeMenu)">
+  Entérobactéries carbapénémases
+</button>
 
-          <button class="btn" onclick="location.hash='#/adaptee/erv'">
-            E. faecium Vancomycine-R
-          </button>
-        </div>
+<button type="button" class="btn" onclick="openSubPage(renderAdapteeERV, renderAdapteeMenu)">
+  E. faecium Vancomycine-R
+</button>
+</div>
 
-        <div style="margin-top: 16px;">
-          <button class="btn ghost" onclick="history.back()">← Retour</button>
-        </div>
+<div style="margin-top: 16px;">
+  <!-- ✅ plus de history.back() -->
+  <button type="button" class="btn ghost" onclick="goBackSmart()">← Retour</button>
+</div>
       </div>
 
       <!-- Colonne droite : image verticale -->
