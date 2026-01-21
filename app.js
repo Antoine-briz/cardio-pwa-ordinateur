@@ -14868,7 +14868,7 @@ function renderModalitesForm() {
 
     </section>
   `;
-}
+
 
   // ==========================
   // 📋 Données MODALITÉS À COMPLÉTER
@@ -14940,9 +14940,10 @@ function renderModalitesForm() {
     }
   };
 
-  // ====== Dynamique du formulaire ======
+   // ====== Dynamique du formulaire ======
   const selClasse = document.getElementById("classeModa");
   const selMolecule = document.getElementById("moleculeModa");
+  const out = document.getElementById("resModa");
 
   selClasse.addEventListener("change", () => {
     const c = selClasse.value;
@@ -14950,14 +14951,16 @@ function renderModalitesForm() {
       selMolecule.innerHTML = `<option value="">— Choisir une classe d’abord —</option>`;
       return;
     }
-    const options = Object.keys(MODALITES[c]).map(m => `<option value="${m}">${m}</option>`).join("");
+    const options = Object.keys(MODALITES[c])
+      .map(m => `<option value="${m}">${m}</option>`)
+      .join("");
     selMolecule.innerHTML = `<option value="">— Sélectionner —</option>` + options;
   });
 
   // ====== Affichage du résultat ======
   document.getElementById("btnModa").addEventListener("click", () => {
-    const c = selClasse.value, m = selMolecule.value;
-    const out = document.getElementById("resModa");
+    const c = selClasse.value;
+    const m = selMolecule.value;
 
     if (!c || !m || !MODALITES[c] || !MODALITES[c][m]) {
       out.textContent = "⚠️ Merci de sélectionner une classe et une molécule.";
@@ -14966,31 +14969,29 @@ function renderModalitesForm() {
 
     const F = MODALITES[c][m];
 
-  out.innerHTML = [
-    `<strong>${m}</strong>`,
-    `<em>Dosages disponibles :</em> ${F.dosages || "—"}`,
-    `<em>Solvant préférentiel :</em> ${F.solvant || "—"}`,
-    `<em>Dose de charge :</em> ${(F.charge && F.charge.schema) || "—"}`,
-    `<em>Dose d’entretien :</em>`,
-    [
-      `- <u>Rythme d’administration</u> : ${(F.entretien && F.entretien.rythme) || "—"}`,
-      `- <u>Intervalle après dose de charge</u> : ${(F.entretien && F.entretien.intervalle) || "—"}`,
-      `- <u>Doses habituelles</u> : ${(F.entretien && F.entretien.doses) || "—"}`,
-      `- <u>Volume de dilution</u> : ${(F.entretien && F.entretien.volume) || "—"}`,
-      `- <u>Durée de perfusion</u> : ${(F.entretien && F.entretien.perfusion) || "—"}`,
-      `- <u>Durée de stabilité</u> : ${(F.entretien && F.entretien.stabilite) || "—"}`
-    ].join("<br>")
-  ].join("<br>");
+    out.innerHTML = [
+      `<strong>${m}</strong>`,
+      `<em>Dosages disponibles :</em> ${F.dosages || "—"}`,
+      `<em>Solvant préférentiel :</em> ${F.solvant || "—"}`,
+      `<em>Dose de charge :</em> ${(F.charge && F.charge.schema) || "—"}`,
+      `<em>Dose d’entretien :</em>`,
+      [
+        `- <u>Rythme d’administration</u> : ${(F.entretien && F.entretien.rythme) || "—"}`,
+        `- <u>Intervalle après dose de charge</u> : ${(F.entretien && F.entretien.intervalle) || "—"}`,
+        `- <u>Doses habituelles</u> : ${(F.entretien && F.entretien.doses) || "—"}`,
+        `- <u>Volume de dilution</u> : ${(F.entretien && F.entretien.volume) || "—"}`,
+        `- <u>Durée de perfusion</u> : ${(F.entretien && F.entretien.perfusion) || "—"}`,
+        `- <u>Durée de stabilité</u> : ${(F.entretien && F.entretien.stabilite) || "—"}`
+      ].join("<br>")
+    ].join("<br>");
 
-  // ➕ crédits en bas de l’encadré
-  out.innerHTML += `
-    <div class="credits">
-      D'après le travail de : Dr Candice FONTAINE et Dr Antoine BRIZARD<br>
-      (Bases de données ANSM, RCP européennes et Dexther)
-    </div>`;
-}); 
-} 
-
+    out.innerHTML += `
+      <div class="credits">
+        D'après le travail de : Dr Candice FONTAINE et Dr Antoine BRIZARD<br>
+        (Bases de données ANSM, RCP européennes et Dexther)
+      </div>`;
+  });
+}
 
 function renderSensiblesPage() {
   const $app = document.getElementById("app");
