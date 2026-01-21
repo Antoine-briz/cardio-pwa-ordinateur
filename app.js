@@ -12539,11 +12539,18 @@ function renderReanEerMenu() {
         </div>
 
         <div class="grid">
-          <button class="btn" onclick="renderReanEerPostOp()">
+          <button
+            type="button"
+            class="btn"
+            onclick="openSubPage(renderReanEerPostOp, renderReanEerMenu)">
             EER post-opératoire
           </button>
-          <button class="btn" onclick="renderReanEchangesPlasmatiques()">
-            Echanges plasmatiques
+
+          <button
+            type="button"
+            class="btn"
+            onclick="openSubPage(renderReanEchangesPlasmatiques, renderReanEerMenu)">
+            Échanges plasmatiques
           </button>
         </div>
       </div>
@@ -12939,20 +12946,39 @@ function renderReanTransplantMenu() {
         </div>
 
         <div class="grid">
-          <button class="btn" onclick="renderReanTransplantHemodynamique()">
+          <button
+            type="button"
+            class="btn"
+            onclick="openSubPage(renderReanTransplantHemodynamique, renderReanTransplantMenu)">
             Gestion hémodynamique post-opératoire
           </button>
-          <button class="btn" onclick="renderReanTransplantImmuno()">
+
+          <button
+            type="button"
+            class="btn"
+            onclick="openSubPage(renderReanTransplantImmuno, renderReanTransplantMenu)">
             Protocole d’immunosuppression
           </button>
-          <button class="btn" onclick="renderReanTransplantRejet()">
+
+          <button
+            type="button"
+            class="btn"
+            onclick="openSubPage(renderReanTransplantRejet, renderReanTransplantMenu)">
             Rejet aigu de greffon
           </button>
-          <button class="btn" onclick="renderReanTransplantInfections()">
+
+          <button
+            type="button"
+            class="btn"
+            onclick="openSubPage(renderReanTransplantInfections, renderReanTransplantMenu)">
             Infections et transplantation
           </button>
-          <button class="btn" onclick="renderReanTransplantCoronaires()">
-            Prévention maladie coronaire du greffon
+
+          <button
+            type="button"
+            class="btn"
+            onclick="openSubPage(renderReanTransplantCoronaires, renderReanTransplantMenu)">
+            Prévention de la maladie coronaire du greffon
           </button>
         </div>
       </div>
