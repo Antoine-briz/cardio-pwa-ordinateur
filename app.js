@@ -14820,115 +14820,55 @@ function humanizeEntretien(text) {
   return text;
 }
 
-// ✅ IMPORTANT : fonction disponible pour onclick (scope global)
-window.renderModalitesForm = function renderModalitesForm() {
-  const $app = document.getElementById("app");
-
-  // ==========================
-  // 📋 Données MODALITÉS
-  // ==========================
-  const MODALITES = {
-    betalactamine: {
-      "Amoxicilline": { dosages:"1g ou 2g", solvant:"Glucosé 5%", charge:{schema:"2g dans 50mL sur 30min"}, entretien:{rythme:"Perfusion intermittente", intervalle:"4 à 6h", doses:"1 à 2g", volume:"50mL", perfusion:"IVL 60min", stabilite:"8h"} },
-      // ... garde tout ton contenu
-    },
-
-    // ... le reste de tes classes/molécules
-  };
-
+function renderModalitesForm() {
   $app.innerHTML = `
     <section class="intervention-shell">
+
+      <!-- Colonne gauche : titre + formulaire -->
       <div class="intervention-main">
-        <div class="hero">
-          <h2>Modalités d'administration des antibiotiques</h2>
-        </div>
 
         <div class="card">
-          <form class="form" onsubmit="return false;">
-            <fieldset>
-              <legend>Classe</legend>
-              <select id="classeModa">
-                <option value="">— Sélectionner —</option>
-                <option value="betalactamine">β-lactamines</option>
-                <!-- ... tes autres options -->
-              </select>
-            </fieldset>
-
-            <fieldset>
-              <legend>Molécule</legend>
-              <select id="moleculeModa">
-                <option value="">— Choisir une classe d’abord —</option>
-              </select>
-            </fieldset>
-
-            <div class="actions">
-              <button type="button" class="btn" id="btnModa">Afficher les modalités</button>
-            </div>
-
-            <div id="resModa" class="result"></div>
-          </form>
+          <strong>Modalités d’administration des antibiotiques</strong>
         </div>
+
+        <form id="formModa" class="form">
+
+          <fieldset>
+            <legend>Classe d’antibiotique</legend>
+            <select id="classeModa">
+              <option value="">— Sélectionner —</option>
+              <option value="betalactamine">β-lactamines</option>
+              <option value="aminoside">Aminosides</option>
+              <option value="fluoroquinolone">Fluoroquinolones</option>
+              <option value="antigram">Anti-Gram+</option>
+              <option value="autres">Autres</option>
+            </select>
+          </fieldset>
+
+          <fieldset>
+            <legend>Molécule</legend>
+            <select id="moleculeModa">
+              <option value="">— Choisir une classe d’abord —</option>
+            </select>
+          </fieldset>
+
+          <div class="actions">
+            <button type="button" class="btn" id="btnModa">Afficher les modalités</button>
+          </div>
+
+          <div id="resModa" class="result"></div>
+
+        </form>
       </div>
 
+      <!-- Colonne droite : grande image verticale -->
       <aside class="intervention-side">
         <img src="./img/modalite.png" alt="Modalités d'administration">
       </aside>
+
     </section>
   `;
-
-  // ====== Dynamique du formulaire ======
-  const selClasse = document.getElementById("classeModa");
-  const selMolecule = document.getElementById("moleculeModa");
-  const btn = document.getElementById("btnModa");
-  const out = document.getElementById("resModa");
-
-  selClasse.addEventListener("change", () => {
-    const c = selClasse.value;
-    if (!c || !MODALITES[c] || Object.keys(MODALITES[c]).length === 0) {
-      selMolecule.innerHTML = `<option value="">— Choisir une classe d’abord —</option>`;
-      return;
-    }
-    const options = Object.keys(MODALITES[c])
-      .map((m) => `<option value="${m}">${m}</option>`)
-      .join("");
-    selMolecule.innerHTML = `<option value="">— Sélectionner —</option>` + options;
-  });
-
-  btn.addEventListener("click", () => {
-    const c = selClasse.value;
-    const m = selMolecule.value;
-
-    if (!c || !m || !MODALITES[c] || !MODALITES[c][m]) {
-      out.textContent = "⚠️ Merci de sélectionner une classe et une molécule.";
-      return;
-    }
-
-    const F = MODALITES[c][m];
-
-    out.innerHTML = [
-      `<strong>${m}</strong>`,
-      `<em>Dosages disponibles :</em> ${F.dosages || "—"}`,
-      `<em>Solvant préférentiel :</em> ${F.solvant || "—"}`,
-      `<em>Dose de charge :</em> ${(F.charge && F.charge.schema) || "—"}`,
-      `<em>Dose d’entretien :</em>`,
-      [
-        `- <u>Rythme d’administration</u> : ${(F.entretien && F.entretien.rythme) || "—"}`,
-        `- <u>Intervalle après dose de charge</u> : ${(F.entretien && F.entretien.intervalle) || "—"}`,
-        `- <u>Doses habituelles</u> : ${(F.entretien && F.entretien.doses) || "—"}`,
-        `- <u>Volume de dilution</u> : ${(F.entretien && F.entretien.volume) || "—"}`,
-        `- <u>Durée de perfusion</u> : ${(F.entretien && F.entretien.perfusion) || "—"}`,
-        `- <u>Durée de stabilité</u> : ${(F.entretien && F.entretien.stabilite) || "—"}`
-      ].join("<br>")
-    ].join("<br>");
-
-    out.innerHTML += `
-      <div class="credits">
-        D'après le travail de : Dr Candice FONTAINE et Dr Antoine BRIZARD<br>
-        (Bases de données ANSM, RCP européennes et Dexther)
-      </div>`;
-  });
-};
-
+}
 
   // ==========================
   // 📋 Données MODALITÉS À COMPLÉTER
