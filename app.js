@@ -14062,10 +14062,6 @@ function renderProbaMenu() {
   </button>
 `)}
 
-        ${h("card", `
-          <button class="btn ghost" onclick="history.back()">← Retour</button>
-        `)}
-
       </div>
 
       <!-- Colonne droite : image -->
@@ -14132,10 +14128,6 @@ function renderAdapteeMenu() {
             onclick="openSubPage(() => renderBacteriaPage('erv', BACTERIA_DATA.erv), renderAdapteeMenu)">
             E. faecium Vancomycine-R
           </button>
-        </div>
-
-        <div style="margin-top: 16px;">
-          <button type="button" class="btn ghost" onclick="goBackSmart()">Retour</button>
         </div>
       </div>
 
@@ -15285,11 +15277,6 @@ function renderBacteriaPage(slug, data) {
             <div class="info-content">${data.choc}</div>
           </section>
         </div>
-
-        <div class="actions">
-          <button class="btn ghost" type="button" onclick="goBackSmart()">Retour</button>
-
-        </div>
       </div>
 
       <!-- Colonne droite : image pleine hauteur -->
@@ -16079,7 +16066,6 @@ function renderProbaPneumonieForm() {
 
           <div class="actions">
             <button type="button" class="btn" id="btnReco">Antibiothérapie probabiliste recommandée</button>
-            <button type="button" class="btn ghost" onclick="history.back()">← Retour</button>
           </div>
           <div id="resPneu" class="result"></div>
         </form>
@@ -16174,7 +16160,6 @@ function renderProbaIUForm() {
 
           <div class="actions">
             <button type="button" class="btn" id="btnIU">Antibiothérapie probabiliste recommandée</button>
-            <button type="button" class="btn ghost" onclick="history.back()">← Retour</button>
           </div>
 
           <div id="resIU" class="result"></div>
@@ -16383,7 +16368,6 @@ function renderProbaAbdoForm() {
 
           <div class="actions">
             <button type="button" class="btn" id="btnAbdo">Antibiothérapie probabiliste recommandée</button>
-            <button type="button" class="btn ghost" onclick="history.back()">← Retour</button>
           </div>
 
           <div id="resAbdo" class="result"></div>
@@ -16750,7 +16734,6 @@ function renderProbaNeuroForm() {
 
           <div class="actions">
             <button type="button" class="btn" id="btnNeuro">Antibiothérapie probabiliste recommandée</button>
-            <button type="button" class="btn ghost" onclick="history.back()">← Retour</button>
           </div>
 
           <div id="resNeuro" class="result"></div>
@@ -16991,7 +16974,6 @@ function renderProbaDermohypoForm(){
 
       <div class="actions">
         <button type="button" class="btn" id="btnDH">Antibiothérapie probabiliste recommandée</button>
-        <button type="button" class="btn ghost" onclick="history.back()">← Retour</button>
       </div>
       <div id="resDH" class="result"></div>
     </form>
@@ -17194,7 +17176,6 @@ function renderProbaEndocarditeForm() {
 
           <div class="actions">
             <button type="button" class="btn" id="btnEndo">Antibiothérapie probabiliste recommandée</button>
-            <button type="button" class="btn ghost" onclick="history.back()">← Retour</button>
           </div>
 
           <div id="resEndo" class="result"></div>
@@ -17333,7 +17314,6 @@ function renderProbaSepsisForm() {
 
           <div class="actions">
             <button type="button" class="btn" id="btnSepsis">Antibiothérapie probabiliste recommandée</button>
-            <button type="button" class="btn ghost" onclick="history.back()">← Retour</button>
           </div>
 
           <div id="resSepsis" class="result"></div>
@@ -17476,7 +17456,6 @@ function renderProbaMediastiniteForm() {
 
           <div class="actions">
             <button class="btn" id="btn-run">Antibiothérapie probabiliste recommandée</button>
-            <button class="btn ghost" type="button" onclick="history.back()">← Retour</button>
           </div>
         </form>
 
