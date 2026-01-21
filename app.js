@@ -14990,8 +14990,9 @@ function renderModalitesForm() {
         D'après le travail de : Dr Candice FONTAINE et Dr Antoine BRIZARD<br>
         (Bases de données ANSM, RCP européennes et Dexther)
       </div>`;
-  });
-}
+  });   // ✅ ferme le addEventListener
+}       // ✅ ferme renderModalitesForm
+
 
 function renderSensiblesPage() {
   const $app = document.getElementById("app");
