@@ -14201,7 +14201,6 @@ function renderDureesForm() {
 
           <div class="actions">
             <button type="button" class="btn" id="btnCalcul">Durée recommandée</button>
-            <button type="button" class="btn ghost" onclick="history.back()">← Retour</button>
           </div>
 
           <div id="resDuree" class="result"></div>
@@ -14678,7 +14677,6 @@ function renderReinForm() {
 
           <div class="actions">
             <button type="button" class="btn" id="btnRein">Afficher la posologie</button>
-            <button type="button" class="btn ghost" onclick="history.back()">← Retour</button>
           </div>
 
           <div id="resRein" class="result"></div>
@@ -14856,7 +14854,6 @@ function renderModalitesForm() {
 
           <div class="actions">
             <button type="button" class="btn" id="btnModa">Afficher les modalités</button>
-            <button type="button" class="btn ghost" onclick="history.back()">← Retour</button>
           </div>
 
           <div id="resModa" class="result"></div>
