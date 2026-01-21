@@ -14819,7 +14819,8 @@ function humanizeEntretien(text) {
   text = text.replace(/\/\s*(\d+(?:\s*(?:à|–|-)\s*\d+)?)\s*h/gi, (_m, grp) => ` toutes les ${grp}h`);
   return text;
 }
-
+}
+  
 function renderModalitesForm() {
   $app.innerHTML = `
     <section class="intervention-shell">
