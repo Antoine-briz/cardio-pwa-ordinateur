@@ -11190,21 +11190,25 @@ function renderReanFormulesMenu() {
         </div>
 
         <div class="grid">
-          <button class="btn" onclick="renderReanFormulesVentilation()">
-            Ventilation
-          </button>
+         <button type="button" class="btn"
+  onclick="openSubPage(renderReanFormulesVentilation, renderReanFormulesMenu)">
+  Ventilation
+</button>
 
-          <button class="btn" onclick="renderReanFormulesCardio()">
-            Cardio-vasculaire
-          </button>
+<button type="button" class="btn"
+  onclick="openSubPage(renderReanFormulesCardio, renderReanFormulesMenu)">
+  Cardio-vasculaire
+</button>
 
-          <button class="btn" onclick="renderReanFormulesMetabolique()">
-            Métabolique
-          </button>
+<button type="button" class="btn"
+  onclick="openSubPage(renderReanFormulesMetabolique, renderReanFormulesMenu)">
+  Métabolique
+</button>
 
-          <button class="btn" onclick="renderReanFormulesNeuro()">
-            Neurologie
-          </button>
+<button type="button" class="btn"
+  onclick="openSubPage(renderReanFormulesNeuro, renderReanFormulesMenu)">
+  Neurologie
+</button>
         </div>
       </div>
 
@@ -14013,47 +14017,47 @@ function renderProbaMenu() {
 
         ${h("grid cols-2", `
   <button type="button" class="btn"
-    onclick="openSubPage(renderProbaPneumonies, renderProbaMenu)">
+    onclick="openSubPage(renderProbaPneumonie, renderProbaMenu)">
     Pneumonies
   </button>
 
   <button type="button" class="btn"
-    onclick="openSubPage(renderProbaMediastinite, renderProbaMenu)">
+    onclick="openSubPage(renderProbaMediastiniteForm, renderProbaMenu)">
     Médiastinites post-opératoires
   </button>
 
   <button type="button" class="btn"
-    onclick="openSubPage(renderProbaScarpa, renderProbaMenu)">
+    onclick="openSubPage(renderProbaScarpaForm, renderProbaMenu)">
     Infections de Scarpa
   </button>
 
   <button type="button" class="btn"
-    onclick="openSubPage(renderProbaEndocardite, renderProbaMenu)">
+    onclick="openSubPage(renderProbaEndocarditeForm, renderProbaMenu)">
     Endocardites infectieuses
   </button>
 
   <button type="button" class="btn"
-    onclick="openSubPage(renderProbaIU, renderProbaMenu)">
+    onclick="openSubPage(renderProbaIUForm, renderProbaMenu)">
     Infections urinaires
   </button>
 
   <button type="button" class="btn"
-    onclick="openSubPage(renderProbaAbdo, renderProbaMenu)">
+    onclick="openSubPage(renderProbaAbdoForm, renderProbaMenu)">
     Infections intra-abdominales
   </button>
 
   <button type="button" class="btn"
-    onclick="openSubPage(renderProbaDermohypo, renderProbaMenu)">
+    onclick="openSubPage(renderProbaDermohypoForm, renderProbaMenu)">
     Infections des parties molles
   </button>
 
   <button type="button" class="btn"
-    onclick="openSubPage(renderProbaNeuro, renderProbaMenu)">
+    onclick="openSubPage(renderProbaNeuroForm, renderProbaMenu)">
     Infections neuro-méningées
   </button>
 
   <button type="button" class="btn"
-    onclick="openSubPage(renderProbaSepsis, renderProbaMenu)">
+    onclick="openSubPage(renderProbaSepsisForm, renderProbaMenu)">
     Sepsis sans porte d'entrée
   </button>
 `)}
@@ -14084,47 +14088,55 @@ function renderAdapteeMenu() {
         </div>
 
         <div class="grid cols-2">
-          <button type="button" class="btn" onclick="openSubPage(renderAdapteeSensibles, renderAdapteeMenu)">
-  Germes multisensibles
-</button>
+          <button type="button" class="btn"
+            onclick="openSubPage(() => renderBacteriaPage('sensibles', BACTERIA_DATA.sensibles), renderAdapteeMenu)">
+            Germes multisensibles
+          </button>
 
-<button type="button" class="btn" onclick="openSubPage(renderAdapteeSARM, renderAdapteeMenu)">
-  SARM
-</button>
+          <button type="button" class="btn"
+            onclick="openSubPage(() => renderBacteriaPage('SARM', BACTERIA_DATA.SARM), renderAdapteeMenu)">
+            SARM
+          </button>
 
-<button type="button" class="btn" onclick="openSubPage(renderAdapteeAmpC, renderAdapteeMenu)">
-  Entérobactéries ampC
-</button>
+          <button type="button" class="btn"
+            onclick="openSubPage(() => renderBacteriaPage('ampC', BACTERIA_DATA.ampC), renderAdapteeMenu)">
+            Entérobactéries ampC
+          </button>
 
-<button type="button" class="btn" onclick="openSubPage(renderAdapteeBLSE, renderAdapteeMenu)">
-  BLSE
-</button>
+          <button type="button" class="btn"
+            onclick="openSubPage(() => renderBacteriaPage('BLSE', BACTERIA_DATA.BLSE), renderAdapteeMenu)">
+            BLSE
+          </button>
 
-<button type="button" class="btn" onclick="openSubPage(renderAdapteePyo, renderAdapteeMenu)">
-  Pseudomonas aeruginosa MDR/XDR
-</button>
+          <button type="button" class="btn"
+            onclick="openSubPage(() => renderBacteriaPage('pyo', BACTERIA_DATA.pyo), renderAdapteeMenu)">
+            Pseudomonas aeruginosa MDR/XDR
+          </button>
 
-<button type="button" class="btn" onclick="openSubPage(renderAdapteeAcineto, renderAdapteeMenu)">
-  Acinetobacter baumannii Imipénème-R
-</button>
+          <button type="button" class="btn"
+            onclick="openSubPage(() => renderBacteriaPage('acineto', BACTERIA_DATA.acineto), renderAdapteeMenu)">
+            Acinetobacter baumannii Imipénème-R
+          </button>
 
-<button type="button" class="btn" onclick="openSubPage(renderAdapteeSteno, renderAdapteeMenu)">
-  Stenotrophomonas maltophilia
-</button>
+          <button type="button" class="btn"
+            onclick="openSubPage(() => renderBacteriaPage('steno', BACTERIA_DATA.steno), renderAdapteeMenu)">
+            Stenotrophomonas maltophilia
+          </button>
 
-<button type="button" class="btn" onclick="openSubPage(renderAdapteeCarba, renderAdapteeMenu)">
-  Entérobactéries carbapénémases
-</button>
+          <button type="button" class="btn"
+            onclick="openSubPage(() => renderBacteriaPage('carba', BACTERIA_DATA.carba), renderAdapteeMenu)">
+            Entérobactéries carbapénémases
+          </button>
 
-<button type="button" class="btn" onclick="openSubPage(renderAdapteeERV, renderAdapteeMenu)">
-  E. faecium Vancomycine-R
-</button>
-</div>
+          <button type="button" class="btn"
+            onclick="openSubPage(() => renderBacteriaPage('erv', BACTERIA_DATA.erv), renderAdapteeMenu)">
+            E. faecium Vancomycine-R
+          </button>
+        </div>
 
-<div style="margin-top: 16px;">
-  <!-- ✅ plus de history.back() -->
-  <button type="button" class="btn ghost" onclick="goBackSmart()">Retour</button>
-</div>
+        <div style="margin-top: 16px;">
+          <button type="button" class="btn ghost" onclick="goBackSmart()">Retour</button>
+        </div>
       </div>
 
       <!-- Colonne droite : image verticale -->
@@ -14135,6 +14147,7 @@ function renderAdapteeMenu() {
     </section>
   `;
 }
+
 
  const INFECTIONS = {
     "Pneumonies": ["Communautaire", "PAVM", "Nécrose/abcès", "Empyème pleural"],
