@@ -14017,7 +14017,7 @@ function renderProbaMenu() {
 
         ${h("grid cols-2", `
   <button type="button" class="btn"
-    onclick="openSubPage(renderProbaPneumonie, renderProbaMenu)">
+    onclick="openSubPage(renderProbaPneumonieForm, renderProbaMenu)">
     Pneumonies
   </button>
 
