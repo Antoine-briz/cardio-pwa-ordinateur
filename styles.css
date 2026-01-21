@@ -7043,3 +7043,59 @@ padding-right: clamp(8px, 2vw, 24px);
     order: 1;
   }
 }
+/* =========================================================
+   AMÉLIORATION LISIBILITÉ — pages bactéries (desktop)
+   ========================================================= */
+
+/* ----- Titre principal (nom de la bactérie) ----- */
+.antibio-title{
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+/* Desktop / tablette large */
+@media (min-width: 1024px){
+  .antibio-title{
+    font-size: 2.2rem; /* ≈ 35px */
+  }
+}
+
+/* Mobile */
+@media (max-width: 1023px){
+  .antibio-title{
+    font-size: 1.6rem; /* ≈ 26px */
+  }
+}
+
+/* ----- Titres des sections (Définition, Phénotype, etc.) ----- */
+.bact-page .info-card h3{
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+/* Desktop */
+@media (min-width: 1024px){
+  .bact-page .info-card h3{
+    font-size: 1.25rem; /* ≈ 20px */
+  }
+}
+
+/* Mobile */
+@media (max-width: 1023px){
+  .bact-page .info-card h3{
+    font-size: 1.05rem; /* ≈ 17px */
+  }
+}
+
+/* ----- Amélioration du confort de lecture du contenu ----- */
+.bact-page .info-content{
+  line-height: 1.55;
+}
+
+/* Desktop : un peu plus aéré */
+@media (min-width: 1024px){
+  .bact-page .info-content{
+    font-size: 1rem;
+  }
+}
