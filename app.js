@@ -3746,7 +3746,7 @@ function renderAnesthRadioVascMenu() {
         </div>
 
         <div class="actions">
-          <button class="btn ghost" onclick="history.back()">← Retour</button>
+          <button class="btn ghost" type="button" onclick="goBackSmart()">Retour</button>
         </div>
       </div>
 
@@ -14123,7 +14123,7 @@ function renderAdapteeMenu() {
 
 <div style="margin-top: 16px;">
   <!-- ✅ plus de history.back() -->
-  <button type="button" class="btn ghost" onclick="goBackSmart()">← Retour</button>
+  <button type="button" class="btn ghost" onclick="goBackSmart()">Retour</button>
 </div>
       </div>
 
@@ -15274,7 +15274,8 @@ function renderBacteriaPage(slug, data) {
         </div>
 
         <div class="actions">
-          <button class="btn ghost" onclick="history.back()">← Retour</button>
+          <button class="btn ghost" type="button" onclick="goBackSmart()">Retour</button>
+
         </div>
       </div>
 
@@ -22755,7 +22756,7 @@ function renderAcrChirCardiaque() {
       </div>
 
       <div class="actions">
-        <button class="btn ghost" onclick="history.back()">← Retour</button>
+        <button class="btn ghost" type="button" onclick="goBackSmart()">Retour</button>
       </div>
     </section>
   `;
@@ -22895,6 +22896,30 @@ let currentRoute = null;
 function navigate() {
   const hash = window.location.hash || "#/";
 
+  // ==========================================================
+  // ✅ ROUTING "SMART BACK" : si on va de #/adaptee -> #/adaptee/*
+  // alors le bouton retour du footer doit revenir au menu adaptee
+  // ==========================================================
+  const from = window.__lastHash || "";
+
+  const isAdapteeMenu = (x) =>
+    x === "#/adaptee" || x === "#/adaptee/" || x.startsWith("#/adaptee?");
+
+  const isAdapteeBugPage = (x) =>
+    x.startsWith("#/adaptee/") && !isAdapteeMenu(x);
+
+  if (isAdapteeBugPage(hash) && isAdapteeMenu(from)) {
+    // évite d'empiler 20 fois si on re-clique / reload bizarre
+    const last = window.__navStack[window.__navStack.length - 1];
+    if (last !== renderAdapteeMenu) window.__navStack.push(renderAdapteeMenu);
+  }
+
+  window.__lastHash = hash;
+
+  // ==========================================================
+  // 🔒 TON CODE EXISTANT
+  // ==========================================================
+
   // 🔒 Si on QUITTE la page ACR, on nettoie
   if (currentRoute === "#/acr" && hash !== "#/acr") {
     if (typeof disableAcrWakeLock === "function") {
@@ -22914,6 +22939,7 @@ function navigate() {
     renderNotFound();
   }
 }
+
 
 
 window.addEventListener("hashchange", navigate);
