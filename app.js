@@ -6774,6 +6774,9 @@ function etoFormHtmlCompact(prefix) {
                   </div>
                 </td>
                 <td class="eto-imgcol">
+                  ${etoImgLink("Morphologie tricuspide", "eto_tric_morpho.png")}
+                  ${etoImgLink("Morphologie ETO tricuspide", "eto_tric_morphoETO.png")}
+                  ${etoImgLink("Quantifier IT", "eto_IT_serevite.png")}
                   ${etoImgLink("PAPs", "eto_htap_paps_it.png")}
                 </td>
               </tr>
@@ -7287,6 +7290,9 @@ function etoFormHtmlCompactPlastieAortique(prefix) {
                   </div>
                 </td>
                 <td class="eto-imgcol">
+                  ${etoImgLink("Morphologie tricuspide", "eto_tric_morpho.png")}
+                  ${etoImgLink("Morphologie ETO tricuspide", "eto_tric_morphoETO.png")}
+                  ${etoImgLink("Quantifier IT", "eto_IT_serevite.png")}
                   ${etoImgLink("PAPs", "eto_htap_paps_it.png")}
                 </td>
               </tr>
@@ -12489,6 +12495,10 @@ function renderReanEto() {
     {
       titre: "Fonction systolique du VD",
       html: stripEtoWrapper(etoHtmlFonctionVD()),
+    },
+    {
+      titre: "Valve tricuspide",
+      html: stripEtoWrapper(etoHtmlValveTricuspide()),
     },
     {
       titre: "Evaluation d'une HTAP",
@@ -17871,6 +17881,34 @@ function etoHtmlFonctionVD() {
         <li>
           Rapport TAPSE/PAPs
           <span class="eto-icon" onclick="openImg('eto_tapsepaps.png')">🖥️</span>
+        </li>
+      </ul>
+      </div>
+    </section>
+  `;
+}
+
+// Valve mitrale (IM / RM)
+function etoHtmlValveTricuspide() {
+  return `
+    <section class="eto-section">
+      <h4 class="eto-title" onclick="toggleEtoBlock(this)">
+        Valve mitrale
+        <span class="eto-toggle-icon">▸</span>
+      </h4>
+      <div class="eto-block" style="display:none;">
+      <ul class="eto-list">
+        <li>
+          Morphologie de la valve tricuspide: classification
+          <span class="eto-icon" onclick="openImg('eto_tric_morpho.png')">🖥️</span>
+        </li>
+        <li>
+          Morphologie de la valve tricuspide: ETO
+          <span class="eto-icon" onclick="openImg('eto_tric_morphoETO.png')">🖥️</span>
+        </li>
+        <li>
+          Insuffisance tricuspide: quantifier la sévérité
+          <span class="eto-icon" onclick="openImg('eto_IT_severite.png')">🖥️</span>
         </li>
       </ul>
       </div>
