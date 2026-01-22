@@ -21612,6 +21612,7 @@ function mergeAllAnnuaireTables(root = document) {
 function renderAnnuaire() {
   const encadres = [
 
+
    /* ================================
        1) ANESTHÉSISTES-RÉANIMATEURS
        ================================ */
@@ -21790,7 +21791,6 @@ function renderAnnuaire() {
           <thead>
             <tr>
               <th>Nom</th>
-              <th>Poste</th>
               <th>Téléphone</th>
             </tr>
           </thead>
@@ -21825,6 +21825,7 @@ function renderAnnuaire() {
       `,
     },
 
+  
     /* ================================
        6) REZ-DE-CHAUSSÉE
        ================================ */
