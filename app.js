@@ -1412,13 +1412,13 @@ function renderInterventionCarotide() {
     `<span data-per-kg="${perKg}" data-unit="${unit}"></span>`;
 
   const mgKg = (perKg) =>
-    `${String(perKg).replace(".", ",")}mg/kg (${doseSpan(perKg, "mg")} mg)`;
+    `${String(perKg).replace(".", ",")}mg/kg (${doseSpan(perKg, "mg")})`;
 
   const uiKg = (perKg) =>
-    `${String(perKg).replace(".", ",")} UI/kg (${doseSpan(perKg, "UI")} UI)`;
+    `${String(perKg).replace(".", ",")} UI/kg (${doseSpan(perKg, "UI")})`;
 
   const mgKgH = (perKg) =>
-    `${String(perKg).replace(".", ",")}mg/kg/h (${doseSpan(perKg, "mg/h")} mg/h)`;
+    `${String(perKg).replace(".", ",")}mg/kg/h (${doseSpan(perKg, "mg/h")})`;
 
 
   // Remplace uniquement les "Cf ..." en lien image + icône écran (sans changer la mise en forme autour)
