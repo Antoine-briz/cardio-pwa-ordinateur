@@ -2707,11 +2707,9 @@ function antibioticCefazVancomy() {
     }
 
     // 3) Antibioprophylaxie : appliquer “Si IMC > 50 … / Si allergie …” sans afficher ces consignes
-    // On reconstruit uniquement la partie concernée.
-    // Repérage simple sur la phrase du tableau.
     t = t.replace(
-  /(Antibioprophylaxie\s*:)[^\n]*/i,
-  (_, label) => `${label} ${antibioticCefazVancomy()}`
+  /(<strong>\s*Antibioprophylaxie\s*:\s*<\/strong>)[^\n]*/i,
+  (_, strongLabel) => `${strongLabel} ${antibioticCefazVancomy()}`
 );
 
 
