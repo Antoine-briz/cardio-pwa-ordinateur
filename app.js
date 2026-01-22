@@ -21612,7 +21612,7 @@ function mergeAllAnnuaireTables(root = document) {
 function renderAnnuaire() {
   const encadres = [
 
-    /* ================================
+   /* ================================
        1) ANESTHÉSISTES-RÉANIMATEURS
        ================================ */
     {
@@ -21630,40 +21630,44 @@ function renderAnnuaire() {
             </tr>
           </thead>
           <tbody>
-            <tr><td>BOUGLE Adrien</td><td>62 991</td><td><a href="tel:0664825629">06.64.82.56.29</a></td></tr>
-            <tr><td>ABBES Ahmed</td><td>65 693</td><td><a href="tel:0758706125">07.58.70.61.25</a></td></tr>
-            <tr><td>ANNONAY Marianne</td><td>62 994</td><td><a href="tel:0622829131">06.22.82.91.31</a></td></tr>
-            <tr><td>ARZOINE Jérémy</td><td>27 133</td><td><a href="tel:0633705373">06.33.70.53.73</a></td></tr>
-            <tr><td>BOROUCHAKI Antoine</td><td>62 998</td><td><a href="tel:0650912946">06.50.91.29.46</a></td></tr>
-            <tr><td>CAMPEANU Aurélie</td><td>28 252</td><td><a href="tel:0665317885">06.65.31.78.85</a></td></tr>
-            <tr><td>CARILLION Aude</td><td>27 387</td><td><a href="tel:0683086530">06.83.08.65.30</a></td></tr>
-            <tr><td>CLAPIN Sixtine</td><td>28 353</td><td><a href="tel:0689129279">06.89.12.92.79</a></td></tr>
-            <tr><td>COELEMBIER Clément</td><td>65 689</td><td><a href="tel:0674580098">06.74.58.00.98</a></td></tr>
-            <tr><td>DESAL Raphaël</td><td>27 195</td><td><a href="tel:0638992672">06.38.99.26.72</a></td></tr>
-            <tr><td>DE SARCUS Martin</td><td>75 869</td><td><a href="tel:0665722676">06.65.72.26.76</a></td></tr>
-            <tr><td>DJAVIDI Nima</td><td>28 363</td><td><a href="tel:0615791470">06.15.79.14.70</a></td></tr>
-            <tr><td>DUARTE Lucie</td><td>62 315</td><td><a href="tel:0688320622">06.88.32.06.22</a></td></tr>
-            <tr><td>DUCEAU Baptiste</td><td>27 915</td><td><a href="tel:0630943934">06.30.94.39.34</a></td></tr>
-            <tr><td>DUREAU Pauline</td><td>27 689</td><td><a href="tel:0663800946">06.63.80.09.46</a></td></tr>
-            <tr><td>GUILLEMIN Jérémie</td><td>28 258</td><td><a href="tel:0658390639">06.58.39.06.39</a></td></tr>
-            <tr><td>HAMIDI Dany</td><td>28 253</td><td><a href="tel:0684283219">06.84.28.32.19</a></td></tr>
-            <tr><td>HENOCQ Paul</td><td>28 255</td><td><a href="tel:0628710814">06.28.71.08.14</a></td></tr>
-            <tr><td>HIRWE Axel</td><td>28 355</td><td><a href="tel:0662187589">06.62.18.75.89</a></td></tr>
-            <tr><td>LABARRIERE Ambroise</td><td>28 308</td><td><a href="tel:0658989337">06.58.98.93.37</a></td></tr>
-            <tr><td>LANCELOT Aymeric</td><td>62 379</td><td><a href="tel:0626362306">06.26.36.23.06</a></td></tr>
-            <tr><td>LEPERE Victoria</td><td>75 885</td><td><a href="tel:0699516900">06.99.51.69.00</a></td></tr>
-            <tr><td>MANSOURI Sehm</td><td>28 256</td><td><a href="tel:0772644530">07.72.64.45.30</a></td></tr>
-            <tr><td>MARQUET Yann</td><td>28 356</td><td><a href="tel:0630132014">06.30.13.20.14</a></td></tr>
-            <tr><td>MELLANO Vincent</td><td>28 358</td><td><a href="tel:0682288105">06.82.28.81.05</a></td></tr>
-            <tr><td>MONTANA Vincenzo</td><td>62 995</td><td><a href="tel:+393890112381">(+39) 389.01.12.381</a></td></tr>
-            <tr><td>NICULESCU Michaela</td><td>62 996</td><td><a href="tel:0647626407">06.47.62.64.07</a></td></tr>
-            <tr><td>OMAR Edris</td><td>27 386</td><td><a href="tel:0618301220">06.18.30.12.20</a></td></tr>
-            <tr><td>PERRIER Johann</td><td>28 357</td><td><a href="tel:0682997279">06.82.99.72.79</a></td></tr>
-            <tr><td>POUJADE Julien</td><td>27 816</td><td><a href="tel:0632392252">06.32.39.22.52</a></td></tr>
-            <tr><td>ROMBI Louise</td><td>28 106</td><td><a href="tel:0634656993">06.34.65.69.93</a></td></tr>
-            <tr><td>SCHRAMM Rémi</td><td>28 062</td><td><a href="tel:0611398260">06.11.39.82.60</a></td></tr>
-            <tr><td>SOUILAMAS Dina</td><td>28 279</td><td><a href="tel:0677139773">06.77.13.97.73</a></td></tr>
-            <tr><td>VAUZANGES Quentin</td><td>27 613</td><td><a href="tel:0679528363">06.79.52.83.63</a></td></tr>
+            <tr><td>BOUGLE Adrien</td><td>62 991</td><td>
+            <tr><td>ABBES Ahmed</td><td>65 693</td><td>
+            <tr><td>ANNONAY Marianne</td><td>62 994</td><td>
+            <tr><td>ARZOINE Jérémy</td><td>27 133</td><td>
+            <tr><td>BEAUCOTE Victor</td><td>28 357</td><td>
+            <tr><td>BERECIBAR Jon Ander</td><td>28 354</td><td>
+            <tr><td>BOROUCHAKI Antoine</td><td>62 998</td><td>
+            <tr><td>BRIZARD Antoine</td><td>28 352</td><td>
+            <tr><td>CAMPEANU Aurélie</td><td>28 252</td><td>
+            <tr><td>CARILLION Aude</td><td>27 387</td><td>
+            <tr><td>CLAPIN Sixtine</td><td>28 353</td><td>
+            <tr><td>COELEMBIER Clément</td><td>65 689</td><td>
+            <tr><td>DE SARCUS Martin</td><td>75 869</td><td>
+            <tr><td>DJAVIDI Nima</td><td>28 363</td><td>
+            <tr><td>DUARTE Lucie</td><td>62 315</td><td>
+            <tr><td>DUCEAU Baptiste</td><td>27 915</td><td>
+            <tr><td>DUREAU Pauline</td><td>27 689</td><td>
+            <tr><td>GUILLEMIN Jérémie</td><td>28 258</td><td>
+            <tr><td>HAMIDI Dany</td><td>28 253</td><td>
+            <tr><td>HARIRI Geoffroy</td><td>27 385</td><td>
+            <tr><td>HENOCQ Paul</td><td>28 255</td><td>
+            <tr><td>HIRWE Axel</td><td>28 355</td><td>
+            <tr><td>LABARRIERE Ambroise</td><td>28 308</td><td>
+            <tr><td>LANCELOT Aymeric</td><td>62 379</td><td>
+            <tr><td>LEPERE Victoria</td><td>75 885</td><td>
+            <tr><td>MANSOURI Sehm</td><td>28 256</td><td>
+            <tr><td>MARQUET Yann</td><td>28 356</td><td>
+            <tr><td>MELLANO Vincent</td><td>28 358</td><td>
+            <tr><td>MONTANA Vincenzo</td><td>62 995</td><td>
+            <tr><td>MOHAMMEDI Neyla</td><td>28 257</td><td>
+            <tr><td>NICULESCU Michaela</td><td>62 996</td><td>
+            <tr><td>OMAR Edris</td><td>27 386</td><td>
+            <tr><td>PERRIER Johann</td><td>28 357</td><td>
+            <tr><td>POUJADE Julien</td><td>27 816</td><td>
+            <tr><td>ROMBI Louise</td><td>28 106</td><td>
+            <tr><td>SCHRAMM Rémi</td><td>28 062</td><td>
+            <tr><td>SOUILAMAS Dina</td><td>28 279</td><td>
+            <tr><td>VAUZANGES Quentin</td><td>27 613</td><td>
           </tbody>
         </table>
       `,
@@ -21687,20 +21691,20 @@ function renderAnnuaire() {
             </tr>
           </thead>
           <tbody>
-            <tr><td>LEPRINCE Pascal</td><td>27 550</td><td><a href="tel:0658251284">06.58.25.12.84</a></td></tr>
-            <tr><td>BARREDA Theo</td><td>27 343</td><td><a href="tel:0632127497">06.32.12.74.97</a></td></tr>
-            <tr><td>D’ALESSANDRO Cosimo</td><td>65 690</td><td><a href="tel:0633009198">06.33.00.91.98</a></td></tr>
-            <tr><td>DANIAL Pichoy</td><td>27 801</td><td><a href="tel:0626361022">06.26.36.10.22</a></td></tr>
-            <tr><td>DEBAUCHEZ Mathieu</td><td>80 622</td><td><a href="tel:0631049949">06.31.04.99.49</a></td></tr>
-            <tr><td>FARAHMAND Patrick</td><td>27 018</td><td><a href="tel:0660037997">06.60.03.79.97</a></td></tr>
-            <tr><td>JUVIN Charles</td><td>27 737</td><td><a href="tel:0769172755">07.69.17.27.55</a></td></tr>
-            <tr><td>HENNEB Belkacem</td><td>27 177</td><td><a href="tel:0668628504">06.68.62.85.04</a></td></tr>
-            <tr><td>LAALI Mojgan</td><td>63 839</td><td><a href="tel:0622146945">06.22.14.69.45</a></td></tr>
-            <tr><td>LANSAC Emmanuel</td><td>27 123</td><td><a href="tel:0664234453">06.64.23.44.53</a></td></tr>
-            <tr><td>LEBRETON Guillaume</td><td>62 979</td><td><a href="tel:0672320194">06.72.32.01.94</a></td></tr>
-            <tr><td>SAIYDOUN Gabriel</td><td>27 175</td><td><a href="tel:0609777694">06.09.77.76.94</a></td></tr>
-            <tr><td>MEYER Horacio</td><td>28 391</td><td><a href="tel:0768222955">07.68.22.29.55</a></td></tr>
-            <tr><td>ZAMORANO Claudio</td><td>28 391</td><td><a href="tel:0745332100">07.45.33.21.00</a></td></tr>
+            <tr><td>LEPRINCE Pascal</td><td>27 550</td><td>
+            <tr><td>BARREDA Theo</td><td>27 343</td><td>
+            <tr><td>D’ALESSANDRO Cosimo</td><td>65 690</td><td>
+            <tr><td>DANIAL Pichoy</td><td>27 801</td><td>
+            <tr><td>DEBAUCHEZ Mathieu</td><td>80 622</td><td>
+            <tr><td>FARAHMAND Patrick</td><td>27 018</td><td>
+            <tr><td>JUVIN Charles</td><td>27 737</td><td>
+            <tr><td>HENNEB Belkacem</td><td>27 177</td><td>
+            <tr><td>LAALI Mojgan</td><td>63 839</td><td>
+            <tr><td>LANSAC Emmanuel</td><td>27 123</td><td>
+            <tr><td>LEBRETON Guillaume</td><td>62 979</td><td>
+            <tr><td>SAIYDOUN Gabriel</td><td>27 175</td><td>
+            <tr><td>MEYER Horacio</td><td>28 391</td><td>
+            <tr><td>ZAMORANO Claudio</td><td>28 391</td><td>
             <tr><td><em>Interne de garde</em></td><td>65 645</td><td>—</td></tr>
           </tbody>
         </table>
@@ -21725,20 +21729,21 @@ function renderAnnuaire() {
             </tr>
           </thead>
           <tbody>
-            <tr><td>CHICHE Laurent</td><td>75 710 / 27 690</td><td><a href="tel:0612592909">06.12.59.29.09</a></td></tr>
-            <tr><td>COCHENNEC Frédéric</td><td>28 217</td><td><a href="tel:0658414933">06.58.41.49.33</a></td></tr>
-            <tr><td>COUTURE Thibault</td><td>28 082</td><td><a href="tel:0679067982">06.79.06.79.82</a></td></tr>
-            <tr><td>LAME Charles</td><td>—</td><td><a href="tel:0771085204">07.71.08.52.04</a></td></tr>
-            <tr><td>GAUDRIC Julien</td><td>27 691</td><td><a href="tel:0663739002">06.63.73.90.02</a></td></tr>
-            <tr><td>LOCATELLI Federica</td><td>—</td><td><a href="tel:0759527538">07.59.52.75.38</a></td></tr>
-            <tr><td>PELISSIE Jérôme</td><td>—</td><td><a href="tel:0614556626">06.14.55.66.26</a></td></tr>
-            <tr><td>RUELLO Pauline</td><td>—</td><td><a href="tel:0623736504">06.23.73.65.04</a></td></tr>
-            <tr><td>VERSCHEURE Dorian</td><td>27 635</td><td><a href="tel:0632901212">06.32.90.12.12</a></td></tr>
+            <tr><td>CHICHE Laurent</td><td>75 710 / 27 690</td><td>
+            <tr><td>COCHENNEC Frédéric</td><td>28 217</td><td>
+            <tr><td>COUTURE Thibault</td><td>28 082</td><td>
+            <tr><td>LAME Charles</td><td>—</td><td>
+            <tr><td>GAUDRIC Julien</td><td>27 691</td><td>
+            <tr><td>LOCATELLI Federica</td><td>—</td><td>
+            <tr><td>PELISSIE Jérôme</td><td>—</td><td>
+            <tr><td>RUELLO Pauline</td><td>—</td><td>
+            <tr><td>VERSCHEURE Dorian</td><td>27 635</td><td>
             <tr><td><em>Interne chirurgie vasculaire</em></td><td>27 493</td><td>—</td></tr>
           </tbody>
         </table>
       `,
     },
+
 
     /* ================================
        4) RYTHMOLOGUES
