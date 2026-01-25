@@ -21613,217 +21613,246 @@ function renderAnnuaire() {
   const encadres = [
 
 
-   /* ================================
-       1) ANESTHÉSISTES-RÉANIMATEURS
-       ================================ */
-    {
-      titre: "Anesthésistes-réanimateurs",
-      sousTitreEncadre: "",
-      html: `
-        <div style="height:6px;"></div>
+  /* ================================
+   1) ANESTHÉSISTES-RÉANIMATEURS
+   ================================ */
+{
+  titre: "Anesthésistes-réanimateurs",
+  sousTitreEncadre: "",
+  html: `
+    <div style="height:6px;"></div>
 
-        <table class="annuaire-table">
-          <thead>
-            <tr>
-              <th>Nom</th>
-              <th>Téléphone</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>BOUGLE Adrien</td><td>62 991</td><td>
-            <tr><td>ABBES Ahmed</td><td>65 693</td><td>
-            <tr><td>ANNONAY Marianne</td><td>62 994</td><td>
-            <tr><td>ARZOINE Jérémy</td><td>27 133</td><td>
-            <tr><td>BEAUCOTE Victor</td><td>28 357</td><td>
-            <tr><td>BERECIBAR Jon Ander</td><td>28 354</td><td>
-            <tr><td>BOROUCHAKI Antoine</td><td>62 998</td><td>
-            <tr><td>BRIZARD Antoine</td><td>28 352</td><td>
-            <tr><td>CAMPEANU Aurélie</td><td>28 252</td><td>
-            <tr><td>CARILLION Aude</td><td>27 387</td><td>
-            <tr><td>CLAPIN Sixtine</td><td>28 353</td><td>
-            <tr><td>COELEMBIER Clément</td><td>65 689</td><td>
-            <tr><td>DE SARCUS Martin</td><td>75 869</td><td>
-            <tr><td>DJAVIDI Nima</td><td>28 363</td><td>
-            <tr><td>DUARTE Lucie</td><td>62 315</td><td>
-            <tr><td>DUCEAU Baptiste</td><td>27 915</td><td>
-            <tr><td>DUREAU Pauline</td><td>27 689</td><td>
-            <tr><td>GUILLEMIN Jérémie</td><td>28 258</td><td>
-            <tr><td>HAMIDI Dany</td><td>28 253</td><td>
-            <tr><td>HARIRI Geoffroy</td><td>27 385</td><td>
-            <tr><td>HENOCQ Paul</td><td>28 255</td><td>
-            <tr><td>HIRWE Axel</td><td>28 355</td><td>
-            <tr><td>LABARRIERE Ambroise</td><td>28 308</td><td>
-            <tr><td>LANCELOT Aymeric</td><td>62 379</td><td>
-            <tr><td>LEPERE Victoria</td><td>75 885</td><td>
-            <tr><td>MANSOURI Sehm</td><td>28 256</td><td>
-            <tr><td>MARQUET Yann</td><td>28 356</td><td>
-            <tr><td>MELLANO Vincent</td><td>28 358</td><td>
-            <tr><td>MONTANA Vincenzo</td><td>62 995</td><td>
-            <tr><td>MOHAMMEDI Neyla</td><td>28 257</td><td>
-            <tr><td>NICULESCU Michaela</td><td>62 996</td><td>
-            <tr><td>OMAR Edris</td><td>27 386</td><td>
-            <tr><td>PERRIER Johann</td><td>28 357</td><td>
-            <tr><td>POUJADE Julien</td><td>27 816</td><td>
-            <tr><td>ROMBI Louise</td><td>28 106</td><td>
-            <tr><td>SCHRAMM Rémi</td><td>28 062</td><td>
-            <tr><td>SOUILAMAS Dina</td><td>28 279</td><td>
-            <tr><td>VAUZANGES Quentin</td><td>27 613</td><td>
-          </tbody>
-        </table>
-      `,
-    },
+    <table class="annuaire-table annuaire-2cols">
+      <colgroup>
+        <col style="width:70%">
+        <col style="width:30%">
+      </colgroup>
 
-    /* ================================
-       2) CHIRURGIENS CARDIAQUES
-       ================================ */
-    {
-      titre: "Chirurgiens cardiaques",
-      sousTitreEncadre: "",
-      html: `
-        <div style="height:6px;"></div>
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Poste</th>
+        </tr>
+      </thead>
 
-        <table class="annuaire-table">
-          <thead>
-            <tr>
-              <th>Nom</th>
-              <th>Téléphone</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>LEPRINCE Pascal</td><td>27 550</td><td>
-            <tr><td>BARREDA Theo</td><td>27 343</td><td>
-            <tr><td>D’ALESSANDRO Cosimo</td><td>65 690</td><td>
-            <tr><td>DANIAL Pichoy</td><td>27 801</td><td>
-            <tr><td>DEBAUCHEZ Mathieu</td><td>80 622</td><td>
-            <tr><td>FARAHMAND Patrick</td><td>27 018</td><td>
-            <tr><td>JUVIN Charles</td><td>27 737</td><td>
-            <tr><td>HENNEB Belkacem</td><td>27 177</td><td>
-            <tr><td>LAALI Mojgan</td><td>63 839</td><td>
-            <tr><td>LANSAC Emmanuel</td><td>27 123</td><td>
-            <tr><td>LEBRETON Guillaume</td><td>62 979</td><td>
-            <tr><td>SAIYDOUN Gabriel</td><td>27 175</td><td>
-            <tr><td>MEYER Horacio</td><td>28 391</td><td>
-            <tr><td>ZAMORANO Claudio</td><td>28 391</td><td>
-            <tr><td><em>Interne de garde</em></td><td>65 645</td><td>—</td></tr>
-          </tbody>
-        </table>
-      `,
-    },
+      <tbody>
+        <tr><td>BOUGLE Adrien</td><td>62 991</td></tr>
+        <tr><td>ABBES Ahmed</td><td>65 693</td></tr>
+        <tr><td>ANNONAY Marianne</td><td>62 994</td></tr>
+        <tr><td>ARZOINE Jérémy</td><td>27 133</td></tr>
+        <tr><td>BEAUCOTE Victor</td><td>28 357</td></tr>
+        <tr><td>BERECIBAR Jon Ander</td><td>28 354</td></tr>
+        <tr><td>BOROUCHAKI Antoine</td><td>62 998</td></tr>
+        <tr><td>BRIZARD Antoine</td><td>28 352</td></tr>
+        <tr><td>CAMPEANU Aurélie</td><td>28 252</td></tr>
+        <tr><td>CARILLION Aude</td><td>27 387</td></tr>
+        <tr><td>CLAPIN Sixtine</td><td>28 353</td></tr>
+        <tr><td>COELEMBIER Clément</td><td>65 689</td></tr>
+        <tr><td>DE SARCUS Martin</td><td>75 869</td></tr>
+        <tr><td>DJAVIDI Nima</td><td>28 363</td></tr>
+        <tr><td>DUARTE Lucie</td><td>62 315</td></tr>
+        <tr><td>DUCEAU Baptiste</td><td>27 915</td></tr>
+        <tr><td>DUREAU Pauline</td><td>27 689</td></tr>
+        <tr><td>GUILLEMIN Jérémie</td><td>28 258</td></tr>
+        <tr><td>HAMIDI Dany</td><td>28 253</td></tr>
+        <tr><td>HARIRI Geoffroy</td><td>27 385</td></tr>
+        <tr><td>HENOCQ Paul</td><td>28 255</td></tr>
+        <tr><td>HIRWE Axel</td><td>28 355</td></tr>
+        <tr><td>LABARRIERE Ambroise</td><td>28 308</td></tr>
+        <tr><td>LANCELOT Aymeric</td><td>62 379</td></tr>
+        <tr><td>LEPERE Victoria</td><td>75 885</td></tr>
+        <tr><td>MANSOURI Sehm</td><td>28 256</td></tr>
+        <tr><td>MARQUET Yann</td><td>28 356</td></tr>
+        <tr><td>MELLANO Vincent</td><td>28 358</td></tr>
+        <tr><td>MONTANA Vincenzo</td><td>62 995</td></tr>
+        <tr><td>MOHAMMEDI Neyla</td><td>28 257</td></tr>
+        <tr><td>NICULESCU Michaela</td><td>62 996</td></tr>
+        <tr><td>OMAR Edris</td><td>27 386</td></tr>
+        <tr><td>PERRIER Johann</td><td>28 357</td></tr>
+        <tr><td>POUJADE Julien</td><td>27 816</td></tr>
+        <tr><td>ROMBI Louise</td><td>28 106</td></tr>
+        <tr><td>SCHRAMM Rémi</td><td>28 062</td></tr>
+        <tr><td>SOUILAMAS Dina</td><td>28 279</td></tr>
+        <tr><td>VAUZANGES Quentin</td><td>27 613</td></tr>
+      </tbody>
+    </table>
+  `,
+},
 
-    /* ================================
-       3) CHIRURGIENS VASCULAIRES
-       ================================ */
-    {
-      titre: "Chirurgiens vasculaires",
-      sousTitreEncadre: "",
-      html: `
-        <div style="height:6px;"></div>
+/* ================================
+   2) CHIRURGIENS CARDIAQUES
+   ================================ */
+{
+  titre: "Chirurgiens cardiaques",
+  sousTitreEncadre: "",
+  html: `
+    <div style="height:6px;"></div>
 
-        <table class="annuaire-table">
-          <thead>
-            <tr>
-              <th>Nom</th>
-              <th>Téléphone</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>CHICHE Laurent</td><td>75 710 / 27 690</td><td>
-            <tr><td>COCHENNEC Frédéric</td><td>28 217</td><td>
-            <tr><td>COUTURE Thibault</td><td>28 082</td><td>
-            <tr><td>LAME Charles</td><td>—</td><td>
-            <tr><td>GAUDRIC Julien</td><td>27 691</td><td>
-            <tr><td>LOCATELLI Federica</td><td>—</td><td>
-            <tr><td>PELISSIE Jérôme</td><td>—</td><td>
-            <tr><td>RUELLO Pauline</td><td>—</td><td>
-            <tr><td>VERSCHEURE Dorian</td><td>27 635</td><td>
-            <tr><td><em>Interne chirurgie vasculaire</em></td><td>27 493</td><td>—</td></tr>
-          </tbody>
-        </table>
-      `,
-    },
+    <table class="annuaire-table annuaire-2cols">
+      <colgroup>
+        <col style="width:70%">
+        <col style="width:30%">
+      </colgroup>
 
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Poste</th>
+        </tr>
+      </thead>
 
-    /* ================================
-       4) RYTHMOLOGUES
-       ================================ */
-    {
-      titre: "Rythmologues",
-      sousTitreEncadre: "",
-      html: `
-        <div style="height:6px;"></div>
+      <tbody>
+        <tr><td>LEPRINCE Pascal</td><td>27 550</td></tr>
+        <tr><td>BARREDA Theo</td><td>27 343</td></tr>
+        <tr><td>D’ALESSANDRO Cosimo</td><td>65 690</td></tr>
+        <tr><td>DANIAL Pichoy</td><td>27 801</td></tr>
+        <tr><td>DEBAUCHEZ Mathieu</td><td>80 622</td></tr>
+        <tr><td>FARAHMAND Patrick</td><td>27 018</td></tr>
+        <tr><td>JUVIN Charles</td><td>27 737</td></tr>
+        <tr><td>HENNEB Belkacem</td><td>27 177</td></tr>
+        <tr><td>LAALI Mojgan</td><td>63 839</td></tr>
+        <tr><td>LANSAC Emmanuel</td><td>27 123</td></tr>
+        <tr><td>LEBRETON Guillaume</td><td>62 979</td></tr>
+        <tr><td>SAIYDOUN Gabriel</td><td>27 175</td></tr>
+        <tr><td>MEYER Horacio</td><td>28 391</td></tr>
+        <tr><td>ZAMORANO Claudio</td><td>28 391</td></tr>
+        <tr><td><em>Interne de garde</em></td><td>65 645</td></tr>
+      </tbody>
+    </table>
+  `,
+},
 
-        <table class="annuaire-table">
-          <thead>
-            <tr>
-              <th>Nom</th>
-              <th>Téléphone</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>BADENCO Nicolas</td><td>—</td><td>62 976</td></tr>
-            <tr><td>CHASTRE Thomas</td><td>—</td><td>63 821</td></tr>
-            <tr><td>DINANIAN Sylvie</td><td>—</td><td>27 804</td></tr>
-            <tr><td>DUTHOIT Guillaume</td><td>—</td><td>63 031</td></tr>
-            <tr><td>GANDJBAKHCH Estelle</td><td>—</td><td>63 055</td></tr>
-            <tr><td>JACQUEMART Étienne</td><td>—</td><td>27 545</td></tr>
-            <tr><td>LAREDO Mickaël</td><td>—</td><td>27 620</td></tr>
-            <tr><td>MAUPAIN Carole</td><td>—</td><td>27 283</td></tr>
-            <tr><td>ROLLAND Thomas</td><td>—</td><td>63 051</td></tr>
-            <tr><td>SCHUMACHER Stéphane</td><td>—</td><td>27 545</td></tr>
-            <tr><td>TEMMAR Yacine</td><td>—</td><td>63 036</td></tr>
-            <tr><td>THUILLOT Marine</td><td>—</td><td>63 036</td></tr>
-            <tr><td>WAINTRAUB Xavier</td><td>—</td><td>63 028</td></tr>
-          </tbody>
-        </table>
-      `,
-    },
+/* ================================
+   3) CHIRURGIENS VASCULAIRES
+   ================================ */
+{
+  titre: "Chirurgiens vasculaires",
+  sousTitreEncadre: "",
+  html: `
+    <div style="height:6px;"></div>
 
-    /* ================================
-       5) CARDIOLOGUES
-       ================================ */
-    {
-      titre: "Cardiologues",
-      sousTitreEncadre: "",
-      html: `
-        <div style="height:6px;"></div>
+    <table class="annuaire-table annuaire-2cols">
+      <colgroup>
+        <col style="width:70%">
+        <col style="width:30%">
+      </colgroup>
 
-        <table class="annuaire-table">
-          <thead>
-            <tr>
-              <th>Nom</th>
-              <th>Téléphone</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>BALDI Lorenzo</td><td>—</td><td>27 531</td></tr>
-            <tr><td>BARTHELEMY Olivier</td><td>—</td><td>63 033</td></tr>
-            <tr><td>BEGOT Emmanuelle</td><td>—</td><td>27 778</td></tr>
-            <tr><td>CHOUSSAT Rémy</td><td>—</td><td>62 951</td></tr>
-            <tr><td>COLLET Jean-Philippe</td><td>—</td><td>62 962</td></tr>
-            <tr><td>CHARINOT Jean-Christophe</td><td>—</td><td>63 837</td></tr>
-            <tr><td>COUTANCE Guillaume</td><td>—</td><td>28 057</td></tr>
-            <tr><td>DESIRE Eva</td><td>—</td><td>28 196</td></tr>
-            <tr><td>GRANGER Camille</td><td>—</td><td>27 134</td></tr>
-            <tr><td>GUEDENEY Paul</td><td>—</td><td>27 619</td></tr>
-            <tr><td>HAMMOUDI Nadjib</td><td>—</td><td>80 782</td></tr>
-            <tr><td>HAZAN Fanny</td><td>—</td><td>80 699</td></tr>
-            <tr><td>HELFT Gérard</td><td>—</td><td>62 912</td></tr>
-            <tr><td>KERNEIS Mathieu</td><td>—</td><td>27 753</td></tr>
-            <tr><td>JAULT Frédérique</td><td>—</td><td>65 694</td></tr>
-            <tr><td>LECUYER Lucien</td><td>—</td><td>27 174</td></tr>
-            <tr><td>LE FEVRE Claude</td><td>—</td><td>63 012</td></tr>
-            <tr><td>LEGRAND Lise</td><td>—</td><td>63 836</td></tr>
-            <tr><td>MONGUILLON Victorien</td><td>—</td><td>28 375</td></tr>
-            <tr><td>MONTALESCOT Gilles</td><td>—</td><td>80 713</td></tr>
-            <tr><td>SILVAIN Johanne</td><td>—</td><td>62 975</td></tr>
-            <tr><td>OULDAMMAR Salima</td><td>—</td><td>28 163</td></tr>
-            <tr><td>VARNOUS Sheida</td><td>—</td><td>65 690</td></tr>
-            <tr><td>WALLET Thomas</td><td>—</td><td>62 975</td></tr>
-            <tr><td>ZEITOUNI Michel</td><td>—</td><td>80 680</td></tr>
-          </tbody>
-        </table>
-      `,
-    },
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Poste</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr><td>CHICHE Laurent</td><td>75 710 / 27 690</td></tr>
+        <tr><td>COCHENNEC Frédéric</td><td>28 217</td></tr>
+        <tr><td>COUTURE Thibault</td><td>28 082</td></tr>
+        <tr><td>LAME Charles</td><td>—</td></tr>
+        <tr><td>GAUDRIC Julien</td><td>27 691</td></tr>
+        <tr><td>LOCATELLI Federica</td><td>—</td></tr>
+        <tr><td>PELISSIE Jérôme</td><td>—</td></tr>
+        <tr><td>RUELLO Pauline</td><td>—</td></tr>
+        <tr><td>VERSCHEURE Dorian</td><td>27 635</td></tr>
+        <tr><td><em>Interne chirurgie vasculaire</em></td><td>27 493</td></tr>
+      </tbody>
+    </table>
+  `,
+},
+
+/* ================================
+   4) RYTHMOLOGUES
+   ================================ */
+{
+  titre: "Rythmologues",
+  sousTitreEncadre: "",
+  html: `
+    <div style="height:6px;"></div>
+
+    <table class="annuaire-table annuaire-2cols">
+      <colgroup>
+        <col style="width:70%">
+        <col style="width:30%">
+      </colgroup>
+
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Poste</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr><td>BADENCO Nicolas</td><td>62 976</td></tr>
+        <tr><td>CHASTRE Thomas</td><td>63 821</td></tr>
+        <tr><td>DINANIAN Sylvie</td><td>27 804</td></tr>
+        <tr><td>DUTHOIT Guillaume</td><td>63 031</td></tr>
+        <tr><td>GANDJBAKHCH Estelle</td><td>63 055</td></tr>
+        <tr><td>JACQUEMART Étienne</td><td>27 545</td></tr>
+        <tr><td>LAREDO Mickaël</td><td>27 620</td></tr>
+        <tr><td>MAUPAIN Carole</td><td>27 283</td></tr>
+        <tr><td>ROLLAND Thomas</td><td>63 051</td></tr>
+        <tr><td>SCHUMACHER Stéphane</td><td>27 545</td></tr>
+        <tr><td>TEMMAR Yacine</td><td>63 036</td></tr>
+        <tr><td>THUILLOT Marine</td><td>63 036</td></tr>
+        <tr><td>WAINTRAUB Xavier</td><td>63 028</td></tr>
+      </tbody>
+    </table>
+  `,
+},
+
+/* ================================
+   5) CARDIOLOGUES
+   ================================ */
+{
+  titre: "Cardiologues",
+  sousTitreEncadre: "",
+  html: `
+    <div style="height:6px;"></div>
+
+    <table class="annuaire-table annuaire-2cols">
+      <colgroup>
+        <col style="width:70%">
+        <col style="width:30%">
+      </colgroup>
+
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Poste</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr><td>BALDI Lorenzo</td><td>27 531</td></tr>
+        <tr><td>BARTHELEMY Olivier</td><td>63 033</td></tr>
+        <tr><td>BEGOT Emmanuelle</td><td>27 778</td></tr>
+        <tr><td>CHOUSSAT Rémy</td><td>62 951</td></tr>
+        <tr><td>COLLET Jean-Philippe</td><td>62 962</td></tr>
+        <tr><td>CHARINOT Jean-Christophe</td><td>63 837</td></tr>
+        <tr><td>COUTANCE Guillaume</td><td>28 057</td></tr>
+        <tr><td>DESIRE Eva</td><td>28 196</td></tr>
+        <tr><td>GRANGER Camille</td><td>27 134</td></tr>
+        <tr><td>GUEDENEY Paul</td><td>27 619</td></tr>
+        <tr><td>HAMMOUDI Nadjib</td><td>80 782</td></tr>
+        <tr><td>HAZAN Fanny</td><td>80 699</td></tr>
+        <tr><td>HELFT Gérard</td><td>62 912</td></tr>
+        <tr><td>KERNEIS Mathieu</td><td>27 753</td></tr>
+        <tr><td>JAULT Frédérique</td><td>65 694</td></tr>
+        <tr><td>LECUYER Lucien</td><td>27 174</td></tr>
+        <tr><td>LE FEVRE Claude</td><td>63 012</td></tr>
+        <tr><td>LEGRAND Lise</td><td>63 836</td></tr>
+        <tr><td>MONGUILLON Victorien</td><td>28 375</td></tr>
+        <tr><td>MONTALESCOT Gilles</td><td>80 713</td></tr>
+        <tr><td>SILVAIN Johanne</td><td>62 975</td></tr>
+        <tr><td>OULDAMMAR Salima</td><td>28 163</td></tr>
+        <tr><td>VARNOUS Sheida</td><td>65 690</td></tr>
+        <tr><td>WALLET Thomas</td><td>62 975</td></tr>
+        <tr><td>ZEITOUNI Michel</td><td>80 680</td></tr>
+      </tbody>
+    </table>
+  `,
+},
 
   
     /* ================================
