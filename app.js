@@ -4385,7 +4385,7 @@ function renderInterventionRadioVascTIPS() {
     // ---- ANESTHÉSIE ----
     if (gravite === "choc") {
       anesth.innerHTML = `
-        <div><strong>Protocole d’anesthésie :</strong> Anesthésie générale avec IOT</div>
+        <div><strong>Protocole d’anesthésie :</strong> Anesthésie générale avec IOT en séquence rapide (estomac plein)</div>
         <div>Induction prudente (Etomidate ou équivalent)</div>
         <div>AIVOC Propofol / Rémifentanil</div>
         <div>Décubitus dorsal maintenu</div>
@@ -4395,7 +4395,7 @@ function renderInterventionRadioVascTIPS() {
       `;
     } else {
       anesth.innerHTML = `
-        <div><strong>Protocole d’anesthésie :</strong> Anesthésie générale avec IOT</div>
+        <div><strong>Protocole d’anesthésie :</strong> Anesthésie générale avec IOT (séquence rapide si contexte hémorragique)</div>
         <div>AIVOC Propofol / Rémifentanil</div>
         <div>Décubitus dorsal maintenu</div>
         <div style="margin-top:.5rem;">
