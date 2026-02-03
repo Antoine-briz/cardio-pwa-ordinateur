@@ -1,8 +1,8 @@
 {
   "_meta": {
     "version": 1,
-    "appTitle": "SAR - PWA",
-    "editorPassword": "CHANGE-MOI"
+    "appTitle": "Application SARIC",
+    "editorPassword": "SARICeditor12345678"
   },
   "menus": {
     "#/": {
