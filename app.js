@@ -23017,6 +23017,11 @@ window.openSubPage = (renderFn, backFn) => {
 };
 
 function configHasRoute(hash) {
+  // si la route est listée dans l’index, elle doit être enabled:true
+  const idx = APP_CONFIG?._routesIndex?.[hash];
+  if (idx) return idx.enabled === true;
+
+  // compat : si tu as encore des routes directement dans menus/pages sans index
   return !!(APP_CONFIG?.menus?.[hash] || APP_CONFIG?.pages?.[hash]);
 }
 
