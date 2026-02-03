@@ -6,6 +6,92 @@
 const ACTUS_API_URL = "https://script.google.com/macros/s/AKfycbzyNf3XddrkPfjfk7fJZqqEoj7geuTUMEfq7DCKgwwWExALcam15U1XsRfHXiWDCpCf/exec";
 const $app = document.getElementById("app");
 
+// =======================================================
+// CONFIG EDITABLE (JSON) + GITHUB SAVE
+// =======================================================
+
+// >>> À RENSEIGNER UNE FOIS POUR TON REPO
+const GITHUB_OWNER = "TON_OWNER";
+const GITHUB_REPO = "TON_REPO";
+const GITHUB_BRANCH = "main";
+const CONFIG_PATH = "config/app-config.json"; // dans le repo
+const IMG_UPLOAD_DIR = "img/uploads"; // où stocker les nouvelles images
+
+let APP_CONFIG = null;
+let EDIT_MODE = false;
+let GITHUB_TOKEN = ""; // en mémoire uniquement (pas de stockage local)
+
+async function loadAppConfig() {
+  try {
+    const res = await fetch(`${CONFIG_PATH}?v=${Date.now()}`, { cache: "no-store" });
+    if (!res.ok) throw new Error("config introuvable");
+    APP_CONFIG = await res.json();
+  } catch (e) {
+    APP_CONFIG = null;
+  }
+}
+
+function getConfigEditorPassword() {
+  return APP_CONFIG?._meta?.editorPassword || "";
+}
+
+// --- GitHub API: get file SHA (nécessaire pour update)
+async function ghGetFileSha(path) {
+  const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}?ref=${encodeURIComponent(GITHUB_BRANCH)}`;
+  const res = await fetch(url, {
+    headers: { Authorization: `token ${GITHUB_TOKEN}` }
+  });
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error("GitHub: lecture fichier impossible");
+  const data = await res.json();
+  return data.sha || null;
+}
+
+async function ghPutFile(path, contentBase64, message) {
+  const sha = await ghGetFileSha(path);
+  const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`;
+  const body = {
+    message,
+    content: contentBase64,
+    branch: GITHUB_BRANCH
+  };
+  if (sha) body.sha = sha;
+
+  const res = await fetch(url, {
+    method: "PUT",
+    headers: {
+      Authorization: `token ${GITHUB_TOKEN}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(body)
+  });
+
+  if (!res.ok) {
+    const txt = await res.text().catch(() => "");
+    throw new Error("GitHub: écriture impossible " + txt);
+  }
+  return await res.json();
+}
+
+// helpers base64
+function toBase64Utf8(str) {
+  return btoa(unescape(encodeURIComponent(str)));
+}
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error("Lecture image impossible"));
+    reader.onload = () => {
+      const dataUrl = reader.result; // "data:image/png;base64,..."
+      const base64 = String(dataUrl).split(",")[1] || "";
+      resolve(base64);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+
+
 function h(cls, html) {
   return `<div class="${cls}">${html}</div>`;
 }
@@ -22930,6 +23016,456 @@ window.openSubPage = (renderFn, backFn) => {
   });
 };
 
+function configHasRoute(hash) {
+  return !!(APP_CONFIG?.menus?.[hash] || APP_CONFIG?.pages?.[hash]);
+}
+
+function renderFromConfig(hash) {
+  const menu = APP_CONFIG?.menus?.[hash];
+  if (menu) return renderConfigMenu(hash, menu);
+
+  const page = APP_CONFIG?.pages?.[hash];
+  if (page) return renderConfigPage(hash, page);
+}
+
+function renderConfigMenu(hash, menu) {
+  const items = menu.items || [];
+  $app.innerHTML = `
+    <section class="page">
+      <header class="page-header">
+        <button class="btn" onclick="history.back()">←</button>
+        <h1>${menu.title || "Menu"}</h1>
+      </header>
+
+      <div class="edit-canvas" id="edit-canvas">
+        ${items.map(it => renderConfigItem(it)).join("")}
+      </div>
+    </section>
+  `;
+  if (EDIT_MODE) enableEditingForRoute(hash, "menu");
+  renderEditorBar();
+}
+
+function renderConfigPage(hash, page) {
+  const blocks = page.blocks || [];
+  $app.innerHTML = `
+    <section class="page">
+      <header class="page-header">
+        <button class="btn" onclick="history.back()">←</button>
+        <h1>${page.title || "Page"}</h1>
+      </header>
+
+      <div class="edit-canvas" id="edit-canvas">
+        ${blocks.map(b => renderConfigBlock(b)).join("")}
+      </div>
+    </section>
+  `;
+  if (EDIT_MODE) enableEditingForRoute(hash, "page");
+  renderEditorBar();
+}
+
+function renderConfigItem(it) {
+  const style = `left:${it.x||0}px;top:${it.y||0}px;width:${it.w||320}px;height:${it.h||56}px;`;
+  if (it.type === "button") {
+    return `
+      <div class="edit-item" data-id="${it.id}" style="${style}">
+        ${EDIT_MODE ? renderEditChrome() : ""}
+        <button class="btn home-btn" style="width:100%;height:100%;" onclick="location.hash='${it.route||"#/"}'">
+          ${it.title || "Bouton"}
+        </button>
+      </div>
+    `;
+  }
+  // extensible: image/card, etc.
+  return `
+    <div class="edit-item" data-id="${it.id}" style="${style}">
+      ${EDIT_MODE ? renderEditChrome() : ""}
+      <div class="card" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
+        ${it.title || "Item"}
+      </div>
+    </div>
+  `;
+}
+
+function renderConfigBlock(b) {
+  const style = `left:${b.x||0}px;top:${b.y||0}px;width:${b.w||360}px;height:${b.h||220}px;`;
+  if (b.type === "box") {
+    return `
+      <div class="edit-item" data-id="${b.id}" style="${style}">
+        ${EDIT_MODE ? renderEditChrome() : ""}
+        <div class="card" style="width:100%;height:100%;padding:12px;overflow:auto;">
+          <div style="font-weight:800;margin-bottom:8px;">${b.title||""}</div>
+          <div class="rich-output">${b.html||""}</div>
+        </div>
+      </div>
+    `;
+  }
+  if (b.type === "image") {
+    const src = b.src || "";
+    return `
+      <div class="edit-item" data-id="${b.id}" style="${style}">
+        ${EDIT_MODE ? renderEditChrome(true) : ""}
+        <img src="${src}" style="width:100%;height:100%;object-fit:cover;border-radius:14px;" />
+      </div>
+    `;
+  }
+  return `
+    <div class="edit-item" data-id="${b.id}" style="${style}">
+      ${EDIT_MODE ? renderEditChrome() : ""}
+      <div class="card" style="width:100%;height:100%;padding:12px;">Bloc</div>
+    </div>
+  `;
+}
+
+function renderEditChrome(isImage=false) {
+  return `
+    <div class="edit-handle" title="Déplacer"></div>
+    <div class="edit-actions">
+      <button title="Modifier" data-action="edit">✏️</button>
+      ${isImage ? `<button title="Image" data-action="image">🖼️</button>` : ""}
+      <button title="Dupliquer" data-action="dup">⎘</button>
+      <button title="Supprimer" data-action="del">🗑️</button>
+    </div>
+  `;
+}
+
+function renderEditorBar() {
+  // Nettoie l’ancienne barre
+  document.querySelectorAll(".editor-bar").forEach(n => n.remove());
+
+  const bar = document.createElement("div");
+  bar.className = "editor-bar";
+  bar.innerHTML = `
+    <button class="btn" id="btn-edit-toggle">${EDIT_MODE ? "🔓 Quitter édition" : "🔒 Mode édition"}</button>
+    ${EDIT_MODE ? `
+      <button class="btn" id="btn-add">➕ Ajouter</button>
+      <button class="btn" id="btn-save">💾 Sauvegarder</button>
+      <button class="btn" id="btn-token">🔑 Token GitHub</button>
+    ` : ""}
+  `;
+  document.body.appendChild(bar);
+
+  bar.querySelector("#btn-edit-toggle").onclick = () => {
+    if (!EDIT_MODE) askEditorPassword();
+    else { EDIT_MODE = false; navigate(); }
+  };
+
+  if (EDIT_MODE) {
+    bar.querySelector("#btn-save").onclick = () => saveConfigToGitHub();
+    bar.querySelector("#btn-token").onclick = () => askGithubToken();
+    bar.querySelector("#btn-add").onclick = () => addNewElementUI();
+  }
+}
+
+function askEditorPassword() {
+  const pwd = prompt("Mot de passe éditeur :");
+  if (!pwd) return;
+  if (pwd === getConfigEditorPassword()) {
+    EDIT_MODE = true;
+    navigate();
+  } else {
+    alert("Mot de passe incorrect.");
+  }
+}
+
+function askGithubToken() {
+  const t = prompt("Colle ton token GitHub (fine-grained) :");
+  if (!t) return;
+  GITHUB_TOKEN = t.trim();
+  alert("Token en mémoire pour cette session.");
+}
+
+async function saveConfigToGitHub() {
+  try {
+    if (!GITHUB_TOKEN) {
+      alert("Ajoute d’abord ton token GitHub (bouton 🔑).");
+      return;
+    }
+    const jsonStr = JSON.stringify(APP_CONFIG, null, 2);
+    await ghPutFile(CONFIG_PATH, toBase64Utf8(jsonStr), "Update app-config.json (editor)");
+    alert("Configuration sauvegardée sur GitHub.");
+  } catch (e) {
+    alert("Erreur sauvegarde: " + (e?.message || e));
+  }
+}
+
+function enableEditingForRoute(hash, kind) {
+  const canvas = document.getElementById("edit-canvas");
+  if (!canvas) return;
+
+  canvas.querySelectorAll(".edit-item").forEach(el => {
+    const id = el.getAttribute("data-id");
+    const handle = el.querySelector(".edit-handle");
+    const actions = el.querySelector(".edit-actions");
+    if (!id || !handle || !actions) return;
+
+    // DRAG
+    handle.onpointerdown = (ev) => {
+      ev.preventDefault();
+      el.classList.add("editing");
+
+      const startX = ev.clientX;
+      const startY = ev.clientY;
+      const rect = el.getBoundingClientRect();
+      const parentRect = canvas.getBoundingClientRect();
+      const originLeft = rect.left - parentRect.left;
+      const originTop = rect.top - parentRect.top;
+
+      const move = (e) => {
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        const nx = Math.max(0, originLeft + dx);
+        const ny = Math.max(0, originTop + dy);
+        el.style.left = nx + "px";
+        el.style.top = ny + "px";
+      };
+
+      const up = () => {
+        window.removeEventListener("pointermove", move);
+        window.removeEventListener("pointerup", up);
+        el.classList.remove("editing");
+
+        // Persist position into APP_CONFIG
+        const obj = getConfigObjectById(hash, kind, id);
+        if (obj) {
+          obj.x = parseInt(el.style.left, 10) || 0;
+          obj.y = parseInt(el.style.top, 10) || 0;
+        }
+      };
+
+      window.addEventListener("pointermove", move);
+      window.addEventListener("pointerup", up);
+    };
+
+    // ACTIONS
+    actions.addEventListener("click", async (e) => {
+      const btn = e.target.closest("button");
+      if (!btn) return;
+      const action = btn.getAttribute("data-action");
+      if (action === "del") {
+        deleteConfigObject(hash, kind, id);
+        navigate();
+      }
+      if (action === "dup") {
+        duplicateConfigObject(hash, kind, id);
+        navigate();
+      }
+      if (action === "edit") {
+        await editConfigObjectText(hash, kind, id);
+        navigate();
+      }
+      if (action === "image") {
+        await replaceImageFromUI(hash, kind, id);
+        navigate();
+      }
+    });
+  });
+}
+
+function getConfigObjectById(hash, kind, id) {
+  if (kind === "menu") {
+    return APP_CONFIG?.menus?.[hash]?.items?.find(x => x.id === id);
+  }
+  return APP_CONFIG?.pages?.[hash]?.blocks?.find(x => x.id === id);
+}
+
+function deleteConfigObject(hash, kind, id) {
+  if (kind === "menu") {
+    const arr = APP_CONFIG?.menus?.[hash]?.items || [];
+    APP_CONFIG.menus[hash].items = arr.filter(x => x.id !== id);
+  } else {
+    const arr = APP_CONFIG?.pages?.[hash]?.blocks || [];
+    APP_CONFIG.pages[hash].blocks = arr.filter(x => x.id !== id);
+  }
+}
+
+function duplicateConfigObject(hash, kind, id) {
+  const obj = getConfigObjectById(hash, kind, id);
+  if (!obj) return;
+
+  const copy = JSON.parse(JSON.stringify(obj));
+  copy.id = `${obj.id}_${Date.now()}`;
+  copy.x = (obj.x || 0) + 20;
+  copy.y = (obj.y || 0) + 20;
+
+  // Si c’est un bouton: nouvelle route + copie de page
+  if (kind === "menu" && copy.type === "button") {
+    const newRoute = `#/custom/${Date.now()}`;
+    const oldRoute = copy.route;
+    copy.route = newRoute;
+    copy.title = (copy.title || "Nouveau") + " (copie)";
+
+    // si l’ancien bouton pointait vers une page config, on la copie
+    if (APP_CONFIG.pages?.[oldRoute]) {
+      APP_CONFIG.pages[newRoute] = JSON.parse(JSON.stringify(APP_CONFIG.pages[oldRoute]));
+      APP_CONFIG.pages[newRoute].title = APP_CONFIG.pages[newRoute].title + " (copie)";
+      // remap ids blocs
+      (APP_CONFIG.pages[newRoute].blocks || []).forEach(b => b.id = `${b.id}_${Date.now()}_${Math.floor(Math.random()*1000)}`);
+    } else {
+      // sinon on crée une page vide
+      APP_CONFIG.pages[newRoute] = { type:"page", title: copy.title, blocks: [] };
+    }
+  }
+
+  if (kind === "menu") APP_CONFIG.menus[hash].items.push(copy);
+  else APP_CONFIG.pages[hash].blocks.push(copy);
+}
+
+function editorCmd(cmd, value=null) {
+  document.execCommand(cmd, false, value);
+}
+
+function openModal(html) {
+  const m = document.createElement("div");
+  m.className = "editor-modal";
+  m.innerHTML = html;
+  document.body.appendChild(m);
+  return m;
+}
+
+async function editConfigObjectText(hash, kind, id) {
+  const obj = getConfigObjectById(hash, kind, id);
+  if (!obj) return;
+
+  const isButton = (kind === "menu" && obj.type === "button");
+  const isBox = (kind === "page" && obj.type === "box");
+
+  const titleVal = obj.title || "";
+  const htmlVal = obj.html || "";
+
+  const modal = openModal(`
+    <div class="editor-modal-card">
+      <div class="editor-modal-title">Modifier</div>
+
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <label>
+          <div style="margin-bottom:6px;opacity:.85;">Titre</div>
+          <input class="editor-input" id="ed-title" value="${escapeHtmlAttr(titleVal)}" />
+        </label>
+
+        ${isBox ? `
+          <div class="editor-toolbar">
+            <button class="btn" type="button" onclick="editorCmd('bold')"><b>B</b></button>
+            <button class="btn" type="button" onclick="editorCmd('italic')"><i>I</i></button>
+            <button class="btn" type="button" onclick="editorCmd('underline')"><u>U</u></button>
+            <div style="display:flex;gap:8px;align-items:center;margin-left:6px;">
+              ${renderColorDot("#ef4444")}
+              ${renderColorDot("#22c55e")}
+              ${renderColorDot("#3b82f6")}
+              ${renderColorDot("#f59e0b")}
+              ${renderColorDot("#a855f7")}
+              ${renderColorDot("#e5e7eb")}
+            </div>
+          </div>
+
+          <div id="ed-rich" class="editor-rich" contenteditable="true">${htmlVal}</div>
+        ` : ``}
+
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px;">
+          <button class="btn" id="ed-cancel">Annuler</button>
+          <button class="btn" id="ed-ok">OK</button>
+        </div>
+      </div>
+    </div>
+  `);
+
+  modal.querySelector("#ed-cancel").onclick = () => modal.remove();
+  modal.querySelector("#ed-ok").onclick = () => {
+    obj.title = modal.querySelector("#ed-title").value.trim();
+    if (isBox) obj.html = modal.querySelector("#ed-rich").innerHTML;
+    modal.remove();
+  };
+}
+
+function renderColorDot(hex) {
+  return `<div class="editor-color" style="background:${hex}" onclick="editorCmd('foreColor','${hex}')"></div>`;
+}
+
+function escapeHtmlAttr(s) {
+  return String(s)
+    .replaceAll("&", "&amp;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+}
+
+async function replaceImageFromUI(hash, kind, id) {
+  const obj = getConfigObjectById(hash, kind, id);
+  if (!obj) return;
+  if (!GITHUB_TOKEN) {
+    alert("Ajoute ton token GitHub (bouton 🔑) avant d’uploader.");
+    return;
+  }
+
+  // input file invisible
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "image/*";
+  input.click();
+
+  const file = await new Promise(resolve => {
+    input.onchange = () => resolve(input.files?.[0] || null);
+  });
+  if (!file) return;
+
+  // nom unique pour éviter cache
+  const safeName = file.name.replace(/[^\w.\-]+/g, "_");
+  const path = `${IMG_UPLOAD_DIR}/${Date.now()}_${safeName}`;
+
+  const b64 = await fileToBase64(file);
+  await ghPutFile(path, b64, `Upload image ${safeName}`);
+
+  // Mise à jour du bloc image
+  obj.src = path + `?v=${Date.now()}`;
+}
+
+function addNewElementUI() {
+  const hash = location.hash || "#/";
+  if (!APP_CONFIG) return;
+
+  const isMenu = !!APP_CONFIG.menus?.[hash];
+  const isPage = !!APP_CONFIG.pages?.[hash];
+  if (!isMenu && !isPage) {
+    alert("Cette route n’est pas gérée par la config JSON (pour l’instant).");
+    return;
+  }
+
+  const type = prompt(isMenu ? "Type à ajouter: button" : "Type à ajouter: box / image");
+  if (!type) return;
+
+  if (isMenu) {
+    if (type !== "button") return alert("Pour le menu, commence par 'button'.");
+    APP_CONFIG.menus[hash].items.push({
+      id: `btn_${Date.now()}`,
+      type: "button",
+      title: "Nouveau bouton",
+      route: `#/custom/${Date.now()}`,
+      x: 20, y: 20, w: 320, h: 56
+    });
+    APP_CONFIG.pages[`#/custom/${Date.now()}`] = { type:"page", title:"Nouvelle page", blocks:[] };
+  } else {
+    if (type === "box") {
+      APP_CONFIG.pages[hash].blocks.push({
+        id: `box_${Date.now()}`,
+        type: "box",
+        title: "Nouvel encadré",
+        html: "<p>Contenu...</p>",
+        x: 20, y: 20, w: 360, h: 220
+      });
+    } else if (type === "image") {
+      APP_CONFIG.pages[hash].blocks.push({
+        id: `img_${Date.now()}`,
+        type: "image",
+        src: "",
+        x: 20, y: 20, w: 320, h: 200
+      });
+    } else {
+      alert("Type inconnu.");
+    }
+  }
+  navigate();
+}
+
 
 const routes = {
   "#/": renderHome,
@@ -23005,17 +23541,26 @@ const routes = {
 
 let currentRoute = null;
 
-function navigate() {
-  const hash = window.location.hash || "#/";
+async function navigate() {
+  const hash = location.hash || "#/";
 
-  // 🔒 Si on QUITTE la page ACR, on nettoie
-  if (currentRoute === "#/acr" && hash !== "#/acr") {
-    if (typeof disableAcrWakeLock === "function") {
-      disableAcrWakeLock();
-    }
-    if (typeof setAcrTheme === "function") {
-      setAcrTheme(false);
-    }
+  // charge config une seule fois
+  if (APP_CONFIG === null) {
+    await loadAppConfig();
+  }
+
+  // priorité au JSON si la route existe dedans
+  if (APP_CONFIG && configHasRoute(hash)) {
+    renderFromConfig(hash);
+    return;
+  }
+
+  // sinon comportement actuel
+  if (typeof disableAcrWakeLock === "function") {
+    disableAcrWakeLock();
+  }
+  if (typeof setAcrTheme === "function") {
+    setAcrTheme(false);
   }
 
   currentRoute = hash;
@@ -23027,6 +23572,7 @@ function navigate() {
     renderNotFound();
   }
 }
+
 
 
 window.addEventListener("hashchange", navigate);
