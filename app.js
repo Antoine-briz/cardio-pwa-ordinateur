@@ -11,8 +11,8 @@ const $app = document.getElementById("app");
 // =======================================================
 
 // >>> À RENSEIGNER UNE FOIS POUR TON REPO
-const GITHUB_OWNER = "TON_OWNER";
-const GITHUB_REPO = "TON_REPO";
+const GITHUB_OWNER = "Antoine-briz";
+const GITHUB_REPO = "cardio-pwa-ordinateur";
 const GITHUB_BRANCH = "main";
 const CONFIG_PATH = "config/app-config.json"; // dans le repo
 const IMG_UPLOAD_DIR = "img/uploads"; // où stocker les nouvelles images
