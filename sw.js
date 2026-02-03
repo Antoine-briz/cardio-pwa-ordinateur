@@ -73,6 +73,9 @@ const PRECACHE = [
   "./img/eto_vd_tapse.png",
   "./img/eto_vd_tei.png",
   "./img/eto_vg_17segments.png",
+  "./img/eto_tric_morpho.png",
+  "./img/eto_tric_morphoETO.png",
+  "./img/eto_IT_severite.png",
 
   "./img/fa.png",
   "./img/saignement.png",
