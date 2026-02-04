@@ -23435,8 +23435,6 @@ function openOvModal({ hash, id, kind, initialHtml, initialText }) {
   <button class="ov-btn" type="button" data-cmd="bold"><b>B</b></button>
   <button class="ov-btn" type="button" data-cmd="italic"><i>I</i></button>
   <button class="ov-btn" type="button" data-cmd="underline"><u>U</u></button>
-</div>
-          <div class="ov-color-row" aria-label="Couleurs">
   <button class="ov-swatch" type="button" title="Bordeaux" data-color="#7F1D1D"></button>
   <button class="ov-swatch" type="button" title="Brun" data-color="#7C2D12"></button>
   <button class="ov-swatch" type="button" title="Ocre" data-color="#92400E"></button>
