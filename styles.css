@@ -7248,3 +7248,37 @@ body.theme-light .ov-editor{
 .ov-editor[contenteditable="true"]:focus{
   outline: 2px solid rgba(59,130,246,0.7);
 }
+
+/* Menu actions édition */
+.ov-actions-menu{
+  position: fixed;
+  z-index: 10000;
+  background: rgba(15,23,42,0.96);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 12px;
+  padding: 8px;
+  min-width: 220px;
+  box-shadow: 0 18px 60px rgba(0,0,0,0.45);
+}
+body.theme-light .ov-actions-menu{
+  background: #fff;
+  color: #111;
+  border: 1px solid rgba(0,0,0,0.18);
+}
+.ov-actions-menu button{
+  width: 100%;
+  text-align: left;
+  padding: 10px 10px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.ov-actions-menu button:hover{
+  background: rgba(255,255,255,0.08);
+}
+body.theme-light .ov-actions-menu button:hover{
+  background: rgba(0,0,0,0.06);
+}
