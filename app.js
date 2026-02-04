@@ -22944,8 +22944,8 @@ let EDIT_MODE = false;
 
 // === GitHub save (optionnel) ===
 // Renseigne si tu veux pouvoir sauvegarder depuis l'interface :
-const GITHUB_OWNER = "TON_OWNER";
-const GITHUB_REPO  = "TON_REPO";
+const GITHUB_OWNER = "Antoine-briz";
+const GITHUB_REPO  = "cardio-pwa-ordinateur";
 const GITHUB_BRANCH = "main"; // ou "master"
 const GITHUB_PATH = "config/app-config.json";
 
@@ -23112,7 +23112,7 @@ function autoTagEditableDom(hash) {
     img.dataset.ovId = `${hash}::img::${slugId(sig)}::${i}`;
   });
 // Titres / sous-titres génériques
-root.querySelectorAll("h1,h2,h3,h4").forEach((h, i) => {
+root.querySelectorAll("h1,h2,h4").forEach((h, i) => {
   const sig = h.textContent.trim() || `${h.tagName}-${i}`;
   h.dataset.ovId ||= `${hash}::heading::${h.tagName.toLowerCase()}::${slugId(sig)}::${i}`;
 });
@@ -23329,10 +23329,10 @@ async function ghGetSha(path, token) {
 }
 
 async function uploadImageToGitHubAndSetSrc(hash, imgEl) {
-  if (GITHUB_OWNER === "Antoine-briz" || GITHUB_REPO === "cardio-pwa-ordinateur") {
-    alert("Renseigne GITHUB_OWNER / GITHUB_REPO dans app.js pour activer l’upload.");
-    return;
-  }
+  if (GITHUB_OWNER === "TON_OWNER" || GITHUB_REPO === "TON_REPO") {
+  alert("Renseigne GITHUB_OWNER / GITHUB_REPO dans app.js pour activer l’upload.");
+  return;
+}
 
  const token = getGithubToken();
 if (!token) return;
