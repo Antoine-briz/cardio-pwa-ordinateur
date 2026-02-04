@@ -23616,9 +23616,7 @@ function navigate() {
     if (EDIT_MODE) enableInlineEditingForRoute(hash);
   } else {
     renderNotFound();
-  } else {
-    renderNotFound();
-  }
+  } else
 }
 
 window.addEventListener("hashchange", navigate);
