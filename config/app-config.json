@@ -1,0 +1,365 @@
+{
+  "_meta": {
+    "version": 1,
+    "appTitle": "SAR - PWA",
+    "editorPassword": "CHANGE-MOI",
+    "routesDetected": 59,
+    "routesIndexUpdatedAt": "2026-02-03"
+  },
+  "menus": {
+    "#/": {
+      "type": "menu",
+      "title": "Accueil",
+      "items": [
+        {
+          "id": "btn_actus",
+          "type": "button",
+          "title": "Actualités",
+          "route": "#/actus",
+          "x": 20,
+          "y": 20,
+          "w": 320,
+          "h": 56
+        },
+        {
+          "id": "btn_exemple",
+          "type": "button",
+          "title": "Exemple intervention (config)",
+          "route": "#/custom/exemple",
+          "x": 20,
+          "y": 90,
+          "w": 320,
+          "h": 56
+        }
+      ]
+    }
+  },
+  "pages": {
+    "#/custom/exemple": {
+      "type": "page",
+      "title": "Exemple intervention (config)",
+      "blocks": [
+        {
+          "id": "box1",
+          "type": "box",
+          "title": "Titre encadré",
+          "html": "<p>Contenu <b>modifiable</b> avec <span style=\"color:#3b82f6;\">couleurs</span>.</p>",
+          "x": 20,
+          "y": 20,
+          "w": 360,
+          "h": 220
+        },
+        {
+          "id": "img1",
+          "type": "image",
+          "src": "img/placeholder.png",
+          "x": 20,
+          "y": 260,
+          "w": 360,
+          "h": 200
+        }
+      ]
+    }
+  },
+  "_routesIndex": {
+    "#/": {
+      "kind": "menu",
+      "enabled": true,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/actus": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/anesthesie": {
+      "kind": "menu",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/anesthesie/consultations": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/anesthesie/antibiopro": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/anesthesie/chir-cec": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/anesthesie/cardio-struct": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/anesthesie/vasculaire": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/anesthesie/radiovasculaire": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/reanimation": {
+      "kind": "menu",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/reanimation/formules": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "/reanimation/formules/ventilation": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/reanimation/formules/ventilation": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "/reanimation/formules/hemodynamique": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/reanimation/formules/hemodynamique": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "/reanimation/formules/metabolique": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/reanimation/formules/metabolique": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/reanimation/prescriptions": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/reanimation/saignements": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/reanimation/fa": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/reanimation/eto": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/reanimation/antibiotherapie": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/reanimation/eer": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/reanimation/transplantation": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/reanimation/assistances": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/proba": {
+      "kind": "menu",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/proba/pneumonies": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/proba/iu": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/proba/abdo": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/proba/neuro": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/proba/dermohypo": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/proba/endocardite": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/proba/mediastinite": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/proba/scarpa": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/proba/sepsis": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/adaptee": {
+      "kind": "menu",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/adaptee/sensibles": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/adaptee/SARM": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/adaptee/ampC": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/adaptee/BLSE": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/adaptee/pyo": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/adaptee/acineto": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/adaptee/steno": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/adaptee/carba": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/adaptee/erv": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/cec": {
+      "kind": "menu",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/cec-protocoles": {
+      "kind": "menu",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/cec-urgences": {
+      "kind": "menu",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/cec-procedures": {
+      "kind": "menu",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/enseignement": {
+      "kind": "menu",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/bibliographie": {
+      "kind": "menu",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/biblio-juniors": {
+      "kind": "menu",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/biblio-hebdo": {
+      "kind": "menu",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/bibliographie/juniors": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/bibliographie/hebdo": {
+      "kind": "page",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/recherche": {
+      "kind": "menu",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/annuaire": {
+      "kind": "menu",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/codes": {
+      "kind": "menu",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/acr": {
+      "kind": "menu",
+      "enabled": false,
+      "note": "Route détectée dans app.js. Passe enabled à true quand tu veux basculer vers la version JSON."
+    },
+    "#/custom/exemple": {
+      "kind": "page",
+      "enabled": true
+    }
+  }
+}
