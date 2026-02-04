@@ -7099,3 +7099,152 @@ padding-right: clamp(8px, 2vw, 24px);
     font-size: 1rem;
   }
 }
+
+/* ===============================
+   EDITION (footer + modale)
+=============================== */
+
+/* Footer : on garde la 1ère ligne identique, on ajoute une 2e ligne pour "édition" */
+#app-footer{
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-areas:
+    "theme actus back"
+    "edit  edit  edit";
+  align-items: center;
+  gap: 10px 12px;
+  padding: 10px 12px;
+}
+
+/* Re-fixe les zones existantes (sans changer l'HTML) */
+#app-footer .theme-switcher{ grid-area: theme; justify-self: start; }
+#app-footer .footer-actus-btn{ grid-area: actus; justify-self: center; }
+#app-footer .footer-actions{ grid-area: back; justify-self: end; }
+
+/* La nouvelle zone "edit" (injectée par JS) */
+#app-footer .footer-editor{
+  grid-area: edit;
+  justify-self: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#edit-toggle-btn{
+  width: min(520px, 100%);
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(15,23,42,0.6);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+body.theme-light #edit-toggle-btn{
+  background: rgba(0,0,0,0.06);
+  color: #111;
+  border: 1px solid rgba(0,0,0,0.2);
+}
+
+#edit-toggle-btn.is-on{
+  outline: 2px solid rgba(34,197,94,0.7);
+}
+
+/* ===== Modale d'édition ===== */
+.ov-modal{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.ov-modal.is-open{ display: flex; }
+
+.ov-card{
+  width: min(920px, calc(100vw - 24px));
+  max-height: min(86vh, 900px);
+  overflow: hidden;
+  background: #0b1220;
+  color: #fff;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.45);
+  display: flex;
+  flex-direction: column;
+}
+
+body.theme-light .ov-card{
+  background: #fff;
+  color: #111;
+  border: 1px solid rgba(0,0,0,0.15);
+}
+
+.ov-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+
+body.theme-light .ov-head{
+  border-bottom: 1px solid rgba(0,0,0,0.12);
+}
+
+.ov-title{
+  font-weight: 800;
+}
+
+.ov-actions{
+  display:flex;
+  gap: 8px;
+  align-items:center;
+}
+
+.ov-btn{
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.06);
+  color: inherit;
+  cursor: pointer;
+}
+
+body.theme-light .ov-btn{
+  border: 1px solid rgba(0,0,0,0.18);
+  background: rgba(0,0,0,0.04);
+}
+
+.ov-body{
+  padding: 12px;
+  overflow: auto;
+}
+
+.ov-toolbar{
+  display:flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.ov-editor{
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 12px;
+  padding: 10px;
+  min-height: 240px;
+  background: rgba(255,255,255,0.04);
+}
+
+body.theme-light .ov-editor{
+  border: 1px solid rgba(0,0,0,0.18);
+  background: #fff;
+}
+
+.ov-editor[contenteditable="true"]:focus{
+  outline: 2px solid rgba(59,130,246,0.7);
+}
