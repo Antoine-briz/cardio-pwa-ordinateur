@@ -22949,6 +22949,49 @@ const GITHUB_REPO  = "TON_REPO";
 const GITHUB_BRANCH = "main"; // ou "master"
 const GITHUB_PATH = "config/app-config.json";
 
+let __ovActionsMenuEl = null;
+
+function closeActionsMenu(){
+  if (__ovActionsMenuEl) __ovActionsMenuEl.remove();
+  __ovActionsMenuEl = null;
+}
+
+function showActionsMenu(x, y, actions){
+  closeActionsMenu();
+  const m = document.createElement("div");
+  m.className = "ov-actions-menu";
+  m.style.left = Math.min(x, window.innerWidth - 240) + "px";
+  m.style.top  = Math.min(y, window.innerHeight - 240) + "px";
+
+  m.innerHTML = actions.map(a => `<button data-key="${a.key}">${a.label}</button>`).join("");
+  m.addEventListener("click", async (e) => {
+    const key = e.target?.dataset?.key;
+    if (!key) return;
+    const action = actions.find(a => a.key === key);
+    closeActionsMenu();
+    if (action) await action.run();
+  });
+
+  document.body.appendChild(m);
+  __ovActionsMenuEl = m;
+
+  setTimeout(() => {
+    const onDoc = () => { closeActionsMenu(); document.removeEventListener("click", onDoc, true); };
+    document.addEventListener("click", onDoc, true);
+  }, 0);
+}
+
+// Appui long (mobile)
+function attachLongPress(el, onLongPress){
+  let t = null;
+  el.addEventListener("touchstart", (e) => {
+    if (!EDIT_MODE) return;
+    t = setTimeout(() => onLongPress(e), 450);
+  }, {passive:true});
+  el.addEventListener("touchend", () => { if (t) clearTimeout(t); t=null; });
+  el.addEventListener("touchmove", () => { if (t) clearTimeout(t); t=null; });
+}
+
 // Mémo SHA (nécessaire au PUT GitHub contents API)
 let __ghFileSha = null;
 
@@ -23067,6 +23110,17 @@ function autoTagEditableDom(hash) {
     const sig = alt || src || `img-${i}`;
     img.dataset.ovId = `${hash}::img::${slugId(sig)}::${i}`;
   });
+// Titres / sous-titres génériques
+root.querySelectorAll("h1,h2,h3,h4").forEach((h, i) => {
+  const sig = h.textContent.trim() || `${h.tagName}-${i}`;
+  h.dataset.ovId ||= `${hash}::heading::${h.tagName.toLowerCase()}::${slugId(sig)}::${i}`;
+});
+
+// Si tu utilises une classe de sous-titre (optionnel)
+root.querySelectorAll(".page-subtitle, .subtitle, .sub-title").forEach((p, i) => {
+  const sig = p.textContent.trim() || `subtitle-${i}`;
+  p.dataset.ovId ||= `${hash}::subtitle::${slugId(sig)}::${i}`;
+});  
 }
 
 
@@ -23078,6 +23132,51 @@ function autoTagEditableDom(hash) {
  * - src: remplace l'image
  * - hidden: true/false
  */
+
+function duplicateElementViaClones(hash, el){
+  const bucket = ensureRouteBucket(hash);
+  bucket.__clones = bucket.__clones || [];
+
+  // on duplique l'élément DOM (structure identique)
+  const cloneHtml = el.outerHTML;
+  const newId = `${el.dataset.ovId}::clone::${Date.now()}`;
+
+  bucket.__clones.push({
+    newId,
+    afterId: el.dataset.ovId,
+    html: cloneHtml
+  });
+
+  OV_CONFIG._meta.updatedAt = nowIso();
+  applyOverridesToDom(hash);
+  return saveOverridesToGitHub();
+}
+
+// À appeler au début de applyOverridesToDom(hash), après REORDER
+function applyClones(hash, bucket){
+  const clones = bucket.__clones;
+  if (!Array.isArray(clones) || clones.length === 0) return;
+
+  clones.forEach(c => {
+    // si déjà présent, on ne recrée pas
+    if (document.querySelector(`[data-ov-id="${CSS.escape(c.newId)}"]`)) return;
+
+    const after = document.querySelector(`[data-ov-id="${CSS.escape(c.afterId)}"]`);
+    if (!after) return;
+
+    const tmp = document.createElement("div");
+    tmp.innerHTML = c.html;
+    const node = tmp.firstElementChild;
+    if (!node) return;
+
+    // on force un nouvel id stable
+    node.dataset.ovId = c.newId;
+
+    // insère juste après
+    after.parentNode.insertBefore(node, after.nextSibling);
+  });
+}
+
 
 function applyOverridesToDom(hash) {
   const bucket = OV_CONFIG.overrides?.[hash];
@@ -23112,6 +23211,8 @@ function applyOverridesToDom(hash) {
     });
   });
 
+  applyClones(hash, bucket);
+  
   // =========================================================
   // OVERRIDES classiques (title/html/src/hidden)
   // =========================================================
@@ -23144,6 +23245,78 @@ function blockNavigationWhileEditing() {
     e.stopPropagation();
     e.stopImmediatePropagation();
   }, true); // capture = bloque avant onclick inline
+}
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onerror = () => reject(new Error("Lecture fichier impossible"));
+    r.onload = () => {
+      const dataUrl = r.result; // data:image/png;base64,...
+      resolve(String(dataUrl).split(",")[1] || "");
+    };
+    r.readAsDataURL(file);
+  });
+}
+
+async function ghPutFile(path, contentBase64, message, sha=null, token=null) {
+  const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`;
+  const body = { message, content: contentBase64, branch: GITHUB_BRANCH };
+  if (sha) body.sha = sha;
+
+  const res = await fetch(url, {
+    method: "PUT",
+    headers: {
+      Authorization: `token ${token}`,
+      "Content-Type": "application/json",
+      Accept: "application/vnd.github+json"
+    },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) throw new Error("Upload GitHub impossible: " + (await res.text()));
+  return await res.json();
+}
+
+async function ghGetSha(path, token) {
+  const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}?ref=${encodeURIComponent(GITHUB_BRANCH)}`;
+  const res = await fetch(url, { headers: { Authorization: `token ${token}`, Accept: "application/vnd.github+json" } });
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error("Lecture GitHub SHA impossible");
+  const j = await res.json();
+  return j.sha || null;
+}
+
+async function uploadImageToGitHubAndSetSrc(hash, imgEl) {
+  if (GITHUB_OWNER === "TON_OWNER" || GITHUB_REPO === "TON_REPO") {
+    alert("Renseigne GITHUB_OWNER / GITHUB_REPO dans app.js pour activer l’upload.");
+    return;
+  }
+
+  const token = prompt("Token GitHub (PAT) pour uploader l’image :");
+  if (!token) return;
+
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "image/*";
+  input.click();
+
+  const file = await new Promise(res => input.onchange = () => res(input.files?.[0] || null));
+  if (!file) return;
+
+  const safeName = file.name.replace(/[^\w.\-]+/g, "_");
+  const path = `img/uploads/${Date.now()}_${safeName}`;
+
+  const b64 = await fileToBase64(file);
+  await ghPutFile(path, b64, `Upload image ${safeName}`, null, token);
+
+  // on pointe vers la nouvelle image (cache-buster)
+  const bucket = ensureRouteBucket(hash);
+  bucket[imgEl.dataset.ovId] = bucket[imgEl.dataset.ovId] || {};
+  bucket[imgEl.dataset.ovId].src = `${path}?v=${Date.now()}`;
+  OV_CONFIG._meta.updatedAt = nowIso();
+
+  applyOverridesToDom(hash);
+  await saveOverridesToGitHub();
 }
 
 
@@ -23520,6 +23693,85 @@ async function saveOverridesToGitHub() {
   console.log("✅ app-config.json sauvegardé sur GitHub.");
 }
 
+function enableGlobalActionsForEditableElements(hash){
+  // sur tout élément taggé
+  document.querySelectorAll("#app [data-ov-id]").forEach((el) => {
+    // clic droit desktop
+    el.addEventListener("contextmenu", (e) => {
+      if (!EDIT_MODE) return;
+      e.preventDefault(); e.stopPropagation();
+      openActionsForElement(hash, el, e.clientX, e.clientY);
+    });
+
+    // appui long mobile
+    attachLongPress(el, (e) => {
+      const t = e.touches?.[0];
+      openActionsForElement(hash, el, t?.clientX || 20, t?.clientY || 20);
+    });
+  });
+}
+
+function openActionsForElement(hash, el, x, y){
+  const id = el.dataset.ovId;
+  const bucket = ensureRouteBucket(hash);
+
+  const isImg = el.tagName === "IMG";
+  const isButton = el.tagName === "BUTTON";
+  const isCardTitle = id.endsWith("::title");
+  const isHtml = id.endsWith("::html");
+
+  const actions = [];
+
+  // Modifier texte (titre)
+  if (isButton || isCardTitle || el.matches("h1,h2,h3,h4,h5,h6") || el.classList.contains("page-subtitle")) {
+    actions.push({
+      key: "rename",
+      label: "✏️ Renommer",
+      run: async () => openOvModal({ hash, id, kind: "title", initialText: el.textContent })
+    });
+  }
+
+  // Modifier contenu riche
+  if (isHtml) {
+    actions.push({
+      key: "edit_html",
+      label: "📝 Modifier contenu",
+      run: async () => openOvModal({ hash, id, kind: "html", initialHtml: el.innerHTML })
+    });
+  }
+
+  // Masquer / afficher
+  const cur = bucket[id]?.hidden === true;
+  actions.push({
+    key: "toggle_hide",
+    label: cur ? "👁️ Afficher" : "🚫 Masquer (supprimer)",
+    run: async () => {
+      bucket[id] = bucket[id] || {};
+      bucket[id].hidden = !cur;
+      OV_CONFIG._meta.updatedAt = nowIso();
+      applyOverridesToDom(hash);
+      await saveOverridesToGitHub();
+    }
+  });
+
+  // Upload / remplacer image
+  if (isImg) {
+    actions.push({
+      key: "upload_img",
+      label: "🖼️ Remplacer par upload…",
+      run: async () => uploadImageToGitHubAndSetSrc(hash, el)
+    });
+  }
+
+  // Dupliquer (générique = clones)
+  actions.push({
+    key: "duplicate",
+    label: "⎘ Dupliquer",
+    run: async () => duplicateElementViaClones(hash, el)
+  });
+
+  showActionsMenu(x, y, actions);
+}
 
 
 const routes = {
