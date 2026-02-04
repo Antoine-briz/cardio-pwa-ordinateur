@@ -22994,6 +22994,7 @@ function attachLongPress(el, onLongPress){
 
 // Mémo SHA (nécessaire au PUT GitHub contents API)
 let __ghFileSha = null;
+let __ghToken = null;
 
 function nowIso() {
   return new Date().toISOString().replace(/\.\d{3}Z$/, "Z");
@@ -23170,10 +23171,42 @@ function applyClones(hash, bucket){
     if (!node) return;
 
     // on force un nouvel id stable
-    node.dataset.ovId = c.newId;
+    retagCloneSubtree(node, c.newId);
 
     // insère juste après
     after.parentNode.insertBefore(node, after.nextSibling);
+  });
+}
+
+function retagCloneSubtree(node, newBaseId) {
+  // Force l'id racine
+  node.dataset.ovId = newBaseId;
+
+  // Retag toutes les valeurs data-ov-id de la sous-arborescence
+  node.querySelectorAll("[data-ov-id]").forEach((el) => {
+    // On ne garde pas les anciens IDs, on les rend uniques pour le clone
+    const old = el.dataset.ovId;
+    // évite de re-retaguer la racine
+    if (el === node) return;
+    el.dataset.ovId = `${newBaseId}::sub::${slugId(old)}::${Math.random().toString(16).slice(2, 8)}`;
+    // utile pour reorder si c'est un bouton
+    if (el.tagName === "BUTTON") el.dataset.ovItem = el.dataset.ovId;
+  });
+
+  // IMPORTANT : certains éléments n'avaient pas de data-ov-id => on les retag via autoTag générique
+  // mais sans polluer les originaux : on fait une passe locale minimaliste
+  node.querySelectorAll("img").forEach((img, i) => {
+    img.dataset.ovId ||= `${newBaseId}::img::${slugId(img.getAttribute("src") || ("img-"+i))}::${i}`;
+  });
+  node.querySelectorAll("h1,h2,h3,h4").forEach((h, i) => {
+    const sig = h.textContent.trim() || `${h.tagName}-${i}`;
+    h.dataset.ovId ||= `${newBaseId}::heading::${h.tagName.toLowerCase()}::${slugId(sig)}::${i}`;
+  });
+  node.querySelectorAll("button.btn").forEach((btn, i) => {
+    const oc = (btn.getAttribute("onclick") || "").trim();
+    const sig = oc || btn.textContent.trim() || `btn-${i}`;
+    btn.dataset.ovId ||= `${newBaseId}::btn::${slugId(sig)}::${i}`;
+    btn.dataset.ovItem ||= btn.dataset.ovId;
   });
 }
 
@@ -23277,6 +23310,14 @@ async function ghPutFile(path, contentBase64, message, sha=null, token=null) {
   return await res.json();
 }
 
+function getGithubToken() {
+  if (__ghToken) return __ghToken;
+  const t = prompt("Token GitHub (PAT) :");
+  if (!t) return null;
+  __ghToken = t;
+  return __ghToken;
+}
+
 async function ghGetSha(path, token) {
   const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}?ref=${encodeURIComponent(GITHUB_BRANCH)}`;
   const res = await fetch(url, { headers: { Authorization: `token ${token}`, Accept: "application/vnd.github+json" } });
@@ -23292,8 +23333,8 @@ async function uploadImageToGitHubAndSetSrc(hash, imgEl) {
     return;
   }
 
-  const token = prompt("Token GitHub (PAT) pour uploader l’image :");
-  if (!token) return;
+ const token = getGithubToken();
+if (!token) return;
 
   const input = document.createElement("input");
   input.type = "file";
@@ -23389,17 +23430,16 @@ function openOvModal({ hash, id, kind, initialHtml, initialText }) {
           </div>
         </div>
         <div class="ov-body">
-          <div class="ov-toolbar">
-            <button class="ov-btn" data-cmd="bold"><b>B</b></button>
-            <button class="ov-btn" data-cmd="italic"><i>I</i></button>
-            <button class="ov-btn" data-cmd="underline"><u>U</u></button>
-            <button class="ov-btn" data-color="#ef4444">Rouge</button>
-            <button class="ov-btn" data-color="#f59e0b">Orange</button>
-            <button class="ov-btn" data-color="#3b82f6">Bleu</button>
-            <button class="ov-btn" data-color="#22c55e">Vert</button>
-            <button class="ov-btn" data-color="#a855f7">Violet</button>
-            <button class="ov-btn" data-color="#757575">Gris</button>
-          </div>
+          <div class="ov-color-row" aria-label="Couleurs">
+  <button class="ov-swatch" type="button" title="Bordeaux" data-color="#7F1D1D"></button>
+  <button class="ov-swatch" type="button" title="Brun" data-color="#7C2D12"></button>
+  <button class="ov-swatch" type="button" title="Ocre" data-color="#92400E"></button>
+  <button class="ov-swatch" type="button" title="Bleu nuit" data-color="#1E3A8A"></button>
+  <button class="ov-swatch" type="button" title="Bleu pétrole" data-color="#0F4C5C"></button>
+  <button class="ov-swatch" type="button" title="Vert forêt" data-color="#14532D"></button>
+  <button class="ov-swatch" type="button" title="Violet sombre" data-color="#4C1D95"></button>
+  <button class="ov-swatch" type="button" title="Gris" data-color="#374151"></button>
+</div>
 
           <div id="ov-editor" class="ov-editor" contenteditable="true"></div>
         </div>
@@ -23458,58 +23498,26 @@ function openOvModal({ hash, id, kind, initialHtml, initialText }) {
 // Activation de l'édition inline
 // ---------------------------
 function enableInlineEditingForRoute(hash) {
+  // 1) tag + applique overrides
   autoTagEditableDom(hash);
   applyOverridesToDom(hash);
-  enableGenericMenuEditing(hash);
 
-  // rend cliquables les titres d'encadrés + contenus
+  // 2) marque le body pour CSS (surbrillance)
+  document.body.classList.add("edit-mode");
+
+  // 3) surbrillance visuelle
   document.querySelectorAll("#app [data-ov-id]").forEach((el) => {
     el.classList.add("ov-editable");
   });
 
-  // clique => ouvre modale
-  document.querySelectorAll("#app details.card summary[data-ov-id]").forEach((sum) => {
-    sum.style.cursor = "pointer";
-    sum.addEventListener("click", (e) => {
-      e.preventDefault(); // évite toggle open/close pendant édition
-      e.stopPropagation();
-      openOvModal({
-        hash,
-        id: sum.dataset.ovId,
-        kind: "title",
-        initialText: sum.textContent
-      });
-    }, { once: false });
-  });
+  // 4) active le menu d'actions global (clic droit / appui long)
+  enableGlobalActionsForEditableElements(hash);
 
-  document.querySelectorAll('#app [data-ov-id$="::html"]').forEach((body) => {
-    body.style.cursor = "pointer";
-    body.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      openOvModal({
-        hash,
-        id: body.dataset.ovId,
-        kind: "html",
-        initialHtml: body.innerHTML
-      });
-    }, { once: false });
-  });
-
-  // boutons : renommer
-  document.querySelectorAll("#app button.btn[data-ov-id]").forEach((b) => {
-    b.addEventListener("contextmenu", (e) => {
-      if (!EDIT_MODE) return;
-      e.preventDefault();
-      openOvModal({
-        hash,
-        id: b.dataset.ovId,
-        kind: "title",
-        initialText: b.textContent
-      });
-    });
-  });
+  // 5) active le reorder (drag) + (éventuellement) édition “click” si tu veux
+  // Recommandation : on ne met PAS de click-to-edit ici pour éviter les doublons.
+  enableGenericMenuEditing(hash);
 }
+
 
 function enableGenericMenuEditing(hash) {
   // surbrillance
@@ -23632,8 +23640,9 @@ function enableSimpleDnDGeneric(hash, container, itemSelector, orderKey) {
 
 
 function disableInlineEditing() {
+  document.body.classList.remove("edit-mode");
   closeOvModal();
-  // simple : on recharge la route => réattache proprement sans listeners “édition”
+  closeActionsMenu();
   navigate();
 }
 
@@ -23641,8 +23650,9 @@ function disableInlineEditing() {
 // Sauvegarde GitHub (commit du JSON)
 // ---------------------------
 async function ghApi(path, opts = {}) {
-  const token = prompt("Token GitHub (PAT) pour sauvegarder :");
+  const token = getGithubToken();
   if (!token) throw new Error("Token manquant.");
+
   return fetch("https://api.github.com" + path, {
     ...opts,
     headers: {
@@ -23790,9 +23800,9 @@ const routes = {
   // Réanimation
   "#/reanimation": renderReanMenu,
   "#/reanimation/formules": renderReanFormulesMenu,
-  "/reanimation/formules/ventilation": renderReanFormulesVentilation,
-"/reanimation/formules/hemodynamique": renderReanFormulesCardio,
-"/reanimation/formules/metabolique": renderReanFormulesMetabolique,
+"#/reanimation/formules/ventilation": renderReanFormulesVentilation,
+"#/reanimation/formules/hemodynamique": renderReanFormulesCardio,
+"#/reanimation/formules/metabolique": renderReanFormulesMetabolique,
   "#/reanimation/prescriptions": renderReanPrescriptionsPostOp,
   "#/reanimation/saignements": renderReanSaignementsPostOp,
   "#/reanimation/fa": renderReanFAPostOp,
