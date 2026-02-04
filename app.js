@@ -22992,6 +22992,46 @@ function slugId(s) {
  * (On se base sur textes/titres existants)
  */
 function autoTagEditableDom(hash) {
+  
+    // =========================================================
+  // MENUS — tagging générique (bandeau / cartes / boutons)
+  // =========================================================
+
+  // 1) bandeau titre commun
+  document.querySelectorAll("#app .title-strip-img").forEach((img, i) => {
+    img.dataset.ovId ||= `${hash}::title-strip-img::${i}`;
+  });
+
+  // 2) cartes de menu (card + menu-section-img + h3)
+  document.querySelectorAll("#app .card").forEach((card, i) => {
+    const hasMenuImg = !!card.querySelector("img.menu-section-img");
+    const h3 = card.querySelector("h3");
+    if (!hasMenuImg || !h3) return;
+
+    const oc = (card.getAttribute("onclick") || "").trim();
+    const sig = oc || (card.querySelector("img.menu-section-img")?.getAttribute("src") || "") || `card-${i}`;
+    const id = `${hash}::menu-card::${slugId(sig)}::${i}`;
+
+    card.dataset.ovId ||= id;
+    card.querySelector("img.menu-section-img").dataset.ovId ||= `${id}::img`;
+    h3.dataset.ovId ||= `${id}::title`;
+  });
+
+  // 3) boutons (dans tous les menus)
+  document.querySelectorAll("#app button.btn").forEach((btn, i) => {
+    const oc = (btn.getAttribute("onclick") || "").trim();
+    const sig = oc || btn.textContent.trim() || `btn-${i}`;
+    btn.dataset.ovId ||= `${hash}::btn::${slugId(sig)}::${i}`;
+    // utile pour l'ordre dans un conteneur
+    btn.dataset.ovItem ||= btn.dataset.ovId;
+  });
+
+  // 4) images génériques (si pas déjà taggées)
+  document.querySelectorAll("#app img").forEach((img, i) => {
+    img.dataset.ovId ||= `${hash}::img::${slugId(img.getAttribute("src") || ("img-"+i))}::${i}`;
+  });
+
+  
   // 1) Encadrés d'intervention : details.card
   document.querySelectorAll("#app details.card").forEach((d, idx) => {
     if (!d.dataset.ovId) {
@@ -23031,28 +23071,74 @@ function autoTagEditableDom(hash) {
  * - src: remplace l'image
  * - hidden: true/false
  */
+
 function applyOverridesToDom(hash) {
   const bucket = OV_CONFIG.overrides?.[hash];
   if (!bucket) return;
 
+  // =========================================================
+  // REORDER : applique l'ordre sauvegardé dans bucket[orderKey]
+  // =========================================================
+  Object.entries(bucket).forEach(([key, val]) => {
+    if (!key.includes("::order::") || !Array.isArray(val)) return;
+
+    // key = `${hash}::order::${selector}::${idx}`
+    const parts = key.split("::order::");
+    const rest = parts[1] || "";
+    const [sel, idxStr] = rest.split("::");
+    const idx = parseInt(idxStr || "0", 10);
+
+    const containers = document.querySelectorAll(sel);
+    const container = containers[idx];
+    if (!container) return;
+
+    // map des enfants actuels par ovId
+    const map = new Map();
+    Array.from(container.children).forEach(ch => {
+      if (ch.dataset?.ovId) map.set(ch.dataset.ovId, ch);
+    });
+
+    // réapplique l'ordre
+    val.forEach(ovId => {
+      const el = map.get(ovId);
+      if (el) container.appendChild(el);
+    });
+  });
+
+  // =========================================================
+  // OVERRIDES classiques (title/html/src/hidden)
+  // =========================================================
   Object.entries(bucket).forEach(([id, props]) => {
+    // On ignore les entrées d'ordre (sinon props serait un tableau)
+    if (id.includes("::order::")) return;
+
     const el = document.querySelector(`[data-ov-id="${CSS.escape(id)}"]`);
     if (!el) return;
 
     if (props.hidden === true) el.style.display = "none";
     if (props.hidden === false) el.style.display = "";
 
-    if (typeof props.title === "string") {
-      el.textContent = props.title;
-    }
-    if (typeof props.html === "string") {
-      el.innerHTML = props.html;
-    }
-    if (typeof props.src === "string" && el.tagName === "IMG") {
-      el.src = props.src;
-    }
+    if (typeof props.title === "string") el.textContent = props.title;
+    if (typeof props.html === "string") el.innerHTML = props.html;
+    if (typeof props.src === "string" && el.tagName === "IMG") el.src = props.src;
   });
 }
+
+
+function blockNavigationWhileEditing() {
+  document.addEventListener("click", (e) => {
+    if (!EDIT_MODE) return;
+
+    const clickable = e.target.closest("#app .card[onclick], #app button[onclick], #app a[href]");
+    if (!clickable) return;
+
+    // En édition : on bloque la navigation / actions
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+  }, true); // capture = bloque avant onclick inline
+}
+
 
 // ---------------------------
 // UI : bouton footer "édition"
@@ -23194,6 +23280,7 @@ function openOvModal({ hash, id, kind, initialHtml, initialText }) {
 function enableInlineEditingForRoute(hash) {
   autoTagEditableDom(hash);
   applyOverridesToDom(hash);
+  enableGenericMenuEditing(hash);
 
   // rend cliquables les titres d'encadrés + contenus
   document.querySelectorAll("#app [data-ov-id]").forEach((el) => {
@@ -23243,6 +23330,126 @@ function enableInlineEditingForRoute(hash) {
     });
   });
 }
+
+function enableGenericMenuEditing(hash) {
+  // surbrillance
+  document.querySelectorAll('#app [data-ov-id]').forEach(el => el.classList.add("ov-editable"));
+
+  // Renommer titres (h3 des cartes)
+  document.querySelectorAll('#app [data-ov-id$="::title"]').forEach(el => {
+    el.style.cursor = "pointer";
+    el.addEventListener("click", (e) => {
+      if (!EDIT_MODE) return;
+      e.preventDefault(); e.stopPropagation();
+      openOvModal({
+        hash,
+        id: el.dataset.ovId,
+        kind: "title",
+        initialText: el.textContent
+      });
+    });
+  });
+
+  // Renommer boutons (click)
+  document.querySelectorAll('#app button.btn[data-ov-id]').forEach(btn => {
+    btn.style.cursor = "pointer";
+    btn.addEventListener("click", (e) => {
+      if (!EDIT_MODE) return;
+      e.preventDefault(); e.stopPropagation();
+      openOvModal({
+        hash,
+        id: btn.dataset.ovId,
+        kind: "title",
+        initialText: btn.textContent
+      });
+    });
+  });
+
+  // Remplacer images (click -> URL pour test)
+  document.querySelectorAll('#app img[data-ov-id]').forEach(img => {
+    img.style.cursor = "pointer";
+    img.addEventListener("click", async (e) => {
+      if (!EDIT_MODE) return;
+      e.preventDefault(); e.stopPropagation();
+      const url = prompt("Nouvelle URL d'image (img/xxx.png ou https://...):", img.getAttribute("src"));
+      if (!url) return;
+
+      const bucket = ensureRouteBucket(hash);
+      bucket[img.dataset.ovId] = bucket[img.dataset.ovId] || {};
+      bucket[img.dataset.ovId].src = url;
+      OV_CONFIG._meta.updatedAt = nowIso();
+      applyOverridesToDom(hash);
+      await saveOverridesToGitHub();
+    });
+  });
+
+  // Réordonner : toutes les grilles / listes de boutons
+  enableReorderOnContainers(hash, [
+    "#app .grid",
+    "#app .anesth-cards",
+    "#app .rean-grid",
+    "#app .antibio-btn-group"
+  ], "button.btn, .card");
+}
+
+function enableReorderOnContainers(hash, selectors, itemSel, ) {
+  selectors.forEach(sel => {
+    document.querySelectorAll(sel).forEach((container, idx) => {
+      enableSimpleDnDGeneric(hash, container, itemSel, `${hash}::order::${sel}::${idx}`);
+    });
+  });
+}
+
+function enableSimpleDnDGeneric(hash, container, itemSelector, orderKey) {
+  const items = Array.from(container.querySelectorAll(itemSelector));
+  if (items.length < 2) return;
+
+  items.forEach(el => {
+    el.classList.add("ov-draggable");
+    el.draggable = true;
+    // s'assure qu'on a un id d'item
+    if (!el.dataset.ovId) el.dataset.ovId = `${hash}::item::${Math.random().toString(16).slice(2)}`;
+  });
+
+  let dragEl = null;
+
+  container.addEventListener("dragstart", (e) => {
+    if (!EDIT_MODE) return;
+    const el = e.target.closest(itemSelector);
+    if (!el) return;
+    dragEl = el;
+    e.dataTransfer.effectAllowed = "move";
+  });
+
+  container.addEventListener("dragover", (e) => {
+    if (!EDIT_MODE || !dragEl) return;
+    e.preventDefault();
+    const over = e.target.closest(itemSelector);
+    if (!over || over === dragEl) return;
+
+    const rect = over.getBoundingClientRect();
+    const before = (e.clientY - rect.top) < rect.height / 2;
+    container.insertBefore(dragEl, before ? over : over.nextSibling);
+  });
+
+  container.addEventListener("drop", async (e) => {
+    if (!EDIT_MODE || !dragEl) return;
+    e.preventDefault();
+
+    const bucket = ensureRouteBucket(hash);
+    bucket[orderKey] = Array.from(container.querySelectorAll(itemSelector))
+      .map(el => el.dataset.ovId)
+      .filter(Boolean);
+
+    OV_CONFIG._meta.updatedAt = nowIso();
+    await saveOverridesToGitHub();
+    dragEl = null;
+  });
+
+  container.addEventListener("dragend", () => { dragEl = null; });
+}
+
+
 
 function disableInlineEditing() {
   closeOvModal();
@@ -23419,6 +23626,7 @@ window.addEventListener("hashchange", navigate);
 window.addEventListener("load", async () => {
   await loadOverridesConfig();
   ensureFooterEditButton();
+  blockNavigationWhileEditing();
   navigate();
 });
 
