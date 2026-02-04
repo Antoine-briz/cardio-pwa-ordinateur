@@ -22991,77 +22991,84 @@ function slugId(s) {
  * SANS modifier tes templates un par un.
  * (On se base sur textes/titres existants)
  */
+
 function autoTagEditableDom(hash) {
-  
-    // =========================================================
-  // MENUS — tagging générique (bandeau / cartes / boutons)
+  const root = document.querySelector("#app");
+  if (!root) return;
+
+  // =========================================================
+  // MENUS — bandeau / cartes / boutons
   // =========================================================
 
-  // 1) bandeau titre commun
-  document.querySelectorAll("#app .title-strip-img").forEach((img, i) => {
+  // 1) Bandeau image titre (si présent)
+  root.querySelectorAll(".title-strip-img").forEach((img, i) => {
     img.dataset.ovId ||= `${hash}::title-strip-img::${i}`;
   });
 
-  // 2) cartes de menu (card + menu-section-img + h3)
-  document.querySelectorAll("#app .card").forEach((card, i) => {
-    const hasMenuImg = !!card.querySelector("img.menu-section-img");
+  // 2) Cartes menu : .card qui contient img.menu-section-img + h3
+  root.querySelectorAll(".card").forEach((card, i) => {
+    const img = card.querySelector("img.menu-section-img");
     const h3 = card.querySelector("h3");
-    if (!hasMenuImg || !h3) return;
+    if (!img || !h3) return;
 
+    // Signature stable : onclick si présent, sinon src image
     const oc = (card.getAttribute("onclick") || "").trim();
-    const sig = oc || (card.querySelector("img.menu-section-img")?.getAttribute("src") || "") || `card-${i}`;
-    const id = `${hash}::menu-card::${slugId(sig)}::${i}`;
+    const sig = oc || (img.getAttribute("src") || "") || `card-${i}`;
+    const baseId = `${hash}::menu-card::${slugId(sig)}::${i}`;
 
-    card.dataset.ovId ||= id;
-    card.querySelector("img.menu-section-img").dataset.ovId ||= `${id}::img`;
-    h3.dataset.ovId ||= `${id}::title`;
+    card.dataset.ovId ||= baseId;
+    img.dataset.ovId ||= `${baseId}::img`;
+    h3.dataset.ovId ||= `${baseId}::title`;
   });
 
-  // 3) boutons (dans tous les menus)
-  document.querySelectorAll("#app button.btn").forEach((btn, i) => {
+  // 3) Boutons : tous les button.btn (menus + pages)
+  root.querySelectorAll("button.btn").forEach((btn, i) => {
     const oc = (btn.getAttribute("onclick") || "").trim();
     const sig = oc || btn.textContent.trim() || `btn-${i}`;
-    btn.dataset.ovId ||= `${hash}::btn::${slugId(sig)}::${i}`;
-    // utile pour l'ordre dans un conteneur
-    btn.dataset.ovItem ||= btn.dataset.ovId;
+    const id = `${hash}::btn::${slugId(sig)}::${i}`;
+
+    btn.dataset.ovId ||= id;
+    btn.dataset.ovItem ||= btn.dataset.ovId; // pour reorder dans un conteneur
   });
 
-  // 4) images génériques (si pas déjà taggées)
-  document.querySelectorAll("#app img").forEach((img, i) => {
-    img.dataset.ovId ||= `${hash}::img::${slugId(img.getAttribute("src") || ("img-"+i))}::${i}`;
-  });
-
-  
-  // 1) Encadrés d'intervention : details.card
-  document.querySelectorAll("#app details.card").forEach((d, idx) => {
+  // =========================================================
+  // INTERVENTION PAGES — details.card (encadrés)
+  // =========================================================
+  root.querySelectorAll("details.card").forEach((d, i) => {
+    // ID stable (avec route)
     if (!d.dataset.ovId) {
-      const title = d.querySelector("summary")?.textContent?.trim() || ("encadre-" + idx);
-      d.dataset.ovId = "encadre-" + slugId(title) + "-" + idx;
+      const title = d.querySelector("summary")?.textContent?.trim() || `encadre-${i}`;
+      d.dataset.ovId = `${hash}::encadre::${slugId(title)}::${i}`;
     }
+
     const sum = d.querySelector("summary");
-    if (sum && !sum.dataset.ovId) sum.dataset.ovId = d.dataset.ovId + "::title";
+    if (sum) sum.dataset.ovId ||= `${d.dataset.ovId}::title`;
 
-    // contenu = premier bloc après summary
-    const body = d.querySelector(".card-body") || d.querySelector("div");
-    if (body && !body.dataset.ovId) body.dataset.ovId = d.dataset.ovId + "::html";
+    // contenu : on préfère .card-body sinon 1er bloc après summary
+    const body =
+      d.querySelector(".card-body") ||
+      (() => {
+        const kids = Array.from(d.children);
+        const idx = kids.findIndex(k => k.tagName === "SUMMARY");
+        return kids[idx + 1] || null;
+      })();
+
+    if (body) body.dataset.ovId ||= `${d.dataset.ovId}::html`;
   });
 
-  // 2) Boutons de page : .btn dans #app
-  document.querySelectorAll("#app button.btn").forEach((b, idx) => {
-    if (!b.dataset.ovId) {
-      const t = b.textContent.trim() || ("btn-" + idx);
-      b.dataset.ovId = "btn-" + slugId(t) + "-" + idx;
-    }
-  });
+  // =========================================================
+  // IMAGES GÉNÉRIQUES — tag si pas déjà fait
+  // =========================================================
+  root.querySelectorAll("img").forEach((img, i) => {
+    if (img.dataset.ovId) return;
 
-  // 3) Images dans #app
-  document.querySelectorAll("#app img").forEach((img, idx) => {
-    if (!img.dataset.ovId) {
-      const alt = img.getAttribute("alt") || "";
-      img.dataset.ovId = "img-" + slugId(alt || img.src || ("img-" + idx)) + "-" + idx;
-    }
+    const alt = (img.getAttribute("alt") || "").trim();
+    const src = (img.getAttribute("src") || "").trim();
+    const sig = alt || src || `img-${i}`;
+    img.dataset.ovId = `${hash}::img::${slugId(sig)}::${i}`;
   });
 }
+
 
 /**
  * Applique OV_CONFIG.overrides[hash][id] aux éléments data-ov-id
@@ -23392,7 +23399,7 @@ function enableGenericMenuEditing(hash) {
   ], "button.btn, .card");
 }
 
-function enableReorderOnContainers(hash, selectors, itemSel, ) {
+function enableReorderOnContainers(hash, selectors, itemSel) {
   selectors.forEach(sel => {
     document.querySelectorAll(sel).forEach((container, idx) => {
       enableSimpleDnDGeneric(hash, container, itemSel, `${hash}::order::${sel}::${idx}`);
@@ -23606,17 +23613,13 @@ function navigate() {
 
   const view = routes[hash];
   if (typeof view === "function") {
-    view();
-
-    // ✅ couche overrides (ne change PAS ton layout)
-    autoTagEditableDom(hash);
-    applyOverridesToDom(hash);
-
-    // ✅ si édition active, on rend éditable
-    if (EDIT_MODE) enableInlineEditingForRoute(hash);
-  } else {
-    renderNotFound();
-  } else
+  view();
+  autoTagEditableDom(hash);
+  applyOverridesToDom(hash);
+  if (EDIT_MODE) enableInlineEditingForRoute(hash);
+} else {
+  renderNotFound();
+}
 }
 
 window.addEventListener("hashchange", navigate);
