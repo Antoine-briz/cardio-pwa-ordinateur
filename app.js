@@ -23458,7 +23458,9 @@ function openOvModal({ hash, id, kind, initialHtml, initialText }) {
     __ovModal.querySelectorAll("[data-color]").forEach((b) => {
       b.addEventListener("click", () => document.execCommand("foreColor", false, b.dataset.color));
     });
-
+    __ovModal.querySelectorAll(".ov-swatch[data-color]").forEach((b) => {
+  b.style.background = b.dataset.color;
+});
     __ovModal.querySelector("#ov-save").addEventListener("click", async () => {
       if (!__ovCurrent) return;
 
