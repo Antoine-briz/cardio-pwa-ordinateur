@@ -7282,3 +7282,33 @@ body.theme-light .ov-actions-menu{
 body.theme-light .ov-actions-menu button:hover{
   background: rgba(0,0,0,0.06);
 }
+
+/* Couleurs : swatches carrés, sobres */
+.ov-color-row{
+  display:flex;
+  gap: 8px;
+  align-items:center;
+}
+
+.ov-swatch{
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.25);
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+}
+
+body.theme-light .ov-swatch{
+  border: 1px solid rgba(0,0,0,0.25);
+}
+
+.ov-swatch[data-color]{
+  background: var(--swatch, transparent);
+}
+
+/* On injecte la couleur via style inline JS (optionnel)
+   ou via attribut : on va le faire via JS ci-dessous */
+
+
