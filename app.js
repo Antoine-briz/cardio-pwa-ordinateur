@@ -23252,6 +23252,7 @@ function applyOverridesToDom(hash) {
   Object.entries(bucket).forEach(([id, props]) => {
     // On ignore les entrées d'ordre (sinon props serait un tableau)
     if (id.includes("::order::")) return;
+    if (id.startsWith("__")) return; // ignore __clones etc.
 
     const el = document.querySelector(`[data-ov-id="${CSS.escape(id)}"]`);
     if (!el) return;
@@ -23328,7 +23329,7 @@ async function ghGetSha(path, token) {
 }
 
 async function uploadImageToGitHubAndSetSrc(hash, imgEl) {
-  if (GITHUB_OWNER === "TON_OWNER" || GITHUB_REPO === "TON_REPO") {
+  if (GITHUB_OWNER === "Antoine-briz" || GITHUB_REPO === "cardio-pwa-ordinateur") {
     alert("Renseigne GITHUB_OWNER / GITHUB_REPO dans app.js pour activer l’upload.");
     return;
   }
@@ -23430,6 +23431,11 @@ function openOvModal({ hash, id, kind, initialHtml, initialText }) {
           </div>
         </div>
         <div class="ov-body">
+        <div class="ov-toolbar">
+  <button class="ov-btn" type="button" data-cmd="bold"><b>B</b></button>
+  <button class="ov-btn" type="button" data-cmd="italic"><i>I</i></button>
+  <button class="ov-btn" type="button" data-cmd="underline"><u>U</u></button>
+</div>
           <div class="ov-color-row" aria-label="Couleurs">
   <button class="ov-swatch" type="button" title="Bordeaux" data-color="#7F1D1D"></button>
   <button class="ov-swatch" type="button" title="Brun" data-color="#7C2D12"></button>
@@ -23520,60 +23526,8 @@ function enableInlineEditingForRoute(hash) {
   enableGenericMenuEditing(hash);
 }
 
-
 function enableGenericMenuEditing(hash) {
-  // surbrillance
-  document.querySelectorAll('#app [data-ov-id]').forEach(el => el.classList.add("ov-editable"));
-
-  // Renommer titres (h3 des cartes)
-  document.querySelectorAll('#app [data-ov-id$="::title"]').forEach(el => {
-    el.style.cursor = "pointer";
-    el.addEventListener("click", (e) => {
-      if (!EDIT_MODE) return;
-      e.preventDefault(); e.stopPropagation();
-      openOvModal({
-        hash,
-        id: el.dataset.ovId,
-        kind: "title",
-        initialText: el.textContent
-      });
-    });
-  });
-
-  // Renommer boutons (click)
-  document.querySelectorAll('#app button.btn[data-ov-id]').forEach(btn => {
-    btn.style.cursor = "pointer";
-    btn.addEventListener("click", (e) => {
-      if (!EDIT_MODE) return;
-      e.preventDefault(); e.stopPropagation();
-      openOvModal({
-        hash,
-        id: btn.dataset.ovId,
-        kind: "title",
-        initialText: btn.textContent
-      });
-    });
-  });
-
-  // Remplacer images (click -> URL pour test)
-  document.querySelectorAll('#app img[data-ov-id]').forEach(img => {
-    img.style.cursor = "pointer";
-    img.addEventListener("click", async (e) => {
-      if (!EDIT_MODE) return;
-      e.preventDefault(); e.stopPropagation();
-      const url = prompt("Nouvelle URL d'image (img/xxx.png ou https://...):", img.getAttribute("src"));
-      if (!url) return;
-
-      const bucket = ensureRouteBucket(hash);
-      bucket[img.dataset.ovId] = bucket[img.dataset.ovId] || {};
-      bucket[img.dataset.ovId].src = url;
-      OV_CONFIG._meta.updatedAt = nowIso();
-      applyOverridesToDom(hash);
-      await saveOverridesToGitHub();
-    });
-  });
-
-  // Réordonner : toutes les grilles / listes de boutons
+  // Réordonner : conteneurs connus (drag & drop)
   enableReorderOnContainers(hash, [
     "#app .grid",
     "#app .anesth-cards",
