@@ -22930,6 +22930,383 @@ window.openSubPage = (renderFn, backFn) => {
   });
 };
 
+// =====================================================
+//  OVERRIDES (édition sans casser le rendu existant)
+//  - charge config/app-config.json
+//  - applique des modifications DOM après render
+//  - sauvegarde uniquement les différences (overrides)
+// =====================================================
+
+const OV_CONFIG_URL = "config/app-config.json"; // relatif au site (GitHub Pages OK)
+let OV_CONFIG = { _meta: { version: 1, editorPassword: "" }, overrides: {} };
+
+let EDIT_MODE = false;
+
+// === GitHub save (optionnel) ===
+// Renseigne si tu veux pouvoir sauvegarder depuis l'interface :
+const GITHUB_OWNER = "TON_OWNER";
+const GITHUB_REPO  = "TON_REPO";
+const GITHUB_BRANCH = "main"; // ou "master"
+const GITHUB_PATH = "config/app-config.json";
+
+// Mémo SHA (nécessaire au PUT GitHub contents API)
+let __ghFileSha = null;
+
+function nowIso() {
+  return new Date().toISOString().replace(/\.\d{3}Z$/, "Z");
+}
+
+async function loadOverridesConfig() {
+  try {
+    const res = await fetch(OV_CONFIG_URL + "?ts=" + Date.now(), { cache: "no-store" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    OV_CONFIG = await res.json();
+    if (!OV_CONFIG.overrides) OV_CONFIG.overrides = {};
+  } catch (e) {
+    console.warn("⚠️ Impossible de charger app-config.json, overrides désactivés.", e);
+    OV_CONFIG = { _meta: { version: 1, editorPassword: "" }, overrides: {} };
+  }
+}
+
+function routeKey() {
+  return window.location.hash || "#/";
+}
+
+function ensureRouteBucket(hash) {
+  if (!OV_CONFIG.overrides[hash]) OV_CONFIG.overrides[hash] = {};
+  return OV_CONFIG.overrides[hash];
+}
+
+function slugId(s) {
+  return String(s || "")
+    .toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "")
+    .slice(0, 80);
+}
+
+/**
+ * Ajoute automatiquement des IDs éditables sur la page
+ * SANS modifier tes templates un par un.
+ * (On se base sur textes/titres existants)
+ */
+function autoTagEditableDom(hash) {
+  // 1) Encadrés d'intervention : details.card
+  document.querySelectorAll("#app details.card").forEach((d, idx) => {
+    if (!d.dataset.ovId) {
+      const title = d.querySelector("summary")?.textContent?.trim() || ("encadre-" + idx);
+      d.dataset.ovId = "encadre-" + slugId(title) + "-" + idx;
+    }
+    const sum = d.querySelector("summary");
+    if (sum && !sum.dataset.ovId) sum.dataset.ovId = d.dataset.ovId + "::title";
+
+    // contenu = premier bloc après summary
+    const body = d.querySelector(".card-body") || d.querySelector("div");
+    if (body && !body.dataset.ovId) body.dataset.ovId = d.dataset.ovId + "::html";
+  });
+
+  // 2) Boutons de page : .btn dans #app
+  document.querySelectorAll("#app button.btn").forEach((b, idx) => {
+    if (!b.dataset.ovId) {
+      const t = b.textContent.trim() || ("btn-" + idx);
+      b.dataset.ovId = "btn-" + slugId(t) + "-" + idx;
+    }
+  });
+
+  // 3) Images dans #app
+  document.querySelectorAll("#app img").forEach((img, idx) => {
+    if (!img.dataset.ovId) {
+      const alt = img.getAttribute("alt") || "";
+      img.dataset.ovId = "img-" + slugId(alt || img.src || ("img-" + idx)) + "-" + idx;
+    }
+  });
+}
+
+/**
+ * Applique OV_CONFIG.overrides[hash][id] aux éléments data-ov-id
+ * props possibles :
+ * - title: change le texte (boutons, summary…)
+ * - html: change le innerHTML (corps encadré)
+ * - src: remplace l'image
+ * - hidden: true/false
+ */
+function applyOverridesToDom(hash) {
+  const bucket = OV_CONFIG.overrides?.[hash];
+  if (!bucket) return;
+
+  Object.entries(bucket).forEach(([id, props]) => {
+    const el = document.querySelector(`[data-ov-id="${CSS.escape(id)}"]`);
+    if (!el) return;
+
+    if (props.hidden === true) el.style.display = "none";
+    if (props.hidden === false) el.style.display = "";
+
+    if (typeof props.title === "string") {
+      el.textContent = props.title;
+    }
+    if (typeof props.html === "string") {
+      el.innerHTML = props.html;
+    }
+    if (typeof props.src === "string" && el.tagName === "IMG") {
+      el.src = props.src;
+    }
+  });
+}
+
+// ---------------------------
+// UI : bouton footer "édition"
+// ---------------------------
+function ensureFooterEditButton() {
+  const footer = document.getElementById("app-footer");
+  if (!footer) return;
+
+  if (document.getElementById("edit-toggle-btn")) return;
+
+  const wrap = document.createElement("div");
+  wrap.className = "footer-editor";
+
+  const btn = document.createElement("button");
+  btn.id = "edit-toggle-btn";
+  btn.type = "button";
+  btn.textContent = "🔒 Mode édition";
+
+  btn.addEventListener("click", async () => {
+    if (!EDIT_MODE) {
+      const ok = await askEditorPassword();
+      if (!ok) return;
+      EDIT_MODE = true;
+      btn.classList.add("is-on");
+      btn.textContent = "✅ Édition activée (cliquer pour quitter)";
+      enableInlineEditingForRoute(routeKey());
+    } else {
+      EDIT_MODE = false;
+      btn.classList.remove("is-on");
+      btn.textContent = "🔒 Mode édition";
+      disableInlineEditing();
+    }
+  });
+
+  wrap.appendChild(btn);
+  footer.appendChild(wrap);
+}
+
+function askEditorPassword() {
+  return new Promise((resolve) => {
+    const pwd = prompt("Mot de passe éditeur :");
+    resolve(pwd === (OV_CONFIG?._meta?.editorPassword || ""));
+  });
+}
+
+// ---------------------------
+// Modale d'édition rich text
+// ---------------------------
+let __ovModal = null;
+let __ovCurrent = null; // { hash, id, kind }
+
+function closeOvModal() {
+  if (__ovModal) __ovModal.classList.remove("is-open");
+  __ovCurrent = null;
+}
+
+function openOvModal({ hash, id, kind, initialHtml, initialText }) {
+  if (!__ovModal) {
+    __ovModal = document.createElement("div");
+    __ovModal.className = "ov-modal";
+    __ovModal.innerHTML = `
+      <div class="ov-card" role="dialog" aria-modal="true">
+        <div class="ov-head">
+          <div class="ov-title">Édition</div>
+          <div class="ov-actions">
+            <button class="ov-btn" id="ov-save">💾 Sauvegarder</button>
+            <button class="ov-btn" id="ov-cancel">Fermer</button>
+          </div>
+        </div>
+        <div class="ov-body">
+          <div class="ov-toolbar">
+            <button class="ov-btn" data-cmd="bold"><b>B</b></button>
+            <button class="ov-btn" data-cmd="italic"><i>I</i></button>
+            <button class="ov-btn" data-cmd="underline"><u>U</u></button>
+            <button class="ov-btn" data-color="#ef4444">Rouge</button>
+            <button class="ov-btn" data-color="#f59e0b">Orange</button>
+            <button class="ov-btn" data-color="#3b82f6">Bleu</button>
+            <button class="ov-btn" data-color="#22c55e">Vert</button>
+            <button class="ov-btn" data-color="#a855f7">Violet</button>
+            <button class="ov-btn" data-color="#757575">Gris</button>
+          </div>
+
+          <div id="ov-editor" class="ov-editor" contenteditable="true"></div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(__ovModal);
+
+    __ovModal.addEventListener("click", (e) => {
+      if (e.target === __ovModal) closeOvModal();
+    });
+    __ovModal.querySelector("#ov-cancel").addEventListener("click", closeOvModal);
+
+    __ovModal.querySelectorAll("[data-cmd]").forEach((b) => {
+      b.addEventListener("click", () => document.execCommand(b.dataset.cmd, false, null));
+    });
+    __ovModal.querySelectorAll("[data-color]").forEach((b) => {
+      b.addEventListener("click", () => document.execCommand("foreColor", false, b.dataset.color));
+    });
+
+    __ovModal.querySelector("#ov-save").addEventListener("click", async () => {
+      if (!__ovCurrent) return;
+
+      const editor = __ovModal.querySelector("#ov-editor");
+      const html = editor.innerHTML;
+
+      const bucket = ensureRouteBucket(__ovCurrent.hash);
+      bucket[__ovCurrent.id] = bucket[__ovCurrent.id] || {};
+
+      if (__ovCurrent.kind === "html") bucket[__ovCurrent.id].html = html;
+      if (__ovCurrent.kind === "title") bucket[__ovCurrent.id].title = editor.textContent;
+
+      OV_CONFIG._meta.updatedAt = nowIso();
+
+      // applique tout de suite
+      applyOverridesToDom(__ovCurrent.hash);
+
+      closeOvModal();
+
+      // Optionnel : sauvegarde GitHub
+      // (tu peux commenter si tu veux d'abord tester localement)
+      await saveOverridesToGitHub();
+    });
+  }
+
+  __ovCurrent = { hash, id, kind };
+
+  const editor = __ovModal.querySelector("#ov-editor");
+  editor.innerHTML = (kind === "title") ? (initialText || "") : (initialHtml || "");
+  __ovModal.classList.add("is-open");
+
+  // focus propre
+  setTimeout(() => editor.focus(), 0);
+}
+
+// ---------------------------
+// Activation de l'édition inline
+// ---------------------------
+function enableInlineEditingForRoute(hash) {
+  autoTagEditableDom(hash);
+  applyOverridesToDom(hash);
+
+  // rend cliquables les titres d'encadrés + contenus
+  document.querySelectorAll("#app [data-ov-id]").forEach((el) => {
+    el.classList.add("ov-editable");
+  });
+
+  // clique => ouvre modale
+  document.querySelectorAll("#app details.card summary[data-ov-id]").forEach((sum) => {
+    sum.style.cursor = "pointer";
+    sum.addEventListener("click", (e) => {
+      e.preventDefault(); // évite toggle open/close pendant édition
+      e.stopPropagation();
+      openOvModal({
+        hash,
+        id: sum.dataset.ovId,
+        kind: "title",
+        initialText: sum.textContent
+      });
+    }, { once: false });
+  });
+
+  document.querySelectorAll('#app [data-ov-id$="::html"]').forEach((body) => {
+    body.style.cursor = "pointer";
+    body.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      openOvModal({
+        hash,
+        id: body.dataset.ovId,
+        kind: "html",
+        initialHtml: body.innerHTML
+      });
+    }, { once: false });
+  });
+
+  // boutons : renommer
+  document.querySelectorAll("#app button.btn[data-ov-id]").forEach((b) => {
+    b.addEventListener("contextmenu", (e) => {
+      if (!EDIT_MODE) return;
+      e.preventDefault();
+      openOvModal({
+        hash,
+        id: b.dataset.ovId,
+        kind: "title",
+        initialText: b.textContent
+      });
+    });
+  });
+}
+
+function disableInlineEditing() {
+  closeOvModal();
+  // simple : on recharge la route => réattache proprement sans listeners “édition”
+  navigate();
+}
+
+// ---------------------------
+// Sauvegarde GitHub (commit du JSON)
+// ---------------------------
+async function ghApi(path, opts = {}) {
+  const token = prompt("Token GitHub (PAT) pour sauvegarder :");
+  if (!token) throw new Error("Token manquant.");
+  return fetch("https://api.github.com" + path, {
+    ...opts,
+    headers: {
+      "Authorization": "token " + token,
+      "Accept": "application/vnd.github+json",
+      ...(opts.headers || {})
+    }
+  });
+}
+
+async function saveOverridesToGitHub() {
+  // Si tu n'as pas encore configuré owner/repo, on ne force pas
+  if (GITHUB_OWNER === "TON_OWNER" || GITHUB_REPO === "TON_REPO") {
+    console.warn("GitHub save: configure GITHUB_OWNER/GITHUB_REPO pour activer la sauvegarde.");
+    return;
+  }
+
+  // 1) récupérer SHA du fichier
+  if (!__ghFileSha) {
+    const r = await ghApi(`/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_PATH}?ref=${GITHUB_BRANCH}`, {
+      method: "GET"
+    });
+    if (!r.ok) throw new Error("GET config failed: " + r.status);
+    const j = await r.json();
+    __ghFileSha = j.sha;
+  }
+
+  // 2) PUT nouveau contenu
+  const contentStr = JSON.stringify(OV_CONFIG, null, 2);
+  const b64 = btoa(unescape(encodeURIComponent(contentStr)));
+
+  const put = await ghApi(`/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_PATH}`, {
+    method: "PUT",
+    body: JSON.stringify({
+      message: `Update app-config overrides (${nowIso()})`,
+      content: b64,
+      sha: __ghFileSha,
+      branch: GITHUB_BRANCH
+    })
+  });
+
+  if (!put.ok) {
+    const txt = await put.text();
+    throw new Error("PUT config failed: " + put.status + " " + txt);
+  }
+  const out = await put.json();
+  __ghFileSha = out.content?.sha || __ghFileSha;
+  console.log("✅ app-config.json sauvegardé sur GitHub.");
+}
+
+
 
 const routes = {
   "#/": renderHome,
@@ -23023,13 +23400,27 @@ function navigate() {
   const view = routes[hash];
   if (typeof view === "function") {
     view();
+
+    // ✅ couche overrides (ne change PAS ton layout)
+    autoTagEditableDom(hash);
+    applyOverridesToDom(hash);
+
+    // ✅ si édition active, on rend éditable
+    if (EDIT_MODE) enableInlineEditingForRoute(hash);
+  } else {
+    renderNotFound();
   } else {
     renderNotFound();
   }
 }
 
-
 window.addEventListener("hashchange", navigate);
-window.addEventListener("load", navigate);
+
+window.addEventListener("load", async () => {
+  await loadOverridesConfig();
+  ensureFooterEditButton();
+  navigate();
+});
 
 initActusNoonReset();
+
