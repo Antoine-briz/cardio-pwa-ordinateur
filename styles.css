@@ -7311,4 +7311,9 @@ body.theme-light .ov-swatch{
 /* On injecte la couleur via style inline JS (optionnel)
    ou via attribut : on va le faire via JS ci-dessous */
 
+/* Texte des encadrés anticoagulants */
+.ord-box,
+.ord-box * {
+  color: inherit;
+}
 
