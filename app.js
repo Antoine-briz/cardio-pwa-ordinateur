@@ -1006,8 +1006,8 @@ function renderAnesthConsultTraitements() {
               (ou Calciparine si &lt; 30 mL/min/1,73m²)&nbsp;:
             </p>
             <p>
-              <em>Indications :</em> Valve mécanique, EP/TVP &lt; 3 mois (ou MTEV récidivante),
-              FA emboligène &lt; 3 mois, thrombus intra-cardiaque.
+              <em>Indications :</em> Valve mécanique, EP/TVP &lt; 1 mois (ou MTEV récidivante),
+              FA emboligène &lt; 3 mois, FA avec RM, thrombus intra-cardiaque.
             </p>
             <p>
               <em>Modalités :</em> Arrêt de l’AVK idem (3 à 5 jours pleins).<br>
