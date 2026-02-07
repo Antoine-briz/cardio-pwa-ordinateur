@@ -1177,6 +1177,618 @@ function renderAnesthConsultTraitements() {
     image: "consultation.png",
     encadres,
   });
+
+  // ✅ Ajoute le bouton “Ordonnance gestion des traitements” sous le titre
+  setTimeout(() => {
+    // Selon ta structure, le "hero" peut être directement .hero
+    // ou contenu dans .intervention-main .hero
+    const hero =
+      document.querySelector(".intervention-main .hero") ||
+      document.querySelector(".hero");
+
+    if (!hero) return;
+    if (document.getElementById("ttm-open-btn")) return;
+
+    const btn = document.createElement("button");
+    btn.id = "ttm-open-btn";
+    btn.className = "btn ttm-open-btn";
+    btn.type = "button";
+    btn.textContent = "Ordonnance gestion des traitements";
+    btn.addEventListener("click", () => openTreatmentManager());
+
+    hero.appendChild(btn);
+  }, 0);
+}
+
+// =====================================================
+// Traitement Manager (Ordonnance gestion des traitements)
+// =====================================================
+
+let __ttmEl = null;
+
+// --- util: normalize text
+function ttmNormalize(s) {
+  return String(s || "")
+    .toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/[®™]/g, "")
+    .replace(/[^a-z0-9\s\-\+]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function ttmParseDelayToOffset(delayStr) {
+  const s = String(delayStr || "").toUpperCase().replace(/\s+/g, " ").trim();
+
+  // Ex: "Arrêt 5 jours" => 5 jours
+  let m = s.match(/(\d+)\s*JOUR/);
+  if (m) return { unit: "days", value: parseInt(m[1], 10), raw: delayStr };
+
+  // Ex: "J-5"
+  m = s.match(/J\s*-\s*(\d+)/);
+  if (m) return { unit: "days", value: parseInt(m[1], 10), raw: delayStr };
+
+  // Ex: "H-24 à 36" or "H-2 à H-4"
+  m = s.match(/H\s*-\s*(\d+)(?:\s*A\s*(?:H\s*-\s*)?(\d+))?/);
+  if (m) {
+    const a = parseInt(m[1], 10);
+    const b = m[2] ? parseInt(m[2], 10) : null;
+    const maxH = b ? Math.max(a, b) : a;
+    return { unit: "hours", value: maxH, raw: delayStr };
+  }
+
+  return { unit: "raw", value: null, raw: delayStr };
+}
+
+function ttmFmtDateFR(d) {
+  // d: Date
+  const dd = String(d.getDate()).padStart(2, "0");
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const yyyy = d.getFullYear();
+  return `${dd}/${mm}/${yyyy}`;
+}
+
+function ttmShiftDate(dateStr, days) {
+  // dateStr: YYYY-MM-DD
+  const d = new Date(dateStr + "T00:00:00");
+  d.setDate(d.getDate() - days);
+  return d;
+}
+
+function ttmDetectInLine(line, rulesIndex) {
+  // returns best match {key, entry} or null
+  const n = ttmNormalize(line);
+  if (!n) return null;
+
+  let hit = null;
+  let bestLen = 0;
+
+  for (const key of Object.keys(rulesIndex)) {
+    if (!key) continue;
+    if (n.includes(key) && key.length > bestLen) {
+      bestLen = key.length;
+      hit = rulesIndex[key];
+    }
+  }
+  return hit;
+}
+
+// --- Base médicaments à arrêter (DCI + noms commerciaux + délai)
+// 👉 Tu peux l'étendre facilement en ajoutant des entrées.
+const TTM_STOP_TABLE = [
+  // ===== Anticoagulants
+  { group: "anticoag", subclass: "HNF", dci: "Heparine sodique", brands: ["Calciparine"], delay: "H-8" },
+  { group: "anticoag", subclass: "HNF", dci: "Heparine sodique IV", brands: ["Heparine sodique (IVSE)"], delay: "H-4" },
+
+  { group: "anticoag", subclass: "HBPM", dci: "Enoxaparine", brands: ["Lovenox"], delay: "H-24" },
+  { group: "anticoag", subclass: "HBPM", dci: "Tinzaparine", brands: ["Innohep"], delay: "H-36" },
+  { group: "anticoag", subclass: "HBPM", dci: "Dalteparine", brands: ["Fragmine"], delay: "H-24" },
+  { group: "anticoag", subclass: "HBPM", dci: "Nadroparine", brands: ["Fraxiparine"], delay: "H-24" },
+
+  { group: "anticoag", subclass: "AOD", dci: "Dabigatran", brands: ["Pradaxa"], delay: "J-3" },
+  { group: "anticoag", subclass: "AOD", dci: "Rivaroxaban", brands: ["Xarelto"], delay: "J-2" },
+  { group: "anticoag", subclass: "AOD", dci: "Apixaban", brands: ["Eliquis"], delay: "J-2" },
+  { group: "anticoag", subclass: "AOD", dci: "Edoxaban", brands: ["Lixiana"], delay: "J-2" },
+
+  { group: "anticoag", subclass: "AVK", dci: "Fluindione", brands: ["Previscan"], delay: "J-5" },
+  { group: "anticoag", subclass: "AVK", dci: "Warfarine", brands: ["Coumadine"], delay: "J-5" },
+  { group: "anticoag", subclass: "AVK", dci: "Acenocoumarol", brands: ["Sintrom"], delay: "J-3" },
+
+  // ===== Anti-agrégants
+  { group: "aap", subclass: "ASA", dci: "Acide acetylsalicylique", brands: ["Kardegic", "Aspirine"], delay: "—" },
+  { group: "aap", subclass: "P2Y12", dci: "Clopidogrel", brands: ["Plavix"], delay: "J-5" },
+  { group: "aap", subclass: "P2Y12", dci: "Ticagrelor", brands: ["Brilique"], delay: "J-3" },
+  { group: "aap", subclass: "P2Y12", dci: "Prasugrel", brands: ["Efient"], delay: "J-7" },
+
+  // ===== Anti-HTA à arrêter (ex. IEC/ARA2) – tu peux étendre
+  { group: "htA", subclass: "IEC", dci: "Enalapril", brands: ["Renitec"], delay: "J-2" },
+  { group: "htA", subclass: "IEC", dci: "Perindopril", brands: ["Coversyl"], delay: "J-2" },
+  { group: "htA", subclass: "IEC", dci: "Ramipril", brands: ["Triatec"], delay: "J-2" },
+  { group: "htA", subclass: "IEC", dci: "Lisinopril", brands: ["Zestril"], delay: "J-2" },
+  { group: "htA", subclass: "ARA2", dci: "Irbesartan", brands: ["Aprovel"], delay: "J-2" },
+  { group: "htA", subclass: "ARA2", dci: "Losartan", brands: ["Cozaar"], delay: "J-2" },
+  { group: "htA", subclass: "ARA2", dci: "Valsartan", brands: ["Tareg"], delay: "J-2" },
+
+  // ===== Diurétiques (principaux)
+  { group: "diuretiques", subclass: "anse", dci: "Furosemide", brands: ["Lasilix"], delay: "J-1" },
+  { group: "diuretiques", subclass: "anse", dci: "Bumetanide", brands: ["Burinex"], delay: "J-1" },
+
+  // ===== Antidiabétiques oraux (principaux)
+  { group: "diabete", subclass: "biguanide", dci: "Metformine", brands: ["Glucophage", "Stagid"], delay: "J-2" },
+  { group: "diabete", subclass: "sulfamide", dci: "Gliclazide", brands: ["Diamicron"], delay: "J-1" },
+  { group: "diabete", subclass: "sulfamide", dci: "Glimepiride", brands: ["Amarel"], delay: "J-1" },
+  { group: "diabete", subclass: "dpp4", dci: "Sitagliptine", brands: ["Januvia"], delay: "—" }, // poursuivi jusqu'au matin
+  { group: "diabete", subclass: "dpp4", dci: "Vildagliptine", brands: ["Galvus"], delay: "—" },
+
+  { group: "diabete", subclass: "glp1", dci: "Semaglutide", brands: ["Ozempic", "Rybelsus"], delay: "J-6" },
+  { group: "diabete", subclass: "glp1", dci: "Dulaglutide", brands: ["Trulicity"], delay: "J-6" },
+  { group: "diabete", subclass: "glp1", dci: "Liraglutide", brands: ["Victoza"], delay: "J-6" },
+
+  { group: "diabete", subclass: "sglt2", dci: "Dapagliflozine", brands: ["Forxiga"], delay: "J-3" },
+  { group: "diabete", subclass: "sglt2", dci: "Empagliflozine", brands: ["Jardiance"], delay: "J-3" }
+];
+
+function ttmBuildIndex() {
+  const idx = {};
+  for (const e of TTM_STOP_TABLE) {
+    const keys = [];
+    keys.push(ttmNormalize(e.dci));
+    (e.brands || []).forEach(b => keys.push(ttmNormalize(b)));
+
+    // ajoute aussi variantes "courtes"
+    for (const k of keys) {
+      if (!k) continue;
+      idx[k] = e;
+    }
+  }
+  return idx;
+}
+
+function ttmHasAnyASA(lines) {
+  // Kardégic / aspirine dans le traitement
+  const n = lines.map(ttmNormalize).join(" | ");
+  return n.includes("kardegic") || n.includes("aspirine") || n.includes("acide acetylsalicylique");
+}
+
+function ttmIsAVK(entry) {
+  return entry?.group === "anticoag" && entry?.subclass === "AVK";
+}
+function ttmIsAnticoag(entry) {
+  return entry?.group === "anticoag";
+}
+function ttmIsAAP(entry) {
+  return entry?.group === "aap";
+}
+
+function ttmSurgeryLabelToKey(label) {
+  // UI => key interne
+  switch (label) {
+    case "Chirurgie cardiaque": return "cardiaque";
+    case "Chirurgie vasculaire": return "vasculaire";
+    case "Cardiologie interventionnelle": return "ci";
+    case "Rythmologie": return "rythmo";
+    case "Radio-vasculaire": return "radiovasc";
+    default: return "vasculaire";
+  }
+}
+
+// ---------- Modal questions (petite fenêtre)
+function ttmAskModal({ title, question, choices }) {
+  return new Promise((resolve) => {
+    const overlay = document.createElement("div");
+    overlay.className = "ttm-q-overlay";
+    overlay.innerHTML = `
+      <div class="ttm-q-box" role="dialog" aria-modal="true">
+        <div class="ttm-q-head">
+          <div class="ttm-q-title">${title}</div>
+          <button class="ttm-q-close" type="button" aria-label="Fermer">✕</button>
+        </div>
+        <div class="ttm-q-body">
+          <div class="ttm-q-question">${question}</div>
+          <div class="ttm-q-choices">
+            ${(choices || []).map((c, i) => `<button type="button" class="ttm-q-btn" data-i="${i}">${c}</button>`).join("")}
+          </div>
+        </div>
+      </div>
+    `;
+
+    const close = () => overlay.remove();
+    overlay.querySelector(".ttm-q-close").addEventListener("click", () => { close(); resolve(null); });
+    overlay.addEventListener("click", (e) => { if (e.target === overlay) { close(); resolve(null); } });
+
+    overlay.querySelectorAll(".ttm-q-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const i = parseInt(btn.dataset.i, 10);
+        const val = (choices || [])[i];
+        close();
+        resolve(val);
+      });
+    });
+
+    document.body.appendChild(overlay);
+  });
+}
+
+// ---------- Calcul “dernière prise”
+function ttmComputeLastIntake(dateSurgery, delayStr) {
+  const off = ttmParseDelayToOffset(delayStr);
+
+  // cas “—” => pas d'arrêt
+  if (!delayStr || delayStr === "—") return { kind: "nochange" };
+
+  if (off.unit === "days") {
+    const d = ttmShiftDate(dateSurgery, off.value);
+    return { kind: "date", date: d, note: `J-${off.value}` };
+  }
+
+  if (off.unit === "hours") {
+    // on donne la date "la veille" si >=24h, sinon J0/J-1 approximatif
+    const days = Math.ceil(off.value / 24);
+    const d = ttmShiftDate(dateSurgery, days);
+    return { kind: "date", date: d, note: `H-${off.value}` };
+  }
+
+  return { kind: "raw", note: off.raw || delayStr };
+}
+
+// ---------- Logique spécifique anticoag/AAP selon chirurgie
+async function ttmResolveSpecialLogic({ surgeryKey, entry, rawLine, hasASA }) {
+  // returns { actionText } (ligne finale)
+  const name = entry?.brands?.[0] ? `${entry.brands[0]} (${entry.dci})` : entry.dci;
+
+  // --- Anticoagulants
+  if (ttmIsAnticoag(entry)) {
+    // Cardiaque & vasculaire : arrêt systématique
+    const stopSystematic = (surgeryKey === "cardiaque" || surgeryKey === "vasculaire");
+
+    // CI / rythmologie / radio-vasc : demander arrêt oui/non
+    const askStop = (surgeryKey === "ci" || surgeryKey === "rythmo" || surgeryKey === "radiovasc");
+
+    let doStop = stopSystematic;
+
+    if (askStop) {
+      const ans = await ttmAskModal({
+        title: "Anticoagulants",
+        question: `Pour ${name} : arrêt des anticoagulants ?`,
+        choices: ["Oui", "Non"]
+      });
+      if (ans === null) return { actionText: `${rawLine} → (annulé)` };
+      doStop = (ans === "Oui");
+    }
+
+    if (!doStop) {
+      return { actionText: `${rawLine} → Pas de modification` };
+    }
+
+    // arrêt selon délai
+    const last = ttmComputeLastIntake(__ttmState.date, entry.delay);
+
+    // relais : uniquement AVK
+    if (ttmIsAVK(entry)) {
+      const ansRelai = await ttmAskModal({
+        title: "AVK",
+        question: `Pour ${name} : indication de relai ?`,
+        choices: ["Oui", "Non"]
+      });
+      if (ansRelai === null) return { actionText: `${rawLine} → (annulé)` };
+
+      if (ansRelai === "Non") {
+        if (last.kind === "date") {
+          return { actionText: `${rawLine} → Dernière prise le ${ttmFmtDateFR(last.date)} aux heures habituelles (${last.note})` };
+        }
+        return { actionText: `${rawLine} → Arrêt selon protocole (${last.note || entry.delay})` };
+      }
+
+      const mol = await ttmAskModal({
+        title: "Relai AVK",
+        question: `Relai pour ${name} : quelle molécule ?`,
+        choices: ["Énoxaparine", "Calciparine", "HNF"]
+      });
+      if (mol === null) return { actionText: `${rawLine} → (annulé)` };
+
+      // Paramétrage automatique (selon tes règles) :
+      // - Previscan/Coumadine : début relai 48h après dernière prise
+      // - Sintrom : 24h après dernière prise
+      const lineN = ttmNormalize(rawLine);
+      const isSintrom = lineN.includes("sintrom") || lineN.includes("acenocoumarol");
+      const startShiftDays = isSintrom ? 2 : 3; // J-3 vs J-2 par rapport à chirurgie si dernière prise J-5 ou J-3 : on exprime en dates à partir de la dernière prise
+      // On calcule concrètement :
+      let lastDate = null;
+      if (last.kind === "date") lastDate = last.date;
+
+      let startDate = null;
+      if (lastDate) {
+        startDate = new Date(lastDate);
+        startDate.setDate(startDate.getDate() + (isSintrom ? 1 : 2)); // +24h ou +48h
+      }
+
+      // fin relai selon molécule
+      let endNote = "";
+      if (mol === "Énoxaparine") endNote = "Dernière dose 24h avant intervention";
+      if (mol === "Calciparine") endNote = "Dernière dose 8h avant intervention";
+      if (mol === "HNF") endNote = "Arrêt IVSE 2h avant intervention";
+
+      if (last.kind === "date") {
+        const msgStart = startDate ? ` ; relai ${mol} à débuter le ${ttmFmtDateFR(startDate)}` : "";
+        return {
+          actionText: `${rawLine} → Dernière prise le ${ttmFmtDateFR(last.date)} aux heures habituelles (${last.note})${msgStart} ; ${endNote}`
+        };
+      }
+
+      return { actionText: `${rawLine} → Arrêt selon protocole (${entry.delay}) ; relai ${mol} (${endNote})` };
+    }
+
+    // non-AVK anticoag : pas de question de relai
+    if (last.kind === "date") {
+      return { actionText: `${rawLine} → Dernière prise le ${ttmFmtDateFR(last.date)} aux heures habituelles (${last.note})` };
+    }
+    return { actionText: `${rawLine} → Arrêt selon protocole (${last.note || entry.delay})` };
+  }
+
+  // --- Anti-agrégants
+  if (ttmIsAAP(entry)) {
+    const isASA = entry.subclass === "ASA";
+    const isClopi = ttmNormalize(entry.dci).includes("clopidogrel") || (entry.brands || []).some(b => ttmNormalize(b).includes("plavix"));
+    const isTica = ttmNormalize(entry.dci).includes("ticagrelor") || (entry.brands || []).some(b => ttmNormalize(b).includes("brilique"));
+    const isPrasu = ttmNormalize(entry.dci).includes("prasugrel") || (entry.brands || []).some(b => ttmNormalize(b).includes("efient"));
+
+    // Kardégic : vasculaire => demander arrêt oui/non ; autres => poursuite systématique
+    if (isASA) {
+      if (surgeryKey === "vasculaire") {
+        const ans = await ttmAskModal({
+          title: "Aspirine (Kardégic)",
+          question: `Pour ${name} : arrêt ?`,
+          choices: ["Oui", "Non"]
+        });
+        if (ans === null) return { actionText: `${rawLine} → (annulé)` };
+
+        if (ans === "Non") return { actionText: `${rawLine} → Pas de modification` };
+
+        // si arrêt demandé : délai (si tu veux le définir), sinon message générique
+        return { actionText: `${rawLine} → Arrêt selon décision (à paramétrer si besoin)` };
+      }
+
+      // CI / rythmologie / radio-vasc / cardiaque : poursuite systématique
+      return { actionText: `${rawLine} → Pas de modification` };
+    }
+
+    // Clopidogrel
+    if (isClopi) {
+      if (surgeryKey === "cardiaque") {
+        // arrêt systématique
+        const last = ttmComputeLastIntake(__ttmState.date, entry.delay);
+
+        // question relai Kardégic uniquement si pas ASA dans le traitement
+        if (!hasASA) {
+          const ans = await ttmAskModal({
+            title: "Clopidogrel (chirurgie cardiaque)",
+            question: `Pour ${name} : relai par Kardégic ?`,
+            choices: ["Oui", "Non"]
+          });
+          if (ans === null) return { actionText: `${rawLine} → (annulé)` };
+
+          if (last.kind === "date") {
+            if (ans === "Oui") {
+              const start = new Date(last.date);
+              start.setDate(start.getDate() + 1);
+              return { actionText: `${rawLine} → Dernière prise le ${ttmFmtDateFR(last.date)} (${last.note}) ; débuter Kardégic 75 mg/j le ${ttmFmtDateFR(start)}` };
+            }
+            return { actionText: `${rawLine} → Dernière prise le ${ttmFmtDateFR(last.date)} (${last.note})` };
+          }
+          return { actionText: `${rawLine} → Arrêt (${entry.delay})${ans === "Oui" ? " ; relai Kardégic 75 mg/j dès le lendemain" : ""}` };
+        }
+
+        // ASA présent => pas de relai
+        if (last.kind === "date") return { actionText: `${rawLine} → Dernière prise le ${ttmFmtDateFR(last.date)} (${last.note})` };
+        return { actionText: `${rawLine} → Arrêt (${entry.delay})` };
+      }
+
+      // autres chirurgies (vasculaire / ci / rythmologie / radio-vasc)
+      const ansStop = await ttmAskModal({
+        title: "Clopidogrel",
+        question: `Pour ${name} : arrêt ?`,
+        choices: ["Oui", "Non"]
+      });
+      if (ansStop === null) return { actionText: `${rawLine} → (annulé)` };
+      if (ansStop === "Non") return { actionText: `${rawLine} → Pas de modification` };
+
+      const last = ttmComputeLastIntake(__ttmState.date, entry.delay);
+
+      if (!hasASA) {
+        const ansRel = await ttmAskModal({
+          title: "Relai",
+          question: `Pour ${name} : relai par Kardégic (si pas déjà présent) ?`,
+          choices: ["Oui", "Non"]
+        });
+        if (ansRel === null) return { actionText: `${rawLine} → (annulé)` };
+
+        if (last.kind === "date") {
+          if (ansRel === "Oui") {
+            const start = new Date(last.date);
+            start.setDate(start.getDate() + 1);
+            return { actionText: `${rawLine} → Dernière prise le ${ttmFmtDateFR(last.date)} (${last.note}) ; débuter Kardégic 75 mg/j le ${ttmFmtDateFR(start)}` };
+          }
+          return { actionText: `${rawLine} → Dernière prise le ${ttmFmtDateFR(last.date)} (${last.note})` };
+        }
+        return { actionText: `${rawLine} → Arrêt (${entry.delay})${ansRel === "Oui" ? " ; relai Kardégic 75 mg/j dès le lendemain" : ""}` };
+      }
+
+      // ASA déjà présent => arrêt simple
+      if (last.kind === "date") return { actionText: `${rawLine} → Dernière prise le ${ttmFmtDateFR(last.date)} (${last.note})` };
+      return { actionText: `${rawLine} → Arrêt (${entry.delay})` };
+    }
+
+    // Ticagrelor / Prasugrel
+    if (isTica || isPrasu) {
+      // chirurgie cardiaque : arrêt systématique, pas de relai
+      const last = ttmComputeLastIntake(__ttmState.date, entry.delay);
+      if (surgeryKey === "cardiaque") {
+        if (last.kind === "date") return { actionText: `${rawLine} → Dernière prise le ${ttmFmtDateFR(last.date)} (${last.note})` };
+        return { actionText: `${rawLine} → Arrêt (${entry.delay})` };
+      }
+
+      // autres : arrêt systématique + demander relai clopidogrel
+      const ansRel = await ttmAskModal({
+        title: "Relai",
+        question: `Pour ${name} : relai par Clopidogrel ?`,
+        choices: ["Oui", "Non"]
+      });
+      if (ansRel === null) return { actionText: `${rawLine} → (annulé)` };
+
+      if (last.kind === "date") {
+        if (ansRel === "Oui") {
+          const start = new Date(last.date);
+          start.setDate(start.getDate() + 1);
+          return { actionText: `${rawLine} → Dernière prise le ${ttmFmtDateFR(last.date)} (${last.note}) ; débuter Clopidogrel 75 mg/j le ${ttmFmtDateFR(start)}` };
+        }
+        return { actionText: `${rawLine} → Dernière prise le ${ttmFmtDateFR(last.date)} (${last.note})` };
+      }
+
+      return { actionText: `${rawLine} → Arrêt (${entry.delay})${ansRel === "Oui" ? " ; relai clopidogrel 75 mg/j dès le lendemain" : ""}` };
+    }
+
+    // autres AAP non gérés : fallback
+    return { actionText: `${rawLine} → (AAP non géré)` };
+  }
+
+  // fallback
+  return { actionText: `${rawLine} → Pas de modification` };
+}
+
+let __ttmState = {
+  surgery: "Chirurgie cardiaque",
+  date: "", // YYYY-MM-DD
+  index: null
+};
+
+async function ttmProcess() {
+  const left = document.getElementById("ttm-left");
+  const right = document.getElementById("ttm-right");
+  const surgerySel = document.getElementById("ttm-surgery");
+  const dateInp = document.getElementById("ttm-date");
+
+  const surgery = surgerySel.value;
+  const surgeryKey = ttmSurgeryLabelToKey(surgery);
+
+  const dateSurgery = dateInp.value;
+  __ttmState.surgery = surgery;
+  __ttmState.date = dateSurgery;
+
+  if (!dateSurgery) {
+    alert("Choisis la date de l’intervention.");
+    return;
+  }
+
+  const lines = (left.value || "")
+    .split("\n")
+    .map(s => s.trim())
+    .filter(Boolean);
+
+  if (lines.length === 0) {
+    right.value = "";
+    return;
+  }
+
+  const hasASA = ttmHasAnyASA(lines);
+
+  const out = [];
+  for (const line of lines) {
+    const hit = ttmDetectInLine(line, __ttmState.index);
+    if (!hit) {
+      out.push(`${line} → Pas de modification`);
+      continue;
+    }
+
+    // spécial anticoag/AAP : questions conditionnelles
+    if (ttmIsAnticoag(hit) || ttmIsAAP(hit)) {
+      const r = await ttmResolveSpecialLogic({ surgeryKey, entry: hit, rawLine: line, hasASA });
+      out.push(r.actionText);
+      continue;
+    }
+
+    // autres : simple J-X
+    const last = ttmComputeLastIntake(dateSurgery, hit.delay);
+
+    if (last.kind === "nochange") {
+      out.push(`${line} → Pas de modification`);
+    } else if (last.kind === "date") {
+      out.push(`${line} → Dernière prise le ${ttmFmtDateFR(last.date)} aux heures habituelles (${last.note})`);
+    } else {
+      out.push(`${line} → Arrêt selon protocole (${last.note || hit.delay})`);
+    }
+  }
+
+  right.value = out.join("\n");
+}
+
+function openTreatmentManager() {
+  if (!__ttmState.index) __ttmState.index = ttmBuildIndex();
+
+  if (__ttmEl) __ttmEl.remove();
+
+  __ttmEl = document.createElement("div");
+  __ttmEl.className = "ttm-overlay";
+  __ttmEl.innerHTML = `
+    <div class="ttm-window" role="dialog" aria-modal="true">
+      <div class="ttm-header">
+        <div class="ttm-title">Ordonnance — Gestion des traitements</div>
+        <button class="ttm-close" type="button" aria-label="Fermer">✕</button>
+      </div>
+
+      <div class="ttm-controls">
+        <div class="ttm-field">
+          <label for="ttm-surgery">Type d’intervention</label>
+          <select id="ttm-surgery">
+            <option>Chirurgie cardiaque</option>
+            <option>Chirurgie vasculaire</option>
+            <option>Cardiologie interventionnelle</option>
+            <option>Rythmologie</option>
+            <option>Radio-vasculaire</option>
+          </select>
+        </div>
+
+        <div class="ttm-field">
+          <label for="ttm-date">Date de l’intervention</label>
+          <input id="ttm-date" type="date" />
+        </div>
+
+        <div class="ttm-field ttm-actions">
+          <button id="ttm-run" class="btn ttm-run" type="button">Générer</button>
+          <button id="ttm-clear" class="btn ttm-clear" type="button">Effacer</button>
+        </div>
+      </div>
+
+      <div class="ttm-body">
+        <div class="ttm-col">
+          <div class="ttm-col-title">Traitement en cours (coller ligne par ligne)</div>
+          <textarea id="ttm-left" class="ttm-textarea" spellcheck="false" placeholder="Ex:\nEliquis 5mg x2\nRamipril 5mg\nMetformine 850mg"></textarea>
+        </div>
+
+        <div class="ttm-col">
+          <div class="ttm-col-title">Gestion des traitements</div>
+          <textarea id="ttm-right" class="ttm-textarea" spellcheck="false" readonly></textarea>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(__ttmEl);
+
+  const close = () => { __ttmEl?.remove(); __ttmEl = null; };
+
+  __ttmEl.querySelector(".ttm-close").addEventListener("click", close);
+  __ttmEl.addEventListener("click", (e) => { if (e.target === __ttmEl) close(); });
+
+  const dateInp = __ttmEl.querySelector("#ttm-date");
+  const today = new Date();
+  // Préremplir avec le mois en cours (date du jour)
+  dateInp.value = today.toISOString().slice(0, 10);
+
+  __ttmEl.querySelector("#ttm-run").addEventListener("click", ttmProcess);
+  __ttmEl.querySelector("#ttm-clear").addEventListener("click", () => {
+    __ttmEl.querySelector("#ttm-left").value = "";
+    __ttmEl.querySelector("#ttm-right").value = "";
+  });
 }
 
 function renderAnesthChirCecMenu() {
