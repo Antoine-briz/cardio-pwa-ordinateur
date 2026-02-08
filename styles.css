@@ -7577,3 +7577,82 @@ body.theme-light .ov-swatch{
   margin-top: 12px;
   width: fit-content;
 }
+
+/* =====================================================
+   TTM — Typo + tailles de titres (scopé uniquement TTM)
+   À mettre TOUT EN BAS du style.css
+   ===================================================== */
+
+.ttm-overlay, .ttm-q-overlay{
+  /* Police moderne sans import */
+  --ttm-font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+}
+
+/* Appliquer la police partout dans la fenêtre */
+.ttm-overlay .ttm-window,
+.ttm-overlay .ttm-window *{
+  font-family: var(--ttm-font);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.ttm-q-overlay .ttm-q-box,
+.ttm-q-overlay .ttm-q-box *{
+  font-family: var(--ttm-font);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Titre principal (en haut) */
+.ttm-overlay .ttm-title{
+  font-size: 20px;     /* avant ~16 */
+  font-weight: 850;
+  letter-spacing: -0.2px;
+}
+
+/* Labels “Type d’intervention / Date …” */
+.ttm-overlay .ttm-field label{
+  font-size: 14px;     /* avant 12-13 */
+  font-weight: 750;
+}
+
+/* Titres au-dessus des textareas */
+.ttm-overlay .ttm-col-title{
+  font-size: 15px;     /* avant 13-14 */
+  font-weight: 850;
+  letter-spacing: -0.15px;
+}
+
+/* Textareas : police plus lisible */
+.ttm-overlay .ttm-textarea{
+  font-size: 14px;     /* avant 13 */
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+/* Boutons : un peu plus “UI moderne” */
+.ttm-overlay .ttm-run,
+.ttm-overlay .ttm-clear,
+.ttm-overlay .ttm-close{
+  font-weight: 750;
+  letter-spacing: -0.1px;
+}
+
+/* Petite fenêtre de questions */
+.ttm-q-overlay .ttm-q-title{
+  font-size: 16px;     /* avant 14 */
+  font-weight: 850;
+  letter-spacing: -0.2px;
+}
+
+.ttm-q-overlay .ttm-q-question{
+  font-size: 14px;     /* avant 13 */
+  line-height: 1.45;
+  font-weight: 520;
+}
+
+.ttm-q-overlay .ttm-q-btn{
+  font-size: 14px;
+  font-weight: 800;
+}
+
