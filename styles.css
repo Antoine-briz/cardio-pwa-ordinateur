@@ -7318,163 +7318,164 @@ body.theme-light .ov-swatch{
 }
 
 /* =====================================================
-   Traitement Manager (Ordonnance) — TOUJOURS clair
-   (même en thème sombre)
+   Traitement Manager (Ordonnance gestion des traitements)
+   => FORCÉ en clair (même si thème sombre)
    ===================================================== */
 
-/* Overlay plein écran (reste sombre) */
+/* Overlay (fond) */
 .ttm-overlay{
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: rgba(0,0,0,.55);
+  background: rgba(0,0,0,.55) !important;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
+  padding: 18px;
 }
 
-.ttm-open-btn{
-  margin-top: 12px;
-  width: fit-content;
-}
-
-/* Fenêtre principale (toujours claire) */
-.ttm-window{
-  width: min(1200px, 98vw);
-  height: min(86vh, 860px);
-  background: #ffffff;
-  color: #111827;
-  border: 1px solid rgba(0,0,0,.15);
-  border-radius: 16px;
+/* Fenêtre principale : toujours blanche */
+.ttm-overlay .ttm-window{
+  width: min(1200px, 96vw);
+  height: min(720px, 92vh);
+  background: #ffffff !important;
+  color: #111111 !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 18px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   box-shadow: 0 20px 60px rgba(0,0,0,.35);
 }
 
-.ttm-header{
+/* Header */
+.ttm-overlay .ttm-header{
+  background: #ffffff !important;
+  color: #111111 !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  padding: 14px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 14px 16px;
-  border-bottom: 1px solid rgba(0,0,0,.12);
-  background: #ffffff;
-  color: #111827;
 }
 
-.ttm-title{
+.ttm-overlay .ttm-title{
   font-weight: 800;
   font-size: 16px;
+  color: #111111 !important;
 }
 
-.ttm-close{
-  border: 1px solid rgba(0,0,0,.15);
-  background: #f3f4f6;
-  color: #111827;
+.ttm-overlay .ttm-close{
+  background: #f3f4f6 !important;
+  border: 1px solid #e5e7eb !important;
+  color: #111111 !important;
   border-radius: 10px;
-  padding: 6px 10px;
+  width: 38px;
+  height: 38px;
   cursor: pointer;
 }
 
-/* Barre de contrôles (toujours claire) */
-.ttm-controls{
+/* Barre de contrôles */
+.ttm-overlay .ttm-controls{
+  background: #ffffff !important;
+  color: #111111 !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  padding: 14px 16px;
   display: grid;
   grid-template-columns: 1.2fr 1fr auto;
   gap: 12px;
-  padding: 12px 16px;
-  border-bottom: 1px solid rgba(0,0,0,.12);
-  background: #ffffff;
 }
 
-.ttm-field label{
+.ttm-overlay .ttm-field label{
   display: block;
-  font-size: 12px;
-  font-weight: 700;
-  color: #111827;
-  margin-bottom: 6px;
-}
-
-.ttm-field select,
-.ttm-field input{
-  width: 100%;
-  border: 1px solid rgba(0,0,0,.18);
-  background: #f9fafb;
-  color: #111827;
-  border-radius: 10px;
-  padding: 10px 10px;
-  outline: none;
-}
-
-.ttm-actions{
-  display: flex;
-  align-items: end;
-  gap: 10px;
-}
-
-.ttm-run, .ttm-clear{
-  white-space: nowrap;
-}
-
-/* Corps : 2 colonnes même hauteur */
-.ttm-body{
-  flex: 1;
-  min-height: 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  padding: 14px 16px 16px;
-  background: #ffffff;
-}
-
-.ttm-col{
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-height: 0;
-}
-
-.ttm-col-title{
-  font-weight: 800;
-  font-size: 14px;
-  color: #111827;
-}
-
-/* Textareas : toujours clairs + texte noir */
-.ttm-textarea{
-  flex: 1;
-  min-height: 0;
-  width: 100%;
-  border: 1px solid rgba(0,0,0,.18);
-  background: #f9fafb;
-  color: #111827;
-  border-radius: 16px;
-  padding: 12px;
-  resize: none;
-  outline: none;
   font-size: 13px;
-  line-height: 1.4;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #111111 !important;
 }
 
-/* Colonne droite empilée : total = hauteur de gauche */
-.ttm-right-stack{
+/* Select + date : toujours clairs */
+.ttm-overlay .ttm-field select,
+.ttm-overlay .ttm-field input,
+.ttm-overlay .ttm-field input[type="date"]{
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db !important;
+  background: #f9fafb !important;
+  color: #111111 !important;
+  outline: none;
+}
+
+/* Boutons actions */
+.ttm-overlay .ttm-actions{
+  display: flex;
+  gap: 10px;
+  align-items: end;
+}
+
+/* Corps : 2 colonnes */
+.ttm-overlay .ttm-body{
+  flex: 1;
   min-height: 0;
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  gap: 14px;
+  padding: 14px 16px;
+  background: #ffffff !important;
 }
 
-.ttm-right-main{
-  flex: 2;         /* plus grand */
+/* Colonnes */
+.ttm-overlay .ttm-col{
+  flex: 1;
   min-height: 0;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.ttm-right-extra{
-  flex: 1;         /* plus petit */
+.ttm-overlay .ttm-col-title{
+  font-weight: 800;
+  color: #111111 !important;
+  font-size: 14px;
+}
+
+/* Textareas : FORCÉS clairs + texte noir */
+.ttm-overlay textarea.ttm-textarea,
+.ttm-overlay .ttm-textarea{
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  resize: none;
+  padding: 12px 12px;
+  border-radius: 16px;
+  border: 1px solid #d1d5db !important;
+  background: #f9fafb !important;
+  color: #111111 !important;
+  line-height: 1.35;
+  outline: none;
+}
+
+/* Colonne droite empilée : même hauteur que gauche */
+.ttm-overlay .ttm-right-stack{
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Partie principale (haut) plus grande */
+.ttm-overlay .ttm-right-main{
+  flex: 2;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Partie extra (bas) plus petite */
+.ttm-overlay .ttm-right-extra{
+  flex: 1;
   min-height: 0;
   display: flex;
   flex-direction: column;
@@ -7483,90 +7484,96 @@ body.theme-light .ov-swatch{
 
 /* Mobile */
 @media (max-width: 860px){
-  .ttm-controls{
+  .ttm-overlay .ttm-controls{
     grid-template-columns: 1fr;
   }
-  .ttm-actions{
+  .ttm-overlay .ttm-actions{
     justify-content: flex-start;
   }
-  .ttm-body{
-    grid-template-columns: 1fr;
+  .ttm-overlay .ttm-body{
+    flex-direction: column;
   }
-  .ttm-window{
+  .ttm-overlay .ttm-window{
     height: 92vh;
   }
 }
 
 /* =====================================================
-   Petite fenêtre questions (toujours claire)
+   Petite fenêtre de questions : FORCÉE en clair aussi
    ===================================================== */
-
 .ttm-q-overlay{
   position: fixed;
   inset: 0;
   z-index: 10000;
-  background: rgba(0,0,0,.55);
+  background: rgba(0,0,0,.55) !important;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 16px;
 }
 
-.ttm-q-box{
+.ttm-q-overlay .ttm-q-box{
   width: min(560px, 96vw);
-  background: #ffffff;
-  color: #111827;
-  border: 1px solid rgba(0,0,0,.15);
+  background: #ffffff !important;
+  color: #111111 !important;
+  border: 1px solid #e5e7eb !important;
   border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0,0,0,.35);
 }
 
-.ttm-q-head{
+.ttm-q-overlay .ttm-q-head{
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 12px 14px;
-  border-bottom: 1px solid rgba(0,0,0,.12);
+  border-bottom: 1px solid #e5e7eb !important;
+  background: #ffffff !important;
 }
 
-.ttm-q-title{
+.ttm-q-overlay .ttm-q-title{
   font-weight: 800;
   font-size: 14px;
+  color: #111111 !important;
 }
 
-.ttm-q-close{
-  border: 1px solid rgba(0,0,0,.15);
-  background: #f3f4f6;
-  color: #111827;
+.ttm-q-overlay .ttm-q-close{
+  background: #f3f4f6 !important;
+  border: 1px solid #e5e7eb !important;
+  color: #111111 !important;
   border-radius: 10px;
   padding: 6px 10px;
   cursor: pointer;
 }
 
-.ttm-q-body{
+.ttm-q-overlay .ttm-q-body{
   padding: 14px;
 }
 
-.ttm-q-question{
+.ttm-q-overlay .ttm-q-question{
   font-size: 13px;
-  color: #111827;
+  color: #111111 !important;
   margin-bottom: 12px;
 }
 
-.ttm-q-choices{
+.ttm-q-overlay .ttm-q-choices{
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }
 
-.ttm-q-btn{
-  border: 1px solid rgba(0,0,0,.18);
-  background: #f9fafb;
-  color: #111827;
+.ttm-q-overlay .ttm-q-btn{
+  border: 1px solid #d1d5db !important;
+  background: #f9fafb !important;
+  color: #111111 !important;
   padding: 10px 12px;
   border-radius: 12px;
   cursor: pointer;
-  font-weight: 800;
+  font-weight: 700;
 }
 
+/* Bouton d'ouverture */
+.ttm-open-btn{
+  margin-top: 12px;
+  width: fit-content;
+}
