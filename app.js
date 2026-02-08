@@ -1502,7 +1502,7 @@ async function ttmResolveSpecialLogic({ surgeryKey, entry, rawLine, hasASA }) {
     }
 
     if (!doStop) {
-      return { actionText: `${rawLine} → Pas de modification` };
+      return { actionText: `${leftNameOnly} → Pas de modification` };
     }
 
     // arrêt selon délai
@@ -1622,16 +1622,16 @@ return {
           question: `Pour ${name} : arrêt ?`,
           choices: ["Oui", "Non"]
         });
-        if (ans === null) return { actionText: `${rawLine} → (annulé)` };
+        if (ans === null) return { actionText: `${leftNameOnly} → (annulé)` };
 
-        if (ans === "Non") return { actionText: `${rawLine} → Pas de modification` };
+        if (ans === "Non") return { actionText: `${leftNameOnly} → Pas de modification` };
 
         // si arrêt demandé : délai (si tu veux le définir), sinon message générique
         return { actionText: `${rawLine} → Arrêt selon décision (à paramétrer si besoin)` };
       }
 
       // CI / rythmologie / radio-vasc / cardiaque : poursuite systématique
-      return { actionText: `${rawLine} → Pas de modification` };
+      return { actionText: `${leftNameOnly} → Pas de modification` };
     }
 
     // Clopidogrel
@@ -1671,8 +1671,8 @@ return {
         question: `Pour ${name} : arrêt ?`,
         choices: ["Oui", "Non"]
       });
-      if (ansStop === null) return { actionText: `${rawLine} → (annulé)` };
-      if (ansStop === "Non") return { actionText: `${rawLine} → Pas de modification` };
+      if (ansStop === null) return { actionText: `${leftNameOnly} → (annulé)` };
+      if (ansStop === "Non") return { actionText: `${leftNameOnly} → Pas de modification` };
 
       const last = ttmComputeLastIntake(__ttmState.date, entry.delay);
 
@@ -1734,7 +1734,7 @@ return {
   }
 
   // fallback
-  return { actionText: `${rawLine} → Pas de modification` };
+  return { actionText: `${leftNameOnly} → Pas de modification` };
 }
 
 let __ttmState = {
