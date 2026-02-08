@@ -1274,17 +1274,29 @@ function ttmNormalize(s) {
 }
 
 function ttmParseDelayToOffset(delayStr) {
-  const s = String(delayStr || "").toUpperCase().replace(/\s+/g, " ").trim();
+  const s0 = String(delayStr || "").trim();
+  const s = s0
+    .toUpperCase()
+    .replace(/[–—]/g, "-")
+    .replace(/\s+/g, " ")
+    .trim();
 
-  // Ex: "Arrêt 5 jours" => 5 jours
-  let m = s.match(/(\d+)\s*JOUR/);
+  // J0 (ex: "J0", "J0 matin", "Ne pas prendre le matin de l’intervention (J0 matin)")
+  if (s.includes("J0")) return { unit: "j0", value: 0, raw: delayStr };
+
+  // "Arrêt 3-4 jours" => on prend le plus grand (sécurité)
+  let m = s.match(/(\d+)\s*-\s*(\d+)\s*JOUR/);
+  if (m) return { unit: "days", value: Math.max(parseInt(m[1], 10), parseInt(m[2], 10)), raw: delayStr };
+
+  // "Arrêt 5 jours"
+  m = s.match(/(\d+)\s*JOUR/);
   if (m) return { unit: "days", value: parseInt(m[1], 10), raw: delayStr };
 
-  // Ex: "J-5"
+  // "J-5"
   m = s.match(/J\s*-\s*(\d+)/);
   if (m) return { unit: "days", value: parseInt(m[1], 10), raw: delayStr };
 
-  // Ex: "H-24 à 36" or "H-2 à H-4"
+  // "H-2 à H-4" / "H-24 à 36"
   m = s.match(/H\s*-\s*(\d+)(?:\s*A\s*(?:H\s*-\s*)?(\d+))?/);
   if (m) {
     const a = parseInt(m[1], 10);
@@ -1293,8 +1305,10 @@ function ttmParseDelayToOffset(delayStr) {
     return { unit: "hours", value: maxH, raw: delayStr };
   }
 
-  return { unit: "raw", value: null, raw: delayStr };
+  // fallback
+  return { unit: "unknown", value: null, raw: delayStr };
 }
+
 
 function ttmFmtDateFR(d) {
   // d: Date
@@ -1430,22 +1444,22 @@ const TTM_STOP_TABLE = [
   // ANTIDIABÉTIQUES ORAUX
   // =====================================================
 
-  { group: "diabete", subclass: "biguanide", dci: "Metformine", brands: ["Glucophage", "Stagid"], delay: "J0-matin" },
+  { group: "diabete", subclass: "biguanide", dci: "Metformine", brands: ["Glucophage", "Stagid"], delay: "J0" },
 
-  { group: "diabete", subclass: "sulfamide", dci: "Gliclazide", brands: ["Diamicron"], delay: "J0-matin" },
-  { group: "diabete", subclass: "sulfamide", dci: "Glimepiride", brands: ["Amarel"], delay: "J0-matin" },
-  { group: "diabete", subclass: "sulfamide", dci: "Glibenclamide", brands: ["Daonil"], delay: "J0-matin" },
+  { group: "diabete", subclass: "sulfamide", dci: "Gliclazide", brands: ["Diamicron"], delay: "J0" },
+  { group: "diabete", subclass: "sulfamide", dci: "Glimepiride", brands: ["Amarel"], delay: "J0" },
+  { group: "diabete", subclass: "sulfamide", dci: "Glibenclamide", brands: ["Daonil"], delay: "J0" },
 
-  { group: "diabete", subclass: "glinide", dci: "Repaglinide", brands: ["Novonorm"], delay: "J0-matin" },
-  { group: "diabete", subclass: "glinide", dci: "Nateglinide", brands: ["Starlix"], delay: "J0-matin" },
+  { group: "diabete", subclass: "glinide", dci: "Repaglinide", brands: ["Novonorm"], delay: "J0" },
+  { group: "diabete", subclass: "glinide", dci: "Nateglinide", brands: ["Starlix"], delay: "J0" },
 
-  { group: "diabete", subclass: "alphaglucosidase", dci: "Acarbose", brands: ["Glucor"], delay: "J0-matin" },
+  { group: "diabete", subclass: "alphaglucosidase", dci: "Acarbose", brands: ["Glucor"], delay: "J0" },
 
-  { group: "diabete", subclass: "dpp4", dci: "Sitagliptine", brands: ["Januvia"], delay: "J0-matin" },
-  { group: "diabete", subclass: "dpp4", dci: "Vildagliptine", brands: ["Galvus"], delay: "J0-matin" },
-  { group: "diabete", subclass: "dpp4", dci: "Linagliptine", brands: ["Trajenta"], delay: "J0-matin" },
-  { group: "diabete", subclass: "dpp4", dci: "Saxagliptine", brands: ["Onglyza"], delay: "J0-matin" },
-  { group: "diabete", subclass: "dpp4", dci: "Alogliptine", brands: ["Vipidia"], delay: "J0-matin" },
+  { group: "diabete", subclass: "dpp4", dci: "Sitagliptine", brands: ["Januvia"], delay: "J0" },
+  { group: "diabete", subclass: "dpp4", dci: "Vildagliptine", brands: ["Galvus"], delay: "J0" },
+  { group: "diabete", subclass: "dpp4", dci: "Linagliptine", brands: ["Trajenta"], delay: "J0" },
+  { group: "diabete", subclass: "dpp4", dci: "Saxagliptine", brands: ["Onglyza"], delay: "J0" },
+  { group: "diabete", subclass: "dpp4", dci: "Alogliptine", brands: ["Vipidia"], delay: "J0" },
 
   { group: "diabete", subclass: "sglt2", dci: "Dapagliflozine", brands: ["Forxiga"], delay: "J-3" },
   { group: "diabete", subclass: "sglt2", dci: "Empagliflozine", brands: ["Jardiance"], delay: "J-3" },
@@ -1567,8 +1581,13 @@ function ttmAskModal({ title, question, choices }) {
 function ttmComputeLastIntake(dateSurgery, delayStr) {
   const off = ttmParseDelayToOffset(delayStr);
 
-  // cas “—” => pas d'arrêt
+  // pas d’arrêt
   if (!delayStr || delayStr === "—") return { kind: "nochange" };
+
+  // J0 : pas de prise le jour J
+  if (off.unit === "j0") {
+    return { kind: "j0", note: "J0" };
+  }
 
   if (off.unit === "days") {
     const d = ttmShiftDate(dateSurgery, off.value);
@@ -1576,14 +1595,52 @@ function ttmComputeLastIntake(dateSurgery, delayStr) {
   }
 
   if (off.unit === "hours") {
-    // on donne la date "la veille" si >=24h, sinon J0/J-1 approximatif
+    // on traduit en jours “pratiques” (sans heure exacte)
     const days = Math.ceil(off.value / 24);
     const d = ttmShiftDate(dateSurgery, days);
     return { kind: "date", date: d, note: `H-${off.value}` };
   }
 
-  return { kind: "raw", note: off.raw || delayStr };
+  // Inconnu => on force une phrase neutre mais SANS “protocole”
+  return { kind: "unknown", note: (off.raw || delayStr || "").trim() || "Arrêt à définir" };
 }
+
+function ttmMakeStopSentence({ entry, lineNameOnly, last }) {
+  // Pas d’arrêt
+  if (last.kind === "nochange") {
+    return `${lineNameOnly} → Pas de modification`;
+  }
+
+  // Antidiabétiques “J0”
+  if (last.kind === "j0") {
+    return `${lineNameOnly} → Pas de prise le jour de l’intervention (J0)`;
+  }
+
+  // Injections : règles demandées
+  const isHBPM = entry?.group === "anticoag" && entry?.subclass === "HBPM";
+  const isCalci = (entry?.group === "anticoag" && entry?.subclass === "HNF" && (entry?.brands || []).some(b => ttmNormalize(b).includes("calciparine")));
+
+  if (last.kind === "date") {
+    const ds = ttmFmtDateFR(last.date);
+
+    if (isHBPM) {
+      // demandé : “Lovenox dernière dose le matin”
+      return `${lineNameOnly} → Dernière injection le ${ds} matin (${last.note})`;
+    }
+
+    if (isCalci) {
+      // demandé : “Calciparine dernière dose le soir”
+      return `${lineNameOnly} → Dernière injection le ${ds} soir (${last.note})`;
+    }
+
+    // comprimés “classiques”
+    return `${lineNameOnly} → Dernière prise le ${ds} aux heures habituelles (${last.note})`;
+  }
+
+  // Unknown : on ne dit jamais “protocole”
+  return `${lineNameOnly} → Arrêt à définir (${last.note || "information insuffisante"})`;
+}
+
 
 function ttmIsHBPM(entry) {
   return entry?.group === "anticoag" && entry?.subclass === "HBPM";
@@ -1908,16 +1965,17 @@ async function ttmProcess() {
       continue;
     }
 
-    // autres : simple J-X
-    const last = ttmComputeLastIntake(dateSurgery, hit.delay);
+    // autres : phrase standardisée (sans “protocole”)
+const last = ttmComputeLastIntake(dateSurgery, hit.delay);
+out.push(ttmMakeStopSentence({ entry: hit, lineNameOnly, last }));
 
-    if (last.kind === "nochange") {
-      out.push(`${lineNameOnly} → Pas de modification`);
-    } else if (last.kind === "date") {
-      out.push(`${lineNameOnly} → Dernière prise le ${ttmFmtDateFR(last.date)} aux heures habituelles (${last.note})`);
-    } else {
-      out.push(`${lineNameOnly} → Arrêt selon protocole (${last.note || hit.delay})`);
-    }
+if (last.kind === "nochange") {
+  out.push(`${lineNameOnly} → Pas de modification`);
+} else if (last.kind === "date") {
+  out.push(`${lineNameOnly} → Dernière prise le ${ttmFmtDateFR(last.date)} aux heures habituelles (${last.note})`);
+} else {
+  out.push(`${lineNameOnly} → Arrêt selon protocole (${last.note || hit.delay})`);
+}
   }
 
   right.value = out.join("\n");
