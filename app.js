@@ -1209,29 +1209,55 @@ let __ttmState = {
   index: null
 };
 
-let __ttmExtraLines = [];
+let __ttmExtra = {
+  fasting: [],
+  ide: [],
+  labs: []
+};
 
 function ttmResetExtraRx(dateSurgery) {
-  __ttmExtraLines = [];
+  __ttmExtra = { fasting: [], ide: [], labs: [] };
 
-  // règles de jeûne (systématiques)
+  // Règles de jeûne (toujours)
   const d = new Date(dateSurgery + "T00:00:00");
   const ds = ttmFmtDateFR(d);
 
-  __ttmExtraLines.push(`Arrêt de l'alimentation le ${ds} à minuit (au moins 6h avant l'intervention).`);
-  __ttmExtraLines.push(`Arrêt des boissons (eau/café) au moins 2h avant l'intervention.`);
+  __ttmExtra.fasting.push(`Arrêt de l'alimentation le ${ds} à minuit (au moins 6h avant l'intervention).`);
+  __ttmExtra.fasting.push(`Arrêt des boissons (eau/café) au moins 2h avant l'intervention.`);
 }
 
-function ttmAddExtraRx(line) {
+function ttmAddExtraRx(section, line) {
   if (!line) return;
-  if (__ttmExtraLines.includes(line)) return;
-  __ttmExtraLines.push(line);
+  if (!__ttmExtra[section]) return;
+  if (__ttmExtra[section].includes(line)) return;
+  __ttmExtra[section].push(line);
 }
 
 function ttmRenderExtraRx() {
   const el = document.getElementById("ttm-extra");
   if (!el) return;
-  el.value = __ttmExtraLines.join("\n");
+
+  const parts = [];
+
+  // 1) Toujours afficher le jeûne
+  parts.push(`**Règles de jeûne:**`);
+  parts.push(...(__ttmExtra.fasting || []));
+
+  // 2) IDE seulement si relai AVK (donc si on a des lignes)
+  if ((__ttmExtra.ide || []).length > 0) {
+    parts.push(""); // ligne vide
+    parts.push(`**IDE au domicile:**`);
+    parts.push(...__ttmExtra.ide);
+  }
+
+  // 3) Bilan biologique seulement si relai AVK
+  if ((__ttmExtra.labs || []).length > 0) {
+    parts.push(""); // ligne vide
+    parts.push(`**Bilan biologique:**`);
+    parts.push(...__ttmExtra.labs);
+  }
+
+  el.value = parts.join("\n");
 }
 
 let __ttmEl = null;
@@ -1303,60 +1329,137 @@ function ttmDetectInLine(line, rulesIndex) {
   return hit;
 }
 
-// --- Base médicaments à arrêter (DCI + noms commerciaux + délai)
-// 👉 Tu peux l'étendre facilement en ajoutant des entrées.
+// --- Base médicaments à arrêter (SFAR) — COMPLET
 const TTM_STOP_TABLE = [
-  // ===== Anticoagulants
-  { group: "anticoag", subclass: "HNF", dci: "Heparine sodique", brands: ["Calciparine"], delay: "H-8" },
-  { group: "anticoag", subclass: "HNF", dci: "Heparine sodique IV", brands: ["Heparine sodique (IVSE)"], delay: "H-4" },
 
+  // =====================================================
+  // ANTICOAGULANTS
+  // =====================================================
+
+  // HNF
+  { group: "anticoag", subclass: "HNF", dci: "Heparine sodique", brands: ["Calciparine"], delay: "H-8" },
+  { group: "anticoag", subclass: "HNF", dci: "Heparine sodique IV", brands: ["Heparine sodique", "IVSE"], delay: "H-4" },
+
+  // HBPM
   { group: "anticoag", subclass: "HBPM", dci: "Enoxaparine", brands: ["Lovenox"], delay: "H-24" },
   { group: "anticoag", subclass: "HBPM", dci: "Tinzaparine", brands: ["Innohep"], delay: "H-36" },
-  { group: "anticoag", subclass: "HBPM", dci: "Dalteparine", brands: ["Fragmine"], delay: "H-24" },
   { group: "anticoag", subclass: "HBPM", dci: "Nadroparine", brands: ["Fraxiparine"], delay: "H-24" },
+  { group: "anticoag", subclass: "HBPM", dci: "Dalteparine", brands: ["Fragmine"], delay: "H-36" },
 
-  { group: "anticoag", subclass: "AOD", dci: "Dabigatran", brands: ["Pradaxa"], delay: "J-3" },
+  // Fondaparinux
+  { group: "anticoag", subclass: "fondaparinux", dci: "Fondaparinux", brands: ["Arixtra"], delay: "J-4" },
+
+  // AOD
+  { group: "anticoag", subclass: "AOD", dci: "Dabigatran", brands: ["Pradaxa"], delay: "J-4" },
   { group: "anticoag", subclass: "AOD", dci: "Rivaroxaban", brands: ["Xarelto"], delay: "J-2" },
   { group: "anticoag", subclass: "AOD", dci: "Apixaban", brands: ["Eliquis"], delay: "J-2" },
   { group: "anticoag", subclass: "AOD", dci: "Edoxaban", brands: ["Lixiana"], delay: "J-2" },
 
+  // AVK
   { group: "anticoag", subclass: "AVK", dci: "Fluindione", brands: ["Previscan"], delay: "J-5" },
   { group: "anticoag", subclass: "AVK", dci: "Warfarine", brands: ["Coumadine"], delay: "J-5" },
   { group: "anticoag", subclass: "AVK", dci: "Acenocoumarol", brands: ["Sintrom"], delay: "J-3" },
 
-  // ===== Anti-agrégants
-  { group: "aap", subclass: "ASA", dci: "Acide acetylsalicylique", brands: ["Kardegic", "Aspirine"], delay: "—" },
+  // Anticoagulants IV spécifiques
+  { group: "anticoag", subclass: "IV", dci: "Bivalirudine", brands: ["Angiox"], delay: "H-4" },
+  { group: "anticoag", subclass: "IV", dci: "Argatroban", brands: ["Argatra"], delay: "H-4" },
+
+  // =====================================================
+  // ANTI-AGRÉGANTS PLAQUETTAIRES
+  // =====================================================
+
+  { group: "aap", subclass: "ASA", dci: "Acide acetylsalicylique", brands: ["Kardegic", "Aspirine", "Aspirine UPSA"], delay: "J-3" },
+
   { group: "aap", subclass: "P2Y12", dci: "Clopidogrel", brands: ["Plavix"], delay: "J-5" },
-  { group: "aap", subclass: "P2Y12", dci: "Ticagrelor", brands: ["Brilique"], delay: "J-3" },
+  { group: "aap", subclass: "P2Y12", dci: "Ticagrelor", brands: ["Brilique"], delay: "J-5" },
   { group: "aap", subclass: "P2Y12", dci: "Prasugrel", brands: ["Efient"], delay: "J-7" },
 
-  // ===== Anti-HTA à arrêter (ex. IEC/ARA2) – tu peux étendre
-  { group: "htA", subclass: "IEC", dci: "Enalapril", brands: ["Renitec"], delay: "J-2" },
-  { group: "htA", subclass: "IEC", dci: "Perindopril", brands: ["Coversyl"], delay: "J-2" },
-  { group: "htA", subclass: "IEC", dci: "Ramipril", brands: ["Triatec"], delay: "J-2" },
-  { group: "htA", subclass: "IEC", dci: "Lisinopril", brands: ["Zestril"], delay: "J-2" },
-  { group: "htA", subclass: "ARA2", dci: "Irbesartan", brands: ["Aprovel"], delay: "J-2" },
-  { group: "htA", subclass: "ARA2", dci: "Losartan", brands: ["Cozaar"], delay: "J-2" },
-  { group: "htA", subclass: "ARA2", dci: "Valsartan", brands: ["Tareg"], delay: "J-2" },
+  // Anti-GPIIb/IIIa
+  { group: "aap", subclass: "GPIIbIIIa", dci: "Eptifibatide", brands: ["Integrilin"], delay: "H-4" },
+  { group: "aap", subclass: "GPIIbIIIa", dci: "Tirofiban", brands: ["Agrastat"], delay: "H-4" },
+  { group: "aap", subclass: "GPIIbIIIa", dci: "Abciximab", brands: ["ReoPro"], delay: "H-12" },
 
-  // ===== Diurétiques (principaux)
-  { group: "diuretiques", subclass: "anse", dci: "Furosemide", brands: ["Lasilix"], delay: "J-1" },
-  { group: "diuretiques", subclass: "anse", dci: "Bumetanide", brands: ["Burinex"], delay: "J-1" },
+  // Cangrelor IV
+  { group: "aap", subclass: "P2Y12-IV", dci: "Cangrelor", brands: ["Kengrexal"], delay: "H-2" },
 
-  // ===== Antidiabétiques oraux (principaux)
-  { group: "diabete", subclass: "biguanide", dci: "Metformine", brands: ["Glucophage", "Stagid"], delay: "J-2" },
-  { group: "diabete", subclass: "sulfamide", dci: "Gliclazide", brands: ["Diamicron"], delay: "J-1" },
-  { group: "diabete", subclass: "sulfamide", dci: "Glimepiride", brands: ["Amarel"], delay: "J-1" },
-  { group: "diabete", subclass: "dpp4", dci: "Sitagliptine", brands: ["Januvia"], delay: "—" }, // poursuivi jusqu'au matin
-  { group: "diabete", subclass: "dpp4", dci: "Vildagliptine", brands: ["Galvus"], delay: "—" },
+  // =====================================================
+  // IEC / ARA II / ARNI
+  // =====================================================
 
-  { group: "diabete", subclass: "glp1", dci: "Semaglutide", brands: ["Ozempic", "Rybelsus"], delay: "J-6" },
-  { group: "diabete", subclass: "glp1", dci: "Dulaglutide", brands: ["Trulicity"], delay: "J-6" },
-  { group: "diabete", subclass: "glp1", dci: "Liraglutide", brands: ["Victoza"], delay: "J-6" },
+  // IEC
+  { group: "hta", subclass: "IEC", dci: "Enalapril", brands: ["Renitec", "Co-Renitec"], delay: "J-2" },
+  { group: "hta", subclass: "IEC", dci: "Perindopril", brands: ["Coversyl", "Preterax", "Bipreterax", "Coveram"], delay: "J-2" },
+  { group: "hta", subclass: "IEC", dci: "Ramipril", brands: ["Tritace", "Tritazide"], delay: "J-2" },
+  { group: "hta", subclass: "IEC", dci: "Lisinopril", brands: ["Zestril", "Zestoretic"], delay: "J-2" },
+  { group: "hta", subclass: "IEC", dci: "Captopril", brands: ["Lopril"], delay: "J-2" },
+  { group: "hta", subclass: "IEC", dci: "Quinapril", brands: ["Accupro", "Accuretic"], delay: "J-2" },
+  { group: "hta", subclass: "IEC", dci: "Fosinopril", brands: ["Fosinotec"], delay: "J-2" },
+  { group: "hta", subclass: "IEC", dci: "Trandolapril", brands: ["Odrik", "Tarka"], delay: "J-2" },
+
+  // ARA II
+  { group: "hta", subclass: "ARA2", dci: "Losartan", brands: ["Cozaar", "Hyzaar"], delay: "J-2" },
+  { group: "hta", subclass: "ARA2", dci: "Valsartan", brands: ["Tareg", "CoDiovan", "Exforge", "Exforge HCT"], delay: "J-2" },
+  { group: "hta", subclass: "ARA2", dci: "Irbesartan", brands: ["Aprovel", "CoAprovel"], delay: "J-2" },
+  { group: "hta", subclass: "ARA2", dci: "Candesartan", brands: ["Atacand", "Atacand Plus"], delay: "J-2" },
+  { group: "hta", subclass: "ARA2", dci: "Olmesartan", brands: ["Olmetec", "Sevikar"], delay: "J-2" },
+  { group: "hta", subclass: "ARA2", dci: "Telmisartan", brands: ["Micardis", "Twynsta"], delay: "J-2" },
+  { group: "hta", subclass: "ARA2", dci: "Eprosartan", brands: ["Teveten"], delay: "J-2" },
+  { group: "hta", subclass: "ARA2", dci: "Azilsartan", brands: ["Edarbi", "Edarbyclor"], delay: "J-2" },
+
+  // ARNI
+  { group: "hta", subclass: "ARNI", dci: "Sacubitril + Valsartan", brands: ["Entresto"], delay: "J-2" },
+
+  // =====================================================
+  // DIURÉTIQUES
+  // =====================================================
+
+  { group: "diuretique", subclass: "anse", dci: "Furosemide", brands: ["Lasilix"], delay: "J-1" },
+  { group: "diuretique", subclass: "anse", dci: "Bumetanide", brands: ["Bumex"], delay: "J-1" },
+  { group: "diuretique", subclass: "anse", dci: "Torasemide", brands: ["Diuver"], delay: "J-1" },
+
+  { group: "diuretique", subclass: "thiazidique", dci: "Hydrochlorothiazide", brands: ["Esidrex"], delay: "J-1" },
+  { group: "diuretique", subclass: "thiazidique", dci: "Indapamide", brands: ["Fludex"], delay: "J-1" },
+  { group: "diuretique", subclass: "thiazidique", dci: "Chlortalidone", brands: ["Hygroton"], delay: "J-1" },
+
+  { group: "diuretique", subclass: "epargneurK", dci: "Spironolactone", brands: ["Aldactone"], delay: "J-1" },
+  { group: "diuretique", subclass: "epargneurK", dci: "Eplerenone", brands: ["Inspra"], delay: "J-1" },
+  { group: "diuretique", subclass: "epargneurK", dci: "Amiloride", brands: ["Moduretic"], delay: "J-1" },
+  { group: "diuretique", subclass: "epargneurK", dci: "Triamterene", brands: ["Dyrenium"], delay: "J-1" },
+
+  // =====================================================
+  // ANTIDIABÉTIQUES ORAUX
+  // =====================================================
+
+  { group: "diabete", subclass: "biguanide", dci: "Metformine", brands: ["Glucophage", "Stagid"], delay: "J0-matin" },
+
+  { group: "diabete", subclass: "sulfamide", dci: "Gliclazide", brands: ["Diamicron"], delay: "J0-matin" },
+  { group: "diabete", subclass: "sulfamide", dci: "Glimepiride", brands: ["Amarel"], delay: "J0-matin" },
+  { group: "diabete", subclass: "sulfamide", dci: "Glibenclamide", brands: ["Daonil"], delay: "J0-matin" },
+
+  { group: "diabete", subclass: "glinide", dci: "Repaglinide", brands: ["Novonorm"], delay: "J0-matin" },
+  { group: "diabete", subclass: "glinide", dci: "Nateglinide", brands: ["Starlix"], delay: "J0-matin" },
+
+  { group: "diabete", subclass: "alphaglucosidase", dci: "Acarbose", brands: ["Glucor"], delay: "J0-matin" },
+
+  { group: "diabete", subclass: "dpp4", dci: "Sitagliptine", brands: ["Januvia"], delay: "J0-matin" },
+  { group: "diabete", subclass: "dpp4", dci: "Vildagliptine", brands: ["Galvus"], delay: "J0-matin" },
+  { group: "diabete", subclass: "dpp4", dci: "Linagliptine", brands: ["Trajenta"], delay: "J0-matin" },
+  { group: "diabete", subclass: "dpp4", dci: "Saxagliptine", brands: ["Onglyza"], delay: "J0-matin" },
+  { group: "diabete", subclass: "dpp4", dci: "Alogliptine", brands: ["Vipidia"], delay: "J0-matin" },
 
   { group: "diabete", subclass: "sglt2", dci: "Dapagliflozine", brands: ["Forxiga"], delay: "J-3" },
-  { group: "diabete", subclass: "sglt2", dci: "Empagliflozine", brands: ["Jardiance"], delay: "J-3" }
+  { group: "diabete", subclass: "sglt2", dci: "Empagliflozine", brands: ["Jardiance"], delay: "J-3" },
+  { group: "diabete", subclass: "sglt2", dci: "Canagliflozine", brands: ["Invokana"], delay: "J-3" },
+  { group: "diabete", subclass: "sglt2", dci: "Ertugliflozine", brands: ["Steglatro"], delay: "J-3" },
+
+  { group: "diabete", subclass: "glp1", dci: "Liraglutide", brands: ["Victoza"], delay: "J-6" },
+  { group: "diabete", subclass: "glp1", dci: "Semaglutide", brands: ["Ozempic", "Rybelsus"], delay: "J-6" },
+  { group: "diabete", subclass: "glp1", dci: "Dulaglutide", brands: ["Trulicity"], delay: "J-6" },
+  { group: "diabete", subclass: "glp1", dci: "Exenatide", brands: ["Byetta"], delay: "J-6" },
+
+  { group: "diabete", subclass: "tzd", dci: "Pioglitazone", brands: ["Actos"], delay: "J0-matin" },
 ];
+
 
 function ttmBuildIndex() {
   const idx = {};
@@ -1482,6 +1585,25 @@ function ttmComputeLastIntake(dateSurgery, delayStr) {
   return { kind: "raw", note: off.raw || delayStr };
 }
 
+function ttmIsHBPM(entry) {
+  return entry?.group === "anticoag" && entry?.subclass === "HBPM";
+}
+function ttmIsHNFCalciparine(entry) {
+  // Calciparine = héparine sodique SC (HNF) dans ton tableau
+  const b = (entry?.brands || []).map(ttmNormalize).join(" ");
+  const d = ttmNormalize(entry?.dci || "");
+  return entry?.group === "anticoag"
+    && entry?.subclass === "HNF"
+    && (b.includes("calciparine") || d.includes("heparine"));
+}
+function ttmLastDoseTimeLabel(entry) {
+  // règle demandée par toi
+  if (ttmIsHBPM(entry)) return "matin";
+  if (ttmIsHNFCalciparine(entry)) return "soir";
+  return "aux heures habituelles";
+}
+
+
 // ---------- Logique spécifique anticoag/AAP selon chirurgie
 async function ttmResolveSpecialLogic({ surgeryKey, entry, rawLine, hasASA }) {
   // IMPORTANT : on enlève toujours la posologie côté droite
@@ -1588,8 +1710,8 @@ async function ttmResolveSpecialLogic({ surgeryKey, entry, rawLine, hasASA }) {
       }
 
       // push extra Rx
-      ttmAddExtraRx(ideText);
-      ttmAddExtraRx(inrText);
+      ttmAddExtraRx("ide", ideText);
+ttmAddExtraRx("labs", inrText);
 
       if (last.kind === "date") {
         return {
@@ -1606,10 +1728,13 @@ async function ttmResolveSpecialLogic({ surgeryKey, entry, rawLine, hasASA }) {
 
     // ===== non-AVK anticoag
     if (last.kind === "date") {
-      return {
-        actionText: `${leftNameOnly} → Dernière prise le ${ttmFmtDateFR(last.date)} aux heures habituelles (${last.note})`
-      };
-    }
+  const when = ttmLastDoseTimeLabel(entry);
+  if (when === "aux heures habituelles") {
+    return { actionText: `${ttmStripDose(leftNameOnly)} → Dernière prise le ${ttmFmtDateFR(last.date)} aux heures habituelles (${last.note})` };
+  }
+  // HBPM / Calciparine : injection matin/soir
+  return { actionText: `${ttmStripDose(leftNameOnly)} → Dernière injection le ${ttmFmtDateFR(last.date)} ${when} (${last.note})` };
+}
     return { actionText: `${leftNameOnly} → Arrêt selon protocole (${last.note || entry.delay})` };
   }
 
