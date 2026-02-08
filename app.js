@@ -1972,7 +1972,7 @@ const last = ttmComputeLastIntake(dateSurgery, hit.delay);
 out.push(ttmMakeStopSentence({ entry: hit, lineNameOnly, last }));
   }
 
-  right.value = out.join("\n");
+  right.value = out.map(l => `- ${l}`).join("\n");
   ttmRenderExtraRx();
 }
 
