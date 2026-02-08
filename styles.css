@@ -7656,3 +7656,18 @@ body.theme-light .ov-swatch{
   font-weight: 800;
 }
 
+/* =====================================================
+   Bouton "Ordonnance gestion des traitements"
+   Centré sous le titre
+   ===================================================== */
+
+.ttm-open-wrapper{
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.ttm-open-btn{
+  font-size: 15px;
+  padding: 10px 18px;
+}
