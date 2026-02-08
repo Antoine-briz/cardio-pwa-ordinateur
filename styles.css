@@ -7615,3 +7615,148 @@ body.theme-light .ov-swatch{
   min-height: 120px;
 }
 
+/* =====================================================
+   TTM (Ordonnance gestion des traitements)
+   => Toujours style clair (même en thème sombre)
+   ===================================================== */
+
+.ttm-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+
+.ttm-window{
+  width: min(1200px, 96vw);
+  height: min(720px, 92vh);
+  background: #ffffff;
+  color: #111;
+  border-radius: 18px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.ttm-header{
+  padding: 14px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  color: #111;
+}
+
+.ttm-title{ font-weight: 800; }
+
+.ttm-close{
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  color: #111;
+  border-radius: 10px;
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+}
+
+.ttm-controls{
+  padding: 14px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 12px;
+  background: #ffffff;
+  color: #111;
+}
+
+.ttm-field label{
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #111;
+}
+
+.ttm-field select,
+.ttm-field input[type="date"]{
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  color: #111;
+}
+
+.ttm-actions{
+  display: flex;
+  gap: 10px;
+  align-items: end;
+}
+
+.ttm-body{
+  flex: 1;                 /* important */
+  min-height: 0;           /* important */
+  display: flex;
+  gap: 14px;
+  padding: 14px 16px;
+  background: #ffffff;
+}
+
+.ttm-col{
+  flex: 1;
+  min-height: 0;           /* important */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ttm-col-title{
+  font-weight: 800;
+  color: #111;
+  font-size: 14px;
+}
+
+.ttm-textarea{
+  flex: 1;                 /* important -> remplit la hauteur */
+  min-height: 0;           /* important */
+  resize: none;
+  width: 100%;
+  padding: 12px 12px;
+  border-radius: 16px;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;     /* clair même en dark */
+  color: #111;             /* texte noir */
+  line-height: 1.35;
+}
+
+/* Colonne droite empilée : doit faire la même hauteur que la gauche */
+.ttm-right-stack{
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Zone principale (droite haut) plus grande */
+.ttm-right-main{
+  flex: 2;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Zone extra (droite bas) plus petite */
+.ttm-right-extra{
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
