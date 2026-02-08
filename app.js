@@ -1742,7 +1742,8 @@ let __ttmState = {
   date: "", // YYYY-MM-DD
   index: null
 };
-
+}
+  
 async function ttmProcess() {
   const left = document.getElementById("ttm-left");
   const right = document.getElementById("ttm-right");
