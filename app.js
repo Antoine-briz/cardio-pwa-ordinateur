@@ -1203,6 +1203,30 @@ function renderAnesthConsultTraitements() {
 // =====================================================
 // Traitement Manager (Ordonnance gestion des traitements)
 // =====================================================
+let __ttmExtraLines = [];
+
+function ttmResetExtraRx(dateSurgery) {
+  __ttmExtraLines = [];
+
+  // règles de jeûne (systématiques)
+  const d = new Date(dateSurgery + "T00:00:00");
+  const ds = ttmFmtDateFR(d);
+
+  __ttmExtraLines.push(`Arrêt de l'alimentation le ${ds} à minuit (au moins 6h avant l'intervention).`);
+  __ttmExtraLines.push(`Arrêt des boissons (eau/café) au moins 2h avant l'intervention.`);
+}
+
+function ttmAddExtraRx(line) {
+  if (!line) return;
+  if (__ttmExtraLines.includes(line)) return;
+  __ttmExtraLines.push(line);
+}
+
+function ttmRenderExtraRx() {
+  const el = document.getElementById("ttm-extra");
+  if (!el) return;
+  el.value = __ttmExtraLines.join("\n");
+}
 
 let __ttmEl = null;
 
@@ -1344,6 +1368,27 @@ function ttmBuildIndex() {
   return idx;
 }
 
+function ttmStripDose(line) {
+  // Garde le nom, enlève posologies/dosages fréquents
+  // Ex: "Eliquis 5mg x2/j" => "Eliquis"
+  // Ex: "Metformine 850 mg 1-0-1" => "Metformine"
+  // Ex: "Xarelto 20mg le soir" => "Xarelto"
+  let s = String(line || "").trim();
+
+  // coupe à partir d'un dosage (mg, g, UI, µg, mcg, mL, %, cp, comprimé, gélule, sachet, etc.)
+  s = s.replace(/\b(\d+([.,]\d+)?\s*(mg|g|ui|u\.i\.|µg|mcg|ml|%))\b.*$/i, "").trim();
+
+  // coupe à partir de patterns de posologie : x2/j, 2 fois, 1-0-1, matin/midi/soir, cp, comprimés
+  s = s.replace(/\b(x\s*\d+(\s*\/\s*j)?|(\d+\s*-\s*\d+\s*-\s*\d+)|\d+\s*(cp|cpr|comprime|comprimés|gelule|gélule|sachet)s?|\bmatin\b|\bmidi\b|\bsoir\b|\bcoucher\b).*/i, "").trim();
+
+  // coupe à partir de parenthèses si elles contiennent dose
+  s = s.replace(/\(([^)]*(mg|g|ui|µg|mcg|ml|%)\s*[^)]*)\).*$/i, "").trim();
+
+  // nettoie double espaces
+  s = s.replace(/\s{2,}/g, " ").trim();
+  return s || String(line || "").trim();
+}
+
 function ttmHasAnyASA(lines) {
   // Kardégic / aspirine dans le traitement
   const n = lines.map(ttmNormalize).join(" | ");
@@ -1480,43 +1525,80 @@ async function ttmResolveSpecialLogic({ surgeryKey, entry, rawLine, hasASA }) {
       }
 
       const mol = await ttmAskModal({
-        title: "Relai AVK",
-        question: `Relai pour ${name} : quelle molécule ?`,
-        choices: ["Énoxaparine", "Calciparine", "HNF"]
-      });
-      if (mol === null) return { actionText: `${rawLine} → (annulé)` };
+  title: "Relai AVK",
+  question: `Relai pour ${name} : quelle molécule ?`,
+  choices: ["Enoxaparine", "Calciparine"]
+});
+if (mol === null) return { actionText: `${ttmStripDose(rawLine)} → (annulé)` };
 
-      // Paramétrage automatique (selon tes règles) :
-      // - Previscan/Coumadine : début relai 48h après dernière prise
-      // - Sintrom : 24h après dernière prise
-      const lineN = ttmNormalize(rawLine);
-      const isSintrom = lineN.includes("sintrom") || lineN.includes("acenocoumarol");
-      const startShiftDays = isSintrom ? 2 : 3; // J-3 vs J-2 par rapport à chirurgie si dernière prise J-5 ou J-3 : on exprime en dates à partir de la dernière prise
-      // On calcule concrètement :
-      let lastDate = null;
-      if (last.kind === "date") lastDate = last.date;
+// --- calcul dates : dernière prise AVK déjà calculée dans `last`
+let lastDate = null;
+if (last.kind === "date") lastDate = last.date;
 
-      let startDate = null;
-      if (lastDate) {
-        startDate = new Date(lastDate);
-        startDate.setDate(startDate.getDate() + (isSintrom ? 1 : 2)); // +24h ou +48h
-      }
+// règles : Previscan/Coumadine => début relai 48h après dernière prise
+//         Sintrom => début relai 24h après dernière prise
+const lineN = ttmNormalize(rawLine);
+const isSintrom = lineN.includes("sintrom") || lineN.includes("acenocoumarol");
+let startDate = null;
 
-      // fin relai selon molécule
-      let endNote = "";
-      if (mol === "Énoxaparine") endNote = "Dernière dose 24h avant intervention";
-      if (mol === "Calciparine") endNote = "Dernière dose 8h avant intervention";
-      if (mol === "HNF") endNote = "Arrêt IVSE 2h avant intervention";
+if (lastDate) {
+  startDate = new Date(lastDate);
+  startDate.setDate(startDate.getDate() + (isSintrom ? 1 : 2)); // +24h ou +48h
+}
 
-      if (last.kind === "date") {
-        const msgStart = startDate ? ` ; relai ${mol} à débuter le ${ttmFmtDateFR(startDate)}` : "";
-        return {
-          actionText: `${rawLine} → Dernière prise le ${ttmFmtDateFR(last.date)} aux heures habituelles (${last.note})${msgStart} ; ${endNote}`
-        };
-      }
+// Dernière injection :
+const surgeryDate = new Date(__ttmState.date + "T00:00:00");
 
-      return { actionText: `${rawLine} → Arrêt selon protocole (${entry.delay}) ; relai ${mol} (${endNote})` };
-    }
+// - Enoxaparine: dernière injection le matin la veille (J-1 matin)
+// - Calciparine: dernière injection le matin J0 (8h avant) -> on met “J0 matin”
+const lastInjEnox = new Date(surgeryDate);
+lastInjEnox.setDate(lastInjEnox.getDate() - 1);
+
+const lastInjCalci = new Date(surgeryDate); // J0
+
+let relayText = "";
+let ideText = "";
+let inrText = `Bilan biologique à pratiquer en laboratoire de ville 24 à 48h avant l'intervention: INR.`;
+
+if (mol === "Enoxaparine") {
+  relayText =
+    `Enoxaparine 100 UI/kg SC deux fois par jour (matin et soir) à partir du ${startDate ? ttmFmtDateFR(startDate) : "…"} ` +
+    `avec dernière injection le ${ttmFmtDateFR(lastInjEnox)} matin (24h avant l'intervention).`;
+
+  // IDE : du startDate matin au J-1 matin
+  ideText =
+    `Faire pratiquer par IDE au domicile les injections de Enoxaparine SC matin et soir du ` +
+    `${startDate ? ttmFmtDateFR(startDate) : "…"} matin au ${ttmFmtDateFR(lastInjEnox)} matin.`;
+}
+
+if (mol === "Calciparine") {
+  relayText =
+    `Calciparine 500 UI/kg SC répartis en 3 injections par jour (matin, midi, soir) à partir du ${startDate ? ttmFmtDateFR(startDate) : "…"} ` +
+    `avec dernière injection le ${ttmFmtDateFR(lastInjCalci)} matin (8h avant l'intervention).`;
+
+  // IDE : du startDate matin au J0 soir
+  ideText =
+    `Faire pratiquer par IDE au domicile les injections de Calciparine SC matin, midi et soir du ` +
+    `${startDate ? ttmFmtDateFR(startDate) : "…"} matin au ${ttmFmtDateFR(lastInjCalci)} soir.`;
+}
+
+// on “pousse” ces prescriptions dans l’encadré extra
+ttmAddExtraRx(ideText);
+ttmAddExtraRx(inrText);
+
+const leftNameOnly = ttmStripDose(rawLine);
+
+if (last.kind === "date") {
+  return {
+    actionText:
+      `${leftNameOnly} → Dernière prise le ${ttmFmtDateFR(last.date)} aux heures habituelles (${last.note}) ; ` +
+      relayText
+  };
+}
+return {
+  actionText:
+    `${leftNameOnly} → Arrêt selon protocole (${entry.delay}) ; ` + relayText
+};
 
     // non-AVK anticoag : pas de question de relai
     if (last.kind === "date") {
@@ -1679,6 +1761,9 @@ async function ttmProcess() {
     return;
   }
 
+// ✅ (re)initialise l’encadré “Ordonnances supplémentaires”
+  ttmResetExtraRx(dateSurgery);
+  
   const lines = (left.value || "")
     .split("\n")
     .map(s => s.trim())
@@ -1693,9 +1778,10 @@ async function ttmProcess() {
 
   const out = [];
   for (const line of lines) {
+    const lineNameOnly = ttmStripDose(line);
     const hit = ttmDetectInLine(line, __ttmState.index);
     if (!hit) {
-      out.push(`${line} → Pas de modification`);
+      out.push(`${lineNameOnly} → Pas de modification`);
       continue;
     }
 
@@ -1710,15 +1796,16 @@ async function ttmProcess() {
     const last = ttmComputeLastIntake(dateSurgery, hit.delay);
 
     if (last.kind === "nochange") {
-      out.push(`${line} → Pas de modification`);
+      out.push(`${lineNameOnly} → Pas de modification`);
     } else if (last.kind === "date") {
-      out.push(`${line} → Dernière prise le ${ttmFmtDateFR(last.date)} aux heures habituelles (${last.note})`);
+      out.push(`${lineNameOnly} → Dernière prise le ${ttmFmtDateFR(last.date)} aux heures habituelles (${last.note})`);
     } else {
-      out.push(`${line} → Arrêt selon protocole (${last.note || hit.delay})`);
+      out.push(`${lineNameOnly} → Arrêt selon protocole (${last.note || hit.delay})`);
     }
   }
 
   right.value = out.join("\n");
+  ttmRenderExtraRx();
 }
 
 function openTreatmentManager() {
@@ -1728,7 +1815,7 @@ function openTreatmentManager() {
 
   __ttmEl = document.createElement("div");
   __ttmEl.className = "ttm-overlay";
-  __ttmEl.innerHTML = `
+    __ttmEl.innerHTML = `
     <div class="ttm-window" role="dialog" aria-modal="true">
       <div class="ttm-header">
         <div class="ttm-title">Ordonnance — Gestion des traitements</div>
@@ -1761,16 +1848,24 @@ function openTreatmentManager() {
       <div class="ttm-body">
         <div class="ttm-col">
           <div class="ttm-col-title">Traitement en cours (coller ligne par ligne)</div>
-          <textarea id="ttm-left" class="ttm-textarea" spellcheck="false" placeholder="Insérez l'ordonnance ici"></textarea>
+          <textarea id="ttm-left" class="ttm-textarea" spellcheck="false"></textarea>
         </div>
 
-        <div class="ttm-col">
-          <div class="ttm-col-title">Gestion des traitements</div>
-          <textarea id="ttm-right" class="ttm-textarea" spellcheck="false" readonly></textarea>
+        <div class="ttm-col ttm-right-stack">
+          <div class="ttm-right-main">
+            <div class="ttm-col-title">Gestion des traitements</div>
+            <textarea id="ttm-right" class="ttm-textarea" spellcheck="false" readonly></textarea>
+          </div>
+
+          <div class="ttm-right-extra">
+            <div class="ttm-col-title">Ordonnances supplémentaires</div>
+            <textarea id="ttm-extra" class="ttm-textarea" spellcheck="false" readonly></textarea>
+          </div>
         </div>
       </div>
     </div>
   `;
+;
 
   document.body.appendChild(__ttmEl);
 
@@ -1788,6 +1883,8 @@ function openTreatmentManager() {
   __ttmEl.querySelector("#ttm-clear").addEventListener("click", () => {
     __ttmEl.querySelector("#ttm-left").value = "";
     __ttmEl.querySelector("#ttm-right").value = "";
+    __ttmEl.querySelector("#ttm-extra").value = "";
+    __ttmExtraLines = [];
   });
 }
 
