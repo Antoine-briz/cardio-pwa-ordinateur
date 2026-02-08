@@ -7551,3 +7551,67 @@ body.theme-light .ov-swatch{
   font-weight: 700;
 }
 
+/* FORCER un rendu clair pour certaines zones même en thème sombre */
+:root{
+  --ttm-panel: #ffffff;
+  --ttm-text: #111827;
+  --ttm-muted: #6b7280;
+  --ttm-border: rgba(0,0,0,.15);
+
+  /* zones “claires” demandées */
+  --ttm-lite-bg: #f3f4f6;
+  --ttm-lite-text: #111827;
+  --ttm-lite-border: rgba(0,0,0,.15);
+}
+
+/* On ne change pas l’overlay (fond), seulement les blocs internes */
+[data-theme="dark"]{
+  --ttm-panel: #ffffff;         /* 👈 copie du thème clair */
+  --ttm-text: #111827;
+  --ttm-muted: #6b7280;
+  --ttm-border: rgba(0,0,0,.15);
+
+  --ttm-lite-bg: #f3f4f6;
+  --ttm-lite-text: #111827;
+  --ttm-lite-border: rgba(0,0,0,.15);
+}
+
+/* champs/select/date + 2 encadrés + textarea en “clair” */
+.ttm-field select,
+.ttm-field input,
+.ttm-textarea,
+.ttm-window{
+  background: var(--ttm-panel);
+  color: var(--ttm-text);
+  border-color: var(--ttm-border);
+}
+
+.ttm-textarea{
+  background: var(--ttm-lite-bg);
+  color: var(--ttm-lite-text);
+  border-color: var(--ttm-lite-border);
+}
+
+.ttm-field select,
+.ttm-field input{
+  background: var(--ttm-lite-bg);
+  color: var(--ttm-lite-text);
+  border-color: var(--ttm-lite-border);
+}
+
+/* nouveau petit encadré “Ordonnances supplémentaires” */
+.ttm-right-stack{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+}
+.ttm-right-main{
+  flex: 1;
+  min-height: 0;
+}
+.ttm-right-extra{
+  height: 150px;         /* 👈 ajustable */
+  min-height: 120px;
+}
+
