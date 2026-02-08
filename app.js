@@ -1761,7 +1761,7 @@ function openTreatmentManager() {
       <div class="ttm-body">
         <div class="ttm-col">
           <div class="ttm-col-title">Traitement en cours (coller ligne par ligne)</div>
-          <textarea id="ttm-left" class="ttm-textarea" spellcheck="false" placeholder="Ex:\nEliquis 5mg x2\nRamipril 5mg\nMetformine 850mg"></textarea>
+          <textarea id="ttm-left" class="ttm-textarea" spellcheck="false" placeholder="Insérez l'ordonnance ici"></textarea>
         </div>
 
         <div class="ttm-col">
