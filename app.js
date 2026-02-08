@@ -1484,10 +1484,14 @@ function ttmComputeLastIntake(dateSurgery, delayStr) {
 
 // ---------- Logique spécifique anticoag/AAP selon chirurgie
 async function ttmResolveSpecialLogic({ surgeryKey, entry, rawLine, hasASA }) {
-  // returns { actionText } (ligne finale)
+  // IMPORTANT : on enlève toujours la posologie côté droite
+  const leftNameOnly = ttmStripDose(rawLine);
+
+  // sécurité
+  if (!entry) return { actionText: `${leftNameOnly} → Pas de modification` };
+
   const name = entry?.brands?.[0] ? `${entry.brands[0]} (${entry.dci})` : entry.dci;
 
-  
   // --- Anticoagulants
   if (ttmIsAnticoag(entry)) {
     // Cardiaque & vasculaire : arrêt systématique
@@ -1504,7 +1508,7 @@ async function ttmResolveSpecialLogic({ surgeryKey, entry, rawLine, hasASA }) {
         question: `Pour ${name} : arrêt des anticoagulants ?`,
         choices: ["Oui", "Non"]
       });
-      if (ans === null) return { actionText: `${rawLine} → (annulé)` };
+      if (ans === null) return { actionText: `${leftNameOnly} → (annulé)` };
       doStop = (ans === "Oui");
     }
 
@@ -1512,106 +1516,101 @@ async function ttmResolveSpecialLogic({ surgeryKey, entry, rawLine, hasASA }) {
       return { actionText: `${leftNameOnly} → Pas de modification` };
     }
 
-    // arrêt selon délai
     const last = ttmComputeLastIntake(__ttmState.date, entry.delay);
 
-    // relais : uniquement AVK
+    // ===== AVK : question relai + prescription détaillée
     if (ttmIsAVK(entry)) {
       const ansRelai = await ttmAskModal({
         title: "AVK",
         question: `Pour ${name} : indication de relai ?`,
         choices: ["Oui", "Non"]
       });
-      if (ansRelai === null) return { actionText: `${rawLine} → (annulé)` };
+      if (ansRelai === null) return { actionText: `${leftNameOnly} → (annulé)` };
 
+      // sans relai
       if (ansRelai === "Non") {
         if (last.kind === "date") {
-          return { actionText: `${rawLine} → Dernière prise le ${ttmFmtDateFR(last.date)} aux heures habituelles (${last.note})` };
+          return {
+            actionText: `${leftNameOnly} → Dernière prise le ${ttmFmtDateFR(last.date)} aux heures habituelles (${last.note})`
+          };
         }
-        return { actionText: `${rawLine} → Arrêt selon protocole (${last.note || entry.delay})` };
+        return { actionText: `${leftNameOnly} → Arrêt selon protocole (${last.note || entry.delay})` };
       }
 
       const mol = await ttmAskModal({
-  title: "Relai AVK",
-  question: `Relai pour ${name} : quelle molécule ?`,
-  choices: ["Enoxaparine", "Calciparine"]
-});
-if (mol === null) return { actionText: `${ttmStripDose(rawLine)} → (annulé)` };
+        title: "Relai AVK",
+        question: `Relai pour ${name} : quelle molécule ?`,
+        choices: ["Enoxaparine", "Calciparine"]
+      });
+      if (mol === null) return { actionText: `${leftNameOnly} → (annulé)` };
 
-// --- calcul dates : dernière prise AVK déjà calculée dans `last`
-let lastDate = null;
-if (last.kind === "date") lastDate = last.date;
+      // --- calcul dates
+      let lastDate = (last.kind === "date") ? last.date : null;
 
-// règles : Previscan/Coumadine => début relai 48h après dernière prise
-//         Sintrom => début relai 24h après dernière prise
-const lineN = ttmNormalize(rawLine);
-const isSintrom = lineN.includes("sintrom") || lineN.includes("acenocoumarol");
-let startDate = null;
+      // Previscan/Coumadine => start +48h ; Sintrom => start +24h
+      const lineN = ttmNormalize(rawLine);
+      const isSintrom = lineN.includes("sintrom") || lineN.includes("acenocoumarol");
 
-if (lastDate) {
-  startDate = new Date(lastDate);
-  startDate.setDate(startDate.getDate() + (isSintrom ? 1 : 2)); // +24h ou +48h
-}
+      let startDate = null;
+      if (lastDate) {
+        startDate = new Date(lastDate);
+        startDate.setDate(startDate.getDate() + (isSintrom ? 1 : 2));
+      }
 
-// Dernière injection :
-const surgeryDate = new Date(__ttmState.date + "T00:00:00");
+      const surgeryDate = new Date(__ttmState.date + "T00:00:00");
 
-// - Enoxaparine: dernière injection le matin la veille (J-1 matin)
-// - Calciparine: dernière injection le matin J0 (8h avant) -> on met “J0 matin”
-const lastInjEnox = new Date(surgeryDate);
-lastInjEnox.setDate(lastInjEnox.getDate() - 1);
+      // dernières injections
+      const lastInjEnox = new Date(surgeryDate); // J-1
+      lastInjEnox.setDate(lastInjEnox.getDate() - 1);
 
-const lastInjCalci = new Date(surgeryDate); // J0
+      const lastInjCalci = new Date(surgeryDate); // J0
 
-let relayText = "";
-let ideText = "";
-let inrText = `Bilan biologique à pratiquer en laboratoire de ville 24 à 48h avant l'intervention: INR.`;
+      let relayText = "";
+      let ideText = "";
+      const inrText = `Bilan biologique à pratiquer en laboratoire de ville 24 à 48h avant l'intervention: INR.`;
 
-if (mol === "Enoxaparine") {
-  relayText =
-    `Enoxaparine 100 UI/kg SC deux fois par jour (matin et soir) à partir du ${startDate ? ttmFmtDateFR(startDate) : "…"} ` +
-    `avec dernière injection le ${ttmFmtDateFR(lastInjEnox)} matin (24h avant l'intervention).`;
+      if (mol === "Enoxaparine") {
+        relayText =
+          `Enoxaparine 100 UI/kg SC deux fois par jour (matin et soir) à partir du ${startDate ? ttmFmtDateFR(startDate) : "…"} ` +
+          `avec dernière injection le ${ttmFmtDateFR(lastInjEnox)} matin (24h avant l'intervention).`;
 
-  // IDE : du startDate matin au J-1 matin
-  ideText =
-    `Faire pratiquer par IDE au domicile les injections de Enoxaparine SC matin et soir du ` +
-    `${startDate ? ttmFmtDateFR(startDate) : "…"} matin au ${ttmFmtDateFR(lastInjEnox)} matin.`;
-}
+        ideText =
+          `Faire pratiquer par IDE au domicile les injections de Enoxaparine SC matin et soir du ` +
+          `${startDate ? ttmFmtDateFR(startDate) : "…"} matin au ${ttmFmtDateFR(lastInjEnox)} matin.`;
+      } else {
+        relayText =
+          `Calciparine 500 UI/kg SC répartis en 3 injections par jour (matin, midi, soir) à partir du ${startDate ? ttmFmtDateFR(startDate) : "…"} ` +
+          `avec dernière injection le ${ttmFmtDateFR(lastInjCalci)} matin (8h avant l'intervention).`;
 
-if (mol === "Calciparine") {
-  relayText =
-    `Calciparine 500 UI/kg SC répartis en 3 injections par jour (matin, midi, soir) à partir du ${startDate ? ttmFmtDateFR(startDate) : "…"} ` +
-    `avec dernière injection le ${ttmFmtDateFR(lastInjCalci)} matin (8h avant l'intervention).`;
+        ideText =
+          `Faire pratiquer par IDE au domicile les injections de Calciparine SC matin, midi et soir du ` +
+          `${startDate ? ttmFmtDateFR(startDate) : "…"} matin au ${ttmFmtDateFR(lastInjCalci)} soir.`;
+      }
 
-  // IDE : du startDate matin au J0 soir
-  ideText =
-    `Faire pratiquer par IDE au domicile les injections de Calciparine SC matin, midi et soir du ` +
-    `${startDate ? ttmFmtDateFR(startDate) : "…"} matin au ${ttmFmtDateFR(lastInjCalci)} soir.`;
-}
+      // push extra Rx
+      ttmAddExtraRx(ideText);
+      ttmAddExtraRx(inrText);
 
-// on “pousse” ces prescriptions dans l’encadré extra
-ttmAddExtraRx(ideText);
-ttmAddExtraRx(inrText);
+      if (last.kind === "date") {
+        return {
+          actionText:
+            `${leftNameOnly} → Dernière prise le ${ttmFmtDateFR(last.date)} aux heures habituelles (${last.note}) ; ` +
+            relayText
+        };
+      }
 
-const leftNameOnly = ttmStripDose(rawLine);
+      return {
+        actionText: `${leftNameOnly} → Arrêt selon protocole (${entry.delay}) ; ${relayText}`
+      };
+    } // ✅ FIN AVK
 
-if (last.kind === "date") {
-  return {
-    actionText:
-      `${leftNameOnly} → Dernière prise le ${ttmFmtDateFR(last.date)} aux heures habituelles (${last.note}) ; ` +
-      relayText
-  };
-}
-return {
-  actionText:
-    `${leftNameOnly} → Arrêt selon protocole (${entry.delay}) ; ` + relayText
-};
-
-    // non-AVK anticoag : pas de question de relai
+    // ===== non-AVK anticoag
     if (last.kind === "date") {
-      return { actionText: `${rawLine} → Dernière prise le ${ttmFmtDateFR(last.date)} aux heures habituelles (${last.note})` };
+      return {
+        actionText: `${leftNameOnly} → Dernière prise le ${ttmFmtDateFR(last.date)} aux heures habituelles (${last.note})`
+      };
     }
-    return { actionText: `${rawLine} → Arrêt selon protocole (${last.note || entry.delay})` };
+    return { actionText: `${leftNameOnly} → Arrêt selon protocole (${last.note || entry.delay})` };
   }
 
   // --- Anti-agrégants
@@ -1621,7 +1620,7 @@ return {
     const isTica = ttmNormalize(entry.dci).includes("ticagrelor") || (entry.brands || []).some(b => ttmNormalize(b).includes("brilique"));
     const isPrasu = ttmNormalize(entry.dci).includes("prasugrel") || (entry.brands || []).some(b => ttmNormalize(b).includes("efient"));
 
-    // Kardégic : vasculaire => demander arrêt oui/non ; autres => poursuite systématique
+    // Kardégic : vasculaire => demander arrêt oui/non ; CI/rythmo/radiovasc/cardiaque => poursuite
     if (isASA) {
       if (surgeryKey === "vasculaire") {
         const ans = await ttmAskModal({
@@ -1630,49 +1629,43 @@ return {
           choices: ["Oui", "Non"]
         });
         if (ans === null) return { actionText: `${leftNameOnly} → (annulé)` };
-
         if (ans === "Non") return { actionText: `${leftNameOnly} → Pas de modification` };
-
-        // si arrêt demandé : délai (si tu veux le définir), sinon message générique
-        return { actionText: `${rawLine} → Arrêt selon décision (à paramétrer si besoin)` };
+        return { actionText: `${leftNameOnly} → Arrêt selon décision (à paramétrer si besoin)` };
       }
-
-      // CI / rythmologie / radio-vasc / cardiaque : poursuite systématique
       return { actionText: `${leftNameOnly} → Pas de modification` };
     }
 
     // Clopidogrel
     if (isClopi) {
-      if (surgeryKey === "cardiaque") {
-        // arrêt systématique
-        const last = ttmComputeLastIntake(__ttmState.date, entry.delay);
+      const last = ttmComputeLastIntake(__ttmState.date, entry.delay);
 
-        // question relai Kardégic uniquement si pas ASA dans le traitement
+      // Cardiaque : arrêt systématique ; relai Kardégic seulement si pas ASA
+      if (surgeryKey === "cardiaque") {
         if (!hasASA) {
           const ans = await ttmAskModal({
             title: "Clopidogrel (chirurgie cardiaque)",
             question: `Pour ${name} : relai par Kardégic ?`,
             choices: ["Oui", "Non"]
           });
-          if (ans === null) return { actionText: `${rawLine} → (annulé)` };
+          if (ans === null) return { actionText: `${leftNameOnly} → (annulé)` };
 
           if (last.kind === "date") {
             if (ans === "Oui") {
               const start = new Date(last.date);
               start.setDate(start.getDate() + 1);
-              return { actionText: `${rawLine} → Dernière prise le ${ttmFmtDateFR(last.date)} (${last.note}) ; débuter Kardégic 75 mg/j le ${ttmFmtDateFR(start)}` };
+              return { actionText: `${leftNameOnly} → Dernière prise le ${ttmFmtDateFR(last.date)} (${last.note}) ; débuter Kardégic 75 mg/j le ${ttmFmtDateFR(start)}` };
             }
-            return { actionText: `${rawLine} → Dernière prise le ${ttmFmtDateFR(last.date)} (${last.note})` };
+            return { actionText: `${leftNameOnly} → Dernière prise le ${ttmFmtDateFR(last.date)} (${last.note})` };
           }
-          return { actionText: `${rawLine} → Arrêt (${entry.delay})${ans === "Oui" ? " ; relai Kardégic 75 mg/j dès le lendemain" : ""}` };
+          return { actionText: `${leftNameOnly} → Arrêt (${entry.delay})${ans === "Oui" ? " ; relai Kardégic 75 mg/j dès le lendemain" : ""}` };
         }
 
-        // ASA présent => pas de relai
-        if (last.kind === "date") return { actionText: `${rawLine} → Dernière prise le ${ttmFmtDateFR(last.date)} (${last.note})` };
-        return { actionText: `${rawLine} → Arrêt (${entry.delay})` };
+        // ASA présent : pas de relai
+        if (last.kind === "date") return { actionText: `${leftNameOnly} → Dernière prise le ${ttmFmtDateFR(last.date)} (${last.note})` };
+        return { actionText: `${leftNameOnly} → Arrêt (${entry.delay})` };
       }
 
-      // autres chirurgies (vasculaire / ci / rythmologie / radio-vasc)
+      // Vasculaire / CI / rythmologie / radiovasc : demander arrêt
       const ansStop = await ttmAskModal({
         title: "Clopidogrel",
         question: `Pour ${name} : arrêt ?`,
@@ -1681,69 +1674,65 @@ return {
       if (ansStop === null) return { actionText: `${leftNameOnly} → (annulé)` };
       if (ansStop === "Non") return { actionText: `${leftNameOnly} → Pas de modification` };
 
-      const last = ttmComputeLastIntake(__ttmState.date, entry.delay);
-
       if (!hasASA) {
         const ansRel = await ttmAskModal({
           title: "Relai",
           question: `Pour ${name} : relai par Kardégic (si pas déjà présent) ?`,
           choices: ["Oui", "Non"]
         });
-        if (ansRel === null) return { actionText: `${rawLine} → (annulé)` };
+        if (ansRel === null) return { actionText: `${leftNameOnly} → (annulé)` };
 
         if (last.kind === "date") {
           if (ansRel === "Oui") {
             const start = new Date(last.date);
             start.setDate(start.getDate() + 1);
-            return { actionText: `${rawLine} → Dernière prise le ${ttmFmtDateFR(last.date)} (${last.note}) ; débuter Kardégic 75 mg/j le ${ttmFmtDateFR(start)}` };
+            return { actionText: `${leftNameOnly} → Dernière prise le ${ttmFmtDateFR(last.date)} (${last.note}) ; débuter Kardégic 75 mg/j le ${ttmFmtDateFR(start)}` };
           }
-          return { actionText: `${rawLine} → Dernière prise le ${ttmFmtDateFR(last.date)} (${last.note})` };
+          return { actionText: `${leftNameOnly} → Dernière prise le ${ttmFmtDateFR(last.date)} (${last.note})` };
         }
-        return { actionText: `${rawLine} → Arrêt (${entry.delay})${ansRel === "Oui" ? " ; relai Kardégic 75 mg/j dès le lendemain" : ""}` };
+        return { actionText: `${leftNameOnly} → Arrêt (${entry.delay})${ansRel === "Oui" ? " ; relai Kardégic 75 mg/j dès le lendemain" : ""}` };
       }
 
-      // ASA déjà présent => arrêt simple
-      if (last.kind === "date") return { actionText: `${rawLine} → Dernière prise le ${ttmFmtDateFR(last.date)} (${last.note})` };
-      return { actionText: `${rawLine} → Arrêt (${entry.delay})` };
+      if (last.kind === "date") return { actionText: `${leftNameOnly} → Dernière prise le ${ttmFmtDateFR(last.date)} (${last.note})` };
+      return { actionText: `${leftNameOnly} → Arrêt (${entry.delay})` };
     }
 
     // Ticagrelor / Prasugrel
     if (isTica || isPrasu) {
-      // chirurgie cardiaque : arrêt systématique, pas de relai
       const last = ttmComputeLastIntake(__ttmState.date, entry.delay);
+
+      // Cardiaque : arrêt systématique, pas de relai
       if (surgeryKey === "cardiaque") {
-        if (last.kind === "date") return { actionText: `${rawLine} → Dernière prise le ${ttmFmtDateFR(last.date)} (${last.note})` };
-        return { actionText: `${rawLine} → Arrêt (${entry.delay})` };
+        if (last.kind === "date") return { actionText: `${leftNameOnly} → Dernière prise le ${ttmFmtDateFR(last.date)} (${last.note})` };
+        return { actionText: `${leftNameOnly} → Arrêt (${entry.delay})` };
       }
 
-      // autres : arrêt systématique + demander relai clopidogrel
+      // autres : demander relai clopidogrel
       const ansRel = await ttmAskModal({
         title: "Relai",
         question: `Pour ${name} : relai par Clopidogrel ?`,
         choices: ["Oui", "Non"]
       });
-      if (ansRel === null) return { actionText: `${rawLine} → (annulé)` };
+      if (ansRel === null) return { actionText: `${leftNameOnly} → (annulé)` };
 
       if (last.kind === "date") {
         if (ansRel === "Oui") {
           const start = new Date(last.date);
           start.setDate(start.getDate() + 1);
-          return { actionText: `${rawLine} → Dernière prise le ${ttmFmtDateFR(last.date)} (${last.note}) ; débuter Clopidogrel 75 mg/j le ${ttmFmtDateFR(start)}` };
+          return { actionText: `${leftNameOnly} → Dernière prise le ${ttmFmtDateFR(last.date)} (${last.note}) ; débuter Clopidogrel 75 mg/j le ${ttmFmtDateFR(start)}` };
         }
-        return { actionText: `${rawLine} → Dernière prise le ${ttmFmtDateFR(last.date)} (${last.note})` };
+        return { actionText: `${leftNameOnly} → Dernière prise le ${ttmFmtDateFR(last.date)} (${last.note})` };
       }
 
-      return { actionText: `${rawLine} → Arrêt (${entry.delay})${ansRel === "Oui" ? " ; relai clopidogrel 75 mg/j dès le lendemain" : ""}` };
+      return { actionText: `${leftNameOnly} → Arrêt (${entry.delay})${ansRel === "Oui" ? " ; relai clopidogrel 75 mg/j dès le lendemain" : ""}` };
     }
 
-    // autres AAP non gérés : fallback
-    return { actionText: `${rawLine} → (AAP non géré)` };
+    return { actionText: `${leftNameOnly} → (AAP non géré)` };
   }
 
-  // fallback
   return { actionText: `${leftNameOnly} → Pas de modification` };
 }
-}
+
   
 async function ttmProcess() {
   const left = document.getElementById("ttm-left");
