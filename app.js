@@ -1968,14 +1968,6 @@ async function ttmProcess() {
     // autres : phrase standardisée (sans “protocole”)
 const last = ttmComputeLastIntake(dateSurgery, hit.delay);
 out.push(ttmMakeStopSentence({ entry: hit, lineNameOnly, last }));
-
-if (last.kind === "nochange") {
-  out.push(`${lineNameOnly} → Pas de modification`);
-} else if (last.kind === "date") {
-  out.push(`${lineNameOnly} → Dernière prise le ${ttmFmtDateFR(last.date)} aux heures habituelles (${last.note})`);
-} else {
-  out.push(`${lineNameOnly} → Arrêt selon protocole (${last.note || hit.delay})`);
-}
   }
 
   right.value = out.join("\n");
