@@ -1178,26 +1178,28 @@ function renderAnesthConsultTraitements() {
     encadres,
   });
 
-  // ✅ Ajoute le bouton “Ordonnance gestion des traitements” sous le titre
-  setTimeout(() => {
-    // Selon ta structure, le "hero" peut être directement .hero
-    // ou contenu dans .intervention-main .hero
-    const hero =
-      document.querySelector(".intervention-main .hero") ||
-      document.querySelector(".hero");
+// ✅ Ajoute le bouton “Ordonnance gestion des traitements” centré sous le titre
+setTimeout(() => {
+  const hero =
+    document.querySelector(".intervention-main .hero") ||
+    document.querySelector(".hero");
 
-    if (!hero) return;
-    if (document.getElementById("ttm-open-btn")) return;
+  if (!hero) return;
+  if (document.getElementById("ttm-open-btn")) return;
 
-    const btn = document.createElement("button");
-    btn.id = "ttm-open-btn";
-    btn.className = "btn ttm-open-btn";
-    btn.type = "button";
-    btn.textContent = "Ordonnance gestion des traitements";
-    btn.addEventListener("click", () => openTreatmentManager());
+  const btnWrapper = document.createElement("div");
+  btnWrapper.className = "ttm-open-wrapper";
 
-    hero.appendChild(btn);
-  }, 0);
+  const btn = document.createElement("button");
+  btn.id = "ttm-open-btn";
+  btn.className = "btn ttm-open-btn";
+  btn.type = "button";
+  btn.textContent = "Ordonnance gestion des traitements";
+  btn.addEventListener("click", () => openTreatmentManager());
+
+  btnWrapper.appendChild(btn);
+  hero.appendChild(btnWrapper);
+}, 0);
 }
 
 // =====================================================
