@@ -7318,25 +7318,20 @@ body.theme-light .ov-swatch{
 }
 
 /* =====================================================
-   Traitement Manager (Ordonnance) — thème clair/sombre
+   Traitement Manager (Ordonnance) — TOUJOURS clair
+   (même en thème sombre)
    ===================================================== */
 
-:root{
-  --ttm-bg: rgba(0,0,0,.55);
-  --ttm-panel: #ffffff;
-  --ttm-text: #111827;
-  --ttm-muted: #6b7280;
-  --ttm-border: rgba(0,0,0,.15);
-  --ttm-input: #f3f4f6;
-}
-
-[data-theme="dark"]{
-  --ttm-bg: rgba(0,0,0,.65);
-  --ttm-panel: #0b1220;
-  --ttm-text: #f8fafc;
-  --ttm-muted: #94a3b8;
-  --ttm-border: rgba(255,255,255,.18);
-  --ttm-input: rgba(255,255,255,.08);
+/* Overlay plein écran (reste sombre) */
+.ttm-overlay{
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0,0,0,.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
 }
 
 .ttm-open-btn{
@@ -7344,24 +7339,13 @@ body.theme-light .ov-swatch{
   width: fit-content;
 }
 
-/* Grande fenêtre plein écran */
-.ttm-overlay{
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: var(--ttm-bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-}
-
+/* Fenêtre principale (toujours claire) */
 .ttm-window{
   width: min(1200px, 98vw);
   height: min(86vh, 860px);
-  background: var(--ttm-panel);
-  color: var(--ttm-text);
-  border: 1px solid var(--ttm-border);
+  background: #ffffff;
+  color: #111827;
+  border: 1px solid rgba(0,0,0,.15);
   border-radius: 16px;
   overflow: hidden;
   display: flex;
@@ -7375,7 +7359,9 @@ body.theme-light .ov-swatch{
   justify-content: space-between;
   gap: 12px;
   padding: 14px 16px;
-  border-bottom: 1px solid var(--ttm-border);
+  border-bottom: 1px solid rgba(0,0,0,.12);
+  background: #ffffff;
+  color: #111827;
 }
 
 .ttm-title{
@@ -7384,35 +7370,38 @@ body.theme-light .ov-swatch{
 }
 
 .ttm-close{
-  border: 1px solid var(--ttm-border);
-  background: transparent;
-  color: var(--ttm-text);
+  border: 1px solid rgba(0,0,0,.15);
+  background: #f3f4f6;
+  color: #111827;
   border-radius: 10px;
   padding: 6px 10px;
   cursor: pointer;
 }
 
+/* Barre de contrôles (toujours claire) */
 .ttm-controls{
   display: grid;
   grid-template-columns: 1.2fr 1fr auto;
   gap: 12px;
   padding: 12px 16px;
-  border-bottom: 1px solid var(--ttm-border);
+  border-bottom: 1px solid rgba(0,0,0,.12);
+  background: #ffffff;
 }
 
 .ttm-field label{
   display: block;
   font-size: 12px;
-  color: var(--ttm-muted);
+  font-weight: 700;
+  color: #111827;
   margin-bottom: 6px;
 }
 
 .ttm-field select,
 .ttm-field input{
   width: 100%;
-  border: 1px solid var(--ttm-border);
-  background: var(--ttm-input);
-  color: var(--ttm-text);
+  border: 1px solid rgba(0,0,0,.18);
+  background: #f9fafb;
+  color: #111827;
   border-radius: 10px;
   padding: 10px 10px;
   outline: none;
@@ -7428,13 +7417,15 @@ body.theme-light .ov-swatch{
   white-space: nowrap;
 }
 
+/* Corps : 2 colonnes même hauteur */
 .ttm-body{
   flex: 1;
+  min-height: 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
   padding: 14px 16px 16px;
-  min-height: 0;
+  background: #ffffff;
 }
 
 .ttm-col{
@@ -7445,24 +7436,49 @@ body.theme-light .ov-swatch{
 }
 
 .ttm-col-title{
-  font-weight: 700;
-  font-size: 13px;
-  color: var(--ttm-text);
+  font-weight: 800;
+  font-size: 14px;
+  color: #111827;
 }
 
+/* Textareas : toujours clairs + texte noir */
 .ttm-textarea{
   flex: 1;
+  min-height: 0;
   width: 100%;
-  border: 1px solid var(--ttm-border);
-  background: var(--ttm-input);
-  color: var(--ttm-text);
-  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,.18);
+  background: #f9fafb;
+  color: #111827;
+  border-radius: 16px;
   padding: 12px;
   resize: none;
   outline: none;
   font-size: 13px;
   line-height: 1.4;
+}
+
+/* Colonne droite empilée : total = hauteur de gauche */
+.ttm-right-stack{
   min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ttm-right-main{
+  flex: 2;         /* plus grand */
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ttm-right-extra{
+  flex: 1;         /* plus petit */
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 /* Mobile */
@@ -7481,12 +7497,15 @@ body.theme-light .ov-swatch{
   }
 }
 
-/* Petite fenêtre questions */
+/* =====================================================
+   Petite fenêtre questions (toujours claire)
+   ===================================================== */
+
 .ttm-q-overlay{
   position: fixed;
   inset: 0;
   z-index: 10000;
-  background: var(--ttm-bg);
+  background: rgba(0,0,0,.55);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -7495,9 +7514,9 @@ body.theme-light .ov-swatch{
 
 .ttm-q-box{
   width: min(560px, 96vw);
-  background: var(--ttm-panel);
-  color: var(--ttm-text);
-  border: 1px solid var(--ttm-border);
+  background: #ffffff;
+  color: #111827;
+  border: 1px solid rgba(0,0,0,.15);
   border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0,0,0,.35);
@@ -7508,7 +7527,7 @@ body.theme-light .ov-swatch{
   justify-content: space-between;
   align-items: center;
   padding: 12px 14px;
-  border-bottom: 1px solid var(--ttm-border);
+  border-bottom: 1px solid rgba(0,0,0,.12);
 }
 
 .ttm-q-title{
@@ -7517,9 +7536,9 @@ body.theme-light .ov-swatch{
 }
 
 .ttm-q-close{
-  border: 1px solid var(--ttm-border);
-  background: transparent;
-  color: var(--ttm-text);
+  border: 1px solid rgba(0,0,0,.15);
+  background: #f3f4f6;
+  color: #111827;
   border-radius: 10px;
   padding: 6px 10px;
   cursor: pointer;
@@ -7531,7 +7550,7 @@ body.theme-light .ov-swatch{
 
 .ttm-q-question{
   font-size: 13px;
-  color: var(--ttm-text);
+  color: #111827;
   margin-bottom: 12px;
 }
 
@@ -7542,221 +7561,12 @@ body.theme-light .ov-swatch{
 }
 
 .ttm-q-btn{
-  border: 1px solid var(--ttm-border);
-  background: var(--ttm-input);
-  color: var(--ttm-text);
-  padding: 10px 12px;
-  border-radius: 12px;
-  cursor: pointer;
-  font-weight: 700;
-}
-
-/* FORCER un rendu clair pour certaines zones même en thème sombre */
-:root{
-  --ttm-panel: #ffffff;
-  --ttm-text: #111827;
-  --ttm-muted: #6b7280;
-  --ttm-border: rgba(0,0,0,.15);
-
-  /* zones “claires” demandées */
-  --ttm-lite-bg: #f3f4f6;
-  --ttm-lite-text: #111827;
-  --ttm-lite-border: rgba(0,0,0,.15);
-}
-
-/* On ne change pas l’overlay (fond), seulement les blocs internes */
-[data-theme="dark"]{
-  --ttm-panel: #ffffff;         /* 👈 copie du thème clair */
-  --ttm-text: #111827;
-  --ttm-muted: #6b7280;
-  --ttm-border: rgba(0,0,0,.15);
-
-  --ttm-lite-bg: #f3f4f6;
-  --ttm-lite-text: #111827;
-  --ttm-lite-border: rgba(0,0,0,.15);
-}
-
-/* champs/select/date + 2 encadrés + textarea en “clair” */
-.ttm-field select,
-.ttm-field input,
-.ttm-textarea,
-.ttm-window{
-  background: var(--ttm-panel);
-  color: var(--ttm-text);
-  border-color: var(--ttm-border);
-}
-
-.ttm-textarea{
-  background: var(--ttm-lite-bg);
-  color: var(--ttm-lite-text);
-  border-color: var(--ttm-lite-border);
-}
-
-.ttm-field select,
-.ttm-field input{
-  background: var(--ttm-lite-bg);
-  color: var(--ttm-lite-text);
-  border-color: var(--ttm-lite-border);
-}
-
-/* nouveau petit encadré “Ordonnances supplémentaires” */
-.ttm-right-stack{
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  min-height: 0;
-}
-.ttm-right-main{
-  flex: 1;
-  min-height: 0;
-}
-.ttm-right-extra{
-  height: 150px;         /* 👈 ajustable */
-  min-height: 120px;
-}
-
-/* =====================================================
-   TTM (Ordonnance gestion des traitements)
-   => Toujours style clair (même en thème sombre)
-   ===================================================== */
-
-.ttm-overlay{
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.55);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 18px;
-}
-
-.ttm-window{
-  width: min(1200px, 96vw);
-  height: min(720px, 92vh);
-  background: #ffffff;
-  color: #111;
-  border-radius: 18px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.ttm-header{
-  padding: 14px 16px;
-  border-bottom: 1px solid #e5e7eb;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #ffffff;
-  color: #111;
-}
-
-.ttm-title{ font-weight: 800; }
-
-.ttm-close{
-  background: #f3f4f6;
-  border: 1px solid #e5e7eb;
-  color: #111;
-  border-radius: 10px;
-  width: 38px;
-  height: 38px;
-  cursor: pointer;
-}
-
-.ttm-controls{
-  padding: 14px 16px;
-  border-bottom: 1px solid #e5e7eb;
-  display: grid;
-  grid-template-columns: 1fr 1fr auto;
-  gap: 12px;
-  background: #ffffff;
-  color: #111;
-}
-
-.ttm-field label{
-  display: block;
-  font-size: 13px;
-  font-weight: 700;
-  margin-bottom: 6px;
-  color: #111;
-}
-
-.ttm-field select,
-.ttm-field input[type="date"]{
-  width: 100%;
-  padding: 10px 12px;
-  border-radius: 12px;
-  border: 1px solid #d1d5db;
+  border: 1px solid rgba(0,0,0,.18);
   background: #f9fafb;
-  color: #111;
-}
-
-.ttm-actions{
-  display: flex;
-  gap: 10px;
-  align-items: end;
-}
-
-.ttm-body{
-  flex: 1;                 /* important */
-  min-height: 0;           /* important */
-  display: flex;
-  gap: 14px;
-  padding: 14px 16px;
-  background: #ffffff;
-}
-
-.ttm-col{
-  flex: 1;
-  min-height: 0;           /* important */
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.ttm-col-title{
+  color: #111827;
+  padding: 10px 12px;
+  border-radius: 12px;
+  cursor: pointer;
   font-weight: 800;
-  color: #111;
-  font-size: 14px;
 }
 
-.ttm-textarea{
-  flex: 1;                 /* important -> remplit la hauteur */
-  min-height: 0;           /* important */
-  resize: none;
-  width: 100%;
-  padding: 12px 12px;
-  border-radius: 16px;
-  border: 1px solid #d1d5db;
-  background: #f9fafb;     /* clair même en dark */
-  color: #111;             /* texte noir */
-  line-height: 1.35;
-}
-
-/* Colonne droite empilée : doit faire la même hauteur que la gauche */
-.ttm-right-stack{
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-/* Zone principale (droite haut) plus grande */
-.ttm-right-main{
-  flex: 2;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-/* Zone extra (droite bas) plus petite */
-.ttm-right-extra{
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
