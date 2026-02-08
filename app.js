@@ -1656,7 +1656,7 @@ async function ttmResolveSpecialLogic({ surgeryKey, entry, rawLine, hasASA }) {
             actionText: `${leftNameOnly} → Dernière prise le ${ttmFmtDateFR(last.date)} aux heures habituelles (${last.note})`
           };
         }
-        return { actionText: `${leftNameOnly} → Arrêt selon protocole (${last.note || entry.delay})` };
+        return { actionText: `${leftNameOnly} → Pas de prise le jour de l'intervention (${last.note || entry.delay})` };
       }
 
       const mol = await ttmAskModal({
