@@ -1203,6 +1203,12 @@ function renderAnesthConsultTraitements() {
 // =====================================================
 // Traitement Manager (Ordonnance gestion des traitements)
 // =====================================================
+let __ttmState = {
+  surgery: "Chirurgie cardiaque",
+  date: "", // YYYY-MM-DD
+  index: null
+};
+
 let __ttmExtraLines = [];
 
 function ttmResetExtraRx(dateSurgery) {
@@ -1481,6 +1487,7 @@ async function ttmResolveSpecialLogic({ surgeryKey, entry, rawLine, hasASA }) {
   // returns { actionText } (ligne finale)
   const name = entry?.brands?.[0] ? `${entry.brands[0]} (${entry.dci})` : entry.dci;
 
+  
   // --- Anticoagulants
   if (ttmIsAnticoag(entry)) {
     // Cardiaque & vasculaire : arrêt systématique
@@ -1736,12 +1743,6 @@ return {
   // fallback
   return { actionText: `${leftNameOnly} → Pas de modification` };
 }
-
-let __ttmState = {
-  surgery: "Chirurgie cardiaque",
-  date: "", // YYYY-MM-DD
-  index: null
-};
 }
   
 async function ttmProcess() {
