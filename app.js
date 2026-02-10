@@ -24707,11 +24707,13 @@ function navigate() {
   const view = routes[hash];
   if (typeof view === "function") {
   view();
+
+  // ✅ bouton Accès rapide (desktop)
+  setTimeout(() => ensureQuickAccessButton(), 0);
+
   autoTagEditableDom(hash);
   applyOverridesToDom(hash);
   if (EDIT_MODE) enableInlineEditingForRoute(hash);
-  ensureQuickAccessButton();   // ✅ (au cas où le header est rerender)
-  setTimeout(qaApplyPendingIfAny, 0); // ✅ applique l'action post-navigation
 } else {
   renderNotFound();
 }
@@ -24720,10 +24722,6 @@ function navigate() {
 // =====================================================
 // Accès rapide (Desktop) — dropdown dans le bandeau
 // =====================================================
-let __qaBtn = null;
-let __qaMenu = null;
-
-// commandes "post-navigation"
 let __qaPending = null; 
 // ex: { type:"ttm" } ou { type:"eto", variant:"standard"|"plastie_aortique"|"plastie_mitrale" }
 
@@ -24731,7 +24729,6 @@ function ensureQuickAccessButton() {
   // Desktop only
   if (window.matchMedia("(max-width: 900px)").matches) return;
 
-  // Essayez de trouver le bandeau/header sans casser ta structure
   const header =
     document.querySelector(".app-header") ||
     document.querySelector("#app-header") ||
@@ -24741,7 +24738,6 @@ function ensureQuickAccessButton() {
   if (!header) return;
   if (document.getElementById("qa-btn")) return;
 
-  // s'assure que le header peut contenir un élément aligné à droite
   header.classList.add("qa-host");
 
   const wrap = document.createElement("div");
@@ -24750,8 +24746,8 @@ function ensureQuickAccessButton() {
   const btn = document.createElement("button");
   btn.id = "qa-btn";
   btn.type = "button";
-  btn.className = "btn qa-btn";
-  btn.textContent = "Accès rapide ▾";
+  btn.className = "qa-btn";
+  btn.innerHTML = `Accès rapide <span class="qa-caret">▾</span>`;
 
   const menu = document.createElement("div");
   menu.id = "qa-menu";
@@ -24759,18 +24755,14 @@ function ensureQuickAccessButton() {
   menu.innerHTML = `
     <button type="button" class="qa-item" data-key="ttm">Gestion pré-op des traitements</button>
     <button type="button" class="qa-item" data-key="eto_page">Coupes et mesures ETO</button>
+    <div class="qa-sep"></div>
     <button type="button" class="qa-item" data-key="eto_standard">CR ETO standard</button>
     <button type="button" class="qa-item" data-key="eto_aortique">CR ETO plastie aortique</button>
     <button type="button" class="qa-item" data-key="eto_mitrale">CR ETO plastie mitrale</button>
   `;
 
-  const closeMenu = () => {
-    menu.classList.remove("is-open");
-  };
-
-  const toggleMenu = () => {
-    menu.classList.toggle("is-open");
-  };
+  const closeMenu = () => menu.classList.remove("is-open");
+  const toggleMenu = () => menu.classList.toggle("is-open");
 
   btn.addEventListener("click", (e) => {
     e.preventDefault();
@@ -24778,16 +24770,13 @@ function ensureQuickAccessButton() {
     toggleMenu();
   });
 
-  // click item
   menu.addEventListener("click", (e) => {
     const b = e.target.closest(".qa-item");
     if (!b) return;
-    const key = b.dataset.key;
     closeMenu();
-    qaRunAction(key);
+    qaRunAction(b.dataset.key);
   });
 
-  // close on outside
   document.addEventListener("click", (e) => {
     if (!menu.classList.contains("is-open")) return;
     if (e.target === btn || menu.contains(e.target)) return;
@@ -24797,16 +24786,12 @@ function ensureQuickAccessButton() {
   wrap.appendChild(btn);
   wrap.appendChild(menu);
   header.appendChild(wrap);
-
-  __qaBtn = btn;
-  __qaMenu = menu;
 }
 
 function qaRunAction(key) {
-  // 1) Gestion pré-op des traitements => aller sur la page puis ouvrir le Treatment Manager
+  // 1) Gestion pré-op des traitements => page consult + ouvre Treatment Manager
   if (key === "ttm") {
     __qaPending = { type: "ttm" };
-    // ⚠️ adapte si ton route exact est différent
     window.location.hash = "#/anesthesie/consultations";
     return;
   }
@@ -24818,7 +24803,7 @@ function qaRunAction(key) {
     return;
   }
 
-  // 3) CR ETO => aller sur la page ETO et ouvrir le bon CR
+  // 3) CR ETO => aller sur la page ETO et ouvrir la bonne fenêtre
   if (key === "eto_standard") {
     __qaPending = { type: "eto", variant: "standard" };
     window.location.hash = "#/reanimation/eto";
@@ -24836,50 +24821,63 @@ function qaRunAction(key) {
   }
 }
 
+// Helper : ouvre le bon CR ETO selon TES fonctions existantes
+function qaOpenEtoVariant(variant) {
+  if (typeof openEtoFormModal !== "function") return false;
+
+  // Standard : prefix qui n'est ni rva ni rvm (ici "eto")
+  if (variant === "standard") {
+    openEtoFormModal("eto");
+    return true;
+  }
+
+  // Plastie aortique : prefix rva + select rva-type = plastie
+  if (variant === "plastie_aortique") {
+    const sel = document.getElementById("rva-type");
+    if (sel) sel.value = "plastie";
+    openEtoFormModal("rva");
+    return true;
+  }
+
+  // Plastie mitrale : prefix rvm + select rvm-type = plastie
+  if (variant === "plastie_mitrale") {
+    const sel = document.getElementById("rvm-type");
+    if (sel) sel.value = "plastie";
+    openEtoFormModal("rvm");
+    return true;
+  }
+
+  return false;
+}
+
 // À appeler après chaque render/navigate (quand le DOM est prêt)
 function qaApplyPendingIfAny() {
   if (!__qaPending) return;
 
   // Ouvrir directement "Ordonnance gestion des traitements"
   if (__qaPending.type === "ttm") {
-    // si la page contient ton bouton + openTreatmentManager()
     if (typeof openTreatmentManager === "function") {
-      // ouvrir + focus zone de collage
       openTreatmentManager();
-      setTimeout(() => {
-        const left = document.getElementById("ttm-left");
-        if (left) left.focus();
-      }, 50);
+      setTimeout(() => document.getElementById("ttm-left")?.focus(), 80);
     }
     __qaPending = null;
     return;
   }
 
-  // Ouvrir directement le CR ETO demandé (si tes fonctions existent)
+  // Ouvrir directement le CR ETO demandé
   if (__qaPending.type === "eto") {
     const v = __qaPending.variant;
 
-    // ⚠️ Adapte ces noms à TON code (ou garde la cascade : on n'explose pas si pas trouvé)
-    const tryFns = [
-      // exemple 1
-      () => (typeof openEtoReportModal === "function") && openEtoReportModal(v),
-      // exemple 2 (si tu as des fonctions séparées)
-      () => (v === "standard" && typeof openEtoCRStandard === "function") && openEtoCRStandard(),
-      () => (v === "plastie_aortique" && typeof openEtoCRPlastieAortique === "function") && openEtoCRPlastieAortique(),
-      () => (v === "plastie_mitrale" && typeof openEtoCRPlastieMitrale === "function") && openEtoCRPlastieMitrale()
-    ];
+    // Laisse le temps à renderReanEto() de poser le DOM (select rva-type / rvm-type)
+    setTimeout(() => {
+      qaOpenEtoVariant(v);
+      __qaPending = null;
+    }, 120);
 
-    for (const fn of tryFns) {
-      try {
-        const r = fn();
-        if (r) break;
-      } catch (_) {}
-    }
-
-    __qaPending = null;
     return;
   }
 }
+
 
 window.addEventListener("hashchange", navigate);
 
