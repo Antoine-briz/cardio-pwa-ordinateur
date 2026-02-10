@@ -2008,7 +2008,7 @@ function openTreatmentManager() {
         </div>
 
         <div class="ttm-field ttm-actions">
-          <button id="ttm-run" class="btn ttm-run" type="button">Générer</button>
+          <button id="ttm-run" class="btn ttm-run" type="button">Adaptation des traitements</button>
           <button id="ttm-clear" class="btn ttm-clear" type="button">Effacer</button>
         </div>
       </div>
