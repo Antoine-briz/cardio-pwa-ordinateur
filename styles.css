@@ -7901,3 +7901,57 @@ body.theme-light .ov-swatch{
   text-decoration: underline;
 }
 
+/* ============================
+   HEADER: titre toujours centré + pas de soulignement
+   ============================ */
+
+/* Le header sert de repère pour le centrage en absolute */
+.app-header{
+  position: relative;
+}
+
+/* Centre le bloc texte indépendamment de ce qu'il y a à droite (Accès rapide + logo) */
+.app-header .header-text{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  width: max-content;
+  max-width: 70vw;
+  pointer-events: auto; /* pour que le lien reste cliquable */
+}
+
+/* ✅ Supprime le soulignement du titre même si c’est un <a> */
+.app-header .header-title,
+.app-header .header-title a{
+  text-decoration: none !important;
+  color: inherit;
+}
+
+/* au hover/focus : pas de soulignement non plus */
+.app-header .header-title:hover,
+.app-header .header-title a:hover,
+.app-header .header-title:focus,
+.app-header .header-title a:focus{
+  text-decoration: none !important;
+}
+
+/* ============================
+   Accès rapide: ne doit pas pousser le header
+   (et ne pas se superposer au logo droit)
+   ============================ */
+
+/* ton JS ajoute .qa-wrap dans le header => on le sort du flux */
+.app-header .qa-wrap{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 120px; /* 👈 laisse la place au logo SARIC à droite (ajuste si besoin) */
+  z-index: 5;
+}
+
+/* (optionnel) pour éviter qu’en petite largeur ça chevauche tout */
+@media (max-width: 1100px){
+  .app-header .qa-wrap{ right: 16px; }
+  .app-header .header-logo-right{ display: none; } /* si tu préfères */
+}
