@@ -7977,3 +7977,49 @@ body.theme-light .ov-swatch{
 @media (max-width: 900px){
   .qa-wrap{ display:none; }
 }
+
+/* =====================================================
+   Header – centrage absolu du titre
+   ===================================================== */
+
+.app-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Logos restent à gauche / droite */
+.header-logo-left,
+.header-logo-right {
+  flex: 0 0 auto;
+}
+
+/* Zone texte centrée ABSOLUMENT */
+.header-text {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  pointer-events: none; /* évite conflits */
+}
+
+/* Le lien reste cliquable */
+.header-title-link {
+  pointer-events: auto;
+  text-decoration: none;
+}
+
+/* Style du titre */
+.header-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: inherit;
+  cursor: pointer;
+}
+
+.header-title:hover {
+  text-decoration: underline;
+}
+
+
