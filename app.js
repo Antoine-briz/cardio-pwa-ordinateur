@@ -247,32 +247,6 @@ function renderHome() {
   `;
 }
 
-function enableHeaderTitleHomeLink(){
-  const titleEl =
-    document.querySelector(".app-header .app-title") ||
-    document.querySelector("#app-header .app-title") ||
-    document.querySelector(".topbar .app-title") ||
-    document.querySelector("header .app-title") ||
-    document.querySelector(".app-header h1") ||
-    document.querySelector("#app-header h1") ||
-    document.querySelector("header h1") ||
-    document.querySelector(".app-header .title") ||
-    document.querySelector("header .title");
-
-  if (!titleEl) return;
-  if (titleEl.dataset.homeBound === "1") return;
-
-  titleEl.dataset.homeBound = "1";
-  titleEl.classList.add("qa-title-home");
-
-  titleEl.addEventListener("click", (e) => {
-    // évite de déclencher autre chose dans le header
-    e.preventDefault();
-    e.stopPropagation();
-    // Menu principal
-    window.location.hash = "#/";
-  });
-}
 
 // =======================================================
 //  ACTUALITÉS (PC) + PURGE BLOC À 12:00
@@ -24721,31 +24695,31 @@ function navigate() {
 
   // 🔒 Si on QUITTE la page ACR, on nettoie
   if (currentRoute === "#/acr" && hash !== "#/acr") {
-    if (typeof disableAcrWakeLock === "function") {
-      disableAcrWakeLock();
-    }
-    if (typeof setAcrTheme === "function") {
-      setAcrTheme(false);
-    }
+    if (typeof disableAcrWakeLock === "function") disableAcrWakeLock();
+    if (typeof setAcrTheme === "function") setAcrTheme(false);
   }
 
   currentRoute = hash;
 
   const view = routes[hash];
   if (typeof view === "function") {
-  view();
+    view();
 
-  // ✅ bouton Accès rapide (desktop)
-  setTimeout(() => ensureQuickAccessButton(), 0);
+    // ✅ Post-render hooks (DOM prêt)
+    setTimeout(() => {
+      ensureQuickAccessButton();
+      ensureHeaderTitleClickableHome();
+    }, 0);
 
-  autoTagEditableDom(hash);
-  applyOverridesToDom(hash);
-enableHeaderTitleHomeLink();
-  if (EDIT_MODE) enableInlineEditingForRoute(hash);
-} else {
-  renderNotFound();
+    autoTagEditableDom(hash);
+    applyOverridesToDom(hash);
+
+    if (EDIT_MODE) enableInlineEditingForRoute(hash);
+  } else {
+    renderNotFound();
+  }
 }
-}
+
 
 // =====================================================
 // Accès rapide (Desktop) — dropdown dans le bandeau
@@ -24825,6 +24799,37 @@ function ensureQuickAccessButton() {
   __qaBtn = btn;
   __qaMenu = menu;
 }
+
+function ensureHeaderTitleClickableHome() {
+  const header =
+    document.querySelector(".app-header") ||
+    document.querySelector("#app-header") ||
+    document.querySelector(".topbar") ||
+    document.querySelector("header");
+
+  if (!header) return;
+
+  // On cherche un élément qui contient le texte du titre
+  const candidates = Array.from(header.querySelectorAll("h1,h2,h3,.app-title,.header-title,.title,a,div,span"));
+  const titleEl = candidates.find(el =>
+    (el.textContent || "").trim().toLowerCase().includes("protocole du saric")
+  );
+
+  if (!titleEl) return;
+  if (titleEl.dataset.homeLinkReady === "1") return;
+
+  titleEl.dataset.homeLinkReady = "1";
+  titleEl.style.cursor = "pointer";
+
+  titleEl.addEventListener("click", (e) => {
+    // si c'est déjà un <a>, on laisse faire
+    if (titleEl.tagName === "A") return;
+    e.preventDefault();
+    e.stopPropagation();
+    window.location.hash = "#/";   // menu principal
+  });
+}
+
 
 // ---------- Actions
 function qaRunAction(key) {
