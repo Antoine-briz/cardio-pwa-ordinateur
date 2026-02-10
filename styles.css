@@ -7901,3 +7901,45 @@ body.theme-light .ov-swatch{
   text-decoration: underline;
 }
 
+/* =====================================================
+   HEADER — centrage absolu du titre (indépendant du bouton)
+   ===================================================== */
+
+.app-header {
+  position: relative; /* référence pour le centrage absolu */
+}
+
+/* Conteneur du titre */
+.header-text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: auto;
+}
+
+/* Empêche logos + bouton d'influencer le centrage */
+.header-logo-left,
+.header-logo-right,
+.qa-wrap {
+  position: relative;
+  z-index: 2;
+}
+
+/* =====================================================
+   HEADER — titre cliquable sans soulignement
+   ===================================================== */
+
+.header-title {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.header-title:hover,
+.header-title:focus,
+.header-title:active {
+  text-decoration: none;
+  color: inherit;
+}
+
