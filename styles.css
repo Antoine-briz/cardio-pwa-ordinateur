@@ -7748,80 +7748,73 @@ body.theme-light .ov-swatch{
   .qa-wrap{ display:none; }
 }
 
-/* =========================
-   Accès rapide (desktop)
-   ========================= */
-@media (min-width: 860px){
+/* =====================================================
+   Accès rapide — positionnement header desktop
+   ===================================================== */
 
-  /* le conteneur du header/hero doit être relative pour positionner le bouton proprement */
-  .hero, .intervention-main .hero{
-    position: relative;
-  }
+/* Le header doit servir de conteneur */
+.qa-host {
+  position: relative;
+  padding-right: 260px; /* réserve l’espace pour logo/image à droite */
+}
 
-  /* Bouton plus visible et décalé à gauche pour ne pas toucher l'image */
-  #quick-access-btn{
-    position: absolute;
-    top: 14px;
+/* Conteneur du bouton Accès rapide */
+.qa-wrap {
+  position: absolute;
+  top: 50%;
+  right: 300px;          /* 👈 DÉCALÉ VERS LA GAUCHE */
+  transform: translateY(-50%);
+  z-index: 20;
+}
 
-    /* IMPORTANT : décale à gauche pour éviter l'image à droite
-       Ajuste la valeur si ton image est très large */
-    right: 260px;
+/* Bouton */
+.qa-btn {
+  background: #1e40af;   /* bleu plus clair */
+  color: #ffffff;
+  font-weight: 700;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: none;
+  font-size: 15px;
+  box-shadow: 0 6px 16px rgba(0,0,0,.25);
+}
 
-    z-index: 50;
+/* Hover */
+.qa-btn:hover {
+  background: #2563eb;
+}
 
-    padding: 12px 18px;
-    border-radius: 16px;
-    font-size: 16px;
-    font-weight: 800;
+/* Menu déroulant */
+.qa-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 300px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 20px 40px rgba(0,0,0,.25);
+  padding: 8px;
+  display: none;
+}
 
-    background: #ffffff;
-    color: #0b1b3a;
+.qa-menu.is-open {
+  display: block;
+}
 
-    border: 1px solid rgba(0,0,0,.12);
-    box-shadow: 0 10px 26px rgba(0,0,0,.22);
+/* Items */
+.qa-item {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
 
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  #quick-access-btn:hover{
-    transform: translateY(-1px);
-    box-shadow: 0 14px 30px rgba(0,0,0,.26);
-  }
-
-  /* Le menu déroulant */
-  #quick-access-menu{
-    position: absolute;
-    top: 60px;
-    right: 260px; /* même offset que le bouton */
-    z-index: 60;
-
-    width: 320px;
-    background: #fff;
-    border: 1px solid rgba(0,0,0,.12);
-    border-radius: 14px;
-    box-shadow: 0 18px 50px rgba(0,0,0,.22);
-
-    overflow: hidden;
-  }
-
-  #quick-access-menu button{
-    width: 100%;
-    text-align: left;
-    padding: 12px 14px;
-    font-size: 14px;
-    font-weight: 700;
-
-    background: transparent;
-    border: 0;
-    cursor: pointer;
-    color: #0f172a;
-  }
-
-  #quick-access-menu button:hover{
-    background: #f3f4f6;
-  }
+.qa-item:hover {
+  background: #f3f4f6;
 }
 
