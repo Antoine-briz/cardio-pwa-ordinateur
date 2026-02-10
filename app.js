@@ -24278,7 +24278,7 @@ function ensureFooterEditButton() {
 
 function askEditorPassword() {
   return new Promise((resolve) => {
-    const pwd = prompt("Mot de passe éditeur :");
+    const pwd = prompt("SARICeditor2026");
     resolve(pwd === (OV_CONFIG?._meta?.editorPassword || ""));
   });
 }
