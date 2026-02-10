@@ -24722,8 +24722,12 @@ function navigate() {
 // =====================================================
 // Accès rapide (Desktop) — dropdown dans le bandeau
 // =====================================================
-let __qaPending = null; 
-// ex: { type:"ttm" } ou { type:"eto", variant:"standard"|"plastie_aortique"|"plastie_mitrale" }
+let __qaBtn = null;
+let __qaMenu = null;
+
+// commandes "post-render"
+let __qaPending = null;
+// ex: { type:"ttm" } ou { type:"eto", prefix:"pc"|"rva"|"rvm", variant:"standard"|"plastie_aortique"|"plastie_mitrale" }
 
 function ensureQuickAccessButton() {
   // Desktop only
@@ -24746,8 +24750,8 @@ function ensureQuickAccessButton() {
   const btn = document.createElement("button");
   btn.id = "qa-btn";
   btn.type = "button";
-  btn.className = "qa-btn";
-  btn.innerHTML = `Accès rapide <span class="qa-caret">▾</span>`;
+  btn.className = "btn qa-btn";
+  btn.textContent = "Accès rapide ▾";
 
   const menu = document.createElement("div");
   menu.id = "qa-menu";
@@ -24755,7 +24759,6 @@ function ensureQuickAccessButton() {
   menu.innerHTML = `
     <button type="button" class="qa-item" data-key="ttm">Gestion pré-op des traitements</button>
     <button type="button" class="qa-item" data-key="eto_page">Coupes et mesures ETO</button>
-    <div class="qa-sep"></div>
     <button type="button" class="qa-item" data-key="eto_standard">CR ETO standard</button>
     <button type="button" class="qa-item" data-key="eto_aortique">CR ETO plastie aortique</button>
     <button type="button" class="qa-item" data-key="eto_mitrale">CR ETO plastie mitrale</button>
@@ -24777,103 +24780,137 @@ function ensureQuickAccessButton() {
     qaRunAction(b.dataset.key);
   });
 
-  document.addEventListener("click", (e) => {
-    if (!menu.classList.contains("is-open")) return;
-    if (e.target === btn || menu.contains(e.target)) return;
-    closeMenu();
-  }, true);
+  document.addEventListener(
+    "click",
+    (e) => {
+      if (!menu.classList.contains("is-open")) return;
+      if (e.target === btn || menu.contains(e.target)) return;
+      closeMenu();
+    },
+    true
+  );
 
   wrap.appendChild(btn);
   wrap.appendChild(menu);
   header.appendChild(wrap);
+
+  __qaBtn = btn;
+  __qaMenu = menu;
 }
 
+// ---------- Actions
 function qaRunAction(key) {
-  // 1) Gestion pré-op des traitements => page consult + ouvre Treatment Manager
+  // 1) Gestion pré-op des traitements => Anesthésie > Consultation > Gestion des traitements + ouvrir TTM
   if (key === "ttm") {
     __qaPending = { type: "ttm" };
+
+    if (typeof openSubPage === "function" &&
+        typeof renderAnesthConsultTraitements === "function" &&
+        typeof renderAnesthConsultations === "function") {
+      openSubPage(renderAnesthConsultTraitements, renderAnesthConsultations);
+      setTimeout(qaApplyPendingIfAny, 0);
+      return;
+    }
+
+    // fallback si jamais openSubPage n’existe pas
     window.location.hash = "#/anesthesie/consultations";
     return;
   }
 
-  // 2) Page ETO (coupes/mesures)
+  // 2) Page ETO (coupes/mesures) => Réanimation > ETO
   if (key === "eto_page") {
     __qaPending = null;
     window.location.hash = "#/reanimation/eto";
     return;
   }
 
-  // 3) CR ETO => aller sur la page ETO et ouvrir la bonne fenêtre
+  // 3) CR ETO standard => Anesthésie > Chirurgie cardiaque > Pontages coronaires > ouvrir CR
   if (key === "eto_standard") {
-    __qaPending = { type: "eto", variant: "standard" };
-    window.location.hash = "#/reanimation/eto";
+    __qaPending = { type: "eto", prefix: "pc", variant: "standard" };
+
+    if (typeof openSubPage === "function" &&
+        typeof renderInterventionPontages === "function" &&
+        typeof renderAnesthChirCecMenu === "function") {
+      openSubPage(renderInterventionPontages, renderAnesthChirCecMenu);
+      setTimeout(qaApplyPendingIfAny, 0);
+      return;
+    }
+
+    // fallback (moins fiable)
+    window.location.hash = "#/anesthesie/chir-cec";
     return;
   }
+
+  // 4) CR ETO plastie aortique => Anesthésie > Chirurgie cardiaque > RVA + choisir "plastie" > ouvrir CR
   if (key === "eto_aortique") {
-    __qaPending = { type: "eto", variant: "plastie_aortique" };
-    window.location.hash = "#/reanimation/eto";
+    __qaPending = { type: "eto", prefix: "rva", variant: "plastie_aortique" };
+
+    if (typeof openSubPage === "function" &&
+        typeof renderInterventionRVA === "function" &&
+        typeof renderAnesthChirCecMenu === "function") {
+      openSubPage(renderInterventionRVA, renderAnesthChirCecMenu);
+      setTimeout(qaApplyPendingIfAny, 0);
+      return;
+    }
+
+    window.location.hash = "#/anesthesie/chir-cec";
     return;
   }
+
+  // 5) CR ETO plastie mitrale => Anesthésie > Chirurgie cardiaque > RVM + choisir "plastie" > ouvrir CR
   if (key === "eto_mitrale") {
-    __qaPending = { type: "eto", variant: "plastie_mitrale" };
-    window.location.hash = "#/reanimation/eto";
+    __qaPending = { type: "eto", prefix: "rvm", variant: "plastie_mitrale" };
+
+    if (typeof openSubPage === "function" &&
+        typeof renderInterventionRVM === "function" &&
+        typeof renderAnesthChirCecMenu === "function") {
+      openSubPage(renderInterventionRVM, renderAnesthChirCecMenu);
+      setTimeout(qaApplyPendingIfAny, 0);
+      return;
+    }
+
+    window.location.hash = "#/anesthesie/chir-cec";
     return;
   }
 }
 
-// Helper : ouvre le bon CR ETO selon TES fonctions existantes
-function qaOpenEtoVariant(variant) {
-  if (typeof openEtoFormModal !== "function") return false;
-
-  // Standard : prefix qui n'est ni rva ni rvm (ici "eto")
-  if (variant === "standard") {
-    openEtoFormModal("eto");
-    return true;
-  }
-
-  // Plastie aortique : prefix rva + select rva-type = plastie
-  if (variant === "plastie_aortique") {
-    const sel = document.getElementById("rva-type");
-    if (sel) sel.value = "plastie";
-    openEtoFormModal("rva");
-    return true;
-  }
-
-  // Plastie mitrale : prefix rvm + select rvm-type = plastie
-  if (variant === "plastie_mitrale") {
-    const sel = document.getElementById("rvm-type");
-    if (sel) sel.value = "plastie";
-    openEtoFormModal("rvm");
-    return true;
-  }
-
-  return false;
-}
-
-// À appeler après chaque render/navigate (quand le DOM est prêt)
+// ---------- À appeler après render (DOM prêt)
 function qaApplyPendingIfAny() {
   if (!__qaPending) return;
 
-  // Ouvrir directement "Ordonnance gestion des traitements"
+  // Ouvrir TTM directement
   if (__qaPending.type === "ttm") {
     if (typeof openTreatmentManager === "function") {
       openTreatmentManager();
-      setTimeout(() => document.getElementById("ttm-left")?.focus(), 80);
+      setTimeout(() => {
+        const left = document.getElementById("ttm-left");
+        if (left) left.focus();
+      }, 50);
     }
     __qaPending = null;
     return;
   }
 
-  // Ouvrir directement le CR ETO demandé
+  // Ouvrir le CR ETO demandé
   if (__qaPending.type === "eto") {
-    const v = __qaPending.variant;
+    const { prefix, variant } = __qaPending;
 
-    // Laisse le temps à renderReanEto() de poser le DOM (select rva-type / rvm-type)
-    setTimeout(() => {
-      qaOpenEtoVariant(v);
-      __qaPending = null;
-    }, 120);
+    // force le bon type (plasties) AVANT ouverture
+    if (prefix === "rva" && variant === "plastie_aortique") {
+      const sel = document.getElementById("rva-type");
+      if (sel) sel.value = "plastie";
+    }
+    if (prefix === "rvm" && variant === "plastie_mitrale") {
+      const sel = document.getElementById("rvm-type");
+      if (sel) sel.value = "plastie";
+    }
 
+    // ouvre la bonne modal ETO (ta logique interne choisit le bon HTML)
+    if (typeof openEtoFormModal === "function") {
+      openEtoFormModal(prefix);
+    }
+
+    __qaPending = null;
     return;
   }
 }
