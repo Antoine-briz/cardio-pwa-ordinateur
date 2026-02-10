@@ -7818,3 +7818,85 @@ body.theme-light .ov-swatch{
   background: #f3f4f6;
 }
 
+/* =====================================================
+   Quick Access dans le header : ne JAMAIS décaler le titre
+   + éviter la superposition avec l'image à droite
+   ===================================================== */
+
+/* Le header sert de "référence" pour positionner le bouton */
+.qa-host{
+  position: relative;
+}
+
+/* Le bouton est en position ABSOLUE => ne prend pas de place => ne décale rien */
+.qa-wrap{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+
+  /* ✅ décale vers la gauche pour ne pas se superposer à l'image à droite */
+  right: 140px;            /* <-- augmente si l'image est large (ex: 180/220) */
+
+  z-index: 50;
+}
+
+/* si ton header devient étroit : on colle à droite */
+@media (max-width: 1100px){
+  .qa-wrap{ right: 16px; }
+}
+
+/* Bouton plus visible (tu dis bleu sur bleu) */
+.qa-btn{
+  padding: 10px 14px;
+  font-weight: 800;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.35);
+  background: rgba(255,255,255,.18);
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(0,0,0,.25);
+}
+
+.qa-btn:hover{
+  background: rgba(255,255,255,.28);
+}
+
+/* Menu */
+.qa-menu{
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 320px;
+  background: rgba(20, 30, 55, .98);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 14px;
+  padding: 8px;
+  display: none;
+  box-shadow: 0 18px 40px rgba(0,0,0,.35);
+}
+
+.qa-menu.is-open{ display:block; }
+
+.qa-item{
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  padding: 10px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.qa-item:hover{
+  background: rgba(255,255,255,.10);
+}
+
+/* ✅ Le titre du header cliquable (retour menu) */
+.qa-title-home{
+  cursor: pointer;
+}
+.qa-title-home:hover{
+  text-decoration: underline;
+}
