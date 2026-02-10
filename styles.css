@@ -7834,3 +7834,39 @@ body.theme-light .ov-swatch{
   .header-search{ display: none; } /* option: cacher sur mobile */
 }
 
+/* ================================
+   Barre de recherche du header
+   ================================ */
+
+/* Conteneur de la barre de recherche */
+.header-search {
+  position: absolute;
+  left: 110px;              /* ✅ décale à droite du logo gauche */
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+/* Champ de recherche */
+.header-search input {
+  width: 220px;
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  font-size: 14px;
+}
+
+/* Placeholder lisible */
+.header-search input::placeholder {
+  color: rgba(255,255,255,0.7);
+}
+
+/* Focus propre */
+.header-search input:focus {
+  outline: none;
+  border-color: #60a5fa;
+  background: rgba(255,255,255,0.18);
+}
+
