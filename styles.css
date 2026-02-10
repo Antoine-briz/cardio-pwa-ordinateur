@@ -8022,4 +8022,73 @@ body.theme-light .ov-swatch{
   text-decoration: underline;
 }
 
+/* =====================================================
+   FIX HEADER — centrage + clic titre + accès rapide
+   ===================================================== */
+
+/* Header garde sa hauteur d’origine */
+.app-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 88px;           /* ← valeur sûre (ajuste si besoin) */
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+/* Logos restent normaux */
+.header-logo-left,
+.header-logo-right {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+/* Bloc texte CENTRÉ ABSOLUMENT */
+.header-text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: auto;
+}
+
+/* Titre cliquable */
+.header-home-link {
+  display: inline-block;
+  text-decoration: none;
+  color: inherit;
+  font-weight: inherit;
+  cursor: pointer;
+}
+
+.header-home-link:hover {
+  text-decoration: underline;
+}
+
+/* Empêche le bouton Accès rapide d’impacter la hauteur */
+.qa-wrap {
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+}
+
+/* Bouton Accès rapide plus visible */
+.qa-btn {
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 14px;
+}
+
+/* Mobile : on désactive l’accès rapide */
+@media (max-width: 900px) {
+  .qa-wrap {
+    display: none;
+  }
+}
 
