@@ -7673,195 +7673,43 @@ body.theme-light .ov-swatch{
 }
 
 /* =====================================================
-   Accès rapide (Desktop) — bouton top-right + dropdown
+   Accès rapide (Desktop) — bouton + dropdown (VERSION CLEAN)
+   Ne décale pas le titre, ne souligne pas le titre
    ===================================================== */
 
-.qa-host{
-  position: relative;
+.app-header.qa-host{
+  position: relative; /* référence pour le bouton en absolu */
 }
 
-/* container à droite dans le bandeau */
-.qa-wrap{
+/* Bouton : en absolu => ne prend pas de place => ne décale pas le titre */
+.app-header.qa-host .qa-wrap{
   position: absolute;
-  top: 10px;
-  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 140px;           /* ✅ décale à gauche du logo SARIC (ajuste si besoin) */
+  z-index: 50;
   display: flex;
   align-items: center;
-  gap: 10px;
-  z-index: 50;
 }
 
-/* évite de “manger” l’image à droite : le bouton reste compact */
-.qa-btn{
-  padding: 8px 12px;
-  border-radius: 12px;
-  font-weight: 800;
-}
-
-/* dropdown */
-.qa-menu{
-  position: absolute;
-  top: 44px;
-  right: 0;
-  width: 320px;
-  background: #ffffff;
-  color: #111;
-  border: 1px solid rgba(0,0,0,.12);
-  border-radius: 14px;
-  box-shadow: 0 20px 60px rgba(0,0,0,.20);
-  padding: 6px;
-  display: none;
-}
-
-.qa-menu.is-open{
-  display: block;
-}
-
-.qa-item{
-  width: 100%;
-  text-align: left;
-  background: transparent;
-  border: 0;
-  padding: 10px 12px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 700;
-  color: #111;
-}
-
-.qa-item:hover{
-  background: rgba(0,0,0,.06);
-}
-
-/* Dark theme: on force en clair (comme demandé) */
-[data-theme="dark"] .qa-menu{
-  background: #ffffff;
-  color: #111;
-  border-color: rgba(0,0,0,.12);
-}
-[data-theme="dark"] .qa-item{
-  color: #111;
-}
-
-/* Mobile: pas d'accès rapide */
-@media (max-width: 900px){
-  .qa-wrap{ display:none; }
-}
-
-/* =====================================================
-   Accès rapide — positionnement header desktop
-   ===================================================== */
-
-/* Le header doit servir de conteneur */
-.qa-host {
-  position: relative;
-  padding-right: 260px; /* réserve l’espace pour logo/image à droite */
-}
-
-/* Conteneur du bouton Accès rapide */
-.qa-wrap {
-  position: absolute;
-  top: 50%;
-  right: 300px;          /* 👈 DÉCALÉ VERS LA GAUCHE */
-  transform: translateY(-50%);
-  z-index: 20;
-}
-
-/* Bouton */
-.qa-btn {
-  background: #1e40af;   /* bleu plus clair */
-  color: #ffffff;
-  font-weight: 700;
-  padding: 10px 18px;
-  border-radius: 999px;
-  border: none;
-  font-size: 15px;
-  box-shadow: 0 6px 16px rgba(0,0,0,.25);
-}
-
-/* Hover */
-.qa-btn:hover {
-  background: #2563eb;
-}
-
-/* Menu déroulant */
-.qa-menu {
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  min-width: 300px;
-  background: #ffffff;
-  border-radius: 14px;
-  box-shadow: 0 20px 40px rgba(0,0,0,.25);
-  padding: 8px;
-  display: none;
-}
-
-.qa-menu.is-open {
-  display: block;
-}
-
-/* Items */
-.qa-item {
-  display: block;
-  width: 100%;
-  padding: 10px 12px;
-  text-align: left;
-  background: transparent;
-  border: none;
-  border-radius: 10px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.qa-item:hover {
-  background: #f3f4f6;
-}
-
-/* =====================================================
-   Quick Access dans le header : ne JAMAIS décaler le titre
-   + éviter la superposition avec l'image à droite
-   ===================================================== */
-
-/* Le header sert de "référence" pour positionner le bouton */
-.qa-host{
-  position: relative;
-}
-
-/* Le bouton est en position ABSOLUE => ne prend pas de place => ne décale rien */
-.qa-wrap{
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-
-  /* ✅ décale vers la gauche pour ne pas se superposer à l'image à droite */
-  right: 140px;            /* <-- augmente si l'image est large (ex: 180/220) */
-
-  z-index: 50;
-}
-
-/* si ton header devient étroit : on colle à droite */
-@media (max-width: 1100px){
-  .qa-wrap{ right: 16px; }
-}
-
-/* Bouton plus visible (tu dis bleu sur bleu) */
-.qa-btn{
-  padding: 10px 14px;
-  font-weight: 800;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,.35);
+/* Bouton plus visible */
+.app-header.qa-host .qa-btn{
   background: rgba(255,255,255,.18);
   color: #fff;
+  font-weight: 800;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.35);
   box-shadow: 0 8px 22px rgba(0,0,0,.25);
+  white-space: nowrap;
 }
 
-.qa-btn:hover{
+.app-header.qa-host .qa-btn:hover{
   background: rgba(255,255,255,.28);
 }
 
-/* Menu */
-.qa-menu{
+/* Menu déroulant */
+.app-header.qa-host .qa-menu{
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
@@ -7874,9 +7722,9 @@ body.theme-light .ov-swatch{
   box-shadow: 0 18px 40px rgba(0,0,0,.35);
 }
 
-.qa-menu.is-open{ display:block; }
+.app-header.qa-host .qa-menu.is-open{ display: block; }
 
-.qa-item{
+.app-header.qa-host .qa-item{
   display: block;
   width: 100%;
   text-align: left;
@@ -7889,69 +7737,28 @@ body.theme-light .ov-swatch{
   font-weight: 700;
 }
 
-.qa-item:hover{
+.app-header.qa-host .qa-item:hover{
   background: rgba(255,255,255,.10);
 }
 
-/* ✅ Le titre du header cliquable (retour menu) */
-.qa-title-home{
+/* Mobile: pas d'accès rapide */
+@media (max-width: 900px){
+  .app-header.qa-host .qa-wrap{ display:none; }
+}
+
+/* ✅ Titre cliquable SANS soulignement (même au hover) */
+.header-text a,
+.header-text a:visited,
+.header-text a:hover,
+.header-text a:focus{
+  color: inherit;
+  text-decoration: none !important;
+}
+
+/* Si tu utilises la classe qa-title-home sur le titre */
+.qa-title-home,
+.qa-title-home:hover{
+  text-decoration: none !important;
   cursor: pointer;
 }
-.qa-title-home:hover{
-  text-decoration: underline;
-}
 
-/* ============================
-   HEADER: titre toujours centré + pas de soulignement
-   ============================ */
-
-/* Le header sert de repère pour le centrage en absolute */
-.app-header{
-  position: relative;
-}
-
-/* Centre le bloc texte indépendamment de ce qu'il y a à droite (Accès rapide + logo) */
-.app-header .header-text{
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  width: max-content;
-  max-width: 70vw;
-  pointer-events: auto; /* pour que le lien reste cliquable */
-}
-
-/* ✅ Supprime le soulignement du titre même si c’est un <a> */
-.app-header .header-title,
-.app-header .header-title a{
-  text-decoration: none !important;
-  color: inherit;
-}
-
-/* au hover/focus : pas de soulignement non plus */
-.app-header .header-title:hover,
-.app-header .header-title a:hover,
-.app-header .header-title:focus,
-.app-header .header-title a:focus{
-  text-decoration: none !important;
-}
-
-/* ============================
-   Accès rapide: ne doit pas pousser le header
-   (et ne pas se superposer au logo droit)
-   ============================ */
-
-/* ton JS ajoute .qa-wrap dans le header => on le sort du flux */
-.app-header .qa-wrap{
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  right: 120px; /* 👈 laisse la place au logo SARIC à droite (ajuste si besoin) */
-  z-index: 5;
-}
-
-/* (optionnel) pour éviter qu’en petite largeur ça chevauche tout */
-@media (max-width: 1100px){
-  .app-header .qa-wrap{ right: 16px; }
-  .app-header .header-logo-right{ display: none; } /* si tu préfères */
-}
