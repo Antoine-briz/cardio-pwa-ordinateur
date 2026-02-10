@@ -7671,3 +7671,81 @@ body.theme-light .ov-swatch{
   font-size: 15px;
   padding: 10px 18px;
 }
+
+/* =====================================================
+   Accès rapide (Desktop) — bouton top-right + dropdown
+   ===================================================== */
+
+.qa-host{
+  position: relative;
+}
+
+/* container à droite dans le bandeau */
+.qa-wrap{
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 50;
+}
+
+/* évite de “manger” l’image à droite : le bouton reste compact */
+.qa-btn{
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-weight: 800;
+}
+
+/* dropdown */
+.qa-menu{
+  position: absolute;
+  top: 44px;
+  right: 0;
+  width: 320px;
+  background: #ffffff;
+  color: #111;
+  border: 1px solid rgba(0,0,0,.12);
+  border-radius: 14px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.20);
+  padding: 6px;
+  display: none;
+}
+
+.qa-menu.is-open{
+  display: block;
+}
+
+.qa-item{
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  color: #111;
+}
+
+.qa-item:hover{
+  background: rgba(0,0,0,.06);
+}
+
+/* Dark theme: on force en clair (comme demandé) */
+[data-theme="dark"] .qa-menu{
+  background: #ffffff;
+  color: #111;
+  border-color: rgba(0,0,0,.12);
+}
+[data-theme="dark"] .qa-item{
+  color: #111;
+}
+
+/* Mobile: pas d'accès rapide */
+@media (max-width: 900px){
+  .qa-wrap{ display:none; }
+}
+
+
