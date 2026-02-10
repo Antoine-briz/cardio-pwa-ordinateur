@@ -247,6 +247,33 @@ function renderHome() {
   `;
 }
 
+function enableHeaderTitleHomeLink(){
+  const titleEl =
+    document.querySelector(".app-header .app-title") ||
+    document.querySelector("#app-header .app-title") ||
+    document.querySelector(".topbar .app-title") ||
+    document.querySelector("header .app-title") ||
+    document.querySelector(".app-header h1") ||
+    document.querySelector("#app-header h1") ||
+    document.querySelector("header h1") ||
+    document.querySelector(".app-header .title") ||
+    document.querySelector("header .title");
+
+  if (!titleEl) return;
+  if (titleEl.dataset.homeBound === "1") return;
+
+  titleEl.dataset.homeBound = "1";
+  titleEl.classList.add("qa-title-home");
+
+  titleEl.addEventListener("click", (e) => {
+    // évite de déclencher autre chose dans le header
+    e.preventDefault();
+    e.stopPropagation();
+    // Menu principal
+    window.location.hash = "#/";
+  });
+}
+
 // =======================================================
 //  ACTUALITÉS (PC) + PURGE BLOC À 12:00
 //  À coller dans app.js (sans bouton, sans route)
@@ -24713,6 +24740,7 @@ function navigate() {
 
   autoTagEditableDom(hash);
   applyOverridesToDom(hash);
+enableHeaderTitleHomeLink();
   if (EDIT_MODE) enableInlineEditingForRoute(hash);
 } else {
   renderNotFound();
