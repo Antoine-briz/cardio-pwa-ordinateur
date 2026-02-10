@@ -7748,4 +7748,80 @@ body.theme-light .ov-swatch{
   .qa-wrap{ display:none; }
 }
 
+/* =========================
+   Accès rapide (desktop)
+   ========================= */
+@media (min-width: 860px){
+
+  /* le conteneur du header/hero doit être relative pour positionner le bouton proprement */
+  .hero, .intervention-main .hero{
+    position: relative;
+  }
+
+  /* Bouton plus visible et décalé à gauche pour ne pas toucher l'image */
+  #quick-access-btn{
+    position: absolute;
+    top: 14px;
+
+    /* IMPORTANT : décale à gauche pour éviter l'image à droite
+       Ajuste la valeur si ton image est très large */
+    right: 260px;
+
+    z-index: 50;
+
+    padding: 12px 18px;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 800;
+
+    background: #ffffff;
+    color: #0b1b3a;
+
+    border: 1px solid rgba(0,0,0,.12);
+    box-shadow: 0 10px 26px rgba(0,0,0,.22);
+
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #quick-access-btn:hover{
+    transform: translateY(-1px);
+    box-shadow: 0 14px 30px rgba(0,0,0,.26);
+  }
+
+  /* Le menu déroulant */
+  #quick-access-menu{
+    position: absolute;
+    top: 60px;
+    right: 260px; /* même offset que le bouton */
+    z-index: 60;
+
+    width: 320px;
+    background: #fff;
+    border: 1px solid rgba(0,0,0,.12);
+    border-radius: 14px;
+    box-shadow: 0 18px 50px rgba(0,0,0,.22);
+
+    overflow: hidden;
+  }
+
+  #quick-access-menu button{
+    width: 100%;
+    text-align: left;
+    padding: 12px 14px;
+    font-size: 14px;
+    font-weight: 700;
+
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    color: #0f172a;
+  }
+
+  #quick-access-menu button:hover{
+    background: #f3f4f6;
+  }
+}
 
