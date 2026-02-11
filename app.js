@@ -24791,6 +24791,261 @@ function navigate() {
   }
 }
 
+// =======================================
+// SEARCH (header) — route + title + keywords
+// =======================================
+
+// 1) Données (issues du Word "mots_cle_routes.docx") : [route, titre, mots-clés]
+const SEARCH_PAGES = [
+  ["#/anesthesie/chir-cec/pontages","Pontages coronaires","Pontage, Pontages, PC, coronaire, coronaires"],
+  ["#/anesthesie/chir-cec/rva","RVA ou plastie aortique","Remplacement, RVA, rva, Rva, aortique, plastie"],
+  ["#/anesthesie/chir-cec/rvm","RVM ou plastie mitrale","Remplacement, RVM, rvm, Rvm, mitrale, plastie"],
+  ["#/anesthesie/chir-cec/rvt","RVT ou plastie tricuspide","Remplacement RVT rvt Rvt tric tricuspide"],
+  ["#/anesthesie/chir-cec/aorte-asc","Chirurgie de l’aorte ascendante (hors dissection)","aorte ascendante aortique Bentall David Tube Tirone"],
+  ["#/anesthesie/chir-cec/drainage-pericardique","Drainage péricardique","Pericardique tamponnade drainage"],
+  ["#/anesthesie/chir-cec/dissection-aortique","Dissection aortique","Dissection Aorte dissection"],
+  ["#/anesthesie/chir-cec/transplantation","Transplantation cardiaque","Greffe transplantation transplant cardio"],
+  ["#/anesthesie/chir-cec/assistances","Assistances circulatoires (implantation / explantation)","Assistance circulatoire ECMO VA ECLS LVAD RVAD BIVAD BiVAD bivad"],
+  ["#/anesthesie/cardio-struct/tavi","TAVI","TAVI tavi valve aortique percutané"],
+  ["#/anesthesie/cardio-struct/mitra-clip","Mitra-clip","Mitra clip mitral percutané"],
+  ["#/anesthesie/cardio-struct/fop-cia","Fermeture FOP / CIA","FOP CIA fermeture percutané"],
+  ["#/anesthesie/cardio-struct/pacemaker-dai","Pacemaker & DAI","Pace maker PM DAI ICD"],
+  ["#/anesthesie/cardio-struct/ablation-droit","Ablations du cœur droit","Ablation coeur droit flutter tachycardie"],
+  ["#/anesthesie/cardio-struct/ablation-gauche","Ablations du cœur gauche","Ablation coeur gauche FA fibrillation"],
+  ["#/anesthesie/vasculaire/carotide","Chirurgies de la carotide et des TSA","Carotide TSA endarteriectomie stenting"],
+  ["#/anesthesie/vasculaire/aorte-thoracique","Chirurgies de l’aorte thoracique et thoraco-abdominale","Aorte thoracique thoraco abdominale"],
+  ["#/anesthesie/vasculaire/aorte-abdominale","Chirurgies de l’aorte abdominale et artères viscérales","Aorte abdominale viscerale AAA"],
+  ["#/anesthesie/vasculaire/membre-inferieur","Chirurgies du membre inférieur","Membre inferieur pontage femoro poplite"],
+  ["#/anesthesie/vasculaire/endoprotheses","Endoprothèses aortiques","EVAR TEVAR endoprothese"],
+  ["#/anesthesie/vasculaire/protocoles","Protocoles spécifiques","protocole vasculaire"],
+  ["#/anesthesie/radiovasculaire/fav","Angioplastie de FAV humérale","FAV fistule humerale dialyse angioplastie"],
+  ["#/anesthesie/radiovasculaire/membre-inferieur","Angioplastie des membres inférieurs","Angioplastie MI ischémie"],
+  ["#/anesthesie/radiovasculaire/embolisation","Embolisation pelvienne","Embolisation pelvis hémorragie"],
+  ["#/anesthesie/radiovasculaire/ablation-abdominale","Ablations intra-abdominales","Ablation radiofrequence micro-ondes foie rein"],
+  ["#/anesthesie/radiovasculaire/tips","TIPS","TIPS shunt porto-systemique"],
+  ["#/anesthesie/radiovasculaire/drainage-biliaire","Drainage biliaire percutané","Drainage biliaire cholangite"],
+  ["#/anesthesie/radiovasculaire/nephrostomie","Néphrostomie percutanée","Nephrostomie urologie"],
+
+  ["#/reanimation/formules","Formules","Formules calculs"],
+  ["#/reanimation/formules/ventilation","Formules ventilation","ventilation Vt V̇E compliance"],
+  ["#/reanimation/formules/hemodynamique","Formules cardio-vasculaire","hemodynamique cardiac output PAM"],
+  ["#/reanimation/formules/metabolique","Formules métabolique","metabolique anion gap osmolarite"],
+  ["#/reanimation/formules/neuro","Formules neurologie","neuro PIC PPC"],
+  ["#/reanimation/prescriptions","Prescriptions post-opératoires","post-op prescriptions"],
+  ["#/reanimation/saignements","Saignements post-opératoires","saignement postop transfusion"],
+  ["#/reanimation/fa","FA post-opératoire","FA FApop amiodarone"],
+  ["#/reanimation/eto","ETO","ETO echographie transoesophagienne"],
+
+  ["#/reanimation/antibiotherapie","Antibiothérapies","ATB antibiotique antibiotherapie"],
+  ["#/reanimation/antibiotherapie/probabiliste","Antibiothérapie probabiliste (général)","probabiliste proba"],
+  ["#/reanimation/antibiotherapie/bmr-bhre","Traitement des BMR et BHRe","BMR BHRe BLSE carbapenemase"],
+  ["#/reanimation/antibiotherapie/durees","Durée d'antibiothérapie","duree ATB"],
+  ["#/reanimation/antibiotherapie/fonction-renale","Adaptation posologique à la fonction rénale","renal clairance creat"],
+  ["#/reanimation/antibiotherapie/modalites","Modalités d'administration des antibiotiques","perfusion continue"],
+
+  ["#/proba/pneumonies","Pneumonies","PAVM pneumonie"],
+  ["#/proba/iu","Infections urinaires","IU pyelo cystite"],
+  ["#/proba/abdo","Infections intra-abdominales","abdo peritonite"],
+  ["#/proba/neuro","Infections neuro-méningées","meningite encephalite"],
+  ["#/proba/dermohypo","Infections des parties molles","dermo hypodermite"],
+  ["#/proba/endocardite","Endocardites infectieuses","endocardite"],
+  ["#/proba/mediastinite","Médiastinites post-opératoires","mediastinite"],
+  ["#/proba/scarpa","Infections de Scarpa","scarpa"],
+  ["#/proba/sepsis","Sepsis sans porte d'entrée","sepsis"],
+
+  ["#/adaptee/sensibles","Germes multisensibles","multisensible"],
+  ["#/adaptee/SARM","SARM","MRSA"],
+  ["#/adaptee/ampC","Entérobactéries AmpC","ampc"],
+  ["#/adaptee/BLSE","BLSE","ESBL"],
+  ["#/adaptee/pyo","Pseudomonas aeruginosa MDR/XDR","pyo"],
+  ["#/adaptee/acineto","Acinetobacter baumannii imipénème-R","acineto"],
+  ["#/adaptee/steno","Stenotrophomonas maltophilia","steno"],
+  ["#/adaptee/carba","Entérobactéries carbapénémases","carba"],
+  ["#/adaptee/erv","E. faecium vancomycine-R","erv"],
+
+  ["#/reanimation/eer","EER et échanges plasmatiques","EER dialyse CVVH plasmapherese"],
+  ["#/reanimation/eer/post-op","EER CVVH","CVVH hemofiltration"],
+  ["#/reanimation/eer/echanges-plasmatiques","Échanges plasmatiques","plasmapherese"],
+
+  ["#/reanimation/transplantation","Transplantation cardiaque","transplant greffe"],
+  ["#/reanimation/transplantation/hemodynamique","Gestion hémodynamique post-transplantation","hemodynamique greffe"],
+  ["#/reanimation/transplantation/immunosuppression","Protocole d’immunosuppression","tacrolimus ciclosporine"],
+  ["#/reanimation/transplantation/rejet-aigu","Rejet aigu de greffon","rejet"],
+  ["#/reanimation/transplantation/infections","Infections et transplantation","infection"],
+  ["#/reanimation/transplantation/coronaires","Prévention de la maladie coronaire du greffon","coronaires greffon"],
+
+  ["#/reanimation/assistances","Assistances circulatoires","ECMO VA ECLS Impella LVAD"],
+  ["#/reanimation/assistances/ecmo-va","ECMO VA","ecmo va"],
+  ["#/reanimation/assistances/bcpia","BCPIA","ballon contre pulsation"],
+  ["#/reanimation/assistances/impella","Impella","impella"],
+  ["#/reanimation/assistances/lvad","LVAD","lvad"],
+  ["#/reanimation/assistances/cardio-west","CardioWest","cardiowest"],
+
+  ["#/cec-protocoles","Protocoles de CEC","cec protocole"],
+  ["#/cec-urgences","Situations d'urgence","urgence cec"],
+  ["#/cec-procedures","Procédures spécifiques","procedure cec"],
+  ["#/cec-urgences/hypotension","Hypotension artérielle per CEC","hypotension"],
+  ["#/cec-urgences/retour-veineux","Retour veineux insuffisant","retour veineux"],
+  ["#/cec-urgences/resistance-heparine","Résistance à l'héparine","heparine"],
+  ["#/cec-urgences/cardioplegie-inefficace","Cardioplégie inefficace","cardioplegie"],
+  ["#/cec-urgences/decanulation-veineuse","Décanulation veineuse accidentelle","decanulation"],
+  ["#/cec-urgences/dissection-aortique-canulation","Dissection aortique sur la canulation","dissection canulation"],
+  ["#/cec-urgences/changement-circuit","Changement de circuit de CEC","changement circuit"],
+  ["#/cec-urgences/entree-air-oxygenateur","Entrée d’air dans l’oxygénateur","air oxygenateur"],
+  ["#/cec-urgences/embolie-gazeuse-massive","Embolie gazeuse massive","embolie gazeuse"],
+  ["#/cec-urgences/thrombose-circuit","Thrombose de circuit","Thrombose circuit"],
+  ["#/cec-urgences/sevrage-difficile","Sevrage de CEC difficile","Sevrage cec CEC"]
+];
+
+// 2) Outils de matching
+const __searchIdx = SEARCH_PAGES.map(([route, title, keywords]) => ({
+  route,
+  title,
+  keywords: keywords || "",
+  n: norm(`${title} ${keywords || ""}`)
+}));
+
+function __tok(q) {
+  return norm(q).split(/[^a-z0-9]+/).filter(Boolean);
+}
+
+function __score(textNorm, terms) {
+  let s = 0;
+  for (const t of terms) if (textNorm.includes(t)) s++;
+  return s;
+}
+
+// 3) Niveau 2 (global) : index texte des pages (lazy)
+let __fullBuilt = false;
+const __fullTextByRoute = Object.create(null);
+
+async function __buildFullTextIndex(progressEl) {
+  if (__fullBuilt) return;
+  const saved = $app.innerHTML;
+
+  for (let i = 0; i < SEARCH_PAGES.length; i++) {
+    const route = SEARCH_PAGES[i][0];
+    const fn = routes[route];
+    if (typeof fn !== "function") continue;
+
+    fn(); // rend la page
+    __fullTextByRoute[route] = norm($app.innerText || "");
+
+    if (progressEl) progressEl.textContent = `Indexation globale… ${i + 1}/${SEARCH_PAGES.length}`;
+    await new Promise(r => requestAnimationFrame(r));
+  }
+
+  __fullBuilt = true;
+  $app.innerHTML = saved;
+  if (progressEl) progressEl.textContent = "Indexation globale prête ✅";
+}
+
+// 4) UI + binding dans le header (input id="header-search")
+function initHeaderSearch() {
+  const input = document.getElementById("header-search");
+  if (!input) return;
+
+  // panel injecté sous l'input
+  let panel = document.getElementById("search-panel");
+  if (!panel) {
+    panel = document.createElement("div");
+    panel.id = "search-panel";
+    panel.className = "search-panel";
+    panel.innerHTML = `
+      <div class="search-panel-head">
+        <label class="search-global">
+          <input id="search-global" type="checkbox">
+          <span>Recherche globale</span>
+        </label>
+        <div id="search-progress" class="search-progress"></div>
+      </div>
+      <div id="search-results" class="search-results"></div>
+    `;
+    // on accroche au conteneur de la search dans le header
+    const host = input.closest(".header-search") || input.parentElement;
+    host.style.position = host.style.position || "relative";
+    host.appendChild(panel);
+  }
+
+  const globalChk = panel.querySelector("#search-global");
+  const progressEl = panel.querySelector("#search-progress");
+  const resultsEl = panel.querySelector("#search-results");
+
+  const closePanel = () => { panel.classList.remove("open"); progressEl.textContent = ""; };
+  const openPanel  = () => panel.classList.add("open");
+
+  const navigate = (route) => {
+    window.location.hash = route;
+    input.value = "";
+    closePanel();
+    input.blur();
+  };
+
+  const render = (items) => {
+    if (!items.length) {
+      resultsEl.innerHTML = `<div class="search-empty">Aucun résultat</div>`;
+      return;
+    }
+    resultsEl.innerHTML = items.map(x => `
+      <button type="button" class="search-item" data-route="${x.route}">
+        <div class="search-title">${x.title}</div>
+        <div class="search-route">${x.route}</div>
+      </button>
+    `).join("");
+    resultsEl.querySelectorAll(".search-item").forEach(b => {
+      b.addEventListener("click", () => navigate(b.dataset.route));
+    });
+  };
+
+  const run = async () => {
+    const terms = __tok(input.value);
+    if (!terms.length) { closePanel(); resultsEl.innerHTML = ""; return; }
+
+    openPanel();
+    progressEl.textContent = "";
+
+    if (globalChk.checked) await __buildFullTextIndex(progressEl);
+
+    const scored = __searchIdx.map(p => {
+      // Niveau 1: titre+mots-clés (pondéré)
+      const s1 = __score(p.n, terms) * 3;
+
+      // Niveau 2: plein texte (optionnel)
+      const full = globalChk.checked ? (__fullTextByRoute[p.route] || "") : "";
+      const s2 = globalChk.checked ? __score(full, terms) : 0;
+
+      return { route: p.route, title: p.title, score: s1 + s2 };
+    });
+
+    const results = scored
+      .filter(x => x.score > 0)
+      .sort((a,b) => b.score - a.score)
+      .slice(0, 30);
+
+    render(results);
+  };
+
+  // events
+  input.addEventListener("input", run);
+  input.addEventListener("focus", run);
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") { closePanel(); input.blur(); }
+    if (e.key === "Enter") {
+      const first = resultsEl.querySelector(".search-item");
+      if (first) navigate(first.dataset.route);
+    }
+  });
+
+  // click outside => close
+  document.addEventListener("click", (e) => {
+    const inSearch = panel.contains(e.target) || input.contains(e.target);
+    if (!inSearch) closePanel();
+  });
+
+  // si on change le toggle, relance
+  globalChk.addEventListener("change", run);
+}
 
 
 // =====================================================
@@ -25028,6 +25283,7 @@ window.addEventListener("load", async () => {
   ensureFooterEditButton();
   blockNavigationWhileEditing();
   ensureQuickAccessButton();       // ✅
+  initHeaderSearch();
   navigate();
 });
 
