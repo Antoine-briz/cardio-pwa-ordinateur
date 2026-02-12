@@ -8108,3 +8108,48 @@ body.theme-light .ov-swatch{
 .search-empty{ padding:10px 4px; opacity:.85; }
 .theme-light .search-empty{ color:#000; }
 
+/* =========================
+   PLACEHOLDER NOIR (theme light)
+========================= */
+
+.theme-light #header-search {
+  color: #000 !important;                 /* texte tapé */
+}
+
+.theme-light #header-search::placeholder {
+  color: #000 !important;                 /* placeholder noir */
+  opacity: 1 !important;                  /* force visibilité */
+}
+
+/* Safari / Edge compat */
+.theme-light #header-search::-webkit-input-placeholder {
+  color: #000 !important;
+}
+.theme-light #header-search:-ms-input-placeholder {
+  color: #000 !important;
+}
+
+/* =========================
+   FOOTER CLAIR (theme light)
+========================= */
+
+.theme-light footer {
+  background: #f2f2f2 !important;  /* même esprit que header */
+  color: #000 !important;           /* texte noir */
+  border-top: 1px solid rgba(0,0,0,0.08);
+}
+
+/* Tous les textes du footer en noir */
+.theme-light footer p,
+.theme-light footer span,
+.theme-light footer div,
+.theme-light footer small {
+  color: #000 !important;
+}
+
+/* ⚠️ ON NE TOUCHE PAS AUX BOUTONS */
+.theme-light footer button,
+.theme-light footer .btn,
+.theme-light footer .button {
+  color: inherit;     /* laisse le style existant */
+}
