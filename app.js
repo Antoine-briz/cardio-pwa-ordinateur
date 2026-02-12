@@ -25010,9 +25010,6 @@ function initHeaderSearch() {
     host.appendChild(panel);
   }
 
-
-  const globalChk = panel.querySelector("#search-global");
-  const progressEl = panel.querySelector("#search-progress");
   const resultsEl = panel.querySelector("#search-results");
 
   const closePanel = () => { panel.classList.remove("open"); progressEl.textContent = ""; };
