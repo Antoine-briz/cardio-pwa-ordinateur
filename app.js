@@ -24615,6 +24615,11 @@ function openActionsForElement(hash, el, x, y){
   showActionsMenu(x, y, actions);
 }
 
+const sub = (menu, page) => () => {
+  menu();
+  if (typeof openSubPage === "function") openSubPage(page, menu);
+  else page(); // fallback si jamais openSubPage indisponible
+};
 
 const routes = {
   "#/": renderHome,
