@@ -24991,15 +24991,8 @@ function initHeaderSearch() {
     panel.id = "search-panel";
     panel.className = "search-panel";
     panel.innerHTML = `
-      <div class="search-panel-head">
-        <label class="search-global">
-          <input id="search-global" type="checkbox">
-          <span>Recherche globale</span>
-        </label>
-        <div id="search-progress" class="search-progress"></div>
-      </div>
-      <div id="search-results" class="search-results"></div>
-    `;
+  <div id="search-results" class="search-results"></div>
+`;
 
     // IMPORTANT : on attache le panel AU WRAPPER de l'input, et on le contraint
     const host = input.closest(".header-search") || input.parentElement;
