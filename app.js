@@ -25040,21 +25040,44 @@ function initHeaderSearch() {
 
 const run = () => {
   const terms = __tok(input.value);
-  if (!terms.length) { closePanel(); resultsEl.innerHTML = ""; return; }
+
+  if (!terms.length) {
+    closePanel();
+    resultsEl.innerHTML = "";
+    return;
+  }
 
   const scored = __searchIdx.map(p => ({
     route: p.route,
     title: p.title,
-    score: __score(p.n, terms) // uniquement titre+mots-clés
+    score: __score(p.n, terms)
   }));
 
   const results = scored
     .filter(x => x.score > 0)
-    .sort((a,b) => b.score - a.score)
+    .sort((a, b) => b.score - a.score)
     .slice(0, 30);
 
+  if (!results.length) {
+    resultsEl.innerHTML = `<div class="search-empty">Aucun résultat</div>`;
+  } else {
+    resultsEl.innerHTML = results.map(x => `
+      <button type="button" class="search-item" data-route="${x.route}">
+        <div class="search-title">${x.title}</div>
+        <div class="search-route">${x.route}</div>
+      </button>
+    `).join("");
+
+    resultsEl.querySelectorAll(".search-item").forEach(b => {
+      b.addEventListener("click", () => {
+        window.location.hash = b.dataset.route;
+        input.value = "";
+        closePanel();
+      });
+    });
+  }
+
   openPanel();
-  render(results);
 };
 
 
