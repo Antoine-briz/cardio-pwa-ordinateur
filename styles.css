@@ -7947,3 +7947,25 @@ body.theme-light .ov-swatch{
 .search-route{ margin-top:4px; font-size:.85em; opacity:.75; word-break:break-all; }
 .search-empty{ padding:10px 4px; opacity:.85; }
 
+/* Empêche la zone search d'étendre sa "zone cliquable" sur tout le header */
+.header-search{
+  display:inline-block !important;
+  width: fit-content !important;
+}
+
+/* Le dropdown ne doit capter les clics que sur sa zone */
+.search-panel{ pointer-events: auto; }
+
+/* Force le titre à rester au-dessus (et donc cliquable) */
+.header-text{
+  position: relative;
+  z-index: 20000;
+  pointer-events: auto;
+}
+
+/* Par sécurité : le wrapper gauche ne doit pas recouvrir le centre */
+.header-left{
+  position: relative;
+  z-index: 1000;
+}
+
