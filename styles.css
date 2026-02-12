@@ -7871,112 +7871,79 @@ body.theme-light .ov-swatch{
 }
 
 /* =============================
-   SEARCH (header propre + aligné)
+   SEARCH (header)
 ============================= */
 
-/* 1️⃣ Conteneur de la search dans le header */
-.header-search{
-  position: relative;
-  display: inline-flex;           /* IMPORTANT pour centrage vertical */
-  align-items: center;            /* centre verticalement */
-  height: 100%;                   /* prend toute la hauteur du header */
-  padding-top: 2px;               /* léger décalage vers le bas */
-}
+/* Wrapper */
+.header-search{ position:relative; }
 
-/* 2️⃣ Ajustement visuel de l’input */
+/* Input lisible */
 .header-search input{
-  margin-top: 2px;                /* descend légèrement la barre */
-}
-
-/* 3️⃣ Panel de résultats (SANS carré blanc) */
-.search-panel{
-  position: absolute;
-  top: calc(100% + 6px);
-  left: 0;
-  width: 100%;
-
-  display: none;
-  z-index: 100;
-
-  /* suppression totale du carré */
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  backdrop-filter: none;
-  overflow: visible;
-}
-
-.search-panel.open{
-  display: block;
-}
-
-/* 4️⃣ Head (toggle + progress) */
-.search-panel-head{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 4px 2px 6px;
-}
-
-.search-global{
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  user-select: none;
-  font-size: .9em;
-}
-
-.search-global input{
-  transform: scale(1.05);
-}
-
-.search-progress{
-  font-size: .85em;
-  opacity: .8;
-  min-height: 18px;
-  text-align: right;
-  flex: 1;
-}
-
-/* 5️⃣ Liste des résultats */
-.search-results{
-  max-height: 50vh;
-  overflow: auto;
-  padding-top: 4px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-/* 6️⃣ Items = lignes discrètes (pas de carte) */
-.search-item{
-  width: 100%;
-  text-align: left;
-  padding: 8px 10px;
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.04);
   color: inherit;
 }
 
+/* Thème clair : texte noir + contour noir */
+.theme-light .header-search input{
+  color:#000 !important;
+  border:1px solid rgba(0,0,0,.55) !important;
+  background:rgba(255,255,255,.95) !important;
+}
+
+/* Thème sombre : contour discret */
+.header-search input{
+  border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.06);
+}
+
+/* Dropdown (carte visible) */
+.search-panel{
+  position:absolute;
+  left:0; right:0;
+  top:calc(100% + 8px);
+  display:none;
+  z-index:9999;
+
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(20,20,20,.92);
+  box-shadow:0 16px 40px rgba(0,0,0,.45);
+  backdrop-filter: blur(10px);
+}
+.search-panel.open{ display:block; }
+
+/* Carte claire si thème clair */
+.theme-light .search-panel{
+  background:rgba(255,255,255,.96);
+  border:1px solid rgba(0,0,0,.12);
+  box-shadow:0 16px 40px rgba(0,0,0,.18);
+}
+
+/* Résultats */
+.search-results{
+  max-height:55vh;
+  overflow:auto;
+  padding:10px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.search-item{
+  width:100%;
+  text-align:left;
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.05);
+  color:inherit;
+}
 .theme-light .search-item{
-  border: 1px solid rgba(0,0,0,.12);
-  background: rgba(0,0,0,.03);
+  border:1px solid rgba(0,0,0,.10);
+  background:rgba(0,0,0,.03);
 }
 
-.search-title{
-  font-weight: 700;
-}
+.search-title{ font-weight:700; }
+.search-route{ margin-top:4px; font-size:.85em; opacity:.75; word-break:break-all; }
+.search-empty{ padding:10px 4px; opacity:.85; }
 
-.search-route{
-  margin-top: 3px;
-  font-size: .82em;
-  opacity: .72;
-  word-break: break-all;
-}
-
-.search-empty{
-  padding: 8px 4px;
-  opacity: .85;
-}
