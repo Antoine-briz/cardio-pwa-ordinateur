@@ -25161,20 +25161,7 @@ function ensureQuickAccessButton() {
 }
 
 function ensureHeaderTitleClickableHome() {
-  const header =
-    document.querySelector(".app-header") ||
-    document.querySelector("#app-header") ||
-    document.querySelector(".topbar") ||
-    document.querySelector("header");
-
-  if (!header) return;
-
-  // On cherche un élément qui contient le texte du titre
-  const candidates = Array.from(header.querySelectorAll("h1,h2,h3,.app-title,.header-title,.title,a,div,span"));
-  const titleEl = candidates.find(el =>
-    (el.textContent || "").trim().toLowerCase().includes("protocole du saric")
-  );
-
+  const titleEl = document.querySelector(".header-title");
   if (!titleEl) return;
   if (titleEl.dataset.homeLinkReady === "1") return;
 
@@ -25182,11 +25169,8 @@ function ensureHeaderTitleClickableHome() {
   titleEl.style.cursor = "pointer";
 
   titleEl.addEventListener("click", (e) => {
-    // si c'est déjà un <a>, on laisse faire
-    if (titleEl.tagName === "A") return;
     e.preventDefault();
-    e.stopPropagation();
-    window.location.hash = "#/";   // menu principal
+    window.location.hash = "#/"; // menu principal
   });
 }
 
