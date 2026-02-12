@@ -24985,34 +24985,35 @@ function initHeaderSearch() {
   if (!input) return;
 
   // panel injecté sous l'input
-    let panel = document.getElementById("search-panel");
+  let panel = document.getElementById("search-panel");
   if (!panel) {
     panel = document.createElement("div");
     panel.id = "search-panel";
     panel.className = "search-panel";
-    panel.innerHTML = `
-  <div id="search-results" class="search-results"></div>
-`;
+    panel.innerHTML = `<div id="search-results" class="search-results"></div>`;
 
     // IMPORTANT : on attache le panel AU WRAPPER de l'input, et on le contraint
     const host = input.closest(".header-search") || input.parentElement;
     host.style.position = "relative";
-    host.style.display = "inline-block";     // <-- empêche l'étalement pleine largeur
-    host.style.zIndex = "50";                // juste au-dessus de l'UI du header
+    host.style.display = "inline-block"; // empêche l'étalement pleine largeur
+    host.style.zIndex = "50";
 
     panel.style.position = "absolute";
     panel.style.left = "0";
     panel.style.right = "auto";
     panel.style.top = "100%";
-    panel.style.width = "100%";              // <-- 100% du host (= largeur input)
+    panel.style.width = "100%";
     panel.style.marginTop = "6px";
 
     host.appendChild(panel);
   }
 
+  // 🔥 IMPORTANT : empêche le dropdown de "voler" les clics/propagation (titre cliquable)
+  panel.addEventListener("click", (e) => e.stopPropagation());
+
   const resultsEl = panel.querySelector("#search-results");
 
-  const closePanel = () => { panel.classList.remove("open"); progressEl.textContent = ""; };
+  const closePanel = () => { panel.classList.remove("open"); };
   const openPanel  = () => panel.classList.add("open");
 
   const navigate = (route) => {
@@ -25038,48 +25039,24 @@ function initHeaderSearch() {
     });
   };
 
-const run = () => {
-  const terms = __tok(input.value);
+  const run = () => {
+    const terms = __tok(input.value);
 
-  if (!terms.length) {
-    closePanel();
-    resultsEl.innerHTML = "";
-    return;
-  }
+    if (!terms.length) {
+      closePanel();
+      resultsEl.innerHTML = "";
+      return;
+    }
 
-  const scored = __searchIdx.map(p => ({
-    route: p.route,
-    title: p.title,
-    score: __score(p.n, terms)
-  }));
+    const results = __searchIdx
+      .map(p => ({ route: p.route, title: p.title, score: __score(p.n, terms) }))
+      .filter(x => x.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 30);
 
-  const results = scored
-    .filter(x => x.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 30);
-
-  if (!results.length) {
-    resultsEl.innerHTML = `<div class="search-empty">Aucun résultat</div>`;
-  } else {
-    resultsEl.innerHTML = results.map(x => `
-      <button type="button" class="search-item" data-route="${x.route}">
-        <div class="search-title">${x.title}</div>
-        <div class="search-route">${x.route}</div>
-      </button>
-    `).join("");
-
-    resultsEl.querySelectorAll(".search-item").forEach(b => {
-      b.addEventListener("click", () => {
-        window.location.hash = b.dataset.route;
-        input.value = "";
-        closePanel();
-      });
-    });
-  }
-
-  openPanel();
-};
-
+    openPanel();
+    render(results);
+  };
 
   // events
   input.addEventListener("input", run);
@@ -25093,14 +25070,11 @@ const run = () => {
     }
   });
 
-  // click outside => close
+  // click outside => close (capture = true pour être prioritaire sans bloquer les autres)
   document.addEventListener("click", (e) => {
     const inSearch = panel.contains(e.target) || input.contains(e.target);
     if (!inSearch) closePanel();
-  });
-
-  // si on change le toggle, relance
-  globalChk.addEventListener("change", run);
+  }, true);
 
   const resize = () => { panel.style.width = "100%"; };
   window.addEventListener("resize", resize);
