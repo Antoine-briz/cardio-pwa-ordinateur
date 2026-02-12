@@ -25048,33 +25048,25 @@ function initHeaderSearch() {
     });
   };
 
-  const run = async () => {
-    const terms = __tok(input.value);
-    if (!terms.length) { closePanel(); resultsEl.innerHTML = ""; return; }
+const run = () => {
+  const terms = __tok(input.value);
+  if (!terms.length) { closePanel(); resultsEl.innerHTML = ""; return; }
 
-    openPanel();
-    progressEl.textContent = "";
+  const scored = __searchIdx.map(p => ({
+    route: p.route,
+    title: p.title,
+    score: __score(p.n, terms) // uniquement titre+mots-clés
+  }));
 
-    if (globalChk.checked) await __buildFullTextIndex(progressEl);
+  const results = scored
+    .filter(x => x.score > 0)
+    .sort((a,b) => b.score - a.score)
+    .slice(0, 30);
 
-    const scored = __searchIdx.map(p => {
-      // Niveau 1: titre+mots-clés (pondéré)
-      const s1 = __score(p.n, terms) * 3;
+  openPanel();
+  render(results);
+};
 
-      // Niveau 2: plein texte (optionnel)
-      const full = globalChk.checked ? (__fullTextByRoute[p.route] || "") : "";
-      const s2 = globalChk.checked ? __score(full, terms) : 0;
-
-      return { route: p.route, title: p.title, score: s1 + s2 };
-    });
-
-    const results = scored
-      .filter(x => x.score > 0)
-      .sort((a,b) => b.score - a.score)
-      .slice(0, 30);
-
-    render(results);
-  };
 
   // events
   input.addEventListener("input", run);
