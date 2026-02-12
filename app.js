@@ -24985,7 +24985,7 @@ function initHeaderSearch() {
   if (!input) return;
 
   // panel injecté sous l'input
-  let panel = document.getElementById("search-panel");
+    let panel = document.getElementById("search-panel");
   if (!panel) {
     panel = document.createElement("div");
     panel.id = "search-panel";
@@ -25000,11 +25000,23 @@ function initHeaderSearch() {
       </div>
       <div id="search-results" class="search-results"></div>
     `;
-    // on accroche au conteneur de la search dans le header
+
+    // IMPORTANT : on attache le panel AU WRAPPER de l'input, et on le contraint
     const host = input.closest(".header-search") || input.parentElement;
-    host.style.position = host.style.position || "relative";
+    host.style.position = "relative";
+    host.style.display = "inline-block";     // <-- empêche l'étalement pleine largeur
+    host.style.zIndex = "50";                // juste au-dessus de l'UI du header
+
+    panel.style.position = "absolute";
+    panel.style.left = "0";
+    panel.style.right = "auto";
+    panel.style.top = "100%";
+    panel.style.width = "100%";              // <-- 100% du host (= largeur input)
+    panel.style.marginTop = "6px";
+
     host.appendChild(panel);
   }
+
 
   const globalChk = panel.querySelector("#search-global");
   const progressEl = panel.querySelector("#search-progress");
@@ -25084,6 +25096,9 @@ function initHeaderSearch() {
 
   // si on change le toggle, relance
   globalChk.addEventListener("change", run);
+
+  const resize = () => { panel.style.width = "100%"; };
+  window.addEventListener("resize", resize);
 }
 
 
