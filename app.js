@@ -1644,6 +1644,9 @@ function ttmMakeStopSentence({ entry, lineNameOnly, last }) {
   return `${lineNameOnly} → Arrêt à définir (${last.note || "information insuffisante"})`;
 }
 
+function ttmIsAOD(entry){
+  return entry?.group === "anticoag" && entry?.subclass === "AOD";
+}
 
 function ttmIsHBPM(entry) {
   return entry?.group === "anticoag" && entry?.subclass === "HBPM";
@@ -1664,6 +1667,7 @@ function ttmLastDoseTimeLabel(entry) {
 }
 
 
+// ---------- Logique spécifique anticoag/AAP selon chirurgie
 // ---------- Logique spécifique anticoag/AAP selon chirurgie
 async function ttmResolveSpecialLogic({ surgeryKey, entry, rawLine, hasASA }) {
   // IMPORTANT : on enlève toujours la posologie côté droite
@@ -1698,7 +1702,21 @@ async function ttmResolveSpecialLogic({ surgeryKey, entry, rawLine, hasASA }) {
       return { actionText: `${leftNameOnly} → Pas de modification` };
     }
 
-    const last = ttmComputeLastIntake(__ttmState.date, entry.delay);
+    // ✅ Spécifique : AOD + chirurgie vasculaire => choix du délai (J-3 ou J-5)
+    let effectiveDelay = entry.delay;
+    const isAOD = (entry.group === "anticoag" && entry.subclass === "AOD");
+
+    if (surgeryKey === "vasculaire" && isAOD) {
+      const ansDelay = await ttmAskModal({
+        title: "AOD — Chirurgie vasculaire",
+        question: `Pour ${name} : quel délai d’arrêt ?`,
+        choices: ["Arrêt J-3", "Arrêt J-5"]
+      });
+      if (ansDelay === null) return { actionText: `${leftNameOnly} → (annulé)` };
+      effectiveDelay = ansDelay.includes("J-5") ? "J-5" : "J-3";
+    }
+
+    const last = ttmComputeLastIntake(__ttmState.date, effectiveDelay);
 
     // ===== AVK : question relai + prescription détaillée
     if (ttmIsAVK(entry)) {
@@ -1716,7 +1734,7 @@ async function ttmResolveSpecialLogic({ surgeryKey, entry, rawLine, hasASA }) {
             actionText: `${leftNameOnly} → Dernière prise le ${ttmFmtDateFR(last.date)} aux heures habituelles (${last.note})`
           };
         }
-        return { actionText: `${leftNameOnly} → Pas de prise le jour de l'intervention (${last.note || entry.delay})` };
+        return { actionText: `${leftNameOnly} → Pas de prise le jour de l'intervention (${last.note || effectiveDelay})` };
       }
 
       const mol = await ttmAskModal({
@@ -1771,7 +1789,7 @@ async function ttmResolveSpecialLogic({ surgeryKey, entry, rawLine, hasASA }) {
 
       // push extra Rx
       ttmAddExtraRx("ide", ideText);
-ttmAddExtraRx("labs", inrText);
+      ttmAddExtraRx("labs", inrText);
 
       if (last.kind === "date") {
         return {
@@ -1782,20 +1800,20 @@ ttmAddExtraRx("labs", inrText);
       }
 
       return {
-        actionText: `${leftNameOnly} → Arrêt selon protocole (${entry.delay}) ; ${relayText}`
+        actionText: `${leftNameOnly} → Arrêt selon protocole (${effectiveDelay}) ; ${relayText}`
       };
     } // ✅ FIN AVK
 
     // ===== non-AVK anticoag
     if (last.kind === "date") {
-  const when = ttmLastDoseTimeLabel(entry);
-  if (when === "aux heures habituelles") {
-    return { actionText: `${ttmStripDose(leftNameOnly)} → Dernière prise le ${ttmFmtDateFR(last.date)} aux heures habituelles (${last.note})` };
-  }
-  // HBPM / Calciparine : injection matin/soir
-  return { actionText: `${ttmStripDose(leftNameOnly)} → Dernière injection le ${ttmFmtDateFR(last.date)} ${when} (${last.note})` };
-}
-    return { actionText: `${leftNameOnly} → Arrêt selon protocole (${last.note || entry.delay})` };
+      const when = ttmLastDoseTimeLabel(entry);
+      if (when === "aux heures habituelles") {
+        return { actionText: `${ttmStripDose(leftNameOnly)} → Dernière prise le ${ttmFmtDateFR(last.date)} aux heures habituelles (${last.note})` };
+      }
+      // HBPM / Calciparine : injection matin/soir
+      return { actionText: `${ttmStripDose(leftNameOnly)} → Dernière injection le ${ttmFmtDateFR(last.date)} ${when} (${last.note})` };
+    }
+    return { actionText: `${leftNameOnly} → Arrêt selon protocole (${last.note || effectiveDelay})` };
   }
 
   // --- Anti-agrégants
