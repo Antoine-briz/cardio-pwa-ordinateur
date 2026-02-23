@@ -8206,3 +8206,45 @@ body.theme-light .ov-swatch{
 [data-theme="dark"] .thumb-card{
   border-color: rgba(255,255,255,0.25);
 }
+
+/* =========================
+   Thème sombre – miniatures
+   ========================= */
+
+[data-theme="dark"] .thumb-card {
+  border: 1px solid #ffffff;
+}
+
+[data-theme="dark"] .thumb-card span {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .thumb-card img {
+  border: 1px solid #ffffff;
+}
+
+/* =========================
+   Sections BMR / BHRe
+   ========================= */
+
+/* Espace général entre les 3 blocs */
+.atb-block {
+  margin-top: 32px;   /* augmente l’espace entre sections */
+}
+
+/* Titre des 3 grandes parties */
+.atb-block-title {
+  font-size: 1.3rem;      /* plus gros */
+  font-weight: 700;
+  margin-bottom: 18px;    /* espace entre titre et boutons/images */
+}
+
+/* Encore un peu plus d’espace avant les sections 2 et 3 */
+.atb-block + .atb-block {
+  margin-top: 42px;
+}
+
+/* Thème sombre : titres en blanc */
+[data-theme="dark"] .atb-block-title {
+  color: #ffffff;
+}
