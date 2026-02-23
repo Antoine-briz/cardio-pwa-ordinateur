@@ -22617,8 +22617,9 @@ function renderAnnuaire() {
         <tr><td>HENOCQ Paul</td><td>28 255</td></tr>
         <tr><td>HIRWE Axel</td><td>28 355</td></tr>
         <tr><td>LABARRIERE Ambroise</td><td>28 308</td></tr>
-        <tr><td>LANCELOT Aymeric</td><td>62 379</td></tr>
+        <tr><td>LANCELOT Aymeric</td><td>65 695</td></tr>
         <tr><td>LEPERE Victoria</td><td>75 885</td></tr>
+        <tr><td>LOEB Jules</td><td>62 997</td></tr>
         <tr><td>MANSOURI Sehm</td><td>28 256</td></tr>
         <tr><td>MARQUET Yann</td><td>28 356</td></tr>
         <tr><td>MELLANO Vincent</td><td>28 358</td></tr>
