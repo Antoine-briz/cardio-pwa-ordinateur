@@ -8250,3 +8250,7 @@ html[data-theme="dark"] .thumb-card img {
 [data-theme="dark"] .atb-block-title {
   color: #ffffff;
 }
+
+html[data-theme="dark"] .thumb-card * {
+  color: #ffffff !important;
+}
