@@ -5096,7 +5096,7 @@ expandPatientCharacteristics();
     <div>Curarisation par curare antagonisable (Rocuronium 0,6-1,2mg/kg)</div>
 
     <div>
-      Intubation par sonde double lumière :
+      Si intubation sélective, sonde double lumière :
       <a href="javascript:void(0)"
          class="inline-img-link"
          onclick="openPopup('./img/iotdoublelum.png')">
