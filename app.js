@@ -14929,7 +14929,7 @@ function renderReanAntibiotherapieMenu() {
 
 <button class="btn"
   onclick="openSubPage(renderAdapteeMenu, renderReanAntibiotherapieMenu)">
-  Traitement des BMR et BHRe
+  Antibiorésistances bactériennes
 </button>
 
 <button class="btn"
@@ -15069,69 +15069,112 @@ function renderAdapteeMenu() {
   $app.innerHTML = `
     <section class="intervention-shell">
 
-      <!-- Colonne gauche : titre + boutons -->
+      <!-- Colonne gauche : titres + miniatures + boutons -->
       <div class="intervention-main">
         <div class="hero">
-          <h2>Antibiothérapie adaptée : germes multisensibles, BMR et BHRe</h2>
+          <h2>Antibiorésistances bactériennes</h2>
         </div>
 
-        <div class="grid cols-2">
-          <button type="button" class="btn"
-            onclick="openSubPage(() => renderBacteriaPage('sensibles', BACTERIA_DATA.sensibles), renderAdapteeMenu)">
-            Germes multisensibles
-          </button>
+        <!-- 1) Tableaux des phénotypes -->
+        <div class="atb-block">
+          <h3 class="atb-block-title">Tableaux des phénotypes habituels d'antibiorésistance</h3>
 
-          <button type="button" class="btn"
-            onclick="openSubPage(() => renderBacteriaPage('SARM', BACTERIA_DATA.SARM), renderAdapteeMenu)">
-            SARM
-          </button>
+          <div class="thumb-grid">
+            <button type="button" class="thumb-card" onclick="openImg('Cocci-Gram-positifs.png')">
+              <img src="img/Cocci-Gram-positifs.png" alt="Cocci gram positifs" loading="lazy">
+              <span>Cocci gram positifs</span>
+            </button>
 
-          <button type="button" class="btn"
-            onclick="openSubPage(() => renderBacteriaPage('ampC', BACTERIA_DATA.ampC), renderAdapteeMenu)">
-            Entérobactéries ampC
-          </button>
+            <button type="button" class="thumb-card" onclick="openImg('Bacilles-Gram-négatifs.png')">
+              <img src="img/Bacilles-Gram-négatifs.png" alt="Bacilles gram négatif sauvages" loading="lazy">
+              <span>Bacilles gram négatif sauvages</span>
+            </button>
 
-          <button type="button" class="btn"
-            onclick="openSubPage(() => renderBacteriaPage('BLSE', BACTERIA_DATA.BLSE), renderAdapteeMenu)">
-            BLSE
-          </button>
+            <button type="button" class="thumb-card" onclick="openImg('Béta-lactamases.png')">
+              <img src="img/Béta-lactamases.png" alt="Béta-lactamases" loading="lazy">
+              <span>Béta-lactamases</span>
+            </button>
 
-          <button type="button" class="btn"
-            onclick="openSubPage(() => renderBacteriaPage('pyo', BACTERIA_DATA.pyo), renderAdapteeMenu)">
-            Pseudomonas aeruginosa MDR/XDR
-          </button>
+            <button type="button" class="thumb-card" onclick="openImg('Pseudomonas-aeruginosa.png')">
+              <img src="img/Pseudomonas-aeruginosa.png" alt="Pseudomonas aeruginosa" loading="lazy">
+              <span>Pseudomonas aeruginosa</span>
+            </button>
 
-          <button type="button" class="btn"
-            onclick="openSubPage(() => renderBacteriaPage('acineto', BACTERIA_DATA.acineto), renderAdapteeMenu)">
-            Acinetobacter baumannii Imipénème-R
-          </button>
+            <button type="button" class="thumb-card" onclick="openImg('Acinetobacter-baumanii.png')">
+              <img src="img/Acinetobacter-baumanii.png" alt="Acinetobacter baumanii" loading="lazy">
+              <span>Acinetobacter baumanii</span>
+            </button>
 
-          <button type="button" class="btn"
-            onclick="openSubPage(() => renderBacteriaPage('steno', BACTERIA_DATA.steno), renderAdapteeMenu)">
-            Stenotrophomonas maltophilia
-          </button>
+            <button type="button" class="thumb-card" onclick="openImg('Carbapénèmases.png')">
+              <img src="img/Carbapénèmases.png" alt="Carbapénèmases" loading="lazy">
+              <span>Carbapénèmases</span>
+            </button>
+          </div>
+        </div>
 
-          <button type="button" class="btn"
-            onclick="openSubPage(() => renderBacteriaPage('carba', BACTERIA_DATA.carba), renderAdapteeMenu)">
-            Entérobactéries carbapénémases
-          </button>
+        <!-- 2) BMR -->
+        <div class="atb-block">
+          <h3 class="atb-block-title">Bactéries multi-résistantes (BMR)</h3>
 
-          <button type="button" class="btn"
-            onclick="openSubPage(() => renderBacteriaPage('erv', BACTERIA_DATA.erv), renderAdapteeMenu)">
-            E. faecium Vancomycine-R
-          </button>
+          <div class="grid cols-2">
+            <button type="button" class="btn"
+              onclick="openSubPage(() => renderBacteriaPage('SARM', BACTERIA_DATA.SARM), renderAdapteeMenu)">
+              SARM
+            </button>
+
+            <button type="button" class="btn"
+              onclick="openSubPage(() => renderBacteriaPage('ampC', BACTERIA_DATA.ampC), renderAdapteeMenu)">
+              Entérobactéries ampC
+            </button>
+
+            <button type="button" class="btn"
+              onclick="openSubPage(() => renderBacteriaPage('BLSE', BACTERIA_DATA.BLSE), renderAdapteeMenu)">
+              BLSE
+            </button>
+
+            <button type="button" class="btn"
+              onclick="openSubPage(() => renderBacteriaPage('pyo', BACTERIA_DATA.pyo), renderAdapteeMenu)">
+              Pseudomonas aeruginosa MDR/XDR
+            </button>
+
+            <button type="button" class="btn"
+              onclick="openSubPage(() => renderBacteriaPage('acineto', BACTERIA_DATA.acineto), renderAdapteeMenu)">
+              Acinetobacter baumannii Imipénème-R
+            </button>
+
+            <button type="button" class="btn"
+              onclick="openSubPage(() => renderBacteriaPage('steno', BACTERIA_DATA.steno), renderAdapteeMenu)">
+              Stenotrophomonas maltophilia
+            </button>
+          </div>
+        </div>
+
+        <!-- 3) BHRe -->
+        <div class="atb-block">
+          <h3 class="atb-block-title">Bactéries hautement résistantes émergeantes (BHRe)</h3>
+
+          <div class="grid cols-2">
+            <button type="button" class="btn"
+              onclick="openSubPage(() => renderBacteriaPage('carba', BACTERIA_DATA.carba), renderAdapteeMenu)">
+              Entérobactéries carbapénémases
+            </button>
+
+            <button type="button" class="btn"
+              onclick="openSubPage(() => renderBacteriaPage('erv', BACTERIA_DATA.erv), renderAdapteeMenu)">
+              E. faecium Vancomycine-R
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- Colonne droite : image verticale -->
+      <!-- Colonne droite : image verticale (inchangée) -->
       <aside class="intervention-side">
-        <img src="img/adaptee.png" alt="Antibiothérapie adaptée">
+        <img src="img/adaptee.png" alt="BMR et BHRe">
       </aside>
 
     </section>
   `;
 }
-
 
  const INFECTIONS = {
     "Pneumonies": ["Communautaire", "PAVM", "Nécrose/abcès", "Empyème pleural"],
