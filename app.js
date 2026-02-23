@@ -15077,7 +15077,7 @@ function renderAdapteeMenu() {
 
         <!-- 1) Tableaux des phénotypes -->
         <div class="atb-block">
-          <h3 class="atb-block-title">Tableaux des phénotypes habituels d'antibiorésistance</h3>
+          <h3 class="atb-block-title">Phénotypes habituels d'antibiorésistance</h3>
 
           <div class="thumb-grid">
             <button type="button" class="thumb-card" onclick="openImg('Cocci-Gram-positifs.png')">
