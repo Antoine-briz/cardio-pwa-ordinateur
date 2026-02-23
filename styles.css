@@ -8208,19 +8208,21 @@ body.theme-light .ov-swatch{
 }
 
 /* =========================
-   Thème sombre – miniatures
+   Thème sombre – miniatures (FORCÉ)
    ========================= */
 
-[data-theme="dark"] .thumb-card {
-  border: 1px solid #ffffff;
+html[data-theme="dark"] .thumb-card {
+  border: 2px solid #ffffff !important;
+  background-color: transparent !important;
 }
 
-[data-theme="dark"] .thumb-card span {
-  color: #ffffff;
+html[data-theme="dark"] .thumb-card span {
+  color: #ffffff !important;
+  font-weight: 600;
 }
 
-[data-theme="dark"] .thumb-card img {
-  border: 1px solid #ffffff;
+html[data-theme="dark"] .thumb-card img {
+  border: 1px solid #ffffff !important;
 }
 
 /* =========================
