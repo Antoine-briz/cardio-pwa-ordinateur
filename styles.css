@@ -8208,21 +8208,39 @@ body.theme-light .ov-swatch{
 }
 
 /* =========================
-   Thème sombre – miniatures (FORCÉ)
+   Miniatures tableaux
    ========================= */
 
-html[data-theme="dark"] .thumb-card {
-  border: 2px solid #ffffff !important;
-  background-color: transparent !important;
+.thumb-card{
+  appearance: none;
+  border: 1px solid #dcdcdc;
+  background: #ffffff;          /* fond blanc au lieu de transparent */
+  border-radius: 12px;
+  padding: 12px;
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
 
-html[data-theme="dark"] .thumb-card span {
-  color: #ffffff !important;
+.thumb-card img{
+  width: 100%;
+  max-width: 180px;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+}
+
+.thumb-card span{
+  font-size: 0.95rem;
+  line-height: 1.3;
+  color: #000000;     /* texte noir assumé */
   font-weight: 600;
-}
-
-html[data-theme="dark"] .thumb-card img {
-  border: 1px solid #ffffff !important;
 }
 
 /* =========================
