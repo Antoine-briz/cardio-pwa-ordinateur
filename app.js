@@ -5119,7 +5119,7 @@ if (pos === "Décubitus latéral") {
     <div>Curarisation par curare antagonisable (Rocuronium 0,6–1,2 mg/kg)</div>
 
     <div>
-      Intubation par sonde double lumière :
+      Si intubation sélective, sonde double lumière :
       <span class="img-link" onclick="openImg('iotdoublelum.png')">
         🖼️ Gestion de l’intubation
       </span>,
