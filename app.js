@@ -13686,10 +13686,6 @@ function renderReanEto() {
             )
             .join("")}
         </div>
-
-        <div class="actions">
-          <button class="btn ghost" type="button" onclick="goBackSmart()">Retour</button>
-        </div>
       </div>
 
       <aside class="intervention-side">
