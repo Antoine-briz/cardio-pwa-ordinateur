@@ -13460,79 +13460,134 @@ function openChadsVascImage() {
 }
 
 /* ====================================================================
-   RÉANIMATION – ETO
+   RÉANIMATION – ETO (MENU EN IMAGES + PANNEAUX DÉPLIABLES)
    ==================================================================== */
 
-// Pour la RÉA : extrait seulement la liste <ul class="eto-list">...</ul>
-// à partir du HTML complet renvoyé par etoHtmlXXX()
+// Extrait seulement la liste <ul class="eto-list">...</ul> du HTML etoHtmlXXX()
 function stripEtoWrapper(html) {
-  if (!html) return html;
-
+  if (!html) return "";
   const ulStart = html.indexOf('<ul class="eto-list">');
-  if (ulStart === -1) {
-    // Si on ne trouve pas la liste, on renvoie tel quel
-    return html;
-  }
+  if (ulStart === -1) return html;
 
   const ulEnd = html.indexOf("</ul>", ulStart);
-  if (ulEnd === -1) {
-    return html;
+  if (ulEnd === -1) return html;
+
+  return html.slice(ulStart, ulEnd + "</ul>".length);
+}
+
+// Toggle d’un panneau (dépliage)
+function toggleEtoMenuPanel(id) {
+  const panel = document.getElementById(id);
+  if (!panel) return;
+
+  const isOpen = panel.classList.contains("open");
+  panel.classList.toggle("open", !isOpen);
+
+  // Optionnel : scroll doux quand on ouvre
+  if (!isOpen) {
+    panel.scrollIntoView({ behavior: "smooth", block: "start" });
   }
-
-  const inner = html.slice(ulStart, ulEnd + "</ul>".length);
-
-  // On remet juste un petit <section> autour pour garder le style
-  return `
-    <section class="eto-section">
-      ${inner}
-    </section>
-  `.trim();
 }
 
 function renderReanEto() {
-  const encadres = [
+  // ⚠️ Mets ici les noms EXACTS de tes images (dans /img)
+  // (tu peux les renommer comme tu veux, l’important est que ça match)
+  const items = [
     {
+      key: "vg-syst",
       titre: "Fonction systolique VG",
+      img: "fonctionsystoliqueVG.png",
       html: stripEtoWrapper(etoHtmlFonctionVG()),
     },
     {
+      key: "vg-seg",
       titre: "Cinétique segmentaire du VG",
+      img: "cinetiquesegmentaire.png",
       html: stripEtoWrapper(etoHtmlVGSegmentaire()),
     },
     {
+      key: "ao",
       titre: "Valve aortique",
+      img: "valveaortique.png",
       html: stripEtoWrapper(etoHtmlValveAortique()),
     },
     {
+      key: "mitrale",
       titre: "Valve mitrale",
+      img: "valvemitrale.png",
       html: stripEtoWrapper(etoHtmlValveMitrale()),
     },
     {
+      key: "ptdvg",
       titre: "PTDVG (Fonction diastolique VG)",
+      img: "fonctiondiastoliqueVG.png",
       html: stripEtoWrapper(etoHtmlPTDVG()),
     },
     {
+      key: "vd-syst",
       titre: "Fonction systolique du VD",
+      img: "dysfonctionVD.png",
       html: stripEtoWrapper(etoHtmlFonctionVD()),
     },
     {
+      key: "tric",
       titre: "Valve tricuspide",
+      img: "valvetricuspide.png",
       html: stripEtoWrapper(etoHtmlValveTricuspide()),
     },
     {
+      key: "htap",
       titre: "Evaluation d'une HTAP",
+      img: "htap.png",
       html: stripEtoWrapper(etoHtmlHTAP()),
     },
   ];
 
-  renderInterventionPage({
-    titre: "Échocardiographie trans-œsophagienne",
-    sousTitre: "",
-    image: "eto.png",
-    encadres,
-  });
+  $app.innerHTML = `
+    <section class="intervention-shell">
+
+      <div class="intervention-main">
+        <div class="hero">
+          <h2>Échocardiographie trans-œsophagienne</h2>
+        </div>
+
+        <!-- Grille d’images -->
+        <div class="eto-menu-grid" aria-label="Menu ETO">
+          ${items
+            .map(
+              (it) => `
+              <button class="eto-menu-card" type="button"
+                onclick="toggleEtoMenuPanel('eto-panel-${it.key}')">
+
+                <img src="img/${it.img}" alt="${it.titre}" onerror="this.style.opacity='0.35'">
+
+                <div class="eto-menu-title">${it.titre}</div>
+              </button>
+
+              <div class="eto-menu-panel" id="eto-panel-${it.key}">
+                <div class="eto-menu-panel-inner">
+                  ${it.html}
+                </div>
+              </div>
+            `
+            )
+            .join("")}
+        </div>
+
+        <div class="actions">
+          <button class="btn ghost" type="button" onclick="goBackSmart()">Retour</button>
+        </div>
+      </div>
+
+      <aside class="intervention-side">
+        <img src="img/eto.png" alt="ETO" onerror="this.style.display='none'">
+      </aside>
+
+    </section>
+  `;
 }
 
+// Garde tes helpers existants
 function closePopup() {
   document.getElementById("img-popup").style.display = "none";
 }
@@ -13552,7 +13607,6 @@ function openVideo(src) {
   modal.onclick = () => modal.remove();
   document.body.appendChild(modal);
 }
-
 
 /* ====================================================================
    RÉANIMATION – EER & ÉCHANGES PLASMATIQUES (MENU + sous-pages)
