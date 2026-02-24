@@ -158,11 +158,11 @@ const PRECACHE = [
   "img/cinetiquesegmentaire.png",
   "img/dysfonctionVD.png",
   "img/fonctiondiastoliqueVG.png",
-  "img/fonctionVG.png",
+  "img/fonctionsystoliqueVG.png",
   "img/htap.png",
   "img/valveaortique.png",
   "img/valvemitrale.png",
-  "img/valvetric.png"
+  "img/valvetricuspide.png"
   "img/Pseudomonas-aeruginosa.png"
 "img/Acinetobacter-baumanii.png"
 "img/Béta-lactamases.png"
