@@ -8386,3 +8386,162 @@ body.theme-light .eto-menu-panel-inner{
 
 /* (optionnel) petit feedback au survol */
 .eto-icon:hover{ opacity: 0.75; }
+
+/* =========================================================
+   ETO – MODALES (SECTION + MEDIA)
+   ========================================================= */
+
+.eto-modal-backdrop{
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0,0,0,0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.eto-modal{
+  width: min(980px, 96vw);
+  max-height: 88vh;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(15,18,24,0.96);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.55);
+}
+
+.eto-modal--media{
+  width: min(980px, 96vw);
+}
+
+.eto-modal-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+}
+
+.eto-modal-title{
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.eto-modal-close{
+  appearance: none;
+  border: 0;
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.eto-modal-close:hover{ opacity: 0.85; }
+
+.eto-modal-body{
+  padding: 14px;
+  overflow: auto;
+  max-height: calc(88vh - 70px);
+}
+
+.eto-modal-body--media{
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eto-media-img{
+  width: 100%;
+  height: auto;
+  max-height: 78vh;
+  object-fit: contain;
+  border-radius: 16px;
+}
+
+.eto-media-video{
+  width: 100%;
+  max-height: 78vh;
+  border-radius: 16px;
+}
+
+/* =========================================================
+   ETO – MINIATURES DANS MODALE SECTION
+   ========================================================= */
+
+.eto-thumb-grid{
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 1100px){
+  .eto-thumb-grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 820px){
+  .eto-thumb-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 420px){
+  .eto-thumb-grid{ grid-template-columns: 1fr; }
+}
+
+.eto-thumb-card{
+  appearance: none;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.04);
+  border-radius: 16px;
+  padding: 10px;
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  text-align: center;
+}
+
+.eto-thumb-card img{
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  display: block;
+}
+
+.eto-thumb-card span{
+  color: #fff;
+  font-weight: 800;
+  line-height: 1.15;
+  font-size: 0.95rem;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.22);
+  background: rgba(0,0,0,0.22);
+}
+
+.eto-thumb-card--video .eto-video-thumb{
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 46px;
+  font-weight: 900;
+  color: #fff;
+  background: rgba(255,255,255,0.06);
+  border: 1px dashed rgba(255,255,255,0.18);
+}
+
+.eto-thumb-card--disabled{
+  opacity: 0.6;
+  cursor: default;
+}
