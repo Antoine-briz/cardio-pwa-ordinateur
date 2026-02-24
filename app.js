@@ -13636,7 +13636,7 @@ function renderReanEto() {
   const sections = [
     {
       titre: "Fonction systolique VG",
-      img: "fonctionVG.png",
+      img: "fonctionsystoliqueVG.png",
       rawHtml: etoHtmlFonctionVG(),
     },
     {
@@ -13666,7 +13666,7 @@ function renderReanEto() {
     },
     {
       titre: "Valve tricuspide",
-      img: "valvetric.png",
+      img: "valvetricuspide.png",
       rawHtml: etoHtmlValveTricuspide(),
     },
     {
