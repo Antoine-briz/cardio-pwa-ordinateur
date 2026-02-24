@@ -13634,53 +13634,24 @@ function openEtoSectionModal(sectionTitle, items) {
 
 function renderReanEto() {
   const sections = [
-    {
-      titre: "Fonction systolique VG",
-      img: "fonctionsystoliqueVG.png",
-      rawHtml: etoHtmlFonctionVG(),
-    },
-    {
-      titre: "Cinétique segmentaire du VG",
-      img: "cinetiquesegmentaire.png",
-      rawHtml: etoHtmlVGSegmentaire(),
-    },
-    {
-      titre: "Valve aortique",
-      img: "valveaortique.png",
-      rawHtml: etoHtmlValveAortique(),
-    },
-    {
-      titre: "Valve mitrale",
-      img: "valvemitrale.png",
-      rawHtml: etoHtmlValveMitrale(),
-    },
-    {
-      titre: "PTDVG (Fonction diastolique VG)",
-      img: "fonctiondiastoliqueVG.png",
-      rawHtml: etoHtmlPTDVG(),
-    },
-    {
-      titre: "Fonction systolique du VD",
-      img: "dysfonctionVD.png",
-      rawHtml: etoHtmlFonctionVD(),
-    },
-    {
-      titre: "Valve tricuspide",
-      img: "valvetricuspide.png",
-      rawHtml: etoHtmlValveTricuspide(),
-    },
-    {
-      titre: "Evaluation d'une HTAP",
-      img: "htap.png",
-      rawHtml: etoHtmlHTAP(),
-    },
+    { titre: "Fonction systolique VG", img: "fonctionsystoliqueVG.png", rawHtml: etoHtmlFonctionVG() },
+    { titre: "Cinétique segmentaire du VG", img: "cinetiquesegmentaire.png", rawHtml: etoHtmlVGSegmentaire() },
+    { titre: "Valve aortique", img: "valveaortique.png", rawHtml: etoHtmlValveAortique() },
+    { titre: "Valve mitrale", img: "valvemitrale.png", rawHtml: etoHtmlValveMitrale() },
+    { titre: "PTDVG (Fonction diastolique VG)", img: "fonctiondiastoliqueVG.png", rawHtml: etoHtmlPTDVG() },
+    { titre: "Fonction systolique du VD", img: "dysfonctionVD.png", rawHtml: etoHtmlFonctionVD() },
+    { titre: "Valve tricuspide", img: "valvetricuspide.png", rawHtml: etoHtmlValveTricuspide() },
+    { titre: "Evaluation d'une HTAP", img: "htap.png", rawHtml: etoHtmlHTAP() },
   ];
 
-  // Pré-calcul des items de chaque section (à partir des lignes actuelles)
+  // Pré-calcul des items
   const sectionData = sections.map((s) => ({
     ...s,
     items: parseEtoListItems(s.rawHtml),
   }));
+
+  // Stock global
+  window.__ETO_SECTIONS__ = sectionData;
 
   $app.innerHTML = `
     <section class="intervention-shell">
@@ -13693,8 +13664,7 @@ function renderReanEto() {
           ${sectionData
             .map(
               (s, idx) => `
-              <button class="eto-menu-card" type="button"
-                onclick="openEtoSectionModal(${JSON.stringify(s.titre)}, window.__ETO_SECTIONS__[${idx}].items)">
+              <button class="eto-menu-card" type="button" data-eto-idx="${idx}">
                 <img src="img/${s.img}" alt="${s.titre}" onerror="this.style.opacity='0.35'">
                 <div class="eto-menu-title">${s.titre}</div>
               </button>
@@ -13714,8 +13684,16 @@ function renderReanEto() {
     </section>
   `;
 
-  // Stockage global pour l'onclick inline
-  window.__ETO_SECTIONS__ = sectionData;
+  // ✅ Ajout des handlers sans inline JS
+  document.querySelectorAll(".eto-menu-card[data-eto-idx]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const idx = parseInt(btn.getAttribute("data-eto-idx"), 10);
+      const sec = window.__ETO_SECTIONS__?.[idx];
+      if (!sec) return;
+
+      openEtoSectionModal(sec.titre, sec.items);
+    });
+  });
 }
 
 
