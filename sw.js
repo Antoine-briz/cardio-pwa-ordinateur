@@ -155,6 +155,20 @@ const PRECACHE = [
   "img/algo-9.png",
   "img/algo-10.png",
   "img/algo-11.png",
+  "img/cinetiquesegmentaire.png",
+  "img/dysfonctionVD.png",
+  "img/fonctiondiastoliqueVG.png",
+  "img/fonctionVG.png",
+  "img/htap.png",
+  "img/valveaortique.png",
+  "img/valvemitrale.png",
+  "img/valvetric.png"
+  "img/Pseudomonas-aeruginosa.png"
+"img/Acinetobacter-baumanii.png"
+"img/Béta-lactamases.png"
+"img/Carbapénèmases.png"
+"img/Cocci-Gram-positifs.png"
+"img/Bacilles-Gram-négatifs.png"
 
   // Menu principal
   "img/enseignement.png",
