@@ -8547,58 +8547,67 @@ body.theme-light .eto-menu-panel-inner{
 }
 
 /* =========================================================
-   ETO – MODALES TOUJOURS CLAIRES + MINIATURES UNIFORMES
-   + CROIX EN HAUT À DROITE
-   (à coller en fin de style.css)
+   ETO – MODALES CLAIRES (SANS CASSER L’OVERLAY ACR)
    ========================================================= */
 
-/* --- Modales toujours en fond clair (thème sombre ou clair) --- */
-.eto-modal{
+/* 1) Si acr-modal + eto-modal (compte rendu anesthésie),
+      on force le comportement plein écran */
+.acr-modal.eto-modal{
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 2147483647 !important;
+  background: rgba(0,0,0,0.65) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 16px !important;
+}
+
+/* 2) Modales ETO réa uniquement (dans leur backdrop) */
+.eto-modal-backdrop .eto-modal{
   background: #ffffff !important;
   border: 1px solid rgba(0,0,0,0.12) !important;
   color: #111 !important;
-  position: relative; /* pour placer la croix en absolu */
+  position: relative !important;
 }
 
-.eto-modal-header{
+.eto-modal-backdrop .eto-modal-header{
   border-bottom: 1px solid rgba(0,0,0,0.10) !important;
 }
 
-.eto-modal-title{
+.eto-modal-backdrop .eto-modal-title{
   color: #111 !important;
 }
 
-/* Croix toujours en haut à droite */
-.eto-modal-close{
-  position: absolute;
-  top: 12px;
-  right: 12px;
+/* Croix en haut à droite */
+.eto-modal-backdrop .eto-modal-close{
+  position: absolute !important;
+  top: 12px !important;
+  right: 12px !important;
   left: auto !important;
 
   background: rgba(0,0,0,0.06) !important;
   color: #111 !important;
 }
 
-/* --- Miniatures uniformes (sans déformer, crop sur le haut) --- */
-.eto-thumb-card img{
+/* Miniatures uniformes (ETO réa uniquement) */
+.eto-modal-backdrop .eto-thumb-card img{
   width: 100% !important;
-  height: 140px !important;          /* ajuste si besoin (120–180px) */
-  object-fit: cover !important;      /* pas de déformation */
-  object-position: top !important;   /* garde le haut de l'image */
+  height: 140px !important;
+  object-fit: cover !important;
+  object-position: top !important;
   border-radius: 14px;
   display: block;
 }
 
-/* Titres sous miniatures lisibles sur fond clair */
-.eto-thumb-card span{
+.eto-modal-backdrop .eto-thumb-card span{
   color: #111 !important;
   border: 1px solid rgba(0,0,0,0.16) !important;
   background: rgba(0,0,0,0.04) !important;
 }
 
-/* Vignettes vidéo (si présentes) à même hauteur que les images */
-.eto-thumb-card--video .eto-video-thumb{
-  height: 140px !important;          /* même hauteur que les images */
+.eto-modal-backdrop .eto-thumb-card--video .eto-video-thumb{
+  height: 140px !important;
   background: rgba(0,0,0,0.04) !important;
   border: 1px dashed rgba(0,0,0,0.20) !important;
   color: #111 !important;
