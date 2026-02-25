@@ -13656,6 +13656,9 @@ function renderReanEto() {
     { titre: "Fonction systolique du VD", img: "dysfonctionVD.png", rawHtml: etoHtmlFonctionVD() },
     { titre: "Valve tricuspide", img: "valvetricuspide.png", rawHtml: etoHtmlValveTricuspide() },
     { titre: "Evaluation d'une HTAP", img: "htap.png", rawHtml: etoHtmlHTAP() },
+    { titre: "ECMO VA", img: "ecmoVA.png", rawHtml: etoHtmlecmo() },
+    { titre: "Impella", img: "impella.png", rawHtml: etoHtmlimpella() },
+    { titre: "LVAD", img: "lvad.png", rawHtml: etoHtmllvad() },
   ];
 
   // Pré-calcul des items
