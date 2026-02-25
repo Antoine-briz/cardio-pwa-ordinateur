@@ -162,13 +162,16 @@ const PRECACHE = [
   "img/htap.png",
   "img/valveaortique.png",
   "img/valvemitrale.png",
-  "img/valvetricuspide.png"
-  "img/Pseudomonas-aeruginosa.png"
-"img/Acinetobacter-baumanii.png"
-"img/Béta-lactamases.png"
-"img/Carbapénèmases.png"
-"img/Cocci-Gram-positifs.png"
-"img/Bacilles-Gram-négatifs.png"
+  "img/valvetricuspide.png",
+  "img/Pseudomonas-aeruginosa.png",
+"img/Acinetobacter-baumanii.png",
+"img/Béta-lactamases.png",
+"img/Carbapénèmases.png",
+"img/Cocci-Gram-positifs.png",
+"img/Bacilles-Gram-négatifs.png",
+"img/ecmoVA.png",
+"img/impella.png",
+"img/lvad.png",
 
   // Menu principal
   "img/enseignement.png",
