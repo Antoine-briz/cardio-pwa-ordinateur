@@ -5385,52 +5385,6 @@ body.screen-square .eto-right{
   }
 }
 
-/* =====================================================
-   PATCH — ETO: supprimer le "plein écran" qui crée le grand blanc
-   (la carte s'ajuste au contenu + scroll vertical si besoin)
-   À COLLER TOUT EN BAS DU CSS
-   ===================================================== */
-
-/* 1) Ne plus forcer la carte à faire 100vh */
-.eto-modal .acr-modal-card.eto-fullscreen{
-  height: auto !important;
-  max-height: 92vh !important;          /* limite raisonnable */
-  width: min(1400px, calc(100vw - 24px)) !important;
-  margin: 12px auto !important;         /* centré */
-  display: flex !important;
-  flex-direction: column !important;
-}
-
-/* 2) Rendre le body scrollable (au lieu de overflow:hidden) */
-.eto-modal .eto-fullscreen .acr-modal-body{
-  flex: 0 1 auto !important;
-  overflow: auto !important;            /* ✅ scroll vertical si nécessaire */
-  padding: 8px !important;
-}
-
-/* 3) Ne plus étirer la grille et la colonne droite sur toute la hauteur */
-.eto-modal .eto-desktop-grid{
-  height: auto !important;
-  align-items: start !important;
-}
-
-.eto-modal .eto-left,
-.eto-modal .eto-right{
-  height: auto !important;
-}
-
-/* 4) La synthèse à droite ne doit pas "remplir" 100% */
-.eto-modal .eto-synth-panel{
-  height: auto !important;
-  max-height: none !important;
-}
-
-/* 5) Si tu veux que la zone tableau puisse scroller sans étirer tout le modal */
-.eto-modal .eto-table-wrap{
-  flex: 0 1 auto !important;
-  max-height: none !important;
-}
-
 /* Actus: état chargement (simple) */
 .actus-modal.is-loading{
   opacity: 0.92;
@@ -8214,7 +8168,7 @@ body.theme-light .ov-swatch{
 .thumb-card{
   appearance: none;
   border: 1px solid #dcdcdc;
-  background: #ffffff;          /* fond blanc au lieu de transparent */
+  background: #ffffff;
   border-radius: 12px;
   padding: 12px;
   cursor: pointer;
@@ -8239,48 +8193,37 @@ body.theme-light .ov-swatch{
 .thumb-card span{
   font-size: 0.95rem;
   line-height: 1.3;
-  color: #000000;     /* texte noir assumé */
+  color: #000000;
   font-weight: 600;
+}
+
+html[data-theme="dark"] .thumb-card *{
+  color: #ffffff !important;
 }
 
 /* =========================
    Sections BMR / BHRe
    ========================= */
 
-/* Espace général entre les 3 blocs */
-.atb-block {
-  margin-top: 32px;   /* augmente l’espace entre sections */
-}
+.atb-block{ margin-top: 32px; }
 
-/* Titre des 3 grandes parties */
-.atb-block-title {
-  font-size: 1.3rem;      /* plus gros */
+.atb-block-title{
+  font-size: 1.3rem;
   font-weight: 700;
-  margin-bottom: 18px;    /* espace entre titre et boutons/images */
+  margin-bottom: 18px;
 }
 
-/* Encore un peu plus d’espace avant les sections 2 et 3 */
-.atb-block + .atb-block {
-  margin-top: 42px;
-}
+.atb-block + .atb-block{ margin-top: 42px; }
 
-/* Thème sombre : titres en blanc */
-[data-theme="dark"] .atb-block-title {
-  color: #ffffff;
-}
-
-html[data-theme="dark"] .thumb-card * {
-  color: #ffffff !important;
-}
+[data-theme="dark"] .atb-block-title{ color:#ffffff; }
 
 /* =========================================================
-   MENU ETO (grille images + titres + panneaux)
+   MENU ETO (grille images + titres)
    ========================================================= */
 
 .eto-menu-grid{
   display: grid;
   gap: 14px;
-  /* Desktop : 4 colonnes (puis ça réduit automatiquement) */
   grid-template-columns: repeat(4, minmax(0, 1fr));
   align-items: start;
 }
@@ -8339,56 +8282,33 @@ body.theme-light .eto-menu-title{
   color: #111;
 }
 
-/* Panneaux dépliables */
-.eto-menu-panel{
-  grid-column: 1 / -1;     /* le panneau prend toute la largeur de la grille */
-  display: none;
-}
-
-.eto-menu-panel.open{
-  display: block;
-}
-
-.eto-menu-panel-inner{
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(255,255,255,0.04);
-  border-radius: 18px;
-  padding: 14px 14px;
-}
-
-body.theme-light .eto-menu-panel-inner{
-  border-color: rgba(0,0,0,0.14);
-  background: rgba(0,0,0,0.03);
-}
-
 /* =========================================================
    LIGNES ETO (🖥️ collé au texte + 3x plus gros)
    ========================================================= */
 
-/* On enlève le "space-between" pour coller l’icône au texte */
 .eto-list li{
   display: flex;
-  justify-content: flex-start;  /* 👈 important */
+  justify-content: flex-start;
   align-items: center;
-  gap: 12px;                    /* espace texte ↔ icône */
+  gap: 12px;
   padding: 6px 0;
 }
 
-/* Icône écran : plus gros et cliquable facilement */
 .eto-icon{
-  font-size: 60px;     /* ~3x (avant 20px) */
+  font-size: 60px;
   line-height: 1;
   cursor: pointer;
-  margin-left: 0;      /* plus collé */
-  padding: 2px 6px;    /* augmente la zone de clic */
+  margin-left: 0;
+  padding: 2px 6px;
   border-radius: 12px;
 }
 
-/* (optionnel) petit feedback au survol */
 .eto-icon:hover{ opacity: 0.75; }
 
 /* =========================================================
    ETO – MODALES (SECTION + MEDIA)
+   IMPORTANT : on scope à .eto-modal-backdrop
+   pour NE PAS impacter le CR ETO anesthésie (.acr-modal.eto-modal)
    ========================================================= */
 
 .eto-modal-backdrop{
@@ -8402,7 +8322,7 @@ body.theme-light .eto-menu-panel-inner{
   padding: 16px;
 }
 
-.eto-modal{
+.eto-modal-backdrop .eto-modal{
   width: min(980px, 96vw);
   max-height: 88vh;
   overflow: hidden;
@@ -8410,13 +8330,14 @@ body.theme-light .eto-menu-panel-inner{
   border: 1px solid rgba(255,255,255,0.18);
   background: rgba(15,18,24,0.96);
   box-shadow: 0 20px 60px rgba(0,0,0,0.55);
+  position: relative; /* croix */
 }
 
-.eto-modal--media{
+.eto-modal-backdrop .eto-modal--media{
   width: min(980px, 96vw);
 }
 
-.eto-modal-header{
+.eto-modal-backdrop .eto-modal-header{
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -8425,14 +8346,14 @@ body.theme-light .eto-menu-panel-inner{
   border-bottom: 1px solid rgba(255,255,255,0.10);
 }
 
-.eto-modal-title{
+.eto-modal-backdrop .eto-modal-title{
   margin: 0;
   font-size: 1.15rem;
   font-weight: 800;
   color: #fff;
 }
 
-.eto-modal-close{
+.eto-modal-backdrop .eto-modal-close{
   appearance: none;
   border: 0;
   background: rgba(255,255,255,0.08);
@@ -8443,24 +8364,30 @@ body.theme-light .eto-menu-panel-inner{
   cursor: pointer;
   font-size: 20px;
   line-height: 1;
+
+  /* croix en haut à droite */
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  left: auto;
 }
 
-.eto-modal-close:hover{ opacity: 0.85; }
+.eto-modal-backdrop .eto-modal-close:hover{ opacity: 0.85; }
 
-.eto-modal-body{
+.eto-modal-backdrop .eto-modal-body{
   padding: 14px;
   overflow: auto;
   max-height: calc(88vh - 70px);
 }
 
-.eto-modal-body--media{
+.eto-modal-backdrop .eto-modal-body--media{
   padding: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.eto-media-img{
+.eto-modal-backdrop .eto-media-img{
   width: 100%;
   height: auto;
   max-height: 78vh;
@@ -8468,7 +8395,7 @@ body.theme-light .eto-menu-panel-inner{
   border-radius: 16px;
 }
 
-.eto-media-video{
+.eto-modal-backdrop .eto-media-video{
   width: 100%;
   max-height: 78vh;
   border-radius: 16px;
@@ -8476,25 +8403,26 @@ body.theme-light .eto-menu-panel-inner{
 
 /* =========================================================
    ETO – MINIATURES DANS MODALE SECTION
+   (scopé à .eto-modal-backdrop)
    ========================================================= */
 
-.eto-thumb-grid{
+.eto-modal-backdrop .eto-thumb-grid{
   display: grid;
   gap: 12px;
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 @media (max-width: 1100px){
-  .eto-thumb-grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .eto-modal-backdrop .eto-thumb-grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (max-width: 820px){
-  .eto-thumb-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .eto-modal-backdrop .eto-thumb-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 420px){
-  .eto-thumb-grid{ grid-template-columns: 1fr; }
+  .eto-modal-backdrop .eto-thumb-grid{ grid-template-columns: 1fr; }
 }
 
-.eto-thumb-card{
+.eto-modal-backdrop .eto-thumb-card{
   appearance: none;
   border: 1px solid rgba(255,255,255,0.14);
   background: rgba(255,255,255,0.04);
@@ -8509,14 +8437,14 @@ body.theme-light .eto-menu-panel-inner{
   text-align: center;
 }
 
-.eto-thumb-card img{
+.eto-modal-backdrop .eto-thumb-card img{
   width: 100%;
   height: auto;
   border-radius: 14px;
   display: block;
 }
 
-.eto-thumb-card span{
+.eto-modal-backdrop .eto-thumb-card span{
   color: #fff;
   font-weight: 800;
   line-height: 1.15;
@@ -8527,7 +8455,7 @@ body.theme-light .eto-menu-panel-inner{
   background: rgba(0,0,0,0.22);
 }
 
-.eto-thumb-card--video .eto-video-thumb{
+.eto-modal-backdrop .eto-thumb-card--video .eto-video-thumb{
   width: 100%;
   aspect-ratio: 1 / 1;
   border-radius: 14px;
@@ -8541,7 +8469,7 @@ body.theme-light .eto-menu-panel-inner{
   border: 1px dashed rgba(255,255,255,0.18);
 }
 
-.eto-thumb-card--disabled{
+.eto-modal-backdrop .eto-thumb-card--disabled{
   opacity: 0.6;
   cursor: default;
 }
