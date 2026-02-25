@@ -8473,3 +8473,42 @@ body.theme-light .eto-menu-title{
   opacity: 0.6;
   cursor: default;
 }
+
+/* =========================================================
+   PATCH CIBLÉ – Modales ETO toujours en fond clair
+   (n’impacte PAS le CR ETO ni les autres modales)
+   ========================================================= */
+
+.eto-modal-backdrop .eto-modal{
+  background: #ffffff !important;
+  color: #111 !important;
+  border: 1px solid rgba(0,0,0,0.15) !important;
+}
+
+/* Header */
+.eto-modal-backdrop .eto-modal-header{
+  border-bottom: 1px solid rgba(0,0,0,0.12) !important;
+}
+
+/* Titre */
+.eto-modal-backdrop .eto-modal-title{
+  color: #111 !important;
+}
+
+/* Croix */
+.eto-modal-backdrop .eto-modal-close{
+  background: rgba(0,0,0,0.06) !important;
+  color: #111 !important;
+}
+
+/* Texte dans body */
+.eto-modal-backdrop .eto-modal-body{
+  color: #111 !important;
+}
+
+/* Miniatures titres */
+.eto-modal-backdrop .eto-thumb-card span{
+  color: #111 !important;
+  background: rgba(0,0,0,0.05) !important;
+  border: 1px solid rgba(0,0,0,0.15) !important;
+}
