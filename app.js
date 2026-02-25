@@ -19162,6 +19162,115 @@ function etoHtmlHTAP() {
   `;
 }
 
+// ECMO VA
+function etoHtmlecmo() {
+  return `
+    <section class="eto-section">
+      <h4 class="eto-title" onclick="toggleEtoBlock(this)">
+        ECMO VA
+        <span class="eto-toggle-icon">▸</span>
+      </h4>
+      <div class="eto-block" style="display:none;">
+        <ul class="eto-list">
+          <li>
+            Vérifier décharge VG / distension
+            <span class="eto-icon" onclick="openImg('eto_ecmo_dechargeVG.png')">🖥️</span>
+          </li>
+          <li>
+            Ouverture valve aortique (stase si non ouverture)
+            <span class="eto-icon" onclick="openImg('eto_ecmo_valveaortique.png')">🖥️</span>
+          </li>
+          <li>
+            Stase / thrombus OG-VG (contraste spontané)
+            <span class="eto-icon" onclick="openImg('eto_ecmo_stase_thrombus.png')">🖥️</span>
+          </li>
+          <li>
+            IM/IA associées ou aggravées
+            <span class="eto-icon" onclick="openImg('eto_ecmo_im_ia.png')">🖥️</span>
+          </li>
+          <li>
+            Fonction VD + septum
+            <span class="eto-icon" onclick="openImg('eto_ecmo_vd_septum.png')">🖥️</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+  `;
+}
+
+// Impella
+function etoHtmlimpella() {
+  return `
+    <section class="eto-section">
+      <h4 class="eto-title" onclick="toggleEtoBlock(this)">
+        Impella
+        <span class="eto-toggle-icon">▸</span>
+      </h4>
+      <div class="eto-block" style="display:none;">
+        <ul class="eto-list">
+          <li>
+            Position inlet dans le VG
+            <span class="eto-icon" onclick="openImg('eto_impella_inletVG.png')">🖥️</span>
+          </li>
+          <li>
+            Position outlet en aorte (au-dessus VAo)
+            <span class="eto-icon" onclick="openImg('eto_impella_outlet_aorte.png')">🖥️</span>
+          </li>
+          <li>
+            Interaction valve aortique / insuffisance aortique
+            <span class="eto-icon" onclick="openImg('eto_impella_ia.png')">🖥️</span>
+          </li>
+          <li>
+            Succion (contact paroi/cordages) / cavité VG petite
+            <span class="eto-icon" onclick="openImg('eto_impella_suction.png')">🖥️</span>
+          </li>
+          <li>
+            Évaluation décharge VG
+            <span class="eto-icon" onclick="openImg('eto_impella_dechargeVG.png')">🖥️</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+  `;
+}
+
+// LVAD
+function etoHtmllvad() {
+  return `
+    <section class="eto-section">
+      <h4 class="eto-title" onclick="toggleEtoBlock(this)">
+        LVAD
+        <span class="eto-toggle-icon">▸</span>
+      </h4>
+      <div class="eto-block" style="display:none;">
+        <ul class="eto-list">
+          <li>
+            Taille VG / risque de succion
+            <span class="eto-icon" onclick="openImg('eto_lvad_suction.png')">🖥️</span>
+          </li>
+          <li>
+            Position septum (décharge excessive vs insuffisante)
+            <span class="eto-icon" onclick="openImg('eto_lvad_septum.png')">🖥️</span>
+          </li>
+          <li>
+            Ouverture valve aortique / insuffisance aortique
+            <span class="eto-icon" onclick="openImg('eto_lvad_valveaortique.png')">🖥️</span>
+          </li>
+          <li>
+            Fonction VD / insuffisance tricuspide
+            <span class="eto-icon" onclick="openImg('eto_lvad_vd_it.png')">🖥️</span>
+          </li>
+          <li>
+            Stase / thrombus cavités gauches
+            <span class="eto-icon" onclick="openImg('eto_lvad_thrombus.png')">🖥️</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+  `;
+}
+
+
 function toggleEtoBlock(titleEl) {
   const section = titleEl.closest(".eto-section");
   if (!section) return;
