@@ -8681,3 +8681,64 @@ body.theme-light .eto-menu-panel-inner{
   height: 100% !important;
   border: 0 !important;
 }
+
+/* =========================================================
+   ACR / CR ETO – corrige la hauteur (tableau jusqu’en bas)
+   À coller en FIN de style.css
+   ========================================================= */
+
+/* Overlay OK, on s’assure du plein écran */
+.acr-modal.eto-modal{
+  height: 100vh !important;
+  min-height: 100vh !important;
+}
+
+/* Le “panel” interne prend tout l’écran et devient un conteneur flex */
+.acr-modal.eto-modal .acr-modal-card,
+.acr-modal.eto-modal .acr-modal-content,
+.acr-modal.eto-modal .eto-modal-content,
+.acr-modal.eto-modal .modal-content,
+.acr-modal.eto-modal > *:first-child{
+  height: 100vh !important;
+  min-height: 100vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important; /* le scroll doit être dans le body */
+}
+
+/* IMPORTANT : le body prend tout l’espace restant */
+.acr-modal.eto-modal .acr-modal-body,
+.acr-modal.eto-modal .modal-body,
+.acr-modal.eto-modal .eto-modal-body{
+  flex: 1 1 auto !important;
+  height: auto !important;
+  min-height: 0 !important;    /* 👈 crucial pour que flex + overflow marche */
+  overflow: hidden !important; /* le scroll doit être sur les colonnes internes */
+}
+
+/* Cas fréquent : le tableau/saisie est dans une zone scrollable.
+   On force ses conteneurs à pouvoir grandir et scroller */
+.acr-modal.eto-modal .acr-left,
+.acr-modal.eto-modal .acr-right,
+.acr-modal.eto-modal .acr-main,
+.acr-modal.eto-modal .acr-form,
+.acr-modal.eto-modal .acr-table-wrap,
+.acr-modal.eto-modal .acr-table,
+.acr-modal.eto-modal .acr-content{
+  min-height: 0 !important;    /* 👈 pareil : sinon le bas est “coupé” */
+}
+
+/* Si ton layout est en 2 colonnes (tableau à gauche / synthèse à droite),
+   on force chaque colonne à scroller plutôt que réduire la hauteur. */
+.acr-modal.eto-modal .acr-left,
+.acr-modal.eto-modal .acr-right{
+  overflow: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Au cas où tu as un footer/actions en bas qui réserve de la place */
+.acr-modal.eto-modal .acr-modal-actions,
+.acr-modal.eto-modal .modal-actions,
+.acr-modal.eto-modal .eto-modal-actions{
+  flex: 0 0 auto !important;
+}
