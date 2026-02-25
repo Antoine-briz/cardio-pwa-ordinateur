@@ -8614,47 +8614,69 @@ body.theme-light .eto-menu-panel-inner{
 }
 
 /* =========================================================
-   ACR / Compte rendu ETO anesthésie – plein écran
+   ACR / Compte rendu ETO anesthésie – VRAI plein écran
+   (à mettre en FIN de style.css)
    ========================================================= */
 
-/* Overlay déjà plein écran */
+/* 1) L’overlay couvre tout l’écran, au-dessus de tout */
 .acr-modal.eto-modal{
   position: fixed !important;
   inset: 0 !important;
   z-index: 2147483647 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+
   background: rgba(0,0,0,0.65) !important;
-  padding: 0 !important;                /* 👈 plus de marge */
+  padding: 0 !important;
+  margin: 0 !important;
+
   display: flex !important;
-  align-items: stretch !important;       /* 👈 le contenu remplit */
+  align-items: stretch !important;      /* 👈 pas centré */
   justify-content: stretch !important;
+
+  overflow: hidden !important;
 }
 
-/* Conteneur interne : on force le “panel” à remplir l’écran.
-   Selon ton HTML, le panel peut être .eto-modal-content, .acr-modal-content,
-   ou parfois le 1er enfant direct. On couvre large. */
-.acr-modal.eto-modal > *{
-  width: 100vw !important;
-  height: 100vh !important;
+/* 2) On neutralise les tailles max héritées des autres modales (.eto-modal) */
+.acr-modal.eto-modal *{
   max-width: none !important;
   max-height: none !important;
-  border-radius: 0 !important;          /* plein écran = pas d’arrondi */
-  overflow: auto !important;
 }
 
-/* Si tu as un conteneur nommé explicitement (souvent le cas) */
-.acr-modal .acr-modal-content,
-.acr-modal .eto-modal-content,
-.acr-modal .modal-content{
+/* 3) Le “cart/panel” interne doit remplir 100% écran
+   (selon ton HTML : .acr-modal-card / .acr-modal-content / .eto-modal-content / .modal-content) */
+.acr-modal.eto-modal .acr-modal-card,
+.acr-modal.eto-modal .acr-modal-content,
+.acr-modal.eto-modal .eto-modal-content,
+.acr-modal.eto-modal .modal-content,
+.acr-modal.eto-modal > *:first-child{
   width: 100vw !important;
   height: 100vh !important;
-  max-width: none !important;
-  max-height: none !important;
-  border-radius: 0 !important;
-  overflow: auto !important;
+  border-radius: 0 !important;          /* plein écran => pas d’arrondis */
+  margin: 0 !important;
+  overflow: hidden !important;
+
+  display: flex !important;
+  flex-direction: column !important;    /* header en haut, body qui prend le reste */
+  background: #fff !important;          /* fond clair */
 }
 
-/* Si le compte rendu est dans un <iframe> */
-.acr-modal iframe{
+/* 4) Le body prend TOUTE la hauteur restante */
+.acr-modal.eto-modal .acr-modal-body{
+  flex: 1 1 auto !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 5) Si tu as une zone actions/boutons, on évite qu’elle écrase la hauteur */
+.acr-modal.eto-modal .acr-modal-actions{
+  flex: 0 0 auto !important;
+}
+
+/* 6) Si le compte rendu est rendu dans un iframe : plein écran aussi */
+.acr-modal.eto-modal iframe{
   width: 100% !important;
   height: 100% !important;
   border: 0 !important;
