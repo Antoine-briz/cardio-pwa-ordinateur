@@ -180,6 +180,11 @@ const PRECACHE = [
   "img/inletimpella.png",
   "img/outletimpella.png",
   "img/impella-im.png",
+  "img/aortelvad.png",
+  "img/inflowlvad.png",
+  "img/outflowlvad.png",
+  "img/debitlvad.png",
+  "img/trajetlvad.png",
 
   // Menu principal
   "img/enseignement.png",
