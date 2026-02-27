@@ -19228,24 +19228,20 @@ function etoHtmlecmo() {
       <div class="eto-block" style="display:none;">
         <ul class="eto-list">
           <li>
-            Vérifier décharge VG / distension
-            <span class="eto-icon" onclick="openImg('eto_ecmo_dechargeVG.png')">🖥️</span>
+            Canulation ECMO VA
+            <span class="eto-icon" onclick="openImg('canulationecmo.png')">🖥️</span>
           </li>
           <li>
-            Ouverture valve aortique (stase si non ouverture)
-            <span class="eto-icon" onclick="openImg('eto_ecmo_valveaortique.png')">🖥️</span>
+            Evaluation aortique: ouverture, IA
+            <span class="eto-icon" onclick="openImg('aorteecmo.png')">🖥️</span>
           </li>
           <li>
-            Stase / thrombus OG-VG (contraste spontané)
-            <span class="eto-icon" onclick="openImg('eto_ecmo_stase_thrombus.png')">🖥️</span>
+            Dilatation VG et contraste spontané
+            <span class="eto-icon" onclick="openImg('dilatvgsludge.png')">🖥️</span>
           </li>
           <li>
-            IM/IA associées ou aggravées
-            <span class="eto-icon" onclick="openImg('eto_ecmo_im_ia.png')">🖥️</span>
-          </li>
-          <li>
-            Fonction VD + septum
-            <span class="eto-icon" onclick="openImg('eto_ecmo_vd_septum.png')">🖥️</span>
+            Sevrabilité ECMO VA
+            <span class="eto-icon" onclick="openImg('sevrageecmo.png')">🖥️</span>
           </li>
         </ul>
       </div>
