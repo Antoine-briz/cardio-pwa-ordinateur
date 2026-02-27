@@ -19288,24 +19288,24 @@ function etoHtmllvad() {
       <div class="eto-block" style="display:none;">
         <ul class="eto-list">
           <li>
-            Taille VG / risque de succion
-            <span class="eto-icon" onclick="openImg('eto_lvad_suction.png')">🖥️</span>
+            Canule d'admission (Inflow)
+            <span class="eto-icon" onclick="openImg('inflowlvad.png')">🖥️</span>
           </li>
           <li>
-            Position septum (décharge excessive vs insuffisante)
-            <span class="eto-icon" onclick="openImg('eto_lvad_septum.png')">🖥️</span>
+            Trajet de la canule d'éjection
+            <span class="eto-icon" onclick="openImg('trajetlvad.png')">🖥️</span>
           </li>
           <li>
-            Ouverture valve aortique / insuffisance aortique
-            <span class="eto-icon" onclick="openImg('eto_lvad_valveaortique.png')">🖥️</span>
+            Flux éjectionnel (Outflow)
+            <span class="eto-icon" onclick="openImg('outflowlvad.png')">🖥️</span>
           </li>
           <li>
-            Fonction VD / insuffisance tricuspide
-            <span class="eto-icon" onclick="openImg('eto_lvad_vd_it.png')">🖥️</span>
+            Valve aortique et LVAD
+            <span class="eto-icon" onclick="openImg('aortelvad.png')">🖥️</span>
           </li>
           <li>
-            Stase / thrombus cavités gauches
-            <span class="eto-icon" onclick="openImg('eto_lvad_thrombus.png')">🖥️</span>
+            Débits LVAD
+            <span class="eto-icon" onclick="openImg('debitlvad.png')">🖥️</span>
           </li>
         </ul>
       </div>
