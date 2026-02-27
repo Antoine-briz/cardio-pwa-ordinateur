@@ -13656,6 +13656,7 @@ function renderReanEto() {
     { titre: "Fonction systolique du VD", img: "dysfonctionVD.png", rawHtml: etoHtmlFonctionVD() },
     { titre: "Valve tricuspide", img: "valvetricuspide.png", rawHtml: etoHtmlValveTricuspide() },
     { titre: "Evaluation d'une HTAP", img: "htap.png", rawHtml: etoHtmlHTAP() },
+    { titre: "Transplantation cardiaque", img: "coeurtransplant.png", rawHtml: etoHtmlTransplant() },
     { titre: "ECMO VA", img: "ecmoVA.png", rawHtml: etoHtmlecmo() },
     { titre: "Impella", img: "impella.png", rawHtml: etoHtmlimpella() },
     { titre: "LVAD", img: "lvad.png", rawHtml: etoHtmllvad() },
@@ -19157,6 +19158,60 @@ function etoHtmlHTAP() {
           <span class="eto-icon" onclick="openImg('eto_htap_mesosyst.png')">🖥️</span>
         </li>
       </ul>
+      </div>
+    </section>
+  `;
+}
+
+// Transplantation cardiaque
+function etoHtmlTransplant() {
+  return `
+    <section class="eto-section">
+      <h4 class="eto-title" onclick="toggleEtoBlock(this)">
+        Transplantation cardiaque
+        <span class="eto-toggle-icon">▸</span>
+      </h4>
+      <div class="eto-block" style="display:none;">
+        <ul class="eto-list">
+          <li>
+            FR de surface du VG
+            <span class="eto-icon" onclick="openImg('eto_FRVG.png')">🖥️</span>
+          </li>
+          <li>
+            FEVG par Simpson biplan
+            <span class="eto-icon" onclick="openImg('eto_fevg.png')">🖥️</span>
+          </li>
+          <li>
+            Durée d'accélération systolique CCVG
+            <span class="eto-icon" onclick="openImg('eto_ccvg.png')">🖥️</span>
+          </li>
+
+          <li>
+            FR de surface du VD
+            <span class="eto-icon" onclick="openImg('eto_frvd.png')">🖥️</span>
+          </li>
+          <li>
+            TAPSE
+            <span class="eto-icon" onclick="openImg('eto_vd_tapse.png')">🖥️</span>
+          </li>
+          <li>
+            Onde S tricuspide (TDI)
+            <span class="eto-icon" onclick="openImg('eto_vd_sprime.png')">🖥️</span>
+          </li>
+
+          <li>
+            Anastomose VCS-OD
+            <span class="eto-icon" onclick="openImg('eto_anastomose_vcs_od.png')">🖥️</span>
+          </li>
+          <li>
+            Anastomose VCI-OD
+            <span class="eto-icon" onclick="openImg('eto_anastomose_vci_od.png')">🖥️</span>
+          </li>
+          <li>
+            Anastomose artère pulmonaire
+            <span class="eto-icon" onclick="openImg('eto_anastomose_ap.png')">🖥️</span>
+          </li>
+        </ul>
       </div>
     </section>
   `;
