@@ -10374,7 +10374,7 @@ function renderInterventionDrainagePericardique() {
         <ul>
           <li>Débuter Noradrénaline</li>
           <li>Expansion volémique</li>
-          <li>Chirurgie en salle</li>
+          <li>Chirurgien en salle</li>
           <li>Désinfection et champage fait</li>
         </ul>
       `,
