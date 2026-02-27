@@ -19198,18 +19198,9 @@ function etoHtmlTransplant() {
             Onde S tricuspide (TDI)
             <span class="eto-icon" onclick="openImg('eto_vd_sprime.png')">🖥️</span>
           </li>
-
           <li>
-            Anastomose VCS-OD
-            <span class="eto-icon" onclick="openImg('eto_anastomose_vcs_od.png')">🖥️</span>
-          </li>
-          <li>
-            Anastomose VCI-OD
-            <span class="eto-icon" onclick="openImg('eto_anastomose_vci_od.png')">🖥️</span>
-          </li>
-          <li>
-            Anastomose artère pulmonaire
-            <span class="eto-icon" onclick="openImg('eto_anastomose_ap.png')">🖥️</span>
+            Anastomoses VCS/VCI à l'OD
+            <span class="eto-icon" onclick="openImg('veinecave.png')">🖥️</span>
           </li>
         </ul>
       </div>
