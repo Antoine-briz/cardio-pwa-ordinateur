@@ -19261,23 +19261,15 @@ function etoHtmlimpella() {
         <ul class="eto-list">
           <li>
             Position inlet dans le VG
-            <span class="eto-icon" onclick="openImg('eto_impella_inletVG.png')">🖥️</span>
+            <span class="eto-icon" onclick="openImg('inletimpella.png')">🖥️</span>
           </li>
           <li>
-            Position outlet en aorte (au-dessus VAo)
-            <span class="eto-icon" onclick="openImg('eto_impella_outlet_aorte.png')">🖥️</span>
+            Position outlet en aorte
+            <span class="eto-icon" onclick="openImg('outletimpella.png')">🖥️</span>
           </li>
           <li>
             Interaction valve aortique / insuffisance aortique
-            <span class="eto-icon" onclick="openImg('eto_impella_ia.png')">🖥️</span>
-          </li>
-          <li>
-            Succion (contact paroi/cordages) / cavité VG petite
-            <span class="eto-icon" onclick="openImg('eto_impella_suction.png')">🖥️</span>
-          </li>
-          <li>
-            Évaluation décharge VG
-            <span class="eto-icon" onclick="openImg('eto_impella_dechargeVG.png')">🖥️</span>
+            <span class="eto-icon" onclick="openImg('impella-im.png')">🖥️</span>
           </li>
         </ul>
       </div>
