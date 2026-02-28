@@ -8552,3 +8552,26 @@ body.theme-light .eto-menu-title{
   font-weight: 600;
   line-height: 1.2;
 }
+
+/* =========================================================
+   FIX FINAL — Miniatures ETO : même hauteur, crop par le haut
+   (à coller tout en bas du CSS)
+   ========================================================= */
+
+.eto-modal-backdrop .eto-thumb-grid{
+  align-items: start;
+}
+
+.eto-modal-backdrop .eto-thumb-card{
+  align-items: stretch;   /* au lieu de center -> la miniature remplit */
+}
+
+/* Hauteur identique pour toutes les miniatures */
+.eto-modal-backdrop .eto-thumb-card img{
+  width: 100% !important;
+  height: 180px !important;        /* <-- ajuste la valeur */
+  object-fit: cover !important;     /* pas de déformation */
+  object-position: top center !important; /* on montre le haut */
+  border-radius: 14px;
+  display: block;
+}
