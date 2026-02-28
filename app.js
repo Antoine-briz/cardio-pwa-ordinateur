@@ -19058,7 +19058,7 @@ function etoHtmlPTDVG() {
       <div class="eto-block" style="display:none;">
       <ul class="eto-list">
         <li>
-         Estimation des PTDVG: E/A, E/E', pente E, flux veines pulmoanires
+         E/A, E/E', pente E, flux veines pulmonaires
           <span class="eto-icon" onclick="openImg('eto_ptdvg.png')">🖥️</span>
         </li>
       </ul>
