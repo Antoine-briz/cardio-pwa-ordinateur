@@ -19174,29 +19174,16 @@ function etoHtmlTransplant() {
       <div class="eto-block" style="display:none;">
         <ul class="eto-list">
           <li>
-            FR de surface du VG
-            <span class="eto-icon" onclick="openImg('eto_FRVG.png')">🖥️</span>
+            Fonction systolique VG post-transplantation
+            <span class="eto-icon" onclick="openImg('transplantVG.png')">🖥️</span>
           </li>
           <li>
-            FEVG par Simpson biplan
-            <span class="eto-icon" onclick="openImg('eto_fevg.png')">🖥️</span>
+            Fonction VD post-transplantation
+            <span class="eto-icon" onclick="openImg('transplantVD.png')">🖥️</span>
           </li>
           <li>
-            Durée d'accélération systolique CCVG
-            <span class="eto-icon" onclick="openImg('eto_ccvg.png')">🖥️</span>
-          </li>
-
-          <li>
-            FR de surface du VD
-            <span class="eto-icon" onclick="openImg('eto_frvd.png')">🖥️</span>
-          </li>
-          <li>
-            TAPSE
-            <span class="eto-icon" onclick="openImg('eto_vd_tapse.png')">🖥️</span>
-          </li>
-          <li>
-            Onde S tricuspide (TDI)
-            <span class="eto-icon" onclick="openImg('eto_vd_sprime.png')">🖥️</span>
+            Recherche de bulles post-transplantation
+            <span class="eto-icon" onclick="openImg('transplantbulles.png')">🖥️</span>
           </li>
           <li>
             Anastomoses VCS/VCI à l'OD
