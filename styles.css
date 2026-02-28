@@ -8512,3 +8512,43 @@ body.theme-light .eto-menu-title{
   background: rgba(0,0,0,0.05) !important;
   border: 1px solid rgba(0,0,0,0.15) !important;
 }
+
+/* Grille de miniatures */
+.thumb-grid{
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr)); /* adapte si besoin */
+  gap: 16px;
+  align-items: start;
+}
+
+/* Carte = image + titre aligné */
+.thumb-card{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Conteneur image : hauteur identique pour toutes */
+.thumb-media{
+  height: 180px;              /* <-- choisis la hauteur unique */
+  width: 100%;
+  overflow: hidden;
+  border-radius: 12px;        /* optionnel */
+  background: #f2f2f2;        /* optionnel pendant chargement */
+}
+
+/* Image : pas déformée, crop si nécessaire, priorité au haut */
+.thumb-media img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;          /* garde proportions, recadre */
+  object-position: top center;/* montre le haut en priorité */
+  display: block;
+}
+
+/* Titre : tous au même niveau car même hauteur d'image */
+.thumb-title{
+  margin: 0;
+  font-weight: 600;
+  line-height: 1.2;
+}
