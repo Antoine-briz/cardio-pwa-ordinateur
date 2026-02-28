@@ -18898,7 +18898,7 @@ function etoHtmlFonctionVG() {
           <span class="eto-icon" onclick="openImg('eto_dpdt.png')">🖥️</span>
         </li>
         <li>
-          Onde S' de l'anneau mitral (TDI)
+          Onde S' anneau mitral (TDI)
           <span class="eto-icon" onclick="openImg('eto_ondeS.png')">🖥️</span>
         </li>
         <li>
@@ -18906,7 +18906,7 @@ function etoHtmlFonctionVG() {
           <span class="eto-icon" onclick="openImg('eto_tei_vg.png')">🖥️</span>
         </li>
         <li>
-          Global longitudinal strain (GLS) du VG
+          Global longitudinal strain VG
           <span class="eto-icon" onclick="openImg('eto_strain_vg.png')">🖥️</span>
         </li>
       </ul>
@@ -18920,13 +18920,13 @@ function etoHtmlVGSegmentaire() {
   return `
     <section class="eto-section">
       <h4 class="eto-title" onclick="toggleEtoBlock(this)">
-        Cinétique segmentaire du VG
+        Cinétique segmentaire VG
         <span class="eto-toggle-icon">▸</span>
       </h4>
       <div class="eto-block" style="display:none;">
       <ul class="eto-list">
         <li>
-         Cinétique segmentaire: 17 segments du VG (AHA)
+         Cinétique segmentaire VG
           <span class="eto-icon" onclick="openImg('eto_vg_17segments.png')">🖥️</span>
         </li>
       </ul>
@@ -18946,31 +18946,31 @@ function etoHtmlValveAortique() {
       <div class="eto-block" style="display:none;">
       <ul class="eto-list">
         <li>
-          Morphologie de la valve aortique
+          Morphologie valve aortique
           <span class="eto-icon" onclick="openImg('eto_ao_morphologie.png')">🖥️</span>
         </li>
         <li>
-          Mesure des diamètres aortiques
+          Diamètres aortiques
           <span class="eto-icon" onclick="openImg('cf-diametre-aortique.png')">🖥️</span>
         </li>
         <li>
-          Insuffisance aortique : Classification
+          IA : Classification
           <span class="eto-icon" onclick="openImg('eto_ia_quantification.png')">🖥️</span>
         </li>
         <li>
-          Insuffisance aortique : Quantification par méthode PISA
+          IA : Méthode PISA
           <span class="eto-icon" onclick="openImg('eto_ia_PISA.png')">🖥️</span>
         </li>
         <li>
-          Insuffisance aortique : Quantification par Vena Contracta
+          IA : Vena Contracta
           <span class="eto-icon" onclick="openImg('eto_ia_VC.png')">🖥️</span>
         </li>
         <li>
-          Insuffisance aortique : Quantification par temps de 1/2 pression (PHT)
+          IA : Temps de 1/2 pression (PHT)
           <span class="eto-icon" onclick="openImg('eto_ia_1.2.png')">🖥️</span>
         </li>
         <li>
-          Insuffisance aortique: Mesures pour plastie aortique
+          IA : Chirurgie de plastie aortique
           <span class="eto-icon" onclick="openImg('cf-plastieaortique.png')">🖥️</span>
         </li>
         <li>
@@ -18994,51 +18994,51 @@ function etoHtmlValveMitrale() {
       <div class="eto-block" style="display:none;">
       <ul class="eto-list">
         <li>
-          Morphologie de la valve mitrale
+          Morphologie valve mitrale
           <span class="eto-icon" onclick="openImg('eto_mit_morphologie.png')">🖥️</span>
         </li>
         <li>
-          Insuffisance mitrale: Classification
+          IM : Classification
           <span class="eto-icon" onclick="openImg('eto_im_classif.png')">🖥️</span>
         </li>
         <li>
-          Insuffisance mitrale: Quantification par méthode PISA
+          IM : Méthode PISA
           <span class="eto-icon" onclick="openImg('eto_im_PISA.png')">🖥️</span>
         </li>
         <li>
-          Insuffisance mitrale: Quantification par Vena Contracta
+          IM : Vena Contracta
           <span class="eto-icon" onclick="openImg('eto_im_VC.png')">🖥️</span>
         </li>
         <li>
-          Insuffisance mitrale: Quantification par temps de 1/2 pression (PHT)
+          IM : Temps de 1/2 pression (PHT)
           <span class="eto-icon" onclick="openImg('eto_im_1.2.png')">🖥️</span>
         </li>
         <li>
-          Insuffisance mitrale: Mesures pour plastie mitrale
+          Chirurgie de plastie mitrale
           <span class="eto-icon" onclick="openImg('cf-plastiemitrale.png')">🖥️</span>
         </li>
         <li>
-          Insuffisance mitrale: Facteurs de risque de SAM
+          Facteurs de risque de SAM
           <span class="eto-icon" onclick="openImg('fdrSAM.png')">🖥️</span>
         </li>
         <li>
-          Insuffisance mitrale: Algorithme décisionnel SAM
+          Algorithme décisionnel SAM
           <span class="eto-icon" onclick="openImg('algoSAM.png')">🖥️</span>
         </li>
         <li>
-          Rétrécissement mitral: Gradient moyen
+          RM : Gradient moyen
           <span class="eto-icon" onclick="openImg('eto_rm_gdmoyen.png')">🖥️</span>
         </li>
         <li>
-          Rétrécissement mitral: Surface mitrale par planimétrie
+          RM : Surface mitrale par planimétrie
           <span class="eto-icon" onclick="openImg('eto_rm_plani.png')">🖥️</span>
         </li>
         <li>
-          Rétrécissement mitral: Surface mitrale par temps de 1/2 pression (PHT)
+          RM : Temps de 1/2 pression (PHT)
           <span class="eto-icon" onclick="openImg('eto_rm_1.2.png')">🖥️</span>
         </li>
         <li>
-          Rétrécissement mitral: : Surface mitrale par équiation de continuité
+          RM: : Equiation de continuité
           <span class="eto-icon" onclick="openImg('eto_rm_gradient_surface.png')">🖥️</span>
         </li>
       </ul>
@@ -19094,7 +19094,7 @@ function etoHtmlFonctionVD() {
           <span class="eto-icon" onclick="openImg('eto_vd_tei.png')">🖥️</span>
         </li>
         <li>
-          Global longitudinal strain (GLS) du VD
+          Global longitudinal strain du VD
           <span class="eto-icon" onclick="openImg('eto_vd_strain.png')">🖥️</span>
         </li>
         <li>
@@ -19107,26 +19107,25 @@ function etoHtmlFonctionVD() {
   `;
 }
 
-// Valve mitrale (IM / RM)
 function etoHtmlValveTricuspide() {
   return `
     <section class="eto-section">
       <h4 class="eto-title" onclick="toggleEtoBlock(this)">
-        Valve mitrale
+        Valve tricuspide
         <span class="eto-toggle-icon">▸</span>
       </h4>
       <div class="eto-block" style="display:none;">
       <ul class="eto-list">
         <li>
-          Morphologie de la valve tricuspide: classification
+          Morphologie tricuspide: classification
           <span class="eto-icon" onclick="openImg('eto_tric_morpho.png')">🖥️</span>
         </li>
         <li>
-          Morphologie de la valve tricuspide: ETO
+          Morphologie tricuspide: ETO
           <span class="eto-icon" onclick="openImg('eto_tric_morphoETO.png')">🖥️</span>
         </li>
         <li>
-          Insuffisance tricuspide: quantifier la sévérité
+          Insuffisance tricuspide: quantification
           <span class="eto-icon" onclick="openImg('eto_IT_severite.png')">🖥️</span>
         </li>
       </ul>
