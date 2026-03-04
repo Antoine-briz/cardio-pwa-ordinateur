@@ -26462,7 +26462,7 @@ const SEARCH_PAGES = [
   ["#/reanimation/assistances/lvad","LVAD","lvad"],
   ["#/reanimation/assistances/cardio-west","CardioWest","cardiowest"],
 
-  ["#/cec-protocoles","Protocoles de CEC","cec protocole"],
+["#/cec-protocoles","Protocoles de CEC","cec protocole"],
   ["#/cec-urgences","Situations d'urgence","urgence cec"],
   ["#/cec-procedures","Procédures spécifiques","procedure cec"],
   ["#/cec-urgences/hypotension","Hypotension artérielle per CEC","hypotension"],
