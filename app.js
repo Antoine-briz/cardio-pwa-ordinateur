@@ -19344,22 +19344,39 @@ function renderCEC() {
         <img src="img/titre5.png" alt="CEC" class="cec-title-img">
       </div>
 
-      <!-- Contenu CEC -->
       <div class="cec-content">
 
-        <!-- Colonne gauche : boutons -->
+        <!-- Colonne gauche -->
         <div class="cec-main">
-          <div class="grid cec-grid">
-            <button class="btn" onclick="location.hash = '#/cec-protocoles'">
-              Protocoles de CEC
-            </button>
 
-            <button class="btn" onclick="location.hash = '#/cec-urgences'">
-              Situations d'urgence
+          <!-- 1) Schéma de la CEC -->
+          <div class="cec-box">
+            <div class="cec-box-title">Schéma de la CEC</div>
+            <button class="cec-thumb-btn" type="button"
+                    onclick="openImageLightbox('img/schemaCEC.png','Schéma de la CEC')"
+                    aria-label="Ouvrir le schéma de la CEC">
+              <img src="img/schemaCEC.png" alt="Schéma de la CEC" class="cec-thumb">
+              <div class="cec-thumb-hint">Cliquer pour agrandir</div>
             </button>
+          </div>
 
+          <!-- 2) Protocoles (encadré cliquable) -->
+          <button class="cec-box cec-box-clickable" type="button"
+                  onclick="location.hash = '#/cec-protocoles'">
+            <div class="cec-box-title">Protocoles de CEC</div>
+            <div class="cec-box-sub">
+              Sélection intervention + caractéristiques patient/cœur/chirurgie → génération du protocole.
+            </div>
+          </button>
+
+          <!-- 3) Boutons conservés -->
+          <div class="cec-grid">
             <button class="btn" onclick="location.hash = '#/cec-procedures'">
               Procédures spécifiques
+            </button>
+
+            <button class="btn btn-red" onclick="location.hash = '#/cec-urgences'">
+              Situations d'urgences CEC
             </button>
           </div>
 
@@ -19368,7 +19385,7 @@ function renderCEC() {
           </div>
         </div>
 
-        <!-- Colonne droite : image -->
+        <!-- Colonne droite : image (on garde ton visuel existant) -->
         <aside class="cec-side">
           <img src="img/cec1.png" alt="Circulation extra-corporelle">
         </aside>
