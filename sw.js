@@ -198,6 +198,7 @@ const PRECACHE = [
 
   // CEC
   "img/cec1.png",
+  "img/schemaCEC.png",
 
   // === Anesthésie (chirurgie cardiaque)
 "img/journals/bja.png",
