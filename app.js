@@ -20286,11 +20286,13 @@ function cecRenderFromPpt(protocol, s){
     chosen = cecApplyDynamicToCell(chosen, s, context);
 
     bodyHtml += `
-      <tr>
-        <td class="cec-td-title">${cecRenderTitleCell(col0)}</td>
-        <td colspan="2">${cecFormatProtocolCell(col0, chosen)}</td>
-      </tr>
-    `;
+  <tr>
+    <td class="cec-td-title">${cecRenderTitleCell(col0)}</td>
+    <td colspan="2">
+      <div class="cec-cell-empty">Sélectionnez une intervention pour afficher le protocole</div>
+    </td>
+  </tr>
+`;
   }
 
   return `
