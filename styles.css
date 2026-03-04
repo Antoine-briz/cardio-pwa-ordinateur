@@ -9264,3 +9264,135 @@ body.dark .cec-obj-left{ background: rgba(255,255,255,.08); color: #fff; }
   background: rgba(255,255,255,0.08);
   font-weight: 800;
 }
+
+/* =========================
+   CEC – Protocoles (layout)
+   ========================= */
+
+.cec-proto-page{
+  width: 100%;
+  padding: 16px;
+}
+
+.cec-proto-hero{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin: 4px 0 14px;
+}
+
+.cec-proto-title{
+  font-size: 32px;
+  font-weight: 800;
+  text-align:center;
+}
+
+.cec-proto-grid{
+  display:grid;
+  grid-template-columns: minmax(420px, 520px) 1fr;
+  gap: 16px;
+  align-items: start; /* ✅ même niveau */
+}
+
+@media (max-width: 980px){
+  .cec-proto-grid{ grid-template-columns: 1fr; }
+}
+
+.cec-preview-card{ margin-top: 0; }
+
+/* =========================
+   CEC – Table style
+   ========================= */
+
+body{
+  --cec-navy-top: #0b2540;
+  --cec-navy-left: #123a63;
+  --cec-obj-head-bg: rgba(148,163,184,.25);
+}
+
+.cec-proto-table-wrap{ width:100%; overflow:auto; }
+
+.cec-proto-table{
+  width:100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.cec-proto-table th,
+.cec-proto-table td{
+  border: 1px solid var(--border);
+  vertical-align: top;
+  padding: 10px 10px;
+}
+
+/* Bandeau résumé */
+.cec-proto-top{
+  background: var(--cec-navy-top);
+  color: #fff;
+  text-align: left;
+  padding: 12px 12px;
+}
+
+.cec-proto-top small{
+  opacity: .95;
+  font-weight: 500;
+}
+
+/* Colonne gauche titres */
+.cec-td-title{
+  background: var(--cec-navy-left);
+  color: #fff;              /* ✅ lisible thème sombre */
+  font-weight: 800;
+  text-align: left;
+  width: 210px;
+}
+
+/* Objectifs per-CEC */
+.cec-obj-left{
+  background: var(--cec-navy-left);
+  color:#fff;
+  text-align:center;
+  vertical-align: middle;   /* ✅ centré en hauteur */
+  font-weight: 900;
+}
+
+.cec-obj-head{
+  background: var(--cec-obj-head-bg); /* ✅ gris clair */
+  font-weight: 800;
+  text-align: center;
+}
+
+/* Cellules vides (avant sélection) */
+.cec-cell-empty{
+  min-height: 26px;
+}
+
+/* Liens Cf : non soulignés + plus petits */
+.cec-imglink{
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.cec-proto-page{ width:100%; }
+.cec-proto-hero{ display:flex; justify-content:center; margin:6px 0 14px; }
+.cec-proto-title{ font-size:32px; font-weight:800; text-align:center; }
+
+.cec-proto-grid{
+  display:grid;
+  grid-template-columns: minmax(420px, 520px) 1fr;
+  gap:16px;
+  align-items:start;
+  width:100%;
+}
+
+@media (max-width: 980px){
+  .cec-proto-grid{ grid-template-columns: 1fr; }
+}
+
+.cec-preview-card{ margin-top:0; }
