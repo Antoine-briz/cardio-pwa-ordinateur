@@ -9396,3 +9396,27 @@ body{
 }
 
 .cec-preview-card{ margin-top:0; }
+
+/* Force texte blanc dans cellules bleues */
+.cec-proto-table .cec-td-title{
+  color:#fff !important;
+}
+.cec-proto-table .cec-td-title *{
+  color:#fff !important;
+}
+
+.cec-proto-table .cec-obj-left{
+  text-align:left;
+  vertical-align:middle;
+  padding-left:14px;
+  font-weight:900;
+}
+.cec-can-head{
+  margin: 0 0 6px 0;
+}
+.cec-can-gap{
+  height: 8px;
+}
+.cec-can-bullet{
+  margin: 0 0 4px 0;
+}
