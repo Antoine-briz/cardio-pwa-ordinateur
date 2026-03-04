@@ -8630,3 +8630,106 @@ body.theme-light .eto-menu-title{
   font-weight:800; text-decoration:underline; cursor:pointer;
 }
 .cec-cf-missing{ font-weight:800; opacity:.7; }
+
+/* =========================================================
+   CEC — Correctifs thème clair/sombre (lisibilité)
+   À coller TOUT EN BAS du fichier styles.css
+========================================================= */
+
+/* Crédit : évite le gris illisible en sombre */
+.cec-credit{ color: var(--muted); }
+
+/* Menu CEC : styles manquants (cec-box-title, thumb, etc.)
+   -> On surcharge seulement dans la page menu (.cec-page) */
+.cec-page .cec-box{
+  background: var(--card);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 14px;
+}
+
+.cec-page .cec-box-title{
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.cec-page .cec-box-sub{
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.cec-page .cec-box-clickable{
+  text-align: left;
+  cursor: pointer;
+}
+
+.cec-page .cec-thumb-btn{
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.cec-page .cec-thumb{
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  display: block;
+}
+
+.cec-page .cec-thumb-hint{
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* Protocoles : fond + texte compatibles sombre/clair */
+.cec-resume{
+  background: var(--card);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  box-shadow: none; /* optionnel : plus “propre” en sombre */
+}
+
+.cec-proto-table-wrap{
+  background: var(--card);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  box-shadow: none;
+}
+
+.cec-proto-table td{
+  color: var(--fg);
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+}
+
+.cec-td-title{
+  background: color-mix(in srgb, var(--card) 70%, var(--bg) 30%);
+  color: var(--fg);
+}
+
+/* Formulaire protocoles : inputs lisibles en sombre */
+.cec-proto-page .cec-field input,
+.cec-proto-page .cec-field select{
+  background: var(--card);
+  color: var(--fg);
+  border: 1px solid var(--border);
+}
+
+.cec-proto-page .cec-field span{
+  color: var(--muted);
+  opacity: 1;
+}
+
+/* Liens "Cf ..." : visibles sur fond sombre/claire */
+.cec-imglink{
+  color: var(--fg);
+}
+.cec-cf-missing{
+  color: var(--muted);
+}
