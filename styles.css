@@ -9485,3 +9485,9 @@ body{
   font-size: 0.9rem !important;
   line-height: 1 !important;
 }
+
+.cec-cell-empty{
+  opacity: 0.85;
+  font-style: italic;
+  padding: 6px 8px;
+}
