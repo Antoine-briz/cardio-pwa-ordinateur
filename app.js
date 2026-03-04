@@ -20121,40 +20121,68 @@ function cecFormatProtocolCell(rowTitle, text){
 // 10bis) Choix colonne alternative (colonne droite) :
 // La colonne de droite REMPLACE totalement la gauche si condition vraie
 // -------------------------------------------------
-function cecChooseAltColumn(row, protocol, s){
-  const useFem = !!s?.chirurgie?.sternotomieRisque;
-  const instab = !!s?.dissection?.instabilite;
 
-  // Format simple : [title, base, alt]
-  if (row.length === 3){
-    return (useFem && row[2]) ? row[2] : row[1];
+// -------------------------------------------------
+// 10 bis) Helpers manquants (ALT column + contexte calibres)
+// -------------------------------------------------
+function cecChooseAltColumn(row, protocol, s){
+  // row = [title, base, alt] OU [title, base, "", alt] (dissection/transplant)
+  const useFem = !!s.chirurgie?.sternotomieRisque;
+  const instab = !!s.dissection?.instabilite;
+
+  if (!Array.isArray(row)) return "";
+
+  // Cas standard: 3 colonnes (alt = sternotomie à risque)
+  if (row.length === 3) {
+    return (useFem && row[2]) ? row[2] : (row[1] || "");
   }
 
-  // Format long : [title, base, "", alt]
-  if (row.length >= 4){
-    const title = String(row[0] || "").toLowerCase();
-
-    if (protocol === "dissection"){
-      // Veineuse : alt si sternotomie à risque OU instabilité
-      if (title.includes("veineuse")){
+  // Cas 4 colonnes (dissection/transplantation): alt en index 3
+  if (row.length >= 4) {
+    if (protocol === "dissection") {
+      const title = String(row[0] || "").toLowerCase();
+      // Veineuse: alt si sternotomie OU instabilité
+      if (title.includes("veineuse")) {
         if ((useFem || instab) && row[3]) return row[3];
-        return row[1];
+        return row[1] || "";
       }
-      // Artérielle : alt seulement si instabilité
+      // Artérielle: alt seulement si instabilité
       if (instab && row[3]) return row[3];
-      return row[1];
+      return row[1] || "";
     }
 
-    if (protocol === "transplantation"){
-      // Alt si sternotomie à risque
-      return (useFem && row[3]) ? row[3] : row[1];
+    if (protocol === "transplantation") {
+      return (useFem && row[3]) ? row[3] : (row[1] || "");
     }
 
-    // Fallback
+    // fallback
     return row[1] || "";
   }
 
   return row[1] || "";
+}
+
+function cecContextForRowTitle(title, protocol, chosenText, s){
+  const t = String(title || "").toLowerCase();
+  const chosen = String(chosenText || "");
+
+  // Artérielle
+  if (t.includes("canulation artérielle")) {
+    if (protocol === "dissection") return "DISSECTION_ART";
+    if (protocol === "video_thoraco") return "ART_FEM";
+    return (s.chirurgie?.sternotomieRisque) ? "ART_FEM" : "ART_CENTRAL";
+  }
+
+  // Veineuse
+  if (t.includes("canulation veineuse")) {
+    if (protocol === "video_thoraco") return "VIDEO";
+    if (chosen.includes("Bi-cavale")) {
+      return (s.chirurgie?.sternotomieRisque) ? "VEN_FEM" : "VEN_BICAVAL";
+    }
+    return (s.chirurgie?.sternotomieRisque) ? "VEN_FEM" : "VEN_ATRIO";
+  }
+
+  return "";
 }
 
 function cecRenderFromPpt(protocol, s){
@@ -20613,34 +20641,25 @@ function renderCecProtocoles() {
     addBtn.style.display = (blocksCount < 3) ? "" : "none";
   }
 
-  function updatePreview(){
-    ensureNoDuplicateValues();
-    toggleDissectionLine();
-    updateAddBtn();
+ function updatePreview(){
+  ensureNoDuplicateValues();
+  toggleDissectionLine();
+  updateAddBtn();
 
-    const gestes = (s.gestes || []).filter(Boolean);
-    const preview = document.getElementById("cec-preview");
+  const gestes = (s.gestes || []).filter(Boolean);
+  const preview = document.getElementById("cec-preview");
+  if (!preview) return;
 
-    if (!gestes.length) {
-  preview.innerHTML = `
-    <div class="info-card cec-preview-card">
-      <h3>Protocole</h3>
-      ${cecRenderEmptyFromPpt("generique")}
-    </div>
-  `;
-  return;
+  // ✅ Toujours afficher un tableau
+  const protocol = gestes.length ? cecPickProtocol(gestes) : "generique";
+
+  // ✅ Table visible même sans sélection : colonnes vides, mais objectifs calculés dès poids/taille
+  const tableHtml = gestes.length
+    ? cecRenderFromPpt(protocol, s)
+    : cecRenderEmptyFromPpt(protocol, s);
+
+  preview.innerHTML = tableHtml;
 }
-
-    const protocol = cecPickProtocol(gestes);
-
-    preview.innerHTML = `
-      <div class="info-card cec-preview-card">
-        <h3>Protocole de CEC</h3>
-        ${cecRenderFromPpt(protocol, s)}
-      </div>
-    `;
-  }
-
   rebuildSelectValues();
   updatePreview();
   updateAddBtn();
