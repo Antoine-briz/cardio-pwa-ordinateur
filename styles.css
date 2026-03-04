@@ -8575,3 +8575,58 @@ body.theme-light .eto-menu-title{
   border-radius: 14px;
   display: block;
 }
+
+/* Lightbox */
+.img-lightbox-overlay{
+  position:fixed; inset:0;
+  background:rgba(0,0,0,.65);
+  display:flex; align-items:center; justify-content:center;
+  z-index:9999; padding:16px;
+}
+.img-lightbox-modal{ position:relative; max-width:min(1100px,95vw); max-height:90vh; }
+.img-lightbox-img{ width:100%; height:auto; max-height:90vh; border-radius:16px; background:#fff; display:block; }
+.img-lightbox-close{
+  position:absolute; top:-10px; right:-10px;
+  width:auto; padding:10px 14px; border-radius:999px;
+}
+
+/* Form */
+.cec-form .cec-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+@media (max-width:700px){ .cec-form .cec-row{ grid-template-columns:1fr; } }
+.cec-field{ display:flex; flex-direction:column; gap:6px; margin-top:10px; }
+.cec-field span{ font-size:13px; opacity:.8; }
+.cec-field input, .cec-field select{
+  padding:12px; border-radius:12px; border:1px solid #ddd; font-size:15px;
+}
+.cec-checks{ display:grid; gap:10px; margin-top:10px; }
+.cec-subchecks{ margin-top:12px; padding-top:10px; border-top:1px dashed #ddd; }
+
+.cec-resume{
+  background:#fff; border-radius:16px; padding:14px;
+  box-shadow:0 6px 16px rgba(0,0,0,.06);
+  margin:12px 0 16px; line-height:1.4; font-size:14px;
+}
+
+/* Table protocole */
+.cec-proto-table-wrap{
+  overflow:auto; background:#fff; border-radius:16px;
+  box-shadow:0 6px 16px rgba(0,0,0,.06);
+}
+.cec-proto-table{ width:100%; border-collapse:separate; border-spacing:0; min-width:820px; }
+.cec-proto-table td{
+  vertical-align:top; padding:12px;
+  border-bottom:1px solid #eee; border-right:1px solid #eee;
+  font-size:14px; line-height:1.35;
+}
+.cec-td-title{ font-weight:800; width:240px; background:#fafafa; }
+.cec-proto-table tr:last-child td{ border-bottom:0; }
+.cec-proto-table td:last-child{ border-right:0; }
+
+.cec-ul{ margin:0; padding-left:18px; }
+.cec-ul li{ margin:6px 0; }
+
+.cec-imglink{
+  border:0; background:transparent; padding:0;
+  font-weight:800; text-decoration:underline; cursor:pointer;
+}
+.cec-cf-missing{ font-weight:800; opacity:.7; }
