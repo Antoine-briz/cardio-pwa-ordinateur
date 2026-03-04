@@ -19942,6 +19942,39 @@ function cecApplyDynamicToCell(text, s, context){
   return t;
 }
 
+// ---- Objectifs per-CEC : calculs patient (valeurs absolues) ----
+// DO2/VO2 sont indexés (mL/min/m2) -> on affiche aussi la valeur absolue (×SC)
+// Débit de pompe est indexé (L/min/m2) -> on affiche aussi la valeur absolue (×SC)
+function cecApplyDynamicObjectives(text, s){
+  let t = String(text || "");
+  const sc = cecComputeBSA(s.poidsKg, s.tailleCm);
+
+  if (!sc) return t; // pas de poids/taille => on laisse l’indexé
+
+  // DO2 : 280–300 mL/min/m2
+  t = t.replace(/DO2\s*>\s*280-300\s*mL\/min\/m2/gi, () => {
+    const a = Math.round(280 * sc);
+    const b = Math.round(300 * sc);
+    return `DO2 > ${a}–${b} mL/min (280–300 mL/min/m² × SC)`;
+  });
+
+  // VO2 : 100–140 mL/min/m2
+  t = t.replace(/VO2\s*=\s*100-140\s*mL\/min\/m2/gi, () => {
+    const a = Math.round(100 * sc);
+    const b = Math.round(140 * sc);
+    return `VO2 = ${a}–${b} mL/min (100–140 mL/min/m² × SC)`;
+  });
+
+  // Débit de pompe : 2,2–2,6 L/min/m2 (tolère virgule/point)
+  t = t.replace(/Débit de pompe\s*=\s*2[,.]2-2[,.]6\s*L\/min\/m2/gi, () => {
+    const a = (2.2 * sc).toFixed(1);
+    const b = (2.6 * sc).toFixed(1);
+    return `Débit de pompe = ${a}–${b} L/min (2,2–2,6 L/min/m² × SC)`;
+  });
+
+  return t;
+}
+  
 // -------------------------------------------------
 // 9) Choix du tableau (gestes) + colonne alternative
 // -------------------------------------------------
@@ -19959,397 +19992,396 @@ function cecPickProtocol(gestes){
 }
 
 // -------------------------------------------------
-// 10) Rendu du protocole depuis table PPT
+// 10) Rendu protocole depuis table PPT — STYLE + objectifs rowspan + calculs objectifs
 // -------------------------------------------------
-function cecChooseAltColumn(row, protocol, s){
-  const useFem = !!s.chirurgie.sternotomieRisque;
-  const instab = !!s.dissection?.instabilite;
 
-  if (row.length === 3) {
-    return (useFem && row[2]) ? row[2] : row[1];
-  }
-  if (row.length === 4) {
-    if (protocol === "dissection") {
-      const title = String(row[0] || "").toLowerCase();
-      if (title.includes("veineuse")) {
-        if ((useFem || instab) && row[3]) return row[3];
-        return row[1];
-      }
-      if (instab && row[3]) return row[3];
-      return row[1];
-    }
-    if (protocol === "transplantation") {
-      return (useFem && row[3]) ? row[3] : row[1];
-    }
-    return row[1] || "";
-  }
-  return row[1] || "";
+function cecRenderCfLine(line){
+  const clean = String(line || "").trim();
+  if (!/^Cf\s+/i.test(clean)) return escapeHtml(clean);
+
+  const file = CEC_CF_MAP[clean];
+  if (!file) return `<span class="cec-cf-missing">${escapeHtml(clean)}</span>`;
+
+  return `
+    <button class="cec-imglink" type="button"
+      onclick="openImageLightbox('img/${escapeHtml(file)}','${escapeHtml(clean)}')">
+      <span>${escapeHtml(clean)}</span>
+      <span class="cec-img-ico" aria-hidden="true">🖼️</span>
+    </button>
+  `;
 }
 
-function cecContextForRowTitle(title, protocol, chosenText, s){
-  const t = String(title || "").toLowerCase();
-  const chosen = String(chosenText || "");
+function cecNl2brHtml(s){
+  return String(s || "")
+    .split("\n")
+    .map(l => cecRenderCfLine(l.trim()))
+    .join("<br>");
+}
 
-  if (t.includes("canulation artérielle")) {
-    if (protocol === "dissection") return "DISSECTION_ART";
-    if (protocol === "video_thoraco") return "ART_FEM";
-    return s.chirurgie.sternotomieRisque ? "ART_FEM" : "ART_CENTRAL";
+function cecRenderTitleCell(col0){
+  const lines = String(col0 || "").split("\n").map(x => x.trim()).filter(Boolean);
+  const main = lines[0] || "";
+  const rest = lines.slice(1);
+
+  const cfHtml = rest.length
+    ? rest.map(l => `<div class="cec-title-cf">${cecRenderCfLine(l)}</div>`).join("")
+    : "";
+
+  return `
+    <div class="cec-cell-title">
+      <div class="cec-title-main">${escapeHtml(main)}</div>
+      ${cfHtml}
+    </div>
+  `;
+}
+
+function cecFormatProtocolCell(rowTitle, text){
+  const t0 = String(rowTitle || "").toLowerCase();
+  const raw = String(text || "").trim();
+  if (!raw) return "";
+
+  // Cardioplégie : valeurs en gras + saut de ligne entre voie/solution
+  if (t0.includes("cardioplégie")) {
+    const lines = raw.split("\n").map(l => l.trim()).filter(Boolean);
+    let voie = "";
+    let sol  = "";
+    const other = [];
+
+    for (const l of lines){
+      if (/^Voie d’administration\s*:/i.test(l)) voie = l.replace(/^Voie d’administration\s*:\s*/i, "");
+      else if (/^Solution de cardioplégie\s*:/i.test(l)) sol = l.replace(/^Solution de cardioplégie\s*:\s*/i, "");
+      else other.push(l);
+    }
+
+    return `
+      <div class="cec-cp-block">
+        ${voie ? `<div class="cec-cp-line">Voie d’administration : <strong>${escapeHtml(voie)}</strong></div>` : ""}
+        <div class="cec-cp-gap"></div>
+        ${sol ? `<div class="cec-cp-line">Solution : <strong>${escapeHtml(sol)}</strong></div>` : ""}
+        ${other.length ? `<div class="cec-cp-gap"></div><div>${cecNl2brHtml(other.join("\n"))}</div>` : ""}
+      </div>
+    `;
   }
-  if (t.includes("canulation veineuse")) {
-    if (protocol === "video_thoraco") return "VIDEO";
-    if (chosen.includes("Bi-cavale")) return s.chirurgie.sternotomieRisque ? "VEN_FEM" : "VEN_BICAVAL";
-    return s.chirurgie.sternotomieRisque ? "VEN_FEM" : "VEN_ATRIO";
+
+  // Canulations : blocs canule + liste en tirets, séparation si ligne vide
+  if (t0.includes("canulation")) {
+    const lines = raw.split("\n").map(l => l.trim());
+
+    const blocks = [];
+    let current = null;
+
+    function flush(){
+      if (!current) return;
+      blocks.push(current);
+      current = null;
+    }
+
+    for (const l of lines){
+      if (!l) { flush(); continue; }
+
+      const isHeading =
+        !l.includes(":") &&
+        !/^Débit/i.test(l) &&
+        !/^Calibre/i.test(l) &&
+        !/^Site/i.test(l) &&
+        !/^Drainage/i.test(l) &&
+        !/^VCI/i.test(l) &&
+        !/^VCS/i.test(l) &&
+        !/^Canule/i.test(l) &&
+        !/^Alternative/i.test(l);
+
+      if (isHeading){
+        flush();
+        current = { name: l, items: [] };
+      } else {
+        if (!current) current = { name: "", items: [] };
+        current.items.push(l);
+      }
+    }
+    flush();
+
+    if (!blocks.length) return cecNl2brHtml(raw);
+
+    return blocks.map(b => {
+      const nameHtml = b.name ? `<div class="cec-cannula-name"><strong>${escapeHtml(b.name)}</strong></div>` : "";
+      const li = (b.items || []).map(x => `<li>${cecNl2brHtml(x)}</li>`).join("");
+      return `
+        <div class="cec-cannula-block">
+          ${nameHtml}
+          <ul class="cec-cannula-lines">${li}</ul>
+        </div>
+      `;
+    }).join("");
   }
-  return "";
+
+  return cecNl2brHtml(raw);
 }
 
 function cecRenderFromPpt(protocol, s){
   const table = CEC_PPT_TABLES[protocol];
   if (!table) return `<p>Table protocole introuvable: ${escapeHtml(protocol)}</p>`;
 
-  let inObjectives = false;
+  // Bandeau haut : résumé sélection
+  const gestesTxt = (s.gestes||[]).filter(Boolean).map(cecLabelFromValue).join(" + ") || "—";
+  const patientTxt = `${escapeHtml(s.poidsKg || "—")} kg / ${escapeHtml(s.tailleCm || "—")} cm`;
+  const coeurTxt = [
+    s.coeur.fevg35 ? "FEVG<35%" : null,
+    s.coeur.hvg ? "HVG" : null,
+    s.coeur.ia ? "IA" : null,
+    s.coeur.stenoseCoronaireSerree ? "Sténose serrée" : null,
+  ].filter(Boolean).join(" • ") || "—";
+  const chirTxt = [
+    s.chirurgie.sternotomieRisque ? "Sternotomie à risque" : null,
+    s.chirurgie.clampage90 ? "Clampage>90min" : null,
+  ].filter(Boolean).join(" • ") || "—";
 
-  const rowsHtml = table.map((row) => {
+  let bodyHtml = "";
+
+  for (let i = 0; i < table.length; i++){
+    const row = table[i];
     const col0 = row[0] || "";
     const col1 = row[1] || "";
     const col2 = row[2] || "";
 
-    if (String(col0).includes("Objectifs per-CEC")) inObjectives = true;
+    // Bloc Objectifs per-CEC : rowspan + entêtes gris + calculs patient
+    if (String(col0).includes("Objectifs per-CEC")) {
+      let j = i + 1;
+      while (j < table.length && String(table[j][0] || "") === "") j++;
+      const nRows = (j - i); // inclut l’entête Objectifs/Mesures
 
-    // Objectifs : toujours 2 colonnes
-    if (inObjectives) {
-      return `
+      bodyHtml += `
         <tr>
-          <td class="cec-td-title">${cecNl2brHtml(col0)}</td>
-          <td>${cecNl2brHtml(col1)}</td>
-          <td>${cecNl2brHtml(col2)}</td>
+          <td class="cec-td-title cec-obj-left" rowspan="${nRows}">Objectifs<br>per-CEC</td>
+          <td class="cec-obj-head">${escapeHtml(col1)}</td>
+          <td class="cec-obj-head">${escapeHtml(col2)}</td>
         </tr>
       `;
+
+      for (let k = i + 1; k < j; k++){
+        const r = table[k];
+        const left = cecApplyDynamicObjectives(String(r[1] || ""), s); // ✅ calcul DO2/VO2/débit
+        const right = String(r[2] || "");
+        bodyHtml += `
+          <tr>
+            <td>${cecNl2brHtml(left)}</td>
+            <td>${cecNl2brHtml(right)}</td>
+          </tr>
+        `;
+      }
+
+      i = j - 1;
+      continue;
     }
 
-    // Autres : une seule colonne (base OU alternative)
+    // Protocole “normal” : base vs alternative, sans afficher les consignes “Si …”
     let chosen = cecChooseAltColumn(row, protocol, s);
     chosen = cecStripInternalLines(chosen);
 
     const context = cecContextForRowTitle(col0, protocol, chosen, s);
     chosen = cecApplyDynamicToCell(chosen, s, context);
 
-    return `
+    bodyHtml += `
       <tr>
-        <td class="cec-td-title">${cecNl2brHtml(col0)}</td>
-        <td colspan="2">${cecNl2brHtml(chosen)}</td>
+        <td class="cec-td-title">${cecRenderTitleCell(col0)}</td>
+        <td colspan="2">${cecFormatProtocolCell(col0, chosen)}</td>
       </tr>
     `;
-  }).join("");
+  }
 
   return `
     <div class="cec-proto-table-wrap">
       <table class="cec-proto-table">
-        <tbody>${rowsHtml}</tbody>
+        <thead>
+          <tr>
+            <th class="cec-proto-top" colspan="3">
+              <div><strong>${escapeHtml(gestesTxt)}</strong></div>
+              <small>Patient: ${patientTxt} • Cœur: ${escapeHtml(coeurTxt)} • Chirurgie: ${escapeHtml(chirTxt)}</small>
+            </th>
+          </tr>
+        </thead>
+        <tbody>${bodyHtml}</tbody>
       </table>
     </div>
   `;
 }
 
 // -------------------------------------------------
-// 11) Page "Protocoles" (SPLIT + LIVE) — 2 niveaux
+// 11) Page "Protocoles" — split gauche/droite + 2 niveaux + + gestes
 // -------------------------------------------------
 
-// Catégories -> sous-interventions (2 niveaux)
-const CEC_CATEGORIES = [
-  { label:"Pontages coronaires", value:"pontages_cat", children:[ {label:"Pontages coronaires", value:"pontages"} ] },
-
-  { label:"Chirurgie aortique", value:"aortique", children:[
-    { label:"RVA", value:"rva" },
-    { label:"Plastie aortique", value:"plastie_aortique" },
-    { label:"TSC", value:"tsc" },
-    { label:"Tirone-David", value:"david" },
-    { label:"Bentall", value:"bentall" },
-    { label:"Ross", value:"ross" },
-  ]},
-
-  { label:"Chirurgie mitrale", value:"mitrale", children:[
-    { label:"Plastie mitrale", value:"plastie_mitrale" },
-    { label:"Remplacement valve mitrale", value:"rvm" },
-  ]},
-
-  { label:"Chirurgie tricuspide", value:"tricuspide", children:[
-    { label:"Plastie tricuspide", value:"plastie_tricuspide" },
-    { label:"Remplacement valve tricuspide", value:"rvt" },
-  ]},
-
-  { label:"Dissection aortique", value:"dissection_cat", children:[
-    { label:"Dissection aortique", value:"dissection" },
-  ]},
-
-  { label:"Transplantation cardiaque", value:"transplantation_cat", children:[
-    { label:"Transplantation cardiaque", value:"transplantation" },
-  ]},
-
-  { label:"Autres", value:"autres", children:[
-    { label:"Exérèse de myxome", value:"myxome" },
-    { label:"Fermeture de CIA", value:"fermeture_cia" },
-    { label:"Fermeture de FOP", value:"fermeture_fop" },
-    { label:"Pose de LVAD", value:"lvad" },
-    { label:"Vidéo-thoracoscopie (CEC périphérique)", value:"video_thoraco" },
-  ]},
+const CEC_LEVEL1 = [
+  { label: "Pontages coronaires", value: "pontages", mode: "direct" },
+  { label: "Chirurgie aortique", value: "aortique", mode: "sub" },
+  { label: "Chirurgie mitrale", value: "mitrale", mode: "sub" },
+  { label: "Chirurgie tricuspide", value: "tricuspide", mode: "sub" },
+  { label: "Dissection aortique", value: "dissection", mode: "direct" },
+  { label: "Transplantation cardiaque", value: "transplantation", mode: "direct" },
+  { label: "Autres", value: "autres", mode: "sub" },
 ];
 
-function cecCategoryOptions(){
-  return [
-    `<option value="">— Choisir —</option>`,
-    ...CEC_CATEGORIES.map(c => `<option value="${c.value}">${escapeHtml(c.label)}</option>`)
-  ].join("");
+const CEC_LEVEL2 = {
+  aortique: [
+    { label: "RVA", value: "rva" },
+    { label: "Plastie aortique", value: "plastie_aortique" },
+    { label: "TSC", value: "tsc" },
+    { label: "Tirone-David", value: "david" },
+    { label: "Bentall", value: "bentall" },
+    { label: "Ross", value: "ross" },
+  ],
+  mitrale: [
+    { label: "Plastie mitrale", value: "plastie_mitrale" },
+    { label: "Remplacement valve mitrale", value: "rvm" },
+  ],
+  tricuspide: [
+    { label: "Plastie tricuspide", value: "plastie_tricuspide" },
+    { label: "Remplacement valve tricuspide", value: "rvt" },
+  ],
+  autres: [
+    { label: "Fermeture de CIA", value: "fermeture_cia" },
+    { label: "Fermeture de FOP", value: "fermeture_fop" },
+    { label: "Exérèse de myxome", value: "myxome" },
+    { label: "Vidéo-thoracoscopie (CEC périphérique)", value: "video_thoraco" },
+    { label: "Pose de LVAD", value: "lvad" },
+  ],
+};
+
+function cecLevel1FromValue(v){
+  if (!v) return "";
+  if (v === "pontages") return "pontages";
+  if (v === "dissection") return "dissection";
+  if (v === "transplantation") return "transplantation";
+
+  if (["rva","plastie_aortique","tsc","david","bentall","ross"].includes(v)) return "aortique";
+  if (["plastie_mitrale","rvm"].includes(v)) return "mitrale";
+  if (["plastie_tricuspide","rvt"].includes(v)) return "tricuspide";
+  if (["fermeture_cia","fermeture_fop","myxome","video_thoraco","lvad"].includes(v)) return "autres";
+  return "";
 }
 
-function cecChildOptions(catValue){
-  const cat = CEC_CATEGORIES.find(c => c.value === catValue);
-  if (!cat) return `<option value="">— Choisir —</option>`;
-  return [
-    `<option value="">— Choisir —</option>`,
-    ...cat.children.map(ch => `<option value="${ch.value}">${escapeHtml(ch.label)}</option>`)
-  ].join("");
-}
-
-function cecFindCat(gestureValue){
-  for (const cat of CEC_CATEGORIES){
-    const child = cat.children.find(c => c.value === gestureValue);
-    if (child) return { cat: cat.value, child: child.value };
-  }
-  return { cat:"", child:"" };
-}
-
-function cecRenderRightPanel(){
-  const s = window.__cecState;
-  const gestes = (s.gestes||[]).filter(Boolean);
-
-  const protocol = cecPickProtocol(gestes);
-
-  const summary = `
-    <div class="cec-resume">
-      <div><strong>Intervention :</strong> ${gestes.length ? gestes.map(cecLabelFromValue).join(" + ") : "—"}</div>
-      <div><strong>Patient :</strong> ${escapeHtml(s.poidsKg||"—")} kg • ${escapeHtml(s.tailleCm||"—")} cm</div>
-      <div><strong>Cœur :</strong>
-        ${s.coeur.fevg35 ? "FEVG<35% • " : ""}
-        ${s.coeur.hvg ? "HVG • " : ""}
-        ${s.coeur.ia ? "IA • " : ""}
-        ${s.coeur.stenoseCoronaireSerree ? "Sténose serrée • " : ""}
-        ${(!s.coeur.fevg35 && !s.coeur.hvg && !s.coeur.ia && !s.coeur.stenoseCoronaireSerree) ? "—" : ""}
-      </div>
-      <div><strong>Chirurgie :</strong>
-        ${s.chirurgie.sternotomieRisque ? "Sternotomie à risque • " : ""}
-        ${s.chirurgie.clampage90 ? "Clampage>90min • " : ""}
-        ${(!s.chirurgie.sternotomieRisque && !s.chirurgie.clampage90) ? "—" : ""}
-      </div>
-      ${protocol==="dissection" ? `<div><strong>Dissection :</strong> ${s.dissection.instabilite ? "Instabilité majeure • " : ""}${s.dissection.tsaDisseques ? "TSA disséqués" : "TSA non renseignés"}</div>` : ``}
-    </div>
-  `;
-
-  if (!gestes.length){
-    // tableau vide (structure prête)
-    const emptyRows = [
-      "Canulation artérielle",
-      "Canulation veineuse",
-      "Priming",
-      "Anticoagulation",
-      "Cardioplégie",
-      "Objectifs per-CEC",
-    ].map(t => `
-      <tr>
-        <td class="cec-td-title">${t}</td>
-        <td></td>
-        <td></td>
-      </tr>
-    `).join("");
-
-    return summary + `
-      <div class="cec-proto-table-wrap">
-        <table class="cec-proto-table">
-          <tbody>
-            <tr>
-              <td class="cec-td-title"></td>
-              <td><strong>Norme</strong></td>
-              <td><strong>Mesures correctrices</strong></td>
-            </tr>
-            ${emptyRows}
-          </tbody>
-        </table>
-      </div>
-    `;
-  }
-
-  if (protocol === "lvad") {
-    return summary + `
-      <div class="cec-panel">
-        <h3>Pose de LVAD</h3>
-        <div class="cec-small">Protocole non disponible pour le moment.</div>
-      </div>
-    `;
-  }
-
-  return summary + cecRenderFromPpt(protocol, s);
+function cecIsDissectionSelected(){
+  return (window.__cecState.gestes || []).filter(Boolean).includes("dissection");
 }
 
 function renderCecProtocoles() {
   const s = window.__cecState;
 
+  if (!Array.isArray(s.gestes) || s.gestes.length !== 3) s.gestes = ["", "", ""];
+
+  function optHtml(list){
+    return [`<option value="">— Choisir —</option>`]
+      .concat(list.map(o => `<option value="${escapeHtml(o.value)}">${escapeHtml(o.label)}</option>`))
+      .join("");
+  }
+
+  function gestureBlockHtml(idx){
+    const currentValue = s.gestes[idx] || "";
+    const l1 = cecLevel1FromValue(currentValue);
+    const l1Mode = (CEC_LEVEL1.find(x => x.value === l1) || {}).mode;
+    const needsL2 = (l1 && l1Mode === "sub");
+    const l2List = needsL2 ? (CEC_LEVEL2[l1] || []) : [];
+
+    return `
+      <div class="cec-gesture" data-idx="${idx}">
+        <div class="cec-gesture-head">
+          <div class="cec-gesture-title">${idx === 0 ? "Intervention" : (idx === 1 ? "2e geste" : "3e geste")}</div>
+          ${idx > 0 ? `<button class="btn btn-ghost cec-gesture-remove" type="button" data-remove="${idx}">✕</button>` : ""}
+        </div>
+
+        <div class="cec-gesture-row">
+          <select class="cec-select cec-l1" data-l1="${idx}">
+            ${optHtml(CEC_LEVEL1)}
+          </select>
+
+          <select class="cec-select cec-l2" data-l2="${idx}" style="${needsL2 ? "" : "display:none;"}">
+            ${optHtml(l2List)}
+          </select>
+        </div>
+      </div>
+    `;
+  }
+
   $app.innerHTML = `
-    <section class="page cec-proto-page">
-      <h2>Protocoles de CEC</h2>
+    <section class="page cec-proto-split">
+      <div class="cec-left">
 
-      <div class="cec-proto-split">
+        <div class="hero">
+          <h2>Protocoles de CEC</h2>
+        </div>
 
-        <div class="cec-panel">
-          <h3>Choix de l’intervention et caractéristiques</h3>
+        <div class="info-card cec-card-compact">
+          <h3>Choix de l’intervention</h3>
 
-          <div class="cec-gesture-list" id="cec-gestures"></div>
-
-          <div class="cec-row-compact">
-            <div class="cec-small">Ajouter jusqu’à 2 gestes supplémentaires</div>
-            <button class="cec-icon-btn" type="button" id="cec-add" title="Ajouter">+</button>
+          <div id="cec-gestures-wrap">
+            ${gestureBlockHtml(0)}
+            ${s.gestes[1] !== "" ? gestureBlockHtml(1) : ""}
+            ${s.gestes[2] !== "" ? gestureBlockHtml(2) : ""}
           </div>
 
-          <div class="cec-subbox">
-            <div class="cec-fields-2">
-              <input id="cec-poids" inputmode="decimal" placeholder="Poids (kg)" value="${escapeHtml(s.poidsKg || "")}">
-              <input id="cec-taille" inputmode="numeric" placeholder="Taille (cm)" value="${escapeHtml(s.tailleCm || "")}">
+          <button class="btn cec-add-gesture" type="button" id="cec-add-gesture">+ Ajouter un geste</button>
+        </div>
+
+        <div class="info-card cec-card-compact">
+          <div class="cec-line">
+            <div class="cec-line-label"><strong>Patient :</strong></div>
+            <div class="cec-line-fields">
+              <label class="cec-inline-field">
+                <span>Poids</span>
+                <input id="cec-poids" inputmode="decimal" placeholder="kg" value="${escapeHtml(s.poidsKg || "")}">
+              </label>
+              <label class="cec-inline-field">
+                <span>Taille</span>
+                <input id="cec-taille" inputmode="numeric" placeholder="cm" value="${escapeHtml(s.tailleCm || "")}">
+              </label>
             </div>
+          </div>
 
-            <div style="height:10px"></div>
-
-            <div class="cec-checkline">
+          <div class="cec-line">
+            <div class="cec-line-label"><strong>Cœur :</strong></div>
+            <div class="cec-line-checks">
               <label><input type="checkbox" id="cec-fevg35"> FEVG &lt; 35%</label>
               <label><input type="checkbox" id="cec-hvg"> HVG</label>
               <label><input type="checkbox" id="cec-ia"> IA</label>
               <label><input type="checkbox" id="cec-stenose"> Sténose coronaire serrée</label>
             </div>
+          </div>
 
-            <div style="height:10px"></div>
-
-            <div class="cec-checkline">
+          <div class="cec-line">
+            <div class="cec-line-label"><strong>Chirurgie :</strong></div>
+            <div class="cec-line-checks">
               <label><input type="checkbox" id="cec-sterno"> Sternotomie à risque</label>
               <label><input type="checkbox" id="cec-clamp90"> Clampage &gt; 90 min</label>
             </div>
+          </div>
 
-            <div class="cec-subbox" id="cec-dissection-box" style="display:none;">
-              <div class="cec-checkline">
-                <label><input type="checkbox" id="cec-instabilite"> Instabilité hémodynamique majeure</label>
-                <label><input type="checkbox" id="cec-tsa-diss"> TSA disséqués</label>
-              </div>
-
-              <div class="cec-checkline" id="cec-tsa-list" style="display:none; margin-top:8px;">
-                <label><input type="checkbox" id="cec-tsa-scd"> Sous-clavière droite</label>
-                <label><input type="checkbox" id="cec-tsa-cd"> Carotide droite</label>
-                <label><input type="checkbox" id="cec-tsa-cg"> Carotide gauche</label>
-                <label><input type="checkbox" id="cec-tsa-scg"> Sous-clavière gauche</label>
-              </div>
+          <div class="cec-line" id="cec-dissection-line" style="display:none;">
+            <div class="cec-line-label"><strong>Dissection aortique :</strong></div>
+            <div class="cec-line-checks">
+              <label><input type="checkbox" id="cec-instabilite"> Instabilité hémodynamique majeure</label>
+              <label><input type="checkbox" id="cec-tsa-diss"> TSA disséqués</label>
+              <span style="width:10px;display:inline-block;"></span>
+              <label><input type="checkbox" id="cec-tsa-scd"> SCD</label>
+              <label><input type="checkbox" id="cec-tsa-cd"> CD</label>
+              <label><input type="checkbox" id="cec-tsa-cg"> CG</label>
+              <label><input type="checkbox" id="cec-tsa-scg"> SCG</label>
             </div>
           </div>
-
-          <div style="height:10px"></div>
-          <div class="grid">
-            <button class="btn" onclick="location.hash='#/cec'">Retour menu CEC</button>
-          </div>
         </div>
+      </div>
 
-        <div class="cec-panel" id="cec-right"></div>
-
+      <div class="cec-right">
+        <div id="cec-preview"></div>
       </div>
     </section>
   `;
 
-  const right = document.getElementById("cec-right");
-  function updateRight(){ right.innerHTML = cecRenderRightPanel(); }
+  // ---- bindings patient ----
+  document.getElementById("cec-poids").addEventListener("input", e => { s.poidsKg = e.target.value; updatePreview(); });
+  document.getElementById("cec-taille").addEventListener("input", e => { s.tailleCm = e.target.value; updatePreview(); });
 
-  // --- Gestes (3 max)
-  const gesturesWrap = document.getElementById("cec-gestures");
-
-  function gestureRowHtml(i){
-    const cur = s.gestes[i] || "";
-    const found = cur ? cecFindCat(cur) : {cat:"", child:""};
-    return `
-      <div class="cec-gesture-item">
-        <select id="cec-cat-${i}">${cecCategoryOptions()}</select>
-        <select id="cec-child-${i}">${cecChildOptions(found.cat)}</select>
-        <button class="cec-icon-btn" type="button" id="cec-del-${i}" title="Retirer">–</button>
-      </div>
-    `;
-  }
-
-  function renderGestures(){
-    // afficher nb lignes = nombre de gestes déjà “créés” (min 1)
-    const existingCount = Math.max(1, s.gestes.filter((_,idx)=> idx===0 || (s.gestes[idx]!==undefined)).length);
-    const count = Math.min(3, existingCount);
-
-    gesturesWrap.innerHTML = Array.from({length: count}, (_,i)=>gestureRowHtml(i)).join("");
-
-    for (let i=0;i<count;i++){
-      const cur = s.gestes[i] || "";
-      const found = cur ? cecFindCat(cur) : {cat:"", child:""};
-
-      const catSel = document.getElementById(`cec-cat-${i}`);
-      const childSel = document.getElementById(`cec-child-${i}`);
-      const delBtn = document.getElementById(`cec-del-${i}`);
-
-      catSel.value = found.cat || "";
-      childSel.innerHTML = cecChildOptions(catSel.value);
-      childSel.value = found.child || "";
-
-      delBtn.disabled = (count === 1 && i === 0);
-
-      delBtn.addEventListener("click", () => {
-        s.gestes.splice(i,1);
-        while (s.gestes.length < 3) s.gestes.push("");
-        s.gestes = s.gestes.slice(0,3);
-        renderGestures();
-        toggleDissectionBox();
-        updateRight();
-      });
-
-      catSel.addEventListener("change", () => {
-        childSel.innerHTML = cecChildOptions(catSel.value);
-        childSel.value = "";
-        s.gestes[i] = "";
-        toggleDissectionBox();
-        updateRight();
-      });
-
-      childSel.addEventListener("change", () => {
-        s.gestes[i] = childSel.value || "";
-
-        // purge doublons
-        const seen = new Set();
-        s.gestes = s.gestes.map(v => {
-          if (!v) return "";
-          if (seen.has(v)) return "";
-          seen.add(v);
-          return v;
-        });
-
-        toggleDissectionBox();
-        updateRight();
-      });
-    }
-
-    const addBtn = document.getElementById("cec-add");
-    addBtn.disabled = (s.gestes.filter(Boolean).length >= 3);
-  }
-
-  document.getElementById("cec-add").addEventListener("click", () => {
-    if (s.gestes.filter(Boolean).length >= 3) return;
-    // forcer affichage 2e/3e ligne : on ne stocke rien tant que pas choisi
-    renderGestures();
-  });
-
-  // --- Patient
-  document.getElementById("cec-poids").addEventListener("input", e => { s.poidsKg = e.target.value; updateRight(); });
-  document.getElementById("cec-taille").addEventListener("input", e => { s.tailleCm = e.target.value; updateRight(); });
-
-  // --- Checkboxes
   function bindChk(id, obj, key){
     const el = document.getElementById(id);
     el.checked = !!obj[key];
-    el.addEventListener("change", () => { obj[key] = el.checked; updateRight(); });
+    el.addEventListener("change", () => { obj[key] = el.checked; updatePreview(); });
   }
   bindChk("cec-fevg35", s.coeur, "fevg35");
   bindChk("cec-hvg", s.coeur, "hvg");
@@ -20358,44 +20390,173 @@ function renderCecProtocoles() {
   bindChk("cec-sterno", s.chirurgie, "sternotomieRisque");
   bindChk("cec-clamp90", s.chirurgie, "clampage90");
 
-  // --- Dissection box
-  const disBox = document.getElementById("cec-dissection-box");
-  const tsaList = document.getElementById("cec-tsa-list");
+  // dissection line
+  const disLine = document.getElementById("cec-dissection-line");
+  function bindDissection(){
+    const instab = document.getElementById("cec-instabilite");
+    const tsaDiss = document.getElementById("cec-tsa-diss");
+    instab.checked = !!s.dissection.instabilite;
+    tsaDiss.checked = !!s.dissection.tsaDisseques;
 
-  function toggleDissectionBox(){
-    const hasDissection = (s.gestes||[]).filter(Boolean).includes("dissection");
-    disBox.style.display = hasDissection ? "block" : "none";
-    tsaList.style.display = (hasDissection && s.dissection.tsaDisseques) ? "flex" : "none";
+    instab.addEventListener("change", () => { s.dissection.instabilite = instab.checked; updatePreview(); });
+    tsaDiss.addEventListener("change", () => { s.dissection.tsaDisseques = tsaDiss.checked; updatePreview(); });
+
+    const map = [
+      ["cec-tsa-scd","scd"],
+      ["cec-tsa-cd","cd"],
+      ["cec-tsa-cg","cg"],
+      ["cec-tsa-scg","scg"],
+    ];
+    map.forEach(([id,key]) => {
+      const el = document.getElementById(id);
+      el.checked = !!s.dissection.tsa[key];
+      el.addEventListener("change", () => { s.dissection.tsa[key] = el.checked; updatePreview(); });
+    });
+  }
+  bindDissection();
+
+  // gestures logic
+  const wrap = document.getElementById("cec-gestures-wrap");
+  const addBtn = document.getElementById("cec-add-gesture");
+
+  function rebuildSelectValues(){
+    const blocks = wrap.querySelectorAll(".cec-gesture");
+    blocks.forEach(block => {
+      const idx = Number(block.dataset.idx);
+      const v = s.gestes[idx] || "";
+      const l1 = cecLevel1FromValue(v);
+
+      const sel1 = block.querySelector(".cec-l1");
+      const sel2 = block.querySelector(".cec-l2");
+
+      sel1.value = l1 || "";
+      const mode = (CEC_LEVEL1.find(x => x.value === (l1||"")) || {}).mode;
+
+      if (mode === "sub") {
+        sel2.style.display = "";
+        sel2.innerHTML = optHtml(CEC_LEVEL2[l1] || []);
+        sel2.value = v || "";
+      } else {
+        sel2.style.display = "none";
+        sel2.innerHTML = optHtml([]);
+        sel2.value = "";
+      }
+    });
   }
 
-  const instab = document.getElementById("cec-instabilite");
-  const tsaDiss = document.getElementById("cec-tsa-diss");
-  instab.checked = !!s.dissection.instabilite;
-  tsaDiss.checked = !!s.dissection.tsaDisseques;
+  function ensureNoDuplicateValues(){
+    const seen = new Set();
+    for (let i=0;i<3;i++){
+      const v = s.gestes[i] || "";
+      if (!v) continue;
+      if (seen.has(v)) s.gestes[i] = "";
+      else seen.add(v);
+    }
+  }
 
-  instab.addEventListener("change", () => { s.dissection.instabilite = instab.checked; updateRight(); });
-  tsaDiss.addEventListener("change", () => {
-    s.dissection.tsaDisseques = tsaDiss.checked;
-    toggleDissectionBox();
-    updateRight();
+  function toggleDissectionLine(){
+    disLine.style.display = cecIsDissectionSelected() ? "" : "none";
+  }
+
+  wrap.addEventListener("change", (e) => {
+    const t = e.target;
+    if (!(t instanceof HTMLElement)) return;
+
+    if (t.classList.contains("cec-l1")) {
+      const idx = Number(t.dataset.l1);
+      const l1 = t.value || "";
+      const meta = CEC_LEVEL1.find(x => x.value === l1);
+      const mode = meta ? meta.mode : "";
+
+      const block = t.closest(".cec-gesture");
+      const sel2 = block.querySelector(".cec-l2");
+
+      if (mode === "direct") {
+        s.gestes[idx] = l1;
+        sel2.style.display = "none";
+        sel2.innerHTML = optHtml([]);
+        sel2.value = "";
+      } else if (mode === "sub") {
+        s.gestes[idx] = "";
+        sel2.style.display = "";
+        sel2.innerHTML = optHtml(CEC_LEVEL2[l1] || []);
+        sel2.value = "";
+      } else {
+        s.gestes[idx] = "";
+        sel2.style.display = "none";
+        sel2.innerHTML = optHtml([]);
+        sel2.value = "";
+      }
+
+      ensureNoDuplicateValues();
+      toggleDissectionLine();
+      updatePreview();
+      return;
+    }
+
+    if (t.classList.contains("cec-l2")) {
+      const idx = Number(t.dataset.l2);
+      s.gestes[idx] = t.value || "";
+      ensureNoDuplicateValues();
+      toggleDissectionLine();
+      updatePreview();
+      return;
+    }
   });
 
-  const tsaMap = [
-    ["cec-tsa-scd","scd"],
-    ["cec-tsa-cd","cd"],
-    ["cec-tsa-cg","cg"],
-    ["cec-tsa-scg","scg"],
-  ];
-  tsaMap.forEach(([id,key]) => {
-    const el = document.getElementById(id);
-    el.checked = !!s.dissection.tsa[key];
-    el.addEventListener("change", () => { s.dissection.tsa[key] = el.checked; updateRight(); });
+  wrap.addEventListener("click", (e) => {
+    const btn = e.target.closest(".cec-gesture-remove");
+    if (!btn) return;
+    const idx = Number(btn.dataset.remove);
+    s.gestes[idx] = "";
+    if (idx === 1) s.gestes[2] = ""; // compact
+    renderCecProtocoles();
   });
 
-  // init
-  renderGestures();
-  toggleDissectionBox();
-  updateRight();
+  addBtn.addEventListener("click", () => {
+    // ajoute bloc 2 puis 3
+    const blocksCount = wrap.querySelectorAll(".cec-gesture").length;
+    if (blocksCount === 1) s.gestes[1] = s.gestes[1] ?? "";
+    else if (blocksCount === 2) s.gestes[2] = s.gestes[2] ?? "";
+    renderCecProtocoles();
+  });
+
+  function updateAddBtn(){
+    const blocksCount = wrap.querySelectorAll(".cec-gesture").length;
+    addBtn.style.display = (blocksCount < 3) ? "" : "none";
+  }
+
+  function updatePreview(){
+    ensureNoDuplicateValues();
+    toggleDissectionLine();
+    updateAddBtn();
+
+    const gestes = (s.gestes || []).filter(Boolean);
+    const preview = document.getElementById("cec-preview");
+
+    if (!gestes.length) {
+      preview.innerHTML = `
+        <div class="info-card cec-preview-empty">
+          <h3>Protocole</h3>
+          <div class="info-content">Sélectionne une intervention à gauche pour afficher le protocole.</div>
+        </div>
+      `;
+      return;
+    }
+
+    const protocol = cecPickProtocol(gestes);
+
+    preview.innerHTML = `
+      <div class="info-card cec-preview-card">
+        <h3>Protocole de CEC</h3>
+        ${cecRenderFromPpt(protocol, s)}
+      </div>
+    `;
+  }
+
+  rebuildSelectValues();
+  updatePreview();
+  updateAddBtn();
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
 }
 
