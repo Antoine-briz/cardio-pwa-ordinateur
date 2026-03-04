@@ -20381,11 +20381,13 @@ function cecRenderEmptyFromPpt(protocol, s){
 
     // ✅ Protocole normal : cellule résultat vide tant qu’on n’a pas d’intervention
     bodyHtml += `
-      <tr>
-        <td class="cec-td-title">${typeof cecRenderTitleCell === "function" ? cecRenderTitleCell(col0) : cecNl2brHtml(col0)}</td>
-        <td colspan="2"><div class="cec-cell-empty"></div></td>
-      </tr>
-    `;
+  <tr>
+    <td class="cec-td-title">${typeof cecRenderTitleCell === "function" ? cecRenderTitleCell(col0) : cecNl2brHtml(col0)}</td>
+    <td colspan="2">
+      <div class="cec-cell-empty">Sélectionnez une intervention pour afficher le protocole</div>
+    </td>
+  </tr>
+`;
   }
 
   return `
@@ -20560,7 +20562,22 @@ function cecIsDissectionSelected(){
 
 function renderCecProtocoles() {
   const s = window.__cecState;
+// ✅ On force le modèle : idx0 toujours visible, idx1/idx2 visibles seulement si ajoutés
+if (!Array.isArray(s.gestes)) s.gestes = ["", undefined, undefined];
 
+// si tableau pas de taille 3, on reconstruit proprement
+if (s.gestes.length !== 3) {
+  s.gestes = [s.gestes[0] || "", s.gestes[1], s.gestes[2]];
+}
+
+// ✅ Si l’historique a mis "" partout, on revient à 1 seul sélecteur par défaut
+if (s.gestes[1] === "" && s.gestes[2] === "" && !(s.gestes[0] || "")) {
+  s.gestes[1] = undefined;
+  s.gestes[2] = undefined;
+}
+
+// ✅ Si g2 est vide mais g3 existe (cas incohérent), on force g2 visible
+if (s.gestes[1] === undefined && s.gestes[2]) s.gestes[1] = "";
   // ✅ On autorise des "slots" non affichés via undefined
   if (!Array.isArray(s.gestes) || s.gestes.length !== 3) {
     s.gestes = ["", undefined, undefined];
@@ -20903,22 +20920,23 @@ function renderCecProtocoles() {
   });
 
   wrap.addEventListener("click", (e) => {
-    const btn = e.target.closest(".cec-gesture-remove");
-    if (!btn) return;
-    const idx = Number(btn.dataset.remove);
+  const btn = e.target.closest(".cec-gesture-remove");
+  if (!btn) return;
+  const idx = Number(btn.dataset.remove);
 
-    // ✅ on "retire" le slot => undefined (pour cacher le bloc)
-    s.gestes[idx] = undefined;
-    if (idx === 1) s.gestes[2] = undefined; // compact
-    renderCecProtocoles();
-  });
+  s.gestes[idx] = undefined;       // ✅ cache le bloc
+  if (idx === 1) s.gestes[2] = undefined;  // compact: si on supprime 2e, on cache aussi le 3e
+  renderCecProtocoles();
+});
 
   addBtn.addEventListener("click", () => {
-    // ✅ Ajoute un slot visible vide
-    if (s.gestes[1] === undefined) s.gestes[1] = "";
-    else if (s.gestes[2] === undefined) s.gestes[2] = "";
-    renderCecProtocoles();
-  });
+  if (s.gestes[1] === undefined) {
+    s.gestes[1] = "";          // ✅ rend visible le 2e geste
+  } else if (s.gestes[2] === undefined) {
+    s.gestes[2] = "";          // ✅ rend visible le 3e geste
+  }
+  renderCecProtocoles();
+});
 
   rebuildSelectValues();
   toggleDissectionLine();
