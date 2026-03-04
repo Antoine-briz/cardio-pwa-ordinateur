@@ -19404,7 +19404,7 @@ window.__cecState = window.__cecState || {
   poidsKg: "",
   tailleCm: "",
   coeur: { fevg35:false, hvg:false, ia:false, stenoseCoronaireSerree:false },
-  chirurgie: { sternotomieRisque:false, clampage90:false },
+  chirurgie: { sternotomieRisque:false, clampage90:false, videoThoracoMitrale: false, },
   dissection: { instabilite:false, tsaDisseques:false, tsa:{ scd:false, cd:false, cg:false, scg:false } }
 };
 
@@ -19431,7 +19431,6 @@ const CEC_GESTES = [
 
   { label: "Dissection aortique", value: "dissection" },
   { label: "Transplantation cardiaque", value: "transplantation" },
-  { label: "Vidéo-thoracoscopie (CEC périphérique)", value: "video_thoraco" },
 
   { label: "Pose de LVAD", value: "lvad" },
 ];
@@ -19508,6 +19507,44 @@ function cecNl2brHtml(s){
     .split("\n")
     .map(l => cecRenderCfLine(l))
     .join("<br>");
+}
+
+function cecRenderCanulationDissectionArt(text){
+  const lines = String(text||"").split("\n").map(l=>l.trim()).filter(Boolean);
+
+  const head1Prefix = "Site de canulation systémique:";
+  const head2Prefix = "Ajout de canule(s) carotidienne(s) si:";
+
+  const out = [];
+  let i = 0;
+
+  // helper
+  const isHead1 = (l)=>l.startsWith(head1Prefix);
+  const isHead2 = (l)=>l.startsWith(head2Prefix);
+
+  while (i < lines.length){
+    const l = lines[i];
+
+    if (isHead1(l)){
+      out.push(`<div class="cec-can-head"><strong>${escapeHtml(l)}</strong></div>`);
+      out.push(`<div class="cec-can-gap"></div>`);
+      i++;
+      continue;
+    }
+
+    if (isHead2(l)){
+      out.push(`<div class="cec-can-head"><strong>${escapeHtml(l)}</strong></div>`);
+      out.push(`<div class="cec-can-gap"></div>`);
+      i++;
+      continue;
+    }
+
+    // reste en tirets
+    out.push(`<div class="cec-can-bullet">— ${cecRenderCfLine(l)}</div>`);
+    i++;
+  }
+
+  return out.join("");
 }
 
 // -------------------------------------------------
@@ -20384,12 +20421,19 @@ function cecRenderEmptyFromPpt(protocolKey = "generique"){
     }
 
     // Protocole standard : titre + cellule vide (colspan=2 comme ton rendu normal)
-    return `
-      <tr>
-        <td class="cec-td-title">${cecNl2brHtml(col0)}</td>
-        <td colspan="2" class="cec-empty"></td>
-      </tr>
-    `;
+    const titleLower = String(col0||"").toLowerCase();
+const isDissectionArt = (protocol === "dissection" && titleLower.includes("canulation artérielle"));
+
+const cellHtml = isDissectionArt
+  ? cecRenderCanulationDissectionArt(chosen)
+  : cecNl2brHtml(chosen);
+
+return `
+  <tr>
+    <td class="cec-td-title">${cecNl2brHtml(col0)}</td>
+    <td colspan="2">${cellHtml}</td>
+  </tr>
+`;
   }).join("");
 
   return `
@@ -20436,7 +20480,6 @@ const CEC_LEVEL2 = {
     { label: "Fermeture de CIA", value: "fermeture_cia" },
     { label: "Fermeture de FOP", value: "fermeture_fop" },
     { label: "Exérèse de myxome", value: "myxome" },
-    { label: "Vidéo-thoracoscopie (CEC périphérique)", value: "video_thoraco" },
     { label: "Pose de LVAD", value: "lvad" },
   ],
 };
@@ -20496,93 +20539,128 @@ function renderCecProtocoles() {
     `;
   }
 
-$app.innerHTML = `
-  <section class="page cec-proto-page">
-    <!-- Titre centré AU-DESSUS des 2 colonnes -->
-    <div class="cec-proto-hero">
-      <div class="cec-proto-title">Protocoles de CEC</div>
-    </div>
+  $app.innerHTML = `
+    <section class="page cec-proto-page">
+      <!-- Titre centré AU-DESSUS des 2 colonnes -->
+      <div class="cec-proto-hero">
+        <div class="cec-proto-title">Protocoles de CEC</div>
+      </div>
 
-    <!-- Grille 2 colonnes pleine largeur -->
-    <div class="cec-proto-grid">
-      <!-- Colonne gauche -->
-      <div class="cec-left">
-        <div class="info-card cec-card-compact">
-          <h3>Choix de l’intervention</h3>
+      <!-- Grille 2 colonnes pleine largeur -->
+      <div class="cec-proto-grid">
+        <!-- Colonne gauche -->
+        <div class="cec-left">
+          <div class="info-card cec-card-compact">
+            <h3>Choix de l’intervention</h3>
 
-          <div id="cec-gestures-wrap">
-            ${gestureBlockHtml(0)}
-            ${s.gestes[1] !== "" ? gestureBlockHtml(1) : ""}
-            ${s.gestes[2] !== "" ? gestureBlockHtml(2) : ""}
+            <div id="cec-gestures-wrap">
+              ${gestureBlockHtml(0)}
+              ${s.gestes[1] !== "" ? gestureBlockHtml(1) : ""}
+              ${s.gestes[2] !== "" ? gestureBlockHtml(2) : ""}
+            </div>
+
+            <div id="cec-video-mitrale-line" class="cec-video-line" style="display:none;">
+              <label>
+                <input type="checkbox" id="cec-video-mitrale">
+                Vidéo-thoracoscopie
+              </label>
+            </div>
+
+            <button class="btn cec-add-gesture" type="button" id="cec-add-gesture">
+              + Ajouter un geste
+            </button>
           </div>
 
-          <button class="btn cec-add-gesture" type="button" id="cec-add-gesture">
-            + Ajouter un geste
-          </button>
+          <div class="info-card cec-card-compact">
+            <h3>Caractéristiques</h3>
+
+            <div class="cec-line">
+              <div class="cec-line-label"><strong>Patient :</strong></div>
+              <div class="cec-line-fields">
+                <label class="cec-inline-field">
+                  <span>Poids</span>
+                  <input id="cec-poids" inputmode="decimal" placeholder="kg"
+                         value="${escapeHtml(s.poidsKg || "")}">
+                </label>
+                <label class="cec-inline-field">
+                  <span>Taille</span>
+                  <input id="cec-taille" inputmode="numeric" placeholder="cm"
+                         value="${escapeHtml(s.tailleCm || "")}">
+                </label>
+              </div>
+            </div>
+
+            <div class="cec-line">
+              <div class="cec-line-label"><strong>Cœur :</strong></div>
+              <div class="cec-line-checks">
+                <label><input type="checkbox" id="cec-fevg35"> FEVG &lt; 35%</label>
+                <label><input type="checkbox" id="cec-hvg"> HVG</label>
+                <label><input type="checkbox" id="cec-ia"> IA</label>
+                <label><input type="checkbox" id="cec-stenose"> Sténose coronaire serrée</label>
+              </div>
+            </div>
+
+            <div class="cec-line">
+              <div class="cec-line-label"><strong>Chirurgie :</strong></div>
+              <div class="cec-line-checks">
+                <label><input type="checkbox" id="cec-sterno"> Sternotomie à risque</label>
+                <label><input type="checkbox" id="cec-clamp90"> Clampage &gt; 90 min</label>
+              </div>
+            </div>
+
+            <div class="cec-line" id="cec-dissection-line" style="display:none;">
+              <div class="cec-line-label"><strong>Dissection aortique :</strong></div>
+              <div class="cec-line-checks">
+                <label><input type="checkbox" id="cec-instabilite"> Instabilité hémodynamique majeure</label>
+                <label><input type="checkbox" id="cec-tsa-diss"> TSA disséqués</label>
+
+                <span id="cec-tsa-wrap" style="display:none; margin-left:10px;">
+                  <label><input type="checkbox" id="cec-tsa-scd"> SCD</label>
+                  <label><input type="checkbox" id="cec-tsa-cd"> CD</label>
+                  <label><input type="checkbox" id="cec-tsa-cg"> CG</label>
+                  <label><input type="checkbox" id="cec-tsa-scg"> SCG</label>
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="info-card cec-card-compact">
-          <h3>Caractéristiques</h3>
-
-          <div class="cec-line">
-            <div class="cec-line-label"><strong>Patient :</strong></div>
-            <div class="cec-line-fields">
-              <label class="cec-inline-field">
-                <span>Poids</span>
-                <input id="cec-poids" inputmode="decimal" placeholder="kg"
-                       value="${escapeHtml(s.poidsKg || "")}">
-              </label>
-              <label class="cec-inline-field">
-                <span>Taille</span>
-                <input id="cec-taille" inputmode="numeric" placeholder="cm"
-                       value="${escapeHtml(s.tailleCm || "")}">
-              </label>
-            </div>
-          </div>
-
-          <div class="cec-line">
-            <div class="cec-line-label"><strong>Cœur :</strong></div>
-            <div class="cec-line-checks">
-              <label><input type="checkbox" id="cec-fevg35"> FEVG &lt; 35%</label>
-              <label><input type="checkbox" id="cec-hvg"> HVG</label>
-              <label><input type="checkbox" id="cec-ia"> IA</label>
-              <label><input type="checkbox" id="cec-stenose"> Sténose coronaire serrée</label>
-            </div>
-          </div>
-
-          <div class="cec-line">
-            <div class="cec-line-label"><strong>Chirurgie :</strong></div>
-            <div class="cec-line-checks">
-              <label><input type="checkbox" id="cec-sterno"> Sternotomie à risque</label>
-              <label><input type="checkbox" id="cec-clamp90"> Clampage &gt; 90 min</label>
-            </div>
-          </div>
-
-          <div class="cec-line" id="cec-dissection-line" style="display:none;">
-            <div class="cec-line-label"><strong>Dissection aortique :</strong></div>
-            <div class="cec-line-checks">
-              <label><input type="checkbox" id="cec-instabilite"> Instabilité hémodynamique majeure</label>
-              <label><input type="checkbox" id="cec-tsa-diss"> TSA disséqués</label>
-              <span style="width:10px;display:inline-block;"></span>
-              <label><input type="checkbox" id="cec-tsa-scd"> SCD</label>
-              <label><input type="checkbox" id="cec-tsa-cd"> CD</label>
-              <label><input type="checkbox" id="cec-tsa-cg"> CG</label>
-              <label><input type="checkbox" id="cec-tsa-scg"> SCG</label>
-            </div>
+        <!-- Colonne droite -->
+        <div class="cec-right">
+          <div class="info-card cec-preview-card">
+            <div id="cec-preview"></div>
           </div>
         </div>
       </div>
+    </section>
+  `;
 
-      <!-- Colonne droite -->
-      <div class="cec-right">
-        <div class="info-card cec-preview-card">
-          <div id="cec-preview"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-`;
-  
+  // -------------------------
+  // Vidéo-thoraco mitrale (checkbox conditionnelle)
+  // -------------------------
+  const videoLine = document.getElementById("cec-video-mitrale-line");
+  const videoChk  = document.getElementById("cec-video-mitrale");
+
+  function hasMitraleSelected(){
+    const g = (s.gestes || []).filter(Boolean);
+    return g.includes("plastie_mitrale") || g.includes("rvm");
+  }
+
+  function toggleVideoThoracoLine(){
+    const show = hasMitraleSelected();
+    videoLine.style.display = show ? "block" : "none";
+    if (!show) {
+      s.chirurgie.videoThoracoMitrale = false;
+      videoChk.checked = false;
+    }
+  }
+
+  videoChk.checked = !!s.chirurgie.videoThoracoMitrale;
+  videoChk.addEventListener("change", () => {
+    s.chirurgie.videoThoracoMitrale = videoChk.checked;
+    updatePreview();
+  });
+
   // ---- bindings patient ----
   document.getElementById("cec-poids").addEventListener("input", e => { s.poidsKg = e.target.value; updatePreview(); });
   document.getElementById("cec-taille").addEventListener("input", e => { s.tailleCm = e.target.value; updatePreview(); });
@@ -20601,14 +20679,41 @@ $app.innerHTML = `
 
   // dissection line
   const disLine = document.getElementById("cec-dissection-line");
+
   function bindDissection(){
-    const instab = document.getElementById("cec-instabilite");
+    const instab  = document.getElementById("cec-instabilite");
     const tsaDiss = document.getElementById("cec-tsa-diss");
-    instab.checked = !!s.dissection.instabilite;
+    const tsaWrap = document.getElementById("cec-tsa-wrap");
+
+    instab.checked  = !!s.dissection.instabilite;
     tsaDiss.checked = !!s.dissection.tsaDisseques;
 
-    instab.addEventListener("change", () => { s.dissection.instabilite = instab.checked; updatePreview(); });
-    tsaDiss.addEventListener("change", () => { s.dissection.tsaDisseques = tsaDiss.checked; updatePreview(); });
+    // ✅ TSA: show/hide + reset si décoché
+    function toggleTsaWrap(){
+      tsaWrap.style.display = tsaDiss.checked ? "inline-flex" : "none";
+      if (!tsaDiss.checked) {
+        s.dissection.tsa.scd = false;
+        s.dissection.tsa.cd  = false;
+        s.dissection.tsa.cg  = false;
+        s.dissection.tsa.scg = false;
+        document.getElementById("cec-tsa-scd").checked = false;
+        document.getElementById("cec-tsa-cd").checked  = false;
+        document.getElementById("cec-tsa-cg").checked  = false;
+        document.getElementById("cec-tsa-scg").checked = false;
+      }
+    }
+
+    instab.addEventListener("change", () => {
+      s.dissection.instabilite = instab.checked;
+      updatePreview();
+    });
+
+    // ✅ REMPLACE ton ancien listener tsaDiss (celui qui faisait juste updatePreview)
+    tsaDiss.addEventListener("change", () => {
+      s.dissection.tsaDisseques = tsaDiss.checked;
+      toggleTsaWrap();
+      updatePreview();
+    });
 
     const map = [
       ["cec-tsa-scd","scd"],
@@ -20621,6 +20726,9 @@ $app.innerHTML = `
       el.checked = !!s.dissection.tsa[key];
       el.addEventListener("change", () => { s.dissection.tsa[key] = el.checked; updatePreview(); });
     });
+
+    // ✅ état initial (important)
+    toggleTsaWrap();
   }
   bindDissection();
 
@@ -20699,6 +20807,10 @@ $app.innerHTML = `
 
       ensureNoDuplicateValues();
       toggleDissectionLine();
+
+      // ✅ IMPORTANT: maj checkbox vidéo selon gestes
+      toggleVideoThoracoLine();
+
       updatePreview();
       return;
     }
@@ -20708,6 +20820,10 @@ $app.innerHTML = `
       s.gestes[idx] = t.value || "";
       ensureNoDuplicateValues();
       toggleDissectionLine();
+
+      // ✅ IMPORTANT: maj checkbox vidéo selon gestes
+      toggleVideoThoracoLine();
+
       updatePreview();
       return;
     }
@@ -20723,7 +20839,6 @@ $app.innerHTML = `
   });
 
   addBtn.addEventListener("click", () => {
-    // ajoute bloc 2 puis 3
     const blocksCount = wrap.querySelectorAll(".cec-gesture").length;
     if (blocksCount === 1) s.gestes[1] = s.gestes[1] ?? "";
     else if (blocksCount === 2) s.gestes[2] = s.gestes[2] ?? "";
@@ -20735,28 +20850,32 @@ $app.innerHTML = `
     addBtn.style.display = (blocksCount < 3) ? "" : "none";
   }
 
- function updatePreview(){
-  ensureNoDuplicateValues();
-  toggleDissectionLine();
-  updateAddBtn();
+  function updatePreview(){
+    ensureNoDuplicateValues();
+    toggleDissectionLine();
+    updateAddBtn();
+    toggleVideoThoracoLine();
 
-  const gestes = (s.gestes || []).filter(Boolean);
-  const preview = document.getElementById("cec-preview");
-  if (!preview) return;
+    const gestes = (s.gestes || []).filter(Boolean);
+    const preview = document.getElementById("cec-preview");
+    if (!preview) return;
 
-  // ✅ Toujours afficher un tableau
-  const protocol = gestes.length ? cecPickProtocol(gestes) : "generique";
+    const protocol = gestes.length ? cecPickProtocol(gestes) : "generique";
 
-  // ✅ Table visible même sans sélection : colonnes vides, mais objectifs calculés dès poids/taille
-  const tableHtml = gestes.length
-    ? cecRenderFromPpt(protocol, s)
-    : cecRenderEmptyFromPpt(protocol, s);
+    const tableHtml = gestes.length
+      ? cecRenderFromPpt(protocol, s)
+      : cecRenderEmptyFromPpt(protocol, s);
 
-  preview.innerHTML = tableHtml;
-}
+    preview.innerHTML = tableHtml;
+  }
+
   rebuildSelectValues();
+
+  // ✅ état initial vidéo + preview
+  toggleVideoThoracoLine();
   updatePreview();
   updateAddBtn();
+
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
 }
 
