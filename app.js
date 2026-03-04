@@ -20273,6 +20273,88 @@ function cecRenderFromPpt(protocol, s){
   `;
 }
 
+function cecRenderEmptyFromPpt(protocol, s){
+  const table = CEC_PPT_TABLES[protocol] || CEC_PPT_TABLES["generique"];
+  if (!table) return `<p>Table protocole introuvable</p>`;
+
+  // Bandeau haut : résumé (vide)
+  const gestesTxt = "—";
+  const patientTxt = `${escapeHtml(s.poidsKg || "—")} kg / ${escapeHtml(s.tailleCm || "—")} cm`;
+  const coeurTxt = [
+    s.coeur?.fevg35 ? "FEVG<35%" : null,
+    s.coeur?.hvg ? "HVG" : null,
+    s.coeur?.ia ? "IA" : null,
+    s.coeur?.stenoseCoronaireSerree ? "Sténose serrée" : null,
+  ].filter(Boolean).join(" • ") || "—";
+  const chirTxt = [
+    s.chirurgie?.sternotomieRisque ? "Sternotomie à risque" : null,
+    s.chirurgie?.clampage90 ? "Clampage>90min" : null,
+  ].filter(Boolean).join(" • ") || "—";
+
+  let bodyHtml = "";
+
+  for (let i = 0; i < table.length; i++){
+    const row = table[i];
+    const col0 = row[0] || "";
+    const col1 = row[1] || "";
+    const col2 = row[2] || "";
+
+    // ✅ Objectifs per-CEC : rowspan (pas de cellule vide à gauche)
+    if (String(col0).includes("Objectifs per-CEC")) {
+      let j = i + 1;
+      while (j < table.length && String(table[j][0] || "") === "") j++;
+      const nRows = (j - i);
+
+      bodyHtml += `
+        <tr>
+          <td class="cec-td-title cec-obj-left" rowspan="${nRows}">Objectifs<br>per-CEC</td>
+          <td class="cec-obj-head">${escapeHtml(col1)}</td>
+          <td class="cec-obj-head">${escapeHtml(col2)}</td>
+        </tr>
+      `;
+
+      for (let k = i + 1; k < j; k++){
+        const r = table[k];
+        const left = cecApplyDynamicObjectives(String(r[1] || ""), s);
+        const right = String(r[2] || "");
+        bodyHtml += `
+          <tr>
+            <td>${cecNl2brHtml(left)}</td>
+            <td>${cecNl2brHtml(right)}</td>
+          </tr>
+        `;
+      }
+
+      i = j - 1;
+      continue;
+    }
+
+    // ✅ Protocole normal : cellule résultat vide tant qu’on n’a pas d’intervention
+    bodyHtml += `
+      <tr>
+        <td class="cec-td-title">${cecRenderTitleCell(col0)}</td>
+        <td colspan="2"><div class="cec-cell-empty"></div></td>
+      </tr>
+    `;
+  }
+
+  return `
+    <div class="cec-proto-table-wrap">
+      <table class="cec-proto-table">
+        <thead>
+          <tr>
+            <th class="cec-proto-top" colspan="3">
+              <div><strong>${escapeHtml(gestesTxt)}</strong></div>
+              <small>Patient: ${patientTxt} • Cœur: ${escapeHtml(coeurTxt)} • Chirurgie: ${escapeHtml(chirTxt)}</small>
+            </th>
+          </tr>
+        </thead>
+        <tbody>${bodyHtml}</tbody>
+      </table>
+    </div>
+  `;
+}
+
 // -------------------------------------------------
 // 10ter) Rendu tableau vide (structure visible dès l'ouverture)
 // -------------------------------------------------
@@ -20414,14 +20496,17 @@ function renderCecProtocoles() {
     `;
   }
 
-  $app.innerHTML = `
-    <section class="page cec-proto-split">
+$app.innerHTML = `
+  <section class="page cec-proto-page">
+    <!-- Titre centré AU-DESSUS des 2 colonnes -->
+    <div class="cec-proto-hero">
+      <div class="cec-proto-title">Protocoles de CEC</div>
+    </div>
+
+    <!-- Grille 2 colonnes pleine largeur -->
+    <div class="cec-proto-grid">
+      <!-- Colonne gauche -->
       <div class="cec-left">
-
-        <div class="cec-proto-hero">
-  <div class="cec-proto-title">Protocoles de CEC</div>
-</div>
-
         <div class="info-card cec-card-compact">
           <h3>Choix de l’intervention</h3>
 
@@ -20431,21 +20516,26 @@ function renderCecProtocoles() {
             ${s.gestes[2] !== "" ? gestureBlockHtml(2) : ""}
           </div>
 
-          <button class="btn cec-add-gesture" type="button" id="cec-add-gesture">+ Ajouter un geste</button>
+          <button class="btn cec-add-gesture" type="button" id="cec-add-gesture">
+            + Ajouter un geste
+          </button>
         </div>
 
         <div class="info-card cec-card-compact">
-           <h3>Caractéristiques</h3>
+          <h3>Caractéristiques</h3>
+
           <div class="cec-line">
             <div class="cec-line-label"><strong>Patient :</strong></div>
             <div class="cec-line-fields">
               <label class="cec-inline-field">
                 <span>Poids</span>
-                <input id="cec-poids" inputmode="decimal" placeholder="kg" value="${escapeHtml(s.poidsKg || "")}">
+                <input id="cec-poids" inputmode="decimal" placeholder="kg"
+                       value="${escapeHtml(s.poidsKg || "")}">
               </label>
               <label class="cec-inline-field">
                 <span>Taille</span>
-                <input id="cec-taille" inputmode="numeric" placeholder="cm" value="${escapeHtml(s.tailleCm || "")}">
+                <input id="cec-taille" inputmode="numeric" placeholder="cm"
+                       value="${escapeHtml(s.tailleCm || "")}">
               </label>
             </div>
           </div>
@@ -20483,12 +20573,16 @@ function renderCecProtocoles() {
         </div>
       </div>
 
+      <!-- Colonne droite -->
       <div class="cec-right">
-        <div id="cec-preview"></div>
+        <div class="info-card cec-preview-card">
+          <div id="cec-preview"></div>
+        </div>
       </div>
-    </section>
-  `;
-
+    </div>
+  </section>
+`;
+  
   // ---- bindings patient ----
   document.getElementById("cec-poids").addEventListener("input", e => { s.poidsKg = e.target.value; updatePreview(); });
   document.getElementById("cec-taille").addEventListener("input", e => { s.tailleCm = e.target.value; updatePreview(); });
