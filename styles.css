@@ -9255,3 +9255,12 @@ body.dark .cec-obj-left{ background: rgba(255,255,255,.08); color: #fff; }
 .cec-proto-hero{
   margin-bottom: 10px;
 }
+
+.cec-empty::after{
+  content:"—";
+  opacity:0.35;
+}
+.cec-obj-head{
+  background: rgba(255,255,255,0.08);
+  font-weight: 800;
+}
