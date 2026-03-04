@@ -20308,7 +20308,7 @@ function cecRenderFromPpt(protocol, s){
     bodyHtml += `
       <tr>
         <td class="cec-td-title">${cecRenderTitleCell(col0)}</td>
-        <td colspan="2">${cecNl2brHtml(formatted)}</td>
+        <td colspan="2">${formatted}</td>
       </tr>
     `;
   }
