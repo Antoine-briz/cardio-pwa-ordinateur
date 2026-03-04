@@ -9434,3 +9434,45 @@ body{
 
 /* 2) MAIS : les liens/ligne "Cf ..." doivent rester bleus */
 .cec-proto-table
+
+/* ===== CEC Protocoles : grid pleine largeur sans scroll horizontal ===== */
+.cec-proto-grid{
+  display: grid;
+  grid-template-columns: minmax(320px, 420px) 1fr; /* ✅ gauche un peu plus étroit */
+  gap: 12px;
+  align-items: start; /* ✅ même niveau haut gauche/droite */
+  width: 100%;
+}
+
+.cec-left, .cec-right{
+  align-self: start; /* ✅ aligne en haut */
+  min-width: 0;      /* ✅ empêche overflow */
+}
+
+.cec-preview-card{
+  width: 100%;
+  min-width: 0;
+}
+
+.cec-proto-table-wrap{
+  width: 100%;
+  overflow-x: auto;  /* ✅ si vraiment trop large, scroll interne uniquement */
+}
+
+.cec-proto-table{
+  width: 100%;
+  table-layout: fixed;
+}
+
+/* ===== Bandeau haut du tableau : police +2 (doublée) ===== */
+.cec-proto-top{
+  color: #fff;                 /* ✅ texte blanc */
+  font-size: 1.35rem;          /* ✅ plus gros */
+  line-height: 1.25;
+}
+
+.cec-proto-top small{
+  display: block;
+  font-size: 1.05rem;          /* ✅ plus gros aussi */
+  opacity: 0.95;
+}
