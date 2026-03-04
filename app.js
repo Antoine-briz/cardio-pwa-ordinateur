@@ -19332,9 +19332,16 @@ function renderEtoBibliotheque() {
 }
 
 // =====================================================================
-//  CEC
+//  CEC  — VERSION COMPLETE (à COLLER EN REMPLACEMENT de tout ton bloc CEC)
+//  - Protocoles générés à partir des tableaux du PPT (algorithme CEC.pptx)
+//  - Objectifs per-CEC = TOUJOURS 2 colonnes (Norme + Mesures correctrices)
+//  - Colonne de droite (alternative) REMPLACE la gauche si condition vraie
+//  - Règle gestes combinés : si ouverture OD => privilégier veineuse bi-cavale (table OD)
 // =====================================================================
 
+// -------------------------------------------------
+// 1) Page menu CEC
+// -------------------------------------------------
 function renderCEC() {
   $app.innerHTML = `
     <section class="cec-page">
@@ -19385,7 +19392,7 @@ function renderCEC() {
           </div>
         </div>
 
-        <!-- Colonne droite : image (on garde ton visuel existant) -->
+        <!-- Colonne droite : image -->
         <aside class="cec-side">
           <img src="img/cec1.png" alt="Circulation extra-corporelle">
         </aside>
@@ -19397,10 +19404,9 @@ function renderCEC() {
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
 }
 
-
-// ===============================
-// CEC — State
-// ===============================
+// -------------------------------------------------
+// 2) State CEC
+// -------------------------------------------------
 window.__cecState = window.__cecState || {
   gestes: ["", "", ""], // jusqu’à 3 gestes
   poidsKg: "",
@@ -19422,10 +19428,9 @@ window.__cecState = window.__cecState || {
   }
 };
 
-// ===============================
-// CEC — Gestes disponibles
-// ===============================
-// IMPORTANT : OD opening => privilégier bi-cavale (mitrale/tricuspide/CIA/FOP/myxome)
+// -------------------------------------------------
+// 3) Gestes disponibles
+// -------------------------------------------------
 const CEC_GESTES = [
   // Générique
   { label: "Pontages coronaires", value: "pontages" },
@@ -19436,7 +19441,7 @@ const CEC_GESTES = [
   { label: "Bentall", value: "bentall" },
   { label: "Ross", value: "ross" },
 
-  // OD (bi-cavale)
+  // OD (ouverture OD => bi-cavale)
   { label: "Plastie mitrale", value: "plastie_mitrale" },
   { label: "Remplacement valve mitrale", value: "rvm" },
   { label: "Plastie tricuspide", value: "plastie_tricuspide" },
@@ -19463,9 +19468,9 @@ function cecLabelFromValue(v){
   return it ? it.label : v;
 }
 
-// ===============================
-// Lightbox (utilise le même principe que ta fenêtre image ailleurs)
-// ===============================
+// -------------------------------------------------
+// 4) Lightbox image
+// -------------------------------------------------
 function openImageLightbox(src, alt){
   const existing = document.getElementById("img-lightbox-overlay");
   if (existing) existing.remove();
@@ -19491,9 +19496,44 @@ function closeImageLightbox(){
   document.removeEventListener("keydown", __cecEscCloseOnce);
 }
 
-// ===============================
-// CEC — Calculs
-// ===============================
+// -------------------------------------------------
+// 5) "Cf ..." => mapping images (à adapter)
+// -------------------------------------------------
+const CEC_CF_MAP = {
+  "Cf canulations artérielles": "canulationsArterielles.png",
+  "Cf canulations veineuses": "canulationsVeineuses.png",
+  "Cf cardioplégies": "cardioplegies.png",
+};
+function cecRenderCfLine(line){
+  const clean = String(line || "").replace(/^\[(BLUE|ORANGE|RED)\]/g, "").trim();
+  if (!/^Cf\s+/i.test(clean)) return escapeHtml(clean);
+
+  const file = CEC_CF_MAP[clean];
+  if (!file) return `<span class="cec-cf-missing">${escapeHtml(clean)}</span>`;
+
+  return `<button class="cec-imglink" type="button"
+            onclick="openImageLightbox('img/${file}','${escapeHtml(clean)}')">${escapeHtml(clean)}</button>`;
+}
+
+// util HTML
+function escapeHtml(s){
+  return String(s ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+function cecNl2brHtml(s){
+  return String(s||"")
+    .split("\n")
+    .map(l => cecRenderCfLine(l))
+    .join("<br>");
+}
+
+// -------------------------------------------------
+// 6) Calculs / Recettes (pour remplacer les consignes orange)
+// -------------------------------------------------
 function cecNum(x){
   const v = Number(String(x ?? "").replace(",", "."));
   return Number.isFinite(v) ? v : null;
@@ -19515,7 +19555,7 @@ function cecFlowBucket(flow){
   return "GE6";
 }
 
-// Recos calibre (on applique les consignes "orange" sans les afficher)
+// Générique
 function cecRecoArtCentral(flow){
   const b = cecFlowBucket(flow);
   if (b==="LE4") return "18 Fr";
@@ -19582,16 +19622,15 @@ function cecRecoVideoLong(flow){
   return "29–31 Fr";
 }
 
-// Dissection — site systémique (selon consigne)
+// Dissection — site systémique (selon TSA)
 function cecRecoDissectionSystemicSite(s){
   const tsa = s?.dissection?.tsa || {};
-  const scd = !!tsa.scd;
-  const scg = !!tsa.scg;
-
+  const scd = !!tsa.scd; // sous-clavière droite
+  const scg = !!tsa.scg; // sous-clavière gauche
   if (scd && scg) return "Rétrograde fémorale";
   if (scd) return "Antérograde axillaire gauche";
   if (scg) return "Antérograde axillaire droite";
-  return "Antérograde axillaire droite";
+  return "Antérograde axillaire droite"; // “aucun”
 }
 function cecRecoDissectionArtCalibre(flow, site){
   const fem = String(site||"").toLowerCase().includes("fém");
@@ -19615,7 +19654,7 @@ function cecRecoCarotidCannula(flowMlMin){
   return "12–14 Fr";
 }
 
-// Cardioplégie (consignes orange => choix direct)
+// Cardioplégie (remplace XXX)
 function cecRecoCardioplegia(s){
   const ia = !!s.coeur.ia;
   const hvg = !!s.coeur.hvg;
@@ -19627,8 +19666,8 @@ function cecRecoCardioplegia(s){
   const hasPlastieAo = gestes.includes("plastie_aortique");
   const hasRoss = gestes.includes("ross");
 
-  let voie = ia ? "Ostia coronaires (P cible 50–70 mmHg)" : "Racine aortique (P cible 60–80 mmHg)";
-  if (hvg || stenose) voie += " + discuter rétrograde (sinus coronaire, P cible 30–40 mmHg)";
+  let voie = ia ? "Ostia coronaires (pression cible 50–70 mmHg)" : "Racine aortique (pression cible 60–80 mmHg)";
+  if (hvg || stenose) voie += " + discuter rétrograde (sinus coronaire, pression cible 30–40 mmHg)";
 
   let solution = "Sang froid (ratio 4:1), bolus 15–20 mL/kg toutes les 15–20 min";
   if (clamp90 || hasPlastieAo || hasRoss) {
@@ -19636,358 +19675,574 @@ function cecRecoCardioplegia(s){
   } else if (fevg35) {
     solution = "Discuter sang chaud (32–37°C) : continu ou bolus après induction au sang froid";
   }
-
   return { voie, solution };
 }
 
-// ===============================
-// CEC — Choix du protocole (association geste -> tableau)
-// ===============================
-function cecHasOdOpening(gestes){
-  return gestes.some(g => CEC_OD_OPENING.has(g));
-}
-function cecPickProtocol(gestes){
-  // priorité absolue
-  if (gestes.includes("dissection")) return "dissection";
-  if (gestes.includes("transplantation")) return "transplantation";
-  if (gestes.includes("video_thoraco")) return "video_thoraco";
+// -------------------------------------------------
+// 7) Tables PPT (EXTRAITES du fichier algorithme CEC.pptx)
+// -------------------------------------------------
+const CEC_PPT_TABLES = {
+  "generique": [
+    [
+      "Canulation artérielle\nCf canulations artérielles",
+      "Centrale\nSite: Aorte ascendante distale\nDébit de pompe cible:  2,4 x SC L/min\nCalibre: XX Fr Selon débit calculé au dessus\nDébit <= 4 L/min: 18 Fr\nDébit 4-5L/min: 20 Fr\nDébit 5-6L/min: 22 Fr\nDébit > 6L/min: 24 Fr",
+      "Si « sternotomie à risque » coché: \nFémorale\nSite: Artère fémorale\nDébit de pompe cible:  2,4 x SC L/min\nCalibre: XX Fr Selon débit calculé au dessus\nDébit <= 4 L/min: 18-20 Fr\nDébit 4-5L/min: 20-22 Fr\nDébit 5-6L/min: 22-24 Fr\nDébit >= 6L/min: 24 Fr"
+    ],
+    [
+      "Canulation veineuse\nCf canulations veineuses",
+      "Atrio-cave\nSite: Insertion OD, extrémité VCI\nDrainage gravitaire (éviter VAVD)\nDébit de pompe cible:  2,4 x SC L/min\nCalibre: XX Fr Selon débit calculé au dessus\nDébit <= 4 L/min: 28/36 Fr\nDébit 4-5L/min: 29/37 Fr\nDébit 5-6L/min: 32/40 Fr\nDébit > 6L/min: 34/46 ou 36/46 Fr",
+      "Si « sternotomie à risque » coché: \nFémorale\nSite: veine fémorale\nDrainage gravitaire (VAVD parfois nécessaire)\nDébit de pompe cible:  2,4 x SC L/min\nCalibre: XX Fr Selon débit calculé au dessus\nDébit <= 4 L/min: 28-32 Fr\nDébit 4-5L/min: 32-36 Fr\nDébit 5-6L/min: 36-40 Fr\nDébit >= 6L/min: 40 Fr"
+    ],
+    [
+      "Priming",
+      "Ringer-lactate 1000 à 1500mL\nAjout d’héparine 5000 UI\nAjout de Mannitol 0,25-0,5 g/kg (Eviter si DFG < 45 mL/min/m2)",
+      ""
+    ],
+    [
+      "Anticoagulation",
+      "Bolus d’héparine 300 UI/kg IVD dans le circuit (ACT cible: > 400 sec)\nAntithrombine III si ACT cible non atteint\nProtamine: 60-80% de la dose d’héparine (ACT cible: < 120 sec)\nSurveillance plaquettes et fibrinogène\n\nSi HIT: Bivalirudine 1mg/kg bolus puis 2,5 mg/kg/h (ACT cible: 300-400 sec)",
+      ""
+    ],
+    [
+      "Cardioplégie\nCf cardioplégies",
+      "Voie d’administration: XXX\nCas général: Racine aortique (pression cible: 60-80 mmHg)\nSi « IA » coché: Ostia coronaires (pression cible: 50-70 mmHg)\nSi « HVG » ou « sténose coronaire serrée » coché: Idem précédent + Discuter rétrograde par sinus coronaire  (pression cible: 30-40 mmHg)\n\nSolution de cardioplégie: XXX\nCas général: Sang froid (ratio 4:1) en antérograde intermittent. Bolus de 15-20 mL/kg toutes les 15-20 min.\nSi FEVG < 35% coché: Discuter sang chaud (32-37°C) selon 2 modalités: Continu OU bolus  après induction au sang froid\nSi « durée de clampage > 90min » coché ou « plastie aortique » ou « Ross » sélectionné: Custodiol 20-25 mL/kg (4-8°C). Cardioprotection entre 90-180min.\n\nSi HVG coché: Autre:  Ajout d’Esmolol 50 µg/kg/min IVSE en per-CEC en raison de l’HVG",
+      ""
+    ],
+    [
+      "Objectifs per-CEC",
+      "Objectifs",
+      "Mesures correctrices"
+    ],
+    [
+      "",
+      "DO2 > 280-300 mL/min/m2\nVO2 = 100-140 mL/min/m2",
+      "DO2 insuffisant: Augmenter débit CEC, SaO2/PaO2, Hb/Ht, diminuer VO2 (hypothermie)\nVO2 élevé: Sédation, curarisation, hypothermie"
+    ],
+    [
+      "",
+      "Débit de pompe = 2,2-2,6 L/min/m2\nPAM = 50-70 mmHg",
+      "Débit de pompe insuffisant: Augmenter RPM, vérifier drainage\nPAM basse: Noradrénaline, vasopressine, augmenter débit si possible"
+    ],
+    [
+      "",
+      "Hb > 7-8 g/dL\nHématocrite > 22-25 %",
+      "Hémodilution: Ultrafiltration\nTransfusion CGR si besoin"
+    ],
+    [
+      "",
+      "PaO2 = 150-250 mmHg\n(Eviter hyperoxémie)",
+      "Hypoxémie: Augmenter FiO2, vérifier oxygénateur\nHyperoxémie: Diminuer FiO2"
+    ],
+    [
+      "",
+      "Normothermie 36-37°C",
+      "Hypothermie: Ajuster réchauffeur\nHyperthermie: Diminuer réchauffement"
+    ]
+  ],
 
-  // LVAD : pas de tableau
-  if (gestes.includes("lvad")) return "lvad";
+  "od": [
+    [
+      "Canulation artérielle\nCf canulations artérielles",
+      "Centrale\nSite: Aorte ascendante distale\nDébit de pompe cible:  2,4 x SC L/min\nCalibre: XX Fr Selon débit calculé au dessus\nDébit <= 4 L/min: 18 Fr\nDébit 4-5L/min: 20 Fr\nDébit 5-6L/min: 22 Fr\nDébit > 6L/min: 24 Fr",
+      "Si « sternotomie à risque » coché: \nFémorale\nSite: Artère fémorale\nDébit de pompe cible:  2,4 x SC L/min\nCalibre: XX Fr Selon débit calculé au dessus\nDébit <= 4 L/min: 18-20 Fr\nDébit 4-5L/min: 20-22 Fr\nDébit 5-6L/min: 22-24 Fr\nDébit >= 6L/min: 24 Fr"
+    ],
+    [
+      "Canulation veineuse\nCf canulations veineuses",
+      "Bi-cavale (ouverture de l’OD)\nSite: Canulation directe VCI et VCS par l’OD\nDrainage gravitaire (éviter VAVD)\nDébit de pompe cible:  2,4 x SC L/min\nVCI: XX Fr\nVCS: XX Fr",
+      "Si « sternotomie à risque » coché: \nFémorale\nSite: veine fémorale\nDrainage gravitaire (VAVD parfois nécessaire)\nDébit de pompe cible:  2,4 x SC L/min\nCalibre: XX Fr Selon débit calculé au dessus\nDébit <= 4 L/min: 28-32 Fr\nDébit 4-5L/min: 32-36 Fr\nDébit 5-6L/min: 36-40 Fr\nDébit >= 6L/min: 40 Fr"
+    ],
+    [
+      "Priming",
+      "Ringer-lactate 1000 à 1500mL\nAjout d’héparine 5000 UI\nAjout de Mannitol 0,25-0,5 g/kg (Eviter si DFG < 45 mL/min/m2)",
+      ""
+    ],
+    [
+      "Anticoagulation",
+      "Bolus d’héparine 300 UI/kg IVD dans le circuit (ACT cible: > 400 sec)\nAntithrombine III si ACT cible non atteint\nProtamine: 60-80% de la dose d’héparine (ACT cible: < 120 sec)\nSurveillance plaquettes et fibrinogène\n\nSi HIT: Bivalirudine 1mg/kg bolus puis 2,5 mg/kg/h (ACT cible: 300-400 sec)",
+      ""
+    ],
+    [
+      "Cardioplégie\nCf cardioplégies",
+      "Voie d’administration: XXX\nCas général: Racine aortique (pression cible: 60-80 mmHg)\nSi « IA » coché: Ostia coronaires (pression cible: 50-70 mmHg)\nSi « HVG » ou « sténose coronaire serrée » coché: Idem précédent + Discuter rétrograde par sinus coronaire  (pression cible: 30-40 mmHg)\n\nSolution de cardioplégie: XXX\nCas général: Sang froid (ratio 4:1) en antérograde intermittent. Bolus de 15-20 mL/kg toutes les 15-20 min.\nSi FEVG < 35% coché: Discuter sang chaud (32-37°C) selon 2 modalités: Continu OU bolus  après induction au sang froid\nSi « durée de clampage > 90min » coché ou « plastie aortique » ou « Ross » sélectionné: Custodiol 20-25 mL/kg (4-8°C). Cardioprotection entre 90-180min.\n\nSi HVG coché: Autre:  Ajout d’Esmolol 50 µg/kg/min IVSE en per-CEC en raison de l’HVG",
+      ""
+    ],
+    [
+      "Objectifs per-CEC",
+      "Objectifs",
+      "Mesures correctrices"
+    ],
+    [
+      "",
+      "DO2 > 280-300 mL/min/m2\nVO2 = 100-140 mL/min/m2",
+      "DO2 insuffisant: Augmenter débit CEC, SaO2/PaO2, Hb/Ht, diminuer VO2 (hypothermie)\nVO2 élevé: Sédation, curarisation, hypothermie"
+    ],
+    [
+      "",
+      "Débit de pompe = 2,2-2,6 L/min/m2\nPAM = 50-70 mmHg",
+      "Débit de pompe insuffisant: Augmenter RPM, vérifier drainage\nPAM basse: Noradrénaline, vasopressine, augmenter débit si possible"
+    ],
+    [
+      "",
+      "Hb > 7-8 g/dL\nHématocrite > 22-25 %",
+      "Hémodilution: Ultrafiltration\nTransfusion CGR si besoin"
+    ],
+    [
+      "",
+      "PaO2 = 150-250 mmHg\n(Eviter hyperoxémie)",
+      "Hypoxémie: Augmenter FiO2, vérifier oxygénateur\nHyperoxémie: Diminuer FiO2"
+    ],
+    [
+      "",
+      "Normothermie 36-37°C",
+      "Hypothermie: Ajuster réchauffeur\nHyperthermie: Diminuer réchauffement"
+    ]
+  ],
 
-  // sinon générique (pontage/RVA/TSC/David/Bentall/Ross/Plastie Ao)
-  return "generique";
-}
+  "video_thoraco": [
+    [
+      "Canulation artérielle\nCf canulations artérielles",
+      "Fémorale \nSite: Artère fémorale\nDébit de pompe cible:  2,4 x SC L/min\nCalibre: XX Fr Selon débit calculé au dessus\nDébit <= 4 L/min: 18-20 Fr\nDébit 4-5L/min: 20-22 Fr\nDébit 5-6L/min: 22-24 Fr\nDébit >= 6L/min: 24 Fr",
+      ""
+    ],
+    [
+      "Canulation veineuse\nCf canulations veineuses",
+      "Fémorale et jugulaire interne droite \nSites: Canule fémorale pour drainage VCI, canule jugulaire interne droite pour drainage VCS\nDrainage gravitaire (VAVD souvent nécessaire)\nDébit de pompe cible:  2,4 x SC L/min\nCanule fémorale: XX Fr Selon débit calculé au dessus\nDébit <= 4 L/min: 21-23 Fr\nDébit 4-5L/min: 23-25 Fr\nDébit 5-6L/min: 25-27 Fr\nDébit >= 6L/min: 27-29 Fr\nCanule jugulaire: XX Fr Selon débit calculé au dessus\nDébit <= 4 L/min: 15-17 Fr\nDébit 4-5L/min: 17-19 Fr\nDébit 5-6L/min: 19-21 Fr\nDébit >= 6L/min: 21 Fr\nAlternative: canule fémorale longue positionnée en VCS pour drainage VCI et VCS\nCalibre: XX Fr Selon débit calculé au dessus\nDébit <= 4 L/min: 23-25 Fr\nDébit 4-5L/min: 25-27 Fr\nDébit 5-6L/min: 27-29 Fr\nDébit >= 6L/min: 29-31 Fr",
+      ""
+    ],
+    [
+      "Priming",
+      "Ringer-lactate 1000 à 1500mL\nAjout d’héparine 5000 UI\nAjout de Mannitol 0,25-0,5 g/kg (Eviter si DFG < 45 mL/min/m2)",
+      ""
+    ],
+    [
+      "Anticoagulation",
+      "Bolus d’héparine 300 UI/kg IVD dans le circuit (ACT cible: > 400 sec)\nAntithrombine III si ACT cible non atteint\nProtamine: 60-80% de la dose d’héparine (ACT cible: < 120 sec)\nSurveillance plaquettes et fibrinogène\n\nSi HIT: Bivalirudine 1mg/kg bolus puis 2,5 mg/kg/h (ACT cible: 300-400 sec)",
+      ""
+    ],
+    [
+      "Cardioplégie\nCf cardioplégies",
+      "Voie d’administration: XXX\nCas général: Racine aortique (pression cible: 60-80 mmHg)\nSi « IA » coché: Ostia coronaires (pression cible: 50-70 mmHg)\nSi « HVG » ou « sténose coronaire serrée » coché: Idem précédent + Discuter rétrograde par sinus coronaire  (pression cible: 30-40 mmHg)\n\nSolution de cardioplégie: XXX\nCas général: Sang froid (ratio 4:1) en antérograde intermittent. Bolus de 15-20 mL/kg toutes les 15-20 min.\nSi FEVG < 35% coché: Discuter sang chaud (32-37°C) selon 2 modalités: Continu OU bolus  après induction au sang froid\nSi « durée de clampage > 90min » coché ou « plastie aortique » ou « Ross » sélectionné: Custodiol 20-25 mL/kg (4-8°C). Cardioprotection entre 90-180min.\n\nSi HVG coché: Autre:  Ajout d’Esmolol 50 µg/kg/min IVSE en per-CEC en raison de l’HVG",
+      ""
+    ],
+    [
+      "Objectifs per-CEC",
+      "Objectifs",
+      "Mesures correctrices"
+    ],
+    [
+      "",
+      "DO2 > 280-300 mL/min/m2\nVO2 = 100-140 mL/min/m2",
+      "DO2 insuffisant: Augmenter débit CEC, SaO2/PaO2, Hb/Ht, diminuer VO2 (hypothermie)\nVO2 élevé: Sédation, curarisation, hypothermie"
+    ],
+    [
+      "",
+      "Débit de pompe = 2,2-2,6 L/min/m2\nPAM = 50-70 mmHg",
+      "Débit de pompe insuffisant: Augmenter RPM, vérifier drainage\nPAM basse: Noradrénaline, vasopressine, augmenter débit si possible"
+    ],
+    [
+      "",
+      "Hb > 7-8 g/dL\nHématocrite > 22-25 %",
+      "Hémodilution: Ultrafiltration\nTransfusion CGR si besoin"
+    ],
+    [
+      "",
+      "PaO2 = 150-250 mmHg\n(Eviter hyperoxémie)",
+      "Hypoxémie: Augmenter FiO2, vérifier oxygénateur\nHyperoxémie: Diminuer FiO2"
+    ],
+    [
+      "",
+      "Normothermie 36-37°C",
+      "Hypothermie: Ajuster réchauffeur\nHyperthermie: Diminuer réchauffement"
+    ]
+  ],
 
-// ===============================
-// CEC — "Cf ..." : mapping vers images (à adapter)
-// ===============================
-// Ici tu peux associer exactement tes liens bleus à tes images.
-// Par défaut : on ouvre une image si elle existe, sinon on peut afficher un message.
-const CEC_CF_MAP = {
-  "Cf canulations artérielles": "canulationsArterielles.png",
-  "Cf canulations veineuses": "canulationsVeineuses.png",
-  "Cf cardioplégies": "cardioplegies.png",
-  // ajoute tes fichiers réels (dans img/)
+  "dissection": [
+    [
+      "Canulation artérielle\nCf canulations artérielles",
+      "Site de canulation systémique: XXX\nSi « aucun »: Antérograde axillaire droite\nSi Sous-clavière droite cochée: Antérograde axillaire gauche\nSi Sous-clavière gauche cochée: Antérograde axillaire droite\nSi sous-clavière droite + gauche cochées: Rétrograde fémorale\nDébit de pompe cible:  2,4 x SC L/min\nCalibre: XX Fr Selon débit calculé au dessus\nSi canule axillaire:\nDébit <= 4 L/min: 16-18 Fr\nDébit 4-5L/min: 18-20 Fr\nDébit 5-6L/min: 20 Fr\nDébit >= 6L/min: 20-22 Fr\nSi canule fémorale:\nDébit <= 4 L/min: 18-20 Fr\nDébit 4-5L/min: 20-22 Fr\nDébit 5-6L/min: 22-24 Fr\nDébit >= 6L/min: 24 Fr\n\nAjout de canule(s) carotidienne(s) si: NIRS bas, mal-perfusion cérébrale à l’angioTDM, arrêt circulatoire prolongé\nDébit carotidien cible: 8-12 mL/kg/min\n< 600 mL/min: 10-12 Fr\n600-900 mL/min: 12 Fr\n> 900 mL/min: 12-14 Fr\nPression cible: 50-70 mmHg",
+      "",
+      "Si « instabilité hémodynamique majeure » cochée: \nSite de canulation systémique: Fémorale\nDébit de pompe cible:  2,4 x SC L/min\nCalibre: XX Fr Selon débit calculé au dessus\nDébit <= 4 L/min: 18-20 Fr\nDébit 4-5L/min: 20-22 Fr\nDébit 5-6L/min: 22-24 Fr\nDébit >= 6L/min: 24 Fr\n\nAjout de canule(s) carotidienne(s) si: NIRS bas, mal-perfusion cérébrale à l’angioTDM, arrêt circulatoire prolongé\nDébit carotidien cible: 8-12 mL/kg/min\n< 600 mL/min: 10-12 Fr\n600-900 mL/min: 12 Fr\n> 900 mL/min: 12-14 Fr\nPression cible: 50-70 mmHg"
+    ],
+    [
+      "Canulation veineuse\nCf canulations veineuses",
+      "Atrio-cave\nSite: Insertion OD, extrémité VCI\nDrainage gravitaire (éviter VAVD)\nDébit de pompe cible:  2,4 x SC L/min\nCalibre: XX Fr Selon débit calculé au dessus\nDébit <= 4 L/min: 28/36 Fr\nDébit 4-5L/min: 29/37 Fr\nDébit 5-6L/min: 32/40 Fr\nDébit > 6L/min: 34/46 ou 36/46 Fr",
+      "",
+      "Si « sternotomie à risque » ou « instabilité hémodynamique majeure »  coché: \nFémorale\nSite: veine fémorale\nDrainage gravitaire (VAVD parfois nécessaire)\nDébit de pompe cible:  2,4 x SC L/min\nCalibre: XX Fr Selon débit calculé au dessus\nDébit <= 4 L/min: 28-32 Fr\nDébit 4-5L/min: 32-36 Fr\nDébit 5-6L/min: 36-40 Fr\nDébit >= 6L/min: 40 Fr"
+    ],
+    [
+      "Priming",
+      "Ringer-lactate 1000 à 1500mL\nAjout d’héparine 5000 UI\nAjout de Mannitol 0,25-0,5 g/kg (Eviter si DFG < 45 mL/min/m2)",
+      "",
+      ""
+    ],
+    [
+      "Anticoagulation",
+      "Bolus d’héparine 300 UI/kg IVD dans le circuit (ACT cible: > 400 sec)\nAntithrombine III si ACT cible non atteint\nProtamine: 60-80% de la dose d’héparine (ACT cible: < 120 sec)\nSurveillance plaquettes et fibrinogène\n\nSi HIT: Bivalirudine 1mg/kg bolus puis 2,5 mg/kg/h (ACT cible: 300-400 sec)",
+      "",
+      ""
+    ],
+    [
+      "Cardioplégie\nCf cardioplégies",
+      "Voie d’administration: XXX\nCas général: Racine aortique (pression cible: 60-80 mmHg)\nSi « IA » coché: Ostia coronaires (pression cible: 50-70 mmHg)\nSi « HVG » ou « sténose coronaire serrée » coché: Idem précédent + Discuter rétrograde par sinus coronaire  (pression cible: 30-40 mmHg)\n\nSolution de cardioplégie: XXX\nCas général: Sang froid (ratio 4:1) en antérograde intermittent. Bolus de 15-20 mL/kg toutes les 15-20 min.\nSi FEVG < 35% coché: Discuter sang chaud (32-37°C) selon 2 modalités: Continu OU bolus  après induction au sang froid\nSi « durée de clampage > 90min » coché ou « plastie aortique » ou « Ross » sélectionné: Custodiol 20-25 mL/kg (4-8°C). Cardioprotection entre 90-180min.\n\nSi HVG coché: Autre:  Ajout d’Esmolol 50 µg/kg/min IVSE en per-CEC en raison de l’HVG",
+      "",
+      ""
+    ],
+    [
+      "Objectifs per-CEC",
+      "Objectifs",
+      "Mesures correctrices",
+      ""
+    ],
+    [
+      "",
+      "DO2 > 280-300 mL/min/m2\nVO2 = 100-140 mL/min/m2",
+      "DO2 insuffisant: Augmenter débit CEC, SaO2/PaO2, Hb/Ht, diminuer VO2 (hypothermie)\nVO2 élevé: Sédation, curarisation, hypothermie",
+      ""
+    ],
+    [
+      "",
+      "Débit de pompe = 2,2-2,6 L/min/m2\nPAM = 50-70 mmHg",
+      "Débit de pompe insuffisant: Augmenter RPM, vérifier drainage\nPAM basse: Noradrénaline, vasopressine, augmenter débit si possible",
+      ""
+    ],
+    [
+      "",
+      "Hb > 7-8 g/dL\nHématocrite > 22-25 %",
+      "Hémodilution: Ultrafiltration\nTransfusion CGR si besoin",
+      ""
+    ],
+    [
+      "",
+      "PaO2 = 150-250 mmHg\n(Eviter hyperoxémie)",
+      "Hypoxémie: Augmenter FiO2, vérifier oxygénateur\nHyperoxémie: Diminuer FiO2",
+      ""
+    ],
+    [
+      "",
+      "Normothermie 36-37°C",
+      "Hypothermie: Ajuster réchauffeur\nHyperthermie: Diminuer réchauffement",
+      ""
+    ]
+  ],
+
+  "transplantation": [
+    [
+      "Canulation artérielle\nCf canulations artérielles",
+      "Aortique \nSite: Aorte ascendante distale\nDébit de pompe cible:  2,4 x SC L/min\nCalibre: XX Fr Selon débit calculé au dessus\nDébit <= 4 L/min: 18 Fr\nDébit 4-5L/min: 20 Fr\nDébit 5-6L/min: 22 Fr\nDébit > 6L/min: 24 Fr",
+      "",
+      "Si « sternotomie à risque » coché: \nFémorale\nSite: Artère fémorale\nDébit de pompe cible:  2,4 x SC L/min\nCalibre: XX Fr Selon débit calculé au dessus\nDébit <= 4 L/min: 18-20 Fr\nDébit 4-5L/min: 20-22 Fr\nDébit 5-6L/min: 22-24 Fr\nDébit >= 6L/min: 24 Fr"
+    ],
+    [
+      "Canulation veineuse\nCf canulations veineuses",
+      "Bi-cavale (ouverture de l’OD)\nSite: Canulation directe VCI et VCS par l’OD\nDrainage gravitaire (éviter VAVD)\nDébit de pompe cible:  2,4 x SC L/min\nVCI: XX Fr\nVCS: XX Fr",
+      "",
+      "Si « sternotomie à risque » coché: \nFémorale\nSite: veine fémorale\nDrainage gravitaire (VAVD parfois nécessaire)\nDébit de pompe cible:  2,4 x SC L/min\nCalibre: XX Fr Selon débit calculé au dessus\nDébit <= 4 L/min: 28-32 Fr\nDébit 4-5L/min: 32-36 Fr\nDébit 5-6L/min: 36-40 Fr\nDébit >= 6L/min: 40 Fr"
+    ],
+    [
+      "Priming",
+      "Ringer-lactate 1000 à 1500mL\nAjout d’héparine 5000 UI\nAjout de Mannitol 0,25-0,5 g/kg (Eviter si DFG < 45 mL/min/m2)",
+      "",
+      ""
+    ],
+    [
+      "Anticoagulation",
+      "Bolus d’héparine 300 UI/kg IVD dans le circuit (ACT cible: > 400 sec)\nAntithrombine III si ACT cible non atteint\nProtamine: 60-80% de la dose d’héparine (ACT cible: < 120 sec)\nSurveillance plaquettes et fibrinogène\n\nSi HIT: Bivalirudine 1mg/kg bolus puis 2,5 mg/kg/h (ACT cible: 300-400 sec)",
+      "",
+      ""
+    ],
+    [
+      "Cardioplégie\nCf cardioplégies",
+      "Voie d’administration: XXX\nCas général: Racine aortique (pression cible: 60-80 mmHg)\nSi « IA » coché: Ostia coronaires (pression cible: 50-70 mmHg)\nSi « HVG » ou « sténose coronaire serrée » coché: Idem précédent + Discuter rétrograde par sinus coronaire  (pression cible: 30-40 mmHg)\n\nSolution de cardioplégie: XXX\nCas général: Sang froid (ratio 4:1) en antérograde intermittent. Bolus de 15-20 mL/kg toutes les 15-20 min.\nSi FEVG < 35% coché: Discuter sang chaud (32-37°C) selon 2 modalités: Continu OU bolus  après induction au sang froid\nSi « durée de clampage > 90min » coché ou « plastie aortique » ou « Ross » sélectionné: Custodiol 20-25 mL/kg (4-8°C). Cardioprotection entre 90-180min.\n\nSi HVG coché: Autre:  Ajout d’Esmolol 50 µg/kg/min IVSE en per-CEC en raison de l’HVG",
+      "",
+      ""
+    ],
+    [
+      "Objectifs per-CEC",
+      "Objectifs",
+      "Mesures correctrices",
+      ""
+    ],
+    [
+      "",
+      "DO2 > 280-300 mL/min/m2\nVO2 = 100-140 mL/min/m2",
+      "DO2 insuffisant: Augmenter débit CEC, SaO2/PaO2, Hb/Ht, diminuer VO2 (hypothermie)\nVO2 élevé: Sédation, curarisation, hypothermie",
+      ""
+    ],
+    [
+      "",
+      "Débit de pompe = 2,2-2,6 L/min/m2\nPAM = 50-70 mmHg",
+      "Débit de pompe insuffisant: Augmenter RPM, vérifier drainage\nPAM basse: Noradrénaline, vasopressine, augmenter débit si possible",
+      ""
+    ],
+    [
+      "",
+      "Hb > 7-8 g/dL\nHématocrite > 22-25 %",
+      "Hémodilution: Ultrafiltration\nTransfusion CGR si besoin",
+      ""
+    ],
+    [
+      "",
+      "PaO2 = 150-250 mmHg\n(Eviter hyperoxémie)",
+      "Hypoxémie: Augmenter FiO2, vérifier oxygénateur\nHyperoxémie: Diminuer FiO2",
+      ""
+    ],
+    [
+      "",
+      "Normothermie 36-37°C",
+      "Hypothermie: Ajuster réchauffeur\nHyperthermie: Diminuer réchauffement",
+      ""
+    ]
+  ]
 };
-function renderCfLink(text){
-  const file = CEC_CF_MAP[text];
-  if (!file) return `<span class="cec-cf-missing">${text}</span>`;
-  return `<button class="cec-imglink" type="button"
-            onclick="openImageLightbox('img/${file}','${text}')">${text}</button>`;
+
+// -------------------------------------------------
+// 8) Nettoyage consignes internes + remplissage dynamique (rouge)
+// -------------------------------------------------
+function cecStripInternalLines(text){
+  const lines = String(text || "").split("\n");
+
+  // On enlève:
+  // - les en-têtes conditionnels ("Si ... coché:")
+  // - les lignes "Si ..." qui décrivent l'algorithme (consignes orange)
+  // - les lignes de seuils "Débit ..." (consignes orange)
+  const kept = [];
+  for (const raw of lines) {
+    const line = raw.replace(/^\[(ORANGE|BLUE|RED)\]/g, "").trim();
+    if (!line) continue;
+
+    const lower = line.toLowerCase();
+
+    // consignes conditionnelles (orange)
+    if (lower.startsWith("si ")) continue;
+    if (lower.startsWith("débit <") || lower.startsWith("débit <=") || lower.startsWith("débit >") || lower.startsWith("débit >=")) continue;
+    if (lower.startsWith("débit 4-") || lower.startsWith("débit 5-") || lower.startsWith("débit 4–") || lower.startsWith("débit 5–")) continue;
+    if (lower.startsWith("< 600") || lower.startsWith("600-") || lower.startsWith("> 900")) continue;
+
+    kept.push(line);
+  }
+  return kept.join("\n");
 }
 
-// ===============================
-// CEC — Table builders (on n’affiche jamais les consignes "orange")
-// ===============================
-function cecRow(title, leftHtml, rightHtml=null){
-  return { title, leftHtml, rightHtml };
-}
-function cecInfoList(lines){
-  return `<ul class="cec-ul">${lines.map(x=>`<li>${x}</li>`).join("")}</ul>`;
-}
-
-function cecBuildRows(protocol, s){
-  const gestes = (s.gestes||[]).filter(Boolean);
-  const odOpening = cecHasOdOpening(gestes);
+function cecApplyDynamicToCell(text, s, context){
+  let t = String(text || "");
 
   const sc = cecComputeBSA(s.poidsKg, s.tailleCm);
   const flow = sc ? cecComputeFlowTarget(sc) : null;
 
-  const flowTxt = (sc && flow)
-    ? `2,4 × SC = <strong>${flow.toFixed(1)} L/min</strong> (SC ${sc.toFixed(2)} m²)`
-    : `2,4 × SC (renseigner poids+taille)`;
-
-  // --- Variantes art/veines selon cases
-  const useFemArt = !!s.chirurgie.sternotomieRisque;
-  const artSite = useFemArt ? "Artère fémorale" : "Aorte ascendante distale";
-  const artCal = (flow ? (useFemArt ? cecRecoArtFem(flow) : cecRecoArtCentral(flow)) : "—");
-
-  // Veineuse
-  // Règle combinés : si OD opening => bi-cavale (même si geste principal générique)
-  let venMode = "Atrio-cave";
-  if (protocol === "video_thoraco") venMode = "Périphérique (fémorale + jugulaire)";
-  else if (protocol === "transplantation") venMode = "Bi-cavale (ouverture OD)";
-  else if (odOpening) venMode = "Bi-cavale (ouverture OD)";
-
-  // Cardioplégie
-  const cp = cecRecoCardioplegia(s);
-
-  // Hypothermie
-  const deepHypo = gestes.some(g => ["tsc","david","bentall","dissection"].includes(g));
-  const tempTarget = deepHypo ? "26–28°C" : "32–34°C";
-
-  // Priming / anticoag (avec calculs utiles)
-  const w = cecNum(s.poidsKg);
-  const hepar = w ? Math.round(300*w) : null;
-  const mannitol = w ? { min:(0.25*w), max:(0.5*w) } : null;
-  const prot = hepar ? { min:Math.round(0.6*hepar), max:Math.round(0.8*hepar) } : null;
-
-  // -------------------------
-  // CONSTRUCTION DU TABLEAU
-  // -------------------------
-  const rows = [];
-
-  // Canulation artérielle
-  if (protocol === "dissection") {
-    const site = s.dissection.instabilite
-      ? "Fémorale (instabilité hémodynamique majeure)"
-      : cecRecoDissectionSystemicSite(s);
-    const calibre = flow ? cecRecoDissectionArtCalibre(flow, site) : "—";
-
-    const carotidRange = cecCarotidRangeMlMin(s.poidsKg);
-    const carotTxt = carotidRange
-      ? `Débit carotidien 8–12 mL/kg/min ≈ <strong>${Math.round(carotidRange.min)}–${Math.round(carotidRange.max)} mL/min</strong> (canule ~ ${cecRecoCarotidCannula((carotidRange.min+carotidRange.max)/2)})`
-      : "Débit carotidien 8–12 mL/kg/min (renseigner poids)";
-
-    rows.push(cecRow(
-      `Canulation artérielle<br>${renderCfLink("Cf canulations artérielles")}`,
-      cecInfoList([
-        `<strong>Site systémique</strong> : ${site}`,
-        `<strong>Débit cible</strong> : ${flowTxt}`,
-        `<strong>Calibre recommandé</strong> : ${calibre}`,
-        `Ajout carotidienne si NIRS bas / malperfusion / arrêt circulatoire prolongé`,
-        `${carotTxt}`,
-        `Pression cible cérébrale : 50–70 mmHg`,
-      ])
-    ));
-  } else if (protocol === "video_thoraco") {
-    rows.push(cecRow(
-      `Canulation artérielle<br>${renderCfLink("Cf canulations artérielles")}`,
-      cecInfoList([
-        `<strong>Site</strong> : Artère fémorale`,
-        `<strong>Débit cible</strong> : ${flowTxt}`,
-        `<strong>Calibre recommandé</strong> : ${flow ? cecRecoArtFem(flow) : "—"}`,
-      ])
-    ));
-  } else {
-    // générqiue/transplant/mitrale => art centrale sauf sternotomie risque
-    rows.push(cecRow(
-      `Canulation artérielle<br>${renderCfLink("Cf canulations artérielles")}`,
-      cecInfoList([
-        `<strong>Site</strong> : ${artSite}`,
-        `<strong>Débit cible</strong> : ${flowTxt}`,
-        `<strong>Calibre recommandé</strong> : ${artCal}`,
-        useFemArt ? `<em>(choix fémoral car “sternotomie à risque” cochée)</em>` : "",
-      ].filter(Boolean))
-    ));
+  // remplace "2,4 x SC L/min"
+  if (sc && flow) {
+    t = t.replaceAll("2,4 x SC L/min", `2,4 × SC = ${flow.toFixed(1)} L/min (SC ${sc.toFixed(2)} m²)`);
   }
 
-  // Canulation veineuse
-  if (protocol === "video_thoraco") {
-    rows.push(cecRow(
-      `Canulation veineuse<br>${renderCfLink("Cf canulations veineuses")}`,
-      cecInfoList([
-        `<strong>Configuration</strong> : fémorale + jugulaire interne droite (ETO)`,
-        `VAVD souvent nécessaire : -20 à -40 mmHg`,
-        `<strong>Débit cible</strong> : ${flowTxt}`,
-        `<strong>Canule fémorale</strong> : ${flow ? cecRecoVideoFem(flow) : "—"}`,
-        `<strong>Canule jugulaire</strong> : ${flow ? cecRecoVideoJug(flow) : "—"}`,
-        `<strong>Alternative</strong> : canule fémorale longue en VCS (VCI+VCS)`,
-        `<strong>Calibre alternative</strong> : ${flow ? cecRecoVideoLong(flow) : "—"}`,
-      ])
-    ));
-  } else if (protocol === "transplantation" || odOpening) {
-    // bi-cavale prioritaire si OD opening
-    const femVen = !!s.chirurgie.sternotomieRisque;
-    if (femVen) {
-      rows.push(cecRow(
-        `Canulation veineuse<br>${renderCfLink("Cf canulations veineuses")}`,
-        cecInfoList([
-          `<strong>Mode préféré</strong> : Bi-cavale (ouverture OD nécessaire)`,
-          `<strong>MAIS</strong> sternotomie à risque → option périphérique veine fémorale`,
-          `<strong>Débit cible</strong> : ${flowTxt}`,
-          `<strong>Calibre fémoral recommandé</strong> : ${flow ? cecRecoVenFem(flow) : "—"}`,
-          `VAVD parfois nécessaire`,
-        ])
-      ));
-    } else {
-      rows.push(cecRow(
-        `Canulation veineuse<br>${renderCfLink("Cf canulations veineuses")}`,
-        cecInfoList([
-          `<strong>Bi-cavale (ouverture OD)</strong>`,
-          `Drainage gravitaire (éviter VAVD)`,
-          `<strong>Débit cible</strong> : ${flowTxt}`,
-          `<strong>VCI</strong> : ${flow ? cecRecoBicavalVCI(flow) : "—"}`,
-          `<strong>VCS</strong> : ${flow ? cecRecoBicavalVCS(flow) : "—"}`,
-        ])
-      ));
+  // Priming: mannitol calculé
+  if (t.includes("Mannitol 0,25-0,5 g/kg")) {
+    const w = cecNum(s.poidsKg);
+    if (w) t = t.replace("0,25-0,5 g/kg", `0,25–0,5 g/kg (≈ ${(0.25*w).toFixed(1)}–${(0.5*w).toFixed(1)} g)`);
+  }
+
+  // Héparine 300 UI/kg -> dose
+  if (t.includes("héparine 300 UI/kg")) {
+    const w = cecNum(s.poidsKg);
+    if (w) t = t.replaceAll("300 UI/kg", `300 UI/kg (≈ ${Math.round(300*w)} UI)`);
+  }
+
+  // Protamine 60-80% -> range
+  if (t.includes("Protamine: 60-80%")) {
+    const w = cecNum(s.poidsKg);
+    if (w) {
+      const hepar = 300*w;
+      t = t.replace(
+        "Protamine: 60-80% de la dose d’héparine",
+        `Protamine: 60–80% (≈ ${Math.round(0.6*hepar)}–${Math.round(0.8*hepar)} UI équiv.)`
+      );
     }
-  } else if (protocol === "dissection") {
-    rows.push(cecRow(
-      `Canulation veineuse<br>${renderCfLink("Cf canulations veineuses")}`,
-      cecInfoList([
-        `<strong>Atrio-cave</strong> (OD → VCI)`,
-        `Drainage gravitaire (éviter VAVD)`,
-        `<strong>Débit cible</strong> : ${flowTxt}`,
-        `<strong>Calibre recommandé</strong> : ${flow ? cecRecoVenAtriocave(flow) : "—"}`,
-        `Option fémorale possible si besoin (VAVD parfois nécessaire)`,
-      ])
-    ));
-  } else {
-    // générique
-    const femVen = !!s.chirurgie.sternotomieRisque;
-    rows.push(cecRow(
-      `Canulation veineuse<br>${renderCfLink("Cf canulations veineuses")}`,
-      cecInfoList(
-        femVen ? [
-          `<strong>Site</strong> : veine fémorale`,
-          `Drainage gravitaire (VAVD parfois nécessaire)`,
-          `<strong>Débit cible</strong> : ${flowTxt}`,
-          `<strong>Calibre recommandé</strong> : ${flow ? cecRecoVenFem(flow) : "—"}`,
-        ] : [
-          `<strong>Atrio-cave</strong> (OD → VCI)`,
-          `Drainage gravitaire (éviter VAVD)`,
-          `<strong>Débit cible</strong> : ${flowTxt}`,
-          `<strong>Calibre recommandé</strong> : ${flow ? cecRecoVenAtriocave(flow) : "—"}`,
-        ]
-      )
-    ));
   }
 
-  // Priming
-  rows.push(cecRow(
-    "Priming",
-    cecInfoList([
-      "Ringer-lactate 1000 à 1500 mL",
-      "Héparine 5000 UI",
-      mannitol ? `Mannitol 0,25–0,5 g/kg ≈ <strong>${mannitol.min.toFixed(1)}–${mannitol.max.toFixed(1)} g</strong> (éviter si DFG < 45)` :
-                 "Mannitol 0,25–0,5 g/kg (renseigner poids) (éviter si DFG < 45)",
-    ])
-  ));
+  // Cardioplégie XXX
+  if (t.includes("Voie d’administration: XXX") || t.includes("Solution de cardioplégie: XXX")) {
+    const cp = cecRecoCardioplegia(s);
+    t = t.replace("Voie d’administration: XXX", `Voie d’administration: ${cp.voie}`);
+    t = t.replace("Solution de cardioplégie: XXX", `Solution de cardioplégie: ${cp.solution}`);
+  }
 
-  // Anticoagulation
-  rows.push(cecRow(
-    "Anticoagulation",
-    cecInfoList([
-      hepar ? `Héparine 300 UI/kg ≈ <strong>${hepar} UI</strong> (ACT cible > 400 sec)` : "Héparine 300 UI/kg (ACT cible > 400 sec) (renseigner poids)",
-      "Antithrombine III si ACT cible non atteint",
-      prot ? `Protamine 60–80% ≈ <strong>${prot.min}–${prot.max}</strong> (équiv. UI) (ACT cible < 120 sec)` : "Protamine 60–80% (ACT cible < 120 sec)",
-      "Surveillance plaquettes et fibrinogène",
-      "Si HIT : Bivalirudine 1 mg/kg bolus puis 2,5 mg/kg/h (ACT 300–400 sec)",
-    ])
-  ));
+  // Remplissages XX/XXX selon contexte
+  if (flow) {
+    // Art générique
+    if (context === "ART_CENTRAL") t = t.replaceAll("Calibre: XX Fr", `Calibre: ${cecRecoArtCentral(flow)}`);
+    if (context === "ART_FEM")     t = t.replaceAll("Calibre: XX Fr", `Calibre: ${cecRecoArtFem(flow)}`);
 
-  // Cardioplégie
-  rows.push(cecRow(
-    `Cardioplégie<br>${renderCfLink("Cf cardioplégies")}`,
-    cecInfoList([
-      `<strong>Voie</strong> : ${cp.voie}`,
-      `<strong>Solution</strong> : ${cp.solution}`,
-      s.coeur.hvg ? "Si HVG : discuter Esmolol 50 µg/kg/min IVSE per-CEC" : "",
-    ].filter(Boolean))
-  ));
+    // Veines génériques
+    if (context === "VEN_ATRIO")   t = t.replaceAll("Calibre: XX Fr", `Calibre: ${cecRecoVenAtriocave(flow)}`);
+    if (context === "VEN_FEM")     t = t.replaceAll("Calibre: XX Fr", `Calibre: ${cecRecoVenFem(flow)}`);
 
-  // Hypothermie
-  rows.push(cecRow(
-    "Hypothermie",
-    cecInfoList([`Température cible : <strong>${tempTarget}</strong>`])
-  ));
+    // Bicavale: remplace VCI/VCS
+    if (context === "VEN_BICAVAL") {
+      t = t.replaceAll("VCI: XX Fr", `VCI: ${cecRecoBicavalVCI(flow)}`);
+      t = t.replaceAll("VCS: XX Fr", `VCS: ${cecRecoBicavalVCS(flow)}`);
+    }
 
-  // Débit de pompe
-  rows.push(cecRow(
-    "Débit de pompe",
-    cecInfoList([
-      "Débit cible : 280–300 mL/min/m²",
-      deepHypo ? "Si hypothermie profonde : 100–140 mL/min/m²" : ""
-    ].filter(Boolean))
-  ));
+    // Vidéo-thoraco
+    if (context === "VIDEO") {
+      t = t.replaceAll("Canule fémorale: XX Fr", `Canule fémorale: ${cecRecoVideoFem(flow)}`);
+      t = t.replaceAll("Canule jugulaire: XX Fr", `Canule jugulaire: ${cecRecoVideoJug(flow)}`);
+      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${cecRecoVideoLong(flow)}`);
+      // art fémorale de base
+      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${cecRecoArtFem(flow)}`);
+    }
 
-  // Objectifs per-CEC
-  rows.push(cecRow(
-    "Objectifs per-CEC",
-    cecInfoList([
-      "Débit : 2,2–2,6 L/min/m²",
-      "PAM : 50–70 mmHg",
-      "Hématocrite : 22–25%",
-      "SvO₂ : > 60%",
-      "Lactates : < 2 mmol/L",
-      w ? `Diurèse : > 1 mL/kg/h (≈ > ${Math.round(w)} mL/h)` : "Diurèse : > 1 mL/kg/h",
-    ])
-  ));
+    // Dissection art: "Site ... XXX" + calibre dépend du site
+    if (context === "DISSECTION_ART") {
+      const site = s.dissection?.instabilite
+        ? "Fémorale"
+        : cecRecoDissectionSystemicSite(s);
+      t = t.replaceAll("Site de canulation systémique: XXX", `Site de canulation systémique: ${site}`);
+      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${cecRecoDissectionArtCalibre(flow, site)}`);
 
-  // Sevrage
-  rows.push(cecRow(
-    "Sevrage de CEC",
-    cecInfoList([
-      "Remplissage progressif du cœur",
-      "Réchauffement à 36–37°C",
-      "Déclampage aortique",
-      "Reperfusion 5–10 min",
-      "Sevrage progressif du débit",
-      "ETO : contractilité, valvules, remplissage",
-      "Inotropes/vasopresseurs selon besoin",
-    ])
-  ));
+      // Carotidienne: on ajoute la version calculée (sans afficher les seuils)
+      const range = cecCarotidRangeMlMin(s.poidsKg);
+      if (range) {
+        const mid = (range.min + range.max)/2;
+        const can = cecRecoCarotidCannula(mid);
+        t = t.replace(
+          "Débit carotidien cible: 8-12 mL/kg/min",
+          `Débit carotidien cible: 8–12 mL/kg/min (≈ ${Math.round(range.min)}–${Math.round(range.max)} mL/min) — Canule: ${can}`
+        );
+      }
+    }
+  }
 
-  // Hémostase / transfusion
-  rows.push(cecRow(
-    "Hémostase / transfusion",
-    cecInfoList([
-      "Hématocrite cible post-CEC : 25–30%",
-      "Si saignement : fibrinogène / plaquettes / PFC selon bilan",
-      "Protocole hémorragie massive si besoin",
-    ])
-  ));
+  // Nettoyage final de tags éventuels [RED]/[BLUE]/[ORANGE]
+  t = t.replace(/^\[(ORANGE|BLUE|RED)\]/gm, "");
 
-  return rows;
+  return t;
 }
 
-function cecRenderProtocolTable(protocol, s){
-  const gestes = (s.gestes||[]).filter(Boolean);
-  const summary = `
-    <div class="cec-resume">
-      <div><strong>Gestes :</strong> ${gestes.length ? gestes.map(cecLabelFromValue).join(" + ") : "—"}</div>
-      <div><strong>Patient :</strong> ${s.poidsKg || "—"} kg, ${s.tailleCm || "—"} cm</div>
-      <div><strong>Cœur :</strong>
-        ${s.coeur.fevg35 ? "FEVG<35% • " : ""}
-        ${s.coeur.hvg ? "HVG • " : ""}
-        ${s.coeur.ia ? "IA • " : ""}
-        ${s.coeur.stenoseCoronaireSerree ? "Sténose serrée • " : ""}
-        ${(!s.coeur.fevg35 && !s.coeur.hvg && !s.coeur.ia && !s.coeur.stenoseCoronaireSerree) ? "—" : ""}
-      </div>
-      <div><strong>Chirurgie :</strong>
-        ${s.chirurgie.sternotomieRisque ? "Sternotomie à risque • " : ""}
-        ${s.chirurgie.clampage90 ? "Clampage>90min • " : ""}
-        ${(!s.chirurgie.sternotomieRisque && !s.chirurgie.clampage90) ? "—" : ""}
-      </div>
-    </div>
-  `;
+// -------------------------------------------------
+// 9) Choix du tableau (gestes) + colonne alternative
+// -------------------------------------------------
+function cecHasOdOpening(gestes){
+  return gestes.some(g => CEC_OD_OPENING.has(g));
+}
 
-  if (protocol === "lvad") {
-    return summary + `
-      <div class="info-card">
-        <h3>Pose de LVAD</h3>
-        <div class="info-content">
-          <p>Le protocole CEC LVAD n’est pas encore disponible dans l’application.</p>
-        </div>
-      </div>
-    `;
+function cecPickProtocol(gestes){
+  if (gestes.includes("dissection")) return "dissection";
+  if (gestes.includes("transplantation")) return "transplantation";
+  if (gestes.includes("video_thoraco")) return "video_thoraco";
+  if (gestes.includes("lvad")) return "lvad";
+
+  // règle combinés : ouverture OD => table OD (bi-cavale)
+  if (cecHasOdOpening(gestes)) return "od";
+
+  return "generique";
+}
+
+// -------------------------------------------------
+// 10) Rendu du protocole depuis table PPT
+// -------------------------------------------------
+function cecChooseAltColumn(row, protocol, s){
+  // row = [title, base, alt] ou [title, base, "", alt]
+  const useFem = !!s.chirurgie.sternotomieRisque;
+  const instab = !!s.dissection?.instabilite;
+
+  if (row.length === 3) {
+    // alt = colonne droite "sternotomie à risque"
+    return (useFem && row[2]) ? row[2] : row[1];
+  }
+  if (row.length === 4) {
+    // alt = colonne 3 (index 3), base = index 1
+    // dissection : alt si instabilité cochée (et veineuse: alt si sternotomie OU instabilité)
+    if (protocol === "dissection") {
+      const title = String(row[0] || "").toLowerCase();
+      if (title.includes("veineuse")) {
+        if ((useFem || instab) && row[3]) return row[3];
+        return row[1];
+      }
+      // artérielle: alt seulement si instabilité
+      if (instab && row[3]) return row[3];
+      return row[1];
+    }
+
+    // transplantation: alt si sternotomie à risque
+    if (protocol === "transplantation") {
+      return (useFem && row[3]) ? row[3] : row[1];
+    }
+
+    // fallback
+    return row[1] || "";
   }
 
-  const rows = cecBuildRows(protocol, s);
+  return row[1] || "";
+}
 
-  const table = `
+function cecContextForRowTitle(title, protocol, chosenText, s){
+  const t = String(title || "").toLowerCase();
+  const chosen = String(chosenText || "");
+
+  if (t.includes("canulation artérielle")) {
+    if (protocol === "dissection") return "DISSECTION_ART";
+    if (protocol === "video_thoraco") return "ART_FEM";
+    return s.chirurgie.sternotomieRisque ? "ART_FEM" : "ART_CENTRAL";
+  }
+  if (t.includes("canulation veineuse")) {
+    if (protocol === "video_thoraco") return "VIDEO";
+    if (chosen.includes("Bi-cavale")) return s.chirurgie.sternotomieRisque ? "VEN_FEM" : "VEN_BICAVAL";
+    return s.chirurgie.sternotomieRisque ? "VEN_FEM" : "VEN_ATRIO";
+  }
+  return "";
+}
+
+function cecRenderFromPpt(protocol, s){
+  const table = CEC_PPT_TABLES[protocol];
+  if (!table) return `<p>Table protocole introuvable: ${escapeHtml(protocol)}</p>`;
+
+  let inObjectives = false;
+
+  const rowsHtml = table.map((row) => {
+    const col0 = row[0] || "";
+    const col1 = row[1] || "";
+    const col2 = row[2] || "";
+    // col3 possible
+
+    if (String(col0).includes("Objectifs per-CEC")) inObjectives = true;
+
+    // --- OBJECTIFS per-CEC : toujours 2 colonnes (Norme + Mesures)
+    if (inObjectives) {
+      return `
+        <tr>
+          <td class="cec-td-title">${cecNl2brHtml(col0)}</td>
+          <td>${cecNl2brHtml(col1)}</td>
+          <td>${cecNl2brHtml(col2)}</td>
+        </tr>
+      `;
+    }
+
+    // --- PROTO : une seule colonne (base ou alternative)
+    let chosen = cecChooseAltColumn(row, protocol, s);
+    chosen = cecStripInternalLines(chosen);
+
+    const context = cecContextForRowTitle(col0, protocol, chosen, s);
+    chosen = cecApplyDynamicToCell(chosen, s, context);
+
+    return `
+      <tr>
+        <td class="cec-td-title">${cecNl2brHtml(col0)}</td>
+        <td colspan="2">${cecNl2brHtml(chosen)}</td>
+      </tr>
+    `;
+  }).join("");
+
+  return `
     <div class="cec-proto-table-wrap">
       <table class="cec-proto-table">
-        <tbody>
-          ${rows.map(r => `
-            <tr>
-              <td class="cec-td-title">${r.title}</td>
-              <td>${r.leftHtml}</td>
-            </tr>
-          `).join("")}
-        </tbody>
+        <tbody>${rowsHtml}</tbody>
       </table>
     </div>
   `;
-
-  return summary + table;
 }
 
-// ===============================
-// CEC — Render page "Protocoles" (sélection)
-// ===============================
+// -------------------------------------------------
+// 11) Page "Protocoles" (sélection)
+// -------------------------------------------------
 function renderCecProtocoles() {
   const s = window.__cecState;
 
@@ -19995,7 +20250,7 @@ function renderCecProtocoles() {
     const ex = new Set(exclude.filter(Boolean));
     return [
       `<option value="">— Choisir —</option>`,
-      ...CEC_GESTES.filter(g => !ex.has(g.value)).map(g => `<option value="${g.value}">${g.label}</option>`)
+      ...CEC_GESTES.filter(g => !ex.has(g.value)).map(g => `<option value="${g.value}">${escapeHtml(g.label)}</option>`)
     ].join("");
   };
 
@@ -20024,11 +20279,11 @@ function renderCecProtocoles() {
           <div class="cec-row">
             <label class="cec-field">
               <span>Poids (kg)</span>
-              <input id="cec-poids" inputmode="decimal" placeholder="ex: 75" value="${s.poidsKg || ""}">
+              <input id="cec-poids" inputmode="decimal" placeholder="ex: 75" value="${escapeHtml(s.poidsKg || "")}">
             </label>
             <label class="cec-field">
               <span>Taille (cm)</span>
-              <input id="cec-taille" inputmode="numeric" placeholder="ex: 175" value="${s.tailleCm || ""}">
+              <input id="cec-taille" inputmode="numeric" placeholder="ex: 175" value="${escapeHtml(s.tailleCm || "")}">
             </label>
           </div>
         </div>
@@ -20146,12 +20401,13 @@ function renderCecProtocoles() {
   document.getElementById("cec-poids").addEventListener("input", e => window.__cecState.poidsKg = e.target.value);
   document.getElementById("cec-taille").addEventListener("input", e => window.__cecState.tailleCm = e.target.value);
 
-  // checkboxes
+  // checkboxes helpers
   function bindChk(id, obj, key){
     const el = document.getElementById(id);
     el.checked = !!obj[key];
     el.addEventListener("change", () => obj[key] = el.checked);
   }
+
   bindChk("cec-fevg35", window.__cecState.coeur, "fevg35");
   bindChk("cec-hvg", window.__cecState.coeur, "hvg");
   bindChk("cec-ia", window.__cecState.coeur, "ia");
@@ -20203,21 +20459,61 @@ function renderCecProtocoles() {
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
 }
 
-// ===============================
-// CEC — Render résultat protocole
-// ===============================
+// -------------------------------------------------
+// 12) Résultat protocole
+// -------------------------------------------------
 function renderCecProtocolesResult() {
   const s = window.__cecState;
   const gestes = (s.gestes||[]).filter(Boolean);
 
   const protocol = cecPickProtocol(gestes);
 
+  // résumé
+  const summary = `
+    <div class="cec-resume">
+      <div><strong>Gestes :</strong> ${gestes.length ? gestes.map(cecLabelFromValue).join(" + ") : "—"}</div>
+      <div><strong>Patient :</strong> ${escapeHtml(s.poidsKg || "—")} kg, ${escapeHtml(s.tailleCm || "—")} cm</div>
+      <div><strong>Cœur :</strong>
+        ${s.coeur.fevg35 ? "FEVG<35% • " : ""}
+        ${s.coeur.hvg ? "HVG • " : ""}
+        ${s.coeur.ia ? "IA • " : ""}
+        ${s.coeur.stenoseCoronaireSerree ? "Sténose serrée • " : ""}
+        ${(!s.coeur.fevg35 && !s.coeur.hvg && !s.coeur.ia && !s.coeur.stenoseCoronaireSerree) ? "—" : ""}
+      </div>
+      <div><strong>Chirurgie :</strong>
+        ${s.chirurgie.sternotomieRisque ? "Sternotomie à risque • " : ""}
+        ${s.chirurgie.clampage90 ? "Clampage>90min • " : ""}
+        ${(!s.chirurgie.sternotomieRisque && !s.chirurgie.clampage90) ? "—" : ""}
+      </div>
+      ${protocol==="dissection" ? `<div><strong>Dissection :</strong> ${s.dissection.instabilite ? "Instabilité hémodynamique majeure • " : ""}${s.dissection.tsaDisseques ? "TSA disséqués" : "TSA non renseignés"}</div>` : ""}
+    </div>
+  `;
+
+  if (protocol === "lvad") {
+    $app.innerHTML = `
+      <section class="page cec-proto-result">
+        <h2>Protocole de CEC</h2>
+        ${summary}
+        <div class="info-card">
+          <h3>Pose de LVAD</h3>
+          <div class="info-content">
+            Le protocole CEC LVAD n’est pas encore disponible dans l’application.
+          </div>
+        </div>
+        <div class="grid" style="margin-top:12px;">
+          <button class="btn" onclick="location.hash='#/cec-protocoles'">Modifier la sélection</button>
+          <button class="btn" onclick="location.hash='#/cec'">Retour menu CEC</button>
+        </div>
+      </section>
+    `;
+    return;
+  }
+
   $app.innerHTML = `
     <section class="page cec-proto-result">
       <h2>Protocole de CEC</h2>
-
-      ${cecRenderProtocolTable(protocol, s)}
-
+      ${summary}
+      ${cecRenderFromPpt(protocol, s)}
       <div class="grid" style="margin-top:12px;">
         <button class="btn" onclick="location.hash='#/cec-protocoles'">Modifier la sélection</button>
         <button class="btn" onclick="location.hash='#/cec'">Retour menu CEC</button>
@@ -21738,10 +22034,6 @@ function renderBibliographie() {
     <div class="biblio-actions">
             <button class="btn btn-darkblue" id="btnBiblioJuniors">
               Internes: Biblio & staff juniors
-            </button>
-
-            <button class="btn btn-darkblue btn-bibl-typewriter" id="btnBiblioHebdo">
-              <p><strong>Newsletter hebdo. BiBL.</strong></p>
             </button>
           </div>
 
