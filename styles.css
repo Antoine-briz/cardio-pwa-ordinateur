@@ -9227,3 +9227,31 @@ body.theme-light .eto-menu-title{
 /* Dark theme (si ton thème sombre est body.dark) */
 body.dark .cec-obj-head{ background: rgba(255,255,255,.12); }
 body.dark .cec-obj-left{ background: rgba(255,255,255,.08); color: #fff; }
+
+/* === CEC Protocoles : alignement des 2 encadrés + titre centré plus gros === */
+
+/* 1) Mettre les 2 colonnes au même niveau (évite que droite "remonte") */
+.cec-proto-split{
+  align-items: start;           /* déjà présent, on le force */
+}
+.cec-left, .cec-right{
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+.cec-left .hero, .cec-right .hero{
+  margin-top: 0 !important;
+}
+
+/* 2) Titre "Protocoles de CEC" centré et 2x plus gros */
+.cec-proto-title{
+  text-align: center;
+  font-size: 2.2em;             /* ~2x un h2 classique */
+  line-height: 1.1;
+  font-weight: 900;
+  margin: 6px 0 14px 0;
+}
+
+/* Optionnel : évite que l’ancien .hero prenne de la place */
+.cec-proto-hero{
+  margin-bottom: 10px;
+}
