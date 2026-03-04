@@ -20314,7 +20314,7 @@ function cecRenderEmptyFromPpt(protocol, s){
   const table = CEC_PPT_TABLES[protocol] || CEC_PPT_TABLES["generique"];
   if (!table) return `<p>Table protocole introuvable</p>`;
 
-  // Bandeau haut : résumé (vide)
+  // Bandeau haut : résumé (vide côté intervention si pas sélection)
   const gestesTxt = "—";
   const patientTxt = `${escapeHtml(s.poidsKg || "—")} kg / ${escapeHtml(s.tailleCm || "—")} cm`;
   const coeurTxt = [
@@ -20331,33 +20331,44 @@ function cecRenderEmptyFromPpt(protocol, s){
   let bodyHtml = "";
 
   for (let i = 0; i < table.length; i++){
-    const row = table[i];
+    const row = table[i] || [];
     const col0 = row[0] || "";
     const col1 = row[1] || "";
     const col2 = row[2] || "";
 
     // ✅ Objectifs per-CEC : rowspan (pas de cellule vide à gauche)
     if (String(col0).includes("Objectifs per-CEC")) {
+      // header objectifs + toutes les lignes suivantes dont col0 === ""
       let j = i + 1;
-      while (j < table.length && String(table[j][0] || "") === "") j++;
-      const nRows = (j - i);
+      while (j < table.length && String((table[j] && table[j][0]) || "") === "") j++;
+      const nRows = Math.max(1, (j - i)); // au minimum 1 (header)
 
       bodyHtml += `
         <tr>
-          <td class="cec-td-title cec-obj-left" rowspan="${nRows}">Objectifs<br>per-CEC</td>
-          <td class="cec-obj-head">${escapeHtml(col1)}</td>
-          <td class="cec-obj-head">${escapeHtml(col2)}</td>
+          <td class="cec-td-title cec-obj-left" rowspan="${nRows}">
+            ${cecRenderTitleCell ? cecRenderTitleCell("Objectifs per-CEC") : "Objectifs<br>per-CEC"}
+          </td>
+          <td class="cec-obj-head">${cecNl2brHtml(col1)}</td>
+          <td class="cec-obj-head">${cecNl2brHtml(col2)}</td>
         </tr>
       `;
 
+      // lignes objectifs
       for (let k = i + 1; k < j; k++){
-        const r = table[k];
-        const left = cecApplyDynamicObjectives(String(r[1] || ""), s);
-        const right = String(r[2] || "");
+        const r = table[k] || [];
+        const leftRaw = String(r[1] || "");
+        const rightRaw = String(r[2] || "");
+
+        // ✅ Calculs dynamiques objectifs (DO2/VO2/Débit pompe)
+        // -> on utilise TA fonction si elle existe
+        const left = (typeof cecApplyDynamicObjectives === "function")
+          ? cecApplyDynamicObjectives(leftRaw, s)
+          : leftRaw;
+
         bodyHtml += `
           <tr>
             <td>${cecNl2brHtml(left)}</td>
-            <td>${cecNl2brHtml(right)}</td>
+            <td>${cecNl2brHtml(rightRaw)}</td>
           </tr>
         `;
       }
@@ -20369,7 +20380,7 @@ function cecRenderEmptyFromPpt(protocol, s){
     // ✅ Protocole normal : cellule résultat vide tant qu’on n’a pas d’intervention
     bodyHtml += `
       <tr>
-        <td class="cec-td-title">${cecRenderTitleCell(col0)}</td>
+        <td class="cec-td-title">${typeof cecRenderTitleCell === "function" ? cecRenderTitleCell(col0) : cecNl2brHtml(col0)}</td>
         <td colspan="2"><div class="cec-cell-empty"></div></td>
       </tr>
     `;
