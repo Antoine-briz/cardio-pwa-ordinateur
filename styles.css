@@ -9420,3 +9420,17 @@ body{
 .cec-can-bullet{
   margin: 0 0 4px 0;
 }
+
+/* =========================================================
+   CEC – Tableau protocole : bandeau haut en BLANC
+   + garder les liens "Cf ..." en BLEU
+   ========================================================= */
+
+/* 1) Bandeau du haut (thead) : tout le texte en blanc */
+.cec-proto-table thead th.cec-proto-top,
+.cec-proto-table thead th.cec-proto-top * {
+  color: #fff !important;
+}
+
+/* 2) MAIS : les liens/ligne "Cf ..." doivent rester bleus */
+.cec-proto-table
