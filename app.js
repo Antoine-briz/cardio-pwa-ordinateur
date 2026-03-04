@@ -20406,51 +20406,95 @@ function cecRenderEmptyFromPpt(protocol, s){
 // -------------------------------------------------
 // 10ter) Rendu tableau vide (structure visible dès l'ouverture)
 // -------------------------------------------------
-function cecRenderEmptyFromPpt(protocolKey = "generique"){
-  const table = CEC_PPT_TABLES?.[protocolKey] || CEC_PPT_TABLES?.generique;
-  if (!table) return `<div class="info-content">Table protocole introuvable.</div>`;
 
-  let inObjectives = false;
+function cecRenderEmptyFromPpt(protocol = "generique", s){
+  const key = protocol || "generique";
+  const table = CEC_PPT_TABLES[key] || CEC_PPT_TABLES["generique"];
+  if (!table) return `<p>Table protocole introuvable</p>`;
 
-  const rowsHtml = table.map((row) => {
+  // Bandeau haut : résumé (intervention vide)
+  const gestesTxt = "—";
+  const patientTxt = `${escapeHtml(s?.poidsKg || "—")} kg / ${escapeHtml(s?.tailleCm || "—")} cm`;
+  const coeurTxt = [
+    s?.coeur?.fevg35 ? "FEVG<35%" : null,
+    s?.coeur?.hvg ? "HVG" : null,
+    s?.coeur?.ia ? "IA" : null,
+    s?.coeur?.stenoseCoronaireSerree ? "Sténose serrée" : null,
+  ].filter(Boolean).join(" • ") || "—";
+  const chirTxt = [
+    s?.chirurgie?.sternotomieRisque ? "Sternotomie à risque" : null,
+    s?.chirurgie?.clampage90 ? "Clampage>90min" : null,
+  ].filter(Boolean).join(" • ") || "—";
+
+  let bodyHtml = "";
+
+  for (let i = 0; i < table.length; i++){
+    const row = table[i] || [];
     const col0 = row[0] || "";
     const col1 = row[1] || "";
     const col2 = row[2] || "";
 
-    if (String(col0).includes("Objectifs per-CEC")) inObjectives = true;
+    // ✅ Objectifs per-CEC : rowspan (aucune cellule vide à gauche)
+    if (String(col0).includes("Objectifs per-CEC")) {
+      let j = i + 1;
+      while (j < table.length && String((table[j] && table[j][0]) || "") === "") j++;
+      const nRows = Math.max(1, (j - i)); // header + lignes suivantes
 
-    // Objectifs per-CEC : toujours 3 colonnes visibles
-    if (inObjectives) {
-      const isHeader = (col1 === "Objectifs" && col2 === "Mesures correctrices");
-      return `
+      bodyHtml += `
         <tr>
-          <td class="cec-td-title">${cecNl2brHtml(col0)}</td>
-          <td class="${isHeader ? "cec-obj-head" : "cec-empty"}">${isHeader ? cecNl2brHtml(col1) : ""}</td>
-          <td class="${isHeader ? "cec-obj-head" : "cec-empty"}">${isHeader ? cecNl2brHtml(col2) : ""}</td>
+          <td class="cec-td-title cec-obj-left" rowspan="${nRows}">
+            ${typeof cecRenderTitleCell === "function" ? cecRenderTitleCell("Objectifs per-CEC") : "Objectifs<br>per-CEC"}
+          </td>
+          <td class="cec-obj-head">${cecNl2brHtml(col1)}</td>
+          <td class="cec-obj-head">${cecNl2brHtml(col2)}</td>
         </tr>
       `;
+
+      for (let k = i + 1; k < j; k++){
+        const r = table[k] || [];
+        const leftRaw = String(r[1] || "");
+        const rightRaw = String(r[2] || "");
+
+        // calculs objectifs si ta fonction existe
+        const left = (typeof cecApplyDynamicObjectives === "function")
+          ? cecApplyDynamicObjectives(leftRaw, s)
+          : leftRaw;
+
+        bodyHtml += `
+          <tr>
+            <td>${cecNl2brHtml(left)}</td>
+            <td>${cecNl2brHtml(rightRaw)}</td>
+          </tr>
+        `;
+      }
+
+      i = j - 1;
+      continue;
     }
 
-    // Protocole standard : titre + cellule vide (colspan=2 comme ton rendu normal)
-    const titleLower = String(col0||"").toLowerCase();
-const isDissectionArt = (protocol === "dissection" && titleLower.includes("canulation artérielle"));
-
-const cellHtml = isDissectionArt
-  ? cecRenderCanulationDissectionArt(chosen)
-  : cecNl2brHtml(chosen);
-
-return `
-  <tr>
-    <td class="cec-td-title">${cecNl2brHtml(col0)}</td>
-    <td colspan="2">${cellHtml}</td>
-  </tr>
-`;
-  }).join("");
+    // ✅ Toutes les autres lignes : colonne résultat vide
+    bodyHtml += `
+      <tr>
+        <td class="cec-td-title">
+          ${typeof cecRenderTitleCell === "function" ? cecRenderTitleCell(col0) : cecNl2brHtml(col0)}
+        </td>
+        <td colspan="2"><div class="cec-cell-empty"></div></td>
+      </tr>
+    `;
+  }
 
   return `
     <div class="cec-proto-table-wrap">
       <table class="cec-proto-table">
-        <tbody>${rowsHtml}</tbody>
+        <thead>
+          <tr>
+            <th class="cec-proto-top" colspan="3">
+              <div><strong>${escapeHtml(gestesTxt)}</strong></div>
+              <small>Patient: ${patientTxt} • Cœur: ${escapeHtml(coeurTxt)} • Chirurgie: ${escapeHtml(chirTxt)}</small>
+            </th>
+          </tr>
+        </thead>
+        <tbody>${bodyHtml}</tbody>
       </table>
     </div>
   `;
