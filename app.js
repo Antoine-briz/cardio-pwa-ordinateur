@@ -20304,9 +20304,9 @@ function renderCecProtocoles() {
     <section class="page cec-proto-split">
       <div class="cec-left">
 
-        <div class="hero">
-          <h2>Protocoles de CEC</h2>
-        </div>
+        <div class="cec-proto-hero">
+  <div class="cec-proto-title">Protocoles de CEC</div>
+</div>
 
         <div class="info-card cec-card-compact">
           <h3>Choix de l’intervention</h3>
@@ -20321,6 +20321,7 @@ function renderCecProtocoles() {
         </div>
 
         <div class="info-card cec-card-compact">
+           <h3>Caractéristiques</h3>
           <div class="cec-line">
             <div class="cec-line-label"><strong>Patient :</strong></div>
             <div class="cec-line-fields">
