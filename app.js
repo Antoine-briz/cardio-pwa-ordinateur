@@ -20223,23 +20223,28 @@ function cecContextForRowTitle(title, protocol, chosenText, s){
 }
 
 function cecRenderFromPpt(protocol, s){
-  const table = CEC_PPT_TABLES[protocol];
-  if (!table) return `<p>Table protocole introuvable: ${escapeHtml(protocol)}</p>`;
+  const table = CEC_PPT_TABLES[protocol] || CEC_PPT_TABLES["generique"];
+  if (!table) return `<p>Table protocole introuvable</p>`;
 
-  // Bandeau haut : résumé sélection
-  const gestesTxt = (s.gestes||[]).filter(Boolean).map(cecLabelFromValue).join(" + ") || "—";
+  // Bandeau haut : résumé (intervention + caractéristiques)
+  const gestes = (s.gestes || []).filter(Boolean);
+  const gestesTxt = gestes.length ? gestes.map(cecLabelFromValue).join(" + ") : "—";
   const patientTxt = `${escapeHtml(s.poidsKg || "—")} kg / ${escapeHtml(s.tailleCm || "—")} cm`;
+
   const coeurTxt = [
-    s.coeur.fevg35 ? "FEVG<35%" : null,
-    s.coeur.hvg ? "HVG" : null,
-    s.coeur.ia ? "IA" : null,
-    s.coeur.stenoseCoronaireSerree ? "Sténose serrée" : null,
-  ].filter(Boolean).join(" • ") || "—";
-  const chirTxt = [
-    s.chirurgie.sternotomieRisque ? "Sternotomie à risque" : null,
-    s.chirurgie.clampage90 ? "Clampage>90min" : null,
+    s.coeur?.fevg35 ? "FEVG<35%" : null,
+    s.coeur?.hvg ? "HVG" : null,
+    s.coeur?.ia ? "IA" : null,
+    s.coeur?.stenoseCoronaireSerree ? "Sténose serrée" : null,
   ].filter(Boolean).join(" • ") || "—";
 
+  const chirTxt = [
+    s.chirurgie?.sternotomieRisque ? "Sternotomie à risque" : null,
+    s.chirurgie?.clampage90 ? "Clampage>90min" : null,
+    s.chirurgie?.videoThoracoMitrale ? "Vidéo-thoracoscopie" : null,
+  ].filter(Boolean).join(" • ") || "—";
+
+  let inObjectives = false;
   let bodyHtml = "";
 
   for (let i = 0; i < table.length; i++){
@@ -20248,51 +20253,64 @@ function cecRenderFromPpt(protocol, s){
     const col1 = row[1] || "";
     const col2 = row[2] || "";
 
-    // Bloc Objectifs per-CEC : rowspan + entêtes gris + calculs patient
-    if (String(col0).includes("Objectifs per-CEC")) {
-      let j = i + 1;
-      while (j < table.length && String(table[j][0] || "") === "") j++;
-      const nRows = (j - i); // inclut l’entête Objectifs/Mesures
+    // Détection objectifs
+    if (String(col0).includes("Objectifs per-CEC")) inObjectives = true;
 
-      bodyHtml += `
-        <tr>
-          <td class="cec-td-title cec-obj-left" rowspan="${nRows}">Objectifs<br>per-CEC</td>
-          <td class="cec-obj-head">${escapeHtml(col1)}</td>
-          <td class="cec-obj-head">${escapeHtml(col2)}</td>
-        </tr>
-      `;
+    // =========================
+    // Objectifs per-CEC : 2 colonnes + rowspan à gauche
+    // =========================
+    if (inObjectives) {
+      // 1ère ligne "Objectifs per-CEC"
+      if (String(col0).includes("Objectifs per-CEC")) {
+        // compter les lignes suivantes dont col0 == ""
+        let j = i + 1;
+        while (j < table.length && String(table[j][0] || "") === "") j++;
+        const nRows = (j - i);
 
-      for (let k = i + 1; k < j; k++){
-        const r = table[k];
-        const left = cecApplyDynamicObjectives(String(r[1] || ""), s); // ✅ calcul DO2/VO2/débit
-        const right = String(r[2] || "");
         bodyHtml += `
           <tr>
-            <td>${cecNl2brHtml(left)}</td>
-            <td>${cecNl2brHtml(right)}</td>
+            <td class="cec-td-title cec-obj-left" rowspan="${nRows}">Objectifs per-CEC</td>
+            <td class="cec-obj-head">${escapeHtml(col1)}</td>
+            <td class="cec-obj-head">${escapeHtml(col2)}</td>
           </tr>
         `;
-      }
 
-      i = j - 1;
-      continue;
+        // lignes suivantes (calculs dynamiques DO2/VO2/débit)
+        for (let k = i + 1; k < j; k++){
+          const r = table[k];
+          const left = cecApplyDynamicObjectives(String(r[1] || ""), s);
+          const right = String(r[2] || "");
+          bodyHtml += `
+            <tr>
+              <td>${cecNl2brHtml(left)}</td>
+              <td>${cecNl2brHtml(right)}</td>
+            </tr>
+          `;
+        }
+
+        i = j - 1;
+        continue;
+      }
     }
 
-    // Protocole “normal” : base vs alternative, sans afficher les consignes “Si …”
+    // =========================
+    // Protocole normal : 1 colonne (base ou alternative)
+    // =========================
     let chosen = cecChooseAltColumn(row, protocol, s);
     chosen = cecStripInternalLines(chosen);
 
     const context = cecContextForRowTitle(col0, protocol, chosen, s);
     chosen = cecApplyDynamicToCell(chosen, s, context);
 
+    // ✅ Formatage (canulations/cardioplégie/puces/etc.)
+    const formatted = cecFormatProtocolCell(chosen, col0, protocol, s);
+
     bodyHtml += `
-  <tr>
-    <td class="cec-td-title">${cecRenderTitleCell(col0)}</td>
-    <td colspan="2">
-      <div class="cec-cell-empty">Sélectionnez une intervention pour afficher le protocole</div>
-    </td>
-  </tr>
-`;
+      <tr>
+        <td class="cec-td-title">${cecRenderTitleCell(col0)}</td>
+        <td colspan="2">${cecNl2brHtml(formatted)}</td>
+      </tr>
+    `;
   }
 
   return `
@@ -20482,7 +20500,9 @@ function cecRenderEmptyFromPpt(protocol = "generique", s){
         <td class="cec-td-title">
           ${typeof cecRenderTitleCell === "function" ? cecRenderTitleCell(col0) : cecNl2brHtml(col0)}
         </td>
-        <td colspan="2"><div class="cec-cell-empty"></div></td>
+        <td colspan="2">
+  <div class="cec-cell-empty">Sélectionnez une intervention pour afficher le protocole</div>
+</td>
       </tr>
     `;
   }
