@@ -19657,12 +19657,187 @@ function cecRecoCardioplegia(s){
 }
 
 // -------------------------------------------------
-// 7) Tables PPT (TES DONNÉES — inchangées)
+// 7) Tables PPT (EXTRAITES du fichier algorithme CEC.pptx)
+//   - CONSIGNES ORANGE SUPPRIMÉES (lignes "Si ... coché:" retirées)
+//   - SEUILS DE DÉBIT SUPPRIMÉS (on affiche directement le calibre calculé)
+//   - Les marqueurs "2,4 x SC L/min", "Calibre: XX Fr", "VCI: XX Fr", etc.
+//     restent pour permettre le remplissage dynamique.
 // -------------------------------------------------
-const CEC_PPT_TABLES = /* === Garde ton objet EXACTEMENT comme tu l’as collé === */ ${"null"};
-// ⚠️ IMPORTANT : je ne recolle pas ici tout ton énorme objet pour éviter une réponse interminable.
-// → Tu le laisses EXACTEMENT tel que tu l’as envoyé (generique/od/video_thoraco/dissection/transplantation)
-// Rien à modifier dedans.
+const CEC_PPT_TABLES = {
+
+  // =================================================
+  // GÉNÉRIQUE (pontages / RVA / aortique hors OD / etc.)
+  // =================================================
+  generique: [
+    [
+      "Canulation artérielle\nCf canulations artérielles",
+      "Centrale\nSite: Aorte ascendante distale\nDébit de pompe cible: 2,4 x SC L/min\nCalibre: XX Fr",
+      "Fémorale\nSite: Artère fémorale\nDébit de pompe cible: 2,4 x SC L/min\nCalibre: XX Fr"
+    ],
+    [
+      "Canulation veineuse\nCf canulations veineuses",
+      "Atrio-cave\nSite: Insertion OD, extrémité VCI\nDrainage gravitaire (éviter VAVD)\nDébit de pompe cible: 2,4 x SC L/min\nCalibre: XX Fr",
+      "Fémorale\nSite: veine fémorale\nDrainage gravitaire (VAVD parfois nécessaire)\nDébit de pompe cible: 2,4 x SC L/min\nCalibre: XX Fr"
+    ],
+    [
+      "Priming",
+      "Ringer-lactate 1000 à 1500mL\nAjout d’héparine 5000 UI\nAjout de Mannitol 0,25-0,5 g/kg (Eviter si DFG < 45 mL/min/m2)",
+      ""
+    ],
+    [
+      "Anticoagulation",
+      "Bolus d’héparine 300 UI/kg IVD dans le circuit (ACT cible: > 400 sec)\nAntithrombine III si ACT cible non atteint\nProtamine: 60-80% de la dose d’héparine (ACT cible: < 120 sec)\nSurveillance plaquettes et fibrinogène\n\nSi HIT: Bivalirudine 1mg/kg bolus puis 2,5 mg/kg/h (ACT cible: 300-400 sec)",
+      ""
+    ],
+    [
+      "Cardioplégie\nCf cardioplégies",
+      "Voie d’administration: XXX\nSolution de cardioplégie: XXX",
+      ""
+    ],
+
+    // Objectifs per-CEC : TOUJOURS 2 colonnes
+    ["Objectifs per-CEC", "Objectifs", "Mesures correctrices"],
+    ["", "DO2 > 280-300 mL/min/m2\nVO2 = 100-140 mL/min/m2", "DO2 insuffisant: Augmenter débit CEC, SaO2/PaO2, Hb/Ht, diminuer VO2 (hypothermie)\nVO2 élevé: Sédation, curarisation, hypothermie"],
+    ["", "Débit de pompe = 2,2-2,6 L/min/m2\nPAM = 50-70 mmHg", "Débit de pompe insuffisant: Augmenter RPM, vérifier drainage\nPAM basse: Noradrénaline, vasopressine, augmenter débit si possible"],
+    ["", "Hb > 7-8 g/dL\nHématocrite > 22-25 %", "Hémodilution: Ultrafiltration\nTransfusion CGR si besoin"],
+    ["", "PaO2 = 150-250 mmHg\n(Eviter hyperoxémie)", "Hypoxémie: Augmenter FiO2, vérifier oxygénateur\nHyperoxémie: Diminuer FiO2"],
+    ["", "Normothermie 36-37°C", "Hypothermie: Ajuster réchauffeur\nHyperthermie: Diminuer réchauffement"]
+  ],
+
+  // =================================================
+  // OUVERTURE OD (mitrale/tricuspide/CIA/FOP/myxome) → bi-cavale
+  // =================================================
+  od: [
+    [
+      "Canulation artérielle\nCf canulations artérielles",
+      "Centrale\nSite: Aorte ascendante distale\nDébit de pompe cible: 2,4 x SC L/min\nCalibre: XX Fr",
+      "Fémorale\nSite: Artère fémorale\nDébit de pompe cible: 2,4 x SC L/min\nCalibre: XX Fr"
+    ],
+    [
+      "Canulation veineuse\nCf canulations veineuses",
+      "Bi-cavale (ouverture de l’OD)\nSite: Canulation directe VCI et VCS par l’OD\nDrainage gravitaire (éviter VAVD)\nDébit de pompe cible: 2,4 x SC L/min\nVCI: XX Fr\nVCS: XX Fr",
+      "Fémorale\nSite: veine fémorale\nDrainage gravitaire (VAVD parfois nécessaire)\nDébit de pompe cible: 2,4 x SC L/min\nCalibre: XX Fr"
+    ],
+    [
+      "Priming",
+      "Ringer-lactate 1000 à 1500mL\nAjout d’héparine 5000 UI\nAjout de Mannitol 0,25-0,5 g/kg (Eviter si DFG < 45 mL/min/m2)",
+      ""
+    ],
+    [
+      "Anticoagulation",
+      "Bolus d’héparine 300 UI/kg IVD dans le circuit (ACT cible: > 400 sec)\nAntithrombine III si ACT cible non atteint\nProtamine: 60-80% de la dose d’héparine (ACT cible: < 120 sec)\nSurveillance plaquettes et fibrinogène\n\nSi HIT: Bivalirudine 1mg/kg bolus puis 2,5 mg/kg/h (ACT cible: 300-400 sec)",
+      ""
+    ],
+    [
+      "Cardioplégie\nCf cardioplégies",
+      "Voie d’administration: XXX\nSolution de cardioplégie: XXX",
+      ""
+    ],
+
+    ["Objectifs per-CEC", "Objectifs", "Mesures correctrices"],
+    ["", "DO2 > 280-300 mL/min/m2\nVO2 = 100-140 mL/min/m2", "DO2 insuffisant: Augmenter débit CEC, SaO2/PaO2, Hb/Ht, diminuer VO2 (hypothermie)\nVO2 élevé: Sédation, curarisation, hypothermie"],
+    ["", "Débit de pompe = 2,2-2,6 L/min/m2\nPAM = 50-70 mmHg", "Débit de pompe insuffisant: Augmenter RPM, vérifier drainage\nPAM basse: Noradrénaline, vasopressine, augmenter débit si possible"],
+    ["", "Hb > 7-8 g/dL\nHématocrite > 22-25 %", "Hémodilution: Ultrafiltration\nTransfusion CGR si besoin"],
+    ["", "PaO2 = 150-250 mmHg\n(Eviter hyperoxémie)", "Hypoxémie: Augmenter FiO2, vérifier oxygénateur\nHyperoxémie: Diminuer FiO2"],
+    ["", "Normothermie 36-37°C", "Hypothermie: Ajuster réchauffeur\nHyperthermie: Diminuer réchauffement"]
+  ],
+
+  // =================================================
+  // VIDÉO-THORACO (CEC périphérique)
+  // =================================================
+  video_thoraco: [
+    [
+      "Canulation artérielle\nCf canulations artérielles",
+      "Fémorale\nSite: Artère fémorale\nDébit de pompe cible: 2,4 x SC L/min\nCalibre: XX Fr",
+      ""
+    ],
+    [
+      "Canulation veineuse\nCf canulations veineuses",
+      "Fémorale et jugulaire interne droite\nSites: Canule fémorale pour drainage VCI, canule jugulaire interne droite pour drainage VCS\nDrainage gravitaire (VAVD souvent nécessaire)\nDébit de pompe cible: 2,4 x SC L/min\nCanule fémorale: XX Fr\nCanule jugulaire: XX Fr\nAlternative: canule fémorale longue positionnée en VCS pour drainage VCI et VCS\nCalibre: XX Fr",
+      ""
+    ],
+    [
+      "Priming",
+      "Ringer-lactate 1000 à 1500mL\nAjout d’héparine 5000 UI\nAjout de Mannitol 0,25-0,5 g/kg (Eviter si DFG < 45 mL/min/m2)",
+      ""
+    ],
+    [
+      "Anticoagulation",
+      "Bolus d’héparine 300 UI/kg IVD dans le circuit (ACT cible: > 400 sec)\nAntithrombine III si ACT cible non atteint\nProtamine: 60-80% de la dose d’héparine (ACT cible: < 120 sec)\nSurveillance plaquettes et fibrinogène\n\nSi HIT: Bivalirudine 1mg/kg bolus puis 2,5 mg/kg/h (ACT cible: 300-400 sec)",
+      ""
+    ],
+    [
+      "Cardioplégie\nCf cardioplégies",
+      "Voie d’administration: XXX\nSolution de cardioplégie: XXX",
+      ""
+    ],
+
+    ["Objectifs per-CEC", "Objectifs", "Mesures correctrices"],
+    ["", "DO2 > 280-300 mL/min/m2\nVO2 = 100-140 mL/min/m2", "DO2 insuffisant: Augmenter débit CEC, SaO2/PaO2, Hb/Ht, diminuer VO2 (hypothermie)\nVO2 élevé: Sédation, curarisation, hypothermie"],
+    ["", "Débit de pompe = 2,2-2,6 L/min/m2\nPAM = 50-70 mmHg", "Débit de pompe insuffisant: Augmenter RPM, vérifier drainage\nPAM basse: Noradrénaline, vasopressine, augmenter débit si possible"],
+    ["", "Hb > 7-8 g/dL\nHématocrite > 22-25 %", "Hémodilution: Ultrafiltration\nTransfusion CGR si besoin"],
+    ["", "PaO2 = 150-250 mmHg\n(Eviter hyperoxémie)", "Hypoxémie: Augmenter FiO2, vérifier oxygénateur\nHyperoxémie: Diminuer FiO2"],
+    ["", "Normothermie 36-37°C", "Hypothermie: Ajuster réchauffeur\nHyperthermie: Diminuer réchauffement"]
+  ],
+
+  // =================================================
+  // DISSECTION AORTIQUE
+  // (table 4 colonnes : [titre, base, "", alternative])
+  // =================================================
+  dissection: [
+    [
+      "Canulation artérielle\nCf canulations artérielles",
+      "Site de canulation systémique: XXX\nDébit de pompe cible: 2,4 x SC L/min\nCalibre: XX Fr\n\nAjout de canule(s) carotidienne(s) si: NIRS bas, mal-perfusion cérébrale à l’angioTDM, arrêt circulatoire prolongé\nDébit carotidien cible: 8-12 mL/kg/min\nPression cible: 50-70 mmHg",
+      "",
+      "Site de canulation systémique: Fémorale\nDébit de pompe cible: 2,4 x SC L/min\nCalibre: XX Fr\n\nAjout de canule(s) carotidienne(s) si: NIRS bas, mal-perfusion cérébrale à l’angioTDM, arrêt circulatoire prolongé\nDébit carotidien cible: 8-12 mL/kg/min\nPression cible: 50-70 mmHg"
+    ],
+    [
+      "Canulation veineuse\nCf canulations veineuses",
+      "Atrio-cave\nSite: Insertion OD, extrémité VCI\nDrainage gravitaire (éviter VAVD)\nDébit de pompe cible: 2,4 x SC L/min\nCalibre: XX Fr",
+      "",
+      "Fémorale\nSite: veine fémorale\nDrainage gravitaire (VAVD parfois nécessaire)\nDébit de pompe cible: 2,4 x SC L/min\nCalibre: XX Fr"
+    ],
+    ["Priming", "Ringer-lactate 1000 à 1500mL\nAjout d’héparine 5000 UI\nAjout de Mannitol 0,25-0,5 g/kg (Eviter si DFG < 45 mL/min/m2)", "", ""],
+    ["Anticoagulation", "Bolus d’héparine 300 UI/kg IVD dans le circuit (ACT cible: > 400 sec)\nAntithrombine III si ACT cible non atteint\nProtamine: 60-80% de la dose d’héparine (ACT cible: < 120 sec)\nSurveillance plaquettes et fibrinogène\n\nSi HIT: Bivalirudine 1mg/kg bolus puis 2,5 mg/kg/h (ACT cible: 300-400 sec)", "", ""],
+    ["Cardioplégie\nCf cardioplégies", "Voie d’administration: XXX\nSolution de cardioplégie: XXX", "", ""],
+
+    ["Objectifs per-CEC", "Objectifs", "Mesures correctrices", ""],
+    ["", "DO2 > 280-300 mL/min/m2\nVO2 = 100-140 mL/min/m2", "DO2 insuffisant: Augmenter débit CEC, SaO2/PaO2, Hb/Ht, diminuer VO2 (hypothermie)\nVO2 élevé: Sédation, curarisation, hypothermie", ""],
+    ["", "Débit de pompe = 2,2-2,6 L/min/m2\nPAM = 50-70 mmHg", "Débit de pompe insuffisant: Augmenter RPM, vérifier drainage\nPAM basse: Noradrénaline, vasopressine, augmenter débit si possible", ""],
+    ["", "Hb > 7-8 g/dL\nHématocrite > 22-25 %", "Hémodilution: Ultrafiltration\nTransfusion CGR si besoin", ""],
+    ["", "PaO2 = 150-250 mmHg\n(Eviter hyperoxémie)", "Hypoxémie: Augmenter FiO2, vérifier oxygénateur\nHyperoxémie: Diminuer FiO2", ""],
+    ["", "Normothermie 36-37°C", "Hypothermie: Ajuster réchauffeur\nHyperthermie: Diminuer réchauffement", ""]
+  ],
+
+  // =================================================
+  // TRANSPLANTATION
+  // (table 4 colonnes : [titre, base, "", alternative])
+  // =================================================
+  transplantation: [
+    [
+      "Canulation artérielle\nCf canulations artérielles",
+      "Aortique\nSite: Aorte ascendante distale\nDébit de pompe cible: 2,4 x SC L/min\nCalibre: XX Fr",
+      "",
+      "Fémorale\nSite: Artère fémorale\nDébit de pompe cible: 2,4 x SC L/min\nCalibre: XX Fr"
+    ],
+    [
+      "Canulation veineuse\nCf canulations veineuses",
+      "Bi-cavale (ouverture de l’OD)\nSite: Canulation directe VCI et VCS par l’OD\nDrainage gravitaire (éviter VAVD)\nDébit de pompe cible: 2,4 x SC L/min\nVCI: XX Fr\nVCS: XX Fr",
+      "",
+      "Fémorale\nSite: veine fémorale\nDrainage gravitaire (VAVD parfois nécessaire)\nDébit de pompe cible: 2,4 x SC L/min\nCalibre: XX Fr"
+    ],
+    ["Priming", "Ringer-lactate 1000 à 1500mL\nAjout d’héparine 5000 UI\nAjout de Mannitol 0,25-0,5 g/kg (Eviter si DFG < 45 mL/min/m2)", "", ""],
+    ["Anticoagulation", "Bolus d’héparine 300 UI/kg IVD dans le circuit (ACT cible: > 400 sec)\nAntithrombine III si ACT cible non atteint\nProtamine: 60-80% de la dose d’héparine (ACT cible: < 120 sec)\nSurveillance plaquettes et fibrinogène\n\nSi HIT: Bivalirudine 1mg/kg bolus puis 2,5 mg/kg/h (ACT cible: 300-400 sec)", "", ""],
+    ["Cardioplégie\nCf cardioplégies", "Voie d’administration: XXX\nSolution de cardioplégie: XXX", "", ""],
+
+    ["Objectifs per-CEC", "Objectifs", "Mesures correctrices", ""],
+    ["", "DO2 > 280-300 mL/min/m2\nVO2 = 100-140 mL/min/m2", "DO2 insuffisant: Augmenter débit CEC, SaO2/PaO2, Hb/Ht, diminuer VO2 (hypothermie)\nVO2 élevé: Sédation, curarisation, hypothermie", ""],
+    ["", "Débit de pompe = 2,2-2,6 L/min/m2\nPAM = 50-70 mmHg", "Débit de pompe insuffisant: Augmenter RPM, vérifier drainage\nPAM basse: Noradrénaline, vasopressine, augmenter débit si possible", ""],
+    ["", "Hb > 7-8 g/dL\nHématocrite > 22-25 %", "Hémodilution: Ultrafiltration\nTransfusion CGR si besoin", ""],
+    ["", "PaO2 = 150-250 mmHg\n(Eviter hyperoxémie)", "Hypoxémie: Augmenter FiO2, vérifier oxygénateur\nHyperoxémie: Diminuer FiO2", ""],
+    ["", "Normothermie 36-37°C", "Hypothermie: Ajuster réchauffeur\nHyperthermie: Diminuer réchauffement", ""]
+  ]
+};
 
 // -------------------------------------------------
 // 8) Nettoyage consignes internes + remplissage dynamique (rouge)
