@@ -8733,3 +8733,109 @@ body.theme-light .eto-menu-title{
 .cec-cf-missing{
   color: var(--muted);
 }
+
+/* =========================================================
+   MENU CEC — correctifs UI (miniature schéma, titres, boutons, image droite)
+   À coller tout en bas de styles.css
+========================================================= */
+
+/* Layout : réduire la place de la colonne droite */
+.cec-content{
+  display: grid;
+  grid-template-columns: 1fr 0.5fr; /* colonne droite 2x moins large */
+  gap: 16px;
+  align-items: start;
+}
+
+.cec-side img{
+  width: 100%;
+  max-width: 280px; /* garde l'image contenue */
+  height: auto;
+  display: block;
+  margin-left: auto; /* la pousse à droite */
+  border-radius: 14px;
+}
+
+/* Bloc "Schéma de la CEC" : même style que les autres menus */
+.cec-box{
+  border-radius: 16px;
+  padding: 14px;
+  border: 1px solid var(--border, rgba(255,255,255,0.14));
+  background: var(--card, rgba(255,255,255,0.06));
+}
+
+.cec-box-title{
+  /* style “menu” : même logique que tes autres titres (sobre, lisible) */
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  margin: 0 0 10px 0;
+  color: var(--fg, #fff);
+}
+
+/* Miniature cliquable : éviter l’affichage “en grand” */
+.cec-thumb-btn{
+  width: 100%;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cec-thumb{
+  /* miniature : pas pleine hauteur, mais belle et cliquable */
+  width: 100%;
+  max-width: 420px;       /* limite la taille */
+  max-height: 180px;      /* empêche l’image de prendre trop de place */
+  object-fit: contain;
+  display: block;
+  border-radius: 12px;
+  border: 1px solid var(--border, rgba(255,255,255,0.14));
+  background: rgba(0,0,0,0.08);
+}
+
+.cec-thumb-hint{
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--muted, rgba(255,255,255,0.7));
+}
+
+/* "Protocoles CEC" doit être un vrai bouton bleu identique aux autres */
+.cec-proto-btn{
+  width: 100%;
+  margin: 10px 0 0 0;
+}
+
+/* IMPORTANT : s’assurer que le bouton bleu ressemble exactement aux autres btn */
+.cec-page .btn{
+  width: 100%;
+}
+
+/* Si ton .btn est déjà bleu, rien à faire.
+   Si ton .btn n’est pas bleu, tu peux forcer uniquement le bouton "Protocoles" avec une classe. */
+.cec-page .btn.cec-btn-blue{
+  background: #1f6feb;      /* bleu “standard” lisible */
+  border: 1px solid rgba(255,255,255,0.18);
+  color: #fff;
+}
+
+/* Hover */
+.cec-page .btn.cec-btn-blue:hover{
+  filter: brightness(1.05);
+}
+
+/* Mobile : repasse en 1 colonne */
+@media (max-width: 900px){
+  .cec-content{
+    grid-template-columns: 1fr;
+  }
+  .cec-side img{
+    max-width: 360px;
+    margin: 0 auto;
+  }
+  .cec-thumb{
+    max-width: 100%;
+    max-height: 220px;
+  }
+}
