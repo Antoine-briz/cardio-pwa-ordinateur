@@ -20117,6 +20117,46 @@ function cecFormatProtocolCell(rowTitle, text){
   return cecNl2brHtml(raw);
 }
 
+// -------------------------------------------------
+// 10bis) Choix colonne alternative (colonne droite) :
+// La colonne de droite REMPLACE totalement la gauche si condition vraie
+// -------------------------------------------------
+function cecChooseAltColumn(row, protocol, s){
+  const useFem = !!s?.chirurgie?.sternotomieRisque;
+  const instab = !!s?.dissection?.instabilite;
+
+  // Format simple : [title, base, alt]
+  if (row.length === 3){
+    return (useFem && row[2]) ? row[2] : row[1];
+  }
+
+  // Format long : [title, base, "", alt]
+  if (row.length >= 4){
+    const title = String(row[0] || "").toLowerCase();
+
+    if (protocol === "dissection"){
+      // Veineuse : alt si sternotomie à risque OU instabilité
+      if (title.includes("veineuse")){
+        if ((useFem || instab) && row[3]) return row[3];
+        return row[1];
+      }
+      // Artérielle : alt seulement si instabilité
+      if (instab && row[3]) return row[3];
+      return row[1];
+    }
+
+    if (protocol === "transplantation"){
+      // Alt si sternotomie à risque
+      return (useFem && row[3]) ? row[3] : row[1];
+    }
+
+    // Fallback
+    return row[1] || "";
+  }
+
+  return row[1] || "";
+}
+
 function cecRenderFromPpt(protocol, s){
   const table = CEC_PPT_TABLES[protocol];
   if (!table) return `<p>Table protocole introuvable: ${escapeHtml(protocol)}</p>`;
@@ -20200,6 +20240,52 @@ function cecRenderFromPpt(protocol, s){
           </tr>
         </thead>
         <tbody>${bodyHtml}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+// -------------------------------------------------
+// 10ter) Rendu tableau vide (structure visible dès l'ouverture)
+// -------------------------------------------------
+function cecRenderEmptyFromPpt(protocolKey = "generique"){
+  const table = CEC_PPT_TABLES?.[protocolKey] || CEC_PPT_TABLES?.generique;
+  if (!table) return `<div class="info-content">Table protocole introuvable.</div>`;
+
+  let inObjectives = false;
+
+  const rowsHtml = table.map((row) => {
+    const col0 = row[0] || "";
+    const col1 = row[1] || "";
+    const col2 = row[2] || "";
+
+    if (String(col0).includes("Objectifs per-CEC")) inObjectives = true;
+
+    // Objectifs per-CEC : toujours 3 colonnes visibles
+    if (inObjectives) {
+      const isHeader = (col1 === "Objectifs" && col2 === "Mesures correctrices");
+      return `
+        <tr>
+          <td class="cec-td-title">${cecNl2brHtml(col0)}</td>
+          <td class="${isHeader ? "cec-obj-head" : "cec-empty"}">${isHeader ? cecNl2brHtml(col1) : ""}</td>
+          <td class="${isHeader ? "cec-obj-head" : "cec-empty"}">${isHeader ? cecNl2brHtml(col2) : ""}</td>
+        </tr>
+      `;
+    }
+
+    // Protocole standard : titre + cellule vide (colspan=2 comme ton rendu normal)
+    return `
+      <tr>
+        <td class="cec-td-title">${cecNl2brHtml(col0)}</td>
+        <td colspan="2" class="cec-empty"></td>
+      </tr>
+    `;
+  }).join("");
+
+  return `
+    <div class="cec-proto-table-wrap">
+      <table class="cec-proto-table">
+        <tbody>${rowsHtml}</tbody>
       </table>
     </div>
   `;
@@ -20536,14 +20622,14 @@ function renderCecProtocoles() {
     const preview = document.getElementById("cec-preview");
 
     if (!gestes.length) {
-      preview.innerHTML = `
-        <div class="info-card cec-preview-empty">
-          <h3>Protocole</h3>
-          <div class="info-content">Sélectionne une intervention à gauche pour afficher le protocole.</div>
-        </div>
-      `;
-      return;
-    }
+  preview.innerHTML = `
+    <div class="info-card cec-preview-card">
+      <h3>Protocole</h3>
+      ${cecRenderEmptyFromPpt("generique")}
+    </div>
+  `;
+  return;
+}
 
     const protocol = cecPickProtocol(gestes);
 
