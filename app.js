@@ -19992,21 +19992,21 @@ function cecApplyDynamicObjectives(text, s){
   t = t.replace(/DO2\s*>\s*280-300\s*mL\/min\/m2/gi, () => {
     const a = Math.round(280 * sc);
     const b = Math.round(300 * sc);
-    return `DO2 > ${a}–${b} mL/min (280–300 mL/min/m² × SC)`;
+    return `DO2 > ${a}–${b} mL/min (280–300 mL/min/m²)`;
   });
 
   // VO2 : 100–140 mL/min/m2
   t = t.replace(/VO2\s*=\s*100-140\s*mL\/min\/m2/gi, () => {
     const a = Math.round(100 * sc);
     const b = Math.round(140 * sc);
-    return `VO2 = ${a}–${b} mL/min (100–140 mL/min/m² × SC)`;
+    return `VO2 = ${a}–${b} mL/min (100–140 mL/min/m²)`;
   });
 
   // Débit de pompe : 2,2–2,6 L/min/m2 (tolère virgule/point)
   t = t.replace(/Débit de pompe\s*=\s*2[,.]2-2[,.]6\s*L\/min\/m2/gi, () => {
     const a = (2.2 * sc).toFixed(1);
     const b = (2.6 * sc).toFixed(1);
-    return `Débit de pompe = ${a}–${b} L/min (2,2–2,6 L/min/m² × SC)`;
+    return `Débit de pompe = ${a}–${b} L/min (2,2–2,6 L/min/m²)`;
   });
 
   return t;
