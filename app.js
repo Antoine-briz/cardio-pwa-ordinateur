@@ -20019,10 +20019,10 @@ function cecHasOdOpening(gestes){
   return gestes.some(g => CEC_OD_OPENING.has(g));
 }
 
-function cecPickProtocol(gestes){
+function cecPickProtocol(gestes, s){
   if (gestes.includes("dissection")) return "dissection";
   if (gestes.includes("transplantation")) return "transplantation";
-  if (gestes.includes("video_thoraco")) return "video_thoraco";
+  if (s?.chirurgie?.videoThoracoMitrale) return "video_thoraco";
   if (gestes.includes("lvad")) return "lvad";
   if (cecHasOdOpening(gestes)) return "od";
   return "generique";
@@ -20886,7 +20886,7 @@ function renderCecProtocolesResult() {
   const s = window.__cecState;
   const gestes = (s.gestes||[]).filter(Boolean);
 
-  const protocol = cecPickProtocol(gestes);
+  const protocol = cecPickProtocol(gestes, s);
 
   // résumé
   const summary = `
