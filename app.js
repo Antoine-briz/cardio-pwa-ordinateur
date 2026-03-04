@@ -19398,20 +19398,834 @@ function renderCEC() {
 }
 
 
+// ===============================
+// CEC — State
+// ===============================
+window.__cecState = window.__cecState || {
+  gestes: ["", "", ""], // jusqu’à 3 gestes
+  poidsKg: "",
+  tailleCm: "",
+  coeur: {
+    fevg35: false,
+    hvg: false,
+    ia: false,
+    stenoseCoronaireSerree: false,
+  },
+  chirurgie: {
+    sternotomieRisque: false,
+    clampage90: false,
+  },
+  dissection: {
+    instabilite: false,
+    tsaDisseques: false,
+    tsa: { scd: false, cd: false, cg: false, scg: false }
+  }
+};
+
+// ===============================
+// CEC — Gestes disponibles
+// ===============================
+// IMPORTANT : OD opening => privilégier bi-cavale (mitrale/tricuspide/CIA/FOP/myxome)
+const CEC_GESTES = [
+  // Générique
+  { label: "Pontages coronaires", value: "pontages" },
+  { label: "RVA", value: "rva" },
+  { label: "Plastie aortique", value: "plastie_aortique" },
+  { label: "TSC", value: "tsc" },
+  { label: "Tirone-David", value: "david" },
+  { label: "Bentall", value: "bentall" },
+  { label: "Ross", value: "ross" },
+
+  // OD (bi-cavale)
+  { label: "Plastie mitrale", value: "plastie_mitrale" },
+  { label: "Remplacement valve mitrale", value: "rvm" },
+  { label: "Plastie tricuspide", value: "plastie_tricuspide" },
+  { label: "Remplacement valve tricuspide", value: "rvt" },
+  { label: "Fermeture de CIA", value: "fermeture_cia" },
+  { label: "Fermeture de FOP", value: "fermeture_fop" },
+  { label: "Exérèse de myxome", value: "myxome" },
+
+  // Spécifiques
+  { label: "Dissection aortique", value: "dissection" },
+  { label: "Transplantation cardiaque", value: "transplantation" },
+  { label: "Vidéo-thoracoscopie (CEC périphérique)", value: "video_thoraco" },
+
+  // Non dispo
+  { label: "Pose de LVAD", value: "lvad" },
+];
+
+const CEC_OD_OPENING = new Set([
+  "plastie_mitrale","rvm","plastie_tricuspide","rvt","fermeture_cia","fermeture_fop","myxome"
+]);
+
+function cecLabelFromValue(v){
+  const it = CEC_GESTES.find(x => x.value === v);
+  return it ? it.label : v;
+}
+
+// ===============================
+// Lightbox (utilise le même principe que ta fenêtre image ailleurs)
+// ===============================
+function openImageLightbox(src, alt){
+  const existing = document.getElementById("img-lightbox-overlay");
+  if (existing) existing.remove();
+
+  const overlay = document.createElement("div");
+  overlay.id = "img-lightbox-overlay";
+  overlay.className = "img-lightbox-overlay";
+  overlay.innerHTML = `
+    <div class="img-lightbox-modal" role="dialog" aria-modal="true">
+      <button class="btn img-lightbox-close" type="button" aria-label="Fermer"
+              onclick="closeImageLightbox()">✕</button>
+      <img src="${src}" alt="${alt}" class="img-lightbox-img">
+    </div>
+  `;
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) closeImageLightbox(); });
+  document.addEventListener("keydown", __cecEscCloseOnce);
+  document.body.appendChild(overlay);
+}
+function __cecEscCloseOnce(e){ if (e.key === "Escape") closeImageLightbox(); }
+function closeImageLightbox(){
+  const overlay = document.getElementById("img-lightbox-overlay");
+  if (overlay) overlay.remove();
+  document.removeEventListener("keydown", __cecEscCloseOnce);
+}
+
+// ===============================
+// CEC — Calculs
+// ===============================
+function cecNum(x){
+  const v = Number(String(x ?? "").replace(",", "."));
+  return Number.isFinite(v) ? v : null;
+}
+function cecComputeBSA(poidsKg, tailleCm){
+  const w = cecNum(poidsKg), h = cecNum(tailleCm);
+  if (!w || !h || w<=0 || h<=0) return null;
+  return Math.sqrt((w*h)/3600);
+}
+function cecComputeFlowTarget(sc){
+  if (!sc || sc<=0) return null;
+  return 2.4 * sc; // L/min
+}
+function cecFlowBucket(flow){
+  if (!flow) return null;
+  if (flow <= 4) return "LE4";
+  if (flow < 5) return "4to5";
+  if (flow < 6) return "5to6";
+  return "GE6";
+}
+
+// Recos calibre (on applique les consignes "orange" sans les afficher)
+function cecRecoArtCentral(flow){
+  const b = cecFlowBucket(flow);
+  if (b==="LE4") return "18 Fr";
+  if (b==="4to5") return "20 Fr";
+  if (b==="5to6") return "22 Fr";
+  return "24 Fr";
+}
+function cecRecoArtFem(flow){
+  const b = cecFlowBucket(flow);
+  if (b==="LE4") return "18–20 Fr";
+  if (b==="4to5") return "20–22 Fr";
+  if (b==="5to6") return "22–24 Fr";
+  return "24 Fr";
+}
+function cecRecoVenAtriocave(flow){
+  const b = cecFlowBucket(flow);
+  if (b==="LE4") return "28/36 Fr";
+  if (b==="4to5") return "29/37 Fr";
+  if (b==="5to6") return "32/40 Fr";
+  return "34/46 ou 36/46 Fr";
+}
+function cecRecoVenFem(flow){
+  const b = cecFlowBucket(flow);
+  if (b==="LE4") return "28–32 Fr";
+  if (b==="4to5") return "32–36 Fr";
+  if (b==="5to6") return "36–40 Fr";
+  return "40 Fr";
+}
+// Bicavale
+function cecRecoBicavalVCI(flow){
+  const b = cecFlowBucket(flow);
+  if (b==="LE4") return "24–26 Fr";
+  if (b==="4to5") return "28–30 Fr";
+  if (b==="5to6") return "30–32 Fr";
+  return "32–34 Fr";
+}
+function cecRecoBicavalVCS(flow){
+  const b = cecFlowBucket(flow);
+  if (b==="LE4") return "20–22 Fr";
+  if (b==="4to5") return "22–24 Fr";
+  if (b==="5to6") return "24–26 Fr";
+  return "26–28 Fr";
+}
+// Vidéo-thoraco
+function cecRecoVideoFem(flow){
+  const b = cecFlowBucket(flow);
+  if (b==="LE4") return "21–23 Fr";
+  if (b==="4to5") return "23–25 Fr";
+  if (b==="5to6") return "25–27 Fr";
+  return "27–29 Fr";
+}
+function cecRecoVideoJug(flow){
+  const b = cecFlowBucket(flow);
+  if (b==="LE4") return "15–17 Fr";
+  if (b==="4to5") return "17–19 Fr";
+  if (b==="5to6") return "19–21 Fr";
+  return "21 Fr";
+}
+function cecRecoVideoLong(flow){
+  const b = cecFlowBucket(flow);
+  if (b==="LE4") return "23–25 Fr";
+  if (b==="4to5") return "25–27 Fr";
+  if (b==="5to6") return "27–29 Fr";
+  return "29–31 Fr";
+}
+
+// Dissection — site systémique (selon consigne)
+function cecRecoDissectionSystemicSite(s){
+  const tsa = s?.dissection?.tsa || {};
+  const scd = !!tsa.scd;
+  const scg = !!tsa.scg;
+
+  if (scd && scg) return "Rétrograde fémorale";
+  if (scd) return "Antérograde axillaire gauche";
+  if (scg) return "Antérograde axillaire droite";
+  return "Antérograde axillaire droite";
+}
+function cecRecoDissectionArtCalibre(flow, site){
+  const fem = String(site||"").toLowerCase().includes("fém");
+  if (fem) return cecRecoArtFem(flow);
+  const b = cecFlowBucket(flow);
+  if (b==="LE4") return "16–18 Fr";
+  if (b==="4to5") return "18–20 Fr";
+  if (b==="5to6") return "20 Fr";
+  return "20–22 Fr";
+}
+// Débit carotidien 8–12 mL/kg/min
+function cecCarotidRangeMlMin(poidsKg){
+  const w = cecNum(poidsKg);
+  if (!w || w<=0) return null;
+  return { min: 8*w, max: 12*w }; // mL/min
+}
+function cecRecoCarotidCannula(flowMlMin){
+  if (!flowMlMin) return "";
+  if (flowMlMin < 600) return "10–12 Fr";
+  if (flowMlMin <= 900) return "12 Fr";
+  return "12–14 Fr";
+}
+
+// Cardioplégie (consignes orange => choix direct)
+function cecRecoCardioplegia(s){
+  const ia = !!s.coeur.ia;
+  const hvg = !!s.coeur.hvg;
+  const stenose = !!s.coeur.stenoseCoronaireSerree;
+  const fevg35 = !!s.coeur.fevg35;
+  const clamp90 = !!s.chirurgie.clampage90;
+
+  const gestes = (s.gestes||[]).filter(Boolean);
+  const hasPlastieAo = gestes.includes("plastie_aortique");
+  const hasRoss = gestes.includes("ross");
+
+  let voie = ia ? "Ostia coronaires (P cible 50–70 mmHg)" : "Racine aortique (P cible 60–80 mmHg)";
+  if (hvg || stenose) voie += " + discuter rétrograde (sinus coronaire, P cible 30–40 mmHg)";
+
+  let solution = "Sang froid (ratio 4:1), bolus 15–20 mL/kg toutes les 15–20 min";
+  if (clamp90 || hasPlastieAo || hasRoss) {
+    solution = "Custodiol 20–25 mL/kg (4–8°C), cardioprotection 90–180 min";
+  } else if (fevg35) {
+    solution = "Discuter sang chaud (32–37°C) : continu ou bolus après induction au sang froid";
+  }
+
+  return { voie, solution };
+}
+
+// ===============================
+// CEC — Choix du protocole (association geste -> tableau)
+// ===============================
+function cecHasOdOpening(gestes){
+  return gestes.some(g => CEC_OD_OPENING.has(g));
+}
+function cecPickProtocol(gestes){
+  // priorité absolue
+  if (gestes.includes("dissection")) return "dissection";
+  if (gestes.includes("transplantation")) return "transplantation";
+  if (gestes.includes("video_thoraco")) return "video_thoraco";
+
+  // LVAD : pas de tableau
+  if (gestes.includes("lvad")) return "lvad";
+
+  // sinon générique (pontage/RVA/TSC/David/Bentall/Ross/Plastie Ao)
+  return "generique";
+}
+
+// ===============================
+// CEC — "Cf ..." : mapping vers images (à adapter)
+// ===============================
+// Ici tu peux associer exactement tes liens bleus à tes images.
+// Par défaut : on ouvre une image si elle existe, sinon on peut afficher un message.
+const CEC_CF_MAP = {
+  "Cf canulations artérielles": "canulationsArterielles.png",
+  "Cf canulations veineuses": "canulationsVeineuses.png",
+  "Cf cardioplégies": "cardioplegies.png",
+  // ajoute tes fichiers réels (dans img/)
+};
+function renderCfLink(text){
+  const file = CEC_CF_MAP[text];
+  if (!file) return `<span class="cec-cf-missing">${text}</span>`;
+  return `<button class="cec-imglink" type="button"
+            onclick="openImageLightbox('img/${file}','${text}')">${text}</button>`;
+}
+
+// ===============================
+// CEC — Table builders (on n’affiche jamais les consignes "orange")
+// ===============================
+function cecRow(title, leftHtml, rightHtml=null){
+  return { title, leftHtml, rightHtml };
+}
+function cecInfoList(lines){
+  return `<ul class="cec-ul">${lines.map(x=>`<li>${x}</li>`).join("")}</ul>`;
+}
+
+function cecBuildRows(protocol, s){
+  const gestes = (s.gestes||[]).filter(Boolean);
+  const odOpening = cecHasOdOpening(gestes);
+
+  const sc = cecComputeBSA(s.poidsKg, s.tailleCm);
+  const flow = sc ? cecComputeFlowTarget(sc) : null;
+
+  const flowTxt = (sc && flow)
+    ? `2,4 × SC = <strong>${flow.toFixed(1)} L/min</strong> (SC ${sc.toFixed(2)} m²)`
+    : `2,4 × SC (renseigner poids+taille)`;
+
+  // --- Variantes art/veines selon cases
+  const useFemArt = !!s.chirurgie.sternotomieRisque;
+  const artSite = useFemArt ? "Artère fémorale" : "Aorte ascendante distale";
+  const artCal = (flow ? (useFemArt ? cecRecoArtFem(flow) : cecRecoArtCentral(flow)) : "—");
+
+  // Veineuse
+  // Règle combinés : si OD opening => bi-cavale (même si geste principal générique)
+  let venMode = "Atrio-cave";
+  if (protocol === "video_thoraco") venMode = "Périphérique (fémorale + jugulaire)";
+  else if (protocol === "transplantation") venMode = "Bi-cavale (ouverture OD)";
+  else if (odOpening) venMode = "Bi-cavale (ouverture OD)";
+
+  // Cardioplégie
+  const cp = cecRecoCardioplegia(s);
+
+  // Hypothermie
+  const deepHypo = gestes.some(g => ["tsc","david","bentall","dissection"].includes(g));
+  const tempTarget = deepHypo ? "26–28°C" : "32–34°C";
+
+  // Priming / anticoag (avec calculs utiles)
+  const w = cecNum(s.poidsKg);
+  const hepar = w ? Math.round(300*w) : null;
+  const mannitol = w ? { min:(0.25*w), max:(0.5*w) } : null;
+  const prot = hepar ? { min:Math.round(0.6*hepar), max:Math.round(0.8*hepar) } : null;
+
+  // -------------------------
+  // CONSTRUCTION DU TABLEAU
+  // -------------------------
+  const rows = [];
+
+  // Canulation artérielle
+  if (protocol === "dissection") {
+    const site = s.dissection.instabilite
+      ? "Fémorale (instabilité hémodynamique majeure)"
+      : cecRecoDissectionSystemicSite(s);
+    const calibre = flow ? cecRecoDissectionArtCalibre(flow, site) : "—";
+
+    const carotidRange = cecCarotidRangeMlMin(s.poidsKg);
+    const carotTxt = carotidRange
+      ? `Débit carotidien 8–12 mL/kg/min ≈ <strong>${Math.round(carotidRange.min)}–${Math.round(carotidRange.max)} mL/min</strong> (canule ~ ${cecRecoCarotidCannula((carotidRange.min+carotidRange.max)/2)})`
+      : "Débit carotidien 8–12 mL/kg/min (renseigner poids)";
+
+    rows.push(cecRow(
+      `Canulation artérielle<br>${renderCfLink("Cf canulations artérielles")}`,
+      cecInfoList([
+        `<strong>Site systémique</strong> : ${site}`,
+        `<strong>Débit cible</strong> : ${flowTxt}`,
+        `<strong>Calibre recommandé</strong> : ${calibre}`,
+        `Ajout carotidienne si NIRS bas / malperfusion / arrêt circulatoire prolongé`,
+        `${carotTxt}`,
+        `Pression cible cérébrale : 50–70 mmHg`,
+      ])
+    ));
+  } else if (protocol === "video_thoraco") {
+    rows.push(cecRow(
+      `Canulation artérielle<br>${renderCfLink("Cf canulations artérielles")}`,
+      cecInfoList([
+        `<strong>Site</strong> : Artère fémorale`,
+        `<strong>Débit cible</strong> : ${flowTxt}`,
+        `<strong>Calibre recommandé</strong> : ${flow ? cecRecoArtFem(flow) : "—"}`,
+      ])
+    ));
+  } else {
+    // générqiue/transplant/mitrale => art centrale sauf sternotomie risque
+    rows.push(cecRow(
+      `Canulation artérielle<br>${renderCfLink("Cf canulations artérielles")}`,
+      cecInfoList([
+        `<strong>Site</strong> : ${artSite}`,
+        `<strong>Débit cible</strong> : ${flowTxt}`,
+        `<strong>Calibre recommandé</strong> : ${artCal}`,
+        useFemArt ? `<em>(choix fémoral car “sternotomie à risque” cochée)</em>` : "",
+      ].filter(Boolean))
+    ));
+  }
+
+  // Canulation veineuse
+  if (protocol === "video_thoraco") {
+    rows.push(cecRow(
+      `Canulation veineuse<br>${renderCfLink("Cf canulations veineuses")}`,
+      cecInfoList([
+        `<strong>Configuration</strong> : fémorale + jugulaire interne droite (ETO)`,
+        `VAVD souvent nécessaire : -20 à -40 mmHg`,
+        `<strong>Débit cible</strong> : ${flowTxt}`,
+        `<strong>Canule fémorale</strong> : ${flow ? cecRecoVideoFem(flow) : "—"}`,
+        `<strong>Canule jugulaire</strong> : ${flow ? cecRecoVideoJug(flow) : "—"}`,
+        `<strong>Alternative</strong> : canule fémorale longue en VCS (VCI+VCS)`,
+        `<strong>Calibre alternative</strong> : ${flow ? cecRecoVideoLong(flow) : "—"}`,
+      ])
+    ));
+  } else if (protocol === "transplantation" || odOpening) {
+    // bi-cavale prioritaire si OD opening
+    const femVen = !!s.chirurgie.sternotomieRisque;
+    if (femVen) {
+      rows.push(cecRow(
+        `Canulation veineuse<br>${renderCfLink("Cf canulations veineuses")}`,
+        cecInfoList([
+          `<strong>Mode préféré</strong> : Bi-cavale (ouverture OD nécessaire)`,
+          `<strong>MAIS</strong> sternotomie à risque → option périphérique veine fémorale`,
+          `<strong>Débit cible</strong> : ${flowTxt}`,
+          `<strong>Calibre fémoral recommandé</strong> : ${flow ? cecRecoVenFem(flow) : "—"}`,
+          `VAVD parfois nécessaire`,
+        ])
+      ));
+    } else {
+      rows.push(cecRow(
+        `Canulation veineuse<br>${renderCfLink("Cf canulations veineuses")}`,
+        cecInfoList([
+          `<strong>Bi-cavale (ouverture OD)</strong>`,
+          `Drainage gravitaire (éviter VAVD)`,
+          `<strong>Débit cible</strong> : ${flowTxt}`,
+          `<strong>VCI</strong> : ${flow ? cecRecoBicavalVCI(flow) : "—"}`,
+          `<strong>VCS</strong> : ${flow ? cecRecoBicavalVCS(flow) : "—"}`,
+        ])
+      ));
+    }
+  } else if (protocol === "dissection") {
+    rows.push(cecRow(
+      `Canulation veineuse<br>${renderCfLink("Cf canulations veineuses")}`,
+      cecInfoList([
+        `<strong>Atrio-cave</strong> (OD → VCI)`,
+        `Drainage gravitaire (éviter VAVD)`,
+        `<strong>Débit cible</strong> : ${flowTxt}`,
+        `<strong>Calibre recommandé</strong> : ${flow ? cecRecoVenAtriocave(flow) : "—"}`,
+        `Option fémorale possible si besoin (VAVD parfois nécessaire)`,
+      ])
+    ));
+  } else {
+    // générique
+    const femVen = !!s.chirurgie.sternotomieRisque;
+    rows.push(cecRow(
+      `Canulation veineuse<br>${renderCfLink("Cf canulations veineuses")}`,
+      cecInfoList(
+        femVen ? [
+          `<strong>Site</strong> : veine fémorale`,
+          `Drainage gravitaire (VAVD parfois nécessaire)`,
+          `<strong>Débit cible</strong> : ${flowTxt}`,
+          `<strong>Calibre recommandé</strong> : ${flow ? cecRecoVenFem(flow) : "—"}`,
+        ] : [
+          `<strong>Atrio-cave</strong> (OD → VCI)`,
+          `Drainage gravitaire (éviter VAVD)`,
+          `<strong>Débit cible</strong> : ${flowTxt}`,
+          `<strong>Calibre recommandé</strong> : ${flow ? cecRecoVenAtriocave(flow) : "—"}`,
+        ]
+      )
+    ));
+  }
+
+  // Priming
+  rows.push(cecRow(
+    "Priming",
+    cecInfoList([
+      "Ringer-lactate 1000 à 1500 mL",
+      "Héparine 5000 UI",
+      mannitol ? `Mannitol 0,25–0,5 g/kg ≈ <strong>${mannitol.min.toFixed(1)}–${mannitol.max.toFixed(1)} g</strong> (éviter si DFG < 45)` :
+                 "Mannitol 0,25–0,5 g/kg (renseigner poids) (éviter si DFG < 45)",
+    ])
+  ));
+
+  // Anticoagulation
+  rows.push(cecRow(
+    "Anticoagulation",
+    cecInfoList([
+      hepar ? `Héparine 300 UI/kg ≈ <strong>${hepar} UI</strong> (ACT cible > 400 sec)` : "Héparine 300 UI/kg (ACT cible > 400 sec) (renseigner poids)",
+      "Antithrombine III si ACT cible non atteint",
+      prot ? `Protamine 60–80% ≈ <strong>${prot.min}–${prot.max}</strong> (équiv. UI) (ACT cible < 120 sec)` : "Protamine 60–80% (ACT cible < 120 sec)",
+      "Surveillance plaquettes et fibrinogène",
+      "Si HIT : Bivalirudine 1 mg/kg bolus puis 2,5 mg/kg/h (ACT 300–400 sec)",
+    ])
+  ));
+
+  // Cardioplégie
+  rows.push(cecRow(
+    `Cardioplégie<br>${renderCfLink("Cf cardioplégies")}`,
+    cecInfoList([
+      `<strong>Voie</strong> : ${cp.voie}`,
+      `<strong>Solution</strong> : ${cp.solution}`,
+      s.coeur.hvg ? "Si HVG : discuter Esmolol 50 µg/kg/min IVSE per-CEC" : "",
+    ].filter(Boolean))
+  ));
+
+  // Hypothermie
+  rows.push(cecRow(
+    "Hypothermie",
+    cecInfoList([`Température cible : <strong>${tempTarget}</strong>`])
+  ));
+
+  // Débit de pompe
+  rows.push(cecRow(
+    "Débit de pompe",
+    cecInfoList([
+      "Débit cible : 280–300 mL/min/m²",
+      deepHypo ? "Si hypothermie profonde : 100–140 mL/min/m²" : ""
+    ].filter(Boolean))
+  ));
+
+  // Objectifs per-CEC
+  rows.push(cecRow(
+    "Objectifs per-CEC",
+    cecInfoList([
+      "Débit : 2,2–2,6 L/min/m²",
+      "PAM : 50–70 mmHg",
+      "Hématocrite : 22–25%",
+      "SvO₂ : > 60%",
+      "Lactates : < 2 mmol/L",
+      w ? `Diurèse : > 1 mL/kg/h (≈ > ${Math.round(w)} mL/h)` : "Diurèse : > 1 mL/kg/h",
+    ])
+  ));
+
+  // Sevrage
+  rows.push(cecRow(
+    "Sevrage de CEC",
+    cecInfoList([
+      "Remplissage progressif du cœur",
+      "Réchauffement à 36–37°C",
+      "Déclampage aortique",
+      "Reperfusion 5–10 min",
+      "Sevrage progressif du débit",
+      "ETO : contractilité, valvules, remplissage",
+      "Inotropes/vasopresseurs selon besoin",
+    ])
+  ));
+
+  // Hémostase / transfusion
+  rows.push(cecRow(
+    "Hémostase / transfusion",
+    cecInfoList([
+      "Hématocrite cible post-CEC : 25–30%",
+      "Si saignement : fibrinogène / plaquettes / PFC selon bilan",
+      "Protocole hémorragie massive si besoin",
+    ])
+  ));
+
+  return rows;
+}
+
+function cecRenderProtocolTable(protocol, s){
+  const gestes = (s.gestes||[]).filter(Boolean);
+  const summary = `
+    <div class="cec-resume">
+      <div><strong>Gestes :</strong> ${gestes.length ? gestes.map(cecLabelFromValue).join(" + ") : "—"}</div>
+      <div><strong>Patient :</strong> ${s.poidsKg || "—"} kg, ${s.tailleCm || "—"} cm</div>
+      <div><strong>Cœur :</strong>
+        ${s.coeur.fevg35 ? "FEVG<35% • " : ""}
+        ${s.coeur.hvg ? "HVG • " : ""}
+        ${s.coeur.ia ? "IA • " : ""}
+        ${s.coeur.stenoseCoronaireSerree ? "Sténose serrée • " : ""}
+        ${(!s.coeur.fevg35 && !s.coeur.hvg && !s.coeur.ia && !s.coeur.stenoseCoronaireSerree) ? "—" : ""}
+      </div>
+      <div><strong>Chirurgie :</strong>
+        ${s.chirurgie.sternotomieRisque ? "Sternotomie à risque • " : ""}
+        ${s.chirurgie.clampage90 ? "Clampage>90min • " : ""}
+        ${(!s.chirurgie.sternotomieRisque && !s.chirurgie.clampage90) ? "—" : ""}
+      </div>
+    </div>
+  `;
+
+  if (protocol === "lvad") {
+    return summary + `
+      <div class="info-card">
+        <h3>Pose de LVAD</h3>
+        <div class="info-content">
+          <p>Le protocole CEC LVAD n’est pas encore disponible dans l’application.</p>
+        </div>
+      </div>
+    `;
+  }
+
+  const rows = cecBuildRows(protocol, s);
+
+  const table = `
+    <div class="cec-proto-table-wrap">
+      <table class="cec-proto-table">
+        <tbody>
+          ${rows.map(r => `
+            <tr>
+              <td class="cec-td-title">${r.title}</td>
+              <td>${r.leftHtml}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+
+  return summary + table;
+}
+
+// ===============================
+// CEC — Render page "Protocoles" (sélection)
+// ===============================
 function renderCecProtocoles() {
+  const s = window.__cecState;
+
+  const options = (exclude=[]) => {
+    const ex = new Set(exclude.filter(Boolean));
+    return [
+      `<option value="">— Choisir —</option>`,
+      ...CEC_GESTES.filter(g => !ex.has(g.value)).map(g => `<option value="${g.value}">${g.label}</option>`)
+    ].join("");
+  };
+
   $app.innerHTML = `
-    <section class="page">
+    <section class="page cec-proto-page">
       <h2>Protocoles de CEC</h2>
 
-      <p>
-        Cette section regroupera les protocoles liés à la circulation extra-corporelle.
-      </p>
+      <div class="cec-form">
+        <div class="info-card">
+          <h3>Choix de l’intervention</h3>
 
-      <p>
-        (Contenu en cours de construction)
-      </p>
+          <label class="cec-field">
+            <span>1er geste</span>
+            <select id="cec-g1">${options([])}</select>
+          </label>
+
+          <div id="cec-extra-gestes"></div>
+
+          <button class="btn cec-add-gesture" type="button" id="cec-add-gesture">
+            Ajouter un geste
+          </button>
+        </div>
+
+        <div class="info-card">
+          <h3>Caractéristiques patient</h3>
+          <div class="cec-row">
+            <label class="cec-field">
+              <span>Poids (kg)</span>
+              <input id="cec-poids" inputmode="decimal" placeholder="ex: 75" value="${s.poidsKg || ""}">
+            </label>
+            <label class="cec-field">
+              <span>Taille (cm)</span>
+              <input id="cec-taille" inputmode="numeric" placeholder="ex: 175" value="${s.tailleCm || ""}">
+            </label>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <h3>Cœur</h3>
+          <div class="cec-checks">
+            <label><input type="checkbox" id="cec-fevg35"> FEVG &lt; 35%</label>
+            <label><input type="checkbox" id="cec-hvg"> HVG</label>
+            <label><input type="checkbox" id="cec-ia"> IA</label>
+            <label><input type="checkbox" id="cec-stenose"> Sténose coronaire serrée</label>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <h3>Chirurgie</h3>
+          <div class="cec-checks">
+            <label><input type="checkbox" id="cec-sterno"> Sternotomie à risque</label>
+            <label><input type="checkbox" id="cec-clamp90"> Durée clampage &gt; 90 min</label>
+          </div>
+        </div>
+
+        <div class="info-card" id="cec-dissection-card" style="display:none;">
+          <h3>Dissection aortique — compléments</h3>
+          <div class="cec-checks">
+            <label><input type="checkbox" id="cec-instabilite"> Instabilité hémodynamique majeure</label>
+            <label><input type="checkbox" id="cec-tsa-diss"> TSA disséqués</label>
+          </div>
+
+          <div class="cec-checks cec-subchecks" id="cec-tsa-list" style="display:none;">
+            <label><input type="checkbox" id="cec-tsa-scd"> Sous-clavière droite</label>
+            <label><input type="checkbox" id="cec-tsa-cd"> Carotide droite</label>
+            <label><input type="checkbox" id="cec-tsa-cg"> Carotide gauche</label>
+            <label><input type="checkbox" id="cec-tsa-scg"> Sous-clavière gauche</label>
+          </div>
+        </div>
+
+        <button class="btn cec-show-proto" type="button" id="cec-show-proto">
+          Afficher protocole de CEC
+        </button>
+      </div>
     </section>
   `;
+
+  const g1 = document.getElementById("cec-g1");
+  const extraWrap = document.getElementById("cec-extra-gestes");
+  const addBtn = document.getElementById("cec-add-gesture");
+
+  function rebuildExtra(){
+    const g = window.__cecState.gestes;
+
+    const blocks = [];
+    if (g[1] !== undefined && (g[1] || g[0])) {
+      blocks.push(`
+        <label class="cec-field">
+          <span>2e geste</span>
+          <select id="cec-g2">${options([g[0]])}</select>
+        </label>
+      `);
+    }
+    if (g[2] !== undefined && (g[2] || (g[0] && g[1]!==undefined))) {
+      blocks.push(`
+        <label class="cec-field">
+          <span>3e geste</span>
+          <select id="cec-g3">${options([g[0], g[1]])}</select>
+        </label>
+      `);
+    }
+
+    extraWrap.innerHTML = blocks.join("");
+
+    const g2 = document.getElementById("cec-g2");
+    const g3 = document.getElementById("cec-g3");
+    if (g2) g2.value = g[1] || "";
+    if (g3) g3.value = g[2] || "";
+
+    const count = g.filter(Boolean).length;
+    addBtn.style.display = (count < 3) ? "block" : "none";
+
+    if (g2) g2.addEventListener("change", () => {
+      window.__cecState.gestes[1] = g2.value || "";
+      if (window.__cecState.gestes[2] && window.__cecState.gestes[2] === window.__cecState.gestes[1]) {
+        window.__cecState.gestes[2] = "";
+      }
+      rebuildExtra();
+      toggleDissectionCard();
+    });
+
+    if (g3) g3.addEventListener("change", () => {
+      window.__cecState.gestes[2] = g3.value || "";
+      toggleDissectionCard();
+    });
+  }
+
+  addBtn.addEventListener("click", () => {
+    const g = window.__cecState.gestes;
+    if (g.filter(Boolean).length >= 3) return;
+    if (g[1] === undefined) g[1] = "";
+    else if (g[2] === undefined) g[2] = "";
+    rebuildExtra();
+  });
+
+  g1.value = window.__cecState.gestes[0] || "";
+  g1.addEventListener("change", () => {
+    window.__cecState.gestes[0] = g1.value || "";
+    // purge doublons
+    const g = window.__cecState.gestes;
+    if (g[1] && g[1] === g[0]) g[1] = "";
+    if (g[2] && (g[2] === g[0] || g[2] === g[1])) g[2] = "";
+    rebuildExtra();
+    toggleDissectionCard();
+  });
+
+  // patient inputs
+  document.getElementById("cec-poids").addEventListener("input", e => window.__cecState.poidsKg = e.target.value);
+  document.getElementById("cec-taille").addEventListener("input", e => window.__cecState.tailleCm = e.target.value);
+
+  // checkboxes
+  function bindChk(id, obj, key){
+    const el = document.getElementById(id);
+    el.checked = !!obj[key];
+    el.addEventListener("change", () => obj[key] = el.checked);
+  }
+  bindChk("cec-fevg35", window.__cecState.coeur, "fevg35");
+  bindChk("cec-hvg", window.__cecState.coeur, "hvg");
+  bindChk("cec-ia", window.__cecState.coeur, "ia");
+  bindChk("cec-stenose", window.__cecState.coeur, "stenoseCoronaireSerree");
+
+  bindChk("cec-sterno", window.__cecState.chirurgie, "sternotomieRisque");
+  bindChk("cec-clamp90", window.__cecState.chirurgie, "clampage90");
+
+  // dissection
+  const disCard = document.getElementById("cec-dissection-card");
+  const tsaList = document.getElementById("cec-tsa-list");
+  const instab = document.getElementById("cec-instabilite");
+  const tsaDiss = document.getElementById("cec-tsa-diss");
+
+  instab.checked = !!window.__cecState.dissection.instabilite;
+  tsaDiss.checked = !!window.__cecState.dissection.tsaDisseques;
+  instab.addEventListener("change", () => window.__cecState.dissection.instabilite = instab.checked);
+  tsaDiss.addEventListener("change", () => {
+    window.__cecState.dissection.tsaDisseques = tsaDiss.checked;
+    tsaList.style.display = tsaDiss.checked ? "grid" : "none";
+  });
+
+  const tsaMap = [
+    ["cec-tsa-scd","scd"],
+    ["cec-tsa-cd","cd"],
+    ["cec-tsa-cg","cg"],
+    ["cec-tsa-scg","scg"],
+  ];
+  tsaMap.forEach(([id,key]) => {
+    const el = document.getElementById(id);
+    el.checked = !!window.__cecState.dissection.tsa[key];
+    el.addEventListener("change", () => window.__cecState.dissection.tsa[key] = el.checked);
+  });
+
+  function toggleDissectionCard(){
+    const g = window.__cecState.gestes;
+    const hasDissection = g.includes("dissection");
+    disCard.style.display = hasDissection ? "block" : "none";
+    tsaList.style.display = (hasDissection && tsaDiss.checked) ? "grid" : "none";
+  }
+
+  rebuildExtra();
+  toggleDissectionCard();
+
+  document.getElementById("cec-show-proto").addEventListener("click", () => {
+    location.hash = "#/cec-protocoles-result";
+  });
+
+  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+}
+
+// ===============================
+// CEC — Render résultat protocole
+// ===============================
+function renderCecProtocolesResult() {
+  const s = window.__cecState;
+  const gestes = (s.gestes||[]).filter(Boolean);
+
+  const protocol = cecPickProtocol(gestes);
+
+  $app.innerHTML = `
+    <section class="page cec-proto-result">
+      <h2>Protocole de CEC</h2>
+
+      ${cecRenderProtocolTable(protocol, s)}
+
+      <div class="grid" style="margin-top:12px;">
+        <button class="btn" onclick="location.hash='#/cec-protocoles'">Modifier la sélection</button>
+        <button class="btn" onclick="location.hash='#/cec'">Retour menu CEC</button>
+      </div>
+    </section>
+  `;
+
+  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
 }
 
 function renderCecUrgencesMenu() {
@@ -20046,7 +20860,6 @@ function renderCecProcedures() {
     </section>
   `;
 }
-
 
 // ===== Enseignement : code admin (1 fois par session) =====
 const SARIC_ADMIN_CODE = "SARIC2026";
@@ -25195,21 +26008,31 @@ const routes = {
   // ---------------------------
   // CEC
   // ---------------------------
-  "#/cec": renderCEC,
-  "#/cec-protocoles": renderCecProtocoles,
-  "#/cec-urgences": renderCecUrgencesMenu,
-  "#/cec-urgences/hypotension": sub(renderCecUrgencesMenu, renderCecUrgenceHypotension),
-  "#/cec-urgences/retour-veineux": sub(renderCecUrgencesMenu, renderCecUrgenceRetourVeineux),
-  "#/cec-urgences/resistance-heparine": sub(renderCecUrgencesMenu, renderCecUrgenceResistanceHeparine),
-  "#/cec-urgences/cardioplegie-inefficace": sub(renderCecUrgencesMenu, renderCecUrgenceCardioplegieInefficace),
-  "#/cec-urgences/decanulation-veineuse": sub(renderCecUrgencesMenu, renderCecUrgenceDecanulationVeineuseAccidentelle),
-  "#/cec-urgences/dissection-aortique-canulation": sub(renderCecUrgencesMenu, renderCecUrgenceDissectionAortiqueSurLaCanulation),
-  "#/cec-urgences/changement-circuit": sub(renderCecUrgencesMenu, renderCecUrgenceChangementCircuitCEC),
-  "#/cec-urgences/entree-air-oxygenateur": sub(renderCecUrgencesMenu, renderCecUrgenceEntreeAirOxygenateur),
-  "#/cec-urgences/embolie-gazeuse-massive": sub(renderCecUrgencesMenu, renderCecUrgenceEmbolieGazeuseMassive),
-  "#/cec-urgences/thrombose-circuit": sub(renderCecUrgencesMenu, renderCecUrgenceThromboseDeCircuit),
-  "#/cec-urgences/sevrage-difficile": sub(renderCecUrgencesMenu, renderCecUrgenceSevrageCecDifficile),
-  "#/cec-procedures": renderCecProcedures,
+ // ---------------------------
+// CEC
+// ---------------------------
+"#/cec": renderCEC,
+
+// Protocoles : sous-page + page résultat
+"#/cec-protocoles": sub(renderCEC, renderCecProtocoles),
+"#/cec-protocoles-result": sub(renderCecProtocoles, renderCecProtocolesResult),
+
+// Urgences : menu + sous-pages (inchangé)
+"#/cec-urgences": sub(renderCEC, renderCecUrgencesMenu),
+"#/cec-urgences/hypotension": sub(renderCecUrgencesMenu, renderCecUrgenceHypotension),
+"#/cec-urgences/retour-veineux": sub(renderCecUrgencesMenu, renderCecUrgenceRetourVeineux),
+"#/cec-urgences/resistance-heparine": sub(renderCecUrgencesMenu, renderCecUrgenceResistanceHeparine),
+"#/cec-urgences/cardioplegie-inefficace": sub(renderCecUrgencesMenu, renderCecUrgenceCardioplegieInefficace),
+"#/cec-urgences/decanulation-veineuse": sub(renderCecUrgencesMenu, renderCecUrgenceDecanulationVeineuseAccidentelle),
+"#/cec-urgences/dissection-aortique-canulation": sub(renderCecUrgencesMenu, renderCecUrgenceDissectionAortiqueSurLaCanulation),
+"#/cec-urgences/changement-circuit": sub(renderCecUrgencesMenu, renderCecUrgenceChangementCircuitCEC),
+"#/cec-urgences/entree-air-oxygenateur": sub(renderCecUrgencesMenu, renderCecUrgenceEntreeAirOxygenateur),
+"#/cec-urgences/embolie-gazeuse-massive": sub(renderCecUrgencesMenu, renderCecUrgenceEmbolieGazeuseMassive),
+"#/cec-urgences/thrombose-circuit": sub(renderCecUrgencesMenu, renderCecUrgenceThromboseDeCircuit),
+"#/cec-urgences/sevrage-difficile": sub(renderCecUrgencesMenu, renderCecUrgenceSevrageCecDifficile),
+
+// Procédures spécifiques : menu conservé
+"#/cec-procedures": sub(renderCEC, renderCecProcedures),
 
   "#/enseignement": renderEnseignement,
   "#/bibliographie": renderBibliographie,
