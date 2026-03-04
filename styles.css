@@ -9016,3 +9016,214 @@ body.theme-light .eto-menu-title{
   padding: 0;
   font-size: inherit;
 }
+
+/* =========================================================
+   CEC – Split page Protocoles (gauche sélection / droite table)
+   + Style tableau protocole (bandeau navy, titres, objectifs)
+   ========================================================= */
+
+:root{
+  --cec-navy-dark: #0b1b33;   /* bandeau haut */
+  --cec-navy-mid:  #163b66;   /* colonne titres */
+  --cec-grey-head: #e6e6e6;   /* objectifs: entête */
+  --cec-border: rgba(127,127,127,.28);
+}
+
+/* ---- Split layout ---- */
+.cec-proto-split{
+  display: grid;
+  grid-template-columns: 440px 1fr;
+  gap: 14px;
+  align-items: start;
+}
+@media (max-width: 980px){
+  .cec-proto-split{ grid-template-columns: 1fr; }
+}
+.cec-left, .cec-right{ min-width: 0; }
+
+.cec-card-compact{ padding-bottom: 10px; }
+
+.cec-gesture{
+  border: 1px solid var(--cec-border);
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.cec-gesture-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom: 8px;
+}
+.cec-gesture-title{ font-weight: 800; }
+
+.btn-ghost{
+  background: transparent !important;
+  border: 1px solid var(--cec-border) !important;
+}
+
+.cec-gesture-row{
+  display:flex;
+  gap: 8px;
+}
+.cec-select{
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--cec-border);
+  background: var(--card-bg, rgba(255,255,255,.04));
+  color: inherit;
+}
+
+/* ---- Lignes compactes “Patient / Coeur / Chirurgie / Dissection” ---- */
+.cec-line{
+  display:flex;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 0;
+  border-top: 1px solid rgba(127,127,127,.18);
+}
+.cec-line:first-child{ border-top: 0; padding-top: 2px; }
+.cec-line-label{ width: 120px; flex: 0 0 120px; }
+
+.cec-line-fields{
+  display:flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items:center;
+}
+.cec-inline-field{
+  display:flex;
+  gap: 6px;
+  align-items:center;
+}
+.cec-inline-field span{ opacity: .85; font-size: .92em; }
+.cec-inline-field input{
+  width: 90px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  border: 1px solid var(--cec-border);
+  background: var(--card-bg, rgba(255,255,255,.04));
+  color: inherit;
+}
+
+.cec-line-checks{
+  display:flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items:center;
+}
+.cec-line-checks label{
+  display:flex;
+  gap: 6px;
+  align-items:center;
+  white-space: nowrap;
+}
+
+/* ---- Tableau protocole (droite) ---- */
+.cec-proto-table-wrap{
+  overflow: auto;
+  border-radius: 14px;
+}
+
+.cec-proto-table{
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 0.95em;
+}
+
+.cec-proto-table td, .cec-proto-table th{
+  border: 1px solid var(--cec-border);
+  vertical-align: top;
+  padding: 10px 12px;
+  color: inherit;
+}
+
+/* Bandeau haut */
+.cec-proto-top{
+  background: var(--cec-navy-dark);
+  color: #fff;
+  font-weight: 700;
+}
+.cec-proto-top small{ opacity: .92; font-weight: 500; }
+
+/* Colonne gauche titres */
+.cec-td-title{
+  width: 240px;
+  background: var(--cec-navy-mid);
+  color: #fff;
+  vertical-align: middle;
+  text-align: left;
+}
+
+/* Titre (gros) + ligne Cf (petite) */
+.cec-cell-title{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cec-cell-title .cec-title-main{
+  font-size: 1.08em;
+  font-weight: 900;
+  line-height: 1.15;
+}
+.cec-cell-title .cec-title-cf{
+  font-size: 0.86em;
+  font-weight: 650;
+  opacity: .95;
+}
+
+/* Lien Cf (pas souligné) + icône image */
+.cec-imglink{
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.cec-imglink:hover{ opacity: .9; }
+.cec-imglink .cec-img-ico{ font-size: 1.05em; }
+
+/* Canules : nom en gras + liste “tirets” */
+.cec-cannula-block{ margin: 0 0 10px 0; }
+.cec-cannula-name{ font-weight: 900; margin-bottom: 6px; }
+.cec-cannula-lines{ list-style: none; padding: 0; margin: 0; }
+.cec-cannula-lines li{
+  margin: 2px 0;
+  padding-left: 14px;
+  position: relative;
+}
+.cec-cannula-lines li::before{
+  content: "–";
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: .95;
+}
+
+/* Cardioplégie : mise en valeur voie + solution */
+.cec-cp-block .cec-cp-line{ margin: 2px 0; }
+.cec-cp-block .cec-cp-gap{ height: 8px; }
+
+/* Objectifs per-CEC : entête gris, cellule gauche centrée verticalement */
+.cec-obj-head{ background: var(--cec-grey-head); font-weight: 900; }
+.cec-obj-left{
+  background: rgba(0,0,0,.08);
+  font-weight: 900;
+  text-align: center;
+  vertical-align: middle !important;
+  color: #111;
+}
+
+/* Dark theme (si ton thème sombre est body.dark) */
+body.dark .cec-obj-head{ background: rgba(255,255,255,.12); }
+body.dark .cec-obj-left{ background: rgba(255,255,255,.08); color: #fff; }
