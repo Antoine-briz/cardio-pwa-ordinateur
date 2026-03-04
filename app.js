@@ -20303,7 +20303,7 @@ function cecRenderFromPpt(protocol, s){
     chosen = cecApplyDynamicToCell(chosen, s, context);
 
     // ✅ Formatage (canulations/cardioplégie/puces/etc.)
-    const formatted = cecFormatProtocolCell(chosen, col0, protocol, s);
+    const formatted = cecFormatProtocolCell(col0, chosen, protocol, s);
 
     bodyHtml += `
       <tr>
