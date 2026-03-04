@@ -19368,13 +19368,10 @@ function renderCEC() {
           </div>
 
           <!-- 2) Protocoles (encadré cliquable) -->
-          <button class="cec-box cec-box-clickable" type="button"
-                  onclick="location.hash = '#/cec-protocoles'">
-            <div class="cec-box-title">Protocoles de CEC</div>
-            <div class="cec-box-sub">
-              Sélection intervention + caractéristiques patient/cœur/chirurgie → génération du protocole.
-            </div>
-          </button>
+          <button class="btn cec-btn-blue cec-proto-btn" type="button"
+        onclick="location.hash = '#/cec-protocoles'">
+  Protocoles CEC
+</button>
 
           <!-- 3) Boutons conservés -->
           <div class="cec-grid">
