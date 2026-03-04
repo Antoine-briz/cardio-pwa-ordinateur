@@ -9476,3 +9476,12 @@ body{
   font-size: 1.05rem;          /* ✅ plus gros aussi */
   opacity: 0.95;
 }
+
+/* croix suppression gestes (plus petite) */
+.cec-gesture-remove{
+  width: 28px !important;
+  height: 28px !important;
+  padding: 0 !important;
+  font-size: 0.9rem !important;
+  line-height: 1 !important;
+}
