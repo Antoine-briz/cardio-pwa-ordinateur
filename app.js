@@ -20559,7 +20559,16 @@ function cecIsDissectionSelected(){
 function renderCecProtocoles() {
   const s = window.__cecState;
 
-  if (!Array.isArray(s.gestes) || s.gestes.length !== 3) s.gestes = ["", "", ""];
+  // ✅ On autorise des "slots" non affichés via undefined
+  if (!Array.isArray(s.gestes) || s.gestes.length !== 3) {
+    s.gestes = ["", undefined, undefined];
+  } else {
+    s.gestes = [s.gestes[0] || "", s.gestes[1], s.gestes[2]];
+  }
+
+  // flag vidéo-thoraco pour mitrale
+  s.chirurgie = s.chirurgie || {};
+  if (typeof s.chirurgie.videoThoracoMitrale !== "boolean") s.chirurgie.videoThoracoMitrale = false;
 
   function optHtml(list){
     return [`<option value="">— Choisir —</option>`]
@@ -20596,24 +20605,22 @@ function renderCecProtocoles() {
 
   $app.innerHTML = `
     <section class="page cec-proto-page">
-      <!-- Titre centré AU-DESSUS des 2 colonnes -->
       <div class="cec-proto-hero">
         <div class="cec-proto-title">Protocoles de CEC</div>
       </div>
 
-      <!-- Grille 2 colonnes pleine largeur -->
       <div class="cec-proto-grid">
-        <!-- Colonne gauche -->
         <div class="cec-left">
           <div class="info-card cec-card-compact">
             <h3>Choix de l’intervention</h3>
 
             <div id="cec-gestures-wrap">
               ${gestureBlockHtml(0)}
-              ${s.gestes[1] !== "" ? gestureBlockHtml(1) : ""}
-              ${s.gestes[2] !== "" ? gestureBlockHtml(2) : ""}
+              ${s.gestes[1] !== undefined ? gestureBlockHtml(1) : ""}
+              ${s.gestes[2] !== undefined ? gestureBlockHtml(2) : ""}
             </div>
 
+            <!-- ✅ Vidéo-thoraco MITRALE : affichée seulement si mitrale sélectionnée -->
             <div id="cec-video-mitrale-line" class="cec-video-line" style="display:none;">
               <label>
                 <input type="checkbox" id="cec-video-mitrale">
@@ -20669,7 +20676,7 @@ function renderCecProtocoles() {
                 <label><input type="checkbox" id="cec-instabilite"> Instabilité hémodynamique majeure</label>
                 <label><input type="checkbox" id="cec-tsa-diss"> TSA disséqués</label>
 
-                <span id="cec-tsa-wrap" style="display:none; margin-left:10px;">
+                <span id="cec-tsa-wrap" class="cec-tsa-wrap" style="display:none;">
                   <label><input type="checkbox" id="cec-tsa-scd"> SCD</label>
                   <label><input type="checkbox" id="cec-tsa-cd"> CD</label>
                   <label><input type="checkbox" id="cec-tsa-cg"> CG</label>
@@ -20677,10 +20684,10 @@ function renderCecProtocoles() {
                 </span>
               </div>
             </div>
+
           </div>
         </div>
 
-        <!-- Colonne droite -->
         <div class="cec-right">
           <div class="info-card cec-preview-card">
             <div id="cec-preview"></div>
@@ -20690,9 +20697,14 @@ function renderCecProtocoles() {
     </section>
   `;
 
-  // -------------------------
-  // Vidéo-thoraco mitrale (checkbox conditionnelle)
-  // -------------------------
+  // ----------------------------
+  // Helpers visibilité
+  // ----------------------------
+  function cecIsDissectionSelected(){
+    return (s.gestes || []).filter(Boolean).includes("dissection");
+  }
+
+  // Vidéo-thoraco : seulement si mitrale (plastie/rvm) sélectionnée
   const videoLine = document.getElementById("cec-video-mitrale-line");
   const videoChk  = document.getElementById("cec-video-mitrale");
 
@@ -20710,13 +20722,68 @@ function renderCecProtocoles() {
     }
   }
 
-  videoChk.checked = !!s.chirurgie.videoThoracoMitrale;
-  videoChk.addEventListener("change", () => {
-    s.chirurgie.videoThoracoMitrale = videoChk.checked;
-    updatePreview();
-  });
+  // TSA wrap : visible seulement si TSA disséqués coché
+  const tsaWrap = document.getElementById("cec-tsa-wrap");
+  const tsaDiss = document.getElementById("cec-tsa-diss");
 
-  // ---- bindings patient ----
+  function toggleTsaWrap(){
+    tsaWrap.style.display = (tsaDiss && tsaDiss.checked) ? "inline-flex" : "none";
+    if (!(tsaDiss && tsaDiss.checked)) {
+      s.dissection.tsa.scd = false;
+      s.dissection.tsa.cd  = false;
+      s.dissection.tsa.cg  = false;
+      s.dissection.tsa.scg = false;
+
+      const ids = ["cec-tsa-scd","cec-tsa-cd","cec-tsa-cg","cec-tsa-scg"];
+      ids.forEach(id => { const el = document.getElementById(id); if (el) el.checked = false; });
+    }
+  }
+
+  // ----------------------------
+  // Bindings
+  // ----------------------------
+  function updateAddBtn(){
+    const wrap = document.getElementById("cec-gestures-wrap");
+    const addBtn = document.getElementById("cec-add-gesture");
+    const count = wrap.querySelectorAll(".cec-gesture").length;
+    addBtn.style.display = (count < 3) ? "" : "none";
+  }
+
+  function ensureNoDuplicateValues(){
+    const seen = new Set();
+    for (let i=0;i<3;i++){
+      const v = s.gestes[i];
+      if (!v) continue;
+      if (seen.has(v)) s.gestes[i] = "";
+      else seen.add(v);
+    }
+  }
+
+  function toggleDissectionLine(){
+    const disLine = document.getElementById("cec-dissection-line");
+    disLine.style.display = cecIsDissectionSelected() ? "" : "none";
+  }
+
+  function updatePreview(){
+    ensureNoDuplicateValues();
+    toggleDissectionLine();
+    toggleVideoThoracoLine();
+    toggleTsaWrap();
+    updateAddBtn();
+
+    const gestes = (s.gestes || []).filter(Boolean);
+    const preview = document.getElementById("cec-preview");
+    if (!preview) return;
+
+    const protocol = gestes.length ? cecPickProtocol(gestes, s) : "generique";
+    const tableHtml = gestes.length
+      ? cecRenderFromPpt(protocol, s)
+      : cecRenderEmptyFromPpt(protocol, s);
+
+    preview.innerHTML = tableHtml;
+  }
+
+  // patient
   document.getElementById("cec-poids").addEventListener("input", e => { s.poidsKg = e.target.value; updatePreview(); });
   document.getElementById("cec-taille").addEventListener("input", e => { s.tailleCm = e.target.value; updatePreview(); });
 
@@ -20732,60 +20799,35 @@ function renderCecProtocoles() {
   bindChk("cec-sterno", s.chirurgie, "sternotomieRisque");
   bindChk("cec-clamp90", s.chirurgie, "clampage90");
 
-  // dissection line
-  const disLine = document.getElementById("cec-dissection-line");
+  // dissection
+  const instab = document.getElementById("cec-instabilite");
+  instab.checked = !!s.dissection.instabilite;
+  instab.addEventListener("change", () => { s.dissection.instabilite = instab.checked; updatePreview(); });
 
-  function bindDissection(){
-    const instab  = document.getElementById("cec-instabilite");
-    const tsaDiss = document.getElementById("cec-tsa-diss");
-    const tsaWrap = document.getElementById("cec-tsa-wrap");
-
-    instab.checked  = !!s.dissection.instabilite;
-    tsaDiss.checked = !!s.dissection.tsaDisseques;
-
-    // ✅ TSA: show/hide + reset si décoché
-    function toggleTsaWrap(){
-      tsaWrap.style.display = tsaDiss.checked ? "inline-flex" : "none";
-      if (!tsaDiss.checked) {
-        s.dissection.tsa.scd = false;
-        s.dissection.tsa.cd  = false;
-        s.dissection.tsa.cg  = false;
-        s.dissection.tsa.scg = false;
-        document.getElementById("cec-tsa-scd").checked = false;
-        document.getElementById("cec-tsa-cd").checked  = false;
-        document.getElementById("cec-tsa-cg").checked  = false;
-        document.getElementById("cec-tsa-scg").checked = false;
-      }
-    }
-
-    instab.addEventListener("change", () => {
-      s.dissection.instabilite = instab.checked;
-      updatePreview();
-    });
-
-    // ✅ REMPLACE ton ancien listener tsaDiss (celui qui faisait juste updatePreview)
-    tsaDiss.addEventListener("change", () => {
-      s.dissection.tsaDisseques = tsaDiss.checked;
-      toggleTsaWrap();
-      updatePreview();
-    });
-
-    const map = [
-      ["cec-tsa-scd","scd"],
-      ["cec-tsa-cd","cd"],
-      ["cec-tsa-cg","cg"],
-      ["cec-tsa-scg","scg"],
-    ];
-    map.forEach(([id,key]) => {
-      const el = document.getElementById(id);
-      el.checked = !!s.dissection.tsa[key];
-      el.addEventListener("change", () => { s.dissection.tsa[key] = el.checked; updatePreview(); });
-    });
-
-    // ✅ état initial (important)
+  tsaDiss.checked = !!s.dissection.tsaDisseques;
+  tsaDiss.addEventListener("change", () => {
+    s.dissection.tsaDisseques = tsaDiss.checked;
     toggleTsaWrap();
-  }
-  bindDissection();
+    updatePreview();
+  });
+
+  [
+    ["cec-tsa-scd","scd"],
+    ["cec-tsa-cd","cd"],
+    ["cec-tsa-cg","cg"],
+    ["cec-tsa-scg","scg"],
+  ].forEach(([id,key]) => {
+    const el = document.getElementById(id);
+    el.checked = !!s.dissection.tsa[key];
+    el.addEventListener("change", () => { s.dissection.tsa[key] = el.checked; updatePreview(); });
+  });
+
+  // Vidéo-thoraco checkbox
+  videoChk.checked = !!s.chirurgie.videoThoracoMitrale;
+  videoChk.addEventListener("change", () => {
+    s.chirurgie.videoThoracoMitrale = videoChk.checked;
+    updatePreview();
+  });
 
   // gestures logic
   const wrap = document.getElementById("cec-gestures-wrap");
@@ -20814,20 +20856,6 @@ function renderCecProtocoles() {
         sel2.value = "";
       }
     });
-  }
-
-  function ensureNoDuplicateValues(){
-    const seen = new Set();
-    for (let i=0;i<3;i++){
-      const v = s.gestes[i] || "";
-      if (!v) continue;
-      if (seen.has(v)) s.gestes[i] = "";
-      else seen.add(v);
-    }
-  }
-
-  function toggleDissectionLine(){
-    disLine.style.display = cecIsDissectionSelected() ? "" : "none";
   }
 
   wrap.addEventListener("change", (e) => {
@@ -20860,12 +20888,6 @@ function renderCecProtocoles() {
         sel2.value = "";
       }
 
-      ensureNoDuplicateValues();
-      toggleDissectionLine();
-
-      // ✅ IMPORTANT: maj checkbox vidéo selon gestes
-      toggleVideoThoracoLine();
-
       updatePreview();
       return;
     }
@@ -20873,12 +20895,6 @@ function renderCecProtocoles() {
     if (t.classList.contains("cec-l2")) {
       const idx = Number(t.dataset.l2);
       s.gestes[idx] = t.value || "";
-      ensureNoDuplicateValues();
-      toggleDissectionLine();
-
-      // ✅ IMPORTANT: maj checkbox vidéo selon gestes
-      toggleVideoThoracoLine();
-
       updatePreview();
       return;
     }
@@ -20888,49 +20904,26 @@ function renderCecProtocoles() {
     const btn = e.target.closest(".cec-gesture-remove");
     if (!btn) return;
     const idx = Number(btn.dataset.remove);
-    s.gestes[idx] = "";
-    if (idx === 1) s.gestes[2] = ""; // compact
+
+    // ✅ on "retire" le slot => undefined (pour cacher le bloc)
+    s.gestes[idx] = undefined;
+    if (idx === 1) s.gestes[2] = undefined; // compact
     renderCecProtocoles();
   });
 
   addBtn.addEventListener("click", () => {
-    const blocksCount = wrap.querySelectorAll(".cec-gesture").length;
-    if (blocksCount === 1) s.gestes[1] = s.gestes[1] ?? "";
-    else if (blocksCount === 2) s.gestes[2] = s.gestes[2] ?? "";
+    // ✅ Ajoute un slot visible vide
+    if (s.gestes[1] === undefined) s.gestes[1] = "";
+    else if (s.gestes[2] === undefined) s.gestes[2] = "";
     renderCecProtocoles();
   });
 
-  function updateAddBtn(){
-    const blocksCount = wrap.querySelectorAll(".cec-gesture").length;
-    addBtn.style.display = (blocksCount < 3) ? "" : "none";
-  }
-
-  function updatePreview(){
-    ensureNoDuplicateValues();
-    toggleDissectionLine();
-    updateAddBtn();
-    toggleVideoThoracoLine();
-
-    const gestes = (s.gestes || []).filter(Boolean);
-    const preview = document.getElementById("cec-preview");
-    if (!preview) return;
-
-    const protocol = gestes.length ? cecPickProtocol(gestes) : "generique";
-
-    const tableHtml = gestes.length
-      ? cecRenderFromPpt(protocol, s)
-      : cecRenderEmptyFromPpt(protocol, s);
-
-    preview.innerHTML = tableHtml;
-  }
-
   rebuildSelectValues();
-
-  // ✅ état initial vidéo + preview
+  toggleDissectionLine();
   toggleVideoThoracoLine();
+  toggleTsaWrap();
   updatePreview();
   updateAddBtn();
-
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
 }
 
