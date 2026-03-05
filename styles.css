@@ -9021,15 +9021,16 @@ body:not(.light-theme) .cec-proto-page .info-card textarea{
   font-weight: 400 !important;
 }
 
-/* ✅ En thème sombre : selects CEC en fond clair (lisible) */
-[data-theme="dark"] .cec-proto-page .cec-select{
+/* ✅ Thème sombre (non light-theme) : select Intervention en fond clair */
+body:not(.light-theme) .cec-proto-page .cec-select{
   background: #fff !important;
   color: #000 !important;
 }
-[data-theme="dark"] .cec-proto-page .cec-select option{
+body:not(.light-theme) .cec-proto-page .cec-select option{
   background: #fff !important;
   color: #000 !important;
 }
+
 /* Canulations : lignes en tirets, sans marge “liste” */
 .cec-cannula-lines-dash{
   margin-top: 0;
@@ -9037,3 +9038,8 @@ body:not(.light-theme) .cec-proto-page .info-card textarea{
   line-height: 1.35;
 }
 .cec-cannula-name{ margin-bottom: 0 !important; }
+
+/* ✅ Espace entre les 2 encadrés (cartes) à gauche */
+.cec-left .info-card + .info-card{
+  margin-top: 14px;
+}
