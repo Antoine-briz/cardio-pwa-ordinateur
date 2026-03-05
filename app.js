@@ -19729,7 +19729,7 @@ const CEC_PPT_TABLES = {
     ],
     [
       "Cardioplégie\nCf cardioplégies",
-      "Voie d’administration: XXX\nSolution de cardioplégie: XXX",
+      "XXX\nXXX",
       ""
     ],
 
