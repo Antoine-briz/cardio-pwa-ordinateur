@@ -9491,3 +9491,66 @@ body{
   font-style: italic;
   padding: 6px 8px;
 }
+
+/* =========================
+   MENU CEC — ajustements
+   ========================= */
+
+/* 1) Harmoniser la hauteur des 3 boutons */
+.cec-proto-btn,
+.cec-grid .btn{
+  width: 100%;
+  min-height: 64px;          /* <- même hauteur partout */
+  padding: 16px 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  border-radius: 16px;
+  box-sizing: border-box;
+}
+
+/* espace identique entre boutons */
+.cec-proto-btn{ margin-bottom: 12px; }
+.cec-grid{
+  display: grid;
+  gap: 12px;
+}
+
+/* 2) Mettre l'image de droite (cec1.png) pleine largeur de la colonne */
+.cec-content{
+  display: grid;
+  grid-template-columns: 1fr 0.75fr; /* colonne droite un peu plus large qu'avant */
+  gap: 24px;
+  align-items: start; /* évite les décalages verticaux bizarres */
+}
+
+/* la colonne droite prend toute la hauteur utile, l'image remplit */
+.cec-side{
+  width: 100%;
+}
+
+.cec-side img{
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 18px;
+  object-fit: cover; /* si tu fixes une hauteur un jour */
+}
+
+/* 3) (optionnel) si tu veux que le schéma sous les boutons reste compact */
+.cec-box{
+  margin-top: 16px;
+}
+
+.cec-thumb{
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* petit détail: éviter que le bouton miniature prenne trop de place */
+.cec-thumb-btn{
+  width: 100%;
+  text-align: left;
+}
