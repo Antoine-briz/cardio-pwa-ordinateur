@@ -19512,11 +19512,13 @@ function cecApplySafeMarkup(htmlEscaped){
     return `<span class="cec-frbox">${txt ? txt : "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"}</span>`;
   });
 
-  // (Optionnel) si tu utilises aussi des tokens de gras type [[B]]...[[/B]]
+  // Tokens de gras [[B]]...[[/B]]
   out = out.replace(/\[\[B\]\]/g, "<strong>").replace(/\[\[\/B\]\]/g, "</strong>");
-// Couleurs variables (après escapeHtml, donc safe)
-  html = html.replace(/\[\[VBLUE:([\s\S]*?)\]\]/g, '<span class="cec-var-word">$1</span>');
-  html = html.replace(/\[\[VRED:([\s\S]*?)\]\]/g,  '<span class="cec-var-num">$1</span>');
+
+  // Couleurs variables (après escapeHtml, donc safe)
+  out = out.replace(/\[\[VBLUE:([\s\S]*?)\]\]/g, '<span class="cec-var-word">$1</span>');
+  out = out.replace(/\[\[VRED:([\s\S]*?)\]\]/g,  '<span class="cec-var-num">$1</span>');
+
   return out;
 }
 
