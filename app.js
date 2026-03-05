@@ -20285,7 +20285,11 @@ function cecFormatProtocolCell(rowTitle, text){
   }
 
   // Canulations : blocs canule + liste en tirets, séparation si ligne vide
-  if (t0.includes("canulation")) {
+ if (t0.includes("canulation")) {
+  // ✅ Dissection aortique (canulation artérielle) : rendu spécifique sans puces sur les 2 titres
+  if (t0.includes("canulation artérielle") && /Site de canulation systémique:/i.test(raw)) {
+    return cecRenderCanulationDissectionArt(raw);
+  }
     const lines = raw.split("\n").map(l => l.trim());
 
     const blocks = [];
