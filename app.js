@@ -20087,6 +20087,18 @@ if (t.includes("Voie d’administration: XXX") || t.includes("Solution de cardio
   const clamp90 = !!s.chirurgie.clampage90;
 
   const gestes = (s.gestes||[]).filter(Boolean);
+    // ✅ Transplantation cardiaque : texte fixe, PAS de cardioplégie standard, PAS d'ajout HVG/Esmolol
+  if (gestes.includes("transplantation")) {
+    t = t.replace(
+      "Voie d’administration: XXX",
+      "Absence de cardioplégie de manière générale après prélèvement du greffon."
+    );
+    t = t.replace(
+      "Solution de cardioplégie: XXX",
+      "Exceptions possibles: Durée d’ischémie froide prolongée (> 4-5h), mauvaise protection initiale…"
+    );
+    return t;
+  }
   const hasPlastieAo = gestes.includes("plastie_aortique");
   const hasRoss = gestes.includes("ross");
  // ✅ Dissection aortique -> ostia coronaires (même si IA non cochée)
