@@ -19379,6 +19379,7 @@ function renderCEC() {
               <div class="cec-thumb-hint">Cliquer pour agrandir</div>
             </button>
           </div>
+          </div>
 
 
         <aside class="cec-side">
