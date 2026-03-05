@@ -20128,17 +20128,26 @@ t = t.replace("Solution de cardioplégie: XXX", sol);
     const v = flow ? cecRecoDissectionArtCalibre(flow, site) : "";
     t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(v)} Fr`);
 
-    const range = cecCarotidRangeMlMin(s.poidsKg);
-    if (range) {
-      const mid = (range.min + range.max)/2;
-      const can = cecRecoCarotidCannula(mid);
-      t = t.replace(
-        "Débit carotidien cible: 8-12 mL/kg/min",
-        `Débit carotidien cible: 8–12 mL/kg/min (≈ ${Math.round(range.min)}–${Math.round(range.max)} mL/min) — Canule: ${can}`
-      );
+// --- Carotides : débit cible + calibre canule (ligne séparée)
+const range = cecCarotidRangeMlMin(s.poidsKg);
+const baseKey = "Débit carotidien cible: 8-12 mL/kg/min";
+
+let debitLine = "Débit carotidien cible: 8–12 mL/kg/min";
+let canVal = "";
+
+if (range) {
+  debitLine = `Débit carotidien cible: 8–12 mL/kg/min (≈ ${Math.round(range.min)}–${Math.round(range.max)} mL/min)`;
+  const mid = (range.min + range.max) / 2;
+  canVal = cecRecoCarotidCannula(mid);
+}
+
+// Toujours afficher une ligne de calibre avec encadré (vide si poids absent)
+t = t.replace(
+  baseKey,
+  `${debitLine}\nCalibre canule carotidienne: ${valOrEmpty(canVal)} Fr`
+);
     }
   }
-}
 }
   t = t.replace(/^\[(ORANGE|BLUE|RED)\]/gm, "");
   return t;
