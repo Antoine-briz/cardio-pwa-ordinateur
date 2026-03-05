@@ -19764,7 +19764,7 @@ const CEC_PPT_TABLES = {
     ],
     [
       "Anticoagulation",
-      "Bolus d’héparine 300 UI/kg IVD dans le circuit (ACT cible: > 400 sec)\nAntithrombine III si ACT cible non atteint\nProtamine: 60-80% de la dose d’héparine (ACT cible: < 120 sec)\nSurveillance plaquettes et fibrinogène\n\nSi HIT: Bivalirudine 1mg/kg bolus puis 2,5 mg/kg/h (ACT cible: 300-400 sec)",
+      "Bolus d’héparine 300 UI/kg IVD dans le circuit (ACT cible: > 400 sec) \nProtamine: 60-80% de la dose d’héparine (ACT cible: < 120 sec)\nSi résistance à l'héparine, discuter AT3 (Cf résistance à l'héparine) \nSi TIH: Bivalirudine 1mg/kg bolus puis 2,5 mg/kg/h (ACT cible: 300-400 sec)",
       ""
     ],
     [
@@ -19803,7 +19803,7 @@ const CEC_PPT_TABLES = {
     ],
     [
       "Anticoagulation",
-      "Bolus d’héparine 300 UI/kg IVD dans le circuit (ACT cible: > 400 sec)\nAntithrombine III si ACT cible non atteint\nProtamine: 60-80% de la dose d’héparine (ACT cible: < 120 sec)\nSurveillance plaquettes et fibrinogène\n\nSi HIT: Bivalirudine 1mg/kg bolus puis 2,5 mg/kg/h (ACT cible: 300-400 sec)",
+      "Bolus d’héparine 300 UI/kg IVD dans le circuit (ACT cible: > 400 sec) \nProtamine: 60-80% de la dose d’héparine (ACT cible: < 120 sec)\nSi résistance à l'héparine, discuter AT3 (Cf résistance à l'héparine) \nSi TIH: Bivalirudine 1mg/kg bolus puis 2,5 mg/kg/h (ACT cible: 300-400 sec)",
       ""
     ],
     [
@@ -19841,7 +19841,7 @@ const CEC_PPT_TABLES = {
     ],
     [
       "Anticoagulation",
-      "Bolus d’héparine 300 UI/kg IVD dans le circuit (ACT cible: > 400 sec)\nAntithrombine III si ACT cible non atteint\nProtamine: 60-80% de la dose d’héparine (ACT cible: < 120 sec)\nSurveillance plaquettes et fibrinogène\n\nSi HIT: Bivalirudine 1mg/kg bolus puis 2,5 mg/kg/h (ACT cible: 300-400 sec)",
+      "Bolus d’héparine 300 UI/kg IVD dans le circuit (ACT cible: > 400 sec) \nProtamine: 60-80% de la dose d’héparine (ACT cible: < 120 sec)\nSi résistance à l'héparine, discuter AT3 (Cf résistance à l'héparine) \nSi TIH: Bivalirudine 1mg/kg bolus puis 2,5 mg/kg/h (ACT cible: 300-400 sec)",
       ""
     ],
     [
@@ -19876,7 +19876,7 @@ const CEC_PPT_TABLES = {
       "Fémorale\nSite: veine fémorale\nDrainage gravitaire (VAVD parfois nécessaire)\nDébit de pompe cible: 2,4 x SC L/min\nCalibre: XX Fr"
     ],
     ["Priming", "Ringer-lactate 1000 à 1500mL\nAjout d’héparine 5000 UI\nAjout de Mannitol 0,25-0,5 g/kg (Eviter si DFG < 45 mL/min/m2)", "", ""],
-    ["Anticoagulation", "Bolus d’héparine 300 UI/kg IVD dans le circuit (ACT cible: > 400 sec)\nAntithrombine III si ACT cible non atteint\nProtamine: 60-80% de la dose d’héparine (ACT cible: < 120 sec)\nSurveillance plaquettes et fibrinogène\n\nSi HIT: Bivalirudine 1mg/kg bolus puis 2,5 mg/kg/h (ACT cible: 300-400 sec)", "", ""],
+    ["Anticoagulation", "Bolus d’héparine 300 UI/kg IVD dans le circuit (ACT cible: > 400 sec) \nProtamine: 60-80% de la dose d’héparine (ACT cible: < 120 sec)\nSi résistance à l'héparine, discuter AT3 (Cf résistance à l'héparine) \nSi TIH: Bivalirudine 1mg/kg bolus puis 2,5 mg/kg/h (ACT cible: 300-400 sec)", "", ""],
     ["Cardioplégie\nCf cardioplégies", "Voie d’administration: XXX\nSolution de cardioplégie: XXX", "", ""],
 
     ["Objectifs per-CEC", "Objectifs", "Mesures correctrices", ""],
@@ -19905,7 +19905,7 @@ const CEC_PPT_TABLES = {
       "Fémorale\nSite: veine fémorale\nDrainage gravitaire (VAVD parfois nécessaire)\nDébit de pompe cible: 2,4 x SC L/min\nCalibre: XX Fr"
     ],
     ["Priming", "Ringer-lactate 1000 à 1500mL\nAjout d’héparine 5000 UI\nAjout de Mannitol 0,25-0,5 g/kg (Eviter si DFG < 45 mL/min/m2)", "", ""],
-    ["Anticoagulation", "Bolus d’héparine 300 UI/kg IVD dans le circuit (ACT cible: > 400 sec)\nAntithrombine III si ACT cible non atteint\nProtamine: 60-80% de la dose d’héparine (ACT cible: < 120 sec)\nSurveillance plaquettes et fibrinogène\n\nSi HIT: Bivalirudine 1mg/kg bolus puis 2,5 mg/kg/h (ACT cible: 300-400 sec)", "", ""],
+    ["Anticoagulation", "Bolus d’héparine 300 UI/kg IVD dans le circuit (ACT cible: > 400 sec) \nProtamine: 60-80% de la dose d’héparine (ACT cible: < 120 sec)\nSi résistance à l'héparine, discuter AT3 (Cf résistance à l'héparine) \nSi TIH: Bivalirudine 1mg/kg bolus puis 2,5 mg/kg/h (ACT cible: 300-400 sec)", "", ""],
     ["Cardioplégie\nCf cardioplégies", "Voie d’administration: XXX\nSolution de cardioplégie: XXX", "", ""],
 
     ["Objectifs per-CEC", "Objectifs", "Mesures correctrices", ""],
