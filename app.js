@@ -19504,17 +19504,17 @@ function cecFrBox(value){
 // Tokens supportés : [[B]]...[[/B]]  et  [[FRBOX:...]]
 // -------------------------------------------------
 function cecApplySafeMarkup(htmlEscaped){
-  let out = String(htmlEscaped || "");
+  // htmlEscaped = texte déjà échappé (escapeHtml), donc SAFE
+  let out = String(htmlEscaped);
 
-  // Gras
-  out = out.replaceAll("[[B]]", "<strong>");
-  out = out.replaceAll("[[/B]]", "</strong>");
-
-  // Encadré Fr : [[FRBOX:12–14]] -> <span class="cec-frbox">12–14</span>
-  out = out.replace(/\[\[FRBOX:([\s\S]*?)\]\]/g, (_, val) => {
-    const safe = escapeHtml(val || "").replaceAll(" ", "&nbsp;");
-    return `<span class="cec-frbox">${safe || "&nbsp;&nbsp;&nbsp;&nbsp;"}</span>`;
+  // Encadré calibre (vide si pas de valeur)
+  out = out.replace(/\[\[FRBOX:([^\]]*)\]\]/g, (_, v) => {
+    const txt = (v || "").trim();
+    return `<span class="cec-frbox">${txt ? txt : "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"}</span>`;
   });
+
+  // (Optionnel) si tu utilises aussi des tokens de gras type [[B]]...[[/B]]
+  out = out.replace(/\[\[B\]\]/g, "<strong>").replace(/\[\[\/B\]\]/g, "</strong>");
 
   return out;
 }
@@ -20026,61 +20026,75 @@ if (t.includes("Voie d’administration: XXX") || t.includes("Solution de cardio
   t = t.replace("Solution de cardioplégie: XXX", sol);
 }
 
-  // Calibres XX  (✅ version compatible avec escapeHtml => utilise un token [[FR:..]])
-if (flow) {
-  // Art générique
-  if (context === "ART_CENTRAL") t = t.replaceAll(
-    "Calibre: XX Fr",
-    `Calibre: ${cecFrBoxToken(cecRecoArtCentral(flow))} Fr`
-  );
+  // Calibres : plus de "XX" -> encadré vide si SC/débit non calculables
+  {
+    const valOrEmpty = (v) => cecFrBoxToken(v || "");
 
-  if (context === "ART_FEM") t = t.replaceAll(
-    "Calibre: XX Fr",
-    `Calibre: ${cecFrBoxToken(cecRecoArtFem(flow))} Fr`
-  );
+    // --- Art ---
+    if (context === "ART_CENTRAL") {
+      const v = flow ? cecRecoArtCentral(flow) : "";
+      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(v)} Fr`);
+    }
 
-  // Veines génériques
-  if (context === "VEN_ATRIO") t = t.replaceAll(
-    "Calibre: XX Fr",
-    `Calibre: ${cecFrBoxToken(cecRecoVenAtriocave(flow))} Fr`
-  );
+    if (context === "ART_FEM") {
+      const v = flow ? cecRecoArtFem(flow) : "";
+      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(v)} Fr`);
+    }
 
-  if (context === "VEN_FEM") t = t.replaceAll(
-    "Calibre: XX Fr",
-    `Calibre: ${cecFrBoxToken(cecRecoVenFem(flow))} Fr`
-  );
+    // --- Veines ---
+    if (context === "VEN_ATRIO") {
+      const v = flow ? cecRecoVenAtriocave(flow) : "";
+      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(v)} Fr`);
+    }
 
-  // Bicavale
-  if (context === "VEN_BICAVAL") {
-    t = t.replaceAll("VCI: XX Fr", `VCI: ${cecFrBoxToken(cecRecoBicavalVCI(flow))} Fr`);
-    t = t.replaceAll("VCS: XX Fr", `VCS: ${cecFrBoxToken(cecRecoBicavalVCS(flow))} Fr`);
-  }
+    if (context === "VEN_FEM") {
+      const v = flow ? cecRecoVenFem(flow) : "";
+      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(v)} Fr`);
+    }
 
-  // Vidéo-thoraco
-  if (context === "VIDEO") {
-    t = t.replaceAll("Canule fémorale: XX Fr", `Canule fémorale: ${cecFrBoxToken(cecRecoVideoFem(flow))} Fr`);
-    t = t.replaceAll("Canule jugulaire: XX Fr", `Canule jugulaire: ${cecFrBoxToken(cecRecoVideoJug(flow))} Fr`);
-    t = t.replaceAll("Calibre: XX Fr", `Calibre: ${cecFrBoxToken(cecRecoVideoLong(flow))} Fr`); // si ligne “Calibre” existe
-  }
+    // --- Bicavale ---
+    if (context === "VEN_BICAVAL") {
+      const vci = flow ? cecRecoBicavalVCI(flow) : "";
+      const vcs = flow ? cecRecoBicavalVCS(flow) : "";
+      t = t.replaceAll("VCI: XX Fr", `VCI: ${valOrEmpty(vci)} Fr`);
+      t = t.replaceAll("VCS: XX Fr", `VCS: ${valOrEmpty(vcs)} Fr`);
+    }
 
-  // Dissection
-  if (context === "DISSECTION_ART") {
-    const site = s.dissection?.instabilite ? "Fémorale" : cecRecoDissectionSystemicSite(s);
-    t = t.replaceAll("Site de canulation systémique: XXX", `Site de canulation systémique: ${site}`);
-    t = t.replaceAll("Calibre: XX Fr", `Calibre: ${cecFrBoxToken(cecRecoDissectionArtCalibre(flow, site))} Fr`);
+    // --- Vidéo-thoraco ---
+    if (context === "VIDEO") {
+      const fem = flow ? cecRecoVideoFem(flow) : "";
+      const jug = flow ? cecRecoVideoJug(flow) : "";
+      const lng = flow ? cecRecoVideoLong(flow) : "";
 
-    const range = cecCarotidRangeMlMin(s.poidsKg);
-    if (range) {
-      const mid = (range.min + range.max) / 2;
-      const can = cecRecoCarotidCannula(mid);
-      // si tu veux aussi une "box" ici : remplace can par cecFrBoxToken(can) + " Fr" si besoin
-      t = t.replace(
-        "Débit carotidien cible: 8-12 mL/kg/min",
-        `Débit carotidien cible: 8–12 mL/kg/min (≈ ${Math.round(range.min)}–${Math.round(range.max)} mL/min) — Canule: ${can}`
-      );
+      t = t.replaceAll("Canule fémorale: XX Fr", `Canule fémorale: ${valOrEmpty(fem)} Fr`);
+      t = t.replaceAll("Canule jugulaire: XX Fr", `Canule jugulaire: ${valOrEmpty(jug)} Fr`);
+
+      // si une ligne "Calibre: XX Fr" existe dans cette cellule
+      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(lng)} Fr`);
+    }
+
+    // --- Dissection artérielle ---
+    if (context === "DISSECTION_ART") {
+      // ⚠️ le site doit s’afficher même sans poids/taille
+      const site = s.dissection?.instabilite ? "Fémorale" : cecRecoDissectionSystemicSite(s);
+      t = t.replaceAll("Site de canulation systémique: XXX", `Site de canulation systémique: ${site}`);
+
+      // calibre (encadré vide si flow absent)
+      const v = flow ? cecRecoDissectionArtCalibre(flow, site) : "";
+      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(v)} Fr`);
+
+      // carotides: calcul seulement si poids OK
+      const range = cecCarotidRangeMlMin(s.poidsKg);
+      if (range) {
+        const mid = (range.min + range.max)/2;
+        const can = cecRecoCarotidCannula(mid);
+        t = t.replace(
+          "Débit carotidien cible: 8-12 mL/kg/min",
+          `Débit carotidien cible: 8–12 mL/kg/min (≈ ${Math.round(range.min)}–${Math.round(range.max)} mL/min) — Canule: ${can}`
+        );
+      }
     }
   }
-}
 
   t = t.replace(/^\[(ORANGE|BLUE|RED)\]/gm, "");
   return t;
