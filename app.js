@@ -19944,11 +19944,11 @@ function cecApplyDynamicToCell(text, s, context){
 
 // --- Si pas de débit (poids/taille manquants), on affiche des “champs” vides ---
 if (!flow) {
-  t = t.replaceAll("Calibre: XX Fr", `Calibre: ${cecFrBox("")}`);
-  t = t.replaceAll("VCI: XX Fr", `VCI: ${cecFrBox("")}`);
-  t = t.replaceAll("VCS: XX Fr", `VCS: ${cecFrBox("")}`);
-  t = t.replaceAll("Canule fémorale: XX Fr", `Canule fémorale: ${cecFrBox("")}`);
-  t = t.replaceAll("Canule jugulaire: XX Fr", `Canule jugulaire: ${cecFrBox("")}`);
+  t = t.replaceAll("Calibre: XX Fr", `Calibre: ${cecFrBox("")} Fr`);
+  t = t.replaceAll("VCI: XX Fr", `VCI: ${cecFrBox("")} Fr`);
+  t = t.replaceAll("VCS: XX Fr", `VCS: ${cecFrBox("")} Fr`);
+  t = t.replaceAll("Canule fémorale: XX Fr", `Canule fémorale: ${cecFrBox("")} Fr`);
+  t = t.replaceAll("Canule jugulaire: XX Fr", `Canule jugulaire: ${cecFrBox("")} Fr`);
   // si tu as d'autres libellés "…: XX Fr", ajoute-les ici
 }
   
@@ -19992,101 +19992,96 @@ if (t.includes("Voie d’administration: XXX") || t.includes("Solution de cardio
   const hasPlastieAo = gestes.includes("plastie_aortique");
   const hasRoss = gestes.includes("ross");
 
-  // --- VOIE ---
-  let voieCore = ia ? "Ostia coronaires" : "Racine aortique";
-  let voie = `[[B]]${voieCore}[[/B]] (pression cible ${ia ? "50–70" : "60–80"} mmHg)`;
+// --- VOIE ---
+let voieCore = ia ? "Ostia coronaires" : "Racine aortique";
+let voie = `${voieCore} (pression cible ${ia ? "50–70" : "60–80"} mmHg)`;
 
-  if (hvg || stenose) {
-    voie += ` + discuter [[B]]Rétrograde sinus coronaire[[/B]] (pression cible 30–40 mmHg)`;
-  }
-
-  // --- SOLUTION ---
-  let solCore = "Sang froid";
-  let sol = `[[B]]${solCore}[[/B]] (ratio 4:1), bolus 15–20 mL/kg toutes les 15–20 min`;
-
-  if (clamp90 || hasPlastieAo || hasRoss) {
-    solCore = "Custodiol";
-    sol = `[[B]]${solCore}[[/B]] 20–25 mL/kg (4–8°C), cardioprotection 90–180 min`;
-  } else if (fevg35) {
-    solCore = "Sang chaud";
-    sol = `[[B]]${solCore}[[/B]] (32–37°C) : continu OU bolus après induction au sang froid`;
-  }
-
-  // On remplace les deux lignes XXX par juste le contenu (sans libellés)
-  t = t.replace("Voie d’administration: XXX", voie);
-  t = t.replace("Solution de cardioplégie: XXX", sol);
+if (hvg || stenose) {
+  voie += ` + discuter Rétrograde sinus coronaire (pression cible 30–40 mmHg)`;
 }
 
-  // Calibres : plus de "XX" -> encadré vide si SC/débit non calculables
-  {
-    const valOrEmpty = (v) => cecFrBoxToken(v || "");
+// --- SOLUTION ---
+let solCore = "Sang froid";
+let sol = `${solCore} (ratio 4:1), bolus 15–20 mL/kg toutes les 15–20 min`;
 
-    // --- Art ---
-    if (context === "ART_CENTRAL") {
-      const v = flow ? cecRecoArtCentral(flow) : "";
-      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(v)} Fr`);
-    }
+if (clamp90 || hasPlastieAo || hasRoss) {
+  solCore = "Custodiol";
+  sol = `${solCore} 20–25 mL/kg (4–8°C), cardioprotection 90–180 min`;
+} else if (fevg35) {
+  solCore = "Sang chaud";
+  sol = `${solCore} (32–37°C) : continu OU bolus après induction au sang froid`;
+}
 
-    if (context === "ART_FEM") {
-      const v = flow ? cecRecoArtFem(flow) : "";
-      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(v)} Fr`);
-    }
+// On remplace les deux lignes XXX par juste le contenu (sans libellés)
+t = t.replace("Voie d’administration: XXX", voie);
+t = t.replace("Solution de cardioplégie: XXX", sol);
 
-    // --- Veines ---
-    if (context === "VEN_ATRIO") {
-      const v = flow ? cecRecoVenAtriocave(flow) : "";
-      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(v)} Fr`);
-    }
+// Calibres : plus de "XX" -> encadré vide si SC/débit non calculables
+{
+  const stripFr = (v) => String(v || "").replace(/\s*Fr\s*$/i, "").trim();
+  const valOrEmpty = (v) => cecFrBoxToken(stripFr(v));
 
-    if (context === "VEN_FEM") {
-      const v = flow ? cecRecoVenFem(flow) : "";
-      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(v)} Fr`);
-    }
-
-    // --- Bicavale ---
-    if (context === "VEN_BICAVAL") {
-      const vci = flow ? cecRecoBicavalVCI(flow) : "";
-      const vcs = flow ? cecRecoBicavalVCS(flow) : "";
-      t = t.replaceAll("VCI: XX Fr", `VCI: ${valOrEmpty(vci)} Fr`);
-      t = t.replaceAll("VCS: XX Fr", `VCS: ${valOrEmpty(vcs)} Fr`);
-    }
-
-    // --- Vidéo-thoraco ---
-    if (context === "VIDEO") {
-      const fem = flow ? cecRecoVideoFem(flow) : "";
-      const jug = flow ? cecRecoVideoJug(flow) : "";
-      const lng = flow ? cecRecoVideoLong(flow) : "";
-
-      t = t.replaceAll("Canule fémorale: XX Fr", `Canule fémorale: ${valOrEmpty(fem)} Fr`);
-      t = t.replaceAll("Canule jugulaire: XX Fr", `Canule jugulaire: ${valOrEmpty(jug)} Fr`);
-
-      // si une ligne "Calibre: XX Fr" existe dans cette cellule
-      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(lng)} Fr`);
-    }
-
-    // --- Dissection artérielle ---
-    if (context === "DISSECTION_ART") {
-      // ⚠️ le site doit s’afficher même sans poids/taille
-      const site = s.dissection?.instabilite ? "Fémorale" : cecRecoDissectionSystemicSite(s);
-      t = t.replaceAll("Site de canulation systémique: XXX", `Site de canulation systémique: ${site}`);
-
-      // calibre (encadré vide si flow absent)
-      const v = flow ? cecRecoDissectionArtCalibre(flow, site) : "";
-      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(v)} Fr`);
-
-      // carotides: calcul seulement si poids OK
-      const range = cecCarotidRangeMlMin(s.poidsKg);
-      if (range) {
-        const mid = (range.min + range.max)/2;
-        const can = cecRecoCarotidCannula(mid);
-        t = t.replace(
-          "Débit carotidien cible: 8-12 mL/kg/min",
-          `Débit carotidien cible: 8–12 mL/kg/min (≈ ${Math.round(range.min)}–${Math.round(range.max)} mL/min) — Canule: ${can}`
-        );
-      }
-    }
+  // --- Art ---
+  if (context === "ART_CENTRAL") {
+    const v = flow ? cecRecoArtCentral(flow) : "";
+    t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(v)} Fr`);
   }
 
+  if (context === "ART_FEM") {
+    const v = flow ? cecRecoArtFem(flow) : "";
+    t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(v)} Fr`);
+  }
+
+  // --- Veines ---
+  if (context === "VEN_ATRIO") {
+    const v = flow ? cecRecoVenAtriocave(flow) : "";
+    t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(v)} Fr`);
+  }
+
+  if (context === "VEN_FEM") {
+    const v = flow ? cecRecoVenFem(flow) : "";
+    t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(v)} Fr`);
+  }
+
+  // --- Bicavale ---
+  if (context === "VEN_BICAVAL") {
+    const vci = flow ? cecRecoBicavalVCI(flow) : "";
+    const vcs = flow ? cecRecoBicavalVCS(flow) : "";
+    t = t.replaceAll("VCI: XX Fr", `VCI: ${valOrEmpty(vci)} Fr`);
+    t = t.replaceAll("VCS: XX Fr", `VCS: ${valOrEmpty(vcs)} Fr`);
+  }
+
+  // --- Vidéo-thoraco ---
+  if (context === "VIDEO") {
+    const fem = flow ? cecRecoVideoFem(flow) : "";
+    const jug = flow ? cecRecoVideoJug(flow) : "";
+    const lng = flow ? cecRecoVideoLong(flow) : "";
+
+    t = t.replaceAll("Canule fémorale: XX Fr", `Canule fémorale: ${valOrEmpty(fem)} Fr`);
+    t = t.replaceAll("Canule jugulaire: XX Fr", `Canule jugulaire: ${valOrEmpty(jug)} Fr`);
+    t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(lng)} Fr`);
+  }
+
+  // --- Dissection artérielle ---
+  if (context === "DISSECTION_ART") {
+    const site = s.dissection?.instabilite ? "Fémorale" : cecRecoDissectionSystemicSite(s);
+    t = t.replaceAll("Site de canulation systémique: XXX", `Site de canulation systémique: ${site}`);
+
+    const v = flow ? cecRecoDissectionArtCalibre(flow, site) : "";
+    t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(v)} Fr`);
+
+    const range = cecCarotidRangeMlMin(s.poidsKg);
+    if (range) {
+      const mid = (range.min + range.max)/2;
+      const can = cecRecoCarotidCannula(mid);
+      t = t.replace(
+        "Débit carotidien cible: 8-12 mL/kg/min",
+        `Débit carotidien cible: 8–12 mL/kg/min (≈ ${Math.round(range.min)}–${Math.round(range.max)} mL/min) — Canule: ${can}`
+      );
+    }
+  }
+}
+}
   t = t.replace(/^\[(ORANGE|BLUE|RED)\]/gm, "");
   return t;
 }
@@ -20145,8 +20140,15 @@ function cecPickProtocol(gestes, s){
 // -------------------------------------------------
 
 function cecRenderCfLine(line){
-  const clean = String(line || "").trim();
-  if (!/^Cf\s+/i.test(clean)) return escapeHtml(clean);
+  // IMPORTANT : on enlève aussi les tags [BLUE]/[ORANGE]/[RED] (comme dans l’autre version)
+  const clean = String(line || "")
+    .replace(/^\[(BLUE|ORANGE|RED)\]/g, "")
+    .trim();
+
+  // Lignes normales : escapeHtml puis conversion des tokens [[FRBOX]] et [[B]]
+  if (!/^Cf\s+/i.test(clean)) {
+    return cecApplySafeMarkup(escapeHtml(clean));
+  }
 
   const file = CEC_CF_MAP[clean];
   if (!file) return `<span class="cec-cf-missing">${escapeHtml(clean)}</span>`;
