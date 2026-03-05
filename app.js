@@ -20065,6 +20065,21 @@ if (!flow) {
 
 // Cardioplégie (mise en gras partielle + pas de libellés "Voie..." / "Solution...")
 if (t.includes("Voie d’administration: XXX") || t.includes("Solution de cardioplégie: XXX")) {
+    // ✅ Transplantation cardiaque : texte fixe, sans Esmolol/HVG, sans voie/solution
+  const isTxCardiaque =
+    /transplantation/i.test(String(s.intervention || "")) ||
+    /transplantation/i.test(String(s.chirurgie || "")) ||
+    /greffon/i.test(String(t || ""));
+
+  if (isTxCardiaque) {
+    // On remplace la cellule cardioplégie par un texte fixe
+    t = t.replace("Voie d’administration: XXX", "Absence de cardioplégie de manière générale après prélèvement du greffon.");
+    t = t.replace(
+      "Solution de cardioplégie: XXX",
+      "Exceptions possibles: Durée d’ischémie froide prolongée (> 4-5h), mauvaise protection initiale…"
+    );
+    return t;
+  }
   const ia = !!s.coeur.ia;
   const hvg = !!s.coeur.hvg;
   const stenose = !!s.coeur.stenoseCoronaireSerree;
