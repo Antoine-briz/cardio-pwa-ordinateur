@@ -8989,3 +8989,17 @@ body.theme-light .eto-menu-title{
 body:not(.dark) .cec-frbox{
   background: rgba(0,0,0,.04);
 }
+
+/* =========================================
+   CEC — Protocoles : lisible en thème sombre
+   ========================================= */
+body:not(.light-theme) .cec-proto-page .info-card{
+  background: rgba(255,255,255,0.92) !important;
+  color: #000 !important;
+}
+
+body:not(.light-theme) .cec-proto-page .info-card input,
+body:not(.light-theme) .cec-proto-page .info-card select,
+body:not(.light-theme) .cec-proto-page .info-card textarea{
+  color: #000 !important;
+}
