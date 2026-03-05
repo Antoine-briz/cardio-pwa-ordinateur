@@ -9058,3 +9058,25 @@ body:not(.light-theme) .cec-proto-page .cec-select option{
 /* Calibres (FRBOX) = rouge foncé aussi */
 .cec-frbox{ color: #7a0c0c; border-color: rgba(122,12,12,.35); }
 .cec-frbox{ color: #7a0c0c; }
+
+/* =========================================================
+   CEC — Couleurs variables (override des règles globales .info-card table *)
+   Bleu = mot conditionnel + gras
+   Rouge = valeur calculée patient + PAS gras
+   ========================================================= */
+
+.cec-proto-page .cec-var-word{
+  color: #0b2540 !important;      /* bleu foncé */
+  font-weight: 800 !important;    /* gras */
+}
+
+.cec-proto-page .cec-var-num{
+  color: #7a0c0c !important;      /* rouge foncé */
+  font-weight: 400 !important;    /* PAS gras */
+}
+
+/* Les FRBOX (calibres) = valeur calculée -> rouge sans gras */
+.cec-proto-page .cec-frbox{
+  color: #7a0c0c !important;
+  font-weight: 400 !important;
+}
