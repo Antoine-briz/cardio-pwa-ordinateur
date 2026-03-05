@@ -19518,14 +19518,6 @@ function cecApplySafeMarkup(htmlEscaped){
   return out;
 }
 
-// -------------------------------------------------
-// "Cf ..." => mapping images (à adapter)
-// -------------------------------------------------
-const CEC_CF_MAP = {
-  "Cf canulations artérielles": "canulationsArterielles.png",
-  "Cf canulations veineuses": "canulationsVeineuses.png",
-  "Cf cardioplégies": "cardioplegies.png",
-};
 
 function cecRenderCfLine(line){
   const clean = String(line || "").replace(/^\[(BLUE|ORANGE|RED)\]/g, "").trim();
