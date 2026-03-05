@@ -19476,6 +19476,7 @@ const CEC_CF_MAP = {
   "Cf canulations artérielles": "canulationsArterielles.png",
   "Cf canulations veineuses": "canulationsVeineuses.png",
   "Cf cardioplégies": "cardioplegies.png",
+  "Cf algorithme Quantra": "quantra.png",
 };
 
 // util HTML
