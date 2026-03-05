@@ -9003,3 +9003,20 @@ body:not(.light-theme) .cec-proto-page .info-card select,
 body:not(.light-theme) .cec-proto-page .info-card textarea{
   color: #000 !important;
 }
+
+/* ✅ Canulation : titre + Cf sur une seule ligne */
+.cec-cell-title-inline{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+.cec-title-cf-inline{
+  font-size: 0.9em;
+  font-weight: 650;
+  opacity: .95;
+}
+/* ✅ Encadré calibre : PAS en gras */
+.cec-frbox{
+  font-weight: 400 !important;
+}
