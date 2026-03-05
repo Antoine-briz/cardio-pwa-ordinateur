@@ -19473,9 +19473,9 @@ function closeImageLightbox(){
 // 5) "Cf ..." => mapping images (à adapter)
 // -------------------------------------------------
 const CEC_CF_MAP = {
-  "Cf canulations artérielles": "canulationsArterielles.png",
-  "Cf canulations veineuses": "canulationsVeineuses.png",
-  "Cf cardioplégies": "cardioplegies.png",
+  "Cf canulations artérielles": "canulationarterielle.png",
+  "Cf canulations veineuses": "canulationveineuse.png",
+  "Cf cardioplégies": "cardioplegie.png",
   "Cf algorithme Quantra": "quantra.png",
 };
 
