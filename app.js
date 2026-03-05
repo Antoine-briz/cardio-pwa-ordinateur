@@ -19492,6 +19492,13 @@ function escapeHtml(s){
     .replaceAll("'","&#039;");
 }
 
+function cecFrBox(value){
+  // valeur affichée dans le “champ” (sans "Fr")
+  const v = String(value || "").trim();
+  const inside = v ? escapeHtml(v) : "&nbsp;&nbsp;&nbsp;&nbsp;";
+  return `<span class="cec-frbox">${inside}</span> Fr`;
+}
+
 function cecRenderCfLine(line){
   const clean = String(line || "").replace(/^\[(BLUE|ORANGE|RED)\]/g, "").trim();
 
@@ -19914,6 +19921,16 @@ function cecApplyDynamicToCell(text, s, context){
   const sc = cecComputeBSA(s.poidsKg, s.tailleCm);
   const flow = sc ? cecComputeFlowTarget(sc) : null;
 
+// --- Si pas de débit (poids/taille manquants), on affiche des “champs” vides ---
+if (!flow) {
+  t = t.replaceAll("Calibre: XX Fr", `Calibre: ${cecFrBox("")}`);
+  t = t.replaceAll("VCI: XX Fr", `VCI: ${cecFrBox("")}`);
+  t = t.replaceAll("VCS: XX Fr", `VCS: ${cecFrBox("")}`);
+  t = t.replaceAll("Canule fémorale: XX Fr", `Canule fémorale: ${cecFrBox("")}`);
+  t = t.replaceAll("Canule jugulaire: XX Fr", `Canule jugulaire: ${cecFrBox("")}`);
+  // si tu as d'autres libellés "…: XX Fr", ajoute-les ici
+}
+  
   if (sc && flow) {
     t = t.replaceAll("2,4 x SC L/min", `2,4 × SC = ${flow.toFixed(1)} L/min (SC ${sc.toFixed(2)} m²)`);
   }
@@ -19978,30 +19995,31 @@ if (t.includes("Voie d’administration: XXX") || t.includes("Solution de cardio
 
   // Calibres XX
   if (flow) {
-    if (context === "ART_CENTRAL") t = t.replaceAll("Calibre: XX Fr", `Calibre: ${cecRecoArtCentral(flow)}`);
-    if (context === "ART_FEM")     t = t.replaceAll("Calibre: XX Fr", `Calibre: ${cecRecoArtFem(flow)}`);
+    // Art générique
+if (context === "ART_CENTRAL") t = t.replaceAll("Calibre: XX Fr", `Calibre: ${cecFrBox(cecRecoArtCentral(flow))}`);
+if (context === "ART_FEM")     t = t.replaceAll("Calibre: XX Fr", `Calibre: ${cecFrBox(cecRecoArtFem(flow))}`);
 
-    if (context === "VEN_ATRIO")   t = t.replaceAll("Calibre: XX Fr", `Calibre: ${cecRecoVenAtriocave(flow)}`);
-    if (context === "VEN_FEM")     t = t.replaceAll("Calibre: XX Fr", `Calibre: ${cecRecoVenFem(flow)}`);
+// Veines génériques
+if (context === "VEN_ATRIO")   t = t.replaceAll("Calibre: XX Fr", `Calibre: ${cecFrBox(cecRecoVenAtriocave(flow))}`);
+if (context === "VEN_FEM")     t = t.replaceAll("Calibre: XX Fr", `Calibre: ${cecFrBox(cecRecoVenFem(flow))}`);
 
-    if (context === "VEN_BICAVAL") {
-      t = t.replaceAll("VCI: XX Fr", `VCI: ${cecRecoBicavalVCI(flow)}`);
-      t = t.replaceAll("VCS: XX Fr", `VCS: ${cecRecoBicavalVCS(flow)}`);
-    }
+// Bicavale
+if (context === "VEN_BICAVAL") {
+  t = t.replaceAll("VCI: XX Fr", `VCI: ${cecFrBox(cecRecoBicavalVCI(flow))}`);
+  t = t.replaceAll("VCS: XX Fr", `VCS: ${cecFrBox(cecRecoBicavalVCS(flow))}`);
+}
 
-    if (context === "VIDEO") {
-      t = t.replaceAll("Canule fémorale: XX Fr", `Canule fémorale: ${cecRecoVideoFem(flow)}`);
-      t = t.replaceAll("Canule jugulaire: XX Fr", `Canule jugulaire: ${cecRecoVideoJug(flow)}`);
-      // "Calibre: XX Fr" de l'alternative longue
-      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${cecRecoVideoLong(flow)}`);
-      // art fémorale si présent
-      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${cecRecoArtFem(flow)}`);
-    }
+// Vidéo-thoraco
+if (context === "VIDEO") {
+  t = t.replaceAll("Canule fémorale: XX Fr", `Canule fémorale: ${cecFrBox(cecRecoVideoFem(flow))}`);
+  t = t.replaceAll("Canule jugulaire: XX Fr", `Canule jugulaire: ${cecFrBox(cecRecoVideoJug(flow))}`);
+  t = t.replaceAll("Calibre: XX Fr", `Calibre: ${cecFrBox(cecRecoVideoLong(flow))}`); // si ligne “Calibre” existe
+}
 
     if (context === "DISSECTION_ART") {
       const site = s.dissection?.instabilite ? "Fémorale" : cecRecoDissectionSystemicSite(s);
       t = t.replaceAll("Site de canulation systémique: XXX", `Site de canulation systémique: ${site}`);
-      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${cecRecoDissectionArtCalibre(flow, site)}`);
+      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${cecFrBox(cecRecoDissectionArtCalibre(flow, site))}`);
 
       const range = cecCarotidRangeMlMin(s.poidsKg);
       if (range) {
