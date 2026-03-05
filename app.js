@@ -20416,8 +20416,8 @@ function cecRenderFromPpt(protocol, s){
     const context = cecContextForRowTitle(col0, protocol, chosen, s);
     chosen = cecApplyDynamicToCell(chosen, s, context);
 
-    // ✅ Formatage (canulations/cardioplégie/puces/etc.)
-    const formatted = cecFormatProtocolCell(col0, chosen, protocol, s);
+// ✅ Formatage (canulations/cardioplégie/puces/etc.) + conversion tokens FRBOX/B sur HTML final
+const formatted = cecApplySafeMarkup(cecFormatProtocolCell(col0, chosen, protocol, s));
 
     bodyHtml += `
       <tr>
