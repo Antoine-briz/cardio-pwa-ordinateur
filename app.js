@@ -19355,16 +19355,6 @@ function renderCEC() {
 
         <div class="cec-main">
 
-          <div class="cec-box">
-            <div class="cec-box-title">Schéma de la CEC</div>
-            <button class="cec-thumb-btn" type="button"
-                    onclick="openImageLightbox('img/schemaCEC.png','Schéma de la CEC')"
-                    aria-label="Ouvrir le schéma de la CEC">
-              <img src="img/schemaCEC.png" alt="Schéma de la CEC" class="cec-thumb">
-              <div class="cec-thumb-hint">Cliquer pour agrandir</div>
-            </button>
-          </div>
-
           <button class="btn cec-btn-blue cec-proto-btn" type="button"
                   onclick="location.hash = '#/cec-protocoles'">
             Protocoles CEC
@@ -19379,6 +19369,17 @@ function renderCEC() {
               Situations d'urgences CEC
             </button>
           </div>
+
+<div class="cec-box">
+            <div class="cec-box-title">Schéma de la CEC</div>
+            <button class="cec-thumb-btn" type="button"
+                    onclick="openImageLightbox('img/schemaCEC.png','Schéma de la CEC')"
+                    aria-label="Ouvrir le schéma de la CEC">
+              <img src="img/schemaCEC.png" alt="Schéma de la CEC" class="cec-thumb">
+              <div class="cec-thumb-hint">Cliquer pour agrandir</div>
+            </button>
+          </div>
+
 
           <div class="cec-credit">
             Avec l'aimable contribution du Dr Florent LAVERDURE
