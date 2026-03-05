@@ -19473,10 +19473,10 @@ function closeImageLightbox(){
 // 5) "Cf ..." => mapping images (à adapter)
 // -------------------------------------------------
 const CEC_CF_MAP = {
-  "Cf canulations artérielles": "canulationarterielle.png",
-  "Cf canulations veineuses": "canulationveineuse.png",
-  "Cf cardioplégies": "cardioplegie.png",
-  "Cf algorithme Quantra": "quantra.png",
+  "Cf canulations artérielles": "img/canulationarterielle.png",
+  "Cf canulations veineuses": "img/canulationveineuse.png",
+  "Cf cardioplégies": "img/cardioplegie.png",
+  "Cf algorithme Quantra": "img/quantra.png",
 };
 
 // util HTML
@@ -19523,17 +19523,15 @@ function cecApplySafeMarkup(htmlEscaped){
 function cecRenderCfLine(line){
   const clean = String(line || "").replace(/^\[(BLUE|ORANGE|RED)\]/g, "").trim();
   if (!/^Cf\s+/i.test(clean)) {
-    // IMPORTANT : on ESCAPE le texte brut, puis on applique nos tokens
     return cecApplySafeMarkup(escapeHtml(clean));
   }
 
   const file = CEC_CF_MAP[clean];
   if (!file) return `<span class="cec-cf-missing">${escapeHtml(clean)}</span>`;
 
-  // Lien image cliquable (garde le texte en bleu via CSS .cec-imglink)
   return `
     <button class="cec-imglink" type="button"
-      onclick="openImageLightbox('/img/${file}','${escapeHtml(clean)}')">
+      onclick="openImageLightbox('${file}','${escapeHtml(clean)}')">
       <span>${escapeHtml(clean)}</span>
       <span class="cec-img-ico" aria-hidden="true">🖼️</span>
     </button>
