@@ -20101,12 +20101,12 @@ if (t.includes("Voie d’administration: XXX") || t.includes("Solution de cardio
   }
   const hasPlastieAo = gestes.includes("plastie_aortique");
   const hasRoss = gestes.includes("ross");
- // ✅ Dissection aortique -> ostia coronaires (même si IA non cochée)
-  const isDissection = !!s.dissection || /dissection/i.test(String(s.intervention || ""));
-  
-// --- VOIE ---
- const voieCore = (ia || isDissection) ? "Ostia coronaires" : "Racine aortique";
-let voie = `${voieCore} (pression cible ${ia ? "50–70" : "60–80"} mmHg)`;
+
+  const isDissection = (s.gestes || []).filter(Boolean).includes("dissection");
+
+const voieCore = (ia || isDissection) ? "Ostia coronaires" : "Racine aortique";
+const pression = (ia || isDissection) ? "50–70" : "60–80";
+let voie = `${voieCore} (pression cible ${pression} mmHg)`;
 
 if (hvg || stenose) {
   voie += ` + discuter Rétrograde sinus coronaire (pression cible 30–40 mmHg)`;
