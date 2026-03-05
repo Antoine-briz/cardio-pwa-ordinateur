@@ -9009,7 +9009,11 @@ body:not(.light-theme) .cec-proto-page .info-card textarea{
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 10px;
+  flex-wrap: wrap;     /* autorise le retour à la ligne */
+  gap: 6px 10px;
+}
+.cec-title-cf-inline{
+  flex-basis: 100%;    /* force "Cf ..." à passer à la ligne */
 }
 .cec-title-cf-inline{
   font-size: 0.9em;
