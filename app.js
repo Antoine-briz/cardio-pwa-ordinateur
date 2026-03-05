@@ -20016,75 +20016,71 @@ if (clamp90 || hasPlastieAo || hasRoss) {
 t = t.replace("Voie d’administration: XXX", voie);
 t = t.replace("Solution de cardioplégie: XXX", sol);
 
-  // Calibres : plus de "XX" -> encadré vide si SC/débit non calculables
-  {
-    const valOrEmpty = (v) => cecFrBoxToken(v || "");
+// Calibres : plus de "XX" -> encadré vide si SC/débit non calculables
+{
+  const stripFr = (v) => String(v || "").replace(/\s*Fr\s*$/i, "").trim();
+  const valOrEmpty = (v) => cecFrBoxToken(stripFr(v));
 
-    // --- Art ---
-    if (context === "ART_CENTRAL") {
-      const v = flow ? cecRecoArtCentral(flow) : "";
-      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(v)} Fr`);
-    }
+  // --- Art ---
+  if (context === "ART_CENTRAL") {
+    const v = flow ? cecRecoArtCentral(flow) : "";
+    t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(v)} Fr`);
+  }
 
-    if (context === "ART_FEM") {
-      const v = flow ? cecRecoArtFem(flow) : "";
-      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(v)} Fr`);
-    }
+  if (context === "ART_FEM") {
+    const v = flow ? cecRecoArtFem(flow) : "";
+    t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(v)} Fr`);
+  }
 
-    // --- Veines ---
-    if (context === "VEN_ATRIO") {
-      const v = flow ? cecRecoVenAtriocave(flow) : "";
-      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(v)} Fr`);
-    }
+  // --- Veines ---
+  if (context === "VEN_ATRIO") {
+    const v = flow ? cecRecoVenAtriocave(flow) : "";
+    t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(v)} Fr`);
+  }
 
-    if (context === "VEN_FEM") {
-      const v = flow ? cecRecoVenFem(flow) : "";
-      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(v)} Fr`);
-    }
+  if (context === "VEN_FEM") {
+    const v = flow ? cecRecoVenFem(flow) : "";
+    t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(v)} Fr`);
+  }
 
-    // --- Bicavale ---
-    if (context === "VEN_BICAVAL") {
-      const vci = flow ? cecRecoBicavalVCI(flow) : "";
-      const vcs = flow ? cecRecoBicavalVCS(flow) : "";
-      t = t.replaceAll("VCI: XX Fr", `VCI: ${valOrEmpty(vci)} Fr`);
-      t = t.replaceAll("VCS: XX Fr", `VCS: ${valOrEmpty(vcs)} Fr`);
-    }
+  // --- Bicavale ---
+  if (context === "VEN_BICAVAL") {
+    const vci = flow ? cecRecoBicavalVCI(flow) : "";
+    const vcs = flow ? cecRecoBicavalVCS(flow) : "";
+    t = t.replaceAll("VCI: XX Fr", `VCI: ${valOrEmpty(vci)} Fr`);
+    t = t.replaceAll("VCS: XX Fr", `VCS: ${valOrEmpty(vcs)} Fr`);
+  }
 
-    // --- Vidéo-thoraco ---
-    if (context === "VIDEO") {
-      const fem = flow ? cecRecoVideoFem(flow) : "";
-      const jug = flow ? cecRecoVideoJug(flow) : "";
-      const lng = flow ? cecRecoVideoLong(flow) : "";
+  // --- Vidéo-thoraco ---
+  if (context === "VIDEO") {
+    const fem = flow ? cecRecoVideoFem(flow) : "";
+    const jug = flow ? cecRecoVideoJug(flow) : "";
+    const lng = flow ? cecRecoVideoLong(flow) : "";
 
-      t = t.replaceAll("Canule fémorale: XX Fr", `Canule fémorale: ${valOrEmpty(fem)} Fr`);
-      t = t.replaceAll("Canule jugulaire: XX Fr", `Canule jugulaire: ${valOrEmpty(jug)} Fr`);
+    t = t.replaceAll("Canule fémorale: XX Fr", `Canule fémorale: ${valOrEmpty(fem)} Fr`);
+    t = t.replaceAll("Canule jugulaire: XX Fr", `Canule jugulaire: ${valOrEmpty(jug)} Fr`);
+    t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(lng)} Fr`);
+  }
 
-      // si une ligne "Calibre: XX Fr" existe dans cette cellule
-      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(lng)} Fr`);
-    }
+  // --- Dissection artérielle ---
+  if (context === "DISSECTION_ART") {
+    const site = s.dissection?.instabilite ? "Fémorale" : cecRecoDissectionSystemicSite(s);
+    t = t.replaceAll("Site de canulation systémique: XXX", `Site de canulation systémique: ${site}`);
 
-    // --- Dissection artérielle ---
-    if (context === "DISSECTION_ART") {
-      // ⚠️ le site doit s’afficher même sans poids/taille
-      const site = s.dissection?.instabilite ? "Fémorale" : cecRecoDissectionSystemicSite(s);
-      t = t.replaceAll("Site de canulation systémique: XXX", `Site de canulation systémique: ${site}`);
+    const v = flow ? cecRecoDissectionArtCalibre(flow, site) : "";
+    t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(v)} Fr`);
 
-      // calibre (encadré vide si flow absent)
-      const v = flow ? cecRecoDissectionArtCalibre(flow, site) : "";
-      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(v)} Fr`);
-
-      // carotides: calcul seulement si poids OK
-      const range = cecCarotidRangeMlMin(s.poidsKg);
-      if (range) {
-        const mid = (range.min + range.max)/2;
-        const can = cecRecoCarotidCannula(mid);
-        t = t.replace(
-          "Débit carotidien cible: 8-12 mL/kg/min",
-          `Débit carotidien cible: 8–12 mL/kg/min (≈ ${Math.round(range.min)}–${Math.round(range.max)} mL/min) — Canule: ${can}`
-        );
-      }
+    const range = cecCarotidRangeMlMin(s.poidsKg);
+    if (range) {
+      const mid = (range.min + range.max)/2;
+      const can = cecRecoCarotidCannula(mid);
+      t = t.replace(
+        "Débit carotidien cible: 8-12 mL/kg/min",
+        `Débit carotidien cible: 8–12 mL/kg/min (≈ ${Math.round(range.min)}–${Math.round(range.max)} mL/min) — Canule: ${can}`
+      );
     }
   }
+}
 
   t = t.replace(/^\[(ORANGE|BLUE|RED)\]/gm, "");
   return t;
