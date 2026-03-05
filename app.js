@@ -20232,6 +20232,18 @@ function cecRenderTitleCell(col0){
   const main = lines[0] || "";
   const rest = lines.slice(1);
 
+  // ✅ Cas particulier "Canulation ..." : le Cf sur la même ligne (pas de saut)
+  if (/^canulation\b/i.test(main) && rest.length === 1) {
+    const cfLine = rest[0];
+    return `
+      <div class="cec-cell-title cec-cell-title-inline">
+        <span class="cec-title-main">${escapeHtml(main)}</span>
+        <span class="cec-title-cf-inline">${cecRenderCfLine(cfLine)}</span>
+      </div>
+    `;
+  }
+
+  // défaut : rendu multi-lignes
   const cfHtml = rest.length
     ? rest.map(l => `<div class="cec-title-cf">${cecRenderCfLine(l)}</div>`).join("")
     : "";
