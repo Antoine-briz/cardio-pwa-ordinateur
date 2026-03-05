@@ -19381,11 +19381,6 @@ function renderCEC() {
           </div>
 
 
-          <div class="cec-credit">
-            Avec l'aimable contribution du Dr Florent LAVERDURE
-          </div>
-        </div>
-
         <aside class="cec-side">
           <img src="img/cec1.png" alt="Circulation extra-corporelle">
         </aside>
@@ -21372,6 +21367,12 @@ function renderCecUrgencesMenu() {
     Sevrage de CEC difficile
   </button>
 </div>
+
+<div class="cec-credit">
+            Avec l'aimable contribution du Dr Florent LAVERDURE
+          </div>
+        </div>
+
       </div>
 
       <aside class="intervention-side">
