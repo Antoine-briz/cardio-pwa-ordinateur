@@ -19776,8 +19776,8 @@ const CEC_PPT_TABLES = {
     // Objectifs per-CEC : TOUJOURS 2 colonnes
     ["Objectifs per-CEC", "Objectifs", "Mesures correctrices"],
     ["", "DO2 > 280-300 mL/min/m2\nVO2 = 100-140 mL/min/m2", "DO2 insuffisant: Augmenter débit CEC, SaO2/PaO2, Hb/Ht \nVO2 élevé: Sédation, curarisation, hypothermie"],
-    ["", "Débit de pompe = 2,2-2,6 L/min/m2\nPAM = 50-70 mmHg (70-80 mmHg si IRC ou HTA)", "Débit de pompe insuffisant: Augmenter RPM, vérifier drainage\nPAM basse: Noradrénaline, vasopressine, augmenter débit si possible"],
-    ["", "Hb > 7-8 g/dL\nHématocrite > 22-25 %", "Hémodilution: Ultrafiltration\nTransfusion CGR si besoin"],
+    ["", "Débit de pompe = 2,2-2,6 L/min/m2\nPAM = 50-70 mmHg (70-80 mmHg si IRC ou HTA)", "Débit de pompe insuffisant: Augmenter RPM, vérifier drainage\nPAM basse (et débit OK): Noradrénaline"],,
+    ["", "Hb > 7-8 g/dL\nHématocrite > 22-25 %", "Hémodilution: Ultrafiltration\nCell-Saver ou transfusion CGR si besoin"],
     ["", "PaO2 = 150-250 mmHg (Eviter hyperoxémie) \nPaCO2 35-45 mmHg", "Hypoxémie: Augmenter FiO2, vérifier/changer oxygénateur"],
     ["", "Normothermie 36-37°C", "Hypothermie: Ajuster réchauffeur\nHyperthermie: Diminuer réchauffement"]
   ],
@@ -19814,9 +19814,9 @@ const CEC_PPT_TABLES = {
 
     ["Objectifs per-CEC", "Objectifs", "Mesures correctrices"],
     ["", "DO2 > 280-300 mL/min/m2\nVO2 = 100-140 mL/min/m2", "DO2 insuffisant: Augmenter débit CEC, SaO2/PaO2, Hb/Ht \nVO2 élevé: Sédation, curarisation, hypothermie"],
-    ["", "Débit de pompe = 2,2-2,6 L/min/m2\nPAM = 50-70 mmHg", "Débit de pompe insuffisant: Augmenter RPM, vérifier drainage\nPAM basse: Noradrénaline, vasopressine, augmenter débit si possible"],
-    ["", "Hb > 7-8 g/dL\nHématocrite > 22-25 %", "Hémodilution: Ultrafiltration\nTransfusion CGR si besoin"],
-    ["", "PaO2 = 150-250 mmHg\n(Eviter hyperoxémie)", "Hypoxémie: Augmenter FiO2, vérifier oxygénateur\nHyperoxémie: Diminuer FiO2"],
+    ["", "Débit de pompe = 2,2-2,6 L/min/m2\nPAM = 50-70 mmHg (70-80 mmHg si IRC ou HTA)", "Débit de pompe insuffisant: Augmenter RPM, vérifier drainage\nPAM basse (et débit OK): Noradrénaline"],
+    ["", "Hb > 7-8 g/dL\nHématocrite > 22-25 %", "Hémodilution: Ultrafiltration\nCell-Saver ou transfusion CGR si besoin"],
+    ["", "PaO2 = 150-250 mmHg (Eviter hyperoxémie) \nPaCO2 35-45 mmHg", "Hypoxémie: Augmenter FiO2, vérifier/changer oxygénateur"],
     ["", "Normothermie 36-37°C", "Hypothermie: Ajuster réchauffeur\nHyperthermie: Diminuer réchauffement"]
   ],
 
@@ -19852,9 +19852,9 @@ const CEC_PPT_TABLES = {
 
     ["Objectifs per-CEC", "Objectifs", "Mesures correctrices"],
     ["", "DO2 > 280-300 mL/min/m2\nVO2 = 100-140 mL/min/m2", "DO2 insuffisant: Augmenter débit CEC, SaO2/PaO2, Hb/Ht \nVO2 élevé: Sédation, curarisation, hypothermie"],
-    ["", "Débit de pompe = 2,2-2,6 L/min/m2\nPAM = 50-70 mmHg", "Débit de pompe insuffisant: Augmenter RPM, vérifier drainage\nPAM basse: Noradrénaline, vasopressine, augmenter débit si possible"],
-    ["", "Hb > 7-8 g/dL\nHématocrite > 22-25 %", "Hémodilution: Ultrafiltration\nTransfusion CGR si besoin"],
-    ["", "PaO2 = 150-250 mmHg\n(Eviter hyperoxémie)", "Hypoxémie: Augmenter FiO2, vérifier oxygénateur\nHyperoxémie: Diminuer FiO2"],
+    ["", "Débit de pompe = 2,2-2,6 L/min/m2\nPAM = 50-70 mmHg", "Débit de pompe insuffisant: Augmenter RPM, vérifier drainage\nPAM basse (et débit OK): Noradrénaline"],
+    ["", "Hb > 7-8 g/dL\nHématocrite > 22-25 %", "Hémodilution: Ultrafiltration\nCell-Saver ou transfusion CGR si besoin"],
+    ["", "PaO2 = 150-250 mmHg (Eviter hyperoxémie) \nPaCO2 35-45 mmHg", "Hypoxémie: Augmenter FiO2, vérifier/changer oxygénateur"],
     ["", "Normothermie 36-37°C", "Hypothermie: Ajuster réchauffeur\nHyperthermie: Diminuer réchauffement"]
   ],
 
