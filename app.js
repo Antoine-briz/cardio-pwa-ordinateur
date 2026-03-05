@@ -19956,6 +19956,64 @@ if (!flow) {
     t = t.replaceAll("2,4 x SC L/min", `2,4 × SC = ${flow.toFixed(1)} L/min (SC ${sc.toFixed(2)} m²)`);
   }
 
+// ----------------------------
+// Calibres canules (CEC)
+// ----------------------------
+{
+  const stripFr = (v) => String(v || "").replace(/\s*Fr\s*$/i, "").trim();
+  const box = (v) => cecFrBox(stripFr(v)); // cecFrBox => token [[FRBOX:...]] puis converti en <span>
+
+  // Si pas de débit, on garde l'encadré vide déjà mis plus haut
+  if (flow) {
+    // --- Art ---
+    if (context === "ART_CENTRAL") {
+      const v = cecRecoArtCentral(flow);
+      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${box(v)} Fr`);
+    }
+    if (context === "ART_FEM") {
+      const v = cecRecoArtFem(flow);
+      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${box(v)} Fr`);
+    }
+
+    // --- Veines ---
+    if (context === "VEN_ATRIO") {
+      const v = cecRecoVenAtriocave(flow);
+      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${box(v)} Fr`);
+    }
+    if (context === "VEN_FEM") {
+      const v = cecRecoVenFem(flow);
+      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${box(v)} Fr`);
+    }
+
+    // --- Bicavale ---
+    if (context === "VEN_BICAVAL") {
+      const vci = cecRecoBicavalVCI(flow);
+      const vcs = cecRecoBicavalVCS(flow);
+      t = t.replaceAll("VCI: XX Fr", `VCI: ${box(vci)} Fr`);
+      t = t.replaceAll("VCS: XX Fr", `VCS: ${box(vcs)} Fr`);
+    }
+
+    // --- Vidéo-thoraco ---
+    if (context === "VIDEO") {
+      const fem = cecRecoVideoFem(flow);
+      const jug = cecRecoVideoJug(flow);
+      const lng = cecRecoVideoLong(flow);
+      t = t.replaceAll("Canule fémorale: XX Fr", `Canule fémorale: ${box(fem)} Fr`);
+      t = t.replaceAll("Canule jugulaire: XX Fr", `Canule jugulaire: ${box(jug)} Fr`);
+      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${box(lng)} Fr`);
+    }
+
+    // --- Dissection artérielle ---
+    if (context === "DISSECTION_ART") {
+      const site = s.dissection?.instabilite ? "Fémorale" : cecRecoDissectionSystemicSite(s);
+      t = t.replaceAll("Site de canulation systémique: XXX", `Site de canulation systémique: ${site}`);
+
+      const v = cecRecoDissectionArtCalibre(flow, site);
+      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${box(v)} Fr`);
+    }
+  }
+}
+  
   // Mannitol
   if (t.includes("Mannitol 0,25-0,5 g/kg")) {
     const w = cecNum(s.poidsKg);
