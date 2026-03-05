@@ -20120,33 +20120,38 @@ t = t.replace("Solution de cardioplégie: XXX", sol);
     t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(lng)} Fr`);
   }
 
-  // --- Dissection artérielle ---
-  if (context === "DISSECTION_ART") {
-    const site = s.dissection?.instabilite ? "Fémorale" : cecRecoDissectionSystemicSite(s);
-    t = t.replaceAll("Site de canulation systémique: XXX", `Site de canulation systémique: ${site}`);
+// --- Dissection artérielle ---
+if (context === "DISSECTION_ART") {
+  const site = s.dissection?.instabilite ? "Fémorale" : cecRecoDissectionSystemicSite(s);
+  t = t.replaceAll("Site de canulation systémique: XXX", `Site de canulation systémique: ${site}`);
 
-    const v = flow ? cecRecoDissectionArtCalibre(flow, site) : "";
-    t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(v)} Fr`);
+  const v = flow ? cecRecoDissectionArtCalibre(flow, site) : "";
+  t = t.replaceAll("Calibre: XX Fr", `Calibre: ${valOrEmpty(v)} Fr`);
 
-// --- Carotides : débit cible + calibre canule (ligne séparée)
-const range = cecCarotidRangeMlMin(s.poidsKg);
-const baseKey = "Débit carotidien cible: 8-12 mL/kg/min";
+  // --- Carotidien : remplacer "8-12 mL/kg/min" par un débit calculé (mL/min)
+  // + ajouter une ligne "Calibre: __ Fr"
+  {
+    const baseKey = "Débit carotidien cible: 8-12 mL/kg/min";
+    const kg = Number(s.poidsKg || 0);
 
-let debitLine = "Débit carotidien cible: 8–12 mL/kg/min";
-let canVal = "";
+    let debitLine = "Débit carotidien cible: __ mL/min";
+    let canVal = "";
 
-if (range) {
-  debitLine = `Débit carotidien cible: 8–12 mL/kg/min (≈ ${Math.round(range.min)}–${Math.round(range.max)} mL/min)`;
-  const mid = (range.min + range.max) / 2;
-  canVal = cecRecoCarotidCannula(mid);
-}
+    if (kg > 0) {
+      const min = Math.round(8 * kg);
+      const max = Math.round(12 * kg);
+      debitLine = `Débit carotidien cible: ≈ ${min}–${max} mL/min`;
 
-// Toujours afficher une ligne de calibre avec encadré (vide si poids absent)
-t = t.replace(
-  baseKey,
-  `${debitLine}\nCalibre canule carotidienne: ${valOrEmpty(canVal)} Fr`
-);
+      const mid = (min + max) / 2;
+      canVal = cecRecoCarotidCannula(mid);
     }
+
+    t = t.replace(
+      baseKey,
+      `${debitLine}\nCalibre: ${valOrEmpty(canVal)} Fr`
+    );
+  }
+}
   }
 }
   t = t.replace(/^\[(ORANGE|BLUE|RED)\]/gm, "");
