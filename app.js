@@ -19493,10 +19493,9 @@ function escapeHtml(s){
 }
 
 function cecFrBox(value){
-  // valeur affichée dans le “champ” (sans "Fr")
+  // retourne un TOKEN, pas du HTML
   const v = String(value || "").trim();
-  const inside = v ? escapeHtml(v) : "&nbsp;&nbsp;&nbsp;&nbsp;";
-  return `<span class="cec-frbox">${inside}</span> Fr`;
+  return `[[FRBOX:${v}]]`;
 }
 
 // -------------------------------------------------
