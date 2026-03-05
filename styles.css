@@ -8968,3 +8968,24 @@ body.theme-light .eto-menu-title{
   table-layout: auto !important; /* évite les “trous” liés au fixed */
   display: table !important;
 }
+
+/* =========================
+   CEC – “champ” calibre (Fr)
+   ========================= */
+.cec-frbox{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 4.8ch;          /* assez pour 12-14 */
+  padding: 2px 8px;
+  border-radius: 8px;
+  border: 1px solid var(--cec-border, rgba(127,127,127,.35));
+  background: rgba(255,255,255,.10);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: .2px;
+}
+
+body:not(.dark) .cec-frbox{
+  background: rgba(0,0,0,.04);
+}
