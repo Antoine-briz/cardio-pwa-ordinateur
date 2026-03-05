@@ -9051,3 +9051,10 @@ body:not(.light-theme) .cec-proto-page .cec-select option{
   display:inline;
   margin:0;
 }
+/* Variables (tableau protocole) */
+.cec-var-word{ color: #0b2540; font-weight: 800; } /* bleu foncé */
+.cec-var-num{  color: #7a0c0c; font-weight: 800; } /* rouge foncé */
+
+/* Calibres (FRBOX) = rouge foncé aussi */
+.cec-frbox{ color: #7a0c0c; border-color: rgba(122,12,12,.35); }
+.cec-frbox{ color: #7a0c0c; }
