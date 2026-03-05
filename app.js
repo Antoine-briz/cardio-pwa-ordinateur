@@ -19533,7 +19533,7 @@ function cecRenderCfLine(line){
   // Lien image cliquable (garde le texte en bleu via CSS .cec-imglink)
   return `
     <button class="cec-imglink" type="button"
-      onclick="openImageLightbox('img/${file}','${escapeHtml(clean)}')">
+      onclick="openImageLightbox('/img/${file}','${escapeHtml(clean)}')">
       <span>${escapeHtml(clean)}</span>
       <span class="cec-img-ico" aria-hidden="true">🖼️</span>
     </button>
