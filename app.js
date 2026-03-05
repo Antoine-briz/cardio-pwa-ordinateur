@@ -19514,7 +19514,9 @@ function cecApplySafeMarkup(htmlEscaped){
 
   // (Optionnel) si tu utilises aussi des tokens de gras type [[B]]...[[/B]]
   out = out.replace(/\[\[B\]\]/g, "<strong>").replace(/\[\[\/B\]\]/g, "</strong>");
-
+// Couleurs variables (après escapeHtml, donc safe)
+  html = html.replace(/\[\[VBLUE:([\s\S]*?)\]\]/g, '<span class="cec-var-word">$1</span>');
+  html = html.replace(/\[\[VRED:([\s\S]*?)\]\]/g,  '<span class="cec-var-num">$1</span>');
   return out;
 }
 
@@ -19953,7 +19955,10 @@ if (!flow) {
 }
   
   if (sc && flow) {
-    t = t.replaceAll("2,4 x SC L/min", `2,4 × SC = ${flow.toFixed(1)} L/min (SC ${sc.toFixed(2)} m²)`);
+    t = t.replaceAll(
+  "2,4 x SC L/min",
+  `2,4 × SC = [[VRED:${flow.toFixed(1)}]] L/min (SC [[VRED:${sc.toFixed(2)}]] m²)`
+);
   }
 
 // ----------------------------
@@ -20020,7 +20025,7 @@ if (!flow) {
     const max = kg ? Math.round(12 * kg) : null;
 
     const debitLine = kg
-      ? `Débit carotidien cible: ≈ ${min}–${max} mL/min`
+      ? `Débit carotidien cible: ≈ [[VRED:${min}–${max}]] mL/min`
       : "Débit carotidien cible: __ mL/min";
 
     const canVal = kg ? cecRecoCarotidCannula((min + max) / 2) : "";
@@ -20093,7 +20098,7 @@ if (clamp90 || hasPlastieAo || hasRoss) {
  // ✅ 1) Ajout Esmolol si HVG cochée (sous la solution)
   // On l'ajoute au texte de la cellule pour apparaître “en dessous”
   if (hvg) {
-    sol += `\nAutre: Ajout d’Esmolol 50 µg/kg/min IVSE en per-CEC en raison de l’HVG`;
+  sol += `\nAutre: Ajout d’[[VBLUE:Esmolol]] 50 µg/kg/min IVSE en per-CEC en raison de l’HVG`;
   }
   
 // On remplace les deux lignes XXX par juste le contenu (sans libellés)
