@@ -19930,12 +19930,18 @@ function cecApplyDynamicToCell(text, s, context){
     }
   }
 
-  // Cardioplégie XXX
-  if (t.includes("Voie d’administration: XXX") || t.includes("Solution de cardioplégie: XXX")) {
-    const cp = cecRecoCardioplegia(s);
-    t = t.replace("Voie d’administration: XXX", `Voie d’administration: ${cp.voie}`);
-    t = t.replace("Solution de cardioplégie: XXX", `Solution de cardioplégie: ${cp.solution}`);
-  }
+ // Cardioplégie XXX  (✅ sans libellés "Voie..." / "Solution...")
+if (t.includes("Voie d’administration: XXX") || t.includes("Solution de cardioplégie: XXX")) {
+  const cp = cecRecoCardioplegia(s);
+
+  // On remplace les placeholders par la réponse uniquement
+  t = t.replace("Voie d’administration: XXX", `${cp.voie}`);
+  t = t.replace("Solution de cardioplégie: XXX", `${cp.solution}`);
+
+  // (sécurité) si jamais d’anciennes versions traînent avec libellés déjà présents
+  t = t.replace(/^Voie d’administration:\s*/gm, "");
+  t = t.replace(/^Solution(?: de cardioplégie)?:\s*/gm, "");
+}
 
   // Calibres XX
   if (flow) {
