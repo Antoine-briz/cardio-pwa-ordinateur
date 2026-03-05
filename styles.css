@@ -9051,13 +9051,29 @@ body:not(.light-theme) .cec-proto-page .cec-select option{
   display:inline;
   margin:0;
 }
-/* Variables (tableau protocole) */
-.cec-var-word{ color: #0b2540; font-weight: 800; } /* bleu foncé */
-.cec-var-num{  color: #7a0c0c; font-weight: 800; } /* rouge foncé */
 
-/* Calibres (FRBOX) = rouge foncé aussi */
-.cec-frbox{ color: #7a0c0c; border-color: rgba(122,12,12,.35); }
-.cec-frbox{ color: #7a0c0c; }
+/* Variables (tableau protocole) */
+.cec-var-word{
+  color: #0b2540 !important;     /* bleu foncé */
+  font-weight: 800 !important;   /* gras */
+}
+
+.cec-var-num{
+  color: #7a0c0c !important;     /* rouge foncé */
+  font-weight: 400 !important;   /* ✅ PAS gras */
+}
+
+/* Calibres (FRBOX) = rouge foncé MAIS pas gras */
+.cec-frbox{
+  color: #7a0c0c !important;
+  border-color: rgba(122,12,12,.35) !important;
+  font-weight: 400 !important;   /* ✅ PAS gras */
+}
+
+/* Titres de blocs canulation (Centrale / Atrio-cave / etc.) en bleu (variables “mots”) */
+.cec-cannula-name strong{
+  color: #0b2540 !important;
+}
 
 /* =========================================================
    CEC — Couleurs variables (override des règles globales .info-card table *)
