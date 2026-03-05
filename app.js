@@ -19961,9 +19961,9 @@ if (!flow) {
 // ----------------------------
 {
   const stripFr = (v) => String(v || "").replace(/\s*Fr\s*$/i, "").trim();
-  const box = (v) => cecFrBox(stripFr(v)); // cecFrBox => token [[FRBOX:...]] puis converti en <span>
+  const box = (v) => cecFrBox(stripFr(v)); // [[FRBOX:...]] => converti en <span class="cec-frbox">
 
-  // Si pas de débit, on garde l'encadré vide déjà mis plus haut
+  // Calibres dépendants du débit (donc poids/taille)
   if (flow) {
     // --- Art ---
     if (context === "ART_CENTRAL") {
@@ -20002,15 +20002,33 @@ if (!flow) {
       t = t.replaceAll("Canule jugulaire: XX Fr", `Canule jugulaire: ${box(jug)} Fr`);
       t = t.replaceAll("Calibre: XX Fr", `Calibre: ${box(lng)} Fr`);
     }
+  }
 
-    // --- Dissection artérielle ---
-    if (context === "DISSECTION_ART") {
-      const site = s.dissection?.instabilite ? "Fémorale" : cecRecoDissectionSystemicSite(s);
-      t = t.replaceAll("Site de canulation systémique: XXX", `Site de canulation systémique: ${site}`);
+  // --- Dissection artérielle ---
+  // ✅ Le site doit s’afficher même sans poids/taille
+  if (context === "DISSECTION_ART") {
+    const site = s.dissection?.instabilite ? "Fémorale" : cecRecoDissectionSystemicSite(s);
+    t = t.replaceAll("Site de canulation systémique: XXX", `Site de canulation systémique: ${site}`);
 
-      const v = cecRecoDissectionArtCalibre(flow, site);
-      t = t.replaceAll("Calibre: XX Fr", `Calibre: ${box(v)} Fr`);
-    }
+    // calibre systémique (vide si flow absent)
+    const v = flow ? cecRecoDissectionArtCalibre(flow, site) : "";
+    t = t.replaceAll("Calibre: XX Fr", `Calibre: ${box(v)} Fr`);
+
+    // ✅ Carotide : remplacer "8-12 mL/kg/min" par débit calculé (mL/min) + ligne calibre
+    const kg = cecNum(s.poidsKg);
+    const min = kg ? Math.round(8 * kg) : null;
+    const max = kg ? Math.round(12 * kg) : null;
+
+    const debitLine = kg
+      ? `Débit carotidien cible: ≈ ${min}–${max} mL/min`
+      : "Débit carotidien cible: __ mL/min";
+
+    const canVal = kg ? cecRecoCarotidCannula((min + max) / 2) : "";
+
+    t = t.replace(
+      /Débit carotidien cible:\s*8\s*[-–]\s*12\s*mL\/kg\/min\s*/i,
+      `${debitLine}\nCalibre: ${box(canVal)} Fr\n`
+    );
   }
 }
   
