@@ -9048,6 +9048,6 @@ body:not(.light-theme) .cec-proto-page .cec-select option{
   margin-top: 14px;
 }
 .cec-cannula-lines strong{
-  display:block;
-  margin-top:4px;
+  display:inline;
+  margin:0;
 }
