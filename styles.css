@@ -8590,459 +8590,158 @@ body.theme-light .eto-menu-title{
   width:auto; padding:10px 14px; border-radius:999px;
 }
 
-/* Form */
-.cec-form .cec-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-@media (max-width:700px){ .cec-form .cec-row{ grid-template-columns:1fr; } }
-.cec-field{ display:flex; flex-direction:column; gap:6px; margin-top:10px; }
-.cec-field span{ font-size:13px; opacity:.8; }
-.cec-field input, .cec-field select{
-  padding:12px; border-radius:12px; border:1px solid #ddd; font-size:15px;
-}
-.cec-checks{ display:grid; gap:10px; margin-top:10px; }
-.cec-subchecks{ margin-top:12px; padding-top:10px; border-top:1px dashed #ddd; }
-
-.cec-resume{
-  background:#fff; border-radius:16px; padding:14px;
-  box-shadow:0 6px 16px rgba(0,0,0,.06);
-  margin:12px 0 16px; line-height:1.4; font-size:14px;
-}
-
-/* Table protocole */
-.cec-proto-table-wrap{
-  overflow:auto; background:#fff; border-radius:16px;
-  box-shadow:0 6px 16px rgba(0,0,0,.06);
-}
-.cec-proto-table{ width:100%; border-collapse:separate; border-spacing:0; min-width:820px; }
-.cec-proto-table td{
-  vertical-align:top; padding:12px;
-  border-bottom:1px solid #eee; border-right:1px solid #eee;
-  font-size:14px; line-height:1.35;
-}
-.cec-td-title{ font-weight:800; width:240px; background:#fafafa; }
-.cec-proto-table tr:last-child td{ border-bottom:0; }
-.cec-proto-table td:last-child{ border-right:0; }
-
-.cec-ul{ margin:0; padding-left:18px; }
-.cec-ul li{ margin:6px 0; }
-
-.cec-imglink{
-  border:0; background:transparent; padding:0;
-  font-weight:800; text-decoration:underline; cursor:pointer;
-}
-.cec-cf-missing{ font-weight:800; opacity:.7; }
-
 /* =========================================================
-   CEC — Correctifs thème clair/sombre (lisibilité)
-   À coller TOUT EN BAS du fichier styles.css
-========================================================= */
+   CEC — CSS CLEAN (menu + protocoles + tableau)
+   => Remplace toutes tes anciennes règles .cec-*
+   ========================================================= */
 
-/* Crédit : évite le gris illisible en sombre */
-.cec-credit{ color: var(--muted); }
+:root{
+  --cec-navy-top:  #0b2540;   /* bandeau haut tableau */
+  --cec-navy-left: #123a63;   /* colonne titres tableau */
+  --cec-obj-head-bg: rgba(148,163,184,.25);
+  --cec-border: rgba(127,127,127,.28);
+}
 
-/* Menu CEC : styles manquants (cec-box-title, thumb, etc.)
-   -> On surcharge seulement dans la page menu (.cec-page) */
+/* -------------------------
+   MENU CEC (page #/cec)
+   ------------------------- */
+
+/* Layout 2 colonnes */
+.cec-content{
+  display: grid;
+  grid-template-columns: 1fr 0.75fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 900px){
+  .cec-content{ grid-template-columns: 1fr; }
+}
+
+/* Harmoniser les 3 boutons (même hauteur) */
+.cec-proto-btn,
+.cec-grid .btn{
+  width: 100%;
+  min-height: 64px;
+  padding: 16px 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  border-radius: 16px;
+  box-sizing: border-box;
+}
+
+.cec-grid{
+  display: grid;
+  gap: 12px;
+}
+
+.cec-proto-btn{ margin: 10px 0 0 0; }
+
+/* Image droite (cec1.png) : plein largeur colonne */
+.cec-side{ width: 100%; }
+.cec-side img{
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 18px;
+}
+
+/* Encadré schéma + miniature centrée */
 .cec-page .cec-box{
   background: var(--card);
   color: var(--fg);
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 14px;
+  margin-top: 16px;
 }
 
 .cec-page .cec-box-title{
+  font-size: 18px;
   font-weight: 800;
-  margin-bottom: 10px;
+  margin: 0 0 10px 0;
+  color: var(--fg);
 }
 
-.cec-page .cec-box-sub{
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.35;
-}
-
-.cec-page .cec-box-clickable{
-  text-align: left;
-  cursor: pointer;
-}
-
+/* bouton miniature */
 .cec-page .cec-thumb-btn{
   width: 100%;
   border: 0;
   background: transparent;
   padding: 0;
   cursor: pointer;
+
+  /* ✅ centre la miniature */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .cec-page .cec-thumb{
   width: 100%;
-  height: auto;
+  max-width: 420px;
+  max-height: 180px;
+  object-fit: contain;
+  display: block;
   border-radius: 12px;
   border: 1px solid var(--border);
-  display: block;
 }
 
 .cec-page .cec-thumb-hint{
   margin-top: 8px;
   font-size: 13px;
   color: var(--muted);
+  align-self: flex-start; /* “Cliquer pour agrandir” aligné comme texte */
 }
 
-/* Protocoles : fond + texte compatibles sombre/clair */
-.cec-resume{
-  background: var(--card);
-  color: var(--fg);
-  border: 1px solid var(--border);
-  box-shadow: none; /* optionnel : plus “propre” en sombre */
-}
+/* -------------------------
+   PAGE PROTOCOLES (split)
+   ------------------------- */
 
-.cec-proto-table-wrap{
-  background: var(--card);
-  color: var(--fg);
-  border: 1px solid var(--border);
-  box-shadow: none;
-}
-
-.cec-proto-table td{
-  color: var(--fg);
-  border-bottom: 1px solid var(--border);
-  border-right: 1px solid var(--border);
-}
-
-.cec-td-title{
-  background: color-mix(in srgb, var(--card) 70%, var(--bg) 30%);
-  color: var(--fg);
-}
-
-/* Formulaire protocoles : inputs lisibles en sombre */
-.cec-proto-page .cec-field input,
-.cec-proto-page .cec-field select{
-  background: var(--card);
-  color: var(--fg);
-  border: 1px solid var(--border);
-}
-
-.cec-proto-page .cec-field span{
-  color: var(--muted);
-  opacity: 1;
-}
-
-/* Liens "Cf ..." : visibles sur fond sombre/claire */
-.cec-imglink{
-  color: var(--fg);
-}
-.cec-cf-missing{
-  color: var(--muted);
-}
-
-/* =========================================================
-   MENU CEC — correctifs UI (miniature schéma, titres, boutons, image droite)
-   À coller tout en bas de styles.css
-========================================================= */
-
-/* Layout : réduire la place de la colonne droite */
-.cec-content{
-  display: grid;
-  grid-template-columns: 1fr 0.5fr; /* colonne droite 2x moins large */
-  gap: 16px;
-  align-items: start;
-}
-
-.cec-side img{
+.cec-proto-page{
   width: 100%;
-  max-width: 280px; /* garde l'image contenue */
-  height: auto;
-  display: block;
-  margin-left: auto; /* la pousse à droite */
-  border-radius: 14px;
+  padding: 16px;
 }
 
-/* Bloc "Schéma de la CEC" : même style que les autres menus */
-.cec-box{
-  border-radius: 16px;
-  padding: 14px;
-  border: 1px solid var(--border, rgba(255,255,255,0.14));
-  background: var(--card, rgba(255,255,255,0.06));
+/* Titre centré */
+.cec-proto-hero{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin: 6px 0 14px;
 }
-
-.cec-box-title{
-  /* style “menu” : même logique que tes autres titres (sobre, lisible) */
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: 0.2px;
-  margin: 0 0 10px 0;
-  color: var(--fg, #fff);
-}
-
-/* Miniature cliquable : éviter l’affichage “en grand” */
-.cec-thumb-btn{
-  width: 100%;
-  border: 0;
-  padding: 0;
-  background: transparent;
-  text-align: left;
-  cursor: pointer;
-}
-
-.cec-thumb{
-  /* miniature : pas pleine hauteur, mais belle et cliquable */
-  width: 100%;
-  max-width: 420px;       /* limite la taille */
-  max-height: 180px;      /* empêche l’image de prendre trop de place */
-  object-fit: contain;
-  display: block;
-  border-radius: 12px;
-  border: 1px solid var(--border, rgba(255,255,255,0.14));
-  background: rgba(0,0,0,0.08);
-}
-
-.cec-thumb-hint{
-  margin-top: 8px;
-  font-size: 13px;
-  color: var(--muted, rgba(255,255,255,0.7));
-}
-
-/* "Protocoles CEC" doit être un vrai bouton bleu identique aux autres */
-.cec-proto-btn{
-  width: 100%;
-  margin: 10px 0 0 0;
-}
-
-/* IMPORTANT : s’assurer que le bouton bleu ressemble exactement aux autres btn */
-.cec-page .btn{
-  width: 100%;
-}
-
-/* Si ton .btn est déjà bleu, rien à faire.
-   Si ton .btn n’est pas bleu, tu peux forcer uniquement le bouton "Protocoles" avec une classe. */
-.cec-page .btn.cec-btn-blue{
-  background: #1f6feb;      /* bleu “standard” lisible */
-  border: 1px solid rgba(255,255,255,0.18);
-  color: #fff;
-}
-
-/* Hover */
-.cec-page .btn.cec-btn-blue:hover{
-  filter: brightness(1.05);
-}
-
-/* Mobile : repasse en 1 colonne */
-@media (max-width: 900px){
-  .cec-content{
-    grid-template-columns: 1fr;
-  }
-  .cec-side img{
-    max-width: 360px;
-    margin: 0 auto;
-  }
-  .cec-thumb{
-    max-width: 100%;
-    max-height: 220px;
-  }
-}
-
-/* =========================================================
-   CEC — Page protocoles en split + lisibilité dark/light
-   (à coller tout en bas)
-========================================================= */
-
-.cec-proto-split{
-  display: grid;
-  grid-template-columns: 380px 1fr;
-  gap: 14px;
-  align-items: start;
-}
-
-@media (max-width: 980px){
-  .cec-proto-split{ grid-template-columns: 1fr; }
-}
-
-.cec-panel{
-  background: var(--card);
-  color: var(--fg);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 12px;
-}
-
-.cec-panel h3{
-  margin: 0 0 10px 0;
-  font-size: 16px;
-  font-weight: 850;
-}
-
-.cec-small{
-  font-size: 13px;
-  color: var(--muted);
-}
-
-.cec-row-compact{
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.cec-gesture-list{
-  display: grid;
-  gap: 10px;
-}
-
-.cec-gesture-item{
-  display: grid;
-  grid-template-columns: 1fr 1fr 34px;
-  gap: 8px;
-  align-items: center;
-}
-
-.cec-gesture-item select{
-  width: 100%;
-  background: var(--card);
-  color: var(--fg);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 8px 10px;
-  font-size: 14px;
-}
-
-.cec-icon-btn{
-  width: 34px;
-  height: 34px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--fg);
-  cursor: pointer;
+.cec-proto-title{
+  text-align: center;
+  font-size: 32px;
+  line-height: 1.1;
   font-weight: 900;
-  line-height: 1;
+  margin: 0;
 }
 
-.cec-icon-btn:hover{ filter: brightness(1.08); }
-
-.cec-fields-2{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-
-.cec-fields-2 input{
-  width: 100%;
-  background: var(--card);
-  color: var(--fg);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 8px 10px;
-  font-size: 14px;
-}
-
-.cec-checkline{
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 14px;
-  align-items: center;
-}
-
-.cec-checkline label{
-  display: inline-flex;
-  gap: 8px;
-  align-items: center;
-  font-size: 13.5px;
-  color: var(--fg);
-}
-
-.cec-checkline input{ transform: translateY(1px); }
-
-.cec-subbox{
-  margin-top: 8px;
-  padding: 10px;
-  border-radius: 14px;
-  border: 1px dashed var(--border);
-  background: color-mix(in srgb, var(--card) 80%, var(--bg) 20%);
-}
-
-/* Tableau protocole */
-.cec-proto-table-wrap{
-  background: transparent;     /* IMPORTANT : ne plus forcer #fff */
-  border: 0;
-  padding: 0;
-}
-
-.cec-resume{
-  background: color-mix(in srgb, var(--card) 85%, var(--bg) 15%);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 10px 12px;
-  color: var(--fg);
-  margin-bottom: 10px;
-}
-
-.cec-proto-table{
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  background: var(--card);
-}
-
-.cec-proto-table td{
-  padding: 10px 12px;
-  vertical-align: top;
-  border-bottom: 1px solid var(--border);
-  border-right: 1px solid var(--border);
-  color: var(--fg);
-  font-size: 14px;
-  line-height: 1.35;
-}
-
-.cec-proto-table tr:last-child td{ border-bottom: 0; }
-.cec-proto-table td:last-child{ border-right: 0; }
-
-.cec-td-title{
-  width: 210px;
-  font-weight: 850;
-  background: color-mix(in srgb, var(--card) 75%, var(--bg) 25%);
-  color: var(--fg);
-}
-
-/* Bouton "Cf ..." */
-.cec-imglink{
-  border: 0;
-  background: transparent;
-  color: var(--fg);
-  text-decoration: underline;
-  cursor: pointer;
-  padding: 0;
-  font-size: inherit;
-}
-
-/* =========================================================
-   CEC – Split page Protocoles (gauche sélection / droite table)
-   + Style tableau protocole (bandeau navy, titres, objectifs)
-   ========================================================= */
-
-:root{
-  --cec-navy-dark: #0b1b33;   /* bandeau haut */
-  --cec-navy-mid:  #163b66;   /* colonne titres */
-  --cec-grey-head: #e6e6e6;   /* objectifs: entête */
-  --cec-border: rgba(127,127,127,.28);
-}
-
-/* ---- Split layout ---- */
-.cec-proto-split{
-  display: grid;
-  grid-template-columns: 440px 1fr;
-  gap: 14px;
+/* Grille 2 colonnes : gauche un peu plus étroit (évite scroll horizontal) */
+.cec-proto-grid{
+  display:grid;
+  grid-template-columns: minmax(320px, 420px) 1fr;
+  gap: 12px;
   align-items: start;
+  width: 100%;
 }
 @media (max-width: 980px){
-  .cec-proto-split{ grid-template-columns: 1fr; }
+  .cec-proto-grid{ grid-template-columns: 1fr; }
 }
-.cec-left, .cec-right{ min-width: 0; }
+.cec-left, .cec-right{
+  min-width: 0;
+  align-self: start;
+}
 
+.cec-preview-card{ margin-top: 0; }
+
+/* Cartes compactes */
 .cec-card-compact{ padding-bottom: 10px; }
 
+/* Bloc geste */
 .cec-gesture{
   border: 1px solid var(--cec-border);
   border-radius: 10px;
@@ -9057,25 +8756,28 @@ body.theme-light .eto-menu-title{
 }
 .cec-gesture-title{ font-weight: 800; }
 
-.btn-ghost{
-  background: transparent !important;
-  border: 1px solid var(--cec-border) !important;
+/* ✅ croix suppression gestes (plus petites) */
+.cec-gesture-remove{
+  width: 28px !important;
+  height: 28px !important;
+  padding: 0 !important;
+  font-size: 14px !important;
+  line-height: 1 !important;
+  border-radius: 999px;
 }
 
-.cec-gesture-row{
-  display:flex;
-  gap: 8px;
-}
+/* Selects */
+.cec-gesture-row{ display:flex; gap: 8px; }
 .cec-select{
   width: 100%;
   padding: 8px 10px;
   border-radius: 10px;
   border: 1px solid var(--cec-border);
-  background: var(--card-bg, rgba(255,255,255,.04));
-  color: inherit;
+  background: var(--card);
+  color: var(--fg);
 }
 
-/* ---- Lignes compactes “Patient / Coeur / Chirurgie / Dissection” ---- */
+/* Lignes caractéristiques (Patient / Cœur / Chirurgie / Dissection) */
 .cec-line{
   display:flex;
   gap: 10px;
@@ -9103,8 +8805,8 @@ body.theme-light .eto-menu-title{
   padding: 6px 8px;
   border-radius: 10px;
   border: 1px solid var(--cec-border);
-  background: var(--card-bg, rgba(255,255,255,.04));
-  color: inherit;
+  background: var(--card);
+  color: var(--fg);
 }
 
 .cec-line-checks{
@@ -9120,68 +8822,85 @@ body.theme-light .eto-menu-title{
   white-space: nowrap;
 }
 
-/* ---- Tableau protocole (droite) ---- */
+/* -------------------------
+   TABLEAU PROTOCOLE (droite)
+   ------------------------- */
+
 .cec-proto-table-wrap{
+  width: 100%;
   overflow: auto;
   border-radius: 14px;
 }
 
 .cec-proto-table{
-  width: 100%;
+  width:100%;
   border-collapse: collapse;
   table-layout: fixed;
-  font-size: 0.95em;
+  font-size: 14px;
 }
 
-.cec-proto-table td, .cec-proto-table th{
+.cec-proto-table th,
+.cec-proto-table td{
   border: 1px solid var(--cec-border);
   vertical-align: top;
   padding: 10px 12px;
-  color: inherit;
+  color: var(--fg);
 }
 
-/* Bandeau haut */
+/* Bandeau résumé haut */
 .cec-proto-top{
-  background: var(--cec-navy-dark);
+  background: var(--cec-navy-top);
   color: #fff;
-  font-weight: 700;
-}
-.cec-proto-top small{ opacity: .92; font-weight: 500; }
-
-/* Colonne gauche titres */
-.cec-td-title{
-  width: 240px;
-  background: var(--cec-navy-mid);
-  color: #fff;
-  vertical-align: middle;
   text-align: left;
+  padding: 12px 12px;
+
+  /* ✅ taille + grande (tu voulais doubler) */
+  font-size: 1.35rem;
+  line-height: 1.25;
+}
+.cec-proto-top *{ color:#fff; }
+.cec-proto-top small{
+  display:block;
+  font-size: 1.05rem;
+  opacity: .95;
+  font-weight: 500;
 }
 
-/* Titre (gros) + ligne Cf (petite) */
+/* Colonne gauche titres (fond bleu + texte blanc) */
+.cec-td-title{
+  background: var(--cec-navy-left);
+  color: #fff;
+  font-weight: 800;
+  text-align: left;
+  width: 210px;
+}
+.cec-td-title *{ color:#fff; }
+
+/* Titres + Cf */
 .cec-cell-title{
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
-.cec-cell-title .cec-title-main{
+.cec-title-main{
   font-size: 1.08em;
   font-weight: 900;
   line-height: 1.15;
 }
-.cec-cell-title .cec-title-cf{
+.cec-title-cf{
   font-size: 0.86em;
   font-weight: 650;
   opacity: .95;
 }
 
-/* Lien Cf (pas souligné) + icône image */
+/* ✅ Liens Cf : BLEU (comme tu veux), pas soulignés */
 .cec-imglink{
   appearance: none;
   border: 0;
   background: transparent;
   padding: 0;
   margin: 0;
-  color: inherit;
+  color: var(--accent);
   font: inherit;
   text-align: left;
   cursor: pointer;
@@ -9191,366 +8910,34 @@ body.theme-light .eto-menu-title{
   gap: 6px;
 }
 .cec-imglink:hover{ opacity: .9; }
-.cec-imglink .cec-img-ico{ font-size: 1.05em; }
-
-/* Canules : nom en gras + liste “tirets” */
-.cec-cannula-block{ margin: 0 0 10px 0; }
-.cec-cannula-name{ font-weight: 900; margin-bottom: 6px; }
-.cec-cannula-lines{ list-style: none; padding: 0; margin: 0; }
-.cec-cannula-lines li{
-  margin: 2px 0;
-  padding-left: 14px;
-  position: relative;
-}
-.cec-cannula-lines li::before{
-  content: "–";
-  position: absolute;
-  left: 0;
-  top: 0;
-  opacity: .95;
-}
-
-/* Cardioplégie : mise en valeur voie + solution */
-.cec-cp-block .cec-cp-line{ margin: 2px 0; }
-.cec-cp-block .cec-cp-gap{ height: 8px; }
-
-/* Objectifs per-CEC : entête gris, cellule gauche centrée verticalement */
-.cec-obj-head{ background: var(--cec-grey-head); font-weight: 900; }
-.cec-obj-left{
-  background: rgba(0,0,0,.08);
-  font-weight: 900;
-  text-align: center;
-  vertical-align: middle !important;
-  color: #111;
-}
-
-/* Dark theme (si ton thème sombre est body.dark) */
-body.dark .cec-obj-head{ background: rgba(255,255,255,.12); }
-body.dark .cec-obj-left{ background: rgba(255,255,255,.08); color: #fff; }
-
-/* === CEC Protocoles : alignement des 2 encadrés + titre centré plus gros === */
-
-/* 1) Mettre les 2 colonnes au même niveau (évite que droite "remonte") */
-.cec-proto-split{
-  align-items: start;           /* déjà présent, on le force */
-}
-.cec-left, .cec-right{
-  margin-top: 0 !important;
-  padding-top: 0 !important;
-}
-.cec-left .hero, .cec-right .hero{
-  margin-top: 0 !important;
-}
-
-/* 2) Titre "Protocoles de CEC" centré et 2x plus gros */
-.cec-proto-title{
-  text-align: center;
-  font-size: 2.2em;             /* ~2x un h2 classique */
-  line-height: 1.1;
-  font-weight: 900;
-  margin: 6px 0 14px 0;
-}
-
-/* Optionnel : évite que l’ancien .hero prenne de la place */
-.cec-proto-hero{
-  margin-bottom: 10px;
-}
-
-.cec-empty::after{
-  content:"—";
-  opacity:0.35;
-}
-.cec-obj-head{
-  background: rgba(255,255,255,0.08);
-  font-weight: 800;
-}
-
-/* =========================
-   CEC – Protocoles (layout)
-   ========================= */
-
-.cec-proto-page{
-  width: 100%;
-  padding: 16px;
-}
-
-.cec-proto-hero{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  margin: 4px 0 14px;
-}
-
-.cec-proto-title{
-  font-size: 32px;
-  font-weight: 800;
-  text-align:center;
-}
-
-.cec-proto-grid{
-  display:grid;
-  grid-template-columns: minmax(420px, 520px) 1fr;
-  gap: 16px;
-  align-items: start; /* ✅ même niveau */
-}
-
-@media (max-width: 980px){
-  .cec-proto-grid{ grid-template-columns: 1fr; }
-}
-
-.cec-preview-card{ margin-top: 0; }
-
-/* =========================
-   CEC – Table style
-   ========================= */
-
-body{
-  --cec-navy-top: #0b2540;
-  --cec-navy-left: #123a63;
-  --cec-obj-head-bg: rgba(148,163,184,.25);
-}
-
-.cec-proto-table-wrap{ width:100%; overflow:auto; }
-
-.cec-proto-table{
-  width:100%;
-  border-collapse: collapse;
-  font-size: 14px;
-}
-
-.cec-proto-table th,
-.cec-proto-table td{
-  border: 1px solid var(--border);
-  vertical-align: top;
-  padding: 10px 10px;
-}
-
-/* Bandeau résumé */
-.cec-proto-top{
-  background: var(--cec-navy-top);
-  color: #fff;
-  text-align: left;
-  padding: 12px 12px;
-}
-
-.cec-proto-top small{
-  opacity: .95;
-  font-weight: 500;
-}
-
-/* Colonne gauche titres */
-.cec-td-title{
-  background: var(--cec-navy-left);
-  color: #fff;              /* ✅ lisible thème sombre */
-  font-weight: 800;
-  text-align: left;
-  width: 210px;
-}
-
-/* Objectifs per-CEC */
-.cec-obj-left{
-  background: var(--cec-navy-left);
-  color:#fff;
-  text-align:center;
-  vertical-align: middle;   /* ✅ centré en hauteur */
-  font-weight: 900;
-}
-
-.cec-obj-head{
-  background: var(--cec-obj-head-bg); /* ✅ gris clair */
-  font-weight: 800;
-  text-align: center;
-}
+.cec-img-ico{ font-size: 1.05em; }
 
 /* Cellules vides (avant sélection) */
 .cec-cell-empty{
   min-height: 26px;
-}
-
-/* Liens Cf : non soulignés + plus petits */
-.cec-imglink{
-  text-decoration: none;
-  font-size: 12px;
-  font-weight: 600;
-  background: transparent;
-  border: 0;
-  padding: 0;
-  color: var(--accent);
-  cursor: pointer;
-}
-
-.cec-proto-page{ width:100%; }
-.cec-proto-hero{ display:flex; justify-content:center; margin:6px 0 14px; }
-.cec-proto-title{ font-size:32px; font-weight:800; text-align:center; }
-
-.cec-proto-grid{
-  display:grid;
-  grid-template-columns: minmax(420px, 520px) 1fr;
-  gap:16px;
-  align-items:start;
-  width:100%;
-}
-
-@media (max-width: 980px){
-  .cec-proto-grid{ grid-template-columns: 1fr; }
-}
-
-.cec-preview-card{ margin-top:0; }
-
-/* Force texte blanc dans cellules bleues */
-.cec-proto-table .cec-td-title{
-  color:#fff !important;
-}
-.cec-proto-table .cec-td-title *{
-  color:#fff !important;
-}
-
-.cec-proto-table .cec-obj-left{
-  text-align:left;
-  vertical-align:middle;
-  padding-left:14px;
-  font-weight:900;
-}
-.cec-can-head{
-  margin: 0 0 6px 0;
-}
-.cec-can-gap{
-  height: 8px;
-}
-.cec-can-bullet{
-  margin: 0 0 4px 0;
-}
-
-/* =========================================================
-   CEC – Tableau protocole : bandeau haut en BLANC
-   + garder les liens "Cf ..." en BLEU
-   ========================================================= */
-
-/* 1) Bandeau du haut (thead) : tout le texte en blanc */
-.cec-proto-table thead th.cec-proto-top,
-.cec-proto-table thead th.cec-proto-top * {
-  color: #fff !important;
-}
-
-/* 2) MAIS : les liens/ligne "Cf ..." doivent rester bleus */
-.cec-proto-table
-
-/* ===== CEC Protocoles : grid pleine largeur sans scroll horizontal ===== */
-.cec-proto-grid{
-  display: grid;
-  grid-template-columns: minmax(320px, 420px) 1fr; /* ✅ gauche un peu plus étroit */
-  gap: 12px;
-  align-items: start; /* ✅ même niveau haut gauche/droite */
-  width: 100%;
-}
-
-.cec-left, .cec-right{
-  align-self: start; /* ✅ aligne en haut */
-  min-width: 0;      /* ✅ empêche overflow */
-}
-
-.cec-preview-card{
-  width: 100%;
-  min-width: 0;
-}
-
-.cec-proto-table-wrap{
-  width: 100%;
-  overflow-x: auto;  /* ✅ si vraiment trop large, scroll interne uniquement */
-}
-
-.cec-proto-table{
-  width: 100%;
-  table-layout: fixed;
-}
-
-/* ===== Bandeau haut du tableau : police +2 (doublée) ===== */
-.cec-proto-top{
-  color: #fff;                 /* ✅ texte blanc */
-  font-size: 1.35rem;          /* ✅ plus gros */
-  line-height: 1.25;
-}
-
-.cec-proto-top small{
-  display: block;
-  font-size: 1.05rem;          /* ✅ plus gros aussi */
-  opacity: 0.95;
-}
-
-/* croix suppression gestes (plus petite) */
-.cec-gesture-remove{
-  width: 28px !important;
-  height: 28px !important;
-  padding: 0 !important;
-  font-size: 0.9rem !important;
-  line-height: 1 !important;
-}
-
-.cec-cell-empty{
   opacity: 0.85;
   font-style: italic;
   padding: 6px 8px;
 }
 
-/* =========================
-   MENU CEC — ajustements
-   ========================= */
-
-/* 1) Harmoniser la hauteur des 3 boutons */
-.cec-proto-btn,
-.cec-grid .btn{
-  width: 100%;
-  min-height: 64px;          /* <- même hauteur partout */
-  padding: 16px 18px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  border-radius: 16px;
-  box-sizing: border-box;
+/* Objectifs per-CEC */
+.cec-obj-head{
+  background: var(--cec-obj-head-bg);
+  font-weight: 800;
+  text-align: center;
 }
+.cec-obj-left{
+  background: var(--cec-navy-left);
+  color:#fff;
+  font-weight: 900;
 
-/* espace identique entre boutons */
-.cec-proto-btn{ margin-bottom: 12px; }
-.cec-grid{
-  display: grid;
-  gap: 12px;
-}
-
-/* 2) Mettre l'image de droite (cec1.png) pleine largeur de la colonne */
-.cec-content{
-  display: grid;
-  grid-template-columns: 1fr 0.75fr; /* colonne droite un peu plus large qu'avant */
-  gap: 24px;
-  align-items: start; /* évite les décalages verticaux bizarres */
-}
-
-/* la colonne droite prend toute la hauteur utile, l'image remplit */
-.cec-side{
-  width: 100%;
-}
-
-.cec-side img{
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 18px;
-  object-fit: cover; /* si tu fixes une hauteur un jour */
-}
-
-/* 3) (optionnel) si tu veux que le schéma sous les boutons reste compact */
-.cec-box{
-  margin-top: 16px;
-}
-
-.cec-thumb{
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* petit détail: éviter que le bouton miniature prenne trop de place */
-.cec-thumb-btn{
-  width: 100%;
+  /* ✅ aligné à gauche + centré verticalement (dans la cellule rowspan) */
   text-align: left;
+  vertical-align: middle;
+  padding-left: 14px;
+}
+
+/* ✅ Cardioplégie : retirer l'aspect “gras” global si tu avais un style dédié */
+.cec-cp-block strong{
+  font-weight: inherit;
 }
