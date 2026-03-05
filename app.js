@@ -19522,16 +19522,32 @@ function cecApplySafeMarkup(htmlEscaped){
 
 function cecRenderCfLine(line){
   const clean = String(line || "").replace(/^\[(BLUE|ORANGE|RED)\]/g, "").trim();
+
+  // Si ce n’est pas un "Cf", on renvoie le texte normal
   if (!/^Cf\s+/i.test(clean)) {
     return cecApplySafeMarkup(escapeHtml(clean));
   }
 
-  const file = CEC_CF_MAP[clean];
-  if (!file) return `<span class="cec-cf-missing">${escapeHtml(clean)}</span>`;
+  // ✅ 4 liens “en dur”
+  let imgPath = null;
+  let title = clean;
+
+  if (/^Cf\s+canulations\s+artérielles$/i.test(clean)) {
+    imgPath = "img/canulationarterielle.png";
+  } else if (/^Cf\s+canulations\s+veineuses$/i.test(clean)) {
+    imgPath = "img/canulationveineuse.png";
+  } else if (/^Cf\s+cardiopl[ée]gies?$/i.test(clean)) {
+    imgPath = "img/cardioplegie.png";
+  } else if (/^Cf\s+algorithme\s+Quantra$/i.test(clean)) {
+    imgPath = "img/quantra.png";
+  } else {
+    // Si un "Cf ..." inattendu apparaît, on l'affiche en “missing”
+    return `<span class="cec-cf-missing">${escapeHtml(clean)}</span>`;
+  }
 
   return `
     <button class="cec-imglink" type="button"
-      onclick="openImageLightbox('img/${file}','${escapeHtml(clean)}')">
+      onclick="openImageLightbox('${imgPath}','${escapeHtml(title)}')">
       <span>${escapeHtml(clean)}</span>
       <span class="cec-img-ico" aria-hidden="true">🖼️</span>
     </button>
