@@ -20364,9 +20364,18 @@ function cecFormatProtocolCell(rowTitle, text){
 
   // ✅ Tirets au lieu de <li> (pas de puces, pas de marges de <ul>)
   const body = (b.items || [])
-    .filter(Boolean)
-    .map(x => `— ${cecNl2brHtml(x)}`)
-    .join("<br>");
+  .filter(Boolean)
+  .map(x => {
+    const txt = cecNl2brHtml(x);
+
+    // ✅ Ligne "Alternative" : pas de tiret + gras
+    if (/^Alternative/i.test(x)) {
+      return `<strong>${txt}</strong>`;
+    }
+
+    return `— ${txt}`;
+  })
+  .join("<br>");
 
   return `
     <div class="cec-cannula-block">
