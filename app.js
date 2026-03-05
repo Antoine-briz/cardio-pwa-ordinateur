@@ -19992,30 +19992,29 @@ if (t.includes("Voie d’administration: XXX") || t.includes("Solution de cardio
   const hasPlastieAo = gestes.includes("plastie_aortique");
   const hasRoss = gestes.includes("ross");
 
-  // --- VOIE ---
-  let voieCore = ia ? "Ostia coronaires" : "Racine aortique";
-  let voie = `[[B]]${voieCore}[[/B]] (pression cible ${ia ? "50–70" : "60–80"} mmHg)`;
+// --- VOIE ---
+let voieCore = ia ? "Ostia coronaires" : "Racine aortique";
+let voie = `${voieCore} (pression cible ${ia ? "50–70" : "60–80"} mmHg)`;
 
-  if (hvg || stenose) {
-    voie += ` + discuter [[B]]Rétrograde sinus coronaire[[/B]] (pression cible 30–40 mmHg)`;
-  }
-
-  // --- SOLUTION ---
-  let solCore = "Sang froid";
-  let sol = `[[B]]${solCore}[[/B]] (ratio 4:1), bolus 15–20 mL/kg toutes les 15–20 min`;
-
-  if (clamp90 || hasPlastieAo || hasRoss) {
-    solCore = "Custodiol";
-    sol = `[[B]]${solCore}[[/B]] 20–25 mL/kg (4–8°C), cardioprotection 90–180 min`;
-  } else if (fevg35) {
-    solCore = "Sang chaud";
-    sol = `[[B]]${solCore}[[/B]] (32–37°C) : continu OU bolus après induction au sang froid`;
-  }
-
-  // On remplace les deux lignes XXX par juste le contenu (sans libellés)
-  t = t.replace("Voie d’administration: XXX", voie);
-  t = t.replace("Solution de cardioplégie: XXX", sol);
+if (hvg || stenose) {
+  voie += ` + discuter Rétrograde sinus coronaire (pression cible 30–40 mmHg)`;
 }
+
+// --- SOLUTION ---
+let solCore = "Sang froid";
+let sol = `${solCore} (ratio 4:1), bolus 15–20 mL/kg toutes les 15–20 min`;
+
+if (clamp90 || hasPlastieAo || hasRoss) {
+  solCore = "Custodiol";
+  sol = `${solCore} 20–25 mL/kg (4–8°C), cardioprotection 90–180 min`;
+} else if (fevg35) {
+  solCore = "Sang chaud";
+  sol = `${solCore} (32–37°C) : continu OU bolus après induction au sang froid`;
+}
+
+// On remplace les deux lignes XXX par juste le contenu (sans libellés)
+t = t.replace("Voie d’administration: XXX", voie);
+t = t.replace("Solution de cardioplégie: XXX", sol);
 
   // Calibres : plus de "XX" -> encadré vide si SC/débit non calculables
   {
@@ -20145,8 +20144,15 @@ function cecPickProtocol(gestes, s){
 // -------------------------------------------------
 
 function cecRenderCfLine(line){
-  const clean = String(line || "").trim();
-  if (!/^Cf\s+/i.test(clean)) return escapeHtml(clean);
+  // IMPORTANT : on enlève aussi les tags [BLUE]/[ORANGE]/[RED] (comme dans l’autre version)
+  const clean = String(line || "")
+    .replace(/^\[(BLUE|ORANGE|RED)\]/g, "")
+    .trim();
+
+  // Lignes normales : escapeHtml puis conversion des tokens [[FRBOX]] et [[B]]
+  if (!/^Cf\s+/i.test(clean)) {
+    return cecApplySafeMarkup(escapeHtml(clean));
+  }
 
   const file = CEC_CF_MAP[clean];
   if (!file) return `<span class="cec-cf-missing">${escapeHtml(clean)}</span>`;
