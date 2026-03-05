@@ -19944,11 +19944,11 @@ function cecApplyDynamicToCell(text, s, context){
 
 // --- Si pas de débit (poids/taille manquants), on affiche des “champs” vides ---
 if (!flow) {
-  t = t.replaceAll("Calibre: XX Fr", `Calibre: ${cecFrBox("")}`);
-  t = t.replaceAll("VCI: XX Fr", `VCI: ${cecFrBox("")}`);
-  t = t.replaceAll("VCS: XX Fr", `VCS: ${cecFrBox("")}`);
-  t = t.replaceAll("Canule fémorale: XX Fr", `Canule fémorale: ${cecFrBox("")}`);
-  t = t.replaceAll("Canule jugulaire: XX Fr", `Canule jugulaire: ${cecFrBox("")}`);
+  t = t.replaceAll("Calibre: XX Fr", `Calibre: ${cecFrBox("")} Fr`);
+  t = t.replaceAll("VCI: XX Fr", `VCI: ${cecFrBox("")} Fr`);
+  t = t.replaceAll("VCS: XX Fr", `VCS: ${cecFrBox("")} Fr`);
+  t = t.replaceAll("Canule fémorale: XX Fr", `Canule fémorale: ${cecFrBox("")} Fr`);
+  t = t.replaceAll("Canule jugulaire: XX Fr", `Canule jugulaire: ${cecFrBox("")} Fr`);
   // si tu as d'autres libellés "…: XX Fr", ajoute-les ici
 }
   
