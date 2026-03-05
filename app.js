@@ -27102,9 +27102,7 @@ const routes = {
   "#/adaptee/carba": () => renderBacteriaPage("carba", BACTERIA_DATA.carba),
   "#/adaptee/erv": () => renderBacteriaPage("erv", BACTERIA_DATA.erv),
 
-  // ---------------------------
-  // CEC
-  // ---------------------------
+
  // ---------------------------
 // CEC
 // ---------------------------
