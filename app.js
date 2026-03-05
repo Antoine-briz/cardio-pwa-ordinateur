@@ -20498,10 +20498,10 @@ function cecRenderFromPpt(protocol, s){
   let bodyHtml = "";
 
   for (let i = 0; i < table.length; i++){
-    const row = table[i];
-    const col0 = row[0] || "";
-    const col1 = row[1] || "";
-    const col2 = row[2] || "";
+    const row = Array.isArray(table[i]) ? table[i] : [];
+const col0 = row[0] || "";
+const col1 = row[1] || "";
+const col2 = row[2] || "";
 
     // Détection objectifs
     if (String(col0).includes("Objectifs per-CEC")) inObjectives = true;
@@ -20514,7 +20514,7 @@ function cecRenderFromPpt(protocol, s){
       if (String(col0).includes("Objectifs per-CEC")) {
         // compter les lignes suivantes dont col0 == ""
         let j = i + 1;
-        while (j < table.length && String(table[j][0] || "") === "") j++;
+        while (j < table.length && String(((table[j] || [])[0]) || "") === "") j++;
         const nRows = (j - i);
 
         bodyHtml += `
