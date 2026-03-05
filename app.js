@@ -20042,13 +20042,19 @@ if (!flow) {
   // Mannitol
   if (t.includes("Mannitol 0,25-0,5 g/kg")) {
     const w = cecNum(s.poidsKg);
-    if (w) t = t.replace("0,25-0,5 g/kg", `0,25–0,5 g/kg (≈ ${(0.25*w).toFixed(1)}–${(0.5*w).toFixed(1)} g)`);
+    if (w) t = t.replace(
+  "0,25-0,5 g/kg",
+  `0,25–0,5 g/kg (≈ [[VRED:${(0.25*w).toFixed(1)}–${(0.5*w).toFixed(1)}]] g)`
+);
   }
 
   // Héparine 300 UI/kg
   if (t.includes("héparine 300 UI/kg")) {
     const w = cecNum(s.poidsKg);
-    if (w) t = t.replaceAll("300 UI/kg", `300 UI/kg (≈ ${Math.round(300*w)} UI)`);
+    if (w) t = t.replaceAll(
+  "300 UI/kg",
+  `300 UI/kg (≈ [[VRED:${Math.round(300*w)}]] UI)`
+);
   }
 
   // Protamine 60–80%
@@ -20058,7 +20064,7 @@ if (!flow) {
       const hepar = 300*w;
       t = t.replace(
         "Protamine: 60-80% de la dose d’héparine",
-        `Protamine: 60–80% (≈ ${Math.round(0.6*hepar)}–${Math.round(0.8*hepar)} UI équiv.)`
+        `Protamine: 60–80% (≈ [[VRED:${Math.round(0.6*hepar)}–${Math.round(0.8*hepar)}]] UI équiv.)`
       );
     }
   }
@@ -20106,22 +20112,22 @@ if (t.includes("Voie d’administration: XXX") || t.includes("Solution de cardio
 
 const voieCore = (ia || isDissection) ? "Ostia coronaires" : "Racine aortique";
 const pression = (ia || isDissection) ? "50–70" : "60–80";
-let voie = `${voieCore} (pression cible ${pression} mmHg)`;
+let voie = `[[VBLUE:${voieCore}]] (pression cible ${pression} mmHg)`;
 
 if (hvg || stenose) {
-  voie += ` + discuter Rétrograde sinus coronaire (pression cible 30–40 mmHg)`;
+  voie += ` + discuter [[VBLUE:Rétrograde sinus coronaire]] (pression cible 30–40 mmHg)`;
 }
 
 // --- SOLUTION ---
 let solCore = "Sang froid";
-let sol = `${solCore} (ratio 4:1), bolus 15–20 mL/kg toutes les 15–20 min`;
+let sol = `[[VBLUE:${solCore}]] (ratio 4:1), bolus 15–20 mL/kg toutes les 15–20 min`;
 
 if (clamp90 || hasPlastieAo || hasRoss) {
   solCore = "Custodiol";
-  sol = `${solCore} 20–25 mL/kg (4–8°C), cardioprotection 90–180 min`;
+  sol = `[[VBLUE:${solCore}]] 20–25 mL/kg (4–8°C), cardioprotection 90–180 min`;
 } else if (fevg35) {
   solCore = "Sang chaud";
-  sol = `${solCore} (32–37°C) : continu OU bolus après induction au sang froid`;
+  sol = `[[VBLUE:${solCore}]] (32–37°C) : continu OU bolus après induction au sang froid`;
 }
 
  // ✅ 1) Ajout Esmolol si HVG cochée (sous la solution)
