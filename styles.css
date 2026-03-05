@@ -9047,3 +9047,7 @@ body:not(.light-theme) .cec-proto-page .cec-select option{
 .cec-left .info-card + .info-card{
   margin-top: 14px;
 }
+.cec-cannula-lines strong{
+  display:block;
+  margin-top:4px;
+}
