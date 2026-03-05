@@ -20067,9 +20067,11 @@ if (t.includes("Voie d’administration: XXX") || t.includes("Solution de cardio
   const gestes = (s.gestes||[]).filter(Boolean);
   const hasPlastieAo = gestes.includes("plastie_aortique");
   const hasRoss = gestes.includes("ross");
-
+ // ✅ Dissection aortique -> ostia coronaires (même si IA non cochée)
+  const isDissection = !!s.dissection || /dissection/i.test(String(s.intervention || ""));
+  
 // --- VOIE ---
-let voieCore = ia ? "Ostia coronaires" : "Racine aortique";
+ const voieCore = (ia || isDissection) ? "Ostia coronaires" : "Racine aortique";
 let voie = `${voieCore} (pression cible ${ia ? "50–70" : "60–80"} mmHg)`;
 
 if (hvg || stenose) {
@@ -20088,6 +20090,12 @@ if (clamp90 || hasPlastieAo || hasRoss) {
   sol = `${solCore} (32–37°C) : continu OU bolus après induction au sang froid`;
 }
 
+ // ✅ 1) Ajout Esmolol si HVG cochée (sous la solution)
+  // On l'ajoute au texte de la cellule pour apparaître “en dessous”
+  if (hvg) {
+    sol += `\nAutre: Ajout d’Esmolol 50 µg/kg/min IVSE en per-CEC en raison de l’HVG`;
+  }
+  
 // On remplace les deux lignes XXX par juste le contenu (sans libellés)
 t = t.replace("Voie d’administration: XXX", voie);
 t = t.replace("Solution de cardioplégie: XXX", sol);
