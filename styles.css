@@ -8941,3 +8941,30 @@ body.theme-light .eto-menu-title{
 .cec-cp-block strong{
   font-weight: inherit;
 }
+
+/* FIX FINAL — Objectifs per-CEC : blanc, centré vertical, aligné gauche */
+.cec-proto-table td.cec-obj-left{
+  background: var(--cec-navy-left, #123a63) !important;
+  color: #fff !important;
+  vertical-align: middle !important;
+  text-align: left !important;
+  font-weight: 900;
+  padding-left: 14px;
+}
+.cec-proto-table td.cec-obj-left *{
+  color: #fff !important;
+}
+
+/* FIX FINAL — le tableau doit toujours remplir son encadré */
+.cec-preview-card,
+.cec-proto-table-wrap{
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.cec-proto-table{
+  width: 100% !important;
+  min-width: 100% !important;
+  table-layout: auto !important; /* évite les “trous” liés au fixed */
+  display: table !important;
+}
