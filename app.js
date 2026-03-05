@@ -19884,7 +19884,7 @@ const CEC_PPT_TABLES = {
     ["", "Débit de pompe = 2,2-2,6 L/min/m2\nPAM = 50-70 mmHg", "Débit de pompe insuffisant: Augmenter RPM, vérifier drainage\nPAM basse: Noradrénaline, vasopressine, augmenter débit si possible", ""],
     ["", "Hb > 7-8 g/dL\nHématocrite > 22-25 %", "Hémodilution: Ultrafiltration\nTransfusion CGR si besoin", ""],
     ["", "PaO2 = 150-250 mmHg\n(Eviter hyperoxémie)", "Hypoxémie: Augmenter FiO2, vérifier oxygénateur\nHyperoxémie: Diminuer FiO2", ""],
-    ["", "Normothermie 36-37°C", "Hypothermie: Ajuster réchauffeur\nHyperthermie: Diminuer réchauffement", ""]
+    ["", "Hors arrêt circulatoire: Normothermie 36-37°C \nArrêt circulatoire avec ACP: Hypothermie 24-28°C \nArrêt circulatoire sans ACP: Hypothermie 18-20°C", "Hypothermie: Ajuster réchauffeur\nHyperthermie: Diminuer réchauffement", ""]
   ],
 
   // =================================================
