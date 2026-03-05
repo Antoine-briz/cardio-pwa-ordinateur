@@ -20525,18 +20525,21 @@ const col2 = row[2] || "";
           </tr>
         `;
 
-        // lignes suivantes (calculs dynamiques DO2/VO2/débit)
-        for (let k = i + 1; k < j; k++){
-          const r = table[k];
-          const left = cecApplyDynamicObjectives(String(r[1] || ""), s);
-          const right = String(r[2] || "");
-          bodyHtml += `
-            <tr>
-              <td>${cecNl2brHtml(left)}</td>
-              <td>${cecNl2brHtml(right)}</td>
-            </tr>
-          `;
-        }
+     // lignes suivantes (calculs dynamiques DO2/VO2/débit)
+for (let k = i + 1; k < j; k++){
+  const r = table[k];
+  const rr = Array.isArray(r) ? r : [];
+
+  const left  = cecApplyDynamicObjectives(String(rr[1] || ""), s);
+  const right = String(rr[2] || "");
+
+  bodyHtml += `
+    <tr>
+      <td>${cecNl2brHtml(left)}</td>
+      <td>${cecNl2brHtml(right)}</td>
+    </tr>
+  `;
+}
 
         i = j - 1;
         continue;
