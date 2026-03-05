@@ -20342,15 +20342,21 @@ function cecFormatProtocolCell(rowTitle, text){
     if (!blocks.length) return cecNl2brHtml(raw);
 
     return blocks.map(b => {
-      const nameHtml = b.name ? `<div class="cec-cannula-name"><strong>${escapeHtml(b.name)}</strong></div>` : "";
-      const li = (b.items || []).map(x => `<li>${cecNl2brHtml(x)}</li>`).join("");
-      return `
-        <div class="cec-cannula-block">
-          ${nameHtml}
-          <ul class="cec-cannula-lines">${li}</ul>
-        </div>
-      `;
-    }).join("");
+  const nameHtml = b.name ? `<div class="cec-cannula-name"><strong>${escapeHtml(b.name)}</strong></div>` : "";
+
+  // ✅ Tirets au lieu de <li> (pas de puces, pas de marges de <ul>)
+  const body = (b.items || [])
+    .filter(Boolean)
+    .map(x => `— ${cecNl2brHtml(x)}`)
+    .join("<br>");
+
+  return `
+    <div class="cec-cannula-block">
+      ${nameHtml}
+      <div class="cec-cannula-lines cec-cannula-lines-dash">${body}</div>
+    </div>
+  `;
+}).join("");
   }
 
   return cecNl2brHtml(raw);
