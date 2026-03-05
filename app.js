@@ -19531,7 +19531,7 @@ function cecRenderCfLine(line){
 
   return `
     <button class="cec-imglink" type="button"
-      onclick="openImageLightbox('${file}','${escapeHtml(clean)}')">
+      onclick="openImageLightbox('img/${file}','${escapeHtml(clean)}')">
       <span>${escapeHtml(clean)}</span>
       <span class="cec-img-ico" aria-hidden="true">🖼️</span>
     </button>
