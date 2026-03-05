@@ -19494,13 +19494,25 @@ function escapeHtml(s){
 
 function cecRenderCfLine(line){
   const clean = String(line || "").replace(/^\[(BLUE|ORANGE|RED)\]/g, "").trim();
-  if (!/^Cf\s+/i.test(clean)) return escapeHtml(clean);
+
+  // Helper: permet du gras avec [[B]]...[[/B]]
+  const applyBoldMarkers = (escaped) =>
+    escaped
+      .replaceAll("[[B]]", "<strong>")
+      .replaceAll("[[/B]]", "</strong>");
+
+  if (!/^Cf\s+/i.test(clean)) {
+    return applyBoldMarkers(escapeHtml(clean));
+  }
 
   const file = CEC_CF_MAP[clean];
-  if (!file) return `<span class="cec-cf-missing">${escapeHtml(clean)}</span>`;
+  if (!file) return `<span class="cec-cf-missing">${applyBoldMarkers(escapeHtml(clean))}</span>`;
 
   return `<button class="cec-imglink" type="button"
-            onclick="openImageLightbox('img/${file}','${escapeHtml(clean)}')">${escapeHtml(clean)}</button>`;
+            onclick="openImageLightbox('img/${file}','${escapeHtml(clean)}')">
+            <span>${escapeHtml(clean)}</span>
+            <span class="cec-img-ico" aria-hidden="true">🖼️</span>
+          </button>`;
 }
 
 function cecNl2brHtml(s){
@@ -19930,17 +19942,38 @@ function cecApplyDynamicToCell(text, s, context){
     }
   }
 
- // Cardioplégie XXX  (✅ sans libellés "Voie..." / "Solution...")
+// Cardioplégie (mise en gras UNIQUEMENT de la voie + de la solution, sans les labels)
 if (t.includes("Voie d’administration: XXX") || t.includes("Solution de cardioplégie: XXX")) {
   const cp = cecRecoCardioplegia(s);
 
-  // On remplace les placeholders par la réponse uniquement
-  t = t.replace("Voie d’administration: XXX", `${cp.voie}`);
-  t = t.replace("Solution de cardioplégie: XXX", `${cp.solution}`);
+  // --- VOIE : gras uniquement sur le "type" de voie
+  let voie = String(cp.voie || "");
 
-  // (sécurité) si jamais d’anciennes versions traînent avec libellés déjà présents
-  t = t.replace(/^Voie d’administration:\s*/gm, "");
-  t = t.replace(/^Solution(?: de cardioplégie)?:\s*/gm, "");
+  // Racine aortique / Ostia coronaires en gras si présents
+  voie = voie.replace(/^Racine aortique/i, '[[B]]Racine aortique[[/B]]');
+  voie = voie.replace(/^Ostia coronaires/i, '[[B]]Ostia coronaires[[/B]]');
+
+  // Rétrograde sinus coronaire : gras sur l’intitulé uniquement
+  // (ton texte est généralement "... + discuter rétrograde (sinus coronaire, pression cible 30–40 mmHg)")
+  voie = voie.replace(
+    /r[ée]trograde\s*\(sinus coronaire/gi,
+    '[[B]]Rétrograde sinus coronaire[[/B]]'
+  );
+
+  // Nettoyage éventuel de la parenthèse si on l’a remplacée
+  voie = voie.replace(/\[\[B\]\]Rétrograde sinus coronaire\[\[\/B\]\][^)]*\)/g,
+    (m) => m.replace(/\)/g, "")
+  );
+
+  // --- SOLUTION : gras uniquement sur le mot-clé (Sang froid / Sang chaud / Custodiol)
+  let sol = String(cp.solution || "");
+  sol = sol.replace(/^Custodiol/i, '[[B]]Custodiol[[/B]]');
+  sol = sol.replace(/^Sang froid/i, '[[B]]Sang froid[[/B]]');
+  sol = sol.replace(/sang chaud/gi, '[[B]]Sang chaud[[/B]]');
+
+  // Remplace les deux lignes "XXX" par 2 lignes simples (sans "Voie d’administration:" / "Solution:")
+  t = t.replace("Voie d’administration: XXX", voie);
+  t = t.replace("Solution de cardioplégie: XXX", sol);
 }
 
   // Calibres XX
