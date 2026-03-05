@@ -9020,3 +9020,13 @@ body:not(.light-theme) .cec-proto-page .info-card textarea{
 .cec-frbox{
   font-weight: 400 !important;
 }
+
+/* ✅ En thème sombre : selects CEC en fond clair (lisible) */
+[data-theme="dark"] .cec-proto-page .cec-select{
+  background: #fff !important;
+  color: #000 !important;
+}
+[data-theme="dark"] .cec-proto-page .cec-select option{
+  background: #fff !important;
+  color: #000 !important;
+}
