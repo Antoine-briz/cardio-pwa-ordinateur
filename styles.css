@@ -9030,3 +9030,10 @@ body:not(.light-theme) .cec-proto-page .info-card textarea{
   background: #fff !important;
   color: #000 !important;
 }
+/* Canulations : lignes en tirets, sans marge “liste” */
+.cec-cannula-lines-dash{
+  margin-top: 0;
+  padding-top: 0;
+  line-height: 1.35;
+}
+.cec-cannula-name{ margin-bottom: 0 !important; }
