@@ -20282,36 +20282,6 @@ function cecPickProtocol(gestes, s){
 // 10) Rendu protocole depuis table PPT — STYLE + objectifs rowspan + calculs objectifs
 // -------------------------------------------------
 
-function cecRenderCfLine(line){
-  // IMPORTANT : on enlève aussi les tags [BLUE]/[ORANGE]/[RED] (comme dans l’autre version)
-  const clean = String(line || "")
-    .replace(/^\[(BLUE|ORANGE|RED)\]/g, "")
-    .trim();
-
-  // Lignes normales : escapeHtml puis conversion des tokens [[FRBOX]] et [[B]]
-  if (!/^Cf\s+/i.test(clean)) {
-    return cecApplySafeMarkup(escapeHtml(clean));
-  }
-
-  const file = CEC_CF_MAP[clean];
-  if (!file) return `<span class="cec-cf-missing">${escapeHtml(clean)}</span>`;
-
-  return `
-    <button class="cec-imglink" type="button"
-      onclick="openImageLightbox('img/${escapeHtml(file)}','${escapeHtml(clean)}')">
-      <span>${escapeHtml(clean)}</span>
-      <span class="cec-img-ico" aria-hidden="true">🖼️</span>
-    </button>
-  `;
-}
-
-function cecNl2brHtml(s){
-  return String(s || "")
-    .split("\n")
-    .map(l => cecRenderCfLine(l.trim()))
-    .join("<br>");
-}
-
 function cecRenderTitleCell(col0){
   const lines = String(col0 || "").split("\n").map(x => x.trim()).filter(Boolean);
   const main = lines[0] || "";
