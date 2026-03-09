@@ -27235,8 +27235,8 @@ const SEARCH_PAGES = [
   ["#/reanimation/assistances/lvad","LVAD","lvad"],
   ["#/reanimation/assistances/cardio-west","CardioWest","cardiowest"],
 
-["#/cec-protocoles","Protocoles de CEC","cec protocole"],
-  ["#/cec-urgences","Situations d'urgence","urgence cec"],
+["#/cec-protocoles","Protocoles","CEC", "canulation", "cardioplégie", "DO2"],
+  ["#/cec-urgences","Situations", "urgence","CEC"],
   ["#/cec-procedures","Procédures spécifiques","procedure cec"],
   ["#/cec-urgences/hypotension","Hypotension artérielle per CEC","hypotension"],
   ["#/cec-urgences/retour-veineux","Retour veineux insuffisant","retour veineux"],
