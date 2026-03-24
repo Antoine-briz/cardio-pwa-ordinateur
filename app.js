@@ -3292,7 +3292,13 @@ Pré-commande : 5 CGR + 5 PFC + 1 CPA`,
 - Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)
 - Transfusion guidée par le Quantra Cf algorithme Quantra
 
-<strong>Objectifs tensionnels:</strong> Cf objectifs tensionnels chirurgie aortique`,
+<strong>Objectifs tensionnels:</strong>
+- PAS 120-130 mmHg avant clampage
+- PAS < 140 mmHg en per-clampage
+- PAS 140-150 mmHg avant déclampage 1ère jambe
+- PAS 120-130 mmHg avant déclampage 2ème jambe
+Cf objectifs tensionnels chirurgie aortique`,
+
       alr: `TAP-bloc ou QLB2 ou Péridurale thoracique
 Cf TAP-bloc 🖥️
 Cf QLB 🖥️`,
@@ -3314,7 +3320,7 @@ PEC en SSPI:
     },
 
     "Pontage aorto-bifémoral (carrefour)": {
-      gestion: `Examens complémentaires :
+  gestion: `Examens complémentaires :
 - Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
 - ECG
 - ETT de repos
@@ -3329,8 +3335,8 @@ Gestion des traitements :
 - Arrêt AOD J-5
 
 Pré-commande : 5 CGR + 5 PFC + 1 CPA`,
-      monitorage: `Scope 5 branches, SpO2, VVP x2, KTa, TOF, BIS +/- NIRS, SU, SNG, Cell-saver, réchauffeur/transfuseur`,
-      protocole: `<strong>Induction:</strong> Anesthésie générale AIVOC Propofol/Sufentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
+  monitorage: `Scope 5 branches, SpO2, VVP x2, KTa, TOF, BIS +/- NIRS, SU, SNG, Cell-saver, réchauffeur/transfuseur`,
+  protocole: `<strong>Induction:</strong> Anesthésie générale AIVOC Propofol/Sufentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
 
 <strong>Antibioprophylaxie:</strong> Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
 
@@ -3340,11 +3346,18 @@ Pré-commande : 5 CGR + 5 PFC + 1 CPA`,
 
 <strong>Hémostase:</strong>
 - Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)
-- Transfusion guidée par le Quantra Cf algorithme Quantra`,
-      alr: `TAP-bloc ou QLB2 ou Péridurale thoracique
+- Transfusion guidée par le Quantra Cf algorithme Quantra
+
+<strong>Objectifs tensionnels:</strong>
+- PAS 120-130 mmHg avant clampage
+- PAS < 140 mmHg en per-clampage
+- PAS 140-150 mmHg avant déclampage 1ère jambe
+- PAS 120-130 mmHg avant déclampage 2ème jambe
+Cf objectifs tensionnels chirurgie aortique`,
+  alr: `TAP-bloc ou QLB2 ou Péridurale thoracique
 Cf TAP-bloc 🖥️
 Cf QLB 🖥️`,
-      orientation: `SSPI 24h
+  orientation: `SSPI 24h
 
 Examens:
 - ECG + biologie à l'admission
@@ -3359,7 +3372,7 @@ Surveillance:
 PEC en SSPI: 
 - Douleur: Paracétamol, Acupan, PCA Morphine
 - VNI + Triflo`,
-    },
+},
 
     "Allogreffe de l’aorte abdominale": {
       gestion: `Examens complémentaires :
@@ -3432,7 +3445,14 @@ Pré-commande : 5 CGR + 5 PFC + 1 CPA`,
 
 <strong>Hémostase:</strong>
 - Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)
-- Transfusion guidée par le Quantra Cf algorithme Quantra`,
+- Transfusion guidée par le Quantra Cf algorithme Quantra
+
+<strong>Objectifs tensionnels:</strong>
+- PAS 110-130 mmHg avant clampage
+- PAS < 130 mmHg per-clampage
+- PAS 120-140 mmHg déclampage AMS
+Cf objectifs tensionnels chirurgie aortique`,
+
       alr: `TAP-bloc ou QLB2 ou Péridurale thoracique
 Cf TAP-bloc 🖥️
 Cf QLB 🖥️`,
