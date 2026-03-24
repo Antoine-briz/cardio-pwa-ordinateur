@@ -9760,7 +9760,7 @@ function renderInterventionRVM() {
              <span data-per-kg="400" data-unit="UI"></span>),
           ACT &gt; 400 s.
         </p>
-        <p>Bêta-bloquant (Esmolol ou Landiolol) si SIV &gt; 18 mm.</p>
+        <p>Bêta-bloquant (Esmolol 0,5mg/kg ou Landiolol 0,25mg/kg) avant clampage aortique si SIV &gt; 18 mm.</p>
         <p>
           <strong>Cardioplégie</strong> froide (K) ou chaude (K, Mg) toutes les 20–30 min
           (Custodiol si durée prévue &gt; 2 h).
@@ -10251,7 +10251,7 @@ function renderInterventionAorteAsc() {
           objectif ACT &gt; 400 s.
         </p>
         <p>
-          <strong>Bêta-bloquant<strong> (Esmolol ou Landiolol) si SIV &gt; 18 mm.
+          <strong>Bêta-bloquant<strong> (Esmolol 0,5mg/kg ou Landiolol 0,25mg/kg) avant clampage aortique si SIV &gt; 18 mm.
         </p>
         <p>
           <strong>Cardioplégie</strong> froide (K) ou chaude (K, Mg) toutes les 20–30 min
@@ -20177,7 +20177,7 @@ if (clamp90 || hasPlastieAo || hasRoss) {
  // ✅ 1) Ajout Esmolol si HVG cochée (sous la solution)
   // On l'ajoute au texte de la cellule pour apparaître “en dessous”
   if (hvg) {
-  sol += `\nAutre: Ajout d’[[VBLUE:Esmolol]] 50 µg/kg/min IVSE en per-CEC en raison de l’HVG`;
+  sol += `\nAutre: Ajout d’[[VBLUE:Esmolol]] 0,5mg/kg avant clampage aortique en raison de l’HVG`;
   }
   
 // On remplace les deux lignes XXX par juste le contenu (sans libellés)
