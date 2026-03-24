@@ -12011,7 +12011,7 @@ function renderInterventionAblationGauche() {
           AIVOC Propofol/Rémifentanil + Atracurium/Rocuronium
         </p>
         <p>
-          <strong>Héparine</strong> 100 UI/kg (ACT cible 300–350 s).<br>
+          <strong>Héparine</strong> 100 UI/kg (ACT cible 300–350 s). Répartir en deux 1/2 doses: 50% de la dose après ponction fémorale, 50% après trans-septale.<br>
           <strong>Protamine</strong> : généralement non indiquée
           (parfois 50&nbsp;% de la dose d’héparine à la demande de l’opérateur).
         </p>
