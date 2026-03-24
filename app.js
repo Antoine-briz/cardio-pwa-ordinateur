@@ -9522,7 +9522,7 @@ function renderInterventionRVA() {
              <span data-per-kg="400" data-unit="UI"></span>),
           ACT &gt; 400 s.
         </p>
-        <p><strong>Bêta-bloquant</strong> (Esmolol ou Landiolol) si SIV &gt; 18 mm.</p>
+        <p><strong>Bêta-bloquant</strong> (Esmolol 0,5mg/kg ou Landiolol 0,25mg/kg) avant clampage aortique si SIV &gt; 18 mm.</p>
         <p><strong>Cardioplégie</strong> froide (K) ou chaude (K, Mg) toutes les 20–30 min (Custodiol si durée prévue &gt; 2 h).</p>
         <p><strong>Protamine</strong> 60–80 % de la dose d’héparine.</p>
       `,
