@@ -10595,6 +10595,7 @@ function renderInterventionDissectionAo() {
           <li>Contrôle FC 50–65/min (Esmolol ou Landiolol)</li>
           <li>Contrôle PAS 110–120 mmHg (Urapidil ou Nicardipine)</li>
         </ul>
+        <p><strong>Prélever bilan complet: NFS-Pl, TP, TCA, Gpe-RAI, iono, BHC, GdS-lact</strong></p>
         <p><strong>Précommande large de PSL</strong></p>
       `,
     },
@@ -11167,6 +11168,7 @@ function renderInterventionTAVI() {
           (KTa radial si anesthésie générale ou RA très serré), ± BIS / NIRS,
           ETT/ETO selon l'opérateur.
         </p>
+        <p><strong>Prévoir adrénaline 1mg/mL et 100µg/mL disponibles</p>
         <p><strong>Objectif RA :</strong> Plein, régulier, fermé.</p>
       `,
     },
@@ -11945,7 +11947,7 @@ function renderInterventionAblationDroit() {
         <p>
           <strong>Héparine :</strong>
           généralement non indiquée, poursuite de l’AOD.<br>
-          Si héparine : objectif ACT = 250 s.
+          Si héparine : 80 UI/kg, objectif ACT = 250 s.
         </p>
         <p><strong>ALR :</strong> Aucune.</p>
       `,
@@ -12006,7 +12008,7 @@ function renderInterventionAblationGauche() {
       html: `
         <p id="ablg-induction-text">
           <strong>Induction :</strong>
-          AIVOC Propofol/Sufentanil + Atracurium 0,5 mg/kg.
+          AIVOC Propofol/Rémifentanil + Atracurium/Rocuronium
         </p>
         <p>
           <strong>Héparine</strong> 100 UI/kg (ACT cible 300–350 s).<br>
