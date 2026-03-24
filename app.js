@@ -10883,7 +10883,7 @@ function renderInterventionTransplantAnesth() {
           Exacyl 20 mg/kg puis 2 mg/kg/h IVSE (sauf CI).
         </p>
         <p>
-          Solumédrol 120 mg IVL à l'induction + 120mg IVL en sortie de CEC
+          Solumédrol 120 mg IVL à l'induction (en plus des 4 mg/kg pré-opératoire) + 120mg IVL en sortie de CEC
         </p>
       `,
     },
