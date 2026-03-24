@@ -9098,8 +9098,7 @@ body:not(.light-theme) .cec-proto-page .cec-select option{
 }
 
 .enseignement-categories-wrap {
-  display: flex;
-  justify-content: center;
+  display: block;
   margin: 18px 0 14px 0;
   padding: 0 16px;
 }
@@ -9108,7 +9107,6 @@ body:not(.light-theme) .cec-proto-page .cec-select option{
   display: flex;
   flex-direction: column;
   gap: 8px;
-  width: 100%;
   max-width: 460px;
 }
 
@@ -9116,7 +9114,7 @@ body:not(.light-theme) .cec-proto-page .cec-select option{
   display: block;
   font-size: 18px;
   font-weight: 700;
-  color: #ffffff;
+  color: #000000;
   margin: 0;
   text-align: left;
 }
@@ -9127,25 +9125,23 @@ body:not(.light-theme) .cec-proto-page .cec-select option{
   height: 54px;
   padding: 0 18px;
   border-radius: 14px;
-  border: 2px solid rgba(255, 255, 255, 0.22);
-  background: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
+  border: 2px solid rgba(0, 0, 0, 0.15);
+  background: #ffffff;
+  color: #000000;
   font-size: 18px;
   font-weight: 600;
   outline: none;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .enseignement-category-select:hover {
-  border-color: rgba(255, 255, 255, 0.38);
-  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(0, 0, 0, 0.35);
 }
 
 .enseignement-category-select:focus {
-  border-color: #ffffff;
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.14);
+  border-color: #000000;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
 }
 
 .enseignement-category-select option {
