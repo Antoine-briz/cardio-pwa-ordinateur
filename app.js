@@ -3401,7 +3401,15 @@ Pré-commande : 10 CGR + 10 PFC + 2 CUP`,
 
 <strong>Hémostase:</strong>
 - Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)
-- Transfusion guidée par le Quantra Cf algorithme Quantra`,
+- Transfusion guidée par le Quantra Cf algorithme Quantra
+
+<strong>Objectifs tensionnels:</strong>
+- PAS 120-130 mmHg avant clampage
+- PAS < 140 mmHg en per-clampage
+- PAS 140-150 mmHg avant déclampage 1ère jambe
+- PAS 120-130 mmHg avant déclampage 2ème jambe
+Cf objectifs tensionnels chirurgie aortique`,
+
       alr: `TAP-bloc ou QLB2 ou Péridurale thoracique
 Cf TAP-bloc 🖥️
 Cf QLB 🖥️`,
