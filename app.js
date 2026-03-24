@@ -2748,9 +2748,9 @@ function renderInterventionCarotide() {
 
     if (row.kind === "STTB") {
       return (
-    `<strong>Privilégier protocole Opioïde Free Anesthesia (OFA):</strong><br><br>` +
-    `- Avant induction: Clonidine 75-150µg IVL + MgSO4 3g IVL<br><br>` +
-    `- Induction: Propofol AIVOC + Xylocaïne(10mg/mL)/Eskétamine(0,5mg/mL) bolus 0,2mL/kg puis 0,1mL/kg/h + MgSO4 3g IVSE (1g/h)<br><br>` +
+    `<strong>Privilégier protocole Opioïde Free Anesthesia (OFA):</strong><br>` +
+    `- Avant induction: Clonidine 75-150µg IVL + MgSO4 3g IVL<br>` +
+    `- Induction/entretien: Propofol AIVOC + Xylocaïne(10mg/mL)/Eskétamine(0,5mg/mL) bolus 0,2mL/kg puis 0,1mL/kg/h + MgSO4 3g IVSE (1g/h)<br><br>` +
     `<strong>Antibioprophylaxie:</strong> ${atb}<br><br>` +
     `<strong>Anticoagulation:</strong><br> - Héparine ${uiKg(50)}, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si &lt; 2h (½ dose 2-4h, 0 &gt; 4h)`
   );
