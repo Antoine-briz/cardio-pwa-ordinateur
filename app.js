@@ -3149,7 +3149,7 @@ function renderInterventionAorteThoracique() {
       `- Au déclampage: 150-170 mmHg pour TC, AMS et ARD, 120-130 mmHg pour ARG<br>` +
       `- PAS 140-150 mmHg avant 1ère jambe<br>` +
       `- PAS 120-130 mmHg avant 2ème jambe<br>` +
-     `Cf objectifs tensionnels chirurgie aortique 🖥️`
+     `${imgLink("Cf objectifs tensionnels chirurgie aortique", "objectifs-tensionnels.png")} ${imgIcon("objectifs-tensionnels.png")}`
     );
   }
 
