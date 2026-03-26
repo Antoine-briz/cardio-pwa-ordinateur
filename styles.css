@@ -5215,64 +5215,64 @@ body.screen-square .eto-right{
 }
 
 /* ---------------------------------------------------------
-   Modal "Compte rendu ETO" : supprimer l'espace blanc du bas
-   (sans autre changement de comportement pour l’instant)
+   Modal "Compte rendu ETO" : optimisation hauteur (desktop)
    --------------------------------------------------------- */
 
-/* La classe eto-fullscreen est sur .acr-modal-card, pas sur .eto-modal */
+/* Carte principale : prend presque tout l’écran */
 .acr-modal .acr-modal-card.eto-fullscreen{
-  width: min(1780px, calc(100vw - 24px)) !important;
+  width: min(1780px, calc(100vw - 16px)) !important;
   height: auto !important;
-  max-height: calc(100vh - 24px) !important;
-  margin: 12px auto !important;
+  max-height: calc(100vh - 8px) !important;   /* 🔥 plus haut qu’avant */
+  margin: 4px auto !important;                /* 🔥 moins de marge verticale */
   display: flex !important;
   flex-direction: column !important;
 }
 
-/* Le body ne doit plus forcer une hauteur vide */
+/* Body : on laisse respirer un peu */
 .acr-modal .acr-modal-card.eto-fullscreen .acr-modal-body{
-  flex: 0 1 auto !important;
+  flex: 1 1 auto !important;                  /* 🔥 permet d’utiliser toute la hauteur */
   overflow: hidden !important;
-  padding: 8px !important;
+  padding: 6px !important;
 }
 
-/* La grille prend seulement la hauteur utile */
+/* Grille principale */
 .acr-modal .acr-modal-card.eto-fullscreen .eto-desktop-grid{
-  height: auto !important;
+  height: 100% !important;                   /* 🔥 prend toute la hauteur dispo */
   min-height: 0 !important;
-  align-items: start !important;
+  align-items: stretch !important;
 }
 
-/* Colonne gauche : pas de hauteur forcée inutile */
+/* Colonne gauche */
 .acr-modal .acr-modal-card.eto-fullscreen .eto-left{
-  height: auto !important;
+  height: 100% !important;
   min-height: 0 !important;
 }
 
-/* Le tableau scrolle si besoin, mais sans créer de vide sous lui */
+/* Tableau : beaucoup plus de place */
 .acr-modal .acr-modal-card.eto-fullscreen .eto-table-wrap{
-  flex: 0 1 auto !important;
-  max-height: calc(100vh - 220px) !important;
+  flex: 1 1 auto !important;
+  max-height: calc(100vh - 140px) !important;  /* 🔥 plus grand (avant 220px) */
   overflow: auto !important;
 }
 
-/* Colonne droite : même logique */
+/* Colonne droite */
 .acr-modal .acr-modal-card.eto-fullscreen .eto-right{
-  height: auto !important;
+  height: 100% !important;
   min-height: 0 !important;
 }
 
+/* Synthèse */
 .acr-modal .acr-modal-card.eto-fullscreen .eto-synth-panel{
-  height: auto !important;
-  max-height: calc(100vh - 220px) !important;
+  height: 100% !important;
+  max-height: calc(100vh - 140px) !important;
 }
 
 .acr-modal .acr-modal-card.eto-fullscreen .eto-synth-box{
-  max-height: calc(100vh - 320px) !important;
+  max-height: calc(100vh - 200px) !important; /* 🔥 moins restrictif */
   overflow: auto !important;
 }
 
-/* Sur écran carré : on garde la synthèse en dessous, sans forcer un grand vide */
+/* Écrans carrés */
 body.screen-square .acr-modal .acr-modal-card.eto-fullscreen .eto-desktop-grid{
   grid-template-columns: 1fr !important;
   grid-template-rows: auto auto !important;
@@ -5282,7 +5282,7 @@ body.screen-square .acr-modal .acr-modal-card.eto-fullscreen .eto-right{
   height: auto !important;
 }
 
-/* Mobile : on laisse le comportement actuel */
+/* Mobile inchangé */
 @media (max-width: 700px){
   .acr-modal .acr-modal-card.eto-fullscreen{
     width: 100vw !important;
