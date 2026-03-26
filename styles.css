@@ -5214,77 +5214,84 @@ body.screen-square .eto-right{
   margin-left: 0 !important;
 }
 
-
 /* ---------------------------------------------------------
-   3) Modal "Compte rendu ETO" : centrée et hauteur = contenu
-   Objectif :
-   - plus de fenêtre qui prend toute la hauteur avec vide
-   - la carte reste centrée
-   - le scroll se fait dans la zone utile (table/synthèse)
+   Modal "Compte rendu ETO" : supprimer l'espace blanc du bas
+   (sans autre changement de comportement pour l’instant)
    --------------------------------------------------------- */
 
-/* L’overlay centre déjà via .acr-modal (flex) dans ton CSS :
-   on sécurise juste que la carte ne s’étire pas en “plein écran”. */
-.eto-modal.eto-fullscreen{
-  width: min(1100px, 96vw) !important;      /* au lieu de 100vw */
-  height: auto !important;                  /* ✅ stop plein écran */
-  max-height: calc(100vh - 32px) !important;
-  margin: 16px auto !important;
-  display: block !important;                /* ✅ pas de flex colonne forcée */
+/* La classe eto-fullscreen est sur .acr-modal-card, pas sur .eto-modal */
+.acr-modal .acr-modal-card.eto-fullscreen{
+  width: min(1780px, calc(100vw - 24px)) !important;
+  height: auto !important;
+  max-height: calc(100vh - 24px) !important;
+  margin: 12px auto !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
-/* La carte doit rester centrée et ne pas “coller à gauche” */
-.eto-modal.eto-fullscreen .acr-modal-card{
-  width: 100% !important;
-  margin: 0 auto !important;
-  max-height: calc(100vh - 32px) !important;
-  overflow: hidden !important;              /* le scroll se fait dedans (zones) */
+/* Le body ne doit plus forcer une hauteur vide */
+.acr-modal .acr-modal-card.eto-fullscreen .acr-modal-body{
+  flex: 0 1 auto !important;
+  overflow: hidden !important;
+  padding: 8px !important;
 }
 
-/* Body : ne PAS prendre toute la hauteur inutilement */
-.eto-modal.eto-fullscreen .acr-modal-body{
-  flex: initial !important;                 /* ✅ annule ton flex:1 */
-  overflow: visible !important;             /* le scroll = dans .eto-table-wrap / .eto-synth-box */
-  max-height: none !important;
-  padding-bottom: 10px !important;
-}
-
-/* Desktop grid : ne force pas 100% hauteur */
-.eto-modal.eto-fullscreen .eto-desktop-grid{
+/* La grille prend seulement la hauteur utile */
+.acr-modal .acr-modal-card.eto-fullscreen .eto-desktop-grid{
   height: auto !important;
   min-height: 0 !important;
   align-items: start !important;
 }
 
-/* La zone tableau scrolle si nécessaire (plutôt que la modale entière) */
-.eto-modal.eto-fullscreen .eto-table-wrap{
-  max-height: 62vh !important;              /* ✅ stop le “vide” global */
-  overflow: auto !important;
-}
-
-/* Synthèse : scrolle aussi si nécessaire */
-.eto-modal.eto-fullscreen .eto-synth-panel{
+/* Colonne gauche : pas de hauteur forcée inutile */
+.acr-modal .acr-modal-card.eto-fullscreen .eto-left{
   height: auto !important;
-  max-height: 62vh !important;
+  min-height: 0 !important;
 }
-.eto-modal.eto-fullscreen .eto-synth-box{
-  max-height: 50vh !important;
+
+/* Le tableau scrolle si besoin, mais sans créer de vide sous lui */
+.acr-modal .acr-modal-card.eto-fullscreen .eto-table-wrap{
+  flex: 0 1 auto !important;
+  max-height: calc(100vh - 220px) !important;
   overflow: auto !important;
 }
 
-/* Mobile : on garde le plein écran (c’est souvent voulu) */
+/* Colonne droite : même logique */
+.acr-modal .acr-modal-card.eto-fullscreen .eto-right{
+  height: auto !important;
+  min-height: 0 !important;
+}
+
+.acr-modal .acr-modal-card.eto-fullscreen .eto-synth-panel{
+  height: auto !important;
+  max-height: calc(100vh - 220px) !important;
+}
+
+.acr-modal .acr-modal-card.eto-fullscreen .eto-synth-box{
+  max-height: calc(100vh - 320px) !important;
+  overflow: auto !important;
+}
+
+/* Sur écran carré : on garde la synthèse en dessous, sans forcer un grand vide */
+body.screen-square .acr-modal .acr-modal-card.eto-fullscreen .eto-desktop-grid{
+  grid-template-columns: 1fr !important;
+  grid-template-rows: auto auto !important;
+}
+
+body.screen-square .acr-modal .acr-modal-card.eto-fullscreen .eto-right{
+  height: auto !important;
+}
+
+/* Mobile : on laisse le comportement actuel */
 @media (max-width: 700px){
-  .eto-modal.eto-fullscreen{
+  .acr-modal .acr-modal-card.eto-fullscreen{
     width: 100vw !important;
     max-height: 100vh !important;
     margin: 0 !important;
     border-radius: 0 !important;
   }
-  .eto-modal.eto-fullscreen .acr-modal-card{
-    max-height: 100vh !important;
-    border-radius: 0 !important;
-  }
-  .eto-modal.eto-fullscreen .eto-table-wrap{
+
+  .acr-modal .acr-modal-card.eto-fullscreen .eto-table-wrap{
     max-height: 58vh !important;
   }
 }
@@ -9200,3 +9207,4 @@ body:not(.light-theme) .cec-proto-page .cec-select option{
   color: #000000;
   background: #ffffff;
 }
+
