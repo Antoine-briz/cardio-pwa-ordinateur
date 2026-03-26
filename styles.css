@@ -9148,3 +9148,55 @@ body:not(.light-theme) .cec-proto-page .cec-select option{
   color: #000000;
   background: #ffffff;
 }
+
+.enseignement-categories-wrap {
+  display: block;
+  margin: 18px 0 14px 0;
+  padding: 0 16px;
+}
+
+.enseignement-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 460px;
+}
+
+.enseignement-category-label {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  color: #000000;
+  margin: 0;
+  text-align: left;
+}
+
+.enseignement-category-select {
+  width: 100%;
+  min-width: 0;
+  height: 54px;
+  padding: 0 18px;
+  border-radius: 14px;
+  border: 2px solid rgba(0, 0, 0, 0.15);
+  background: #ffffff;
+  color: #000000;
+  font-size: 18px;
+  font-weight: 600;
+  outline: none;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.enseignement-category-select:hover {
+  border-color: rgba(0, 0, 0, 0.35);
+}
+
+.enseignement-category-select:focus {
+  border-color: #000000;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+.enseignement-category-select option {
+  color: #000000;
+  background: #ffffff;
+}
