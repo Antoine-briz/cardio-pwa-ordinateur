@@ -2739,7 +2739,7 @@ function renderInterventionCarotide() {
         `<strong>Induction:</strong> Anesthésie générale ${hypnotiqueSterno}, ${curare}<br><br>` +
         `<strong>Antibioprophylaxie:</strong> ${atb}<br><br>` +
         `<strong>Entretien:</strong> AIVOC Propofol/Sufentanil<br><br>` +
-        `<strong>Hémostase:</strong><br> - Exacyl ${mgKg(20)} puis ${mgKgH(2)} IVSE (sauf CI)<br>` +
+        `<strong>Hémostase:</strong><br>` +
         `${heparineTsa}<br>` +
         ` - Transfusion guidée par le Quantra ${imgLink("Cf algorithme Quantra", "cf-algorithme-quantra.png")}<br><br>` +
         `<strong>Objectif TA:</strong> PAS &gt; 140 mmHg pendant le clampage des TSA`
