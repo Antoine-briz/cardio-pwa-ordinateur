@@ -22102,8 +22102,6 @@ function renderEnseignement() {
     "Accueil des internes",
     "Cours hebdo. internes",
     "Cours aux externes",
-    "Echographie trans-oesophagienne",
-    "Circulation extra-corporelle",
     "Autres cours",
   ];
 
