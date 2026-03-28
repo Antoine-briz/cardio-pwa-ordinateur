@@ -2383,7 +2383,7 @@ function renderInterventionCarotide() {
         "- Arrêt AOD J-5<br><br>" +
         "Si carotide symptomatique : possibilité de maintenir le clopidogrel après accord chirurgien (relayer prasugrel et ticagrélor par du clopidogrel) <br><br>" +
         "Pré-commande&nbsp;: 2 CGR",
-      monitorage: "Scope 5 branches, SpO2,  VVP, KTa, TOF, BIS, NIRS",
+      monitorage: "Scope 5 branches, SpO2,  VVP, KTa (radial controlatéral), TOF, BIS, NIRS. Penser à la protection des yeux",
       alr:
         "Blocs cervicaux superficiel et intermédiaire, Ropicavaïne 3,75mg/mL 20-25mL max (max 3mg/kg)<br><br>" +
         "Cf bloc cervical 🖥️",
@@ -2534,7 +2534,7 @@ function renderInterventionCarotide() {
         "- Arrêt Prasugrel J-7<br>" +
         "- Arrêt AOD J-5<br><br>" +
         "Pré-commande&nbsp;: 2 CGR",
-      monitorage: "Scope 5 branches, SpO2, VVP, PNI, TOF, BIS",
+      monitorage: "Scope 5 branches, SpO2, VVP (controlatéral), PNI (controlatéral), TOF, BIS",
       alr: "Infiltration chirurgicale par Ropivacaïne 2mg/mL",
       orientation:
         "<strong>SSPI 2h minimum</strong><br><br>" +
