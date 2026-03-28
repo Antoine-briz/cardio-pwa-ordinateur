@@ -22118,7 +22118,6 @@ const fileExt = (name = "") => {
 };
 
 const uploadToStorage = async (file) => {
-  // ===== LIMITES =====
   const MAX_PDF = 40 * 1024 * 1024;   // 40 Mo
   const MAX_PPT = 80 * 1024 * 1024;   // 80 Mo
 
@@ -22132,12 +22131,10 @@ const uploadToStorage = async (file) => {
   const isPdf = ext === "pdf";
   const isPpt = ext === "ppt" || ext === "pptx";
 
-  // ===== TYPE =====
   if (!isPdf && !isPpt) {
     throw new Error("Format non autorisé. Seuls PDF et PPT/PPTX sont acceptés.");
   }
 
-  // ===== TAILLE =====
   if (isPdf && file.size > MAX_PDF) {
     throw new Error("PDF trop volumineux (limite 40 Mo).");
   }
@@ -22146,25 +22143,43 @@ const uploadToStorage = async (file) => {
     throw new Error("PPT/PPTX trop volumineux (limite 80 Mo).");
   }
 
-  // ===== UPLOAD =====
   const safeName = name.replace(/[^\w.\-]+/g, "_");
   const path = `teaching/${Date.now()}__${safeName}`;
   const ref = window.storage.ref().child(path);
 
   try {
-    const ext = (file.name || "").toLowerCase().split(".").pop();
+    let contentType = file.type;
+    if (!contentType || contentType === "application/octet-stream") {
+      if (ext === "pdf") {
+        contentType = "application/pdf";
+      } else if (ext === "ppt") {
+        contentType = "application/vnd.ms-powerpoint";
+      } else if (ext === "pptx") {
+        contentType = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+      }
+    }
 
-let contentType = file.type; // ex: "application/pdf"
-if (!contentType || contentType === "application/octet-stream") {
-  if (ext === "pdf") contentType = "application/pdf";
-  else if (ext === "ppt") contentType = "application/vnd.ms-powerpoint";
-  else if (ext === "pptx") contentType = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
-}
+    console.log("Upload Firebase Storage démarré :", {
+      name,
+      size: file.size,
+      type: contentType,
+      path
+    });
 
-// ⚠️ on force le contentType
-await ref.put(file, { contentType });
+    const task = ref.put(file, { contentType });
+
+    await new Promise((resolve, reject) => {
+      task.on(
+        "state_changed",
+        null,
+        (error) => reject(error),
+        () => resolve()
+      );
+    });
 
     const fileUrl = await ref.getDownloadURL();
+
+    console.log("Upload Firebase Storage terminé :", { path, fileUrl });
 
     return {
       fileUrl,
@@ -22173,6 +22188,11 @@ await ref.put(file, { contentType });
     };
   } catch (err) {
     console.error("Erreur upload Firebase Storage:", err);
+
+    if (err && err.code) {
+      throw new Error(`Erreur Firebase Storage : ${err.code}`);
+    }
+
     throw new Error("Erreur lors de l'envoi du fichier vers le serveur.");
   }
 };
@@ -22752,9 +22772,16 @@ $btnDelete.addEventListener("click", async () => {
 
 
 // Save add/edit (Firebase)
+let ensSaving = false;
+
 $form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
+  if (ensSaving) return;
+  ensSaving = true;
+
+  const saveBtn = document.getElementById("ens-save");
+  if (saveBtn) saveBtn.disabled = true;
 
   const id = ($formId.value || "").trim();
   const title = ($formTitle.value || "").trim();
@@ -22807,9 +22834,13 @@ $form.addEventListener("submit", async (e) => {
     closeModal();
     await load();
   } catch (err) {
-  console.error(err);
-  alert(err.message || "Erreur lors de l'enregistrement.");
-}
+    console.error(err);
+    alert(err.message || "Erreur lors de l'enregistrement.");
+  } finally {
+    ensSaving = false;
+    const saveBtn = document.getElementById("ens-save");
+    if (saveBtn) saveBtn.disabled = false;
+  }
 });
 
 
