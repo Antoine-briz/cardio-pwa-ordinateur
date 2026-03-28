@@ -9208,3 +9208,7 @@ body:not(.light-theme) .cec-proto-page .cec-select option{
   background: #ffffff;
 }
 
+
+body[data-theme="dark"] .enseignement-category-label {
+  color: #ffffff !important;
+}
