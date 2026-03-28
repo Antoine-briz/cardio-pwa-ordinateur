@@ -9208,7 +9208,10 @@ body:not(.light-theme) .cec-proto-page .cec-select option{
   background: #ffffff;
 }
 
-
-body[data-theme="dark"] .enseignement-category-label {
+/* ============================================================
+   Enseignement — label "Sélectionnez un type de cours :" lisible en thème sombre
+   ============================================================ */
+body:not(.theme-light) .enseignement-page .enseignement-category-label,
+body:not(.theme-light) .enseignement-page .enseignement-categories label.enseignement-category-label {
   color: #ffffff !important;
 }
