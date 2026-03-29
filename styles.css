@@ -9215,3 +9215,105 @@ body:not(.theme-light) .enseignement-page .enseignement-category-label,
 body:not(.theme-light) .enseignement-page .enseignement-categories label.enseignement-category-label {
   color: #ffffff !important;
 }
+
+/* =========================================================
+   ENSEIGNEMENT / BIBLIO / RECHERCHE — pagination moderne
+   ========================================================= */
+.ens-pages {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.ens-page {
+  min-width: 38px;
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.06);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ens-page:hover {
+  transform: translateY(-1px);
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.28);
+}
+
+.ens-page.active {
+  background: #4169be;
+  color: #ffffff;
+  border-color: #4169be;
+  box-shadow: 0 6px 16px rgba(65,105,190,0.35);
+}
+
+/* thème clair */
+body.theme-light .ens-page {
+  background: #ffffff;
+  color: #0f172a;
+  border: 1px solid rgba(15,23,42,0.18);
+  box-shadow: 0 2px 8px rgba(15,23,42,0.06);
+}
+
+body.theme-light .ens-page:hover {
+  background: #f8fafc;
+  border-color: rgba(15,23,42,0.32);
+}
+
+body.theme-light .ens-page.active {
+  background: #4169be;
+  color: #ffffff;
+  border-color: #4169be;
+  box-shadow: 0 6px 16px rgba(65,105,190,0.28);
+}
+
+/* =========================================================
+   ENSEIGNEMENT — spinner de sauvegarde modal
+   ========================================================= */
+.ens-modal {
+  position: relative;
+}
+
+.ens-modal-saving {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.28);
+  border-radius: 16px;
+  z-index: 20;
+}
+
+.ens-modal.is-saving .ens-modal-saving {
+  display: flex;
+}
+
+.ens-modal-saving-spinner {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 5px solid rgba(255,255,255,0.35);
+  border-top-color: #ffffff;
+  animation: ens-spin 0.8s linear infinite;
+}
+
+body.theme-light .ens-modal-saving {
+  background: rgba(255,255,255,0.45);
+}
+
+body.theme-light .ens-modal-saving-spinner {
+  border: 5px solid rgba(0,0,0,0.16);
+  border-top-color: #4169be;
+}
+
+@keyframes ens-spin {
+  to { transform: rotate(360deg); }
+}
