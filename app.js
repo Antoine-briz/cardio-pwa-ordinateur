@@ -22365,11 +22365,15 @@ function esc(s) {
 
       <!-- Modal -->
       <div class="ens-modal-backdrop hidden" id="ens-modal-backdrop">
-        <div class="ens-modal" role="dialog" aria-modal="true">
-          <div class="ens-modal-head">
-            <h3 id="ens-modal-title">Ajouter un fichier</h3>
-            <button class="ens-modal-close" id="ens-modal-close" aria-label="Fermer">×</button>
-          </div>
+  <div class="ens-modal" id="ens-modal-box" role="dialog" aria-modal="true">
+    <div class="ens-modal-saving" id="ens-modal-saving">
+      <div class="ens-modal-saving-spinner" aria-hidden="true"></div>
+    </div>
+
+    <div class="ens-modal-head">
+      <h3 id="ens-modal-title">Ajouter un fichier</h3>
+      <button class="ens-modal-close" id="ens-modal-close" aria-label="Fermer">×</button>
+    </div>
 
           <form id="ens-form" class="ens-form">
             <input type="hidden" id="ens-form-id" value="" />
