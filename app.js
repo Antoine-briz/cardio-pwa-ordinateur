@@ -22088,10 +22088,11 @@ async function renderPdfWithPdfjs(container, pdfUrl) {
 
 function renderEnseignement() {
   const DOMAINS = [
-    "Réanimation",
-    "Anesthésie",
+    "Anesthésie chir. cardiaque",
+    "Anesthésie chir. vasculaire",
     "ETO",
     "CEC",
+    "Réanimation",
     "Infectiologie",
     "Cardiologie",
     "Autre",
