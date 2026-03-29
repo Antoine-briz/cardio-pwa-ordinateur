@@ -22783,7 +22783,10 @@ $form.addEventListener("submit", async (e) => {
 
   const saveBtn = document.getElementById("ens-save");
   if (saveBtn) saveBtn.disabled = true;
+  const modalBox = document.getElementById("ens-modal-box");
+  if (modalBox) modalBox.classList.add("is-saving");
 
+  
   const id = ($formId.value || "").trim();
   const title = ($formTitle.value || "").trim();
   const author = ($formAuthor.value || "").trim();
@@ -22839,8 +22842,12 @@ $form.addEventListener("submit", async (e) => {
     alert(err.message || "Erreur lors de l'enregistrement.");
   } finally {
     ensSaving = false;
+
     const saveBtn = document.getElementById("ens-save");
     if (saveBtn) saveBtn.disabled = false;
+
+    const modalBox = document.getElementById("ens-modal-box");
+    if (modalBox) modalBox.classList.remove("is-saving");
   }
 });
 
