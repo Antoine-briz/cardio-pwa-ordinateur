@@ -9370,3 +9370,29 @@ body.theme-light .ens-modal-saving-spinner {
 .ecmo-eto-grid .thumb-card {
   width: 100%;
 }
+
+.ecmo-eto-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.ecmo-eto-grid .thumb-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ecmo-eto-grid .thumb-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.ecmo-eto-grid .thumb-card span {
+  margin-top: 8px;
+  text-align: center;
+  line-height: 1.25;
+}
