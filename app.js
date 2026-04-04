@@ -15254,7 +15254,7 @@ function renderReanAssistECMO() {
           "Epuration extra-rénale continue",
           `
             <p><strong>Principe:</strong> Possibilité de branchement d’une EER en CVVH sur le circuit d’ECMO VA afin de préserver les axes veineux du patient.</p>
-            <p><strong>Branchements:</strong> Lignes artérielle et veineuse entre la pompe centrifuge et l’oxygénateur. ${imgInline("Cf schéma", "ecmoeer.png")}</p>
+            <p><strong>Branchements:</strong> Lignes artérielle et veineuse entre la pompe centrifuge et l’oxygénateur. ${imgInline("Cf schéma", "eerecmo.png")}</p>
             <p><strong>Précaution:</strong> pas de ré-injection complète du volume sanguin lors de la restitution car risque de bullage du circuit d’ECMO</p>
           `,
         ],
