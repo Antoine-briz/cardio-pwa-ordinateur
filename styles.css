@@ -9514,8 +9514,7 @@ body.theme-light .ens-modal-saving-spinner {
 }
 
 .ecmo-table-4cols tbody td:first-child {
-  background: #0f2a44;
+  background: #2c4f75;  /* bleu un peu plus clair que le header */
   color: #ffffff;
   font-weight: 700;
-  border-right: 2px solid #0b2540;
 }
