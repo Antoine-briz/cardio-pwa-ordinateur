@@ -15218,16 +15218,16 @@ function renderReanAssistECMO() {
         [
           "Réglage des débits",
           `
-            <p><strong>Débit de pompe:</strong> <strong>Objectif d’index cardiaque théorique 2,4L/min/m²</strong>, avec un débit de pompe minimal pour régression de l’hypoperfusion tissulaire. Ne pas diminuer en dessous de 1500 tpm ou 2 L/min</p>
-            <p><strong>FmO2:</strong> Absence de recommandation claire. Généralement FmO2 haute afin de délivrer une ventilation mécanique protectrice avec FiO2 minimale. Une FmO2 &lt; 50% crée une hypoxémie iatrogène.</p>
-            <p><strong>Balayage:</strong> Initialement ratio 1:1 avec le débit de pompe, puis QSP PaCO2 35-45 mmHg. Un balayage &lt; 1L/min crée une hypoxémie iatrogène.</p>
+            <p><strong>Débit de pompe:</strong> Objectif d’index cardiaque théorique 2,4L/min/m², avec un débit de pompe minimal pour régression de l’hypoperfusion tissulaire. Ne pas diminuer en dessous de 1500 tpm ou 2 L/min</p>
+            <p><strong>FmO2:</strong> Absence de recommandation claire. Généralement FmO2 haute afin de délivrer une ventilation mécanique protectrice avec FiO2 minimale. ⚠️ Une FmO2 &lt; 50% crée une hypoxémie iatrogène.</p>
+            <p><strong>Balayage:</strong> Initialement ratio 1:1 avec le débit de pompe, puis QSP PaCO2 35-45 mmHg. ⚠️ Un balayage &lt; 1L/min crée une hypoxémie iatrogène.</p>
           `,
         ],
         [
           "Surveillance quotidienne",
           `
             <p><strong>Clinique:</strong> Signes d’hypoperfusion périphériques, signes d’ischémie de MI, examen neurologique (risque d’AVC), recherche de complications infectieuses (scarpas, pneumonies…)</p>
-            <p><strong>Monitorage:</strong> PA pulsatile, SvO2 sur Swan Ganz ou ligne veineuse, NIRS cérébral et membres inférieurs</p>
+            <p><strong>Monitorage continu:</strong> Pression aortérielle pulsatile, SvO2 sur Swan Ganz ou ligne veineuse, NIRS cérébral et membres inférieurs</p>
             <p><strong>Circuit:</strong> Oxygénation de la ligne artérielle, insertion des canules, caillotage de membrane</p>
             <p><strong>Biologie:</strong> GdS-lact, NFS-Pl, ionogramme sanguin, BHC, CPK, AntiXa (Obj 0,2-0,4 UI/mL), Hb plasmatique (Norme &lt; 50 mg/L, objectif &lt; 150 mg/L)</p>
             <p><strong>Imagerie:</strong> Radiographie de thorax (position canule veineuse, pneumonie…), échocardiographie (position canule veineuse, récupération/sevrabilité, ouverture de la valve aortique, décharge du VG…) ${imgInline("Cf ETT/ETO quotidien", "etoquotidien.png")}</p>
