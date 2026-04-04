@@ -15493,6 +15493,24 @@ function renderReanAssistECMO() {
   });
 }
 
+function renderReanAssistBCPIA() {
+  const encadres = [
+    {
+      titre: "BCPIA",
+      html: `
+        <p>Prise en charge d’une contre-pulsion intra-aortique :
+        positionnement, synchronisation, réglages, sevrage. Contenu à compléter.</p>
+      `,
+    },
+  ];
+  renderInterventionPage({
+    titre: "Assistances circulatoires",
+    sousTitre: "BCPIA",
+    image: "assistances2.png",
+    encadres,
+  });
+}
+
 function renderReanAssistImpella() {
   const encadres = [
     {
