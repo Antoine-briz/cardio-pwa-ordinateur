@@ -15168,20 +15168,20 @@ function renderReanAssistECMO() {
           "Types d’ECMO artério-veineuses",
           `
             <p><strong>ECMO VA périphérique</strong>: ${imgInline("", "ecmoperiph.png")}</p>
-            <p>Canulation: canule veineuse fémorale, canule artérielle fémorale ou axillaire (flux artériel rétrograde)</p>
-            <p>Indication: Technique privilégiée en ère intention</p>
+            <p>- Canulation: canule veineuse fémorale, canule artérielle fémorale ou axillaire (flux artériel rétrograde)</p>
+            <p>- Indication: Technique privilégiée en ère intention</p>
 
             <p><strong>ECMO VA centrale</strong>: ${imgInline("", "ecmocentrale.png")}</p>
-            <p>Canulation: canule veineuse dans l’OD (soit part abord direct, soit via la veine fémorale), canule artérielle aortique (flux artériel antérograde).</p>
-            <p>Indication: OAP réfractaire sous ECMOA VA périphérique, également possible en post-cardiotomie en 1ère intention.</p>
+            <p>- Canulation: canule veineuse dans l’OD (soit part abord direct, soit via la veine fémorale), canule artérielle aortique (flux artériel antérograde).</p>
+            <p>- Indication: OAP réfractaire sous ECMOA VA périphérique, également possible en post-cardiotomie en 1ère intention.</p>
 
             <p><strong>ECMO droite</strong>: ${imgInline("", "ecmodroite.png")}</p>
-            <p>Canulation: Canule d’admission dans l’OD, canule éjectionnelle dans l’artère pulmonaire.</p>
-            <p>Indication: Dysfonction VD isolée. A privilégier lorsqu’on souhaite limiter les conséquences négatives de l’ECMO VA sur le VG.</p>
+            <p>- Canulation: Canule d’admission dans l’OD, canule éjectionnelle dans l’artère pulmonaire.</p>
+            <p>- Indication: Dysfonction VD isolée. A privilégier lorsqu’on souhaite limiter les conséquences négatives de l’ECMO VA sur le VG.</p>
 
             <p><strong>Double ECMO centrale</strong>: ${imgInline("", "ecmodouble.png")}</p>
-            <p>Canulation: 1er circuit OD-Artère pulmonaire, 2ème circuit VG-Aorte.</p>
-            <p>Indication: Défaillance bi-ventriculaire sévère avec échec ou inadéquation de l’ECMO VA périphérique</p>
+            <p>- Canulation: 1er circuit OD-Artère pulmonaire, 2ème circuit VG-Aorte.</p>
+            <p>- Indication: Défaillance bi-ventriculaire sévère avec échec ou inadéquation de l’ECMO VA périphérique</p>
           `,
         ],
         [
@@ -15237,8 +15237,8 @@ function renderReanAssistECMO() {
           "Prescriptions médicamenteuses",
           `
             <p><strong>Hémodynamique:</strong></p>
-            <p><strong>Inotropes:</strong> Dobutamine si contraste-spontané ou absence d’ouverture des la valve aortique . Cure le Levosimendan (Charge de 6-12µg/kg suir 10min IVL puis 0,1 µg/kg/min pendant 24h) à discuter en cas de sevrage difficile.</p>
-            <p>Vasopresseurs: Noradrénaline 0,16mg/mL avec objectif de PAM &gt; 70 mmHg</p>
+            <p>- Inotropes: Dobutamine si sludge et/ou absence de débit aortique. Cure le Levosimendan (Charge de 6-12µg/kg sur 10min IVL puis 0,1 µg/kg/min pendant 24h) à discuter en cas de sevrage difficile.</p>
+            <p>- Vasopresseurs: Noradrénaline 0,16mg/mL avec objectif de PAM &gt; 70 mmHg</p>
             <p><strong>Anticoagulation:</strong> HNF IVSE pour objectif de TCA ratio 1,5-2 et AntiXa 0,2-0,4 UI/mL. Si inefficacité, dosage de l’ATIII (norme &gt; 80%)</p>
             <p><strong>Anti-infectieux:</strong> Pas de modification significative du volume de distribution donc pas d’augmentation des posologies usuelles.</p>
           `,
