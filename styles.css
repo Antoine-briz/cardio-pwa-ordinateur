@@ -9439,13 +9439,19 @@ body.theme-light .ens-modal-saving-spinner {
 
 /* 4) Cartes miniatures toutes homogènes */
 .ecmo-eto-grid .thumb-card {
-  width: 100% !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  min-height: 220px !important;
-  padding: 12px !important;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 250px; /* hauteur FIXE (plus compacte) */
+  padding: 10px;
+}
+
+.ecmo-eto-grid .thumb-card img {
+  width: 100%;
+  height: 150px; /* adapte ici */
+  object-fit: contain;
 }
 
 /* 5) IMPORTANT : force la même zone image pour toutes */
