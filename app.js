@@ -15293,190 +15293,202 @@ function renderReanAssistECMO() {
 },
 
     {
-      titre: "Complications de l’ECMO VA",
-      html: ecmoTable([
-        [
-          "Hémorragie",
-          `
-            <p><strong>Facteurs favorisants</strong></p>
-            <p>- Abord chirurgical &gt; percutané</p>
-            <p>- Contexte post-opératoire</p>
-            <p>- Troubles de hémostase: thrombopénie, Willebrand acquis, HNF IVSE, TIH…</p>
-            <p>- Lésion à risque hémorragique pré-existante</p>
+  titre: "Complications de l’ECMO VA",
+  html: `
+    <div class="info-content ecmo-table-wrap">
+      <table class="ecmo-table ecmo-table-4cols">
+        <thead>
+          <tr>
+            <th>Complication</th>
+            <th>Facteurs favorisants</th>
+            <th>Prévention</th>
+            <th>Prise en charge</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Hémorragie</strong><br>(site opératoire, site de canule, ORL, digestive…)</td>
+            <td>
+              <p>- Abord chirurgical > percutané</p>
+              <p>- Contexte post-opératoire</p>
+              <p>- Troubles de hémostase: thrombopénie, Willebrand acquis, HNF IVSE, TIH…</p>
+              <p>- Lésion à risque hémorragique pré-existante</p>
+            </td>
+            <td>
+              <p>- Abord percutané à privilégier</p>
+              <p>- Correction des troubles de l’hémostase, objectif d’AntiXa 0,2-0,4 UI/mL</p>
+              <p>- Débit d’assistance minimal</p>
+            </td>
+            <td>
+              <p><strong>Intervention hémostatique:</strong> reprise chirurgicale, point sur site de canulation, tamponnement ORL, endoscopie digestive, radiologie interventionnelle…</p>
+              <p><strong>Correction des troubles de l’hémostase:</strong> Arrêt HNF, transfusion PFC/CUP…</p>
+            </td>
+          </tr>
 
-            <p><strong>Prévention</strong></p>
-            <p>- Abord percutané à privilégier</p>
-            <p>- Correction des troubles de l’hémostase, objectif d’AntiXa 0,2-0,4 UI/mL</p>
-            <p>- Débit d’assistance minimal</p>
+          <tr>
+            <td><strong>Infections:</strong>
+              <p>- Pneumonies</p>
+              <p>- Bactériémies</p>
+              <p>- Scarpa (> 7j)</p></td>
+            <td>
+              <p><strong>Germes:</strong> BGN (entérobact., P. aeruginosa), CG+ (S. aureus, SCN)</p>
+              <p>- Abord chirurgical > percutané</p>
+              <p>- Manipulations de canules</p>
+              <p>- Antibiothérapie récente</p>
+              <p>- Durée d’assistance par ECMO</p>
+              <p>- Durée de sédation</p>
+            </td>
+            <td>
+              <p>- Abord percutané à privilégier</p>
+              <p>- Soins locaux et manipulations prudentes des scarpas</p>
+              <p>- Sauvegarde antibiotique</p>
+              <p>- Explantation précoce</p>
+              <p>- Sevrage précoce de la ventilation mécanique</p>
+            </td>
+            <td>
+              <p><strong>Antibiothérapie probabiliste</strong> (ou adaptée) selon le site infecté: couverture des entérobactéries Gp3, P.aeruginosa (+/- Staphylococcus spp. si point d’appel cutané).</p>
+              <p><strong>Sevrage d’ECMO</strong> ou changement de site de canulation si possible</p>
+            </td>
+          </tr>
 
-            <p><strong>Prise en charge</strong></p>
-            <p><strong>Intervention hémostatique:</strong> reprise chirurgicale, point sur site de canulation, tamponnement ORL, endoscopie digestive, radiologie interventionnelle…</p>
-            <p><strong>Correction des troubles de l’hémostase:</strong> Arrêt HNF, transfusion PFC/CUP…</p>
-          `,
-        ],
-        [
-          "Infection",
-          `
-            <p><strong>Facteurs favorisants</strong></p>
-            <p>- Pneumonies</p>
-            <p>- Bactériémies</p>
-            <p>- Scarpa (&gt; 7j)</p>
-            <p><strong>Germes:</strong> BGN (entérobact., P. aeruginosa), CG+ (S. aureus, SCN)</p>
-            <p>- Abord chirurgical &gt; percutané</p>
-            <p>- Manipulations de canules</p>
-            <p>- Antibiothérapie récente</p>
-            <p>- Durée d’assistance par ECMO</p>
-            <p>- Durée de sédation</p>
+          <tr>
+            <td><strong>Ischémie: </strong>
+              <p>- AVC</p>
+              <p>- Membre inf.</p>
+              <p>- Mésentérique</p></td>
+            <td>
+              
+              <p>- Athérome pré-existant: TSA, AOMI, art. viscérales…</p>
+              <p>- Débit de perfusion insuffisant</p>
+              <p>- Anticoagulation insuffisante</p>
+              <p>- Canulation axillaire (AVC) et défaut de reperfusion (MI)</p>
+            </td>
+            <td>
+              <p>- Canulation adaptée à l’athérome du patient et calibre adapté des canules</p>
+              <p>- Anticoagulation HNF pour AntiXa 0,2-0,4 UI/mL</p>
+              <p>- Débit cible > 2,4 L/min/m² et PAM > 70 mmHg</p>
+            </td>
+            <td>
+              <p><strong>Pour AVC:</strong> thrombectomie (thrombolyse CI)</p>
+              <p><strong>Pour membre inf.:</strong> reperfusion chirurgicale, discuter changement de canulation</p>
+              <p><strong>Pour ischémie mésentérique:</strong> laparotomie exploratrice</p>
+            </td>
+          </tr>
 
-            <p><strong>Prévention</strong></p>
-            <p>- Abord percutané à privilégier</p>
-            <p>- Soins locaux et manipulations prudentes des scarpas</p>
-            <p>- Sauvegarde antibiotique</p>
-            <p>- Explantation précoce</p>
-            <p>- Sevrage précoce de la ventilation mécanique</p>
+          <tr>
+            <td><strong>Œdème pulmonaire hydrostatique</strong></td>
+            <td>
+              <p>- ECMO VA périphérique</p>
+              <p>- Débit d’assistance élevé</p>
+              <p>- Akinésie/Hypokinésie VG sévère</p>
+              <p>- Absence de technique de décharge VG</p>
+            </td>
+            <td>
+              <p>- Diminuer le débit d’assistance au minimum possible</p>
+              <p>- Dobutamine pour maintient d’une éjection VG</p>
+              <p>- Technique de décharge VG prophylactique (BCPIA)</p>
+            </td>
+            <td>
+              <p><strong>Technique de décharge VG curative:</strong> BCPIA, Impella, atriotomie (Rashking), canule VG apicale…</p>
+              <p><strong>ECMO VAV:</strong> ajout d’une canule d’éjection veineuse</p>
+              <p><strong>Centralisation de l’ECMO périphérique</strong></p>
+            </td>
+          </tr>
 
-            <p><strong>Prise en charge</strong></p>
-            <p><strong>Antibiothérapie probabiliste</strong> (ou adaptée) selon le site infecté: couverture des entérobactéries Gp3, P.aeruginosa (+/- Staphylococcus spp. si point d’appel cutané).</p>
-            <p><strong>Sevrage d’ECMO</strong> ou changement de site de canulation si possible</p>
-          `,
-        ],
-        [
-          "Ischémie",
-          `
-            <p><strong>Facteurs favorisants</strong></p>
-            <p>- AVC</p>
-            <p>- Membre inf.</p>
-            <p>- Mésentérique</p>
-            <p>- Athérome pré-existant: TSA, AOMI, art. viscérales…</p>
-            <p>- Débit de perfusion insuffisant</p>
-            <p>- Anticoagulation insuffisante</p>
-            <p>- Canulation axillaire (AVC) et défaut de reperfusion (MI)</p>
+          <tr>
+            <td><strong>Syndrome d’Arlequin</strong><p>${imgInline("Cf schéma", "arlequin.png")}</p></td>
+            <td>
+              <p>- Oxygénation pulmonaire compromise (SDRA, pneumonie sévère, OAP réfractaire…)</p>
+              <p>- Récupération d’une éjection VG satisfaisante</p>
+            </td>
+            <td>
+              <p>- Détection précoce: Kta radial droit et SpO2 main droite</p>
+            </td>
+            <td>
+              <p><strong>Conversion en ECMO VV</strong> si défaillance cardio-circulatoire résolue.</p>
+              <p><strong>Conversion en ECMO VAV</strong> (ajout d’une canule veineuse éjectionnelle) si défaillance cardio-circulatoire non résolue.</p>
+              <p>- Rarement conversion en double ECMO centrale</p>
+            </td>
+          </tr>
 
-            <p><strong>Prévention</strong></p>
-            <p>- Canulation adaptée à l’athérome du patient et calibre adapté des canules</p>
-            <p>- Anticoagulation HNF pour AntiXa 0,2-0,4 UI/mL</p>
-            <p>- Débit cible &gt; 2,4 L/min/m² et PAM &gt; 70 mmHg</p>
+          <tr>
+            <td><strong>Hémolyse</strong></td>
+            <td>
+              <p>- Pression veineuse très négatives (hypovolémique, déplacement de canule, tamponnade…)</p>
+              <p>- Caillotage de l’oxygénateur ou anticoagulation insuffisante</p>
+              <p>- Vitesse de pompe importante</p>
+            </td>
+            <td>
+              <p>- Détection précoce: Hémoglobine plasmatique quotidienne (objectif < 150 mg/L, norme < 50 mg/L)</p>
+              <p>- Limiter le débit de pompe au minimum nécessaire</p>
+              <p>- Anticoagulation HNF AntiXa 0,2-0,4 UI/mL</p>
+            </td>
+            <td>
+              <p><strong>Transfusion</strong> pour Hb > 7-8 g/dL</p>
+              <p><strong>Anticoagulation</strong> HNF AntiXa 0,2-0,4 UI/mL</p>
+              <p><strong>Changement de membrane</strong> si oxygénateur coagulé</p>
+              <p><strong>Diminution du débit de pompe</strong> ou explantation d’ECMO si possible</p>
+            </td>
+          </tr>
 
-            <p><strong>Prise en charge</strong></p>
-            <p><strong>Pour AVC:</strong> thrombectomie (thrombolyse CI)</p>
-            <p><strong>Pour membre inf.:</strong> reperfusion chirurgicale, discuter changement de canulation</p>
-            <p><strong>Pour ischémie mésentérique:</strong> laparotomie exploratrice</p>
-          `,
-        ],
-        [
-          "Œdème pulmonaire hydrostatique",
-          `
-            <p><strong>Facteurs favorisants</strong></p>
-            <p>- ECMO VA périphérique</p>
-            <p>- Débit d’assistance élevé</p>
-            <p>- Akinésie/Hypokinésie VG sévère</p>
-            <p>- Absence de technique de décharge VG</p>
+          <tr>
+            <td><strong>Insuffisance rénale aiguë</strong></td>
+            <td>
+              <p>- Fonction rénale préalable</p>
+              <p>- CEC prolongée avant ECMO</p>
+              <p>- Gravité clinique avant ECMO</p>
+              <p>- Implantation tardive d’ECMO</p>
+              <p>- Traitements néphrotoxiques</p>
+              <p>- Hémolyse, rhabdomyolyse</p>
+              <p>- Sepsis, infections</p>
+            </td>
+            <td>
+              <p>- Implantation précoce de l’ECMO VA si indiquée</p>
+              <p>- Eviction des néphrotoxiques</p>
+            </td>
+            <td>
+              <p><strong>EER en CVVH si IRA KDIGO III</strong> avec indication à l’épuration</p>
+            </td>
+          </tr>
 
-            <p><strong>Prévention</strong></p>
-            <p>- Diminuer le débit d’assistance au minimum possible</p>
-            <p>- Dobutamine pour maintient d’une éjection VG</p>
-            <p>- Technique de décharge VG prophylactique (BCPIA)</p>
+          <tr>
+            <td><strong>Décanulation accidentelle</strong></td>
+            <td>
+              <p>- Canule artérielle axillaire</p>
+              <p>- Agitation du patient</p>
+              <p>- Transports et manipulations nombreuses</p>
+            </td>
+            <td>
+              <p>- Surveillance et fixation soigneuse des canules</p>
+              <p>- Prévention et traitement du délirium de réanimation</p>
+            </td>
+            <td>
+              <p><strong>Clampage immédiat des lignes artérielle et veineuse</strong> (risque de spoliation sanguine et embolie gazeuse)</p>
+            </td>
+          </tr>
 
-            <p><strong>Prise en charge</strong></p>
-            <p><strong>Technique de décharge VG curative:</strong> BCPIA, Impella, atriotomie (Rashking), canule VG apicale…</p>
-            <p><strong>ECMO VAV:</strong> ajout d’une canule d’éjection veineuse</p>
-            <p><strong>Centralisation de l’ECMO périphérique</strong></p>
-          `,
-        ],
-        [
-          "Syndrome d’Arlequin",
-          `
-            <p>${imgInline("Cf schéma", "arlequin.png")}</p>
-
-            <p><strong>Facteurs favorisants</strong></p>
-            <p>- Oxygénation pulmonaire compromise (SDRA, pneumonie sévère, OAP réfractaire…)</p>
-            <p>- Récupération d’une éjection VG satisfaisante</p>
-
-            <p><strong>Prévention</strong></p>
-            <p>- Détection précoce: Kta radial droit et SpO2 main droite</p>
-
-            <p><strong>Prise en charge</strong></p>
-            <p><strong>Conversion en ECMO VV</strong> si défaillance cardio-circulatoire résolue.</p>
-            <p><strong>Conversion en ECMO VAV</strong> (ajout d’une canule veineuse éjectionnelle) si défaillance cardio-circulatoire non résolue.</p>
-            <p>- Rarement conversion en double ECMO centrale</p>
-          `,
-        ],
-        [
-          "Hémolyse",
-          `
-            <p><strong>Facteurs favorisants</strong></p>
-            <p>- Pression veineuse très négatives (hypovolémique, déplacement de canule, tamponnade…)</p>
-            <p>- Caillotage de l’oxygénateur ou anticoagulation insuffisante</p>
-            <p>- Vitesse de pompe importante</p>
-
-            <p><strong>Prévention</strong></p>
-            <p>- Détection précoce: Hémoglobine plasmatique quotidienne (objectif &lt; 150 mg/L, norme &lt; 50 mg/L)</p>
-            <p>- Limiter le débit de pompe au minimum nécessaire</p>
-            <p>- Anticoagulation HNF AntiXa 0,2-0,4 UI/mL</p>
-
-            <p><strong>Prise en charge</strong></p>
-            <p><strong>Transfusion</strong> pour Hb &gt; 7-8 g/dL</p>
-            <p><strong>Anticoagulation</strong> HNF AntiXa 0,2-0,4 UI/mL</p>
-            <p><strong>Changement de membrane</strong> si oxygénateur coagulé</p>
-            <p><strong>Diminution du débit de pompe ou explantation d’ECMO si possible</strong></p>
-          `,
-        ],
-        [
-          "Insuffisance rénale aiguë",
-          `
-            <p><strong>Facteurs favorisants</strong></p>
-            <p>- Fonction rénale préalable</p>
-            <p>- CEC prolongée avant ECMO</p>
-            <p>- Gravité clinique avant ECMO</p>
-            <p>- Implantation tardive d’ECMO</p>
-            <p>- Traitements néphrotoxiques</p>
-            <p>- Hémolyse, rhabdomyolyse</p>
-            <p>- Sepsis, infections</p>
-
-            <p><strong>Prévention</strong></p>
-            <p>- Implantation précoce de l’ECMO VA si indiquée</p>
-            <p>- Eviction des néphrotoxiques</p>
-
-            <p><strong>Prise en charge</strong></p>
-            <p><strong>EER en CVVH si IRA KDIGO III</strong> avec indication à l’épuration</p>
-          `,
-        ],
-        [
-          "Décanulation accidentelle",
-          `
-            <p><strong>Facteurs favorisants</strong></p>
-            <p>- Canule artérielle axillaire</p>
-            <p>- Agitation du patient</p>
-            <p>- Transports et manipulations nombreuses</p>
-
-            <p><strong>Prévention</strong></p>
-            <p>- Surveillance et fixation soigneuse des canules</p>
-            <p>- Prévention et traitement du délirium de réanimation</p>
-
-            <p><strong>Prise en charge</strong></p>
-            <p><strong>Clampage immédiat des lignes artérielle et veineuse</strong> (risque de spoliation sanguine et embolie gazeuse)</p>
-          `,
-        ],
-        [
-          "Arrêt de pompe",
-          `
-            <p><strong>Facteurs favorisants</strong></p>
-            <p>- Dysfonction électrique (batterie, prise murale etc…)</p>
-            <p>- Bullage de la pompe</p>
-            <p>- Thrombose de circuit</p>
-
-            <p><strong>Prévention</strong></p>
-            <p>- Remplissage et EER sur ECMO toujours entre pompe et membrane</p>
-            <p>- Surveillance des batteries et branchements</p>
-            <p>- Manivelle accessible</p>
-
-            <p><strong>Prise en charge</strong></p>
-            <p><strong>Activation de la pompe de secours</strong> par manivelle</p>
-            <p><strong>Changement de circuit d’ECMO</strong></p>
-          `,
-        ],
-      ]),
-    },
+          <tr>
+            <td><strong>Arrêt de pompe</strong></td>
+            <td>
+              <p>- Dysfonction électrique (batterie, prise murale etc…)</p>
+              <p>- Bullage de la pompe</p>
+              <p>- Thrombose de circuit</p>
+            </td>
+            <td>
+              <p>- Remplissage et EER sur ECMO toujours entre pompe et membrane</p>
+              <p>- Surveillance des batteries et branchements</p>
+              <p>- Manivelle accessible</p>
+            </td>
+            <td>
+              <p><strong>Activation de la pompe de secours</strong> par manivelle</p>
+              <p><strong>Changement de circuit d’ECMO</strong></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  `,
+},
   ];
 
   renderInterventionPage({
