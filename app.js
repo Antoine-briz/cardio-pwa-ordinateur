@@ -15267,17 +15267,17 @@ function renderReanAssistECMO() {
             <p>- Disparition des signes d’hypoxie tissulaire (marbrures, lactate, fonction rénale et hépatique…)</p>
             <p>- Oxygénation pulmonaire satisfaisante (envisager conversion en ECMO VV dans le cas contraire)</p>
 
-            <p><strong>Déroulement du test de sevrage:</strong> Diminution du débit d’ECMO à 1 500 tpm et balayage &lt; 1L/min</p>
-            <p>Tolérance clinique: Maintient d’une PAM satisfaisante avec faible dose d’amines, et bonne tolérance ventilatoire (P/F &gt; 200 et absence d’acidose respiratoire).</p>
-            <p>Tolérance échographique: FEVG &gt; 30-40%, ITV Ssao ≥ 12 cm, onde S’ mitrale ≥ 6 cm/s, absence de dilatation des cavités cardiaques droite ou gauche</p>
-            <p>Si monitorage par Swan Ganz: IC &gt; 2,4 L/min/m², PAPO &lt; 18 mmHg, POD &lt; 18 mmHg, SvO2 &gt; 65%</p>
+            <p><strong>Déroulement du test de sevrage:</strong> Baisse du débit à 1 500 tpm et balayage &lt; 1L/min</p>
+            <p>- Tolérance clinique: Maintient d’une PAM satisfaisante avec faible dose d’amines, et bonne tolérance ventilatoire (P/F &gt; 200 et absence d’acidose respiratoire).</p>
+            <p>- Tolérance échographique: FEVG &gt; 30-40%, ITV Ssao ≥ 12 cm, onde S’ mitrale ≥ 6 cm/s, absence de dilatation des cavités cardiaques droite ou gauche</p>
+            <p>- Si monitorage par Swan Ganz: IC &gt; 2,4 L/min/m², PAPO &lt; 18 mmHg, POD &lt; 18 mmHg, SvO2 &gt; 65%</p>
 
             <p><strong>Déroulement de l’explantation d’ECMO VA:</strong></p>
-            <p>Objectifs biologiques: Hb ≥ 8g/dL, Pl &gt; 50 G/L, TP &gt; 50%, TCA &lt; 2 (arrêt HNF 2h avant), fibrinogène &gt; 1,5g/L. Groupes/RAI et pré-commande de 2 CGR.</p>
-            <p>Bolus d’HNF 5000 UI, puis clampage des lignes pendant 30min. Si bonne tolérance clinique et échographique, OK pour explantation.</p>
-            <p>Antibioprophylaxie uniquement en cas d’abord chirurgical Céfazoline 2g (Vancomycine 20mg/kg si allergie sévère aux béta-lactamines)</p>
-            <p>Artériographie des axes artériels post-explantation à la recherche d’une ischémie de membre inférieur</p>
-            <p>Poursuite de l’anticoagulation efficace par HNF IVSE. Arrêt si écho-doppler veineux normal.</p>
+            <p>- Objectifs biologiques: Hb ≥ 8g/dL, Pl &gt; 50 G/L, TP &gt; 50%, TCA &lt; 2 (arrêt HNF 2h avant), fibrinogène &gt; 1,5g/L. Groupes/RAI et pré-commande de 2 CGR.</p>
+            <p>- Bolus d’HNF 5000 UI, puis clampage des lignes pendant 30min. Si bonne tolérance clinique et échographique, OK pour explantation.</p>
+            <p>- Antibioprophylaxie uniquement en cas d’abord chirurgical Céfazoline 2g (Vancomycine 20mg/kg si allergie sévère aux béta-lactamines)</p>
+            <p>- Artériographie des axes artériels post-explantation à la recherche d’une ischémie de membre inférieur</p>
+            <p>- Poursuite de l’anticoagulation efficace par HNF IVSE. Arrêt si écho-doppler veineux normal.</p>
           `,
         ],
       ]),
