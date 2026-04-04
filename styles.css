@@ -9444,7 +9444,7 @@ body.theme-light .ens-modal-saving-spinner {
   flex-direction: column !important;
   align-items: center !important;
   justify-content: flex-start !important;
-  min-height: 300px !important;
+  min-height: 220px !important;
   padding: 12px !important;
 }
 
