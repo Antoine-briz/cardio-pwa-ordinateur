@@ -15227,8 +15227,8 @@ function renderReanAssistECMO() {
           "Surveillance quotidienne",
           `
             <p><strong>Clinique:</strong> Signes d’hypoperfusion périphériques, signes d’ischémie de MI, examen neurologique (risque d’AVC), recherche de complications infectieuses (scarpas, pneumonies…)</p>
-            <p><strong>Monitorage continu:</strong> Pression aortérielle pulsatile, SvO2 sur Swan Ganz ou ligne veineuse, NIRS cérébral et membres inférieurs</p>
-            <p><strong>Circuit:</strong> Oxygénation de la ligne artérielle, insertion des canules, caillotage de membrane</p>
+            <p><strong>Monitorage continu:</strong> Pression artérielle pulsatile, SvO2 sur Swan Ganz ou ligne veineuse, NIRS cérébral et membres inférieurs</p>
+            <p><strong>Circuit:</strong> Débit cible atteint, oxygénation de la ligne artérielle, caillotage de membrane, insertion des canules, vérification des batteries et branchements muraux </p>
             <p><strong>Biologie:</strong> GdS-lact, NFS-Pl, ionogramme sanguin, BHC, CPK, AntiXa (Obj 0,2-0,4 UI/mL), Hb plasmatique (Norme &lt; 50 mg/L, objectif &lt; 150 mg/L)</p>
             <p><strong>Imagerie:</strong> Radiographie de thorax (position canule veineuse, pneumonie…), échocardiographie (position canule veineuse, récupération/sevrabilité, ouverture de la valve aortique, décharge du VG…) ${imgInline("Cf ETT/ETO quotidien", "etoquotidien.png")}</p>
           `,
