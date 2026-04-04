@@ -15079,7 +15079,6 @@ function renderReanAssistancesMenu() {
   `;
 }
 
-
 function renderReanAssistECMO() {
   const imgInline = (label, file) => `
     <span class="img-link" onclick="openImg('${file}')">
@@ -15145,19 +15144,26 @@ function renderReanAssistECMO() {
       titre: "Généralités sur l’ECMO VA",
       html: ecmoTable([
         [
-          "Principe et composition",
-          `
-            <p>L’ECMO <strong>artério-veineuse</strong> est une technique d’assistance circulatoire et respiratoire visant à se substituer à la fonction cardiaque en cas de défaillance <strong>cardio-circulatoire</strong> sévère et réfractaire.</p>
-            <p>Le circuit se compose de:</p>
-            <p>- Une <strong>canule veineuse</strong> placée dans l’OD: via la veine fémorale si périphérique, insertion possible directement dans l’OD si centrale.</p>
-            <p>- Une <strong>pompe centrifuge</strong>: génère le débit sanguin</p>
-            <p>- Une <strong>membrane d’oxygénation</strong>: permet l’oxygénation et la décarboxylation du sang</p>
-            <p>- Un <strong>réchauffeur</strong>: permet le maintient d’une température cible à 37°C</p>
-            <p>- Une <strong>canule artérielle</strong> d’éjection: via l’artère fémorale ou axillaire si périphérique (rétrograde), abord aortique direct si centrale (antérograde).</p>
-            <p>- Un <strong>contrôleur</strong>: Permet de fixer la vitesse de pompe (tpm), affiche le débit calculé et les pressions mesurées.</p>
-            <p>Schéma du circuit (ECMO VA périphérique fémoro-fémorale): ${imgInline("Afficher le schéma", "schemaecmo.png")}</p>
-          `,
-        ],
+  "Principe et composition",
+  `
+    <p>L’ECMO <strong>artério-veineuse</strong> est une technique d’assistance circulatoire et respiratoire visant à se substituer à la fonction cardiaque en cas de défaillance <strong>cardio-circulatoire</strong> sévère et réfractaire.</p>
+    <p>Le circuit se compose de:</p>
+    <p>- Une <strong>canule veineuse</strong> placée dans l’OD: via la veine fémorale si périphérique, insertion possible directement dans l’OD si centrale.</p>
+    <p>- Une <strong>pompe centrifuge</strong>: génère le débit sanguin</p>
+    <p>- Une <strong>membrane d’oxygénation</strong>: permet l’oxygénation et la décarboxylation du sang</p>
+    <p>- Un <strong>réchauffeur</strong>: permet le maintient d’une température cible à 37°C</p>
+    <p>- Une <strong>canule artérielle</strong> d’éjection: via l’artère fémorale ou axillaire si périphérique (rétrograde), abord aortique direct si centrale (antérograde).</p>
+    <p>- Un <strong>contrôleur</strong>: Permet de fixer la vitesse de pompe (tpm), affiche le débit calculé et les pressions mesurées.</p>
+  `,
+],
+[
+  "Schéma du circuit (ECMO VA périphérique fémoro-fémorale)",
+  `
+    <div class="image-container">
+      <img src="img/schemaecmo.png" alt="Schéma ECMO VA" style="display:block;">
+    </div>
+  `,
+],
         [
           "Types d’ECMO artério-veineuses",
           `
@@ -15482,24 +15488,6 @@ function renderReanAssistECMO() {
   renderInterventionPage({
     titre: "Assistances circulatoires",
     sousTitre: "ECMO artério-veineuse",
-    image: "assistances2.png",
-    encadres,
-  });
-}
-
-function renderReanAssistBCPIA() {
-  const encadres = [
-    {
-      titre: "BCPIA",
-      html: `
-        <p>Prise en charge d’une contre-pulsion intra-aortique :
-        positionnement, synchronisation, réglages, sevrage. Contenu à compléter.</p>
-      `,
-    },
-  ];
-  renderInterventionPage({
-    titre: "Assistances circulatoires",
-    sousTitre: "BCPIA",
     image: "assistances2.png",
     encadres,
   });
