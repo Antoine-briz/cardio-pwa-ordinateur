@@ -15167,19 +15167,19 @@ function renderReanAssistECMO() {
         [
           "Types d’ECMO artério-veineuses",
           `
-            <p><strong>ECMO VA périphérique</strong>: ${imgInline("Afficher", "ecmoperiph.png")}</p>
+            <p><strong>ECMO VA périphérique</strong>: ${imgInline("", "ecmoperiph.png")}</p>
             <p>Canulation: canule veineuse fémorale, canule artérielle fémorale ou axillaire (flux artériel rétrograde)</p>
             <p>Indication: Technique privilégiée en ère intention</p>
 
-            <p><strong>ECMO VA centrale</strong>: ${imgInline("Afficher", "ecmocentrale.png")}</p>
+            <p><strong>ECMO VA centrale</strong>: ${imgInline("", "ecmocentrale.png")}</p>
             <p>Canulation: canule veineuse dans l’OD (soit part abord direct, soit via la veine fémorale), canule artérielle aortique (flux artériel antérograde).</p>
             <p>Indication: OAP réfractaire sous ECMOA VA périphérique, également possible en post-cardiotomie en 1ère intention.</p>
 
-            <p><strong>ECMO droite</strong>: ${imgInline("Afficher", "ecmodroite.png")}</p>
+            <p><strong>ECMO droite</strong>: ${imgInline("", "ecmodroite.png")}</p>
             <p>Canulation: Canule d’admission dans l’OD, canule éjectionnelle dans l’artère pulmonaire.</p>
             <p>Indication: Dysfonction VD isolée. A privilégier lorsqu’on souhaite limiter les conséquences négatives de l’ECMO VA sur le VG.</p>
 
-            <p><strong>Double ECMO centrale</strong>: ${imgInline("Afficher", "ecmodouble.png")}</p>
+            <p><strong>Double ECMO centrale</strong>: ${imgInline("", "ecmodouble.png")}</p>
             <p>Canulation: 1er circuit OD-Artère pulmonaire, 2ème circuit VG-Aorte.</p>
             <p>Indication: Défaillance bi-ventriculaire sévère avec échec ou inadéquation de l’ECMO VA périphérique</p>
           `,
@@ -15187,21 +15187,16 @@ function renderReanAssistECMO() {
         [
           "Indications",
           `
-            <p>Choc cardiogénique réfractaire d’étiologies variables:</p>
-            <p>- post-ischémique, post-cardiotomie, post-ACR, EP grave, myocardite, intoxication aux cardiotropes, cardiopathie septique…</p>
-            <p><strong>Critères d’implantation (ESC 2021/2023):</strong></p>
-            <p>L’EMCO VA doit être envisagé chez les patients en choc cardiogénique (IC &lt; 2,4L/min/m²) avec hypoperfusion persistante (hyperlactatémie et/ou diurèse &lt; 0,5mL/h) malgré traitement conventionnel optimal, dans une stratégie de bridge, après sélection soigneuse et au sein d’une équipe experte.</p>
+            <p><strong>Choc cardiogénique réfractaire d’étiologies variables</strong>: post-ischémique, post-cardiotomie, post-ACR, EP grave, myocardite, intoxication aux cardiotropes, cardiopathie septique…</p>
+            <p><strong>Critères d’implantation (ESC 2021/2023):</strong> L’EMCO VA doit être envisagé chez les patients en choc cardiogénique (IC &lt; 2,4L/min/m²) avec hypoperfusion persistante (hyperlactatémie et/ou diurèse &lt; 0,5mL/h) malgré traitement conventionnel optimal, dans une stratégie de bridge, après sélection soigneuse et au sein d’une équipe experte.</p>
             <p>Classes D et E de la classification SCAI du choc cardiogénique. ${imgInline("Cf SCAI", "SCAI.png")}</p>
           `,
         ],
         [
-          "Contre-indications",
+          "Contre-indications (Consensus ESLO-SCCM 2020)",
           `
-            <p><strong>Contre-indications (Consensus ESLO-SCCM 2020)</strong></p>
-            <p><strong>Contre-indications absolues:</strong></p>
-            <p>- Hémorragie active intra-cérébrale, hémorragie sévère non contrôlée, lésion cérébrale sévère irréversible, pathologie terminale évoluée (ex: cancer multi-métastatique), absence de stratégie: pas de bridge, pas de récupération.</p>
-            <p><strong>Contre-indications relatives:</strong></p>
-            <p>- Ventilation mécanique prolongée, coagulopathie sévère, ACR prolongé, comorbidités sévères, insuffisance aortique sévère (sauf centrale avec décharge VG)</p>
+            <p><strong>Contre-indications absolues:</strong> Hémorragie active intra-cérébrale, hémorragie sévère non contrôlée, lésion cérébrale sévère irréversible, pathologie terminale évoluée (ex: cancer multi-métastatique), absence de stratégie: pas de bridge, pas de récupération.</p>
+            <p><strong>Contre-indications relatives:</strong> Ventilation mécanique prolongée, coagulopathie sévère, ACR prolongé, comorbidités sévères, insuffisance aortique sévère (sauf centrale avec décharge VG)</p>
           `,
         ],
       ]),
