@@ -15284,14 +15284,13 @@ function renderReanAssistECMO() {
     },
 
     {
-      titre: "Echocardiographie et ECMO VA",
-      html: ecmoTable([
-        [
-          "Images ETO",
-          etoThumbs,
-        ],
-      ]),
-    },
+  titre: "Echocardiographie et ECMO VA",
+  html: `
+    <div class="info-content">
+      ${etoThumbs}
+    </div>
+  `,
+},
 
     {
       titre: "Complications de l’ECMO VA",
