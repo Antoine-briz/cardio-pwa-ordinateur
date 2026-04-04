@@ -19242,6 +19242,10 @@ function etoHtmlecmo() {
       </h4>
       <div class="eto-block" style="display:none;">
         <ul class="eto-list">
+        <li>
+            ECMO VA implantation
+            <span class="eto-icon" onclick="openImg('etoimplantation.png')">🖥️</span>
+          </li>
           <li>
             Canulation ECMO VA
             <span class="eto-icon" onclick="openImg('canulationecmo.png')">🖥️</span>
@@ -19253,6 +19257,10 @@ function etoHtmlecmo() {
           <li>
             Dilatation VG et contraste spontané
             <span class="eto-icon" onclick="openImg('dilatvgsludge.png')">🖥️</span>
+          </li>
+          <li>
+            ECMO VA quotidien
+            <span class="eto-icon" onclick="openImg('etoquotidien.png')">🖥️</span>
           </li>
           <li>
             Sevrabilité ECMO VA
