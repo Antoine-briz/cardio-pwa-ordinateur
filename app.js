@@ -15329,9 +15329,10 @@ function renderReanAssistECMO() {
             <td><strong>Infections:</strong>
               <p>- Pneumonies</p>
               <p>- Bactériémies</p>
-              <p>- Scarpa (> 7j)</p></td>
+              <p>- Scarpa (> 7j)</p>
+              <p><p><strong>Germes:</strong> BGN (entérobact., P. aeruginosa), CG+ (S. aureus, SCN)</p>
+              </td>
             <td>
-              <p><strong>Germes:</strong> BGN (entérobact., P. aeruginosa), CG+ (S. aureus, SCN)</p>
               <p>- Abord chirurgical > percutané</p>
               <p>- Manipulations de canules</p>
               <p>- Antibiothérapie récente</p>
@@ -15480,7 +15481,7 @@ function renderReanAssistECMO() {
               <p>- Manivelle accessible</p>
             </td>
             <td>
-              <p><strong>Activation de la pompe de secours</strong> par manivelle</p>
+              <p><strong>Activation de la pompe de secours</strong></p>
               <p><strong>Changement de circuit d’ECMO</strong></p>
             </td>
           </tr>
