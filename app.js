@@ -27664,7 +27664,7 @@ const SEARCH_PAGES = [
   ["#/reanimation/transplantation/coronaires","Prévention de la maladie coronaire du greffon","coronaires greffon transplant"],
 
   ["#/reanimation/assistances","Assistances circulatoires","ECMO ballon BCPIA Impella LVAD"],
-  ["#/reanimation/assistances/ecmo-va","ECMO VA","ecmo va"],
+  ["#/reanimation/assistances/ecmo-va","ECMO VA","ecmo va", "canule", "canules", "arlequin", "sevrage", "implantation"],
   ["#/reanimation/assistances/bcpia","BCPIA","ballon contre pulsation BCPIA"],
   ["#/reanimation/assistances/impella","Impella","impella"],
   ["#/reanimation/assistances/lvad","LVAD","lvad"],
