@@ -15093,7 +15093,7 @@ function renderReanAssistECMO() {
   renderInterventionPage({
     titre: "Assistances circulatoires",
     sousTitre: "ECMO artério-veineuse",
-    image: "assistances.png",
+    image: "assistances2.png",
     encadres,
   });
 }
