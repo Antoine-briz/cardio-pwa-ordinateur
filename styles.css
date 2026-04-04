@@ -9470,3 +9470,8 @@ body.theme-light .ens-modal-saving-spinner {
   justify-content: center !important;
   width: 100% !important;
 }
+
+/* Espace sous les titres d'encadrés */
+.info-card > h3 {
+  margin-bottom: 12px !important;
+}
