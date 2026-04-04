@@ -9317,3 +9317,56 @@ body.theme-light .ens-modal-saving-spinner {
 @keyframes ens-spin {
   to { transform: rotate(360deg); }
 }
+
+/* =========================================================
+   ECMO VA – tableaux
+   ========================================================= */
+
+.ecmo-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ecmo-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  background: #ffffff;
+  color: #000000;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.ecmo-table th,
+.ecmo-table td {
+  border: 1px solid #d1d5db;
+  padding: 10px 12px;
+  vertical-align: top;
+  line-height: 1.35;
+}
+
+.ecmo-table th {
+  width: 28%;
+  min-width: 180px;
+  background: #123a63;
+  color: #ffffff;
+  font-weight: 800;
+  text-align: left;
+}
+
+.ecmo-table td p {
+  margin: 0 0 8px 0;
+}
+
+.ecmo-table td p:last-child {
+  margin-bottom: 0;
+}
+
+.ecmo-eto-grid {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.ecmo-eto-grid .thumb-card {
+  width: 100%;
+}
