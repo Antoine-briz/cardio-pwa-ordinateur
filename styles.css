@@ -9347,8 +9347,8 @@ body.theme-light .ens-modal-saving-spinner {
 }
 
 .ecmo-table th {
-  width: 28%;
-  min-width: 180px;
+  width: 14%;
+  min-width: 90px;
   background: #123a63;
   color: #ffffff;
   font-weight: 800;
