@@ -9396,3 +9396,12 @@ body.theme-light .ens-modal-saving-spinner {
   text-align: center;
   line-height: 1.25;
 }
+
+.ecmo-table td p {
+  margin: 0 0 4px 0;   /* espace réduit entre les lignes */
+  line-height: 1.3;    /* resserre le texte */
+}
+
+.ecmo-table td p:last-child {
+  margin-bottom: 0;
+}
