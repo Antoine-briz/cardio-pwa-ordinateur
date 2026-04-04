@@ -9405,3 +9405,68 @@ body.theme-light .ens-modal-saving-spinner {
 .ecmo-table td p:last-child {
   margin-bottom: 0;
 }
+/* =========================================================
+   PATCH ECMO VA — compactage texte + miniatures ETO
+   À placer TOUT EN BAS du CSS
+   ========================================================= */
+
+/* 1) Texte plus compact dans le 1er encadré ECMO */
+.ecmo-table td {
+  line-height: 1.2 !important;
+}
+
+.ecmo-table td p {
+  margin: 0 0 2px 0 !important;
+  line-height: 1.2 !important;
+}
+
+.ecmo-table td p:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* 2) Espace sous le titre "Echocardiographie et ECMO VA" */
+.info-card > h3 + .info-content {
+  margin-top: 12px;
+}
+
+/* 3) Grille ETO */
+.ecmo-eto-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)) !important;
+  gap: 14px !important;
+  align-items: start !important;
+}
+
+/* 4) Cartes miniatures toutes homogènes */
+.ecmo-eto-grid .thumb-card {
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  min-height: 300px !important;
+  padding: 12px !important;
+}
+
+/* 5) IMPORTANT : force la même zone image pour toutes */
+.ecmo-eto-grid .thumb-card img {
+  width: 100% !important;
+  max-width: none !important;   /* neutralise le max-width:180px global */
+  height: 170px !important;
+  object-fit: contain !important;
+  display: block !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+}
+
+/* 6) Zone titre identique pour toutes les cartes */
+.ecmo-eto-grid .thumb-card span {
+  margin-top: 10px !important;
+  line-height: 1.2 !important;
+  text-align: center !important;
+  min-height: 52px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+}
