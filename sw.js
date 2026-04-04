@@ -192,6 +192,15 @@ const PRECACHE = [
   "img/canulationarterielle.png",
   "img/canulationveineuse.png",
   "img/cardioplegie.png",
+  "img/schemaecmo.png",
+  "img/ecmoperiph.png",
+  "img/ecmocentrale.png",
+  "img/ecmodroite.png",
+  "img/ecmodouble.png",
+  "img/etoquotidien.png",
+  "img/etoimplantation.png",
+  "img/SCAI.png",
+  "img/arlequin.png",
   
   // Menu principal
   "img/enseignement.png",
