@@ -9532,3 +9532,11 @@ body.theme-light .ens-modal-saving-spinner {
   border-radius: 10px;
   display: block;
 }
+
+.info-card > h3 {
+  margin-bottom: 14px !important;
+}
+
+.info-content {
+  padding-top: 4px;
+}
