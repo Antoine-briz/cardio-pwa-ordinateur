@@ -15706,7 +15706,7 @@ function renderReanAssistBCPIA() {
           "Surveillance quotidienne",
           `
             <p><strong>Clinique:</strong> PA invasive pulsatile, signes d’hypoperfusion tissulaire, diurèse, ischémie de membre inférieur, saignement ou infection au site d’insertion. Position allongée ou inclinaison &lt; 30°.</p>
-            <p><strong>Assistance:</strong> Bonne synchronisation patient-machine (${imgInline("Cf asynchronies et BCPIA 🖥️", "asynchroniebcpia.png")}), bonne détection de la source de déclenchement, niveau d’hélium, niveau de batterie/prise murale.</p>
+            <p><strong>Assistance:</strong> Bonne synchronisation patient-machine (${imgInline("Cf asynchronies et BCPIA", "asynchroniebcpia.png")}), bonne détection de la source de déclenchement, niveau d’hélium, niveau de batterie/prise murale.</p>
             <p><strong>Biologie:</strong> AntiXa 0,3-0,6 UI/mL, recherche de thrombopénie/hémolyse</p>
             <p><strong>Imagerie:</strong> Vérification du positionnement correct du dispositif: à 2cm de la carène à la radiographie (${imgInline("Cf Radio & BCPIA", "radiobcpia.png")}) et à 2cm de la sous-clavière gauche en ETO (${imgInline("Cf ETO & BCPIA", "etobcpia.png")})</p>
           `,
@@ -15726,7 +15726,7 @@ function renderReanAssistBCPIA() {
             <p>- Bonne tolérance d’une diminution de l’inflation à 50% pendant 24h</p>
             <p>- Ne jamais interrompre l’assistance pendant plus de 30min</p>
             <p><strong>Déroulement du retrait de BCPIA:</strong></p>
-            <p>- Arrêt de l’HNF IVSE 2h avant le retrait. Objectifs biologiques: Hb ≥ 8g/<strong>dL, Pl &gt; 50 G/L, TP &gt; 50%, TCA &lt; 1,5, fibrinogène &gt; 1,5g/L.</p>
+            <p>- Arrêt de l’HNF IVSE 2h avant le retrait. Objectifs biologiques: Hb ≥ 8g/dL, Pl &gt; 50 G/L, TP &gt; 50%, TCA &lt; 1,5, fibrinogène &gt; 1,5g/L.</p>
             <p>- Interruption de l’assistance, déflation complète du ballon, retrait du ballon et de la gaine, laisser saigner 1 à 2 secondes avant compression.</p>
             <p>- Compression fémorale pendant 30min ou système de fermeture percutané (Femostop), puis pansement compressif pendant 24h. Surveillance des pouls pédieux.</p>
             <p>- Antibioprophylaxie uniquement en cas d’abord chirurgical Cefazoline 2g (Vancomycine 20mg/kg si allergie sévère aux béta-lactamines)</p>
