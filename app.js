@@ -15537,7 +15537,7 @@ function renderReanAssistBCPIA() {
           <tr>
             <td>
               <strong>Asynchronie patient-machine</strong><br>
-              ${imgInline("Cf asynchronies et BCPIA 🖥️", "asynchroniebcpia.png")}
+              ${imgInline("Cf asynchronies et BCPIA", "asynchroniebcpia.png")}
             </td>
             <td>
               <p>Source de déclenchement non fiable, mauvaise détection du cycle cardiaque</p>
@@ -15546,8 +15546,8 @@ function renderReanAssistBCPIA() {
               <p>Vérification quotidienne de la synchronisation</p>
             </td>
             <td>
-              <p>Modifier la source de déclenchement si non fiable</p>
-              <p>Modifier manuellement le timing de <strong>« gonflage » / « dégonflage »</strong> (encadré <strong>« synchronisation »</strong>)</p>
+              <p>Modifier la source de déclenchement si non fiable.</p></p>
+              <p>Modifier manuellement le timing de « gonflage » / « dégonflage » (encadré « synchronisation »)</p>
             </td>
           </tr>
 
@@ -15568,7 +15568,7 @@ function renderReanAssistBCPIA() {
               <p>- Vérification quotidienne de la position du BCPIA</p>
               <p>- Jamais d’arrêt &gt; 30min</p>
               <p>- Surveillance quotidienne des membres inférieurs</p>
-              <p>- HNF IVSE pour <strong>AntiXa</strong> 0,3-0,6 UI/mL</p>
+              <p>- HNF IVSE pour AntiXa 0,3-0,6 UI/mL</p>
             </td>
             <td>
               <p><strong>Revascularisation:</strong> retrait/changement de côté, revascularisation chirurgicale si nécessaire</p></p>
@@ -15589,7 +15589,7 @@ function renderReanAssistBCPIA() {
             </td>
             <td>
               <p>- Abord percutané à privilégier</p>
-              <p>- Soins locaux et manipulations prudentes des <strong>scarpas</strong></p>
+              <p>- Soins locaux et manipulations prudentes des scarpas</p>
               <p>- Sauvegarde antibiotique</p>
               <p>- Retrait précoce</p>
             </td>
