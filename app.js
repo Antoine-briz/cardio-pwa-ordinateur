@@ -15652,27 +15652,24 @@ function renderReanAssistBCPIA() {
           "Indications",
           `
             <p><strong>En chirurgie cardiaque:</strong></p>
-            <p><strong>Pré-opératoire</strong>: chirurgie de pontage coronaire à risque</p>
-            <p><strong>Per-opératoire:</strong> Sevrage difficile de CEC</p>
-            <p><strong>Post-opératoire:</strong> troubles de repolarisation, IDM, troubles du rythme ventriculaire…</p>
-            <p><strong>Assistance par ECMO VA:</strong></p>
-            <p>Décharge ventriculaire gauche pour améliorer l’éjection aortique et diminuer l’œdème pulmonaire hydrostatique.</p>
-            <p><strong>Infarctus du myocarde:</strong></p>
-            <p>En l’absence de choc cardiogénique dans certains contextes spécifiques: troubles du rythme ventriculaires, complications mécaniques (CIV, IM).</p>
-            <p><strong>Angioplasties coronaires à risque:</strong></p>
-            <p>FEVG &lt; 30%, lésion du tronc commun, complication per-coronarographie</p>
+            <p>- Pré-opératoire: Chirurgie de pontage coronaire à risque</p>
+            <p>- Per-opératoire: Sevrage difficile de CEC</p>
+            <p>- Post-opératoire: Troubles de repolarisation, IDM, troubles du rythme ventriculaire…</p>
+            <p><strong>Assistance par ECMO VA:</strong> Décharge ventriculaire gauche pour améliorer l’éjection aortique et diminuer l’œdème pulmonaire hydrostatique.</p>
+            <p><strong>Infarctus du myocarde:</strong> En l’absence de choc cardiogénique dans certains contextes spécifiques: troubles du rythme ventriculaires, complications mécaniques (CIV, IM). Plus d'indications dans le choc cardiogénique post-ischémique (IABP Shock 2)</p>
+            <p><strong>Angioplasties coronaires à risque:</strong> FEVG &lt; 30%, lésion du tronc commun, complication per-coronarographie</p>
           `,
         ],
         [
           "Contre-indications",
           `
             <p><strong>Absolues:</strong></p>
-            <p>Dissection aortique</p>
-            <p>Insuffisance aortique ( &gt; 1/4)</p>
+            <p>- Dissection aortique</p>
+            <p>- Insuffisance aortique ( &gt; 1/4)</p>
             <p><strong>Relatives:</strong></p>
-            <p>Autre pathologie aortique: anévrysme, hématome, athérome sévère</p>
-            <p>AOMI sévère des axes fémoraux</p>
-            <p>Contre-indication à l’anticoagulation</p>
+            <p>- Autre pathologie aortique: anévrysme, hématome, athérome sévère</p>
+            <p>- AOMI sévère des axes fémoraux</p>
+            <p>- Contre-indication à l’anticoagulation</p>
           `,
         ],
       ]),
