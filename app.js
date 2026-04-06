@@ -15630,7 +15630,9 @@ function renderReanAssistBCPIA() {
           `
             <p>Le ballon de contre-pulsion intra-aortique (BCPIA) est un dispositif d’assistance circulatoire temporaire, dont le principe repose sur un ballon placé en intra-aortique et dont l’état d’inflation/déflation évolue en deux phases:</p>
             <p><strong>- Inflation en protodiastole:</strong> amélioration de la perfusion diastolique des artères coronaires, et donc augmentation de la DO2 myocardique.</p>
-            <p style="margin-bottom:10px;"><strong>- Déflation en protosystole:</strong> diminution de la postcharge du VG (pression négative de la déflation), diminution de la tension pariétale, et donc diminution de la VO2 myocardique.</p>
+            <p style="margin-bottom:10px;"><strong>- Déflation en protosystole:</strong> diminution de la postcharge du VG (pression négative de la déflation), diminution de la tension pariétale, et donc diminution de la VO2 myocardique.</p></p>
+            
+            <p>  </p>
             <p>Le dispositif se compose de:</p>
             <p>- <strong>Un cathéter ballon</strong> de 40 à 50mL gonflé à l’hélium, inséré par l’artère fémorale, à placer dans l’aorte thoracique descendante (entre l’artère sous-clavière gauche et les artères viscérales).</p>
             <p>- <strong>Un circuit d’hélium:</strong> Connexion entre une cartouche d’hélium, la console, et le cathéter ballon permettant son inflation/déflation.</p>
