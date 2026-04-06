@@ -9518,3 +9518,17 @@ body.theme-light .ens-modal-saving-spinner {
   color: #ffffff;
   font-weight: 700;
 }
+
+.bcpia-screens {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.bcpia-screens img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+}
