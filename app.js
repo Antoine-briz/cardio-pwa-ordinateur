@@ -15630,13 +15630,13 @@ function renderReanAssistBCPIA() {
           `
             <p>Le ballon de contre-pulsion intra-aortique (BCPIA) est un dispositif d’assistance circulatoire temporaire, dont le principe repose sur un ballon placé en intra-aortique et dont l’état d’inflation/déflation évolue en deux phases:</p>
             <p><strong>- Inflation en protodiastole:</strong> amélioration de la perfusion diastolique des artères coronaires, et donc augmentation de la DO2 myocardique.</p>
-            <p><strong>Déflation en protosystole:</strong> diminution de la postcharge du VG (pression négative de la déflation), diminution de la tension pariétale, et donc diminution de la VO2 myocardique.</p></p>
-           
+            <p><strong>- Déflation en protosystole:</strong> diminution de la postcharge du VG (pression négative de la déflation), diminution de la tension pariétale, et donc diminution de la VO2 myocardique.</p>
+           <p></p>
             <p>Le dispositif se compose de:</p>
             <p>- <strong>Un cathéter ballon</strong> de 40 à 50mL gonflé à l’hélium, inséré par l’artère fémorale, à placer dans l’aorte thoracique descendante (entre l’artère sous-clavière gauche et les artères viscérales).</p>
             <p>- <strong>Un circuit d’hélium:</strong> Connexion entre une cartouche d’hélium, la console, et le cathéter ballon permettant son inflation/déflation.</p>
             <p>- <strong>Une console BCPIA:</strong> permet le paramétrage de l’assistance, la synchronisation du ballon au patient, et le monitorage. Il se compose: d’un compresseur (propulsion du gaz), d’une électrovanne de timing, et d’une interface utilisateur.</p>
-            <p>- <strong>Des systèmes de monitorage:</strong></p> scope ECG et PA invasive permettant la synchronisation, capteur de pression intra-aortique.</p>
+            <p>- <strong>Des systèmes de monitorage:</strong> Scope ECG et PA invasive permettant la synchronisation, capteur de pression intra-aortique.</p>
           `,
         ],
         [
@@ -15693,10 +15693,10 @@ function renderReanAssistBCPIA() {
         [
           "Réglage de la console",
           `
-            <p><strong>Source du déclenchement:</strong> ECG (trigger = onde R), PA invasive (trigger = onde dicrote), pacemaker (trigger = spike)</p>
+            <p><strong>Source du déclenchement:</strong> Le ballon peut être synchronisé sur l'ECG (trigger = onde R), la PA invasive (trigger = onde dicrote), ou le pacemaker (trigger = spike)</p>
             <p><strong>Mode de fonctionnement:</strong> Automatique (recommandé), semi-automatique ou manuel</p>
-            <p><strong>Fréquence de déclenchement:</strong> 1:1 (à chaque cycle) ou 1:2 (tous les deux cycles)</p>
-            <p><strong>Niveau d’insufflation:</strong> Inflation du ballon de 0 à 100%. Inflation complète à privilégier, mais une diminution à 50% peut être pratiquée avant sevrage.</p>
+            <p><strong>Fréquence de déclenchement:</strong> 1:1 (à chaque cycle), 1:2 (tous les deux cycles) ou 1:3 (tous les trois cycles). Un rythme d'inflation en 1:1 est recommandé pendant toute la durée d'assitance</p>
+            <p><strong>Niveau d’inflation:</strong> Inflation du ballon de 0 à 100%. L'inflation complète est à privilégier initialement, puis diminuée à 50% pour le sevrage.</p>
             <div class="bcpia-screens">
               <img src="img/ecranbcpia.png" alt="Écran BCPIA 1" style="display:block;">
               <img src="img/ecranbcpia2.png" alt="Écran BCPIA 2" style="display:block;">
