@@ -15554,26 +15554,25 @@ function renderReanAssistBCPIA() {
           <tr>
             <td>
               <strong>Ischémie</strong>
-              <p>Membre inf.</p>
-              <p>Viscérale: Rénale ou mésentérique</p>
+              <p>- Membre inf.</p>
+              <p>- Viscérale: Rénale ou mésentérique</p>
             </td>
             <td>
-              <p>Pose traumatique</p>
-              <p>Malposition du ballon: artères rénales et/ou viscérales recouvertes</p>
-              <p>AOMI sévère</p>
-              <p>Anticoagulation insuffisante</p>
-              <p>Arrêt prolongé de l’assistance</p>
+              <p>- Pose traumatique</p>
+              <p>- Malposition du ballon: artères rénales et/ou viscérales recouvertes</p>
+              <p>- AOMI sévère</p>
+              <p>- Anticoagulation insuffisante</p>
+              <p>- Arrêt prolongé de l’assistance</p>
             </td>
             <td>
-              <p>Vérification quotidienne de la position du BCPIA</p>
-              <p>Jamais d’arrêt &gt; 30min</p>
-              <p>Surveillance quotidienne des membres inférieurs</p>
-              <p>HNF IVSE pour <strong>AntiXa</strong> 0,3-0,6 UI/mL</p>
+              <p>- Vérification quotidienne de la position du BCPIA</p>
+              <p>- Jamais d’arrêt &gt; 30min</p>
+              <p>- Surveillance quotidienne des membres inférieurs</p>
+              <p>- HNF IVSE pour <strong>AntiXa</strong> 0,3-0,6 UI/mL</p>
             </td>
             <td>
-              <p><strong>Revascularisation:</strong> retrait/changement de côté, revascularisation chirurgicale si nécessaire</p>
-              <p>Anticoagulation efficace</p>
-              <p>HNF IVSE pour <strong>AntiXa</strong> 0,3-0,6 UI/mL</p>
+              <p><strong>Revascularisation:</strong> retrait/changement de côté, revascularisation chirurgicale si nécessaire</p></p>
+              <p><strong>Anticoagulation efficace: </strong> HNF IVSE pour AntiXa 0,3-0,6 UI/mL</p>
             </td>
           </tr>
 
@@ -15582,33 +15581,33 @@ function renderReanAssistBCPIA() {
               <strong>Infection de scarpa</strong>
             </td>
             <td>
-              <p>Abord chirurgical</p>
-              <p>Pose traumatique</p>
-              <p>Manipulations nombreuses</p>
-              <p>Antibiothérapie récente</p>
-              <p>Durée d’assistance par BCPIA</p>
+              <p>- Abord chirurgical</p>
+              <p>- Pose traumatique</p>
+              <p>- Manipulations nombreuses</p>
+              <p>- Antibiothérapie récente</p>
+              <p>- Durée d’assistance par BCPIA</p>
             </td>
             <td>
-              <p>Abord percutané à privilégier</p>
-              <p>Soins locaux et manipulations prudentes des <strong>scarpas</strong></p>
-              <p>Sauvegarde antibiotique</p>
-              <p>Retrait précoce</p>
+              <p>- Abord percutané à privilégier</p>
+              <p>- Soins locaux et manipulations prudentes des <strong>scarpas</strong></p>
+              <p>- Sauvegarde antibiotique</p>
+              <p>- Retrait précoce</p>
             </td>
             <td>
-              <p><strong>Antibiothérapie probabiliste</strong> (ou adaptée) : couverture probabiliste des entérobactéries Gp3, <strong>P.aeruginosa</strong> et <strong>Staphylococcus spp.</strong></p>
-              <p>Retrait du BCPIA</p>
+              <p><strong>Antibiothérapie probabiliste</strong> (ou adaptée) : couverture probabiliste des entérobactéries Gp3, P.aeruginosa et Staphylococcus spp.</p></p>
+              <p><strong>Retrait du BCPIA</strong></p>
             </td>
           </tr>
 
           <tr>
             <td>
               <strong>Complication vasculaire mécanique</strong>
-              <p>Dissection aortique</p>
-              <p>Hémorragie</p>
+              <p>- Dissection aortique</p>
+              <p>- Hémorragie</p>
             </td>
             <td>
-              <p>Pose traumatique</p>
-              <p>Pathologie vasculaire préexistante: AOMI sévère, anévrysme aortique…</p>
+              <p>- Pose traumatique</p>
+              <p>- Pathologie vasculaire préexistante: AOMI sévère, anévrysme aortique…</p>
             </td>
             <td>
               <p>Pose par un opérateur entrainé (chirurgien cardiaque ou vasculaire)</p>
@@ -15681,31 +15680,23 @@ function renderReanAssistBCPIA() {
         [
           "Implantation du BCPIA",
           `
-            <p><strong>Objectifs biologiques:</strong></p>
-            <p>Correction des troubles de l’hémostase, mais risque hémorragique faible (<strong>Hb</strong> ≥ 8g/<strong>dL</strong>, <strong>Pl &gt; 50 G/L</strong>, TP &gt; 50%, TCA &lt; 1,5, fibrinogène &gt; 1,5g/L).</p>
-            <p><strong>Voie d’abord:</strong></p>
-            <p>Insertion dans l’artère fémorale en privilégiant la voie percutanée (<strong>Seldinger</strong> échoguidé). Voie chirurgicale en cas d’artère pathologique, ou contexte per-opératoire.</p>
-            <p><strong>Antibioprophylaxie:</strong> uniquement en cas d’abord chirurgical <strong>Cefazoline</strong> 2g (Vancomycine 20mg/kg si allergie sévère aux béta-lactamines)</p>
-            <p><strong>Anticoagulation:</strong></p>
-            <p>Bolus d’HNF 50 UI/kg (3000-5000 UI) à l’implantation, à adapter au risque hémorragique puis HNF IVSE pour <strong>AntiXa</strong> 0,3-0,6 UI/mL.</p>
+            <p><strong>Objectifs biologiques:</strong> Correction des troubles de l’hémostase, mais risque hémorragique faible (Hb ≥ 8g/dL, Pl &gt; 50 G/L, TP &gt; 50%, TCA &lt; 1,5, fibrinogène &gt; 1,5g/L).</p>
+            <p><strong>Voie d’abord:</strong> Insertion dans l’artère fémorale en privilégiant la voie percutanée (Seldinger échoguidé). Voie chirurgicale en cas d’artère pathologique, ou contexte per-opératoire.</p>
+            <p><strong>Antibioprophylaxie:</strong> uniquement en cas d’abord chirurgical Cefazoline 2g (Vancomycine 20mg/kg si allergie sévère aux béta-lactamines)</p>
+            <p><strong>Anticoagulation:</strong> Bolus d’HNF 50 UI/kg (3000-5000 UI) à l’implantation, à adapter au risque hémorragique puis HNF IVSE pour AntiXa 0,3-0,6 UI/mL.</p>
             <p><strong>Positionnement:</strong></p>
-            <p>Radiographie de thorax: extrémité du BCPIA à 2cm au dessus de la carène ${imgInline("Cf Radio & BCPIA", "radiobcpia.png")}</p>
-            <p>ETO: extrémité du BCPIA à 2cm en dessous de la sous-clavière gauche ${imgInline("Cf ETO & BCPIA", "etobcpia.png")}</p>
-            <p><strong>Branchements du dispositif:</strong></p>
-            <p>Monitorage relié à la console (ECG et PA invasive), cathéter ballon relié à la console, cartouche d’hélium ouverte et pleine, prise électrique murale branchée.</p>
+            <p>- Radiographie de thorax: extrémité du BCPIA à 2cm au dessus de la carène ${imgInline("Cf Radio & BCPIA", "radiobcpia.png")}</p>
+            <p>- ETO: extrémité du BCPIA à 2cm en dessous de la sous-clavière gauche ${imgInline("Cf ETO & BCPIA", "etobcpia.png")}</p>
+            <p><strong>Branchements du dispositif:</strong> Monitorage relié à la console (ECG et PA invasive), cathéter ballon relié à la console, cartouche d’hélium ouverte et pleine, prise électrique murale branchée.</p>
           `,
         ],
         [
           "Réglage de la console",
           `
-            <p><strong>Source du déclenchement:</strong></p>
-            <p>ECG (trigger = onde R), PA invasive (trigger = onde dicrote), pacemaker (trigger = spike)</p>
-            <p><strong>Mode de fonctionnement:</strong></p>
-            <p>Automatique (recommandé), semi-automatique ou manuel</p>
-            <p><strong>Fréquence de déclenchement:</strong></p>
-            <p>1:1 (à chaque cycle) ou 1:2 (tous les deux cycles)</p>
-            <p><strong>Niveau d’insufflation:</strong></p>
-            <p>Inflation du ballon de 0 à 100%. Inflation complète à privilégier, mais une diminution à 50% peut être pratiquée avant sevrage.</p>
+            <p><strong>Source du déclenchement:</strong> ECG (trigger = onde R), PA invasive (trigger = onde dicrote), pacemaker (trigger = spike)</p>
+            <p><strong>Mode de fonctionnement:</strong> Automatique (recommandé), semi-automatique ou manuel</p>
+            <p><strong>Fréquence de déclenchement:</strong> 1:1 (à chaque cycle) ou 1:2 (tous les deux cycles)</p>
+            <p><strong>Niveau d’insufflation:</strong> Inflation du ballon de 0 à 100%. Inflation complète à privilégier, mais une diminution à 50% peut être pratiquée avant sevrage.</p>
             <div class="bcpia-screens">
               <img src="img/ecranbcpia.png" alt="Écran BCPIA 1" style="display:block;">
               <img src="img/ecranbcpia2.png" alt="Écran BCPIA 2" style="display:block;">
@@ -15715,36 +15706,31 @@ function renderReanAssistBCPIA() {
         [
           "Surveillance quotidienne",
           `
-            <p><strong>Clinique:</strong></p>
-            <p>PA invasive pulsatile, signes d’hypoperfusion tissulaire, diurèse, ischémie de membre inférieur, saignement ou infection au site d’insertion. Position allongée ou inclinaison &lt; 30°.</p>
-            <p><strong>Assistance:</strong></p>
-            <p>Bonne synchronisation patient-machine (Cf infra), bonne détection de la source de déclenchement, niveau d’hélium, niveau de batterie/prise murale.</p>
-            <p><strong>Biologie:</strong></p>
-            <p><strong>AntiXa</strong> 0,3-0,6 UI/mL, recherche de thrombopénie/hémolyse</p>
-            <p><strong>Imagerie:</strong></p>
-            <p>Vérification du positionnement correct du dispositif: à 2cm de la carène à la radiographie (${imgInline("Cf Radio & BCPIA", "radiobcpia.png")}) et à 2cm de la sous-clavière gauche en ETO (${imgInline("Cf ETO & BCPIA", "etobcpia.png")})</p>
+            <p><strong>Clinique:</strong> PA invasive pulsatile, signes d’hypoperfusion tissulaire, diurèse, ischémie de membre inférieur, saignement ou infection au site d’insertion. Position allongée ou inclinaison &lt; 30°.</p>
+            <p><strong>Assistance:</strong> Bonne synchronisation patient-machine (Cf infra), bonne détection de la source de déclenchement, niveau d’hélium, niveau de batterie/prise murale.</p>
+            <p><strong>Biologie:</strong> AntiXa 0,3-0,6 UI/mL, recherche de thrombopénie/hémolyse</p>
+            <p><strong>Imagerie:</strong> Vérification du positionnement correct du dispositif: à 2cm de la carène à la radiographie (${imgInline("Cf Radio & BCPIA", "radiobcpia.png")}) et à 2cm de la sous-clavière gauche en ETO (${imgInline("Cf ETO & BCPIA", "etobcpia.png")})</p>
           `,
         ],
         [
           "Prescriptions médicamenteuses",
           `
-            <p><strong>Anticoagulation:</strong></p>
-            <p>HNF IVSE pour objectif d’<strong>AntiXa</strong> 0,3-0,6 UI/mL. Si inefficacité, dosage de l’ATIII (norme &gt; 80%)</p>
+            <p><strong>Anticoagulation:</strong> HNF IVSE pour objectif d’<strong>AntiXa</strong> 0,3-0,6 UI/mL. Si inefficacité, dosage de l’ATIII (norme &gt; 80%)</p>
           `,
         ],
         [
           "Sevrage du BCPIA",
           `
             <p><strong>Critères de sevrabilité:</strong></p>
-            <p>Régression des signes d’hypoperfusion tissulaires, faibles doses d’amines</p>
-            <p>Si décharge VG sous ECMO: PA invasive pulsatile (à l’arrêt du BCPIA) et œdème pulmonaire hydrostatique contrôlé</p>
-            <p>Bonne tolérance d’une diminution de l’inflation à 50% pendant 24h</p>
-            <p>Ne jamais interrompre l’assistance pendant plus de 30min</p>
+            <p>- Régression des signes d’hypoperfusion tissulaires, faibles doses d’amines</p>
+            <p>- Si décharge VG sous ECMO: PA invasive pulsatile (à l’arrêt du BCPIA) et œdème pulmonaire hydrostatique contrôlé</p>
+            <p>- Bonne tolérance d’une diminution de l’inflation à 50% pendant 24h</p>
+            <p>- Ne jamais interrompre l’assistance pendant plus de 30min</p>
             <p><strong>Déroulement du retrait de BCPIA:</strong></p>
-            <p>Arrêt de l’HNF IVSE 2h avant le retrait. Objectifs biologiques: <strong>Hb</strong> ≥ 8g/<strong>dL</strong>, <strong>Pl &gt; 50 G/L</strong>, TP &gt; 50%, TCA &lt; 1,5, fibrinogène &gt; 1,5g/L.</p>
-            <p>Interruption de l’assistance, déflation complète du ballon, retrait du ballon et de la gaine, laisser saigner 1 à 2 secondes avant compression.</p>
-            <p>Compression fémorale pendant 30min ou système de fermeture percutané (<strong>Femostop</strong>), puis pansement compressif pendant 24h. Surveillance des pouls pédieux.</p>
-            <p>Antibioprophylaxie uniquement en cas d’abord chirurgical <strong>Cefazoline</strong> 2g (Vancomycine 20mg/kg si allergie sévère aux béta-lactamines)</p>
+            <p>- Arrêt de l’HNF IVSE 2h avant le retrait. Objectifs biologiques: <strong>Hb</strong> ≥ 8g/<strong>dL</strong>, <strong>Pl &gt; 50 G/L</strong>, TP &gt; 50%, TCA &lt; 1,5, fibrinogène &gt; 1,5g/L.</p>
+            <p>- Interruption de l’assistance, déflation complète du ballon, retrait du ballon et de la gaine, laisser saigner 1 à 2 secondes avant compression.</p>
+            <p>- Compression fémorale pendant 30min ou système de fermeture percutané (<strong>Femostop</strong>), puis pansement compressif pendant 24h. Surveillance des pouls pédieux.</p>
+            <p>- Antibioprophylaxie uniquement en cas d’abord chirurgical <strong>Cefazoline</strong> 2g (Vancomycine 20mg/kg si allergie sévère aux béta-lactamines)</p>
           `,
         ],
       ]),
