@@ -15501,15 +15501,283 @@ function renderReanAssistECMO() {
 }
 
 function renderReanAssistBCPIA() {
+  const imgInline = (label, file) => `
+    <span class="img-link" onclick="openImg('${file}')">
+      ${label} <span style="font-size:18px;">🖥️</span>
+    </span>
+  `;
+
+  const ecmoTable = (rows) => `
+    <div class="info-content ecmo-table-wrap">
+      <table class="ecmo-table">
+        <tbody>
+          ${rows.map(([left, right]) => `
+            <tr>
+              <th>${left}</th>
+              <td>${right}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+
+  const bcpiaComplicationsTable = `
+    <div class="info-content ecmo-table-wrap">
+      <table class="ecmo-table ecmo-table-4cols">
+        <thead>
+          <tr>
+            <th>Complication</th>
+            <th>Facteurs favorisants</th>
+            <th>Prévention</th>
+            <th>Prise en charge</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>Asynchronie patient-machine</strong><br>
+              ${imgInline("Cf asynchronies et BCPIA", "asynchroniebcpia.png")}
+            </td>
+            <td>
+              <p>Source de déclenchement non fiable, mauvaise détection du cycle cardiaque</p>
+            </td>
+            <td>
+              <p>Vérification quotidienne de la synchronisation</p>
+            </td>
+            <td>
+              <p>Modifier la source de déclenchement si non fiable</p>
+              <p>Modifier manuellement le timing de <strong>« gonflage » / « dégonflage »</strong> (encadré <strong>« synchronisation »</strong>)</p>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <strong>Ischémie</strong>
+              <p>Membre inf.</p>
+              <p>Viscérale: Rénale ou mésentérique</p>
+            </td>
+            <td>
+              <p>Pose traumatique</p>
+              <p>Malposition du ballon: artères rénales et/ou viscérales recouvertes</p>
+              <p>AOMI sévère</p>
+              <p>Anticoagulation insuffisante</p>
+              <p>Arrêt prolongé de l’assistance</p>
+            </td>
+            <td>
+              <p>Vérification quotidienne de la position du BCPIA</p>
+              <p>Jamais d’arrêt &gt; 30min</p>
+              <p>Surveillance quotidienne des membres inférieurs</p>
+              <p>HNF IVSE pour <strong>AntiXa</strong> 0,3-0,6 UI/mL</p>
+            </td>
+            <td>
+              <p><strong>Revascularisation:</strong> retrait/changement de côté, revascularisation chirurgicale si nécessaire</p>
+              <p>Anticoagulation efficace</p>
+              <p>HNF IVSE pour <strong>AntiXa</strong> 0,3-0,6 UI/mL</p>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <strong>Infection de scarpa</strong>
+            </td>
+            <td>
+              <p>Abord chirurgical</p>
+              <p>Pose traumatique</p>
+              <p>Manipulations nombreuses</p>
+              <p>Antibiothérapie récente</p>
+              <p>Durée d’assistance par BCPIA</p>
+            </td>
+            <td>
+              <p>Abord percutané à privilégier</p>
+              <p>Soins locaux et manipulations prudentes des <strong>scarpas</strong></p>
+              <p>Sauvegarde antibiotique</p>
+              <p>Retrait précoce</p>
+            </td>
+            <td>
+              <p><strong>Antibiothérapie probabiliste</strong> (ou adaptée) : couverture probabiliste des entérobactéries Gp3, <strong>P.aeruginosa</strong> et <strong>Staphylococcus spp.</strong></p>
+              <p>Retrait du BCPIA</p>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <strong>Complication vasculaire mécanique</strong>
+              <p>Dissection aortique</p>
+              <p>Hémorragie</p>
+            </td>
+            <td>
+              <p>Pose traumatique</p>
+              <p>Pathologie vasculaire préexistante: AOMI sévère, anévrysme aortique…</p>
+            </td>
+            <td>
+              <p>Pose par un opérateur entrainé (chirurgien cardiaque ou vasculaire)</p>
+            </td>
+            <td>
+              <p>Prise en charge chirurgicale si indiquée</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  `;
+
   const encadres = [
     {
-      titre: "BCPIA",
+      titre: "Généralités sur le BCPIA",
+      html: ecmoTable([
+        [
+          "Principe et composition",
+          `
+            <p>Le ballon de contre-pulsion intra-aortique (BCPIA) est un dispositif d’assistance circulatoire temporaire, dont le principe repose sur un ballon placé en intra-aortique et dont l’état d’inflation/déflation évolue en deux phases:</p>
+            <p><strong>Inflation en protodiastole:</strong></p>
+            <p>amélioration de la perfusion diastolique des artères coronaires, et donc augmentation de la DO2 myocardique.</p>
+            <p><strong>Déflation en protosystole:</strong></p>
+            <p>diminution de la postcharge du VG (pression négative de la déflation), diminution de la tension pariétale, et donc diminution de la VO2 myocardique.</p>
+            <p>Le dispositif se compose de:</p>
+            <p><strong>Un cathéter ballon</strong></p>
+            <p>de 40 à 50mL gonflé à l’hélium, inséré par l’artère fémorale, à placer dans l’aorte thoracique descendante (entre l’artère sous-clavière gauche et les artères viscérales).</p>
+            <p><strong>Un circuit d’hélium:</strong></p>
+            <p>Connexion entre une cartouche d’hélium, la console, et le cathéter ballon permettant son inflation/déflation.</p>
+            <p><strong>Une console BCPIA:</strong></p>
+            <p>permet le paramétrage de l’assistance, la synchronisation du ballon au patient, et le monitorage. Il se compose: d’un compresseur (propulsion du gaz), d’une électrovanne de timing, et d’une interface utilisateur.</p>
+            <p><strong>Des systèmes de monitorage:</strong></p>
+            <p>scope ECG et PA invasive permettant la synchronisation, capteur de pression intra-aortique.</p>
+          `,
+        ],
+        [
+          "Schéma du dispositif",
+          `
+            <div class="image-container">
+              <img src="img/bcpia.png" alt="Schéma du BCPIA" style="display:block;">
+            </div>
+          `,
+        ],
+        [
+          "Indications",
+          `
+            <p><strong>En chirurgie cardiaque:</strong></p>
+            <p><strong>Pré-opératoire</strong>: chirurgie de pontage coronaire à risque</p>
+            <p><strong>Per-opératoire:</strong> Sevrage difficile de CEC</p>
+            <p><strong>Post-opératoire:</strong> troubles de repolarisation, IDM, troubles du rythme ventriculaire…</p>
+            <p><strong>Assistance par ECMO VA:</strong></p>
+            <p>Décharge ventriculaire gauche pour améliorer l’éjection aortique et diminuer l’œdème pulmonaire hydrostatique.</p>
+            <p><strong>Infarctus du myocarde:</strong></p>
+            <p>En l’absence de choc cardiogénique dans certains contextes spécifiques: troubles du rythme ventriculaires, complications mécaniques (CIV, IM).</p>
+            <p><strong>Angioplasties coronaires à risque:</strong></p>
+            <p>FEVG &lt; 30%, lésion du tronc commun, complication per-coronarographie</p>
+          `,
+        ],
+        [
+          "Contre-indications",
+          `
+            <p><strong>Absolues:</strong></p>
+            <p>Dissection aortique</p>
+            <p>Insuffisance aortique ( &gt; 1/4)</p>
+            <p><strong>Relatives:</strong></p>
+            <p>Autre pathologie aortique: anévrysme, hématome, athérome sévère</p>
+            <p>AOMI sévère des axes fémoraux</p>
+            <p>Contre-indication à l’anticoagulation</p>
+          `,
+        ],
+      ]),
+    },
+
+    {
+      titre: "Gestion pratique du BCPIA",
+      html: ecmoTable([
+        [
+          "Implantation du BCPIA",
+          `
+            <p><strong>Objectifs biologiques:</strong></p>
+            <p>Correction des troubles de l’hémostase, mais risque hémorragique faible (<strong>Hb</strong> ≥ 8g/<strong>dL</strong>, <strong>Pl &gt; 50 G/L</strong>, TP &gt; 50%, TCA &lt; 1,5, fibrinogène &gt; 1,5g/L).</p>
+            <p><strong>Voie d’abord:</strong></p>
+            <p>Insertion dans l’artère fémorale en privilégiant la voie percutanée (<strong>Seldinger</strong> échoguidé). Voie chirurgicale en cas d’artère pathologique, ou contexte per-opératoire.</p>
+            <p><strong>Antibioprophylaxie:</strong> uniquement en cas d’abord chirurgical <strong>Cefazoline</strong> 2g (Vancomycine 20mg/kg si allergie sévère aux béta-lactamines)</p>
+            <p><strong>Anticoagulation:</strong></p>
+            <p>Bolus d’HNF 50 UI/kg (3000-5000 UI) à l’implantation, à adapter au risque hémorragique puis HNF IVSE pour <strong>AntiXa</strong> 0,3-0,6 UI/mL.</p>
+            <p><strong>Positionnement:</strong></p>
+            <p>Radiographie de thorax: extrémité du BCPIA à 2cm au dessus de la carène ${imgInline("Cf Radio & BCPIA", "radiobcpia.png")}</p>
+            <p>ETO: extrémité du BCPIA à 2cm en dessous de la sous-clavière gauche ${imgInline("Cf ETO & BCPIA", "etobcpia.png")}</p>
+            <p><strong>Branchements du dispositif:</strong></p>
+            <p>Monitorage relié à la console (ECG et PA invasive), cathéter ballon relié à la console, cartouche d’hélium ouverte et pleine, prise électrique murale branchée.</p>
+          `,
+        ],
+        [
+          "Réglage de la console",
+          `
+            <p><strong>Source du déclenchement:</strong></p>
+            <p>ECG (trigger = onde R), PA invasive (trigger = onde dicrote), pacemaker (trigger = spike)</p>
+            <p><strong>Mode de fonctionnement:</strong></p>
+            <p>Automatique (recommandé), semi-automatique ou manuel</p>
+            <p><strong>Fréquence de déclenchement:</strong></p>
+            <p>1:1 (à chaque cycle) ou 1:2 (tous les deux cycles)</p>
+            <p><strong>Niveau d’insufflation:</strong></p>
+            <p>Inflation du ballon de 0 à 100%. Inflation complète à privilégier, mais une diminution à 50% peut être pratiquée avant sevrage.</p>
+            <div class="bcpia-screens">
+              <img src="img/ecranbcpia.png" alt="Écran BCPIA 1" style="display:block;">
+              <img src="img/ecranbcpia2.png" alt="Écran BCPIA 2" style="display:block;">
+            </div>
+          `,
+        ],
+        [
+          "Surveillance quotidienne",
+          `
+            <p><strong>Clinique:</strong></p>
+            <p>PA invasive pulsatile, signes d’hypoperfusion tissulaire, diurèse, ischémie de membre inférieur, saignement ou infection au site d’insertion. Position allongée ou inclinaison &lt; 30°.</p>
+            <p><strong>Assistance:</strong></p>
+            <p>Bonne synchronisation patient-machine (Cf infra), bonne détection de la source de déclenchement, niveau d’hélium, niveau de batterie/prise murale.</p>
+            <p><strong>Biologie:</strong></p>
+            <p><strong>AntiXa</strong> 0,3-0,6 UI/mL, recherche de thrombopénie/hémolyse</p>
+            <p><strong>Imagerie:</strong></p>
+            <p>Vérification du positionnement correct du dispositif: à 2cm de la carène à la radiographie (${imgInline("Cf Radio & BCPIA", "radiobcpia.png")}) et à 2cm de la sous-clavière gauche en ETO (${imgInline("Cf ETO & BCPIA", "etobcpia.png")})</p>
+          `,
+        ],
+        [
+          "Prescriptions médicamenteuses",
+          `
+            <p><strong>Anticoagulation:</strong></p>
+            <p>HNF IVSE pour objectif d’<strong>AntiXa</strong> 0,3-0,6 UI/mL. Si inefficacité, dosage de l’ATIII (norme &gt; 80%)</p>
+          `,
+        ],
+        [
+          "Sevrage du BCPIA",
+          `
+            <p><strong>Critères de sevrabilité:</strong></p>
+            <p>Régression des signes d’hypoperfusion tissulaires, faibles doses d’amines</p>
+            <p>Si décharge VG sous ECMO: PA invasive pulsatile (à l’arrêt du BCPIA) et œdème pulmonaire hydrostatique contrôlé</p>
+            <p>Bonne tolérance d’une diminution de l’inflation à 50% pendant 24h</p>
+            <p>Ne jamais interrompre l’assistance pendant plus de 30min</p>
+            <p><strong>Déroulement du retrait de BCPIA:</strong></p>
+            <p>Arrêt de l’HNF IVSE 2h avant le retrait. Objectifs biologiques: <strong>Hb</strong> ≥ 8g/<strong>dL</strong>, <strong>Pl &gt; 50 G/L</strong>, TP &gt; 50%, TCA &lt; 1,5, fibrinogène &gt; 1,5g/L.</p>
+            <p>Interruption de l’assistance, déflation complète du ballon, retrait du ballon et de la gaine, laisser saigner 1 à 2 secondes avant compression.</p>
+            <p>Compression fémorale pendant 30min ou système de fermeture percutané (<strong>Femostop</strong>), puis pansement compressif pendant 24h. Surveillance des pouls pédieux.</p>
+            <p>Antibioprophylaxie uniquement en cas d’abord chirurgical <strong>Cefazoline</strong> 2g (Vancomycine 20mg/kg si allergie sévère aux béta-lactamines)</p>
+          `,
+        ],
+      ]),
+    },
+
+    {
+      titre: "Echographie trans-oesophagienne et BCPIA",
       html: `
-        <p>Prise en charge d’une contre-pulsion intra-aortique :
-        positionnement, synchronisation, réglages, sevrage. Contenu à compléter.</p>
+        <div class="info-content">
+          <div class="thumb-grid ecmo-eto-grid">
+            <button class="thumb-card" onclick="openImg('etobcpia.png')">
+              <img src="img/etobcpia.png" alt="Positionnement BCPIA">
+              <span>Positionnement BCPIA</span>
+            </button>
+          </div>
+        </div>
       `,
     },
+
+    {
+      titre: "Complications du BCPIA",
+      html: bcpiaComplicationsTable,
+    },
   ];
+
   renderInterventionPage({
     titre: "Assistances circulatoires",
     sousTitre: "BCPIA",
