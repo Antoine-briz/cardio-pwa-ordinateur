@@ -9618,3 +9618,11 @@ table.bact-table p:last-child {
     padding: 8px 10px !important;
   }
 }
+
+.ecmo-table ul {
+  margin: 0;
+}
+
+.ecmo-table li {
+  margin-bottom: 3px;
+}
