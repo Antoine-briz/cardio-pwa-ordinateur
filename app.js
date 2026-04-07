@@ -17202,22 +17202,22 @@ function renderBacteriaPage(slug, data) {
 
           <section class="info-card">
             <h3>Phénotype habituel</h3>
-            <div class="info-content">${data.phenotype}</div>
+            <div class="info-content bact-table-wrap">${data.phenotype}</div>
           </section>
 
           <section class="info-card">
             <h3>Antibiotique de référence</h3>
-            <div class="info-content">${data.refAtb}</div>
+            <div class="info-content bact-table-wrap">${data.refAtb}</div>
           </section>
 
           <section class="info-card">
             <h3>Antibiotique selon le site infectieux</h3>
-            <div class="info-content">${data.siteAtb}</div>
+            <div class="info-content bact-table-wrap">${data.siteAtb}</div>
           </section>
 
           <section class="info-card">
             <h3>Ajout si choc septique</h3>
-            <div class="info-content">${data.choc}</div>
+            <div class="info-content bact-table-wrap">${data.choc}</div>
           </section>
         </div>
       </div>
