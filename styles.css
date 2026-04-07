@@ -9626,3 +9626,26 @@ table.bact-table p:last-child {
 .ecmo-table li {
   margin-bottom: 3px;
 }
+
+.ecmo-table ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.ecmo-table ul > li::before {
+  content: "- ";
+}
+
+.ecmo-table ul ul {
+  list-style-type: circle;
+  padding-left: 18px;
+  margin-top: 4px;
+}
+
+.ecmo-table ul ul > li::before {
+  content: "";
+}
+
+.ecmo-table li {
+  margin-bottom: 4px;
+}
