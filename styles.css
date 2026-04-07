@@ -9686,3 +9686,19 @@ table.bact-table p:last-child {
 .impella-sub-list {
   list-style-type: circle;
 }
+
+/* IMPella : sous-liste des calibres = ronds blancs, pas de tirets */
+.ecmo-table ul.impella-sub-list {
+  list-style: circle !important;
+  padding-left: 34px !important;
+  margin: 0 !important;
+}
+
+.ecmo-table ul.impella-sub-list > li {
+  padding-left: 0 !important;
+  margin-bottom: 4px !important;
+}
+
+.ecmo-table ul.impella-sub-list > li::before {
+  content: none !important;
+}
