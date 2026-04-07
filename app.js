@@ -15938,6 +15938,26 @@ function renderReanAssistImpella() {
     </div>
   `;
 
+    const impellaEtoThumbs = `
+  <div class="thumb-grid ecmo-eto-grid">
+    <button class="thumb-card" onclick="openImg('inletimpella.png')">
+      <img src="img/inletimpella.png" alt="Position inlet dans le VG">
+      <span>Position inlet dans le VG</span>
+    </button>
+
+    <button class="thumb-card" onclick="openImg('outletimpella.png')">
+      <img src="img/outletimpella.png" alt="Position outlet dans l’aorte">
+      <span>Position outlet dans l’aorte</span>
+    </button>
+
+    <button class="thumb-card" onclick="openImg('impella-im.png')">
+      <img src="img/impella-im.png" alt="Recherche d’IM">
+      <span>Recherche d’IM</span>
+    </button>
+  </div>
+`;
+
+  
   const encadres = [
     {
       titre: "Généralités sur l'Impella",
@@ -16098,33 +16118,16 @@ function renderReanAssistImpella() {
       ])
     },
 
-    const impellaEtoThumbs = `
-  <div class="thumb-grid ecmo-eto-grid">
-    <button class="thumb-card" onclick="openImg('inletimpella.png')">
-      <img src="img/inletimpella.png" alt="Position inlet dans le VG">
-      <span>Position inlet dans le VG</span>
-    </button>
 
-    <button class="thumb-card" onclick="openImg('outletimpella.png')">
-      <img src="img/outletimpella.png" alt="Position outlet dans l’aorte">
-      <span>Position outlet dans l’aorte</span>
-    </button>
-
-    <button class="thumb-card" onclick="openImg('impella-im.png')">
-      <img src="img/impella-im.png" alt="Recherche d’IM">
-      <span>Recherche d’IM</span>
-    </button>
-  </div>
-`;
 
 {
-  titre: "Echographie trans-oesophagienne et Impella",
-  html: `
-    <div class="info-content">
-      ${impellaEtoThumbs}
-    </div>
-  `,
-},
+      titre: "Echographie trans-oesophagienne et Impella",
+      html: `
+        <div class="info-content">
+          ${impellaEtoThumbs}
+        </div>
+      `,
+    },
 
     {
       titre: "Complications de l’Impella",
