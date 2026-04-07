@@ -15951,7 +15951,7 @@ function renderReanAssistImpella() {
 
 <ul style="padding-left: 15px; margin-top:5px;">
   <li>
-    Une <strong>micro-pompe axiale</strong> à rotation rapide (environ 50 000 <strong>tpm</strong>), composée d’un orifice d’éjection intra-aortique (<strong>outlet</strong>), d’un corps de pompe (12-14Fr) en regard de la valve aortique, d’un orifice de pression sanglante, d’un orifice d’admission intra-VG (<strong>inlet</strong>), et d’une terminaison en queue de cochon (<strong>pigtail</strong>) orientée vers l’apex du VG. Elle peut être de calibre variable: Cf calibres Impella ${imgInline("afficher", "calibreimpella.png")}
+    Une <strong>micro-pompe axiale</strong> à rotation rapide (environ 50 000 tpm), composée d’un orifice d’éjection intra-aortique (outlet), d’un corps de pompe (12-14Fr) en regard de la valve aortique, d’un orifice de pression sanglante, d’un orifice d’admission intra-VG (inlet), et d’une terminaison en queue de cochon (pigtail) orientée vers l’apex du VG. Elle peut être de calibre variable: Cf calibres Impella ${imgInline("afficher", "calibreimpella.png")}
 
     <ul style="padding-left: 20px; margin-top:5px;">
       <li><strong>Impella 2.5:</strong> débit max 2,5L/min. Insertion percutanée.</li>
@@ -15963,9 +15963,9 @@ function renderReanAssistImpella() {
   </li>
 </ul>
 
-          <p>- Un <strong>cable (drive) de connexion:</strong> il relie la micro-pompe à la console, permettant l’alimentation de la pompe et la transmission des données (<strong>tpm</strong>, pressions, débit de pompe...)</p>
+          <p>- Un <strong>cable (drive) de connexion:</strong> il relie la micro-pompe à la console, permettant l’alimentation de la pompe et la transmission des données (tpm, pressions, débit de pompe...)</p>
 
-          <p>- Une <strong> console de contrôle (Impella controller): </strong> Permet l’alimentation de la pompe, le réglage du débit (<strong>P-level</strong>), l’affichage du monitoring (débit estimé, vitesse de pompe, pression aortique), et le réglage des alarmes. Cf contrôleur Impella ${imgInline("afficher", "controleurimpella.png")}</p>
+          <p>- Une <strong> console de contrôle (Impella controller): </strong> Permet l’alimentation de la pompe, le réglage du débit (P-level), l’affichage du monitoring (débit estimé, vitesse de pompe, pression aortique), et le réglage des alarmes. Cf contrôleur Impella ${imgInline("afficher", "controleurimpella.png")}</p>
 
           <p>- Un <strong>circuit de purge:</strong> soluté glucosé et hépariné injecté en continu à forte pression (300-1000mmHg) au travers de l’outlet, permettant de prévenir la thrombose de pompe. Cf purge Impella ${imgInline("afficher", "purgeimpella.png")}</p>
           `
@@ -16039,9 +16039,14 @@ function renderReanAssistImpella() {
           <p>- Débit sanguin estimé de pompe</p>
           <p>- Signal de positionnement (courbe rouge): courbe de pression différentielle (Paortique – PVG). Le capteur de pression différentielle est souvent défectueux après J10 d’assistance (mais pompe toujours fonctionnelle).</p>
           <p>- Signal du courant moteur (courbe verte): reflète la charge de la pompe. Son augmentation (pas de seuil fixe) permet de révéler une complication (thrombose, hypovolémie, malposition...)</p>
-          <p>- Système de purge:</p>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;- Débit de purge: de 8 à 15 mL/h, il dépend du débit de pompe et de la pression de purge. Un débit &lt; 2mL/h expose à un risque de thrombose de pompe</p>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;- Pression de purge: Elle doit être entre 300 et 1000 mmHg. Elle dépend de la viscosité du soluté (G10% ou G5%) et d’éventuelles obstructions/plicatures.</p>
+          <ul>
+  <li>Système de purge:
+    <ul>
+      <li>Débit de purge: de 8 à 15 mL/h, il dépend du débit de pompe et de la pression de purge. Un débit &lt; 2mL/h expose à un risque de thrombose de pompe</li>
+      <li>Pression de purge: Elle doit être entre 300 et 1000 mmHg. Elle dépend de la viscosité du soluté (G10% ou G5%) et d’éventuelles obstructions/plicatures.</li>
+    </ul>
+  </li>
+</ul>
           <p>- Niveau de batterie et source d’alimentation secteur</p>
 
           <div class="bcpia-screens">
