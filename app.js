@@ -15768,15 +15768,350 @@ function renderReanAssistBCPIA() {
 }
 
 function renderReanAssistImpella() {
+  const imgInline = (label, file) => `
+    <span class="img-link" onclick="openImg('${file}')">
+      ${label} <span style="font-size:18px;">🖥️</span>
+    </span>
+  `;
+
+  const ecmoTable = (rows) => `
+    <div class="info-content ecmo-table-wrap">
+      <table class="ecmo-table">
+        <tbody>
+          ${rows.map(([left, right]) => `
+            <tr>
+              <th>${left}</th>
+              <td>${right}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+
+  const complicationsTable = `
+    <div class="info-content ecmo-table-wrap">
+      <table class="ecmo-table ecmo-table-4cols">
+        <thead>
+          <tr>
+            <th>Complication</th>
+            <th>Facteurs favorisants</th>
+            <th>Prévention</th>
+            <th>Prise en charge</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Dysfonction ventriculaire droite</strong></td>
+            <td>
+              <p>- Dysfonction systolique du VD pré-existante</p>
+              <p>- Haut débits d’assistance</p>
+            </td>
+            <td>
+              <p>- Evaluation soigneuse de la fonction VD avant implantation</p>
+              <p>- Débit d’assistance minimal</p>
+              <p>- Mesures de protection VD: FC 100/min, PAM &gt; 70 mmHg, diminution postcharge VD...</p>
+            </td>
+            <td>
+              <p><strong>Inotropes: Dobutamine</strong></p>
+              <p><strong>Débit d’assistance minimal</strong></p>
+              <p><strong>Mesures de protection VD:</strong> FC 100/min, PAM &gt; 70 mmHg, diminution postcharge VD...</p>
+            </td>
+          </tr>
+
+          <tr>
+            <td><strong>Malposition intra-cardiaque</strong></td>
+            <td>
+              <p>- Impella trop enfoncée dans le VG: augmentation PTDVG et pas de débit trans-aortique</p>
+              <p>- Insuffisance aortique ou mitrale: augmentation PTDVG</p>
+            </td>
+            <td>
+              <p>- Surveillance courbe de pression différentielle</p>
+              <p>- Surveillance du repère de cathéter à la peau</p>
+              <p>- Radio/échographique quotidiennes</p>
+            </td>
+            <td>
+              <p><strong>Mobilisation de l’Impella</strong> sous contrôle échographique en aseptie stricte</p>
+            </td>
+          </tr>
+
+          <tr>
+            <td><strong>Thrombose et arrêt de pompe</strong></td>
+            <td>
+              <p>- Débit de purge &lt; 10mL/h</p>
+              <p>- Pression de purge &gt; 1000 mmHg</p>
+              <p>- Anticoagulation insuffisante</p>
+              <p>- P-level trop faible (P0-P1)</p>
+            </td>
+            <td>
+              <p>- Débit de purge &gt; 10mL/h et pression purge 300-1000 mmHg</p>
+              <p>- HNF IVSE pour AntiXa 0,2-0,4 UI/mL</p>
+              <p>- P-level &gt; P2-P3</p>
+            </td>
+            <td>
+              <p><strong>Ajuster purge et anticoagulation</strong></p>
+              <p><strong>Si arrêt de pompe:</strong> retrait du dispositif si échec de redémarrage à 3 reprises</p>
+            </td>
+          </tr>
+
+          <tr>
+            <td><strong>Hémolyse</strong></td>
+            <td>
+              <p>- Malposition</p>
+              <p>- Phénomène de succion (hypovolémie notamment)</p>
+              <p>- Thrombose de pompe</p>
+            </td>
+            <td>
+              <p>- Surveillance Hb plasmatique (&lt; 150mg/L), LDH, bilirubine...</p>
+              <p>- Débit de purge &gt; 10mL/h et pression purge 300-1000 mmHg</p>
+              <p>- HNF IVSE pour AntiXa 0,2-0,4 UI/mL</p>
+            </td>
+            <td>
+              <p><strong>Ajuster purge et anticoagulation</strong></p>
+              <p><strong>Retrait de l’Impella</strong> si possible</p>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <strong>Ischémie</strong>
+              <p>- AVC</p>
+              <p>- membre inf.</p>
+            </td>
+            <td>
+              <p>- Pose traumatique</p>
+              <p>- Athérome préexistant</p>
+              <p>- Anticoagulation insuffisante</p>
+              <p>- Débit de purge insuffisant</p>
+            </td>
+            <td>
+              <p>- Surveillance quotidienne des membres inférieurs</p>
+              <p>- Débit de purge &gt; 10mL/h pression purge 300-1000 mmHg</p>
+              <p>- HNF IVSE pour AntiXa 0,2-0,4 UI/mL</p>
+            </td>
+            <td>
+              <p><strong>Revascularisation:</strong> retrait/changement de côté, revascularisation chirurgicale si nécessaire</p>
+              <p><strong>Anticoagulation efficace</strong> HNF IVSE pour AntiXa 0,2-0,4 UI/mL</p>
+            </td>
+          </tr>
+
+          <tr>
+            <td><strong>Infection de scarpa</strong></td>
+            <td>
+              <p>- Abord chirurgical</p>
+              <p>- Pose traumatique</p>
+              <p>- Manipulations nombreuses</p>
+              <p>- Antibiothérapie récente</p>
+              <p>- Durée d’assistance par Impella</p>
+            </td>
+            <td>
+              <p>- Abord percutané à privilégier</p>
+              <p>- Soins locaux et manipulations prudentes des scarpas</p>
+              <p>- Sauvegarde antibiotique</p>
+              <p>- Retrait précoce</p>
+            </td>
+            <td>
+              <p><strong>Antibiothérapie probabiliste</strong> (ou adaptée) : couverture probabiliste des entérobactéries Gp3, <em>P.aeruginosa</em> et <em>Staphylococcus spp.</em></p>
+              <p><strong>Retrait de l’Impella</strong></p>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <strong>Complication vasculaire mécanique</strong>
+              <p>- Dissection aortique</p>
+              <p>- Hémorragie</p>
+            </td>
+            <td>
+              <p>- Pose traumatique</p>
+              <p>- Pathologie vasculaire préexistante: AOMI sévère, anévrysme aortique...</p>
+            </td>
+            <td>
+              <p>- Pose par un opérateur entrainé</p>
+            </td>
+            <td>
+              <p><strong>Prise en charge chirurgicale si indiquée</strong></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  `;
+
   const encadres = [
     {
-      titre: "Impella",
+      titre: "Généralités sur l'Impella",
+      html: ecmoTable([
+        [
+          "Principe et composition",
+          `
+          <p><strong>L’Impella</strong> est une assistance circulatoire antérograde du ventricule gauche de courte durée, dont le principe repose sur une micro-pompe axiale à débit continu positionnée au travers de la valve aortique, et permettant de faciliter l’éjection du VG vers l’aorte.</p>
+
+<p>Le dispositif se compose de:</p>
+
+<ul style="padding-left: 15px; margin-top:5px;">
+  <li>
+    Une <strong>micro-pompe axiale</strong> à rotation rapide (environ 50 000 <strong>tpm</strong>), composée d’un orifice d’éjection intra-aortique (<strong>outlet</strong>), d’un corps de pompe (12-14Fr) en regard de la valve aortique, d’un orifice de pression sanglante, d’un orifice d’admission intra-VG (<strong>inlet</strong>), et d’une terminaison en queue de cochon (<strong>pigtail</strong>) orientée vers l’apex du VG. Elle peut être de calibre variable: Cf calibres Impella ${imgInline("afficher", "calibreimpella.png")}
+
+    <ul style="padding-left: 20px; margin-top:5px;">
+      <li><strong>Impella 2.5:</strong> débit max 2,5L/min. Insertion percutanée.</li>
+      <li><strong>Impella CP:</strong> débit max 3,7L/min. Insertion percutanée.</li>
+      <li><strong>Impella 5:</strong> débit max 5L/min. Insertion chirurgicale (axillaire)</li>
+      <li><strong>Impella 5.5:</strong> non disponible en France</li>
+      <li><strong>Impella RP:</strong> destinée à l’assistance du VD</li>
+    </ul>
+  </li>
+</ul>
+
+          <p>- Un <strong>cable (drive) de connexion:</strong> il relie la micro-pompe à la console, permettant l’alimentation de la pompe et la transmission des données (<strong>tpm</strong>, pressions, débit de pompe...)</p>
+
+          <p>- Une <strong> console de contrôle (Impella controller): </strong> Permet l’alimentation de la pompe, le réglage du débit (<strong>P-level</strong>), l’affichage du monitoring (débit estimé, vitesse de pompe, pression aortique), et le réglage des alarmes. Cf contrôleur Impella ${imgInline("afficher", "controleurimpella.png")}</p>
+
+          <p>- Un <strong>circuit de purge:</strong> soluté glucosé et hépariné injecté en continu à forte pression (300-1000mmHg) au travers de l’outlet, permettant de prévenir la thrombose de pompe. Cf purge Impella ${imgInline("afficher", "purgeimpella.png")}</p>
+          `
+        ],
+
+        [
+          "Schéma du dispositif",
+          `
+          <div class="image-container">
+            <img src="img/circuitimpella.png" alt="Schéma Impella" style="display:block;">
+          </div>
+          `
+        ],
+
+        [
+          "Indications",
+          `
+          <p>- Choc cardiogénique avec dysfonction mono-ventriculaire gauche, et notamment le STEMI compliqué de choc cardiogénique (étude DanGer Shock NEJM 2024). Cependant pas de bénéfice clair en comparaison du BCPIA.</p>
+          <p>- Décharge ventriculaire gauche au cours de l’assistance par ECMO VA</p>
+          <p>- Certaines dysfonctions VG en péri-opératoire de chirurgie cardiaque</p>
+          <p>- Possible en cas d’angioplastie coronaire à haut risque: FEVG &lt;30% et anatomie coronaire complexe</p>
+          `
+        ],
+
+        [
+          "Contre-indications",
+          `
+          <p>- Défaillance ventriculaire droite sévère (sauf si ECMO VA en place)</p>
+          <p>- Rétrécissement aortique avec surface aortique &lt; 1,5cm² ou calcifications aortiques majeures</p>
+          <p>- Insuffisance aortique &gt; 2/4</p>
+          <p>- Valve aortique mécanique</p>
+          <p>- Rétrécissement mitral serré</p>
+          <p>- Thrombus intra-VG</p>
+          <p>- Communication inter-ventriculaire (CIV)</p>
+          <p>- AOMI sévère</p>
+          `
+        ],
+      ])
+    },
+
+    {
+      titre: "Gestion pratique de l’Impella",
+      html: ecmoTable([
+        [
+          "Implantation de l’Impella",
+          `
+          <p><strong>Objectifs biologiques:</strong> Correction des troubles de l’hémostase, mais risque hémorragique faible (Hb ≥ 8g/dL, Pl &gt; 50 G/L, TP &gt; 50%, TCA &lt; 1,5, fibrinogène &gt; 1,5g/L).</p>
+
+          <p><strong>Voie d’abord:</strong> Abord percutané par l’artère fémorale pour Impella 2.5 et CP, veine fémorale pour Impella RP, et abord chirurgical axillaire pour Impella 5.</p>
+
+          <p><strong>Antibioprophylaxie:</strong> uniquement en cas d’abord chirurgical Cefazoline 2g (Vancomycine 20mg/kg si allergie sévère aux béta-lactamines)</p>
+
+          <p><strong>Anticoagulation:</strong> Bolus d’HNF 50-100 UI/kg (généralement 5000 UI) à l’implantation, à adapter au risque hémorragique. Purge héparinée: G10% 500mL contenant HNF 5000 UI (10 UI/mL) initialement.</p>
+
+          <p><strong>Initiation de l’assistance:</strong> Réglage du P-level de P1 à P8 (absence de débit à P0, et assistance maximale P9 uniquement temporaire)</p>
+
+          <p><strong>Positionnement:</strong></p>
+          <p>- ETO avant assistance: orientation de la pigtail vers l’apex du VG, inlet à 3,5cm de la valve aortique, absence de conflit avec la valve mitrale, angulation du corps de pompe en regard de la valve aortique</p>
+          <p>- ETO pendant assistance: Diminution des signes de surcharge VG (PTDVG, IM), flux éjectionnel au dessus de la valve aortique, recherche d’IA et d’IM, évaluation de la fonction VD (dilatation, septum interventriculaire, fonction systolique du VD...)</p>
+          <p>- Radiographie de thorax: évaluation de la bonne position de l’Impella, la radiographie initiale permet un comparatif ultérieur</p>
+          <p>- Repère du cathéter à la peau et fixation soigneuse</p>
+          `
+        ],
+
+        [
+          "Réglage de la console",
+          `
+          <p><strong>Paramètre à régler = Niveau d’assistance (P-level):</strong> Réglage du P-level de P1 à P8 (absence de débit à P0, et assistance maximale P9 uniquement temporaire). Cf P-level & débit Impella ${imgInline("afficher", "plevelimpella.png")}</p>
+
+          <p><strong>Affichage sur le contrôleur:</strong></p>
+          <p>- Débit sanguin estimé de pompe</p>
+          <p>- Signal de positionnement (courbe rouge): courbe de pression différentielle (Paortique – PVG). Le capteur de pression différentielle est souvent défectueux après J10 d’assistance (mais pompe toujours fonctionnelle).</p>
+          <p>- Signal du courant moteur (courbe verte): reflète la charge de la pompe. Son augmentation (pas de seuil fixe) permet de révéler une complication (thrombose, hypovolémie, malposition...)</p>
+          <p>- Système de purge:</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;- Débit de purge: de 8 à 15 mL/h, il dépend du débit de pompe et de la pression de purge. Un débit &lt; 2mL/h expose à un risque de thrombose de pompe</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;- Pression de purge: Elle doit être entre 300 et 1000 mmHg. Elle dépend de la viscosité du soluté (G10% ou G5%) et d’éventuelles obstructions/plicatures.</p>
+          <p>- Niveau de batterie et source d’alimentation secteur</p>
+
+          <div class="bcpia-screens">
+            <img src="img/ecranimpella.png" alt="Écran Impella gauche" style="display:block;">
+            <img src="img/ecranimpella2.png" alt="Écran Impella droite" style="display:block;">
+          </div>
+          `
+        ],
+
+        [
+          "Surveillance quotidienne",
+          `
+          <p><strong>Clinique:</strong> Signes d’hypoperfusion tissulaire, diurèse, ischémie de membre inférieur, saignement ou infection au site d’insertion. Position allongée ou inclinaison &lt; 30°.</p>
+
+          <p><strong>Assistance:</strong> <span style="color:#d62828;"><strong>« Règles des 3 P »</strong></span></p>
+          <p>- <u>Pansement</u>: Repérage d’insertion du cathéter à la peau, fixation du cathéter en boucle au dessus du genou avec connectique rouge visible. Cf fixation Impella ${imgInline("afficher", "fixationimpella.png")}</p>
+          <p>- <u>Pression</u>: Pression de purge 300-1000mmHg, débit de purge &gt;10mL/h</p>
+          <p>- <u>Position</u>: Courbe de position (Pdifférentielle), radio de thorax, ETT/ETO</p>
+
+          <p><strong>Biologie:</strong> AntiXa 0,2-0,4 UI/mL, recherche de thrombopénie/hémolyse</p>
+          `
+        ],
+
+        [
+          "Prescriptions médicamenteuses",
+          `
+          <p><strong>Anticoagulation:</strong></p>
+          <p>- HNF dans le système de purge: Débuter à 10 UI/mL (5 000 UI / 500mL de G10%) avec majoration possible jusqu’à 50 UI/mL (25 000 UI / 500mL de G10%). Le G10% peut être remplacé par du G5% pour diminuer la viscosité.</p>
+          <p>- Ajout HNF IVSE pour objectif d’AntiXa 0,2-0,4 UI/mL.</p>
+          `
+        ],
+
+        [
+          "Sevrage de l’Impella",
+          `
+          <p><strong>Critères de sevrabilité:</strong></p>
+          <p>- Régression des signes d’hypoperfusion tissulaires, faibles doses d’amines</p>
+          <p>- Pression artérielle invasive pulsatile et œdème pulmonaire hydrostatique contrôlé</p>
+          <p>- Bonne tolérance d’une diminution du P-level P2-P3 (1,5-2L/min selon dispositif) pendant 24h</p>
+          <p>- ⚠️ Ne pas arrêter la pompe (P0) pour tester la sevrabilité (risque de back-flow)</p>
+
+          <p><strong>Déroulement du retrait de l’Impella:</strong></p>
+          <p>- Arrêt de l’HNF IVSE 2h avant le retrait. Objectifs biologiques: Hb ≥ 8g/dL, Pl &gt; 50 G/L, TP &gt; 50%, TCA &lt; 1,5, fibrinogène &gt; 1,5g/L.</p>
+          <p>- Interruption de l’assistance (P0), retrait du cathéter.</p>
+          <p>- Compression fémorale pendant 30min ou système de fermeture percutané (Femostop), puis pansement compressif pendant 24h avec surveillance des pouls pédieux.</p>
+          <p>- Antibioprophylaxie uniquement en cas d’abord chirurgical Cefazoline 2g (Vancomycine 20mg/kg si allergie sévère aux béta-lactamines)</p>
+          `
+        ],
+      ])
+    },
+
+    {
+      titre: "Echographie trans-oesophagienne et Impella",
       html: `
-        <p>Prise en charge d’un dispositif Impella (positionnement, débits, anticoagulation).
-        Contenu à compléter.</p>
+        <div class="info-content">
+          <ul class="eto-list">
+            <li>Position inlet dans le VG ${imgInline("afficher", "inletimpella.png")}</li>
+            <li>Position outlet dans l’aorte ${imgInline("afficher", "outletimpella.png")}</li>
+            <li>Recherche d’IM ${imgInline("afficher", "impella-im.png")}</li>
+          </ul>
+        </div>
       `,
     },
+
+    {
+      titre: "Complications de l’Impella",
+      html: complicationsTable,
+    },
   ];
+
   renderInterventionPage({
     titre: "Assistances circulatoires",
     sousTitre: "Impella",
@@ -15784,6 +16119,7 @@ function renderReanAssistImpella() {
     encadres,
   });
 }
+
 
 function renderReanAssistLVAD() {
   const encadres = [
