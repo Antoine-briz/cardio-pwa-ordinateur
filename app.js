@@ -15973,16 +15973,16 @@ function renderReanAssistImpella() {
 
 <div class="impella-main-list">
   <div class="impella-main-item">
-    Une <strong>micro-pompe axiale</strong> à rotation rapide (environ 50 000 tpm), composée d’un orifice d’éjection intra-aortique (outlet), d’un corps de pompe (12-14Fr) en regard de la valve aortique, d’un orifice de pression sanglante, d’un orifice d’admission intra-VG (inlet), et d’une terminaison en queue de cochon (pigtail) orientée vers l’apex du VG. Elle peut être de calibre variable: Cf calibres Impella ${imgInline("afficher", "calibreimpella.png")}
+    Une <strong>micro-pompe axiale</strong> à rotation rapide (environ 50 000 tpm), composée d’un orifice d’éjection intra-aortique (outlet), d’un corps de pompe (12-14Fr) en regard de la valve aortique, d’un orifice de pression sanglante, d’un orifice d’admission intra-VG (inlet), et d’une terminaison en queue de cochon (pigtail) orientée vers l’apex du VG. Elle peut être de calibre variable:  ${imgInline("Cf calibres Impella", "calibreimpella.png")}
   </div>
 
   <ul class="impella-sub-list">
-    <li><strong>Impella 2.5:</strong> débit max 2,5L/min. Insertion percutanée.</li>
-    <li><strong>Impella CP:</strong> débit max 3,7L/min. Insertion percutanée.</li>
-    <li><strong>Impella 5:</strong> débit max 5L/min. Insertion chirurgicale (axillaire)</li>
-    <li><strong>Impella 5.5:</strong> non disponible en France</li>
-    <li><strong>Impella RP:</strong> destinée à l’assistance du VD</li>
-  </ul>
+  <li><strong>Impella 2.5:</strong> débit max 2,5L/min. Insertion percutanée.</li>
+  <li><strong>Impella CP:</strong> débit max 3,7L/min. Insertion percutanée.</li>
+  <li><strong>Impella 5:</strong> débit max 5L/min. Insertion chirurgicale (axillaire)</li>
+  <li><strong>Impella 5.5:</strong> non disponible en France</li>
+  <li><strong>Impella RP:</strong> destinée à l’assistance du VD</li>
+</ul>
 </div>
 
           <p>- Un <strong>cable (drive) de connexion:</strong> il relie la micro-pompe à la console, permettant l’alimentation de la pompe et la transmission des données (tpm, pressions, débit de pompe...)</p>
