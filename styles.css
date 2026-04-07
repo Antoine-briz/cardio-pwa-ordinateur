@@ -9651,3 +9651,34 @@ table.bact-table p:last-child {
 .ecmo-table ul ul li::before {
   content: none;
 }
+
+.impella-spacer {
+  height: 12px;
+}
+
+.impella-main-list {
+  margin: 0;
+}
+
+.impella-main-item {
+  position: relative;
+  padding-left: 18px;
+  margin-bottom: 6px;
+}
+
+.impella-main-item::before {
+  content: "-";
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.impella-sub-list {
+  margin: 0;
+  padding-left: 34px;
+  list-style-type: circle;
+}
+
+.impella-sub-list li {
+  margin-bottom: 4px;
+}
