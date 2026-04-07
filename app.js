@@ -15971,7 +15971,7 @@ function renderReanAssistImpella() {
 
 <ul style="padding-left: 15px; margin-top:5px;">
   <li>
-    Une <strong>micro-pompe axiale</strong> à rotation rapide (environ 50 000 tpm), composée d’un orifice d’éjection intra-aortique (outlet), d’un corps de pompe (12-14Fr) en regard de la valve aortique, d’un orifice de pression sanglante, d’un orifice d’admission intra-VG (inlet), et d’une terminaison en queue de cochon (pigtail) orientée vers l’apex du VG. Elle peut être de calibre variable: Cf calibres Impella ${imgInline("afficher", "calibreimpella.png")}
+    Une <strong>micro-pompe axiale</strong> à rotation rapide (environ 50 000 tpm), composée d’un orifice d’éjection intra-aortique (outlet), d’un corps de pompe (12-14Fr) en regard de la valve aortique, d’un orifice de pression sanglante, d’un orifice d’admission intra-VG (inlet), et d’une terminaison en queue de cochon (pigtail) orientée vers l’apex du VG. Elle peut être de calibre variable:  ${imgInline("Cf calibres Impella", "calibreimpella.png")}
 
     <ul style="padding-left: 20px; margin-top:5px;">
       <li><strong>Impella 2.5:</strong> débit max 2,5L/min. Insertion percutanée.</li>
@@ -15985,9 +15985,9 @@ function renderReanAssistImpella() {
 
           <p>- Un <strong>cable (drive) de connexion:</strong> il relie la micro-pompe à la console, permettant l’alimentation de la pompe et la transmission des données (tpm, pressions, débit de pompe...)</p>
 
-          <p>- Une <strong> console de contrôle (Impella controller): </strong> Permet l’alimentation de la pompe, le réglage du débit (P-level), l’affichage du monitoring (débit estimé, vitesse de pompe, pression aortique), et le réglage des alarmes. Cf contrôleur Impella ${imgInline("afficher", "controleurimpella.png")}</p>
+          <p>- Une <strong> console de contrôle (Impella controller): </strong> Permet l’alimentation de la pompe, le réglage du débit (P-level), l’affichage du monitoring (débit estimé, vitesse de pompe, pression aortique), et le réglage des alarmes.  ${imgInline("Cf contrôleur Impella", "controleurimpella.png")}</p>
 
-          <p>- Un <strong>circuit de purge:</strong> soluté glucosé et hépariné injecté en continu à forte pression (300-1000mmHg) au travers de l’outlet, permettant de prévenir la thrombose de pompe. Cf purge Impella ${imgInline("afficher", "purgeimpella.png")}</p>
+          <p>- Un <strong>circuit de purge:</strong> soluté glucosé et hépariné injecté en continu à forte pression (300-1000mmHg) au travers de l’outlet, permettant de prévenir la thrombose de pompe.  ${imgInline("Cf purge Impella", "purgeimpella.png")}</p>
           `
         ],
 
@@ -16053,7 +16053,7 @@ function renderReanAssistImpella() {
         [
           "Réglage de la console",
           `
-          <p><strong>Paramètre à régler = Niveau d’assistance (P-level):</strong> Réglage du P-level de P1 à P8 (absence de débit à P0, et assistance maximale P9 uniquement temporaire). Cf P-level & débit Impella ${imgInline("afficher", "plevelimpella.png")}</p>
+          <p><strong>Paramètre à régler = Niveau d’assistance (P-level):</strong> Réglage du P-level de P1 à P8 (absence de débit à P0, et assistance maximale P9 uniquement temporaire). ${imgInline("Cf P-level & débit Impella", "debitimpella.png")}</p>
 
           <p><strong>Affichage sur le contrôleur:</strong></p>
           <p>- Débit sanguin estimé de pompe</p>
@@ -16082,7 +16082,7 @@ function renderReanAssistImpella() {
           <p><strong>Clinique:</strong> Signes d’hypoperfusion tissulaire, diurèse, ischémie de membre inférieur, saignement ou infection au site d’insertion. Position allongée ou inclinaison &lt; 30°.</p>
 
           <p><strong>Assistance:</strong> <span style="color:#d62828;"><strong>« Règles des 3 P »</strong></span></p>
-          <p>- <u>Pansement</u>: Repérage d’insertion du cathéter à la peau, fixation du cathéter en boucle au dessus du genou avec connectique rouge visible. Cf fixation Impella ${imgInline("afficher", "fixationimpella.png")}</p>
+          <p>- <u>Pansement</u>: Repérage d’insertion du cathéter à la peau, fixation du cathéter en boucle au dessus du genou avec connectique rouge visible.  ${imgInline("Cf fixation Impella", "fixationimpella.png")}</p>
           <p>- <u>Pression</u>: Pression de purge 300-1000mmHg, débit de purge &gt;10mL/h</p>
           <p>- <u>Position</u>: Courbe de position (Pdifférentielle), radio de thorax, ETT/ETO</p>
 
