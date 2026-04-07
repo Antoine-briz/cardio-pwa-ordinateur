@@ -207,6 +207,14 @@ const PRECACHE = [
   "img/ecranbcpia2.png",
   "img/asynchroniebcpia",
   "img/radiobcpia.png",
+  "img/calibreimpella.png",
+  "img/controleurimpella.png",
+  "img/purgeimpella.png",
+  "img/circuitimpella.png",
+  "img/plevelimpella.png",
+  "img/ecranimpella.png",
+  "img/ecranimpella2.png",
+  "img/fixationimpella.png",
   
   // Menu principal
   "img/enseignement.png",
