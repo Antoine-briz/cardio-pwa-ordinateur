@@ -9540,3 +9540,81 @@ body.theme-light .ens-modal-saving-spinner {
 .info-content {
   padding-top: 4px;
 }
+
+/* =========================================================
+   ANTIBIORÉSISTANCE — même rendu que les tableaux ECMO
+   ========================================================= */
+
+.bact-table-wrap {
+  width: 100%;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch;
+  margin-top: 4px;
+}
+
+.bact-table-wrap table,
+table.bact-table {
+  width: 100% !important;
+  min-width: 760px !important;
+  border-collapse: collapse !important;
+  background: #ffffff !important;
+  color: #000000 !important;
+  table-layout: auto !important;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* neutralise les anciennes règles globales antibio */
+.bact-table-wrap table th,
+.bact-table-wrap table td,
+table.bact-table th,
+table.bact-table td {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  border: 1px solid #d1d5db !important;
+  padding: 10px 12px !important;
+  vertical-align: top !important;
+  line-height: 1.2 !important;
+  font-size: 1rem !important;
+}
+
+.bact-table-wrap table thead th,
+table.bact-table thead th {
+  background: #123a63 !important;
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  text-align: center !important;
+}
+
+.bact-table-wrap table tbody td:first-child,
+table.bact-table tbody td:first-child {
+  font-weight: 400 !important;
+}
+
+.bact-table-wrap table p,
+table.bact-table p {
+  margin: 0 0 2px 0 !important;
+  line-height: 1.2 !important;
+}
+
+.bact-table-wrap table p:last-child,
+table.bact-table p:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* mobile */
+@media (max-width: 768px) {
+  .bact-table-wrap table,
+  table.bact-table {
+    min-width: 720px !important;
+  }
+
+  .bact-table-wrap table th,
+  .bact-table-wrap table td,
+  table.bact-table th,
+  table.bact-table td {
+    font-size: 13px !important;
+    padding: 8px 10px !important;
+  }
+}
