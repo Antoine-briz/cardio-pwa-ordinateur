@@ -20323,6 +20323,10 @@ function etoHtmllvad() {
       <div class="eto-block" style="display:none;">
         <ul class="eto-list">
           <li>
+            Evaluation ETO pré-LVAD
+            <span class="eto-icon" onclick="openImg('etolvad.png')">🖥️</span>
+          </li>
+          <li>
             Canule d'admission (Inflow)
             <span class="eto-icon" onclick="openImg('inflowlvad.png')">🖥️</span>
           </li>
