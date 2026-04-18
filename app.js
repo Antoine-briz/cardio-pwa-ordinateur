@@ -16396,7 +16396,7 @@ function renderReanAssistLVAD() {
         [
           "Indications",
           `
-            <p>Insuffisance cardiaque mono-ventriculaire gauche ou bi-ventriculaire au stade terminal et réfractaire au traitement médical optimal. Généralement des cardiomyopathies dilatées et cardiopathies ischémiques terminales. Le contexte clinique correspond à des patients INTERMACS 2 à 4. Cf Intermacs ${imgInline("Cf Intermacs", "intermacs.png")}</p>
+            <p>Insuffisance cardiaque mono-ventriculaire gauche ou bi-ventriculaire au stade terminal et réfractaire au traitement médical optimal. Généralement des cardiomyopathies dilatées et cardiopathies ischémiques terminales. Le contexte clinique correspond à des patients INTERMACS 2 à 4. ${imgInline("Cf Intermacs", "intermacs.png")}</p>
             <div class="impella-spacer"></div>
 
             <p>En cas d’indication retenue d’assistance par LVAD, les trois devenirs possibles sont:</p>
@@ -16458,73 +16458,74 @@ function renderReanAssistLVAD() {
             <p><strong>Assistance circulatoire prévue:</strong> CEC ou ECMO VA ou aucune</p>
 
             <p><strong>Protocole anesthésique:</strong></p>
-            <p><strong>Monitorage:</strong> Scope, SpO2, Kta, VVP, KTc, BIS, NIRS, ETO, +/- Swan Ganz</p>
-            <p>Induction Etomidate, entretien AIVOC Propofol/Sufentanil.</p>
-            <p>Atracurium IVSE</p>
-            <p>Kétamine 0,125mg/kg/h IVSE</p>
-            <p>Anti-fibrinolyse par Exacyl 20mg/kg puis 2mg/kg/h</p>
+            <p>- Monitorage: Scope, SpO2, Kta, VVP, KTc, BIS, NIRS, ETO, +/- Swan Ganz</p>
+            <p>- Induction Etomidate, entretien AIVOC Propofol/Sufentanil.</p>
+            <p>- Atracurium bolus puis IVSE</p>
+            <p>- Kétamine 0,125mg/kg/h IVSE</p>
+            <p>- Anti-fibrinolyse par Exacyl 20mg/kg puis 2mg/kg/h</p>
 
             <p><strong>Ventilation:</strong> Sonde monolumière si sternotomie, double lumière si thoracotomie gauche</p>
 
             <p><strong>Antibioprophylaxie:</strong> Céfazoline 2g puis 1g/4h (Vancomycine 20mg/kg si allergie sévère aux béta-lactamines)</p>
 
             <p><strong>Anticoagulation:</strong></p>
-            <p>Si CEC: Bolus d’HNF 300-400 UI/kg pour objectif d’ACT &gt; 400s</p>
-            <p>Si ECMO VA: Bolus d’HNF 200-300 UI/kg pour objectif d’ACT &gt; 350s</p>
+            <p>- Si CEC: Bolus d’HNF 300-400 UI/kg pour objectif d’ACT &gt; 400s</p>
+            <p>- Si ECMO VA: Bolus d’HNF 200-300 UI/kg pour objectif d’ACT &gt; 350s</p>
 
-            <p><strong>ETO pré-implantation:</strong> A rechercher spécifiquement: Cf ETO pré-LVAD ${imgInline("Cf ETO pré-LVAD", "etolvad.png")}</p>
-            <p>Ventricule gauche: HVG, CIV, thrombus VG, anévrysme VG</p>
-            <p>Oreillette gauche: FOP/CIA, thrombus auriculaire</p>
-            <p>Ventricule droit: Dysfonction systolique VD, dilatation VD</p>
-            <p>Valves: insuffisance aortique, rétrécissement mitral, insuffisance tricuspide</p>
-            <p>Aorte: anévrysme aortique, aorte porcelaine, dissection aortique</p>
+            <p><strong>ETO pré-implantation:</strong> A rechercher spécifiquement:${imgInline("Cf ETO pré-LVAD", "etolvad.png")}</p>
+            <p>- Ventricule gauche: HVG, CIV, thrombus VG, anévrysme VG</p>
+            <p>- Oreillette gauche: FOP/CIA, thrombus auriculaire</p>
+            <p>- Ventricule droit: Dysfonction systolique VD, dilatation VD</p>
+            <p>- Valves: insuffisance aortique, rétrécissement mitral, insuffisance tricuspide</p>
+            <p>- Aorte: anévrysme aortique, aorte porcelaine, dissection aortique</p>
 
             <p><strong>Etapes chirurgicale de l’implantation d’un HeartMate3:</strong></p>
-            <p>Abord chirurgical, exposition du cœur</p>
-            <p>Test de la pompe sur le champ opératoire avec NaCl 0,9% contenant 1g de Vancomycine. Laisser tourner à vitesse minimale pendant 10min.</p>
-            <p>Tunnelisation de la driveline jusqu’en position sous-costale droite</p>
-            <p>Administration du bolus d’HNF, canulation et départ CEC/ECMO après objectif d’ACT. Clampage aortique si autre geste chirurgical associé ou stimulation épicardique rapide.</p>
-            <p>Fixation de la collerette de la canule d’admission à l’apex du VG, excision du tissu apical, introduction de la canule d’admission en direction du flux mitral</p>
-            <p>Fixation du tube d’éjection sur l’aorte ascendante ou descendante (clampage aortique latéral dans ce cas)</p>
-            <p>Connexion de la pompe au contrôleur</p>
-            <p>Purge du cœur et du LVAD, recrutement alvéolaire. Diminution transitoire du débit d’assistance CEC/ECMO +/- déclampage aortique (si clampage)</p>
+            <p>- Abord chirurgical, exposition du cœur</p>
+            <p>- Test de la pompe sur le champ opératoire avec NaCl 0,9% contenant 1g de Vancomycine. Laisser tourner à vitesse minimale pendant 10min.</p>
+            <p>- Tunnelisation de la driveline jusqu’en position sous-costale droite</p>
+            <p>- Administration du bolus d’HNF, canulation et départ CEC/ECMO après objectif d’ACT. Clampage aortique si autre geste chirurgical associé ou stimulation épicardique rapide.</p>
+            <p>- Fixation de la collerette de la canule d’admission à l’apex du VG, excision du tissu apical, introduction de la canule d’admission en direction du flux mitral</p>
+            <p>- Fixation du tube d’éjection sur l’aorte ascendante ou descendante (clampage aortique latéral dans ce cas)</p>
+            <p>- Connexion de la pompe au contrôleur</p>
+            <p>- Purge du cœur et du LVAD, recrutement alvéolaire. Diminution transitoire du débit d’assistance CEC/ECMO +/- déclampage aortique (si clampage)</p>
 
             <p><strong>Démarrage de la pompe:</strong></p>
-            <p>Reprise du monitorage du débit cardiaque par Swan Ganz (si en place)</p>
-            <p>Démarrage du LVAD à vitesse minimale + déclampage du tube éjectionnel</p>
-            <p>Vérification ETO de l’absence de bulle intra-cardiaque</p>
-            <p>Augmentation progressive du débit de LVAD jusqu’à 2,2-2,4 L/min/m²</p>
-            <p>Réglages de la console: vitesse de rotation, vitesse de rotation minimale, alarme de débit minimal, hématocrite de sortie. Copie de ces réglages du contrôleur de secours.</p>
-            <p>Insertion de la batterie interne et réarmement des alarmes</p>
+            <p>- Reprise du monitorage du débit cardiaque par Swan Ganz (si en place)</p>
+            <p>- Démarrage du LVAD à vitesse minimale + déclampage du tube éjectionnel</p>
+            <p>- Vérification ETO de l’absence de bulle intra-cardiaque</p>
+            <p>- Augmentation progressive du débit de LVAD jusqu’à 2,2-2,4 L/min/m²</p>
+            <p>- Réglages de la console: vitesse de rotation, vitesse de rotation minimale, alarme de débit minimal, hématocrite de sortie. Copie de ces réglages du contrôleur de secours.</p>
+            <p>- Insertion de la batterie interne et réarmement des alarmes</p>
 
             <p><strong>ETO post-implantation</strong></p>
-            <p><strong>Canule d’admission:</strong> orientation vers le flux mitral, parallèle au SIV, flux d’admission &lt; 1,5m/s (doppler continu)</p>
-            <p><strong>Cavités gauches:</strong> Diminution de la taille du VG, absence de contraste spontané intra-VG, diminution ou disparition d’une IM</p>
-            <p><strong>Ventricule droit:</strong> SIV aplati, rapport VD/VG augmenté à 0,8-1. Possible dysfonction VD à rechercher, risque de majoration d’une IT.</p>
-            <p><strong>Canule de réinjection:</strong> Flux de ré-injection aortique non aliasé, vitesse &lt; 2 m/s (doppler continu). Risque de suture sténosante si &gt; 2 m/s.</p>
-            <p><strong>Valve aortique:</strong> persistance d’une ouverture intermittente, absence d’IA (ou minime), absence de contraste spontané de la racine aortique.</p>
+            <p>- Canule d’admission: orientation vers le flux mitral, parallèle au SIV, flux d’admission &lt; 1,5m/s (doppler continu)</p>
+            <p>- Cavités gauches: Diminution de la taille du VG, absence de contraste spontané intra-VG, diminution ou disparition d’une IM</p>
+            <p>- Ventricule droit: SIV aplati, rapport VD/VG augmenté à 0,8-1. Possible dysfonction VD à rechercher, risque de majoration d’une IT.</p>
+            <p>- Canule de réinjection: Flux de ré-injection aortique non aliasé, vitesse &lt; 2 m/s (doppler continu). Suture sténosante si &gt; 2 m/s.</p>
+            <p>- Valve aortique: persistance d’une ouverture intermittente, absence d’IA (ou minime), absence de contraste spontané de la racine aortique.</p>
           `
         ],
         [
-          "Réglage de la console",
+          "Réglage de la console (Exemple du HeartMate3)",
           `
-            <p><strong>(Exemple du HeartMate3)</strong></p>
+            <p><strong>Affichage sur le contrôleur:</strong> Etat de marche de la pompe, vitesse (tpm), niveau de batterie</p>
+<p><strong>Gestion du moniteur (HeartMate Touch)</strong></p>
 
-            <p><strong>Affichage sur le contrôleur:</strong></p>
-            <p>Etat de marche de la pompe, vitesse (tpm), niveau de batterie</p>
-            <p>Gestion du moniteur (HeartMate Touch)</p>
+<p>- Paramètres à régler: (Menu en haut à droite de l’écran)</p>
+<ul class="impella-sub-list">
+  <li>Vitesse de rotation (tpm): Généralement 5000-5400 tpm (mais peut aller de 3000 à 9000 tpm).</li>
+  <li>Vitesse minimale de pompe (tpm)</li>
+  <li>L’hématocrite minimal de sortie (%)</li>
+</ul>
 
-            <p><strong>Paramètres à régler:</strong> (Menu en haut à droite de l’écran)</p>
-            <p>Vitesse de rotation (tpm): Généralement 5000-5400 tpm (mais peut aller de 3000 à 9000 tpm).</p>
-            <p>Vitesse minimale de pompe (tpm)</p>
-            <p>L’hématocrite minimal de sortie (%)</p>
-
-            <p><strong>Paramètres affichés:</strong></p>
-            <p>Vitesse de pompe (tpm)</p>
-            <p>Débit sanguin estimé de pompe (L/min)</p>
-            <p>Puissance délivrée (Watt): 3-6 Watt</p>
-            <p>Index de pulsatilité (PI):</p>
-            <p>Niveau de batterie</p>
+<p>- Paramètres affichés:</p>
+<ul class="impella-sub-list">
+  <li>Vitesse de pompe (tpm)</li>
+  <li>Débit sanguin estimé de pompe (L/min)</li>
+  <li>Puissance délivrée (Watt): 3-6 Watt</li>
+  <li>Index de pulsatilité (PI)</li>
+  <li>Niveau de batterie</li>
+</ul>
 
             <div class="bcpia-screens">
               <img src="img/ecranlvad.png" alt="Écran LVAD" style="display:block;">
