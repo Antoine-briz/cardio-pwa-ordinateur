@@ -16376,13 +16376,13 @@ function renderReanAssistLVAD() {
             
             <p>Le dispositif se compose de:</p>
             <p>- Une <strong>canule d’admission</strong> (<strong>inflow cannula</strong>): implantée à l’apex du ventricule gauche, elle doit être orientée vers le flux mitral.</p>
-            <p>- Une <strong>pompe centrifuge magnétique</strong>: A l’apex du VG, elle génère un débit continu avec pouls artificiel. Le débit sanguin peut atteindre 10 L/min pour le HeartMate3. Son débit dépend des conditions de charge (<strong>pré-charge</strong> VG), de la vitesse réglée (en tours/min) et de la pression intra-aortique.</p>
+            <p>- Une <strong>pompe centrifuge magnétique</strong>: A l’apex du VG, elle génère un débit continu avec pouls artificiel. Le débit sanguin peut atteindre 10 L/min pour le HeartMate3. Son débit dépend des conditions de charge (pré-charge VG), de la vitesse réglée (en tours/min) et de la pression intra-aortique.</p>
             <p>- Une <strong>canule éjectionnelle</strong> (<strong>outflow graft</strong>): Prothèse vasculaire reliant la pompe centrifuge à l’aorte thoracique ascendante (à privilégier) ou descendante.</p>
             <p>- Une <strong>driveline</strong>: Câble reliant la pompe centrifuge au contrôleur externe, généralement externalisée en sous-costal droit. Elle permet l’alimentation de la pompe et la transmission des données de fonctionnement (réglages, alarmes…).</p>
             <p>- Un <strong>contrôleur</strong> (System Controller): Il permet le réglage de la vitesse de pompe (tpm), l’affichage des paramètres mesurés (débit estimé en L/min, la puissance en W, l’index de pulsatilité), la gestion des batteries, le réglage et l’historique des alarmes. Il est relié à la pompe via la driveline, et à une source d’alimentation (batteries externes ou secteur).</p>
             <p>- Une <strong>source d’alimentation</strong>: Elle peut se faire par prise secteur (si connecté à la base station), via deux batteries externes portables, ou sur batterie interne (de courte autonomie).</p>
             <div class="impella-spacer"></div>
-            <p>Il existe actuellement principalement 3 types de LVAD: HeartMate3, HeartWare, Jarvik 2000. Cf types de LVAD ${imgInline("Cf types de LVAD", "typelvad.png")}</p>
+            <p>Il existe actuellement principalement 3 types de LVAD: HeartMate3, HeartWare, Jarvik 2000. ${imgInline("Cf types de LVAD", "typelvad.png")}</p>
           `
         ],
         [
