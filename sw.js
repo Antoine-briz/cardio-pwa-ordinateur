@@ -215,6 +215,13 @@ const PRECACHE = [
   "img/ecranimpella.png",
   "img/ecranimpella2.png",
   "img/fixationimpella.png",
+  "img/typelvad.png",
+  "img/circuitlvad.png",
+  "img/intermacs.png",
+  "img/etolvad.png",
+  "img/ecranlvad2.png",
+  "img/algolvad.png",
+
   
   // Menu principal
   "img/enseignement.png",
