@@ -16371,7 +16371,7 @@ function renderReanAssistLVAD() {
         [
           "Principe et composition",
           `
-            <p>Le <strong>LVAD</strong> (<strong>Left Ventricular Assist Device</strong>) est une technique d’assistance mono-ventriculaire gauche de longue durée, chez les patients présentant une dysfonction ventriculaire gauche sévère terminale. Il s’agit d’une pompe centrifuge internalisée placée à l’apex du VG permettant un débit sanguin de 3 à 10 L/min du ventricule gauche vers l’aorte thoracique.</p>
+            <p>Le <strong>LVAD</strong> (<strong>Left Ventricular Assist Device</strong>) est une technique d’assistance mono-ventriculaire gauche de longue durée, chez les patients présentant une dysfonction ventriculaire gauche sévère terminale. Il s’agit d’une pompe centrifuge internalisée placée à l’apex du VG permettant un débit sanguin de 3 à 10 L/min du ventricule gauche vers l’aorte thoracique.</p></p>
 
             <p>Le dispositif se compose de:</p>
 
@@ -16380,7 +16380,7 @@ function renderReanAssistLVAD() {
             <p>- Une <strong>canule éjectionnelle</strong> (<strong>outflow graft</strong>): Prothèse vasculaire reliant la pompe centrifuge à l’aorte thoracique ascendante (à privilégier) ou descendante.</p>
             <p>- Une <strong>driveline</strong>: Câble reliant la pompe centrifuge au contrôleur externe, généralement externalisée en sous-costal droit. Elle permet l’alimentation de la pompe et la transmission des données de fonctionnement (réglages, alarmes…).</p>
             <p>- Un <strong>contrôleur</strong> (System Controller): Il permet le réglage de la vitesse de pompe (tpm), l’affichage des paramètres mesurés (débit estimé en L/min, la puissance en W, l’index de pulsatilité), la gestion des batteries, le réglage et l’historique des alarmes. Il est relié à la pompe via la driveline, et à une source d’alimentation (batteries externes ou secteur).</p>
-            <p>- Une <strong>source d’alimentation</strong>: Elle peut se faire par prise secteur (si connecté à la base station), via deux batteries externes portables, ou sur batterie interne (de courte autonomie).</p>
+            <p>- Une <strong>source d’alimentation</strong>: Elle peut se faire par prise secteur (si connecté à la base station), via deux batteries externes portables, ou sur batterie interne (de courte autonomie).</p></p>
 
             <p>Il existe actuellement principalement 3 types de LVAD: HeartMate3, HeartWare, Jarvik 2000. Cf types de LVAD ${imgInline("Cf types de LVAD", "typelvad.png")}</p>
           `
@@ -16396,32 +16396,32 @@ function renderReanAssistLVAD() {
         [
           "Indications",
           `
-            <p>Insuffisance cardiaque mono-ventriculaire gauche ou bi-ventriculaire au stade terminal et réfractaire au traitement médical optimal. Généralement des cardiomyopathies dilatées et cardiopathies ischémiques terminales. Le contexte clinique correspond à des patients INTERMACS 2 à 4. Cf Intermacs ${imgInline("Cf Intermacs", "intermacs.png")}</p>
+            <p>Insuffisance cardiaque mono-ventriculaire gauche ou bi-ventriculaire au stade terminal et réfractaire au traitement médical optimal. Généralement des cardiomyopathies dilatées et cardiopathies ischémiques terminales. Le contexte clinique correspond à des patients INTERMACS 2 à 4. Cf Intermacs ${imgInline("Cf Intermacs", "intermacs.png")}</p></p>
 
             <p>En cas d’indication retenue d’assistance par LVAD, les trois devenirs possibles sont:</p>
-            <p><strong>Bridge to transplantation</strong>: dans l’attente d’un greffon cardiaque</p>
-            <p><strong>Bridge to recovery</strong>: en cas de récupération attendue de la fonction myocardique</p>
-            <p><strong>Destination therapy</strong>: assistance définitive, en cas de contrôle indication à la greffe et sans récupération myocardique attendue</p>
+            <p><strong>- Bridge to transplantation</strong>: dans l’attente d’un greffon cardiaque</p>
+            <p><strong>- Bridge to recovery</strong>: en cas de récupération attendue de la fonction myocardique</p>
+            <p><strong>- Destination therapy</strong>: assistance définitive, en cas de contrôle indication à la greffe et sans récupération myocardique attendue</p>
           `
         ],
         [
           "Contre-indications",
           `
             <p><strong>Contre-indications absolues:</strong></p>
-            <p>Défaillance d’organe sévère: insuffisance hépatique, insuffisance respiratoire, lésion neurologique étendue irréversible</p>
-            <p>Troubles sévères de l’hémostase ou contre-indication à l’anticoagulation (hémorragie active, saignement intracrânien).</p>
-            <p>Infection/sepsis non contrôlé</p>
-            <p>Espérance de vie &lt; 2 ans: comorbidités majeures, cancer évolutif, cachexie, maladie de système avec atteinte multiple d’organes…</p>
-            <p>Maladies psychiatriques déséquilibrées et/ou mauvaise observance majeure</p>
+            <p>- Défaillance d’organe sévère: insuffisance hépatique, insuffisance respiratoire, lésion neurologique étendue irréversible</p>
+            <p>- Troubles sévères de l’hémostase ou contre-indication à l’anticoagulation (hémorragie active, saignement intracrânien).</p>
+            <p>- Infection/sepsis non contrôlé</p>
+            <p>- Espérance de vie &lt; 2 ans: comorbidités majeures, cancer évolutif, cachexie, maladie de système avec atteinte multiple d’organes…</p>
+            <p>- Maladies psychiatriques déséquilibrées et/ou mauvaise observance majeure</p>
 
             <p><strong>Contre-indications relatives (selon contexte/avis expert):</strong></p>
-            <p>Défaillance ventriculaire droite ou HTAP sévère associée (possibilité d’assistance courte durée par ECMO droite-droite ou longue durée par BiVAD)</p>
-            <p>Insuffisance aortique sévère (corrigeable par RVA lors de l’implantation)</p>
-            <p>Rétrécissement mitral sévère (risque de succion, RVM possible)</p>
-            <p>CIV (corrigeable par fermeture lors de l’implantation)</p>
-            <p>VG de petite taille ou hypertrophique (risque de succion)</p>
-            <p>Surface corporelle &lt; 1,2 m² (risque de succion)</p>
-            <p>Aorte porcelaine (risque embolique)</p>
+            <p>- Défaillance ventriculaire droite ou HTAP sévère associée (possibilité d’assistance courte durée par ECMO droite-droite ou longue durée par BiVAD)</p>
+            <p>- Insuffisance aortique sévère (corrigeable par RVA lors de l’implantation)</p>
+            <p>- Rétrécissement mitral sévère (risque de succion, RVM possible)</p>
+            <p>- CIV (corrigeable par fermeture lors de l’implantation)</p>
+            <p>- VG de petite taille ou hypertrophique (risque de succion)</p>
+            <p>- Surface corporelle &lt; 1,2 m² (risque de succion)</p>
+            <p>- Aorte porcelaine (risque embolique)</p>
           `
         ],
       ]),
