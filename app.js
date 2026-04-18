@@ -27272,10 +27272,10 @@ const maxTries = 120; // ~2s
             <tr><td>3ème étage</td><td>Réserve IDE / AS</td><td>C85A / C91A</td></tr>
             <tr><td>4ème étage</td><td>Bureau VPA (4ème sud)</td><td>2738</td></tr>
             <tr><td>4ème étage</td><td>Ch. de garde USIP (4ème sud)</td><td>C18</td></tr>
-            <tr><td>1er étage</td><td>Réveil 1er</td><td>52#</td></tr>
-            <tr><td>1er étage</td><td>PTI</td><td>80#</td></tr>
-            <tr><td>1er étage</td><td>Radiovasc 1er</td><td>2024 / C148</td></tr>
-            <tr><td>Rez-de-chaussée</td><td>Radiovasc RDC</td><td>2011#</td></tr>
+            <tr><td>1er étage</td><td>Réveil 1er</td><td>930#</td></tr>
+            <tr><td>1er étage</td><td>PTI</td><td>150#</td></tr>
+            <tr><td>1er étage</td><td>Radiovasc 1er</td><td>1959/ C148</td></tr>
+            <tr><td>Rez-de-chaussée</td><td>Radiovasc RDC</td><td>1345#</td></tr>
             <tr><td>Rez-de-chaussée</td><td>Box 18 (consult cardio med)</td><td>C123</td></tr>
           </tbody>
         </table>
