@@ -16535,18 +16535,22 @@ function renderReanAssistLVAD() {
         [
           "Surveillance quotidienne après implantation de LVAD",
           `
-            <p><strong>Clinique:</strong> Signes d’hypoperfusion tissulaire, diurèse, saignement ou infection du site opératoire.</p>
-            <p><strong>Swan Ganz:</strong> débit cardiaque et fonction ventriculaire droite</p>
+            <p><strong>Clinique:</strong></p>
+            <p>- Signes d’hypoperfusion tissulaire, diurèse, saignement ou infection du site opératoire.</p>
+            <p>- Swan Ganz: débit cardiaque et fonction ventriculaire droite</p>
 
             <p><strong>Assistance:</strong></p>
-            <p><strong>Vitesse de rotation et débit de pompe:</strong> Généralement 5000-5400 tpm pour débit de LVAD de 2,2-2,4 L/min/m².</p>
-            <p>Si débit LVAD estimé insuffisant: Cf algorithme débit LVAD ${imgInline("Cf algorithme débit LVAD", "algolvad.png")}</p>
-            <p><strong>Puissance délivrée (Watt):</strong> 3-6 Watt</p>
-            <p>Augmentation si: augmentation de vitesse, augmentation de viscosité sanguine, thrombose de pompe, obstruction partielle, hypertension artérielle</p>
-            <p>Diminution si: Diminution de vitesse, diminution de viscosité, diminution de précharge, dysfonction de pompe, batterie faible</p>
-            <p><strong>Index de pulsatilité (PI):</strong></p>
-            <p>Augmentation si: Augmentation de précharge VG (diminution vitesse de pompe, expansion volémique), récupération de fonction VG</p>
-            <p>Diminution si: Baisse de précharge (hypovolémie, tamponnade, dysfonction VD…), troubles du rythme, thrombose de pompe</p>
+            <p>- Vitesse de rotation et débit de pompe: Généralement 5000-5400 tpm pour débit de LVAD de 2,2-2,4 L/min/m². Si débit LVAD estimé insuffisant: ${imgInline("Cf algorithme débit LVAD", "algolvad.png")}</p>
+            <p>- Puissance délivrée (Watt): 3-6 Watt</p>
+            <ul class="impella-sub-list">
+  <li>Augmentation si: augmentation de vitesse, augmentation de viscosité sanguine, thrombose de pompe, obstruction partielle, hypertension artérielle. </li>
+  <li>Diminution si: Diminution de vitesse, diminution de viscosité, diminution de précharge, dysfonction de pompe, batterie faible</li>
+</ul>
+            <p>- Index de pulsatilité (PI):</p>
+            <ul class="impella-sub-list">
+  <li>Augmentation si: Augmentation de précharge VG (diminution vitesse de pompe, expansion volémique), récupération de fonction VG</li>
+  <li>Diminution si: Baisse de précharge (hypovolémie, tamponnade, dysfonction VD…), troubles du rythme, thrombose de pompe</li>
+</ul>
 
             <p><strong>Biologie:</strong> AntiXa 0,3-0,6 UI/mL, recherche de thrombopénie/hémolyse</p>
           `
@@ -16555,13 +16559,13 @@ function renderReanAssistLVAD() {
           "Prescriptions médicamenteuses après implantation de LVAD",
           `
             <p><strong>Hémodynamique:</strong></p>
-            <p><strong>Vasopresseurs:</strong> Noradrénaline IVSE pour objectif de PAM 70-80 mmHg (risque d’AVC si &gt; 85 mmHg)</p>
-            <p><strong>Inotropes:</strong> Dobutamine si dysfonction VD ou absence de débit trans-aortique. Milrinone ou Levosimedan à discuter</p>
-            <p><strong>Vasodilatateurs:</strong> NO inhalé, éproprosténol inhalé, inhibiteurs de la phosphodiestérase type 5 (Sildénafil)</p>
+            <p>- Vasopresseurs:Noradrénaline IVSE pour objectif de PAM 70-80 mmHg (risque d’AVC si &gt; 85 mmHg)</p>
+            <p>- Inotropes: Dobutamine si dysfonction VD ou absence de débit trans-aortique. Milrinone ou Levosimedan à discuter</p>
+            <p>- Vasodilatateurs: NO inhalé, éproprosténol inhalé, inhibiteurs de la phosphodiestérase type 5 (Sildénafil)</p>
 
             <p><strong>Traitements cardiologiques de fond:</strong></p>
-            <p><strong>Anti-hypertenseurs:</strong> IEC ou ARA2 en 1ère intention</p>
-            <p>Furosémide pour limiter la congestion veineuse et dysfonction droite</p>
+            <p>- Anti-hypertenseurs:IEC ou ARA2 en 1ère intention</p>
+            <p>- Furosémide pour limiter la congestion veineuse et dysfonction droite</p>
 
             <p><strong>Anticoagulation:</strong> HNF IVSE pour objectif d’AntiXa 0,3-0,6 UI/mL. AVK à distance de l’intervention (INR cible 2-3)</p>
           `
