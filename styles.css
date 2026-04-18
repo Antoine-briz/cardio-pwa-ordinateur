@@ -9702,3 +9702,63 @@ table.bact-table p:last-child {
 .ecmo-table ul.impella-sub-list > li::before {
   content: none !important;
 }
+
+/* =====================================================
+   PROTECTION PAGES FLOUTÉES
+===================================================== */
+
+.saric-protected-blur {
+  filter: blur(7px);
+  pointer-events: none;
+  user-select: none;
+}
+
+.saric-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(2px);
+}
+
+.saric-gate-box {
+  width: min(92vw, 360px);
+  background: #ffffff;
+  color: #000;
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 20px 45px rgba(0,0,0,0.35);
+  text-align: center;
+}
+
+.saric-gate-box h3 {
+  margin: 0 0 10px;
+}
+
+.saric-gate-box p {
+  margin: 0 0 14px;
+  opacity: 0.8;
+}
+
+.saric-gate-box input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #bbb;
+  margin-bottom: 12px;
+  font-size: 16px;
+}
+
+.saric-gate-box .btn {
+  width: 100%;
+}
+
+.saric-gate-error {
+  color: #c62828;
+  font-size: 14px;
+  margin-top: 10px;
+  min-height: 18px;
+}
