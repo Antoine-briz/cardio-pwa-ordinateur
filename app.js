@@ -16371,17 +16371,17 @@ function renderReanAssistLVAD() {
         [
           "Principe et composition",
           `
-            <p>Le <strong>LVAD</strong> (<strong>Left Ventricular Assist Device</strong>) est une technique d’assistance mono-ventriculaire gauche de longue durée, chez les patients présentant une dysfonction ventriculaire gauche sévère terminale. Il s’agit d’une pompe centrifuge internalisée placée à l’apex du VG permettant un débit sanguin de 3 à 10 L/min du ventricule gauche vers l’aorte thoracique.</p></p>
-
+            <p>Le <strong>LVAD</strong> (<strong>Left Ventricular Assist Device</strong>) est une technique d’assistance mono-ventriculaire gauche de longue durée, chez les patients présentant une dysfonction ventriculaire gauche sévère terminale. Il s’agit d’une pompe centrifuge internalisée placée à l’apex du VG permettant un débit sanguin de 3 à 10 L/min du ventricule gauche vers l’aorte thoracique.</p>
+            <div class="impella-spacer"></div>
+            
             <p>Le dispositif se compose de:</p>
-
             <p>- Une <strong>canule d’admission</strong> (<strong>inflow cannula</strong>): implantée à l’apex du ventricule gauche, elle doit être orientée vers le flux mitral.</p>
             <p>- Une <strong>pompe centrifuge magnétique</strong>: A l’apex du VG, elle génère un débit continu avec pouls artificiel. Le débit sanguin peut atteindre 10 L/min pour le HeartMate3. Son débit dépend des conditions de charge (<strong>pré-charge</strong> VG), de la vitesse réglée (en tours/min) et de la pression intra-aortique.</p>
             <p>- Une <strong>canule éjectionnelle</strong> (<strong>outflow graft</strong>): Prothèse vasculaire reliant la pompe centrifuge à l’aorte thoracique ascendante (à privilégier) ou descendante.</p>
             <p>- Une <strong>driveline</strong>: Câble reliant la pompe centrifuge au contrôleur externe, généralement externalisée en sous-costal droit. Elle permet l’alimentation de la pompe et la transmission des données de fonctionnement (réglages, alarmes…).</p>
             <p>- Un <strong>contrôleur</strong> (System Controller): Il permet le réglage de la vitesse de pompe (tpm), l’affichage des paramètres mesurés (débit estimé en L/min, la puissance en W, l’index de pulsatilité), la gestion des batteries, le réglage et l’historique des alarmes. Il est relié à la pompe via la driveline, et à une source d’alimentation (batteries externes ou secteur).</p>
-            <p>- Une <strong>source d’alimentation</strong>: Elle peut se faire par prise secteur (si connecté à la base station), via deux batteries externes portables, ou sur batterie interne (de courte autonomie).</p></p>
-
+            <p>- Une <strong>source d’alimentation</strong>: Elle peut se faire par prise secteur (si connecté à la base station), via deux batteries externes portables, ou sur batterie interne (de courte autonomie).</p>
+            <div class="impella-spacer"></div>
             <p>Il existe actuellement principalement 3 types de LVAD: HeartMate3, HeartWare, Jarvik 2000. Cf types de LVAD ${imgInline("Cf types de LVAD", "typelvad.png")}</p>
           `
         ],
@@ -16434,18 +16434,18 @@ function renderReanAssistLVAD() {
           "Evaluation pré-opératoire",
           `
             <p><strong>Détermination de la voie d’abord chirurgicale et de l’assistance circulatoire per-opératoire:</strong></p>
-            <p><strong>Sternotomie:</strong> Sous CEC si autre geste associé (RVA, fermeture de CIA, plastie tricuspide…) ou ECMO artério-veineuse si implantation seule de LVAD</p>
-            <p><strong>Thoracotomie gauche + mini-manubriectomie sous ECMO artério-veineuse:</strong> thoracotomie pour positionnement de la pompe, mini-manubriectomie pour accès à l’aorte ascendante.</p>
-            <p><strong>Thoracotomie gauche isolée</strong> (rarement pratiqué): Clampage latéral de l’aorte si ré-injection dans l’aorte thoracique descendante (Possible pour Jarvik 2000 et HeartWare).</p>
-
+            <p>- Sternotomie: Sous CEC si autre geste associé (RVA, fermeture de CIA, plastie tricuspide…) ou ECMO artério-veineuse si implantation seule de LVAD</p>
+            <p>- Thoracotomie gauche + mini-manubriectomie sous ECMO artério-veineuse: thoracotomie pour positionnement de la pompe, mini-manubriectomie pour accès à l’aorte ascendante.</p>
+            <p>- Thoracotomie gauche isolée (rarement pratiquée): Clampage latéral de l’aorte si ré-injection dans l’aorte thoracique descendante (Possible pour Jarvik 2000 et HeartWare).</p>
+            <div class="impella-spacer"></div>
             <p><strong>Evaluation de la fonction ventriculaire droite:</strong></p>
-            <p><strong>Echocardiographie:</strong> Rapport VD/VG &gt; 0,75, modification géométrique du VD, TAPSE &lt; 7,5 mm, onde S’ &lt; 8 cm/s, insuffisance tricuspide ≥ modérée, dilatation anneau tricuspide</p>
-            <p><strong>Cathétérisme droit:</strong> POD, PAPm, index de pulsatilité de l’artère pulmonaire PAPi = (PAPs-PAPd)/PVC, Index de charge de travail du VD RVSWI = (PAPm- POD) x IC/FC, RVP</p>
-            <p>Une assistance par Impella peut permettre de « tester » la fonction VD en mimant une assistance par LVAD de courte durée</p>
-
+            <p>- Echocardiographie: Rapport VD/VG &gt; 0,75, modification géométrique du VD, TAPSE &lt; 7,5 mm, onde S’ &lt; 8 cm/s, insuffisance tricuspide ≥ modérée, dilatation anneau tricuspide</p>
+            <p>- Cathétérisme droit: POD, PAPm, index de pulsatilité de l’artère pulmonaire PAPi = (PAPs-PAPd)/PVC, Index de charge de travail du VD RVSWI = (PAPm- POD) x IC/FC, RVP</p>
+            <p>- Une assistance par Impella peut permettre de « tester » la fonction VD en mimant une assistance par LVAD de courte durée</p>
+            <div class="impella-spacer"></div>
             <p><strong>Gestion hémodynamique post-opératoire prévue:</strong></p>
-            <p>Monitorage étroit de la fonction VD par cathéter de Swan Ganz (au minimum)</p>
-            <p>Implantation d’emblée d’une ECMO droite-droite en fin d’intervention</p>
+            <p>- Monitorage étroit de la fonction VD par cathéter de Swan Ganz (au minimum)</p>
+            <p>- Implantation d’emblée d’une ECMO droite-droite en fin d’intervention</p>
           `
         ],
         [
