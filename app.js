@@ -261,6 +261,76 @@ function renderHome() {
   `;
 }
 
+/* =====================================================
+   PROTECTION PAGES SENSIBLES
+   Codes d'accès + Recherche
+===================================================== */
+
+const SARIC_VIEW_CODE = "SARIC2026";
+const SARIC_VIEW_SESSION_KEY = "saric_view_ok";
+
+function isProtectedAccessGranted() {
+  return sessionStorage.getItem(SARIC_VIEW_SESSION_KEY) === "1";
+}
+
+function unlockProtectedAccess(code) {
+  if ((code || "").trim() === SARIC_VIEW_CODE) {
+    sessionStorage.setItem(SARIC_VIEW_SESSION_KEY, "1");
+    return true;
+  }
+  return false;
+}
+
+function renderProtectedPage(realRenderFn, title = "Accès protégé") {
+  realRenderFn();
+
+  if (isProtectedAccessGranted()) return;
+
+  const container = document.querySelector("#app");
+  if (!container) return;
+
+  const page = container.firstElementChild || container;
+
+  page.classList.add("saric-protected-blur");
+
+  const gate = document.createElement("div");
+  gate.className = "saric-gate";
+  gate.innerHTML = `
+    <div class="saric-gate-box">
+      <h3>${title}</h3>
+      <p>Veuillez saisir le code d'accès</p>
+      <input type="password" id="saric-code-input" placeholder="Code">
+      <button class="btn" id="saric-code-btn">Valider</button>
+      <div class="saric-gate-error" id="saric-code-error"></div>
+    </div>
+  `;
+
+  container.appendChild(gate);
+
+  const input = document.getElementById("saric-code-input");
+  const btn = document.getElementById("saric-code-btn");
+  const err = document.getElementById("saric-code-error");
+
+  const submit = () => {
+    if (unlockProtectedAccess(input.value)) {
+      page.classList.remove("saric-protected-blur");
+      gate.remove();
+    } else {
+      err.textContent = "Code incorrect";
+      input.value = "";
+      input.focus();
+    }
+  };
+
+  btn.addEventListener("click", submit);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") submit();
+  });
+
+  setTimeout(() => input.focus(), 100);
+}
+
+
 
 // =======================================================
 //  ACTUALITÉS (PC) + PURGE BLOC À 12:00
@@ -28540,11 +28610,11 @@ const routes = {
   "#/bibliographie": renderBibliographie,
   "#/biblio-juniors": renderBiblioJuniors,
 "#/bibliographie/juniors": renderBiblioJuniors,
-  "#/recherche": renderRecherche,
+  "#/recherche": () => renderProtectedPage(renderRecherche, "Recherche"),
   
   // Divers
   "#/annuaire": renderAnnuaire,
-  "#/codes": renderCodesAcces,
+  "#/codes": () => renderProtectedPage(renderCodesAcces, "Codes d'accès"),
   "#/acr": renderAcrChirCardiaque,
 };
 
