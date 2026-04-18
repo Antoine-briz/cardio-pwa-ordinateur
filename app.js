@@ -16396,7 +16396,8 @@ function renderReanAssistLVAD() {
         [
           "Indications",
           `
-            <p>Insuffisance cardiaque mono-ventriculaire gauche ou bi-ventriculaire au stade terminal et réfractaire au traitement médical optimal. Généralement des cardiomyopathies dilatées et cardiopathies ischémiques terminales. Le contexte clinique correspond à des patients INTERMACS 2 à 4. Cf Intermacs ${imgInline("Cf Intermacs", "intermacs.png")}</p></p>
+            <p>Insuffisance cardiaque mono-ventriculaire gauche ou bi-ventriculaire au stade terminal et réfractaire au traitement médical optimal. Généralement des cardiomyopathies dilatées et cardiopathies ischémiques terminales. Le contexte clinique correspond à des patients INTERMACS 2 à 4. Cf Intermacs ${imgInline("Cf Intermacs", "intermacs.png")}</p>
+            <div class="impella-spacer"></div>
 
             <p>En cas d’indication retenue d’assistance par LVAD, les trois devenirs possibles sont:</p>
             <p><strong>- Bridge to transplantation</strong>: dans l’attente d’un greffon cardiaque</p>
@@ -16413,7 +16414,7 @@ function renderReanAssistLVAD() {
             <p>- Infection/sepsis non contrôlé</p>
             <p>- Espérance de vie &lt; 2 ans: comorbidités majeures, cancer évolutif, cachexie, maladie de système avec atteinte multiple d’organes…</p>
             <p>- Maladies psychiatriques déséquilibrées et/ou mauvaise observance majeure</p>
-
+            <div class="impella-spacer"></div>
             <p><strong>Contre-indications relatives (selon contexte/avis expert):</strong></p>
             <p>- Défaillance ventriculaire droite ou HTAP sévère associée (possibilité d’assistance courte durée par ECMO droite-droite ou longue durée par BiVAD)</p>
             <p>- Insuffisance aortique sévère (corrigeable par RVA lors de l’implantation)</p>
