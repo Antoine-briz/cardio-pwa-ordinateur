@@ -16200,13 +16200,13 @@ function renderReanAssistLVAD() {
           <tr>
             <td><strong>Majoration d’une insuffisance aortique, d’un FOP/CIA</strong></td>
             <td>
-              <p>- Insuffisance aortique, FOP ou CIA pré-existant</p>
+              <p>Insuffisance aortique, FOP ou CIA pré-existant</p>
             </td>
             <td>
-              <p>- RVA, fermeture du FOP/CIA dans le même temps que l’implantation du LVAD</p>
+              <p>RVA, fermeture du FOP/CIA dans le même temps que l’implantation du LVAD</p>
             </td>
             <td>
-              <p>- RVA, fermeture du FOP/CIA</p>
+              <p><strong>RVA, fermeture du FOP/CIA</strong></p>
             </td>
           </tr>
 
@@ -16252,9 +16252,9 @@ function renderReanAssistLVAD() {
               <p>- Eviter le sur-débit d’assistance</p>
             </td>
             <td>
-              <p>- Correction des troubles de coagulation</p>
-              <p>- Reprise chirurgicale si nécessaire</p>
-              <p>- Si hémorragie digestive: FOGD, embolisation…</p>
+              <p><strong>Correction des troubles de coagulation</strong></p>
+              <p><strong>Reprise chirurgicale si nécessaire</strong></p>
+              <p><strong>Si hémorragie digestive: FOGD, embolisation…</strong></p>
             </td>
           </tr>
 
@@ -16270,7 +16270,7 @@ function renderReanAssistLVAD() {
               <p>- Contrôle tensionnel</p>
             </td>
             <td>
-              <p>- Si AVC ischémique: thrombectomie (thrombolyse CI)</p>
+              <p><strong>Si AVC ischémique: thrombectomie (thrombolyse CI)</strong></p>
             </td>
           </tr>
 
@@ -16286,9 +16286,9 @@ function renderReanAssistLVAD() {
               <p>- Réglage d’une vitesse minimale de pompe</p>
             </td>
             <td>
-              <p>- Majorer anticoagulation</p>
-              <p>- Discuter thrombolyse systémique</p>
-              <p>- Changement LVAD ou transplantation cardiaque</p>
+              <p><strong>Majorer anticoagulation</strong></p>
+              <p><strong>Discuter thrombolyse systémique</strong></p>
+              <p><strong>Changement LVAD ou transplantation cardiaque</strong></p>
             </td>
           </tr>
 
@@ -16306,9 +16306,9 @@ function renderReanAssistLVAD() {
               <p>- Vmax éjectionnelle &lt; 2,5 m/s (doppler continu)</p>
             </td>
             <td>
-              <p>- Ajuster vitesse de rotation</p>
-              <p>- Majorer anticoagulation</p>
-              <p>- Correction chirurgicale d’une malposition</p>
+              <p><strong>Ajuster vitesse de rotation</strong></p>
+              <p><strong>Majorer anticoagulation</strong></p>
+              <p><strong>Correction chirurgicale d’une malposition</strong></p>
             </td>
           </tr>
 
@@ -16324,10 +16324,10 @@ function renderReanAssistLVAD() {
               <p>- Soins locaux de driveline</p>
             </td>
             <td>
-              <p>- Si infection orifice driveline:</p>
+              <p><strong>Si infection orifice driveline:</strong></p>
               <p>- Sans sepsis/bactériémie: Mise à plat si abcès, ATB 14 jours (pas de probabiliste), soins locaux</p>
               <p>- Avec sepsis/bactériémie: Mise à plat si abcès, ATB ≥ 14 jours (probabiliste couvrant <em>P.aeruginosa</em>, entérobactéries nosocomiales, <em>Staphylococcus spp.</em>)</p>
-              <p>- Si infection profonde: ATB IV ≥ 6 semaines. Si persistante après 6 semaines d’ATB: discuter changement de pompe ou transplantation.</p>
+              <p><strong>Si infection profonde:</strong> ATB IV ≥ 6 semaines. Si persistante après 6 semaines d’ATB: discuter changement de pompe ou transplantation.</p>
             </td>
           </tr>
         </tbody>
