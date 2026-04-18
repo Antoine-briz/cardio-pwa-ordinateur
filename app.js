@@ -28874,12 +28874,9 @@ function ensureQuickAccessButton() {
     <button type="button" class="qa-item" data-key="eto_standard">CR ETO standard</button>
     <button type="button" class="qa-item" data-key="eto_aortique">CR ETO plastie aortique</button>
     <button type="button" class="qa-item" data-key="eto_mitrale">CR ETO plastie mitrale</button>
-    <button type="button" class="qa-item" onclick="location.hash='#/cec-protocoles'">
-    Protocoles CEC
-  </button>
-  <button type="button" class="qa-item" onclick="location.hash='#/cec-urgences'">
-    Urgences CEC
-  </button>
+    <button type="button" class="qa-item" onclick="location.hash='#/cec-protocoles'"> Protocoles CEC </button>
+  <button type="button" class="qa-item" onclick="location.hash='#/cec-urgences'"> Urgences CEC </button>
+  <button type="button" class="qa-item" data-key="assistances"> Assistances circulatoires</button>
   `;
 
   const closeMenu = () => menu.classList.remove("is-open");
@@ -29005,6 +29002,21 @@ function qaRunAction(key) {
     window.location.hash = "#/anesthesie/chir-cec";
     return;
   }
+
+// 6) Assistances circulatoires => ouvre la page assistances déjà utilisée en Réanimation
+  if (key === "assistances") {
+    __qaPending = null;
+
+    if (typeof renderReanAssistancesMenu === "function") {
+      renderReanAssistancesMenu();
+      return;
+    }
+
+    // fallback si jamais la fonction n'est pas dispo
+    window.location.hash = "#/reanimation";
+    return;
+  }
+  
 }
 
 // ---------- À appeler après render (DOM prêt)
