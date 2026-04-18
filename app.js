@@ -15065,9 +15065,6 @@ function renderReanAssistancesMenu() {
           <button class="btn" onclick="renderReanAssistLVAD()">
             LVAD
           </button>
-          <button class="btn" onclick="renderReanAssistCardioWest()">
-            Cardio-west
-          </button>
         </div>
       </div>
 
@@ -16145,17 +16142,446 @@ function renderReanAssistImpella() {
   });
 }
 
-
 function renderReanAssistLVAD() {
+  const imgInline = (label, file) => `
+    <span class="img-link" onclick="openImg('${file}')">
+      ${label} <span style="font-size:18px;">🖥️</span>
+    </span>
+  `;
+
+  const ecmoTable = (rows) => `
+    <div class="info-content ecmo-table-wrap">
+      <table class="ecmo-table">
+        <tbody>
+          ${rows.map(([left, right]) => `
+            <tr>
+              <th>${left}</th>
+              <td>${right}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+
+  const lvadEtoThumbs = `
+    <div class="thumb-grid ecmo-eto-grid">
+      <button class="thumb-card" onclick="openImg('etolvad.png')">
+        <img src="img/etolvad.png" alt="Evaluation ETO pré-LVAD">
+        <span>Evaluation ETO pré-LVAD</span>
+      </button>
+
+      <button class="thumb-card" onclick="openImg('inflowlvad.png')">
+        <img src="img/inflowlvad.png" alt="Canule d'admission (Inflow)">
+        <span>Canule d'admission (Inflow)</span>
+      </button>
+
+      <button class="thumb-card" onclick="openImg('trajetlvad.png')">
+        <img src="img/trajetlvad.png" alt="Trajet de la canule d'éjection">
+        <span>Trajet de la canule d'éjection</span>
+      </button>
+
+      <button class="thumb-card" onclick="openImg('outflowlvad.png')">
+        <img src="img/outflowlvad.png" alt="Flux éjectionnel (Outflow)">
+        <span>Flux éjectionnel (Outflow)</span>
+      </button>
+
+      <button class="thumb-card" onclick="openImg('aortelvad.png')">
+        <img src="img/aortelvad.png" alt="Valve aortique et LVAD">
+        <span>Valve aortique et LVAD</span>
+      </button>
+
+      <button class="thumb-card" onclick="openImg('debitlvad.png')">
+        <img src="img/debitlvad.png" alt="Débits LVAD">
+        <span>Débits LVAD</span>
+      </button>
+    </div>
+  `;
+
+  const complicationsTable = `
+    <div class="info-content ecmo-table-wrap">
+      <table class="ecmo-table ecmo-table-4cols">
+        <thead>
+          <tr>
+            <th>Complication</th>
+            <th>Facteurs favorisants</th>
+            <th>Prévention</th>
+            <th>Prise en charge</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Malposition chirurgicale</strong></td>
+            <td>
+              <p>- VG de petite taille (non dilaté)</p>
+              <p>- Canule d’admission orientée vers le SIV</p>
+              <p>- Anastomose aortique sténosante</p>
+            </td>
+            <td>
+              <p>- Sélection soigneuse du patient: VG dilaté, absence de RM serré</p>
+              <p>- Vérification ETO à l’implantation: position <em>inflow</em>, doppler <em>outflow</em></p>
+            </td>
+            <td>
+              <p><strong>Ré-intervention</strong> chirurgicale si nécessaire</p>
+            </td>
+          </tr>
+
+          <tr>
+            <td><strong>Majoration d’une insuffisance aortique, d’un FOP/CIA</strong></td>
+            <td>
+              <p>- Insuffisance aortique, FOP ou CIA pré-existant</p>
+            </td>
+            <td>
+              <p>- RVA, fermeture du FOP/CIA dans le même temps que l’implantation du LVAD</p>
+            </td>
+            <td>
+              <p>- RVA, fermeture du FOP/CIA</p>
+            </td>
+          </tr>
+
+          <tr>
+            <td><strong>Dysfonction ventriculaire droite (20-30% des cas)</strong></td>
+            <td>
+              <p>- Dysfonction VD pré-existante</p>
+              <p>- Score Intermacs 1 ou 2</p>
+              <p>- DFG &lt; 30 mL/min</p>
+              <p>- Polytransfusion, expansion volémique massive</p>
+              <p>- Troubles du rythme cardiaque</p>
+              <p>- Reprise chirurgicale</p>
+              <p>- Infection</p>
+              <p>- Haut débits d’assistance</p>
+            </td>
+            <td>
+              <p>- Evaluation soigneuse de la fonction VD avant implantation</p>
+              <p>- Eviter le sur-débit d’assistance</p>
+              <p>- Noradrénaline pour PAM &gt; 75 mmHg</p>
+              <p>- NO inhalé, PEP minimale</p>
+              <p>- Accélération FC 100/min</p>
+              <p>- Inotropes: Dobutamine</p>
+            </td>
+            <td>
+              <p><strong>Mesures de protection VD:</strong> FC 100/min, PAM &gt; 70 mmHg, diminution postcharge VD</p>
+              <p><strong>Si échec:</strong> assistance droite (ECMO droite-droite ou Impella droite)</p>
+            </td>
+          </tr>
+
+          <tr>
+            <td><strong>Saignements</strong></td>
+            <td>
+              <p>- Post-op précoces</p>
+              <p>- Hémorragie digestive tardive</p>
+              <p>- Antiagrégant/anticoagulant pré-opératoires, troubles de coagulation</p>
+              <p>- Willebrandt acquis (<em>shear</em> stress)</p>
+              <p>- ECMO péri-opératoire ou CEC prolongée</p>
+              <p>- Patient redux/tridux</p>
+              <p>- Dysfonction VD</p>
+            </td>
+            <td>
+              <p>- Correction des troubles de coagulation</p>
+              <p>- Eviter le sur-débit d’assistance</p>
+            </td>
+            <td>
+              <p>- Correction des troubles de coagulation</p>
+              <p>- Reprise chirurgicale si nécessaire</p>
+              <p>- Si hémorragie digestive: FOGD, embolisation…</p>
+            </td>
+          </tr>
+
+          <tr>
+            <td><strong>AVC: ischémiques ou hémorragiques</strong></td>
+            <td>
+              <p>- AVC ischémiques: absence d’ouverture aortique, défaut d’anticoagulation</p>
+              <p>- AVC hémorragiques: HTA, surdosage anticoagulant</p>
+            </td>
+            <td>
+              <p>- Surveillance d’une pulsatilité/ouverture aortique</p>
+              <p>- Anticoagulation adaptée</p>
+              <p>- Contrôle tensionnel</p>
+            </td>
+            <td>
+              <p>- Si AVC ischémique: thrombectomie (thrombolyse CI)</p>
+            </td>
+          </tr>
+
+          <tr>
+            <td><strong>Thrombose et arrêt de pompe</strong></td>
+            <td>
+              <p>- Défaut d’anticoagulation</p>
+              <p>- Hypercoagulabilité</p>
+              <p>- Faible débit de pompe: HTA, diminution de vitesse…</p>
+            </td>
+            <td>
+              <p>- Anticoagulation efficace: HNF IVSE AntiXa 0,3-0,6 ou AVK avec INR 2-3</p>
+              <p>- Réglage d’une vitesse minimale de pompe</p>
+            </td>
+            <td>
+              <p>- Majorer anticoagulation</p>
+              <p>- Discuter thrombolyse systémique</p>
+              <p>- Changement LVAD ou transplantation cardiaque</p>
+            </td>
+          </tr>
+
+          <tr>
+            <td><strong>Hémolyse</strong></td>
+            <td>
+              <p>- Malposition &amp; phénomène de succion</p>
+              <p>- Thrombose de pompe</p>
+              <p>- Anastomose éjectionnelle sténosante</p>
+              <p>- Vitesse de rotation élevée</p>
+            </td>
+            <td>
+              <p>- Surveillance Hb plasmatique (&lt; 150mg/L), LDH, bilirubine…</p>
+              <p>- Anticoagulation efficace</p>
+              <p>- Vmax éjectionnelle &lt; 2,5 m/s (doppler continu)</p>
+            </td>
+            <td>
+              <p>- Ajuster vitesse de rotation</p>
+              <p>- Majorer anticoagulation</p>
+              <p>- Correction chirurgicale d’une malposition</p>
+            </td>
+          </tr>
+
+          <tr>
+            <td><strong>Complications infectieuses:</strong><br>Locales de driveline<br>Infections systémiques</td>
+            <td>
+              <p>- Durée d’asssistance par LVAD</p>
+              <p>- Terrain: Diabète, immunodépression…</p>
+              <p>- Antibiothérapies à répétition</p>
+            </td>
+            <td>
+              <p>- Antibioprophylaxie à l’implantation</p>
+              <p>- Soins locaux de driveline</p>
+            </td>
+            <td>
+              <p>- Si infection orifice driveline:</p>
+              <p>- Sans sepsis/bactériémie: Mise à plat si abcès, ATB 14 jours (pas de probabiliste), soins locaux</p>
+              <p>- Avec sepsis/bactériémie: Mise à plat si abcès, ATB ≥ 14 jours (probabiliste couvrant <em>P.aeruginosa</em>, entérobactéries nosocomiales, <em>Staphylococcus spp.</em>)</p>
+              <p>- Si infection profonde: ATB IV ≥ 6 semaines. Si persistante après 6 semaines d’ATB: discuter changement de pompe ou transplantation.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  `;
+
   const encadres = [
     {
-      titre: "LVAD",
+      titre: "Généralités sur le LVAD",
+      html: ecmoTable([
+        [
+          "Principe et composition",
+          `
+            <p>Le <strong>LVAD</strong> (<strong>Left Ventricular Assist Device</strong>) est une technique d’assistance mono-ventriculaire gauche de longue durée, chez les patients présentant une dysfonction ventriculaire gauche sévère terminale. Il s’agit d’une pompe centrifuge internalisée placée à l’apex du VG permettant un débit sanguin de 3 à 10 L/min du ventricule gauche vers l’aorte thoracique.</p>
+
+            <p>Le dispositif se compose de:</p>
+
+            <p>- Une <strong>canule d’admission</strong> (<strong>inflow cannula</strong>): implantée à l’apex du ventricule gauche, elle doit être orientée vers le flux mitral.</p>
+            <p>- Une <strong>pompe centrifuge magnétique</strong>: A l’apex du VG, elle génère un débit continu avec pouls artificiel. Le débit sanguin peut atteindre 10 L/min pour le HeartMate3. Son débit dépend des conditions de charge (<strong>pré-charge</strong> VG), de la vitesse réglée (en tours/min) et de la pression intra-aortique.</p>
+            <p>- Une <strong>canule éjectionnelle</strong> (<strong>outflow graft</strong>): Prothèse vasculaire reliant la pompe centrifuge à l’aorte thoracique ascendante (à privilégier) ou descendante.</p>
+            <p>- Une <strong>driveline</strong>: Câble reliant la pompe centrifuge au contrôleur externe, généralement externalisée en sous-costal droit. Elle permet l’alimentation de la pompe et la transmission des données de fonctionnement (réglages, alarmes…).</p>
+            <p>- Un <strong>contrôleur</strong> (System Controller): Il permet le réglage de la vitesse de pompe (tpm), l’affichage des paramètres mesurés (débit estimé en L/min, la puissance en W, l’index de pulsatilité), la gestion des batteries, le réglage et l’historique des alarmes. Il est relié à la pompe via la driveline, et à une source d’alimentation (batteries externes ou secteur).</p>
+            <p>- Une <strong>source d’alimentation</strong>: Elle peut se faire par prise secteur (si connecté à la base station), via deux batteries externes portables, ou sur batterie interne (de courte autonomie).</p>
+
+            <p>Il existe actuellement principalement 3 types de LVAD: HeartMate3, HeartWare, Jarvik 2000. Cf types de LVAD ${imgInline("Cf types de LVAD", "typelvad.png")}</p>
+          `
+        ],
+        [
+          "Schéma du dispositif",
+          `
+            <div class="image-container">
+              <img src="img/circuitlvad.png" alt="Schéma du LVAD" style="display:block;">
+            </div>
+          `
+        ],
+        [
+          "Indications",
+          `
+            <p>Insuffisance cardiaque mono-ventriculaire gauche ou bi-ventriculaire au stade terminal et réfractaire au traitement médical optimal. Généralement des cardiomyopathies dilatées et cardiopathies ischémiques terminales. Le contexte clinique correspond à des patients INTERMACS 2 à 4. Cf Intermacs ${imgInline("Cf Intermacs", "intermacs.png")}</p>
+
+            <p>En cas d’indication retenue d’assistance par LVAD, les trois devenirs possibles sont:</p>
+            <p><strong>Bridge to transplantation</strong>: dans l’attente d’un greffon cardiaque</p>
+            <p><strong>Bridge to recovery</strong>: en cas de récupération attendue de la fonction myocardique</p>
+            <p><strong>Destination therapy</strong>: assistance définitive, en cas de contrôle indication à la greffe et sans récupération myocardique attendue</p>
+          `
+        ],
+        [
+          "Contre-indications",
+          `
+            <p><strong>Contre-indications absolues:</strong></p>
+            <p>Défaillance d’organe sévère: insuffisance hépatique, insuffisance respiratoire, lésion neurologique étendue irréversible</p>
+            <p>Troubles sévères de l’hémostase ou contre-indication à l’anticoagulation (hémorragie active, saignement intracrânien).</p>
+            <p>Infection/sepsis non contrôlé</p>
+            <p>Espérance de vie &lt; 2 ans: comorbidités majeures, cancer évolutif, cachexie, maladie de système avec atteinte multiple d’organes…</p>
+            <p>Maladies psychiatriques déséquilibrées et/ou mauvaise observance majeure</p>
+
+            <p><strong>Contre-indications relatives (selon contexte/avis expert):</strong></p>
+            <p>Défaillance ventriculaire droite ou HTAP sévère associée (possibilité d’assistance courte durée par ECMO droite-droite ou longue durée par BiVAD)</p>
+            <p>Insuffisance aortique sévère (corrigeable par RVA lors de l’implantation)</p>
+            <p>Rétrécissement mitral sévère (risque de succion, RVM possible)</p>
+            <p>CIV (corrigeable par fermeture lors de l’implantation)</p>
+            <p>VG de petite taille ou hypertrophique (risque de succion)</p>
+            <p>Surface corporelle &lt; 1,2 m² (risque de succion)</p>
+            <p>Aorte porcelaine (risque embolique)</p>
+          `
+        ],
+      ]),
+    },
+
+    {
+      titre: "Gestion pratique du LVAD",
+      html: ecmoTable([
+        [
+          "Evaluation pré-opératoire",
+          `
+            <p><strong>Détermination de la voie d’abord chirurgicale et de l’assistance circulatoire per-opératoire:</strong></p>
+            <p><strong>Sternotomie:</strong> Sous CEC si autre geste associé (RVA, fermeture de CIA, plastie tricuspide…) ou ECMO artério-veineuse si implantation seule de LVAD</p>
+            <p><strong>Thoracotomie gauche + mini-manubriectomie sous ECMO artério-veineuse:</strong> thoracotomie pour positionnement de la pompe, mini-manubriectomie pour accès à l’aorte ascendante.</p>
+            <p><strong>Thoracotomie gauche isolée</strong> (rarement pratiqué): Clampage latéral de l’aorte si ré-injection dans l’aorte thoracique descendante (Possible pour Jarvik 2000 et HeartWare).</p>
+
+            <p><strong>Evaluation de la fonction ventriculaire droite:</strong></p>
+            <p><strong>Echocardiographie:</strong> Rapport VD/VG &gt; 0,75, modification géométrique du VD, TAPSE &lt; 7,5 mm, onde S’ &lt; 8 cm/s, insuffisance tricuspide ≥ modérée, dilatation anneau tricuspide</p>
+            <p><strong>Cathétérisme droit:</strong> POD, PAPm, index de pulsatilité de l’artère pulmonaire PAPi = (PAPs-PAPd)/PVC, Index de charge de travail du VD RVSWI = (PAPm- POD) x IC/FC, RVP</p>
+            <p>Une assistance par Impella peut permettre de « tester » la fonction VD en mimant une assistance par LVAD de courte durée</p>
+
+            <p><strong>Gestion hémodynamique post-opératoire prévue:</strong></p>
+            <p>Monitorage étroit de la fonction VD par cathéter de Swan Ganz (au minimum)</p>
+            <p>Implantation d’emblée d’une ECMO droite-droite en fin d’intervention</p>
+          `
+        ],
+        [
+          "Implantation du LVAD",
+          `
+            <p><strong>Pré-commande large de PSL:</strong> 8 CGR, 8 PFC, 2 CUP au minimum</p>
+            <p><strong>Eléments disponibles en salle:</strong> aimant si PM/DAI, bouteille de NO, contrôleur principal et de secours programmés (date, identité patient, langue) et chargés.</p>
+            <p><strong>Abord chirurgical prévu:</strong> Sternotomie ou thoracotomie gauche + manubriectomie ou thoracotomie gauche seule</p>
+            <p><strong>Assistance circulatoire prévue:</strong> CEC ou ECMO VA ou aucune</p>
+
+            <p><strong>Protocole anesthésique:</strong></p>
+            <p><strong>Monitorage:</strong> Scope, SpO2, Kta, VVP, KTc, BIS, NIRS, ETO, +/- Swan Ganz</p>
+            <p>Induction Etomidate, entretien AIVOC Propofol/Sufentanil.</p>
+            <p>Atracurium IVSE</p>
+            <p>Kétamine 0,125mg/kg/h IVSE</p>
+            <p>Anti-fibrinolyse par Exacyl 20mg/kg puis 2mg/kg/h</p>
+
+            <p><strong>Ventilation:</strong> Sonde monolumière si sternotomie, double lumière si thoracotomie gauche</p>
+
+            <p><strong>Antibioprophylaxie:</strong> Céfazoline 2g puis 1g/4h (Vancomycine 20mg/kg si allergie sévère aux béta-lactamines)</p>
+
+            <p><strong>Anticoagulation:</strong></p>
+            <p>Si CEC: Bolus d’HNF 300-400 UI/kg pour objectif d’ACT &gt; 400s</p>
+            <p>Si ECMO VA: Bolus d’HNF 200-300 UI/kg pour objectif d’ACT &gt; 350s</p>
+
+            <p><strong>ETO pré-implantation:</strong> A rechercher spécifiquement: Cf ETO pré-LVAD ${imgInline("Cf ETO pré-LVAD", "etolvad.png")}</p>
+            <p>Ventricule gauche: HVG, CIV, thrombus VG, anévrysme VG</p>
+            <p>Oreillette gauche: FOP/CIA, thrombus auriculaire</p>
+            <p>Ventricule droit: Dysfonction systolique VD, dilatation VD</p>
+            <p>Valves: insuffisance aortique, rétrécissement mitral, insuffisance tricuspide</p>
+            <p>Aorte: anévrysme aortique, aorte porcelaine, dissection aortique</p>
+
+            <p><strong>Etapes chirurgicale de l’implantation d’un HeartMate3:</strong></p>
+            <p>Abord chirurgical, exposition du cœur</p>
+            <p>Test de la pompe sur le champ opératoire avec NaCl 0,9% contenant 1g de Vancomycine. Laisser tourner à vitesse minimale pendant 10min.</p>
+            <p>Tunnelisation de la driveline jusqu’en position sous-costale droite</p>
+            <p>Administration du bolus d’HNF, canulation et départ CEC/ECMO après objectif d’ACT. Clampage aortique si autre geste chirurgical associé ou stimulation épicardique rapide.</p>
+            <p>Fixation de la collerette de la canule d’admission à l’apex du VG, excision du tissu apical, introduction de la canule d’admission en direction du flux mitral</p>
+            <p>Fixation du tube d’éjection sur l’aorte ascendante ou descendante (clampage aortique latéral dans ce cas)</p>
+            <p>Connexion de la pompe au contrôleur</p>
+            <p>Purge du cœur et du LVAD, recrutement alvéolaire. Diminution transitoire du débit d’assistance CEC/ECMO +/- déclampage aortique (si clampage)</p>
+
+            <p><strong>Démarrage de la pompe:</strong></p>
+            <p>Reprise du monitorage du débit cardiaque par Swan Ganz (si en place)</p>
+            <p>Démarrage du LVAD à vitesse minimale + déclampage du tube éjectionnel</p>
+            <p>Vérification ETO de l’absence de bulle intra-cardiaque</p>
+            <p>Augmentation progressive du débit de LVAD jusqu’à 2,2-2,4 L/min/m²</p>
+            <p>Réglages de la console: vitesse de rotation, vitesse de rotation minimale, alarme de débit minimal, hématocrite de sortie. Copie de ces réglages du contrôleur de secours.</p>
+            <p>Insertion de la batterie interne et réarmement des alarmes</p>
+
+            <p><strong>ETO post-implantation</strong></p>
+            <p><strong>Canule d’admission:</strong> orientation vers le flux mitral, parallèle au SIV, flux d’admission &lt; 1,5m/s (doppler continu)</p>
+            <p><strong>Cavités gauches:</strong> Diminution de la taille du VG, absence de contraste spontané intra-VG, diminution ou disparition d’une IM</p>
+            <p><strong>Ventricule droit:</strong> SIV aplati, rapport VD/VG augmenté à 0,8-1. Possible dysfonction VD à rechercher, risque de majoration d’une IT.</p>
+            <p><strong>Canule de réinjection:</strong> Flux de ré-injection aortique non aliasé, vitesse &lt; 2 m/s (doppler continu). Risque de suture sténosante si &gt; 2 m/s.</p>
+            <p><strong>Valve aortique:</strong> persistance d’une ouverture intermittente, absence d’IA (ou minime), absence de contraste spontané de la racine aortique.</p>
+          `
+        ],
+        [
+          "Réglage de la console",
+          `
+            <p><strong>(Exemple du HeartMate3)</strong></p>
+
+            <p><strong>Affichage sur le contrôleur:</strong></p>
+            <p>Etat de marche de la pompe, vitesse (tpm), niveau de batterie</p>
+            <p>Gestion du moniteur (HeartMate Touch)</p>
+
+            <p><strong>Paramètres à régler:</strong> (Menu en haut à droite de l’écran)</p>
+            <p>Vitesse de rotation (tpm): Généralement 5000-5400 tpm (mais peut aller de 3000 à 9000 tpm).</p>
+            <p>Vitesse minimale de pompe (tpm)</p>
+            <p>L’hématocrite minimal de sortie (%)</p>
+
+            <p><strong>Paramètres affichés:</strong></p>
+            <p>Vitesse de pompe (tpm)</p>
+            <p>Débit sanguin estimé de pompe (L/min)</p>
+            <p>Puissance délivrée (Watt): 3-6 Watt</p>
+            <p>Index de pulsatilité (PI):</p>
+            <p>Niveau de batterie</p>
+
+            <div class="bcpia-screens">
+              <img src="img/ecranlvad.png" alt="Écran LVAD" style="display:block;">
+            </div>
+          `
+        ],
+        [
+          "Surveillance quotidienne après implantation de LVAD",
+          `
+            <p><strong>Clinique:</strong> Signes d’hypoperfusion tissulaire, diurèse, saignement ou infection du site opératoire.</p>
+            <p><strong>Swan Ganz:</strong> débit cardiaque et fonction ventriculaire droite</p>
+
+            <p><strong>Assistance:</strong></p>
+            <p><strong>Vitesse de rotation et débit de pompe:</strong> Généralement 5000-5400 tpm pour débit de LVAD de 2,2-2,4 L/min/m².</p>
+            <p>Si débit LVAD estimé insuffisant: Cf algorithme débit LVAD ${imgInline("Cf algorithme débit LVAD", "algolvad.png")}</p>
+            <p><strong>Puissance délivrée (Watt):</strong> 3-6 Watt</p>
+            <p>Augmentation si: augmentation de vitesse, augmentation de viscosité sanguine, thrombose de pompe, obstruction partielle, hypertension artérielle</p>
+            <p>Diminution si: Diminution de vitesse, diminution de viscosité, diminution de précharge, dysfonction de pompe, batterie faible</p>
+            <p><strong>Index de pulsatilité (PI):</strong></p>
+            <p>Augmentation si: Augmentation de précharge VG (diminution vitesse de pompe, expansion volémique), récupération de fonction VG</p>
+            <p>Diminution si: Baisse de précharge (hypovolémie, tamponnade, dysfonction VD…), troubles du rythme, thrombose de pompe</p>
+
+            <p><strong>Biologie:</strong> AntiXa 0,3-0,6 UI/mL, recherche de thrombopénie/hémolyse</p>
+          `
+        ],
+        [
+          "Prescriptions médicamenteuses après implantation de LVAD",
+          `
+            <p><strong>Hémodynamique:</strong></p>
+            <p><strong>Vasopresseurs:</strong> Noradrénaline IVSE pour objectif de PAM 70-80 mmHg (risque d’AVC si &gt; 85 mmHg)</p>
+            <p><strong>Inotropes:</strong> Dobutamine si dysfonction VD ou absence de débit trans-aortique. Milrinone ou Levosimedan à discuter</p>
+            <p><strong>Vasodilatateurs:</strong> NO inhalé, éproprosténol inhalé, inhibiteurs de la phosphodiestérase type 5 (Sildénafil)</p>
+
+            <p><strong>Traitements cardiologiques de fond:</strong></p>
+            <p><strong>Anti-hypertenseurs:</strong> IEC ou ARA2 en 1ère intention</p>
+            <p>Furosémide pour limiter la congestion veineuse et dysfonction droite</p>
+
+            <p><strong>Anticoagulation:</strong> HNF IVSE pour objectif d’AntiXa 0,3-0,6 UI/mL. AVK à distance de l’intervention (INR cible 2-3)</p>
+          `
+        ],
+      ]),
+    },
+
+    {
+      titre: "Echographie trans-oesophagienne et LVAD",
       html: `
-        <p>Prise en charge d’un LVAD (paramètres de pompe, anticoagulation, surveillance).
-        Contenu à compléter.</p>
+        <div class="info-content">
+          ${lvadEtoThumbs}
+        </div>
       `,
     },
+
+    {
+      titre: "Complications du LVAD",
+      html: complicationsTable,
+    },
   ];
+
   renderInterventionPage({
     titre: "Assistances circulatoires",
     sousTitre: "LVAD",
@@ -16164,23 +16590,7 @@ function renderReanAssistLVAD() {
   });
 }
 
-function renderReanAssistCardioWest() {
-  const encadres = [
-    {
-      titre: "Cardio-west",
-      html: `
-        <p>Prise en charge d’un cœur artificiel total (Cardio-west).
-        Contenu à compléter.</p>
-      `,
-    },
-  ];
-  renderInterventionPage({
-    titre: "Assistances circulatoires",
-    sousTitre: "Cardio-west",
-    image: "assistances2.png",
-    encadres,
-  });
-}
+
 
 function renderReanAntibiotherapieMenu() {
   $app.innerHTML = `
@@ -28097,7 +28507,6 @@ const routes = {
   "#/reanimation/assistances/bcpia": sub(renderReanAssistancesMenu, renderReanAssistBCPIA),
   "#/reanimation/assistances/impella": sub(renderReanAssistancesMenu, renderReanAssistImpella),
   "#/reanimation/assistances/lvad": sub(renderReanAssistancesMenu, renderReanAssistLVAD),
-  "#/reanimation/assistances/cardio-west": sub(renderReanAssistancesMenu, renderReanAssistCardioWest),
 
   // Antibiothérapie probabiliste (routes existantes)
   "#/proba": renderProbaMenu,
