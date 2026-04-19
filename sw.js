@@ -221,6 +221,7 @@ const PRECACHE = [
   "img/etolvad.png",
   "img/ecranlvad.png",
   "img/algolvad.png",
+  "img/cracc.png",
 
   
   // Menu principal
