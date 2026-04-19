@@ -2169,6 +2169,13 @@ function renderAnesthChirCecMenu() {
           <h2>Chirurgie cardiaque sous CEC</h2>
         </div>
 
+<div class="cr-anesth-entry-wrap">
+            <button class="cr-anesth-entry-btn" type="button" onclick="openCrAnesthModal()">
+              <img src="img/cracc.png" alt="Compte rendu d’anesthésie">
+            </button>
+          </div>
+        </div>
+
         <h3>Chirurgies programmées sous CEC</h3>
         <div class="grid">
           <button class="btn" onclick="openSubPage(renderInterventionPontages, renderAnesthChirCecMenu)">
@@ -9216,6 +9223,1067 @@ function openEtoSynthese(text) {
 
   document.body.appendChild(overlay);
 }
+
+/* =========================================================
+   CR ANESTHÉSIE — Chirurgie cardiaque sous CEC
+   ========================================================= */
+
+let crAnesthState = null;
+
+function crAnSafe(v) {
+  return String(v ?? "").trim();
+}
+
+function crAnChecked(id) {
+  return !!document.getElementById(id)?.checked;
+}
+
+function crAnVal(id) {
+  return document.getElementById(id)?.value ?? "";
+}
+
+function crAnEsc(s) {
+  return String(s ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function crAnTodayFR() {
+  const d = new Date();
+  const dd = String(d.getDate()).padStart(2, "0");
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const yyyy = d.getFullYear();
+  return `${dd}/${mm}/${yyyy}`;
+}
+
+function crAnInitState() {
+  return {
+    activeTab: "anesth",
+    etoVariant: "standard",
+
+    date: crAnTodayFR(),
+
+    geste1: "",
+    geste2: "",
+    geste3: "",
+
+    chirurgien1: "",
+    chirurgien2: "",
+    anesth1: "",
+    anesth2: "",
+
+    conditionnement: {
+      scope: true,
+      spo2: true,
+      vvp: true,
+      bis: true,
+      nirs: false,
+      kta: true,
+      ktc: true,
+      eto: true,
+      swan: true
+    },
+
+    induction: {
+      propofol: true,
+      sufentanil: true,
+      remifentanil: false,
+      etomidate: false,
+      esketamine: true
+    },
+
+    curarisation: {
+      atracurium: true,
+      celocurine: false,
+      rocuronium: false
+    },
+
+    intubation: {
+      ventilation: true,
+      sequenceRapide: false,
+      sonde: "7,5",
+      cormack: "1",
+      pogo: "",
+      eschmann: false
+    },
+
+    antibiotique: {
+      cefazoline: true,
+      augmentin: false,
+      vancomycine: false,
+      tazocilline: false,
+      daptomycine: false
+    },
+
+    entretien: {
+      propofol: true,
+      sufentanil: true,
+      remifentanil: false,
+      atracuriumIvse: true,
+      esketamineIvse: true
+    },
+
+    vasopresseur: "0,16",
+    autres: {
+      acideTranexamique: true,
+      insulineIvse: false
+    },
+
+    abord: "sternotomie",
+    prelevement: {
+      mig: false,
+      mid: false,
+      saphene: false
+    },
+
+    canulationArt: "aortique",
+    canulationVein: "atrio-cave",
+    cardioplegie: "sang-froid",
+
+    gesteRealise: "",
+    dureeCec: "",
+    clampage: "",
+    assistance: "",
+    heparine: "",
+    protamine: "",
+
+    rythme: "sinusal",
+    cei: "",
+
+    ringer: "",
+    cellsaver: "",
+    cgr: "",
+    pfc: "",
+    cup: "",
+    fibrinogene: "",
+    ppsb: "",
+    cacl: "",
+    diurese: "",
+
+    noradMax: "",
+    dobuMax: "",
+
+    fevg: "",
+    itvSsao: "",
+    etoPost: {
+      cinesegOk: true,
+      vaOk: true,
+      vmOk: true,
+      vdOk: true,
+      aorteOk: true
+    },
+
+    epicardiques: {
+      sentinelle: false,
+      stimulation: false,
+      freq: "",
+      seuilSens: "",
+      reglageSens: "",
+      seuilStim: "",
+      reglageStim: ""
+    },
+
+    hbFin: "",
+    lactateFin: "",
+    noradFin: "",
+    ventile: true,
+    extube: false,
+
+    destination: "usip"
+  };
+}
+
+function openCrAnesthModal() {
+  if (!crAnesthState) crAnesthState = crAnInitState();
+
+  closeCrAnesthModal();
+
+  const overlay = document.createElement("div");
+  overlay.id = "cr-an-overlay";
+  overlay.className = "acr-overlay";
+
+  overlay.innerHTML = `
+    <div class="acr-modal eto-modal eto-fullscreen cr-an-modal" role="dialog" aria-modal="true">
+      <div class="acr-modal-header">
+        <div class="cr-an-tabs">
+          <button type="button" id="cr-an-tab-anesth" class="cr-an-tab is-active" onclick="switchCrAnTab('anesth')">
+            CR Anesthésie
+          </button>
+          <button type="button" id="cr-an-tab-eto" class="cr-an-tab" onclick="switchCrAnTab('eto')">
+            CR ETO
+          </button>
+        </div>
+
+        <button class="acr-close-btn" type="button" onclick="closeCrAnesthModal()" aria-label="Fermer">✕</button>
+      </div>
+
+      <div class="acr-modal-body cr-an-modal-body">
+        <div id="cr-an-tab-content-anesth"></div>
+        <div id="cr-an-tab-content-eto" class="hidden"></div>
+      </div>
+    </div>
+  `;
+
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) closeCrAnesthModal();
+  });
+
+  document.body.appendChild(overlay);
+
+  renderCrAnTabAnesth();
+  renderCrAnTabEto();
+
+  if (crAnesthState.activeTab === "eto") {
+    switchCrAnTab("eto");
+  } else {
+    switchCrAnTab("anesth");
+  }
+}
+
+function closeCrAnesthModal() {
+  const old = document.getElementById("cr-an-overlay");
+  if (old) old.remove();
+}
+
+function switchCrAnTab(tab) {
+  if (!crAnesthState) return;
+  crAnesthState.activeTab = tab;
+
+  const b1 = document.getElementById("cr-an-tab-anesth");
+  const b2 = document.getElementById("cr-an-tab-eto");
+  const p1 = document.getElementById("cr-an-tab-content-anesth");
+  const p2 = document.getElementById("cr-an-tab-content-eto");
+
+  if (b1) b1.classList.toggle("is-active", tab === "anesth");
+  if (b2) b2.classList.toggle("is-active", tab === "eto");
+  if (p1) p1.classList.toggle("hidden", tab !== "anesth");
+  if (p2) p2.classList.toggle("hidden", tab !== "eto");
+
+  if (tab === "eto") {
+    renderCrAnTabEto();
+  }
+}
+
+function crAnOpenEtoVariant(variant) {
+  if (!crAnesthState) return;
+  crAnesthState.etoVariant = variant || "standard";
+  switchCrAnTab("eto");
+}
+
+function renderCrAnTabEto() {
+  const mount = document.getElementById("cr-an-tab-content-eto");
+  if (!mount) return;
+
+  const variant = crAnesthState?.etoVariant || "standard";
+
+  let prefix = "pc";
+  if (variant === "plastie_aortique") prefix = "rva";
+  if (variant === "plastie_mitrale") prefix = "rvm";
+
+  let html = "";
+  try {
+    if (typeof getEtoFormHtml === "function") {
+      html = getEtoFormHtml(prefix);
+    } else if (typeof buildEtoFormHtml === "function") {
+      html = buildEtoFormHtml(prefix);
+    }
+  } catch (e) {
+    console.error("Erreur rendu CR ETO embarqué", e);
+  }
+
+  if (!html) {
+    html = `
+      <div class="card" style="background:#fff;color:#000;border:1.5px solid #000;">
+        <strong>Impossible d’embarquer le CR ETO automatiquement.</strong><br>
+        Vérifie le nom exact de ta fonction générant le HTML ETO
+        (ex. <code>getEtoFormHtml</code> ou <code>buildEtoFormHtml</code>).
+      </div>
+    `;
+  }
+
+  mount.innerHTML = `<div class="cr-an-eto-shell">${html}</div>`;
+
+  try {
+    if (typeof initEtoFormModal === "function") {
+      initEtoFormModal(prefix);
+    } else if (typeof bindEtoFormEvents === "function") {
+      bindEtoFormEvents(prefix);
+    } else if (typeof updateEtoSynth === "function") {
+      updateEtoSynth();
+    }
+  } catch (e) {
+    console.error("Erreur init CR ETO embarqué", e);
+  }
+}
+
+function renderCrAnTabAnesth() {
+  const mount = document.getElementById("cr-an-tab-content-anesth");
+  if (!mount || !crAnesthState) return;
+
+  mount.innerHTML = `
+    <div class="eto-desktop-grid cr-an-grid">
+
+      <div class="eto-left cr-an-left">
+        <div class="cr-an-grid-5">
+
+          <!-- 1 -->
+          <section class="cr-an-cell">
+            <div class="cr-an-cell-title">Intervention</div>
+
+            <div class="cr-an-form-row">
+              <label>Date</label>
+              <input type="text" id="cran-date" value="${crAnEsc(crAnesthState.date)}" oninput="crAnSyncState(); crAnRenderSynth();">
+            </div>
+
+            <div class="cr-an-form-row">
+              <label>Geste</label>
+              <input type="text" id="cran-geste1" placeholder="Geste principal" value="${crAnEsc(crAnesthState.geste1)}" oninput="crAnSyncState(); crAnMirrorGeste(); crAnRenderSynth();">
+            </div>
+
+            <div class="cr-an-form-row">
+              <label>+</label>
+              <input type="text" id="cran-geste2" placeholder="Geste additionnel" value="${crAnEsc(crAnesthState.geste2)}" oninput="crAnSyncState(); crAnMirrorGeste(); crAnRenderSynth();">
+            </div>
+
+            <div class="cr-an-form-row">
+              <label>+</label>
+              <input type="text" id="cran-geste3" placeholder="Geste additionnel" value="${crAnEsc(crAnesthState.geste3)}" oninput="crAnSyncState(); crAnMirrorGeste(); crAnRenderSynth();">
+            </div>
+
+            <div class="cr-an-form-row">
+              <label>Chirurgien</label>
+              <input type="text" id="cran-chir1" value="${crAnEsc(crAnesthState.chirurgien1)}" oninput="crAnSyncState(); crAnRenderSynth();">
+            </div>
+            <div class="cr-an-form-row">
+              <label>Chirurgien 2</label>
+              <input type="text" id="cran-chir2" value="${crAnEsc(crAnesthState.chirurgien2)}" oninput="crAnSyncState(); crAnRenderSynth();">
+            </div>
+
+            <div class="cr-an-form-row">
+              <label>Anesthésiste</label>
+              <input type="text" id="cran-an1" value="${crAnEsc(crAnesthState.anesth1)}" oninput="crAnSyncState(); crAnRenderSynth();">
+            </div>
+            <div class="cr-an-form-row">
+              <label>Anesthésiste 2</label>
+              <input type="text" id="cran-an2" value="${crAnEsc(crAnesthState.anesth2)}" oninput="crAnSyncState(); crAnRenderSynth();">
+            </div>
+          </section>
+
+          <!-- 2 -->
+          <section class="cr-an-cell">
+            <div class="cr-an-cell-title">Induction et entretien anesthésie</div>
+
+            <div class="cr-an-subtitle">Conditionnement</div>
+            <div class="cr-an-check-grid">
+              ${crAnCheck("cran-scope", "Scope", crAnesthState.conditionnement.scope)}
+              ${crAnCheck("cran-spo2", "SpO2", crAnesthState.conditionnement.spo2)}
+              ${crAnCheck("cran-vvp", "VVP", crAnesthState.conditionnement.vvp)}
+              ${crAnCheck("cran-bis", "BIS", crAnesthState.conditionnement.bis)}
+              ${crAnCheck("cran-nirs", "NIRS", crAnesthState.conditionnement.nirs)}
+              ${crAnCheck("cran-kta", "KTa", crAnesthState.conditionnement.kta)}
+              ${crAnCheck("cran-ktc", "KTc", crAnesthState.conditionnement.ktc)}
+              ${crAnCheck("cran-eto", "ETO", crAnesthState.conditionnement.eto)}
+              ${crAnCheck("cran-swan", "Swan Ganz", crAnesthState.conditionnement.swan)}
+            </div>
+
+            <div class="cr-an-subtitle">Induction</div>
+            <div class="cr-an-check-grid">
+              ${crAnCheck("cran-ind-propofol", "Propofol", crAnesthState.induction.propofol)}
+              ${crAnCheck("cran-ind-suf", "Sufentanil", crAnesthState.induction.sufentanil)}
+              ${crAnCheck("cran-ind-remi", "Rémifentanil", crAnesthState.induction.remifentanil)}
+              ${crAnCheck("cran-ind-eto", "Etomidate", crAnesthState.induction.etomidate)}
+              ${crAnCheck("cran-ind-eske", "Eskétamine", crAnesthState.induction.esketamine)}
+            </div>
+
+            <div class="cr-an-subtitle">Curarisation</div>
+            <div class="cr-an-check-grid">
+              ${crAnCheck("cran-cur-atr", "Atracurium", crAnesthState.curarisation.atracurium)}
+              ${crAnCheck("cran-cur-celo", "Célocurine", crAnesthState.curarisation.celocurine)}
+              ${crAnCheck("cran-cur-rocu", "Rocuronium", crAnesthState.curarisation.rocuronium)}
+            </div>
+
+            <div class="cr-an-subtitle">Intubation</div>
+            <div class="cr-an-check-grid">
+              ${crAnCheck("cran-int-vent", "Ventilation", crAnesthState.intubation.ventilation)}
+              ${crAnCheck("cran-int-sr", "Séquence rapide", crAnesthState.intubation.sequenceRapide)}
+              ${crAnCheck("cran-int-esch", "Eschmann", crAnesthState.intubation.eschmann)}
+            </div>
+
+            <div class="cr-an-inline3">
+              <div>
+                <label>Sonde</label>
+                <select id="cran-int-sonde" onchange="crAnSyncState(); crAnRenderSynth();">
+                  ${["6,5","7","7,5","8"].map(v => `<option value="${v}" ${crAnesthState.intubation.sonde===v?"selected":""}>${v}</option>`).join("")}
+                </select>
+              </div>
+              <div>
+                <label>Cormack</label>
+                <select id="cran-int-cormack" onchange="crAnSyncState(); crAnRenderSynth();">
+                  ${["1","2","3","4"].map(v => `<option value="${v}" ${crAnesthState.intubation.cormack===v?"selected":""}>${v}</option>`).join("")}
+                </select>
+              </div>
+              <div>
+                <label>POGO %</label>
+                <input type="number" id="cran-int-pogo" value="${crAnEsc(crAnesthState.intubation.pogo)}" oninput="crAnSyncState(); crAnRenderSynth();">
+              </div>
+            </div>
+
+            <div class="cr-an-subtitle">Antibiotique</div>
+            <div class="cr-an-check-grid">
+              ${crAnCheck("cran-atb-cef", "Céfazoline", crAnesthState.antibiotique.cefazoline)}
+              ${crAnCheck("cran-atb-aug", "Augmentin", crAnesthState.antibiotique.augmentin)}
+              ${crAnCheck("cran-atb-vanc", "Vancomycine", crAnesthState.antibiotique.vancomycine)}
+              ${crAnCheck("cran-atb-tazo", "Tazocilline", crAnesthState.antibiotique.tazocilline)}
+              ${crAnCheck("cran-atb-dapto", "Daptomycine", crAnesthState.antibiotique.daptomycine)}
+            </div>
+
+            <div class="cr-an-subtitle">Entretien</div>
+            <div class="cr-an-check-grid">
+              ${crAnCheck("cran-ent-prop", "Propofol", crAnesthState.entretien.propofol)}
+              ${crAnCheck("cran-ent-suf", "Sufentanil", crAnesthState.entretien.sufentanil)}
+              ${crAnCheck("cran-ent-remi", "Rémifentanil", crAnesthState.entretien.remifentanil)}
+              ${crAnCheck("cran-ent-atrivse", "Atracurium IVSE", crAnesthState.entretien.atracuriumIvse)}
+              ${crAnCheck("cran-ent-eskeivse", "Eskétamine IVSE", crAnesthState.entretien.esketamineIvse)}
+            </div>
+
+            <div class="cr-an-subtitle">Vasopresseur</div>
+            <div class="cr-an-inline2">
+              <label><input type="radio" name="cran-vaso" value="0,16" ${crAnesthState.vasopresseur==="0,16"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Noradrénaline 0,16</label>
+              <label><input type="radio" name="cran-vaso" value="0,01" ${crAnesthState.vasopresseur==="0,01"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Noradrénaline 0,01</label>
+            </div>
+
+            <div class="cr-an-subtitle">Autres</div>
+            <div class="cr-an-check-grid">
+              ${crAnCheck("cran-autre-atx", "Acide tranexamique", crAnesthState.autres.acideTranexamique)}
+              ${crAnCheck("cran-autre-ins", "Insuline IVSE", crAnesthState.autres.insulineIvse)}
+            </div>
+          </section>
+
+          <!-- 3 -->
+          <section class="cr-an-cell">
+            <div class="cr-an-cell-title">ETO pré-CEC</div>
+
+            <div class="antibio-btn-group">
+              <button class="btn" type="button" onclick="crAnOpenEtoVariant('standard')">CR ETO standard</button>
+              <button class="btn" type="button" onclick="crAnOpenEtoVariant('plastie_aortique')">CR ETO plastie aortique</button>
+              <button class="btn" type="button" onclick="crAnOpenEtoVariant('plastie_mitrale')">CR ETO plastie mitrale</button>
+            </div>
+          </section>
+
+          <!-- 4 -->
+          <section class="cr-an-cell">
+            <div class="cr-an-cell-title">Chirurgie & CEC</div>
+
+            <div class="cr-an-subtitle">Abord</div>
+            <div class="cr-an-inline3">
+              <label><input type="radio" name="cran-abord" value="sternotomie" ${crAnesthState.abord==="sternotomie"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Sternotomie</label>
+              <label><input type="radio" name="cran-abord" value="thoracotomie-droite" ${crAnesthState.abord==="thoracotomie-droite"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Thoracotomie Dte</label>
+              <label><input type="radio" name="cran-abord" value="thoracotomie-gauche" ${crAnesthState.abord==="thoracotomie-gauche"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Thoracotomie Gche</label>
+              <label><input type="radio" name="cran-abord" value="sous-xyphoidien" ${crAnesthState.abord==="sous-xyphoidien"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Sous-xyphoïdien</label>
+            </div>
+
+            <div class="cr-an-subtitle">Prélèvement</div>
+            <div class="cr-an-check-grid">
+              ${crAnCheck("cran-prel-mig", "MIG", crAnesthState.prelevement.mig)}
+              ${crAnCheck("cran-prel-mid", "MID", crAnesthState.prelevement.mid)}
+              ${crAnCheck("cran-prel-saph", "Saphène", crAnesthState.prelevement.saphene)}
+            </div>
+
+            <div class="cr-an-subtitle">Canulation artérielle</div>
+            <div class="cr-an-inline3">
+              <label><input type="radio" name="cran-can-art" value="aortique" ${crAnesthState.canulationArt==="aortique"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Aortique</label>
+              <label><input type="radio" name="cran-can-art" value="femorale" ${crAnesthState.canulationArt==="femorale"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Fémorale</label>
+              <label><input type="radio" name="cran-can-art" value="axillaire-droite" ${crAnesthState.canulationArt==="axillaire-droite"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Axillaire Dte</label>
+              <label><input type="radio" name="cran-can-art" value="axillaire-gauche" ${crAnesthState.canulationArt==="axillaire-gauche"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Axillaire Gche</label>
+            </div>
+
+            <div class="cr-an-subtitle">Canulation veineuse</div>
+            <div class="cr-an-inline3">
+              <label><input type="radio" name="cran-can-vein" value="atrio-cave" ${crAnesthState.canulationVein==="atrio-cave"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Atrio-cave</label>
+              <label><input type="radio" name="cran-can-vein" value="bi-cavale" ${crAnesthState.canulationVein==="bi-cavale"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Bi-cavale</label>
+              <label><input type="radio" name="cran-can-vein" value="femorale" ${crAnesthState.canulationVein==="femorale"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Fémorale</label>
+              <label><input type="radio" name="cran-can-vein" value="jid" ${crAnesthState.canulationVein==="jid"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Jugulaire interne droite</label>
+            </div>
+
+            <div class="cr-an-subtitle">Cardioplégie</div>
+            <div class="cr-an-inline3">
+              <label><input type="radio" name="cran-cardioplegie" value="sang-froid" ${crAnesthState.cardioplegie==="sang-froid"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Sang froid</label>
+              <label><input type="radio" name="cran-cardioplegie" value="sang-chaud" ${crAnesthState.cardioplegie==="sang-chaud"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Sang chaud</label>
+              <label><input type="radio" name="cran-cardioplegie" value="custodiol" ${crAnesthState.cardioplegie==="custodiol"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Custodiol</label>
+            </div>
+
+            <div class="cr-an-form-row">
+              <label>Geste réalisé</label>
+              <input type="text" id="cran-geste-realise" value="${crAnEsc(crAnesthState.gesteRealise || crAnBuildGeste())}" oninput="crAnSyncState(); crAnRenderSynth();">
+            </div>
+
+            <div class="cr-an-inline3">
+              <div><label>CEC min</label><input type="number" id="cran-duree-cec" value="${crAnEsc(crAnesthState.dureeCec)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>Clampage min</label><input type="number" id="cran-clampage" value="${crAnEsc(crAnesthState.clampage)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>Assistance min</label><input type="number" id="cran-assistance" value="${crAnEsc(crAnesthState.assistance)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+            </div>
+
+            <div class="cr-an-inline2">
+              <div><label>Héparine UI</label><input type="number" id="cran-heparine" value="${crAnEsc(crAnesthState.heparine)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>Protamine UI</label><input type="number" id="cran-protamine" value="${crAnEsc(crAnesthState.protamine)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+            </div>
+          </section>
+
+          <!-- 5 -->
+          <section class="cr-an-cell">
+            <div class="cr-an-cell-title">Prise en charge post-CEC</div>
+
+            <div class="cr-an-subtitle">Rythme cardiaque</div>
+            <div class="cr-an-inline3">
+              <label><input type="radio" name="cran-rythme" value="sinusal" ${crAnesthState.rythme==="sinusal"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Sinusal</label>
+              <label><input type="radio" name="cran-rythme" value="fv" ${crAnesthState.rythme==="fv"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> FV</label>
+              <label><input type="radio" name="cran-rythme" value="fa" ${crAnesthState.rythme==="fa"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> FA</label>
+              <label><input type="radio" name="cran-rythme" value="bav" ${crAnesthState.rythme==="bav"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> BAV</label>
+            </div>
+            <div class="cr-an-form-row">
+              <label>Administration de CEI</label>
+              <input type="text" id="cran-cei" value="${crAnEsc(crAnesthState.cei)}" oninput="crAnSyncState(); crAnRenderSynth();">
+            </div>
+
+            <div class="cr-an-subtitle">Bilan entrée-sortie / transfusion</div>
+            <div class="cr-an-form-row"><label>Ringer lactate mL</label><input type="number" id="cran-ringer" value="${crAnEsc(crAnesthState.ringer)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+            <div class="cr-an-inline3">
+              <div><label>CellSaver mL</label><input type="number" id="cran-cellsaver" value="${crAnEsc(crAnesthState.cellsaver)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>CGR</label><input type="number" id="cran-cgr" value="${crAnEsc(crAnesthState.cgr)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>PFC</label><input type="number" id="cran-pfc" value="${crAnEsc(crAnesthState.pfc)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+            </div>
+            <div class="cr-an-inline4">
+              <div><label>CUP</label><input type="number" id="cran-cup" value="${crAnEsc(crAnesthState.cup)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>Fibrinogène g</label><input type="number" id="cran-fibri" value="${crAnEsc(crAnesthState.fibrinogene)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>PPSB UI</label><input type="number" id="cran-ppsb" value="${crAnEsc(crAnesthState.ppsb)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>CaCl g</label><input type="number" id="cran-cacl" value="${crAnEsc(crAnesthState.cacl)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+            </div>
+            <div class="cr-an-form-row"><label>Diurèse mL</label><input type="number" id="cran-diurese" value="${crAnEsc(crAnesthState.diurese)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+
+            <div class="cr-an-subtitle">Catécholamines max</div>
+            <div class="cr-an-inline2">
+              <div><label>Noradrénaline mg/h</label><input type="number" step="any" id="cran-noradmax" value="${crAnEsc(crAnesthState.noradMax)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>Dobutamine µg/kg/min</label><input type="number" step="any" id="cran-dobumax" value="${crAnEsc(crAnesthState.dobuMax)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+            </div>
+
+            <div class="cr-an-subtitle">ETO post-CEC</div>
+            <div class="cr-an-inline2">
+              <div><label>FEVG %</label><input type="number" id="cran-fevg" value="${crAnEsc(crAnesthState.fevg)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>ITV Ssao cm</label><input type="number" step="any" id="cran-itv" value="${crAnEsc(crAnesthState.itvSsao)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+            </div>
+            <div class="cr-an-check-grid">
+              ${crAnCheck("cran-eto-cine", "Cinétique segmentaire OK", crAnesthState.etoPost.cinesegOk)}
+              ${crAnCheck("cran-eto-va", "Valve aortique OK", crAnesthState.etoPost.vaOk)}
+              ${crAnCheck("cran-eto-vm", "Valve mitrale OK", crAnesthState.etoPost.vmOk)}
+              ${crAnCheck("cran-eto-vd", "Fonction VD OK", crAnesthState.etoPost.vdOk)}
+              ${crAnCheck("cran-eto-aorte", "Paroi aortique OK", crAnesthState.etoPost.aorteOk)}
+            </div>
+
+            <div class="cr-an-subtitle">Électrodes épicardiques</div>
+            <div class="cr-an-check-grid">
+              ${crAnCheck("cran-epi-sent", "Sentinelle", crAnesthState.epicardiques.sentinelle)}
+              ${crAnCheck("cran-epi-stim", "Stimulation", crAnesthState.epicardiques.stimulation)}
+            </div>
+            <div class="cr-an-inline4">
+              <div><label>Fréq /min</label><input type="number" id="cran-epi-freq" value="${crAnEsc(crAnesthState.epicardiques.freq)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>Seuil sens mV</label><input type="number" step="any" id="cran-epi-ss" value="${crAnEsc(crAnesthState.epicardiques.seuilSens)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>Réglé à mV</label><input type="number" step="any" id="cran-epi-rs" value="${crAnEsc(crAnesthState.epicardiques.reglageSens)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>Seuil stim V</label><input type="number" step="any" id="cran-epi-stv" value="${crAnEsc(crAnesthState.epicardiques.seuilStim)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+            </div>
+            <div class="cr-an-form-row">
+              <label>Réglé à V</label>
+              <input type="number" step="any" id="cran-epi-rstv" value="${crAnEsc(crAnesthState.epicardiques.reglageStim)}" oninput="crAnSyncState(); crAnRenderSynth();">
+            </div>
+
+            <div class="cr-an-subtitle">Fin d’intervention</div>
+            <div class="cr-an-inline3">
+              <div><label>Hb g/dL</label><input type="number" step="any" id="cran-hbfin" value="${crAnEsc(crAnesthState.hbFin)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>Lactate mmol/L</label><input type="number" step="any" id="cran-lactfin" value="${crAnEsc(crAnesthState.lactateFin)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>Noradrénaline mg/h</label><input type="number" step="any" id="cran-noradfin" value="${crAnEsc(crAnesthState.noradFin)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+            </div>
+            <div class="cr-an-check-grid">
+              ${crAnCheck("cran-fin-vent", "Ventilé(e)", crAnesthState.ventile)}
+              ${crAnCheck("cran-fin-ext", "Extubé(e)", crAnesthState.extube)}
+            </div>
+
+            <div class="cr-an-subtitle">Destination</div>
+            <div class="cr-an-inline4">
+              <label><input type="radio" name="cran-dest" value="usip" ${crAnesthState.destination==="usip"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> USIP</label>
+              <label><input type="radio" name="cran-dest" value="rea-3eme" ${crAnesthState.destination==="rea-3eme"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Réa. 3ème</label>
+              <label><input type="radio" name="cran-dest" value="sspi" ${crAnesthState.destination==="sspi"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> SSPI</label>
+              <label><input type="radio" name="cran-dest" value="rea-1er" ${crAnesthState.destination==="rea-1er"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Réa. 1er</label>
+            </div>
+          </section>
+
+        </div>
+
+        <div class="eto-actions">
+          <button class="btn" type="button" onclick="crAnCopySynth()">Copier la synthèse</button>
+          <button class="btn" type="button" onclick="crAnReset()">Effacer la saisie</button>
+        </div>
+      </div>
+
+      <div class="eto-right cr-an-right">
+        <div class="eto-synth-panel">
+          <div class="eto-synth-title">Synthèse CR d’anesthésie</div>
+          <pre id="cr-an-synth-text" class="eto-synth-box"></pre>
+        </div>
+      </div>
+    </div>
+  `;
+
+  crAnMirrorGeste();
+  crAnInitAutocomplete();
+  crAnRenderSynth();
+}
+
+function crAnCheck(id, label, checked) {
+  return `
+    <label class="checkbox">
+      <input type="checkbox" id="${id}" ${checked ? "checked" : ""} onchange="crAnSyncState(); crAnRenderSynth();">
+      <span>${label}</span>
+    </label>
+  `;
+}
+
+function crAnSyncState() {
+  if (!crAnesthState) return;
+
+  crAnesthState.date = crAnVal("cran-date");
+  crAnesthState.geste1 = crAnVal("cran-geste1");
+  crAnesthState.geste2 = crAnVal("cran-geste2");
+  crAnesthState.geste3 = crAnVal("cran-geste3");
+
+  crAnesthState.chirurgien1 = crAnVal("cran-chir1");
+  crAnesthState.chirurgien2 = crAnVal("cran-chir2");
+  crAnesthState.anesth1 = crAnVal("cran-an1");
+  crAnesthState.anesth2 = crAnVal("cran-an2");
+
+  crAnesthState.conditionnement = {
+    scope: crAnChecked("cran-scope"),
+    spo2: crAnChecked("cran-spo2"),
+    vvp: crAnChecked("cran-vvp"),
+    bis: crAnChecked("cran-bis"),
+    nirs: crAnChecked("cran-nirs"),
+    kta: crAnChecked("cran-kta"),
+    ktc: crAnChecked("cran-ktc"),
+    eto: crAnChecked("cran-eto"),
+    swan: crAnChecked("cran-swan")
+  };
+
+  crAnesthState.induction = {
+    propofol: crAnChecked("cran-ind-propofol"),
+    sufentanil: crAnChecked("cran-ind-suf"),
+    remifentanil: crAnChecked("cran-ind-remi"),
+    etomidate: crAnChecked("cran-ind-eto"),
+    esketamine: crAnChecked("cran-ind-eske")
+  };
+
+  crAnesthState.curarisation = {
+    atracurium: crAnChecked("cran-cur-atr"),
+    celocurine: crAnChecked("cran-cur-celo"),
+    rocuronium: crAnChecked("cran-cur-rocu")
+  };
+
+  crAnesthState.intubation = {
+    ventilation: crAnChecked("cran-int-vent"),
+    sequenceRapide: crAnChecked("cran-int-sr"),
+    sonde: crAnVal("cran-int-sonde"),
+    cormack: crAnVal("cran-int-cormack"),
+    pogo: crAnVal("cran-int-pogo"),
+    eschmann: crAnChecked("cran-int-esch")
+  };
+
+  crAnesthState.antibiotique = {
+    cefazoline: crAnChecked("cran-atb-cef"),
+    augmentin: crAnChecked("cran-atb-aug"),
+    vancomycine: crAnChecked("cran-atb-vanc"),
+    tazocilline: crAnChecked("cran-atb-tazo"),
+    daptomycine: crAnChecked("cran-atb-dapto")
+  };
+
+  crAnesthState.entretien = {
+    propofol: crAnChecked("cran-ent-prop"),
+    sufentanil: crAnChecked("cran-ent-suf"),
+    remifentanil: crAnChecked("cran-ent-remi"),
+    atracuriumIvse: crAnChecked("cran-ent-atrivse"),
+    esketamineIvse: crAnChecked("cran-ent-eskeivse")
+  };
+
+  crAnesthState.vasopresseur = document.querySelector('input[name="cran-vaso"]:checked')?.value || "0,16";
+
+  crAnesthState.autres = {
+    acideTranexamique: crAnChecked("cran-autre-atx"),
+    insulineIvse: crAnChecked("cran-autre-ins")
+  };
+
+  crAnesthState.abord = document.querySelector('input[name="cran-abord"]:checked')?.value || "sternotomie";
+
+  crAnesthState.prelevement = {
+    mig: crAnChecked("cran-prel-mig"),
+    mid: crAnChecked("cran-prel-mid"),
+    saphene: crAnChecked("cran-prel-saph")
+  };
+
+  crAnesthState.canulationArt = document.querySelector('input[name="cran-can-art"]:checked')?.value || "aortique";
+  crAnesthState.canulationVein = document.querySelector('input[name="cran-can-vein"]:checked')?.value || "atrio-cave";
+  crAnesthState.cardioplegie = document.querySelector('input[name="cran-cardioplegie"]:checked')?.value || "sang-froid";
+
+  crAnesthState.gesteRealise = crAnVal("cran-geste-realise");
+  crAnesthState.dureeCec = crAnVal("cran-duree-cec");
+  crAnesthState.clampage = crAnVal("cran-clampage");
+  crAnesthState.assistance = crAnVal("cran-assistance");
+  crAnesthState.heparine = crAnVal("cran-heparine");
+  crAnesthState.protamine = crAnVal("cran-protamine");
+
+  crAnesthState.rythme = document.querySelector('input[name="cran-rythme"]:checked')?.value || "sinusal";
+  crAnesthState.cei = crAnVal("cran-cei");
+
+  crAnesthState.ringer = crAnVal("cran-ringer");
+  crAnesthState.cellsaver = crAnVal("cran-cellsaver");
+  crAnesthState.cgr = crAnVal("cran-cgr");
+  crAnesthState.pfc = crAnVal("cran-pfc");
+  crAnesthState.cup = crAnVal("cran-cup");
+  crAnesthState.fibrinogene = crAnVal("cran-fibri");
+  crAnesthState.ppsb = crAnVal("cran-ppsb");
+  crAnesthState.cacl = crAnVal("cran-cacl");
+  crAnesthState.diurese = crAnVal("cran-diurese");
+
+  crAnesthState.noradMax = crAnVal("cran-noradmax");
+  crAnesthState.dobuMax = crAnVal("cran-dobumax");
+
+  crAnesthState.fevg = crAnVal("cran-fevg");
+  crAnesthState.itvSsao = crAnVal("cran-itv");
+  crAnesthState.etoPost = {
+    cinesegOk: crAnChecked("cran-eto-cine"),
+    vaOk: crAnChecked("cran-eto-va"),
+    vmOk: crAnChecked("cran-eto-vm"),
+    vdOk: crAnChecked("cran-eto-vd"),
+    aorteOk: crAnChecked("cran-eto-aorte")
+  };
+
+  crAnesthState.epicardiques = {
+    sentinelle: crAnChecked("cran-epi-sent"),
+    stimulation: crAnChecked("cran-epi-stim"),
+    freq: crAnVal("cran-epi-freq"),
+    seuilSens: crAnVal("cran-epi-ss"),
+    reglageSens: crAnVal("cran-epi-rs"),
+    seuilStim: crAnVal("cran-epi-stv"),
+    reglageStim: crAnVal("cran-epi-rstv")
+  };
+
+  crAnesthState.hbFin = crAnVal("cran-hbfin");
+  crAnesthState.lactateFin = crAnVal("cran-lactfin");
+  crAnesthState.noradFin = crAnVal("cran-noradfin");
+  crAnesthState.ventile = crAnChecked("cran-fin-vent");
+  crAnesthState.extube = crAnChecked("cran-fin-ext");
+
+  crAnesthState.destination = document.querySelector('input[name="cran-dest"]:checked')?.value || "usip";
+}
+
+function crAnMirrorGeste() {
+  const target = document.getElementById("cran-geste-realise");
+  if (!target) return;
+
+  const current = crAnSafe(target.value);
+  const built = crAnBuildGeste();
+
+  if (!current || current === crAnSafe(crAnesthState.gesteRealise)) {
+    target.value = built;
+    crAnesthState.gesteRealise = built;
+  }
+}
+
+function crAnBuildGeste() {
+  const parts = [crAnesthState.geste1, crAnesthState.geste2, crAnesthState.geste3]
+    .map(crAnSafe)
+    .filter(Boolean);
+  return parts.join(" + ");
+}
+
+function crAnPushSection(lines, title, bodyLines) {
+  const clean = bodyLines.filter(Boolean);
+  if (!clean.length) return;
+  if (lines.length) lines.push("");
+  lines.push(title.toUpperCase());
+  lines.push(...clean);
+}
+
+function crAnRenderSynth() {
+  if (!crAnesthState) return;
+  crAnSyncState();
+
+  const out = [];
+
+  // INTERVENTION
+  const intervention = [];
+  if (crAnSafe(crAnesthState.date)) intervention.push(`Date : ${crAnesthState.date}.`);
+
+  const geste = crAnBuildGeste();
+  if (geste) intervention.push(`Geste : ${geste}.`);
+
+  const chirs = [crAnesthState.chirurgien1, crAnesthState.chirurgien2].map(crAnSafe).filter(Boolean);
+  if (chirs.length) intervention.push(`Chirurgien${chirs.length > 1 ? "s" : ""} : ${chirs.join(" / ")}.`);
+
+  const anesths = [crAnesthState.anesth1, crAnesthState.anesth2].map(crAnSafe).filter(Boolean);
+  if (anesths.length) intervention.push(`Anesthésiste${anesths.length > 1 ? "s" : ""} : ${anesths.join(" / ")}.`);
+
+  crAnPushSection(out, "Intervention", intervention);
+
+  // INDUCTION / ENTRETIEN
+  const ia = [];
+
+  const cond = [];
+  if (crAnesthState.conditionnement.scope) cond.push("Scope 5 branches");
+  if (crAnesthState.conditionnement.spo2) cond.push("SpO2");
+  if (crAnesthState.conditionnement.vvp) cond.push("voie veineuse périphérique");
+  if (crAnesthState.conditionnement.bis) cond.push("BIS");
+  if (crAnesthState.conditionnement.nirs) cond.push("NIRS");
+  if (crAnesthState.conditionnement.kta) cond.push("cathéter artériel radial gauche");
+  if (crAnesthState.conditionnement.ktc) cond.push("cathéter veineux central 5 voies en jugulaire interne droite (insertion échoguidée sans complication)");
+  if (crAnesthState.conditionnement.eto) cond.push("sonde d’échographie transoesophagienne (insertion atraumatique)");
+  if (crAnesthState.conditionnement.swan) cond.push("cathéter de Swan Ganz en jugulaire interne droite (insertion échoguidée sans complication)");
+  if (cond.length) ia.push(`Conditionnement : ${cond.join(", ")}.`);
+
+  const ind = [];
+  if (crAnesthState.induction.propofol) {
+    if (crAnesthState.induction.remifentanil) ind.push("AIVOC Propofol/Rémifentanil");
+    else if (crAnesthState.induction.sufentanil) ind.push("AIVOC Propofol/Sufentanil");
+    else ind.push("AIVOC Propofol");
+  }
+  if (crAnesthState.induction.etomidate) ind.push("Etomidate 0,3mg/kg");
+  if (crAnesthState.induction.esketamine) ind.push("Eskétamine 0,25mg/kg");
+  if (ind.length) ia.push(`Induction : ${ind.join(", ")}.`);
+
+  const cura = [];
+  if (crAnesthState.curarisation.atracurium) cura.push("Atracurium");
+  if (crAnesthState.curarisation.celocurine) cura.push("Célocurine");
+  if (crAnesthState.curarisation.rocuronium) cura.push("Rocuronium");
+  if (cura.length) ia.push(`Curarisation par ${cura.join(", ")}.`);
+
+  const intu = [];
+  if (crAnesthState.intubation.ventilation) intu.push("Ventilation aisée au masque facial");
+  if (crAnesthState.intubation.sequenceRapide) intu.push("Intubation en séquence rapide");
+  if (crAnSafe(crAnesthState.intubation.sonde)) intu.push(`Sonde ${crAnesthState.intubation.sonde}`);
+  if (crAnSafe(crAnesthState.intubation.cormack)) intu.push(`Cormack ${crAnesthState.intubation.cormack}`);
+  if (crAnSafe(crAnesthState.intubation.pogo)) intu.push(`Vidéo-laryngoscopie par McGrath, POGO ${crAnesthState.intubation.pogo}%`);
+  if (crAnesthState.intubation.eschmann) intu.push("Utilisation d’un mandrin d’Eschmann");
+  if (intu.length) ia.push(`Intubation : ${intu.join(", ")}.`);
+
+  const atb = [];
+  if (crAnesthState.antibiotique.cefazoline) atb.push("Céfazoline 2g puis 1g/4h");
+  if (crAnesthState.antibiotique.augmentin) atb.push("Augmentin 2g puis 1g/2h");
+  if (crAnesthState.antibiotique.vancomycine) atb.push("Vancomycine 20mg/kg IVL");
+  if (crAnesthState.antibiotique.tazocilline) atb.push("Tazocilline 4g/4h");
+  if (crAnesthState.antibiotique.daptomycine) atb.push("Daptomycine 10mg/kg");
+  if (atb.length) ia.push(`Antibioprophylaxie : ${atb.join(", ")}.`);
+
+  const ent = [];
+  if (crAnesthState.entretien.propofol) {
+    if (crAnesthState.entretien.remifentanil) ent.push("AIVOC Propofol/Rémifentanil");
+    else if (crAnesthState.entretien.sufentanil) ent.push("AIVOC Propofol/Sufentanil");
+    else ent.push("AIVOC Propofol");
+  }
+  if (crAnesthState.entretien.atracuriumIvse) ent.push("Atracurium IVSE");
+  if (crAnesthState.entretien.esketamineIvse) ent.push("Eskétamine IVSE");
+  if (ent.length) ia.push(`Entretien : ${ent.join(", ")}.`);
+
+  if (crAnesthState.vasopresseur === "0,16") ia.push("Noradrénaline IVSE diluée à 0,16 mg/mL.");
+  if (crAnesthState.vasopresseur === "0,01") ia.push("Noradrénaline IVSE diluée à 0,01 mg/mL.");
+
+  if (crAnesthState.autres.acideTranexamique) ia.push("Antifibrinolyse par Acide tranexamique 20mg/kg puis 2 mg/kg/h.");
+  if (crAnesthState.autres.insulineIvse) ia.push("Insuline IVSE.");
+
+  crAnPushSection(out, "Induction et entretien anesthésie", ia);
+
+  // ETO PRE-CEC
+  const etoPre = [];
+  const labelVariant =
+    crAnesthState.etoVariant === "plastie_aortique" ? "CR ETO plastie aortique" :
+    crAnesthState.etoVariant === "plastie_mitrale" ? "CR ETO plastie mitrale" :
+    "CR ETO standard";
+  etoPre.push(`Compte rendu ETO pré-CEC disponible (${labelVariant}).`);
+  crAnPushSection(out, "ETO pré-CEC", etoPre);
+
+  // CHIRURGIE & CEC
+  const chircec = [];
+  const abordMap = {
+    "sternotomie": "Sternotomie sans complication",
+    "thoracotomie-droite": "Thoracotomie droite sans complication",
+    "thoracotomie-gauche": "Thoracotomie gauche sans complication",
+    "sous-xyphoidien": "Abord sous-xyphoïdien sans complication"
+  };
+  if (abordMap[crAnesthState.abord]) chircec.push(abordMap[crAnesthState.abord] + ".");
+
+  if (crAnesthState.prelevement.mig) chircec.push("Prélèvement mammaire interne gauche sans complication.");
+  if (crAnesthState.prelevement.mid) chircec.push("Prélèvement mammaire interne droite sans complication.");
+  if (crAnesthState.prelevement.saphene) chircec.push("Prélèvement saphène sans complication.");
+
+  const artMap = {
+    "aortique": "Canulation artérielle aortique.",
+    "femorale": "Canulation artérielle fémorale.",
+    "axillaire-droite": "Canulation artérielle axillaire droite.",
+    "axillaire-gauche": "Canulation artérielle axillaire gauche."
+  };
+  if (artMap[crAnesthState.canulationArt]) chircec.push(artMap[crAnesthState.canulationArt]);
+
+  const veinMap = {
+    "atrio-cave": "Canulation veineuse atrio-cave.",
+    "bi-cavale": "Canulation veineuse bi-cavale.",
+    "femorale": "Canulation veineuse fémorale.",
+    "jid": "Canulation veineuse en jugulaire interne droite."
+  };
+  if (veinMap[crAnesthState.canulationVein]) chircec.push(veinMap[crAnesthState.canulationVein]);
+
+  const cardMap = {
+    "sang-froid": "Cardioplégie par sang froid.",
+    "sang-chaud": "Cardioplégie par sang chaud.",
+    "custodiol": "Cardioplégie par Custodiol."
+  };
+  if (cardMap[crAnesthState.cardioplegie]) chircec.push(cardMap[crAnesthState.cardioplegie]);
+
+  if (crAnSafe(crAnesthState.gesteRealise)) chircec.push(`Geste réalisé : ${crAnesthState.gesteRealise}.`);
+
+  const durees = [];
+  if (crAnSafe(crAnesthState.dureeCec)) durees.push(`CEC ${crAnesthState.dureeCec} min`);
+  if (crAnSafe(crAnesthState.clampage)) durees.push(`Clampage aortique ${crAnesthState.clampage} min`);
+  if (crAnSafe(crAnesthState.assistance)) durees.push(`Assistance ${crAnesthState.assistance} min`);
+  if (durees.length) chircec.push(`Durées : ${durees.join(", ")}.`);
+
+  if (crAnSafe(crAnesthState.heparine)) chircec.push(`Héparine ${crAnesthState.heparine} UI pour maintenir un objectif d’ACT > 400s.`);
+  if (crAnSafe(crAnesthState.protamine)) chircec.push(`Antagonisation par Protamine ${crAnesthState.protamine} UI.`);
+
+  crAnPushSection(out, "Chirurgie & CEC", chircec);
+
+  // POST CEC
+  const post = [];
+  const rythmeMap = {
+    sinusal: "Sortie de CEC en rythme régulier et sinusal",
+    fv: "Sortie de CEC en fibrillation ventriculaire",
+    fa: "Sortie de CEC en fibrillation auriculaire",
+    bav: "Sortie de CEC en BAV complet"
+  };
+  if (rythmeMap[crAnesthState.rythme]) post.push(rythmeMap[crAnesthState.rythme] + ".");
+  if (crAnSafe(crAnesthState.cei)) post.push(`Administration de ${crAnesthState.cei} CEI.`);
+
+  const io = [];
+  if (crAnSafe(crAnesthState.ringer)) io.push(`Expansion volémique : Ringer lactate ${crAnesthState.ringer} mL`);
+  const transf = [];
+  if (crAnSafe(crAnesthState.cellsaver)) transf.push(`CellSaver ${crAnesthState.cellsaver} mL`);
+  if (crAnSafe(crAnesthState.cgr)) transf.push(`${crAnesthState.cgr} CGR`);
+  if (crAnSafe(crAnesthState.pfc)) transf.push(`${crAnesthState.pfc} PFC`);
+  if (crAnSafe(crAnesthState.cup)) transf.push(`${crAnesthState.cup} CUP`);
+  if (crAnSafe(crAnesthState.fibrinogene)) transf.push(`fibrinogène ${crAnesthState.fibrinogene} g`);
+  if (crAnSafe(crAnesthState.ppsb)) transf.push(`PPSB ${crAnesthState.ppsb} UI`);
+  if (crAnSafe(crAnesthState.cacl)) transf.push(`CaCl ${crAnesthState.cacl} g`);
+  if (transf.length) io.push(`Transfusion / hémostase : ${transf.join(", ")}`);
+  if (crAnSafe(crAnesthState.diurese)) io.push(`Diurèse : ${crAnesthState.diurese} mL`);
+  if (io.length) post.push(`Bilan entrée-sortie / transfusion : ${io.join(" ; ")}.`);
+
+  const cate = [];
+  if (crAnSafe(crAnesthState.noradMax)) cate.push(`Noradrénaline ${crAnesthState.noradMax} mg/h`);
+  if (crAnSafe(crAnesthState.dobuMax)) cate.push(`Dobutamine ${crAnesthState.dobuMax} µg/kg/min`);
+  if (cate.length) post.push(`Catécholamines (max) : ${cate.join(", ")}.`);
+
+  const etoPost = [];
+  if (crAnSafe(crAnesthState.fevg)) etoPost.push(`FEVG ${crAnesthState.fevg} %`);
+  if (crAnSafe(crAnesthState.itvSsao)) etoPost.push(`ITV Ssao ${crAnesthState.itvSsao} cm`);
+  if (crAnesthState.etoPost.cinesegOk) etoPost.push("absence de trouble de cinétique segmentaire");
+  if (crAnesthState.etoPost.vaOk) etoPost.push("absence de valvulopathie aortique");
+  if (crAnesthState.etoPost.vmOk) etoPost.push("absence de valvulopathie mitrale");
+  if (crAnesthState.etoPost.vdOk) etoPost.push("fonction systolique du ventricule droit préservée");
+  if (crAnesthState.etoPost.aorteOk) etoPost.push("intégrité de la paroi aortique");
+  if (etoPost.length) post.push(`ETO post-CEC : ${etoPost.join(", ")}.`);
+
+  const epi = [];
+  if (crAnesthState.epicardiques.sentinelle && crAnSafe(crAnesthState.epicardiques.freq)) {
+    epi.push(`Réglées en sentinelle à ${crAnesthState.epicardiques.freq} /min`);
+  }
+  if (crAnesthState.epicardiques.stimulation && crAnSafe(crAnesthState.epicardiques.freq)) {
+    epi.push(`Réglées en stimulation à ${crAnesthState.epicardiques.freq} /min`);
+  }
+  if (crAnSafe(crAnesthState.epicardiques.seuilSens) || crAnSafe(crAnesthState.epicardiques.reglageSens)) {
+    epi.push(`seuil de sensibilité ${crAnesthState.epicardiques.seuilSens || "?"} mV (réglé à ${crAnesthState.epicardiques.reglageSens || "?"} mV)`);
+  }
+  if (crAnSafe(crAnesthState.epicardiques.seuilStim) || crAnSafe(crAnesthState.epicardiques.reglageStim)) {
+    epi.push(`seuil de stimulation ${crAnesthState.epicardiques.seuilStim || "?"} V (réglé à ${crAnesthState.epicardiques.reglageStim || "?"} V)`);
+  }
+  if (epi.length) post.push(`Électrodes épicardiques : ${epi.join(", ")}.`);
+
+  const fin = [];
+  if (crAnSafe(crAnesthState.hbFin)) fin.push(`Hb ${crAnesthState.hbFin} g/dL`);
+  if (crAnSafe(crAnesthState.lactateFin)) fin.push(`lactate ${crAnesthState.lactateFin} mmol/L`);
+  if (crAnSafe(crAnesthState.noradFin)) fin.push(`Noradrénaline ${crAnesthState.noradFin} mg/h`);
+  if (crAnesthState.ventile) fin.push("poursuite de la ventilation mécanique");
+  if (crAnesthState.extube) fin.push("extubation au bloc opératoire");
+  if (fin.length) post.push(`En fin d’intervention : ${fin.join(", ")}.`);
+
+  const destMap = {
+    usip: "USIP",
+    "rea-3eme": "réanimation 3ème",
+    sspi: "SSPI",
+    "rea-1er": "réanimation 1er"
+  };
+  if (destMap[crAnesthState.destination]) post.push(`Transfert en ${destMap[crAnesthState.destination]}.`);
+
+  crAnPushSection(out, "Prise en charge post-CEC", post);
+
+  const box = document.getElementById("cr-an-synth-text");
+  if (box) box.textContent = out.join("\n");
+}
+
+async function crAnCopySynth() {
+  const txt = document.getElementById("cr-an-synth-text")?.textContent || "";
+  if (!txt) return;
+  try {
+    await navigator.clipboard.writeText(txt);
+  } catch (_) {}
+}
+
+function crAnReset() {
+  crAnesthState = crAnInitState();
+  renderCrAnTabAnesth();
+}
+
+function crAnInitAutocomplete() {
+  // si tu as déjà une vraie source annuaire globale, branche-la ici
+  // sinon on applique juste un datalist local minimal pour ne rien casser
+
+  crAnAttachDatalist("cran-chir1", "cran-chir-list", [
+    "A. Chirurgien cardiaque",
+    "B. Chirurgien cardiaque"
+  ]);
+  crAnAttachDatalist("cran-chir2", "cran-chir-list", [
+    "A. Chirurgien cardiaque",
+    "B. Chirurgien cardiaque"
+  ]);
+  crAnAttachDatalist("cran-an1", "cran-an-list", [
+    "A. Anesthésiste réanimateur",
+    "B. Anesthésiste réanimateur"
+  ]);
+  crAnAttachDatalist("cran-an2", "cran-an-list", [
+    "A. Anesthésiste réanimateur",
+    "B. Anesthésiste réanimateur"
+  ]);
+}
+
+function crAnAttachDatalist(inputId, listId, items) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+
+  let list = document.getElementById(listId);
+  if (!list) {
+    list = document.createElement("datalist");
+    list.id = listId;
+    list.innerHTML = items.map(v => `<option value="${crAnEsc(v)}"></option>`).join("");
+    document.body.appendChild(list);
+  }
+  input.setAttribute("list", listId);
+}
+
+
 
 function renderInterventionPontages() {
   const encadres = [
