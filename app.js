@@ -2170,11 +2170,12 @@ function renderAnesthChirCecMenu() {
         </div>
 
 <div class="cr-anesth-entry-wrap">
-            <button class="cr-anesth-entry-btn" type="button" onclick="openCrAnesthModal()">
-              <img src="img/cracc.png" alt="Compte rendu d’anesthésie">
-            </button>
-          </div>
-        </div>
+  <button class="cr-anesth-entry-btn cr-anesth-text-btn"
+          type="button"
+          onclick="openCrAnesthModal()">
+    Compte rendu d’anesthésie
+  </button>
+</div>
 
         <h3>Chirurgies programmées sous CEC</h3>
         <div class="grid">
