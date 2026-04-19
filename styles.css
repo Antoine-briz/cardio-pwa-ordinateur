@@ -9779,3 +9779,61 @@ table.bact-table p:last-child {
   margin-top: 10px;
   min-height: 18px;
 }
+
+/* =========================================================
+   PATCH FINAL CR ETO — à laisser tout en bas
+   ========================================================= */
+
+.acr-modal.eto-modal {
+  padding: 4px !important;
+}
+
+.acr-modal.eto-modal .acr-modal-card {
+  width: calc(100vw - 8px) !important;
+  max-width: none !important;
+  height: calc(100vh - 8px) !important;
+  max-height: calc(100vh - 8px) !important;
+  margin: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.acr-modal.eto-modal .acr-modal-body {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: hidden !important;
+  padding: 6px !important;
+}
+
+.acr-modal.eto-modal .eto-desktop-grid {
+  height: 100% !important;
+  min-height: 0 !important;
+  align-items: stretch !important;
+}
+
+.acr-modal.eto-modal .eto-left,
+.acr-modal.eto-modal .eto-right {
+  min-height: 0 !important;
+  height: 100% !important;
+}
+
+.acr-modal.eto-modal .eto-table-wrap {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: auto !important;
+}
+
+.acr-modal.eto-modal .eto-synth-panel {
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+}
+
+.acr-modal.eto-modal .eto-synth-box {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: auto !important;
+}
