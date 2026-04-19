@@ -9403,24 +9403,43 @@ function openCrAnesthModal() {
 
   const overlay = document.createElement("div");
   overlay.id = "cr-an-overlay";
-  overlay.className = "acr-overlay";
+  overlay.className = "acr-modal"; // ✅ même conteneur racine que CR ETO
 
   overlay.innerHTML = `
-    <div class="acr-modal eto-modal eto-fullscreen cr-an-modal" role="dialog" aria-modal="true">
-      <div class="acr-modal-header">
-        <div class="cr-an-tabs">
-          <button type="button" id="cr-an-tab-anesth" class="cr-an-tab is-active" onclick="switchCrAnTab('anesth')">
-            CR Anesthésie
-          </button>
-          <button type="button" id="cr-an-tab-eto" class="cr-an-tab" onclick="switchCrAnTab('eto')">
-            CR ETO
-          </button>
-        </div>
+    <div class="acr-modal-card eto-fullscreen eto-modal cr-an-modal" role="dialog" aria-modal="true">
+      
+      <div class="cr-an-topbar">
+  <div class="cr-an-topbar-left">
+    <div class="cr-an-tabs" role="tablist" aria-label="Navigation compte rendu">
+      <button type="button"
+              id="cr-an-tab-anesth"
+              class="cr-an-tab is-active"
+              onclick="switchCrAnTab('anesth')"
+              role="tab"
+              aria-selected="true">
+        CR Anesthésie
+      </button>
 
-        <button class="acr-close-btn" type="button" onclick="closeCrAnesthModal()" aria-label="Fermer">✕</button>
-      </div>
+      <button type="button"
+              id="cr-an-tab-eto"
+              class="cr-an-tab"
+              onclick="switchCrAnTab('eto')"
+              role="tab"
+              aria-selected="false">
+        CR ETO
+      </button>
+    </div>
+  </div>
 
-      <div class="acr-modal-body cr-an-modal-body">
+  <button class="acr-close-btn cr-an-close-btn"
+          type="button"
+          onclick="closeCrAnesthModal()"
+          aria-label="Fermer">
+    ✕
+  </button>
+</div>
+
+      <div class="acr-modal-body cr-an-body">
         <div id="cr-an-tab-content-anesth"></div>
         <div id="cr-an-tab-content-eto" class="hidden"></div>
       </div>
@@ -9436,11 +9455,7 @@ function openCrAnesthModal() {
   renderCrAnTabAnesth();
   renderCrAnTabEto();
 
-  if (crAnesthState.activeTab === "eto") {
-    switchCrAnTab("eto");
-  } else {
-    switchCrAnTab("anesth");
-  }
+  switchCrAnTab(crAnesthState.activeTab || "anesth");
 }
 
 function closeCrAnesthModal() {
@@ -9457,8 +9472,16 @@ function switchCrAnTab(tab) {
   const p1 = document.getElementById("cr-an-tab-content-anesth");
   const p2 = document.getElementById("cr-an-tab-content-eto");
 
-  if (b1) b1.classList.toggle("is-active", tab === "anesth");
-  if (b2) b2.classList.toggle("is-active", tab === "eto");
+  if (b1) {
+    b1.classList.toggle("is-active", tab === "anesth");
+    b1.setAttribute("aria-selected", tab === "anesth" ? "true" : "false");
+  }
+
+  if (b2) {
+    b2.classList.toggle("is-active", tab === "eto");
+    b2.setAttribute("aria-selected", tab === "eto" ? "true" : "false");
+  }
+
   if (p1) p1.classList.toggle("hidden", tab !== "anesth");
   if (p2) p2.classList.toggle("hidden", tab !== "eto");
 
@@ -9466,7 +9489,6 @@ function switchCrAnTab(tab) {
     renderCrAnTabEto();
   }
 }
-
 function crAnOpenEtoVariant(variant) {
   if (!crAnesthState) return;
   crAnesthState.etoVariant = variant || "standard";
@@ -9524,60 +9546,62 @@ function renderCrAnTabAnesth() {
   if (!mount || !crAnesthState) return;
 
   mount.innerHTML = `
-    <div class="eto-desktop-grid cr-an-grid">
+    <div class="eto-desktop-grid cr-an-desktop-grid">
 
       <div class="eto-left cr-an-left">
         <div class="cr-an-grid-5">
 
           <!-- 1 -->
-          <section class="cr-an-cell">
+          <section class="cr-an-cell cr-an-cell-intervention">
             <div class="cr-an-cell-title">Intervention</div>
 
             <div class="cr-an-form-row">
               <label>Date</label>
-              <input type="text" id="cran-date" value="${crAnEsc(crAnesthState.date)}" oninput="crAnSyncState(); crAnRenderSynth();">
+              <input type="text" id="cran-date" value="${crAnEsc(crAnesthState.date)}" placeholder="XX/XX/XXXX" oninput="crAnSyncState(); crAnRenderSynth();">
             </div>
 
             <div class="cr-an-form-row">
               <label>Geste</label>
-              <input type="text" id="cran-geste1" placeholder="Geste principal" value="${crAnEsc(crAnesthState.geste1)}" oninput="crAnSyncState(); crAnMirrorGeste(); crAnRenderSynth();">
+              <input type="text" id="cran-geste1" placeholder="Idem choix « Protocole CEC »" value="${crAnEsc(crAnesthState.geste1)}" oninput="crAnSyncState(); crAnMirrorGeste(); crAnRenderSynth();">
             </div>
 
             <div class="cr-an-form-row">
               <label>+</label>
-              <input type="text" id="cran-geste2" placeholder="Geste additionnel" value="${crAnEsc(crAnesthState.geste2)}" oninput="crAnSyncState(); crAnMirrorGeste(); crAnRenderSynth();">
+              <input type="text" id="cran-geste2" placeholder="Ajout de geste possible" value="${crAnEsc(crAnesthState.geste2)}" oninput="crAnSyncState(); crAnMirrorGeste(); crAnRenderSynth();">
             </div>
 
             <div class="cr-an-form-row">
               <label>+</label>
-              <input type="text" id="cran-geste3" placeholder="Geste additionnel" value="${crAnEsc(crAnesthState.geste3)}" oninput="crAnSyncState(); crAnMirrorGeste(); crAnRenderSynth();">
+              <input type="text" id="cran-geste3" placeholder="Ajout de geste possible" value="${crAnEsc(crAnesthState.geste3)}" oninput="crAnSyncState(); crAnMirrorGeste(); crAnRenderSynth();">
             </div>
 
             <div class="cr-an-form-row">
               <label>Chirurgien</label>
-              <input type="text" id="cran-chir1" value="${crAnEsc(crAnesthState.chirurgien1)}" oninput="crAnSyncState(); crAnRenderSynth();">
+              <input type="text" id="cran-chir1" placeholder="Idem choix annuaire" value="${crAnEsc(crAnesthState.chirurgien1)}" oninput="crAnSyncState(); crAnRenderSynth();">
             </div>
+
             <div class="cr-an-form-row">
-              <label>Chirurgien 2</label>
-              <input type="text" id="cran-chir2" value="${crAnEsc(crAnesthState.chirurgien2)}" oninput="crAnSyncState(); crAnRenderSynth();">
+              <label>Chirurgien</label>
+              <input type="text" id="cran-chir2" placeholder="2e choix possible" value="${crAnEsc(crAnesthState.chirurgien2)}" oninput="crAnSyncState(); crAnRenderSynth();">
             </div>
 
             <div class="cr-an-form-row">
               <label>Anesthésiste</label>
-              <input type="text" id="cran-an1" value="${crAnEsc(crAnesthState.anesth1)}" oninput="crAnSyncState(); crAnRenderSynth();">
+              <input type="text" id="cran-an1" placeholder="Idem choix annuaire" value="${crAnEsc(crAnesthState.anesth1)}" oninput="crAnSyncState(); crAnRenderSynth();">
             </div>
+
             <div class="cr-an-form-row">
-              <label>Anesthésiste 2</label>
-              <input type="text" id="cran-an2" value="${crAnEsc(crAnesthState.anesth2)}" oninput="crAnSyncState(); crAnRenderSynth();">
+              <label>Anesthésiste</label>
+              <input type="text" id="cran-an2" placeholder="2e choix possible" value="${crAnEsc(crAnesthState.anesth2)}" oninput="crAnSyncState(); crAnRenderSynth();">
             </div>
           </section>
 
           <!-- 2 -->
-          <section class="cr-an-cell">
+          <section class="cr-an-cell cr-an-cell-induction">
             <div class="cr-an-cell-title">Induction et entretien anesthésie</div>
 
             <div class="cr-an-subtitle">Conditionnement</div>
-            <div class="cr-an-check-grid">
+            <div class="cr-an-check-grid compact2">
               ${crAnCheck("cran-scope", "Scope", crAnesthState.conditionnement.scope)}
               ${crAnCheck("cran-spo2", "SpO2", crAnesthState.conditionnement.spo2)}
               ${crAnCheck("cran-vvp", "VVP", crAnesthState.conditionnement.vvp)}
@@ -9590,7 +9614,7 @@ function renderCrAnTabAnesth() {
             </div>
 
             <div class="cr-an-subtitle">Induction</div>
-            <div class="cr-an-check-grid">
+            <div class="cr-an-check-grid compact2">
               ${crAnCheck("cran-ind-propofol", "Propofol", crAnesthState.induction.propofol)}
               ${crAnCheck("cran-ind-suf", "Sufentanil", crAnesthState.induction.sufentanil)}
               ${crAnCheck("cran-ind-remi", "Rémifentanil", crAnesthState.induction.remifentanil)}
@@ -9599,20 +9623,20 @@ function renderCrAnTabAnesth() {
             </div>
 
             <div class="cr-an-subtitle">Curarisation</div>
-            <div class="cr-an-check-grid">
+            <div class="cr-an-check-grid compact2">
               ${crAnCheck("cran-cur-atr", "Atracurium", crAnesthState.curarisation.atracurium)}
               ${crAnCheck("cran-cur-celo", "Célocurine", crAnesthState.curarisation.celocurine)}
               ${crAnCheck("cran-cur-rocu", "Rocuronium", crAnesthState.curarisation.rocuronium)}
             </div>
 
             <div class="cr-an-subtitle">Intubation</div>
-            <div class="cr-an-check-grid">
+            <div class="cr-an-check-grid compact2">
               ${crAnCheck("cran-int-vent", "Ventilation", crAnesthState.intubation.ventilation)}
               ${crAnCheck("cran-int-sr", "Séquence rapide", crAnesthState.intubation.sequenceRapide)}
               ${crAnCheck("cran-int-esch", "Eschmann", crAnesthState.intubation.eschmann)}
             </div>
 
-            <div class="cr-an-inline3">
+            <div class="cr-an-inline3 compact-inputs">
               <div>
                 <label>Sonde</label>
                 <select id="cran-int-sonde" onchange="crAnSyncState(); crAnRenderSynth();">
@@ -9626,13 +9650,13 @@ function renderCrAnTabAnesth() {
                 </select>
               </div>
               <div>
-                <label>POGO %</label>
-                <input type="number" id="cran-int-pogo" value="${crAnEsc(crAnesthState.intubation.pogo)}" oninput="crAnSyncState(); crAnRenderSynth();">
+                <label>POGO</label>
+                <input type="number" id="cran-int-pogo" placeholder="XXX" value="${crAnEsc(crAnesthState.intubation.pogo)}" oninput="crAnSyncState(); crAnRenderSynth();">
               </div>
             </div>
 
             <div class="cr-an-subtitle">Antibiotique</div>
-            <div class="cr-an-check-grid">
+            <div class="cr-an-check-grid compact2">
               ${crAnCheck("cran-atb-cef", "Céfazoline", crAnesthState.antibiotique.cefazoline)}
               ${crAnCheck("cran-atb-aug", "Augmentin", crAnesthState.antibiotique.augmentin)}
               ${crAnCheck("cran-atb-vanc", "Vancomycine", crAnesthState.antibiotique.vancomycine)}
@@ -9641,7 +9665,7 @@ function renderCrAnTabAnesth() {
             </div>
 
             <div class="cr-an-subtitle">Entretien</div>
-            <div class="cr-an-check-grid">
+            <div class="cr-an-check-grid compact2">
               ${crAnCheck("cran-ent-prop", "Propofol", crAnesthState.entretien.propofol)}
               ${crAnCheck("cran-ent-suf", "Sufentanil", crAnesthState.entretien.sufentanil)}
               ${crAnCheck("cran-ent-remi", "Rémifentanil", crAnesthState.entretien.remifentanil)}
@@ -9650,23 +9674,23 @@ function renderCrAnTabAnesth() {
             </div>
 
             <div class="cr-an-subtitle">Vasopresseur</div>
-            <div class="cr-an-inline2">
-              <label><input type="radio" name="cran-vaso" value="0,16" ${crAnesthState.vasopresseur==="0,16"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Noradrénaline 0,16</label>
-              <label><input type="radio" name="cran-vaso" value="0,01" ${crAnesthState.vasopresseur==="0,01"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Noradrénaline 0,01</label>
+            <div class="cr-an-inline2 compact-radios">
+              <label><input type="radio" name="cran-vaso" value="0,16" ${crAnesthState.vasopresseur==="0,16"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Noradrénaline 0,16 mg/mL</label>
+              <label><input type="radio" name="cran-vaso" value="0,01" ${crAnesthState.vasopresseur==="0,01"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Noradrénaline 0,01 mg/mL</label>
             </div>
 
             <div class="cr-an-subtitle">Autres</div>
-            <div class="cr-an-check-grid">
+            <div class="cr-an-check-grid compact2">
               ${crAnCheck("cran-autre-atx", "Acide tranexamique", crAnesthState.autres.acideTranexamique)}
               ${crAnCheck("cran-autre-ins", "Insuline IVSE", crAnesthState.autres.insulineIvse)}
             </div>
           </section>
 
           <!-- 3 -->
-          <section class="cr-an-cell">
+          <section class="cr-an-cell cr-an-cell-eto">
             <div class="cr-an-cell-title">ETO pré-CEC</div>
 
-            <div class="antibio-btn-group">
+            <div class="cr-an-eto-buttons">
               <button class="btn" type="button" onclick="crAnOpenEtoVariant('standard')">CR ETO standard</button>
               <button class="btn" type="button" onclick="crAnOpenEtoVariant('plastie_aortique')">CR ETO plastie aortique</button>
               <button class="btn" type="button" onclick="crAnOpenEtoVariant('plastie_mitrale')">CR ETO plastie mitrale</button>
@@ -9674,11 +9698,11 @@ function renderCrAnTabAnesth() {
           </section>
 
           <!-- 4 -->
-          <section class="cr-an-cell">
+          <section class="cr-an-cell cr-an-cell-chir">
             <div class="cr-an-cell-title">Chirurgie & CEC</div>
 
             <div class="cr-an-subtitle">Abord</div>
-            <div class="cr-an-inline3">
+            <div class="cr-an-check-grid compact2">
               <label><input type="radio" name="cran-abord" value="sternotomie" ${crAnesthState.abord==="sternotomie"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Sternotomie</label>
               <label><input type="radio" name="cran-abord" value="thoracotomie-droite" ${crAnesthState.abord==="thoracotomie-droite"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Thoracotomie Dte</label>
               <label><input type="radio" name="cran-abord" value="thoracotomie-gauche" ${crAnesthState.abord==="thoracotomie-gauche"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Thoracotomie Gche</label>
@@ -9686,22 +9710,24 @@ function renderCrAnTabAnesth() {
             </div>
 
             <div class="cr-an-subtitle">Prélèvement</div>
-            <div class="cr-an-check-grid">
+            <div class="cr-an-check-grid compact3">
               ${crAnCheck("cran-prel-mig", "MIG", crAnesthState.prelevement.mig)}
               ${crAnCheck("cran-prel-mid", "MID", crAnesthState.prelevement.mid)}
-              ${crAnCheck("cran-prel-saph", "Saphène", crAnesthState.prelevement.saphene)}
+              ${crAnCheck("cran-prel-saph", "saphène", crAnesthState.prelevement.saphene)}
             </div>
 
-            <div class="cr-an-subtitle">Canulation artérielle</div>
-            <div class="cr-an-inline3">
+            <div class="cr-an-subtitle">Canulations</div>
+
+            <div class="cr-an-subtitle cr-an-mini-subtitle">Artérielle</div>
+            <div class="cr-an-check-grid compact2">
               <label><input type="radio" name="cran-can-art" value="aortique" ${crAnesthState.canulationArt==="aortique"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Aortique</label>
               <label><input type="radio" name="cran-can-art" value="femorale" ${crAnesthState.canulationArt==="femorale"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Fémorale</label>
               <label><input type="radio" name="cran-can-art" value="axillaire-droite" ${crAnesthState.canulationArt==="axillaire-droite"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Axillaire Dte</label>
               <label><input type="radio" name="cran-can-art" value="axillaire-gauche" ${crAnesthState.canulationArt==="axillaire-gauche"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Axillaire Gche</label>
             </div>
 
-            <div class="cr-an-subtitle">Canulation veineuse</div>
-            <div class="cr-an-inline3">
+            <div class="cr-an-subtitle cr-an-mini-subtitle">Veineuse</div>
+            <div class="cr-an-check-grid compact2">
               <label><input type="radio" name="cran-can-vein" value="atrio-cave" ${crAnesthState.canulationVein==="atrio-cave"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Atrio-cave</label>
               <label><input type="radio" name="cran-can-vein" value="bi-cavale" ${crAnesthState.canulationVein==="bi-cavale"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Bi-cavale</label>
               <label><input type="radio" name="cran-can-vein" value="femorale" ${crAnesthState.canulationVein==="femorale"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Fémorale</label>
@@ -9709,7 +9735,7 @@ function renderCrAnTabAnesth() {
             </div>
 
             <div class="cr-an-subtitle">Cardioplégie</div>
-            <div class="cr-an-inline3">
+            <div class="cr-an-check-grid compact3">
               <label><input type="radio" name="cran-cardioplegie" value="sang-froid" ${crAnesthState.cardioplegie==="sang-froid"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Sang froid</label>
               <label><input type="radio" name="cran-cardioplegie" value="sang-chaud" ${crAnesthState.cardioplegie==="sang-chaud"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Sang chaud</label>
               <label><input type="radio" name="cran-cardioplegie" value="custodiol" ${crAnesthState.cardioplegie==="custodiol"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Custodiol</label>
@@ -9720,97 +9746,108 @@ function renderCrAnTabAnesth() {
               <input type="text" id="cran-geste-realise" value="${crAnEsc(crAnesthState.gesteRealise || crAnBuildGeste())}" oninput="crAnSyncState(); crAnRenderSynth();">
             </div>
 
-            <div class="cr-an-inline3">
-              <div><label>CEC min</label><input type="number" id="cran-duree-cec" value="${crAnEsc(crAnesthState.dureeCec)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
-              <div><label>Clampage min</label><input type="number" id="cran-clampage" value="${crAnEsc(crAnesthState.clampage)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
-              <div><label>Assistance min</label><input type="number" id="cran-assistance" value="${crAnEsc(crAnesthState.assistance)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+            <div class="cr-an-inline3 compact-inputs">
+              <div><label>CEC</label><input type="number" id="cran-duree-cec" placeholder="XX" value="${crAnEsc(crAnesthState.dureeCec)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>Clampage aortique</label><input type="number" id="cran-clampage" placeholder="XX" value="${crAnEsc(crAnesthState.clampage)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>Assistance</label><input type="number" id="cran-assistance" placeholder="XX" value="${crAnEsc(crAnesthState.assistance)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
             </div>
 
-            <div class="cr-an-inline2">
-              <div><label>Héparine UI</label><input type="number" id="cran-heparine" value="${crAnEsc(crAnesthState.heparine)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
-              <div><label>Protamine UI</label><input type="number" id="cran-protamine" value="${crAnEsc(crAnesthState.protamine)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+            <div class="cr-an-inline2 compact-inputs">
+              <div><label>Héparine totale</label><input type="number" id="cran-heparine" placeholder="XX" value="${crAnEsc(crAnesthState.heparine)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>Protamine</label><input type="number" id="cran-protamine" placeholder="XX" value="${crAnEsc(crAnesthState.protamine)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
             </div>
           </section>
 
           <!-- 5 -->
-          <section class="cr-an-cell">
+          <section class="cr-an-cell cr-an-cell-post">
             <div class="cr-an-cell-title">Prise en charge post-CEC</div>
 
             <div class="cr-an-subtitle">Rythme cardiaque</div>
-            <div class="cr-an-inline3">
+            <div class="cr-an-check-grid compact2">
               <label><input type="radio" name="cran-rythme" value="sinusal" ${crAnesthState.rythme==="sinusal"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Sinusal</label>
               <label><input type="radio" name="cran-rythme" value="fv" ${crAnesthState.rythme==="fv"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> FV</label>
               <label><input type="radio" name="cran-rythme" value="fa" ${crAnesthState.rythme==="fa"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> FA</label>
               <label><input type="radio" name="cran-rythme" value="bav" ${crAnesthState.rythme==="bav"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> BAV</label>
             </div>
+
             <div class="cr-an-form-row">
-              <label>Administration de CEI</label>
-              <input type="text" id="cran-cei" value="${crAnEsc(crAnesthState.cei)}" oninput="crAnSyncState(); crAnRenderSynth();">
+              <label>Administration de</label>
+              <input type="text" id="cran-cei" placeholder="XX CEI" value="${crAnEsc(crAnesthState.cei)}" oninput="crAnSyncState(); crAnRenderSynth();">
             </div>
 
-            <div class="cr-an-subtitle">Bilan entrée-sortie / transfusion</div>
-            <div class="cr-an-form-row"><label>Ringer lactate mL</label><input type="number" id="cran-ringer" value="${crAnEsc(crAnesthState.ringer)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
-            <div class="cr-an-inline3">
-              <div><label>CellSaver mL</label><input type="number" id="cran-cellsaver" value="${crAnEsc(crAnesthState.cellsaver)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
-              <div><label>CGR</label><input type="number" id="cran-cgr" value="${crAnEsc(crAnesthState.cgr)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
-              <div><label>PFC</label><input type="number" id="cran-pfc" value="${crAnEsc(crAnesthState.pfc)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
-            </div>
-            <div class="cr-an-inline4">
-              <div><label>CUP</label><input type="number" id="cran-cup" value="${crAnEsc(crAnesthState.cup)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
-              <div><label>Fibrinogène g</label><input type="number" id="cran-fibri" value="${crAnEsc(crAnesthState.fibrinogene)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
-              <div><label>PPSB UI</label><input type="number" id="cran-ppsb" value="${crAnEsc(crAnesthState.ppsb)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
-              <div><label>CaCl g</label><input type="number" id="cran-cacl" value="${crAnEsc(crAnesthState.cacl)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
-            </div>
-            <div class="cr-an-form-row"><label>Diurèse mL</label><input type="number" id="cran-diurese" value="${crAnEsc(crAnesthState.diurese)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+            <div class="cr-an-subtitle">Bilan entrée-sortie/transfusion</div>
 
-            <div class="cr-an-subtitle">Catécholamines max</div>
-            <div class="cr-an-inline2">
-              <div><label>Noradrénaline mg/h</label><input type="number" step="any" id="cran-noradmax" value="${crAnEsc(crAnesthState.noradMax)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
-              <div><label>Dobutamine µg/kg/min</label><input type="number" step="any" id="cran-dobumax" value="${crAnEsc(crAnesthState.dobuMax)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+            <div class="cr-an-form-row">
+              <label>Expansion volémique</label>
+              <input type="number" id="cran-ringer" placeholder="Ringer lactate XXXX mL" value="${crAnEsc(crAnesthState.ringer)}" oninput="crAnSyncState(); crAnRenderSynth();">
+            </div>
+
+            <div class="cr-an-inline4 compact-inputs">
+              <div><label>CellSaver</label><input type="number" id="cran-cellsaver" placeholder="XXX" value="${crAnEsc(crAnesthState.cellsaver)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>CGR</label><input type="number" id="cran-cgr" placeholder="XX" value="${crAnEsc(crAnesthState.cgr)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>PFC</label><input type="number" id="cran-pfc" placeholder="XX" value="${crAnEsc(crAnesthState.pfc)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>CUP</label><input type="number" id="cran-cup" placeholder="XX" value="${crAnEsc(crAnesthState.cup)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+            </div>
+
+            <div class="cr-an-inline3 compact-inputs">
+              <div><label>fibrinogène</label><input type="number" id="cran-fibri" placeholder="XX" value="${crAnEsc(crAnesthState.fibrinogene)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>PPSB</label><input type="number" id="cran-ppsb" placeholder="XX" value="${crAnEsc(crAnesthState.ppsb)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>CaCl</label><input type="number" id="cran-cacl" placeholder="XX" value="${crAnEsc(crAnesthState.cacl)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+            </div>
+
+            <div class="cr-an-form-row">
+              <label>Diurèse</label>
+              <input type="number" id="cran-diurese" placeholder="XXX mL" value="${crAnEsc(crAnesthState.diurese)}" oninput="crAnSyncState(); crAnRenderSynth();">
+            </div>
+
+            <div class="cr-an-subtitle">Catécholamines (max)</div>
+            <div class="cr-an-inline2 compact-inputs">
+              <div><label>Noradrénaline</label><input type="number" step="any" id="cran-noradmax" placeholder="XX mg/h" value="${crAnEsc(crAnesthState.noradMax)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>Dobutamine</label><input type="number" step="any" id="cran-dobumax" placeholder="XX µg/kg/min" value="${crAnEsc(crAnesthState.dobuMax)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
             </div>
 
             <div class="cr-an-subtitle">ETO post-CEC</div>
-            <div class="cr-an-inline2">
-              <div><label>FEVG %</label><input type="number" id="cran-fevg" value="${crAnEsc(crAnesthState.fevg)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
-              <div><label>ITV Ssao cm</label><input type="number" step="any" id="cran-itv" value="${crAnEsc(crAnesthState.itvSsao)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
-            </div>
-            <div class="cr-an-check-grid">
-              ${crAnCheck("cran-eto-cine", "Cinétique segmentaire OK", crAnesthState.etoPost.cinesegOk)}
-              ${crAnCheck("cran-eto-va", "Valve aortique OK", crAnesthState.etoPost.vaOk)}
-              ${crAnCheck("cran-eto-vm", "Valve mitrale OK", crAnesthState.etoPost.vmOk)}
-              ${crAnCheck("cran-eto-vd", "Fonction VD OK", crAnesthState.etoPost.vdOk)}
-              ${crAnCheck("cran-eto-aorte", "Paroi aortique OK", crAnesthState.etoPost.aorteOk)}
+            <div class="cr-an-inline2 compact-inputs">
+              <div><label>FEVG</label><input type="number" id="cran-fevg" placeholder="XX %" value="${crAnEsc(crAnesthState.fevg)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>ITV Ssao</label><input type="number" step="any" id="cran-itv" placeholder="XX cm" value="${crAnEsc(crAnesthState.itvSsao)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
             </div>
 
-            <div class="cr-an-subtitle">Électrodes épicardiques</div>
-            <div class="cr-an-check-grid">
+            <div class="cr-an-check-grid compact2">
+              ${crAnCheck("cran-eto-cine", "cinétique segmentaire OK", crAnesthState.etoPost.cinesegOk)}
+              ${crAnCheck("cran-eto-va", "valve aortique OK", crAnesthState.etoPost.vaOk)}
+              ${crAnCheck("cran-eto-vm", "valve mitrale OK", crAnesthState.etoPost.vmOk)}
+              ${crAnCheck("cran-eto-vd", "fonction VD OK", crAnesthState.etoPost.vdOk)}
+              ${crAnCheck("cran-eto-aorte", "paroi aortique OK", crAnesthState.etoPost.aorteOk)}
+            </div>
+
+            <div class="cr-an-subtitle">Electrodes épicardiques</div>
+            <div class="cr-an-check-grid compact2">
               ${crAnCheck("cran-epi-sent", "Sentinelle", crAnesthState.epicardiques.sentinelle)}
               ${crAnCheck("cran-epi-stim", "Stimulation", crAnesthState.epicardiques.stimulation)}
             </div>
-            <div class="cr-an-inline4">
-              <div><label>Fréq /min</label><input type="number" id="cran-epi-freq" value="${crAnEsc(crAnesthState.epicardiques.freq)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
-              <div><label>Seuil sens mV</label><input type="number" step="any" id="cran-epi-ss" value="${crAnEsc(crAnesthState.epicardiques.seuilSens)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
-              <div><label>Réglé à mV</label><input type="number" step="any" id="cran-epi-rs" value="${crAnEsc(crAnesthState.epicardiques.reglageSens)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
-              <div><label>Seuil stim V</label><input type="number" step="any" id="cran-epi-stv" value="${crAnEsc(crAnesthState.epicardiques.seuilStim)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
-            </div>
-            <div class="cr-an-form-row">
-              <label>Réglé à V</label>
-              <input type="number" step="any" id="cran-epi-rstv" value="${crAnEsc(crAnesthState.epicardiques.reglageStim)}" oninput="crAnSyncState(); crAnRenderSynth();">
+
+            <div class="cr-an-inline5 compact-inputs">
+              <div><label>à</label><input type="number" id="cran-epi-freq" placeholder="XX/min" value="${crAnEsc(crAnesthState.epicardiques.freq)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>seuil sensibilité</label><input type="number" step="any" id="cran-epi-ss" placeholder="XX mV" value="${crAnEsc(crAnesthState.epicardiques.seuilSens)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>réglé à</label><input type="number" step="any" id="cran-epi-rs" placeholder="XX mV" value="${crAnEsc(crAnesthState.epicardiques.reglageSens)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>seuil stimulation</label><input type="number" step="any" id="cran-epi-stv" placeholder="XX V" value="${crAnEsc(crAnesthState.epicardiques.seuilStim)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>réglé à</label><input type="number" step="any" id="cran-epi-rstv" placeholder="XX V" value="${crAnEsc(crAnesthState.epicardiques.reglageStim)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
             </div>
 
-            <div class="cr-an-subtitle">Fin d’intervention</div>
-            <div class="cr-an-inline3">
-              <div><label>Hb g/dL</label><input type="number" step="any" id="cran-hbfin" value="${crAnEsc(crAnesthState.hbFin)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
-              <div><label>Lactate mmol/L</label><input type="number" step="any" id="cran-lactfin" value="${crAnEsc(crAnesthState.lactateFin)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
-              <div><label>Noradrénaline mg/h</label><input type="number" step="any" id="cran-noradfin" value="${crAnEsc(crAnesthState.noradFin)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+            <div class="cr-an-subtitle">En fin d’intervention</div>
+            <div class="cr-an-inline3 compact-inputs">
+              <div><label>Hb</label><input type="number" step="any" id="cran-hbfin" placeholder="XX g/dL" value="${crAnEsc(crAnesthState.hbFin)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>lactate</label><input type="number" step="any" id="cran-lactfin" placeholder="XX mmol/L" value="${crAnEsc(crAnesthState.lactateFin)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
+              <div><label>Noradrénaline</label><input type="number" step="any" id="cran-noradfin" placeholder="XX mg/h" value="${crAnEsc(crAnesthState.noradFin)}" oninput="crAnSyncState(); crAnRenderSynth();"></div>
             </div>
-            <div class="cr-an-check-grid">
+
+            <div class="cr-an-check-grid compact2">
               ${crAnCheck("cran-fin-vent", "Ventilé(e)", crAnesthState.ventile)}
               ${crAnCheck("cran-fin-ext", "Extubé(e)", crAnesthState.extube)}
             </div>
 
             <div class="cr-an-subtitle">Destination</div>
-            <div class="cr-an-inline4">
+            <div class="cr-an-check-grid compact2">
               <label><input type="radio" name="cran-dest" value="usip" ${crAnesthState.destination==="usip"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> USIP</label>
               <label><input type="radio" name="cran-dest" value="rea-3eme" ${crAnesthState.destination==="rea-3eme"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Réa. 3ème</label>
               <label><input type="radio" name="cran-dest" value="sspi" ${crAnesthState.destination==="sspi"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> SSPI</label>
@@ -9820,7 +9857,7 @@ function renderCrAnTabAnesth() {
 
         </div>
 
-        <div class="eto-actions">
+        <div class="eto-synth-actions cr-an-bottom-actions">
           <button class="btn" type="button" onclick="crAnCopySynth()">Copier la synthèse</button>
           <button class="btn" type="button" onclick="crAnReset()">Effacer la saisie</button>
         </div>
