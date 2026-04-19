@@ -9839,304 +9839,43 @@ table.bact-table p:last-child {
 }
 
 /* =========================================================
-   Bouton d’entrée CR anesthésie
+   CR ANESTHÉSIE — bouton d’entrée
    ========================================================= */
 .cr-anesth-entry-wrap{
-  margin-top: 14px;
+  margin-top: 12px;
   margin-bottom: 8px;
 }
 
 .cr-anesth-entry-btn{
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 0;
   border: 0;
   background: transparent;
   cursor: pointer;
 }
 
-.cr-anesth-entry-btn img{
-  display: block;
-  max-width: min(520px, 100%);
-  width: 100%;
-  height: auto;
-  border-radius: 18px;
-}
-
-/* =========================================================
-   Modal CR anesthésie
-   - fond clair / texte noir quel que soit le thème
-   ========================================================= */
-.cr-an-modal,
-.cr-an-modal *{
-  color-scheme: light !important;
-}
-
-body:not(.theme-light) .cr-an-modal,
-body:not(.theme-light) .cr-an-modal *,
-.cr-an-modal{
-  color: #000 !important;
-}
-
-.cr-an-modal{
-  background: #fff !important;
-}
-
-.cr-an-modal .acr-modal-body{
-  background: #fff !important;
-  color: #000 !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  padding-top: 0 !important;
-}
-
-body:not(.theme-light) .cr-an-modal input[type="text"],
-body:not(.theme-light) .cr-an-modal input[type="number"],
-body:not(.theme-light) .cr-an-modal select,
-body:not(.theme-light) .cr-an-modal textarea,
-.cr-an-modal input[type="text"],
-.cr-an-modal input[type="number"],
-.cr-an-modal select,
-.cr-an-modal textarea{
-  background: #fff !important;
-  color: #000 !important;
-  -webkit-text-fill-color: #000 !important;
-  border: 1.6px solid #000 !important;
-  box-shadow: none !important;
-}
-
-/* =========================================================
-   Onglets
-   ========================================================= */
-.cr-an-tabs{
-  display: flex;
-  align-items: flex-end;
-  gap: 14px;
-}
-
-.cr-an-tab{
-  border: 1.5px solid #1f3b6b !important;
-  border-bottom: none !important;
-  background: #4f79bf !important;
-  color: #fff !important;
-  padding: 10px 22px;
-  border-radius: 0 !important;
-  font-weight: 700;
-  cursor: pointer;
-  min-width: 160px;
-}
-
-.cr-an-tab.is-active{
-  background: #5b85ca !important;
-}
-
-.cr-an-modal-body{
-  border-top: 1.5px solid #1f3b6b;
-}
-
-.cr-an-eto-shell{
-  background: #fff;
-}
-
-/* =========================================================
-   Grille CR anesthésie
-   ========================================================= */
-.cr-an-grid{
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(360px, 34%);
-  gap: 16px;
-  align-items: stretch;
-  min-height: calc(100vh - 180px);
-}
-
-.cr-an-left{
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.cr-an-right{
-  min-width: 0;
-}
-
-.cr-an-grid-5{
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-areas:
-    "a b"
-    "c d"
-    "c e";
-  gap: 12px;
-  flex: 1 1 auto;
-}
-
-.cr-an-grid-5 > section:nth-child(1){ grid-area: a; }
-.cr-an-grid-5 > section:nth-child(2){ grid-area: b; }
-.cr-an-grid-5 > section:nth-child(3){ grid-area: c; }
-.cr-an-grid-5 > section:nth-child(4){ grid-area: d; }
-.cr-an-grid-5 > section:nth-child(5){ grid-area: e; }
-
-.cr-an-cell{
-  background: #fff !important;
-  color: #000 !important;
-  border: 1.5px solid #000;
-  border-radius: 12px;
-  padding: 10px;
-  min-width: 0;
-}
-
-.cr-an-cell-title{
-  font-weight: 900;
-  font-size: 1rem;
-  margin-bottom: 10px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid #000;
-}
-
-.cr-an-subtitle{
-  margin-top: 10px;
-  margin-bottom: 6px;
-  font-weight: 800;
-  font-size: 0.95rem;
-}
-
-.cr-an-form-row{
-  display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: 8px;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.cr-an-inline2,
-.cr-an-inline3,
-.cr-an-inline4{
-  display: grid;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-
-.cr-an-inline2{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.cr-an-inline3{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.cr-an-inline4{ grid-template-columns: repeat(4, minmax(0, 1fr)); }
-
-.cr-an-inline2 > div,
-.cr-an-inline3 > div,
-.cr-an-inline4 > div{
-  min-width: 0;
-}
-
-.cr-an-inline2 label,
-.cr-an-inline3 label,
-.cr-an-inline4 label{
-  display: block;
-  margin-bottom: 4px;
-  font-weight: 700;
-}
-
-.cr-an-check-grid{
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 6px 10px;
-  margin-bottom: 6px;
-}
-
-.cr-an-check-grid label,
-.cr-an-inline2 label.checkbox,
-.cr-an-inline3 label.checkbox,
-.cr-an-inline4 label.checkbox{
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  white-space: normal;
-}
-
-.cr-an-modal input[type="checkbox"]{
-  appearance: auto !important;
-  -webkit-appearance: checkbox !important;
-  background: #fff !important;
-}
-
-.cr-an-modal .eto-actions{
-  margin-top: 12px;
-}
-
-.cr-an-modal .eto-actions .btn{
-  background: #fff !important;
-  color: #000 !important;
-  border: 2px solid #000 !important;
-}
-
-/* =========================================================
-   Responsive
-   ========================================================= */
-@media (max-width: 1200px){
-  .cr-an-grid{
-    grid-template-columns: 1fr;
-  }
-
-  .cr-an-right{
-    min-height: 320px;
-  }
-}
-
-@media (max-width: 900px){
-  .cr-an-grid-5{
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "a"
-      "b"
-      "c"
-      "d"
-      "e";
-  }
-
-  .cr-an-form-row{
-    grid-template-columns: 1fr;
-  }
-
-  .cr-an-inline2,
-  .cr-an-inline3,
-  .cr-an-inline4,
-  .cr-an-check-grid{
-    grid-template-columns: 1fr;
-  }
-
-  .cr-an-tab{
-    min-width: auto;
-    padding: 10px 14px;
-  }
-}
-
-/* Bouton texte jaune CR anesthésie */
-.cr-anesth-entry-wrap{
-  margin-top: 12px;
-  margin-bottom: 8px;
-}
-
 .cr-anesth-text-btn{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-
   min-height:58px;
   padding:14px 26px;
   border-radius:18px;
-
   border:3px solid #d58a00;
   background: linear-gradient(180deg, #ffe96b 0%, #ffc933 55%, #ffb100 100%);
   color:#231600 !important;
-
+  font-family: inherit !important;
   font-weight:900;
   font-size:1.35rem;
   line-height:1.1;
   letter-spacing:0.2px;
   text-align:center;
-
   cursor:pointer;
   box-shadow:
     0 4px 0 rgba(180,110,0,.95),
     0 10px 22px rgba(0,0,0,.22);
-
   transition: transform .08s ease, box-shadow .08s ease, filter .08s ease;
 }
 
@@ -10152,6 +9891,397 @@ body:not(.theme-light) .cr-an-modal textarea,
     0 6px 14px rgba(0,0,0,.18);
 }
 
+/* =========================================================
+   CR ANESTHÉSIE — modal générale
+   fond clair / texte noir quel que soit le thème
+   ========================================================= */
+.cr-an-modal,
+.cr-an-modal *{
+  color-scheme: light !important;
+}
+
+.cr-an-modal{
+  background:#fff !important;
+  color:#000 !important;
+}
+
+body:not(.theme-light) .cr-an-modal,
+body:not(.theme-light) .cr-an-modal *{
+  color:#000 !important;
+}
+
+.cr-an-modal .acr-modal-body,
+.cr-an-body{
+  background:#fff !important;
+  color:#000 !important;
+  overflow:hidden !important;
+  padding:6px !important;
+}
+
+.cr-an-modal-body{
+  border-top:1.5px solid #2a4c84;
+}
+
+.cr-an-eto-shell{
+  background:#fff !important;
+}
+
+/* =========================================================
+   CR ANESTHÉSIE — topbar / onglets
+   ========================================================= */
+.cr-an-topbar{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:16px;
+  padding:0 0 8px 0;
+  border-bottom:1.5px solid #2a4c84;
+  min-height:54px;
+}
+
+.cr-an-topbar-left{
+  display:flex;
+  align-items:flex-end;
+  justify-content:flex-start;
+  flex:1 1 auto;
+  min-width:0;
+}
+
+.cr-an-tabs{
+  display:flex;
+  align-items:flex-end;
+  justify-content:flex-start;
+  gap:8px;
+  margin:0;
+  padding:0;
+}
+
+.cr-an-tab{
+  appearance:none;
+  -webkit-appearance:none;
+  border:1.5px solid #29508d !important;
+  background:linear-gradient(180deg, #edf4ff 0%, #d7e6ff 100%) !important;
+  color:#16345f !important;
+  font-family:inherit !important;
+  font-size:1rem !important;
+  font-weight:800 !important;
+  letter-spacing:0 !important;
+  line-height:1.1 !important;
+  text-align:center;
+  padding:11px 20px !important;
+  min-width:170px;
+  border-radius:12px 12px 0 0 !important;
+  cursor:pointer;
+  box-shadow:none !important;
+  transition:background .15s ease, color .15s ease, transform .08s ease;
+}
+
+.cr-an-tab:hover{
+  background:linear-gradient(180deg, #e7f0ff 0%, #cfe0ff 100%) !important;
+  color:#102b4d !important;
+}
+
+.cr-an-tab.is-active{
+  background:linear-gradient(180deg, #5d89d0 0%, #4572bc 100%) !important;
+  color:#fff !important;
+  border-color:#27497f !important;
+}
+
+.cr-an-tab:active{
+  transform:translateY(1px);
+}
+
+.cr-an-close-btn{
+  position:static !important;
+  margin:0 2px 4px 0 !important;
+  width:34px !important;
+  height:34px !important;
+  min-width:34px !important;
+  border:1.5px solid #7a7a7a !important;
+  border-radius:10px !important;
+  background:#f7f7f7 !important;
+  color:#000 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  font-size:20px !important;
+  line-height:1 !important;
+  box-shadow:none !important;
+}
+
+.cr-an-close-btn:hover{
+  background:#ececec !important;
+}
+
+/* =========================================================
+   CR ANESTHÉSIE — layout principal
+   ========================================================= */
+.cr-an-desktop-grid{
+  height:100%;
+  min-height:0 !important;
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) 440px;
+  gap:10px;
+  align-items:stretch;
+}
+
+.cr-an-left{
+  min-height:0 !important;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+}
+
+.cr-an-right{
+  min-height:0 !important;
+  min-width:0;
+}
+
+.cr-an-right .eto-synth-panel{
+  height:100% !important;
+  max-height:calc(100vh - 120px) !important;
+}
+
+/* =========================================================
+   CR ANESTHÉSIE — grille des 5 cellules
+   2 en haut / 3 en bas
+   ========================================================= */
+.cr-an-grid-5{
+  flex:1 1 auto;
+  min-height:0;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  grid-template-areas:
+    "a b"
+    "c d"
+    "c e";
+  gap:8px;
+  overflow:auto;
+  padding-right:2px;
+}
+
+.cr-an-grid-5 > section:nth-child(1){ grid-area:a; }
+.cr-an-grid-5 > section:nth-child(2){ grid-area:b; }
+.cr-an-grid-5 > section:nth-child(3){ grid-area:c; }
+.cr-an-grid-5 > section:nth-child(4){ grid-area:d; }
+.cr-an-grid-5 > section:nth-child(5){ grid-area:e; }
+
+/* =========================================================
+   CR ANESTHÉSIE — cellules
+   ========================================================= */
+.cr-an-cell{
+  background:#fff !important;
+  color:#000 !important;
+  border:1.5px solid #000 !important;
+  border-radius:10px !important;
+  padding:8px 10px !important;
+  min-width:0;
+  overflow:hidden;
+}
+
+.cr-an-cell-title{
+  font-weight:900 !important;
+  font-size:0.97rem !important;
+  margin:0 0 8px 0 !important;
+  padding:0 0 6px 0 !important;
+  border-bottom:1px solid #000 !important;
+}
+
+.cr-an-subtitle{
+  font-weight:900 !important;
+  font-size:0.90rem !important;
+  margin:8px 0 4px 0 !important;
+  line-height:1.05 !important;
+}
+
+.cr-an-mini-subtitle{
+  font-size:0.82rem !important;
+  font-weight:800 !important;
+  margin-top:6px !important;
+  margin-bottom:4px !important;
+  line-height:1.05 !important;
+}
+
+/* =========================================================
+   CR ANESTHÉSIE — formulaires
+   ========================================================= */
+.cr-an-form-row{
+  display:grid;
+  grid-template-columns:145px 1fr;
+  gap:8px;
+  align-items:center;
+  margin-bottom:6px;
+}
+
+.cr-an-form-row label,
+.cr-an-inline2 label,
+.cr-an-inline3 label,
+.cr-an-inline4 label,
+.cr-an-inline5 label,
+.cr-an-check-grid label{
+  font-size:0.88rem !important;
+  line-height:1.05 !important;
+}
+
+.cr-an-inline2,
+.cr-an-inline3,
+.cr-an-inline4,
+.cr-an-inline5{
+  display:grid;
+  gap:8px;
+  margin-bottom:6px;
+}
+
+.cr-an-inline2{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+.cr-an-inline3{ grid-template-columns:repeat(3, minmax(0,1fr)); }
+.cr-an-inline4{ grid-template-columns:repeat(4, minmax(0,1fr)); }
+.cr-an-inline5{ grid-template-columns:repeat(5, minmax(0,1fr)); }
+
+.cr-an-inline2 > div,
+.cr-an-inline3 > div,
+.cr-an-inline4 > div,
+.cr-an-inline5 > div{
+  min-width:0;
+}
+
+.cr-an-inline2 label,
+.cr-an-inline3 label,
+.cr-an-inline4 label,
+.cr-an-inline5 label{
+  display:block;
+  margin-bottom:3px;
+  font-weight:800 !important;
+}
+
+.cr-an-check-grid{
+  display:grid;
+  gap:4px 12px;
+  margin-bottom:4px;
+}
+
+.cr-an-check-grid.compact2{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+.cr-an-check-grid.compact3{ grid-template-columns:repeat(3, minmax(0,1fr)); }
+
+.cr-an-check-grid label{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  white-space:nowrap;
+}
+
+.compact-radios label{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  white-space:nowrap;
+}
+
+.cr-an-eto-buttons{
+  display:grid;
+  gap:8px;
+}
+
+.cr-an-eto-buttons .btn{
+  padding:10px 12px !important;
+  min-height:0 !important;
+  font-size:0.92rem !important;
+  line-height:1.1 !important;
+}
+
+/* =========================================================
+   CR ANESTHÉSIE — champs
+   ========================================================= */
+body:not(.theme-light) .cr-an-modal input[type="text"],
+body:not(.theme-light) .cr-an-modal input[type="number"],
+body:not(.theme-light) .cr-an-modal select,
+body:not(.theme-light) .cr-an-modal textarea,
+.cr-an-modal input[type="text"],
+.cr-an-modal input[type="number"],
+.cr-an-modal select,
+.cr-an-modal textarea{
+  background:#fff !important;
+  color:#000 !important;
+  -webkit-text-fill-color:#000 !important;
+  border:1.6px solid #000 !important;
+  border-radius:8px !important;
+  height:28px !important;
+  min-height:28px !important;
+  padding:2px 8px !important;
+  box-shadow:none !important;
+  font-size:0.92rem !important;
+  font-family:inherit !important;
+}
+
+.cr-an-modal input[type="checkbox"],
+.cr-an-modal input[type="radio"]{
+  appearance:auto !important;
+  -webkit-appearance:auto !important;
+  accent-color:#d08a2e;
+  background:#fff !important;
+}
+
+/* =========================================================
+   CR ANESTHÉSIE — actions
+   ========================================================= */
+.cr-an-bottom-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-top:8px !important;
+}
+
+.cr-an-bottom-actions .btn{
+  background:#fff !important;
+  color:#000 !important;
+  border:2px solid #000 !important;
+}
+
+/* =========================================================
+   CR ANESTHÉSIE — synthèse droite
+   ========================================================= */
+.cr-an-right .eto-synth-panel{
+  background:#fff !important;
+  color:#000 !important;
+  border:1.5px solid #000 !important;
+  border-radius:10px !important;
+  padding:10px !important;
+}
+
+.cr-an-right .eto-synth-title{
+  font-size:0.98rem !important;
+  font-weight:900 !important;
+  margin-bottom:8px !important;
+}
+
+.cr-an-right .eto-synth-box{
+  font-size:0.86rem !important;
+  line-height:1.25 !important;
+  border:1.5px solid #000 !important;
+  border-radius:8px !important;
+  white-space:pre-wrap !important;
+  overflow:auto !important;
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+@media (max-width: 1400px){
+  .cr-an-desktop-grid{
+    grid-template-columns:minmax(0,1fr) 380px;
+  }
+}
+
+@media (max-width: 1180px){
+  .cr-an-desktop-grid{
+    grid-template-columns:1fr;
+    grid-template-rows:auto auto;
+  }
+
+  .cr-an-right .eto-synth-panel{
+    max-height:340px !important;
+  }
+}
+
 @media (max-width: 900px){
   .cr-anesth-text-btn{
     width:100%;
@@ -10160,3 +10290,59 @@ body:not(.theme-light) .cr-an-modal textarea,
     min-height:52px;
   }
 }
+
+@media (max-width: 820px){
+  .cr-an-topbar{
+    align-items:flex-start;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  .cr-an-topbar-left{
+    width:100%;
+  }
+
+  .cr-an-tabs{
+    width:100%;
+    gap:6px;
+  }
+
+  .cr-an-tab{
+    flex:1 1 0;
+    min-width:0;
+    font-size:0.95rem !important;
+    padding:10px 12px !important;
+  }
+
+  .cr-an-grid-5{
+    grid-template-columns:1fr;
+    grid-template-areas:
+      "a"
+      "b"
+      "c"
+      "d"
+      "e";
+  }
+
+  .cr-an-form-row{
+    grid-template-columns:1fr;
+  }
+
+  .cr-an-inline2,
+  .cr-an-inline3,
+  .cr-an-inline4,
+  .cr-an-inline5,
+  .cr-an-check-grid.compact2,
+  .cr-an-check-grid.compact3{
+    grid-template-columns:1fr;
+  }
+
+  .cr-an-check-grid label,
+  .compact-radios label{
+    white-space:normal;
+  }
+}
+
+
+
+
