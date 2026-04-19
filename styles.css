@@ -4129,11 +4129,11 @@ body:not(.theme-light) .eto-modal .eto-head-field select {
 
 /* ===== Modal ETO plein écran (desktop) ===== */
 .eto-fullscreen{
-  width: calc(100vw - 24px) !important;
-  height: calc(100vh - 24px) !important;
+  width: calc(100vw - 8px) !important;
+  height: calc(100vh - 8px) !important;
   max-width: none !important;
   max-height: none !important;
-  margin: 12px !important;
+  margin: 4px !important;
   display: flex;
   flex-direction: column;
 }
@@ -4141,9 +4141,23 @@ body:not(.theme-light) .eto-modal .eto-head-field select {
 /* Body doit prendre la place restante */
 .eto-fullscreen .acr-modal-body{
   flex: 1 1 auto;
-  overflow: hidden; /* on évite le scroll global */
-  padding: 8px !important;
+  min-height: 0 !important;
+  overflow: hidden;
+  padding: 6px !important;
 }
+
+/* La zone gauche doit pouvoir vraiment prendre toute la hauteur */
+.eto-fullscreen .eto-left{
+  min-height: 0 !important;
+}
+
+/* Le tableau doit scroller jusqu'en bas si nécessaire */
+.eto-fullscreen .eto-table-wrap{
+  flex: 1 1 auto;
+  min-height: 0 !important;
+  overflow: auto !important;
+}
+
 
 /* ===== Layout gauche/droite ETO ===== */
 .eto-desktop-grid{
