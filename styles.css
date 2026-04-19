@@ -3045,11 +3045,13 @@ button.btn.home-btn.home-danger:not(.ghost):not(.outline):hover {
 .eto-modal .acr-modal-head {
   padding: 8px 12px !important;
 }
+
 .eto-modal .acr-modal-body {
   padding: 8px 12px !important;
-  max-height: 78vh;
-  overflow-y: auto;
+  max-height: none !important;
+  overflow: hidden !important;
 }
+
 .eto-modal .acr-modal-actions {
   padding: 8px 12px !important;
 }
@@ -3254,17 +3256,18 @@ button.btn.home-btn.home-danger:not(.ghost):not(.outline):hover {
   text-align: left !important;
 }
 
-/* Modal : enlever les gros paddings */
 .eto-modal .acr-modal-head {
-  padding: 10px 12px !important;
+  padding: 8px 12px !important;
 }
+
 .eto-modal .acr-modal-body {
-  padding: 10px 12px !important;
-  max-height: 78vh;
-  overflow-y: auto;
+  padding: 8px 12px !important;
+  max-height: none !important;
+  overflow: hidden !important;
 }
+
 .eto-modal .acr-modal-actions {
-  padding: 10px 12px !important;
+  padding: 8px 12px !important;
 }
 
 /* Container ETO */
