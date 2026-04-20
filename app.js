@@ -9292,6 +9292,7 @@ function crAnInitState() {
 
     geste1: "",
 geste2: "",
+    showGeste2: false,
 valveType: "",
 chirurgien1: "",
 anesth1: "",
@@ -9713,8 +9714,7 @@ function renderCrAnTabAnesth() {
 
             <div id="cran-geste2-wrap"
      class="cr-an-form-row cr-an-form-row-tight"
-     data-open="${crAnSafe(crAnesthState.geste2) ? "1" : "0"}"
-     style="display:${crAnSafe(crAnesthState.geste2) ? "grid" : "none"};">
+     style="display:${crAnesthState.showGeste2 ? "grid" : "none"};">
               <label>Geste 2</label>
               <select id="cran-geste2" onchange="crAnOnGesteChange();">
                 <option value=""></option>
@@ -10305,13 +10305,15 @@ function crAnOnGesteChange() {
   const wrap2 = document.getElementById("cran-geste2-wrap");
   const valveWrap = document.getElementById("cran-valve-type");
 
-  const geste2AlreadyVisible = wrap2?.dataset.open === "1";
   if (wrap2) {
-    wrap2.style.display = geste2AlreadyVisible ? "grid" : "none";
+    wrap2.style.display = crAnesthState.showGeste2 ? "grid" : "none";
   }
 
-  const gestes = [crAnesthState.geste1, crAnesthState.geste2].filter(Boolean);
-  const showValve = gestes.some(v => ["rva", "rvm", "bentall"].includes((v || "").toLowerCase()));
+  const gestes = [crAnesthState.geste1, crAnesthState.geste2]
+    .map(v => (v || "").toLowerCase())
+    .filter(Boolean);
+
+  const showValve = gestes.some(v => ["rva", "rvm", "bentall"].includes(v));
 
   if (valveWrap) {
     valveWrap.style.display = showValve ? "grid" : "none";
@@ -10329,9 +10331,10 @@ function crAnOnGesteChange() {
 }
 
 function crAnAddSecondGeste() {
+  crAnesthState.showGeste2 = true;
+
   const wrap = document.getElementById("cran-geste2-wrap");
   if (wrap) {
-    wrap.dataset.open = "1";
     wrap.style.display = "grid";
   }
 }
@@ -10612,6 +10615,7 @@ async function crAnCopySynth() {
 
 function crAnReset() {
   crAnesthState = crAnInitState();
+  crAnesthState.showGeste2 = false;
   renderCrAnTabAnesth();
 }
 
