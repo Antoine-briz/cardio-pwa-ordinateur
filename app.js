@@ -10008,6 +10008,7 @@ function renderCrAnTabAnesth() {
 
   crAnMirrorGeste();
   crAnInitAutocomplete();
+  crAnOnGesteChange();
   crAnRenderSynth();
 }
 
