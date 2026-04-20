@@ -10044,25 +10044,28 @@ body:not(.theme-light) .cr-an-modal *{
 /* =========================================================
    CR ANESTHÉSIE — grille des 5 cellules
    ========================================================= */
+
 .cr-an-grid-5{
   flex:1 1 auto;
   min-height:0;
   display:grid;
-  grid-template-columns:0.78fr 1.22fr;
+
+  /* 2 cellules en haut, 3 cellules en bas */
+  grid-template-columns: 0.75fr 0.75fr 1.2fr 1.2fr 1.55fr 1.55fr;
   grid-template-areas:
-    "a b"
-    "c d"
-    "c e";
+    "a a b b b b"
+    "c d d e e e";
+
   gap:4px;
   overflow:auto;
   padding-right:0;
 }
 
-.cr-an-grid-5 > section:nth-child(1){ grid-area:a; }
-.cr-an-grid-5 > section:nth-child(2){ grid-area:b; }
-.cr-an-grid-5 > section:nth-child(3){ grid-area:c; }
-.cr-an-grid-5 > section:nth-child(4){ grid-area:d; }
-.cr-an-grid-5 > section:nth-child(5){ grid-area:e; }
+.cr-an-grid-5 > section:nth-child(1){ grid-area:a; } /* Intervention */
+.cr-an-grid-5 > section:nth-child(2){ grid-area:b; } /* Induction */
+.cr-an-grid-5 > section:nth-child(3){ grid-area:c; } /* ETO */
+.cr-an-grid-5 > section:nth-child(4){ grid-area:d; } /* Chirurgie & CEC */
+.cr-an-grid-5 > section:nth-child(5){ grid-area:e; } /* Post-CEC */
 
 /* =========================================================
    CR ANESTHÉSIE — cellules
