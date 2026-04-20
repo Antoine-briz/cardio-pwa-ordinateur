@@ -30493,6 +30493,7 @@ function ensureQuickAccessButton() {
   menu.className = "qa-menu";
   menu.innerHTML = `
     <button type="button" class="qa-item" data-key="ttm">Gestion pré-op des traitements</button>
+    <button type="button" class="qa-item" data-key="cran_cec">CR d'anesthésie CEC</button>
     <button type="button" class="qa-item" data-key="eto_page">Coupes et mesures ETO</button>
     <button type="button" class="qa-item" data-key="eto_standard">CR ETO standard</button>
     <button type="button" class="qa-item" data-key="eto_aortique">CR ETO plastie aortique</button>
@@ -30570,6 +30571,30 @@ function qaRunAction(key) {
     return;
   }
 
+
+if (key === "cran_cec") {
+  __qaPending = null;
+
+  if (
+    typeof openSubPage === "function" &&
+    typeof renderInterventionPontages === "function" &&
+    typeof renderAnesthChirCecMenu === "function"
+  ) {
+    openSubPage(renderInterventionPontages, renderAnesthChirCecMenu);
+
+    setTimeout(() => {
+      if (typeof openCrAnesthModal === "function") {
+        openCrAnesthModal();
+      }
+    }, 100);
+
+    return;
+  }
+
+  window.location.hash = "#/anesthesie/chir-cec";
+  return;
+}
+  
   // 2) Page ETO (coupes/mesures) => Réanimation > ETO
   if (key === "eto_page") {
     __qaPending = null;
