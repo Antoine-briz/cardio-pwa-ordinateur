@@ -10107,7 +10107,7 @@ ${crAnesthState.geste3 !== undefined ? `
             <div class="cr-an-flow-row cr-an-inline-title-row">
               <div class="cr-an-inline-title">Amines (max):</div>
               ${crAnFlowTextInput({ id: "cran-noradmax", label: "Noradrénaline", value: crAnesthState.noradMax, placeholder: " ", type: "number", step: "any", cls: "is-micro" })}
-              ${crAnFlowTextInput({ id: "cran-dobumax", label: "Dobut.", value: crAnesthState.dobuMax, placeholder: " ", type: "number", step: "any", cls: "is-micro" })}
+              ${crAnFlowTextInput({ id: "cran-dobumax", label: "Dobutamine", value: crAnesthState.dobuMax, placeholder: " ", type: "number", step: "any", cls: "is-micro" })}
             </div>
 
             <div class="cr-an-flow-row cr-an-inline-title-row">
