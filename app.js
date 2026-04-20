@@ -10033,7 +10033,7 @@ ${crAnesthState.geste3 !== undefined ? `
     type="number"
     id="cran-heparine"
     class="cr-an-heparine-input"
-    placeholder="XX"
+    placeholder=" "
     value="${crAnEsc(crAnesthState.heparine)}"
     oninput="crAnSyncState(); crAnRenderSynth();"
   >
