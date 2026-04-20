@@ -10489,7 +10489,8 @@ body:not(.theme-light) .cr-an-modal textarea,
 .cr-an-simple-line label{
   font-weight:700;
   white-space:nowrap;
-  min-width:150px;
+  flex:0 0 auto;
+  margin-right:4px;
 }
 
 .cr-an-simple-line input{
@@ -10531,4 +10532,21 @@ body:not(.theme-light) .cr-an-modal textarea,
 .cr-an-right .eto-synth-panel{
   overflow-y:auto !important;
   overflow-x:hidden !important;
+}
+
+/* =========================================================
+   Supprimer les flèches des input number
+   ========================================================= */
+
+/* Chrome / Edge / Safari */
+.cr-an-modal input[type="number"]::-webkit-outer-spin-button,
+.cr-an-modal input[type="number"]::-webkit-inner-spin-button{
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.cr-an-modal input[type="number"]{
+  -moz-appearance: textfield !important;
+  appearance: textfield !important;
 }
