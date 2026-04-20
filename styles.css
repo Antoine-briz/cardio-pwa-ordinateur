@@ -10030,8 +10030,20 @@ body:not(.theme-light) .cr-an-modal *{
 .cr-an-left{
   min-height:0 !important;
   min-width:0;
+  height:100% !important;
   display:flex;
   flex-direction:column;
+}
+
+.cr-an-grid-5{
+  flex:1 1 auto !important;
+}
+
+.cr-an-bottom-actions{
+  margin-top:auto !important;
+  padding-top:8px !important;
+  padding-bottom:0 !important;
+  margin-bottom:0 !important;
 }
 
 .cr-an-right{
@@ -10326,8 +10338,12 @@ body:not(.theme-light) .cr-an-modal textarea,
 }
 
 .cr-an-right .eto-synth-title{
+  background:#123e7a !important;
+  color:#fff !important;
   font-size:0.98rem !important;
   font-weight:900 !important;
+  padding:8px 12px !important;
+  border-radius:8px !important;
   margin-bottom:8px !important;
 }
 
@@ -10712,4 +10728,11 @@ body:not(.theme-light) .cr-an-modal textarea,
 
 .cr-an-bottom-actions-right .btn{
   flex:1 1 0 !important;
+}
+
+.cr-an-cell-title,
+.cr-an-tab,
+.cr-an-tab.is-active,
+.cr-an-right .eto-synth-title{
+  color:#fff !important;
 }
