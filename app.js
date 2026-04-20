@@ -9745,7 +9745,7 @@ function renderCrAnTabAnesth() {
               </div>
               <div>
                 <label>POGO</label>
-                <input type="number" id="cran-int-pogo" placeholder="XXX" value="${crAnEsc(crAnesthState.intubation.pogo)}" oninput="crAnSyncState(); crAnRenderSynth();">
+                <input type="number" id="cran-int-pogo" placeholder="   " value="${crAnEsc(crAnesthState.intubation.pogo)}" oninput="crAnSyncState(); crAnRenderSynth();">
               </div>
             </div>
 
