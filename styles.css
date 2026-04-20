@@ -9913,7 +9913,8 @@ body:not(.theme-light) .cr-an-modal *{
 .cr-an-body{
   background:#fff !important;
   color:#000 !important;
-  overflow:hidden !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
   padding:6px !important;
 }
 
@@ -10145,25 +10146,25 @@ body:not(.theme-light) .cr-an-modal *{
 
 .cr-an-flow-field input,
 .cr-an-flow-field select{
-  width:64px !important;
-  min-width:64px !important;
-  max-width:64px !important;
+  width:82px !important;
+  min-width:82px !important;
+  max-width:82px !important;
   height:28px !important;
   padding:2px 6px !important;
 }
 
 .cr-an-flow-field.is-micro input,
 .cr-an-flow-field.is-micro select{
-  width:52px !important;
-  min-width:52px !important;
-  max-width:52px !important;
+  width:66px !important;
+  min-width:66px !important;
+  max-width:66px !important;
 }
 
 .cr-an-flow-field.is-mini-wide input,
 .cr-an-flow-field.is-mini-wide select{
-  width:86px !important;
-  min-width:86px !important;
-  max-width:86px !important;
+  width:110px !important;
+  min-width:110px !important;
+  max-width:110px !important;
 }
 
 /* =========================================================
@@ -10401,19 +10402,19 @@ body:not(.theme-light) .cr-an-modal textarea,
     gap:6px 10px;
   }
 
-  .cr-an-flow-field input,
-  .cr-an-flow-field select{
-    width:58px !important;
-    min-width:58px !important;
-    max-width:58px !important;
-  }
+ .cr-an-flow-field input,
+.cr-an-flow-field select{
+  width:74px !important;
+  min-width:74px !important;
+  max-width:74px !important;
+}
 
-  .cr-an-flow-field.is-micro input,
-  .cr-an-flow-field.is-micro select{
-    width:46px !important;
-    min-width:46px !important;
-    max-width:46px !important;
-  }
+.cr-an-flow-field.is-micro input,
+.cr-an-flow-field.is-micro select{
+  width:58px !important;
+  min-width:58px !important;
+  max-width:58px !important;
+}
 }
 
 /* =========================================================
@@ -10492,9 +10493,42 @@ body:not(.theme-light) .cr-an-modal textarea,
 }
 
 .cr-an-simple-line input{
-  width:46px !important;
-  min-width:46px !important;
-  max-width:46px !important;
+  width:64px !important;
+  min-width:64px !important;
+  max-width:64px !important;
   height:28px !important;
-  padding:2px 4px !important;
+  padding:2px 6px !important;
+}
+
+.cr-an-left{
+  min-height:0 !important;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+}
+
+.cr-an-grid-5{
+  flex:1 1 auto;
+  min-height:0;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+}
+
+/* =========================================================
+   Correctif scroll vertical modal CR anesthésie
+   ========================================================= */
+
+.cr-an-modal .acr-modal-body,
+.cr-an-body{
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+}
+
+.cr-an-left,
+.cr-an-grid-5,
+.cr-an-right .eto-synth-panel{
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
 }
