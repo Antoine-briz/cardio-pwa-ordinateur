@@ -9292,6 +9292,7 @@ function crAnInitState() {
 
 geste1: "",
 geste2: undefined,
+geste3: undefined,
 valveType: "",
 chirurgien1: "",
 anesth1: "",
@@ -9733,14 +9734,14 @@ function renderCrAnTabAnesth() {
                 </select>
 
                 <button
-                  type="button"
-                  class="cr-an-btn-plus"
-                  onclick="crAnAddSecondGeste()"
-                  aria-label="Ajouter geste"
-                  title="Ajouter geste"
-                >
-                  +
-                </button>
+  type="button"
+  class="cr-an-btn-plus"
+  onclick="crAnAddGeste()"
+  aria-label="Ajouter geste"
+  title="Ajouter geste"
+>
+  +
+</button>
               </div>
             </div>
 
@@ -9753,6 +9754,20 @@ function renderCrAnTabAnesth() {
         <option value="${g.value}" ${crAnesthState.geste2===g.value ? 'selected' : ''}>
           ${crAnEsc(g.label)}
         </option>`).join("")}
+    </select>
+  </div>
+` : ""}
+
+${crAnesthState.geste3 !== undefined ? `
+  <div id="cran-geste3-wrap" class="cr-an-form-row cr-an-form-row-tight">
+    <label>Geste 3</label>
+    <select id="cran-geste3" onchange="crAnOnGesteChange();">
+      <option value=""></option>
+      ${CRAN_GESTES.map(g => `
+        <option value="${g.value}" ${crAnesthState.geste3 === g.value ? "selected" : ""}>
+          ${crAnEsc(g.label)}
+        </option>
+      `).join("")}
     </select>
   </div>
 ` : ""}
@@ -10180,6 +10195,7 @@ function crAnSyncState() {
   crAnesthState.date = crAnVal("cran-date");
   crAnesthState.geste1 = crAnVal("cran-geste1");
   crAnesthState.geste2 = document.getElementById("cran-geste2") ? crAnVal("cran-geste2") : undefined;
+  crAnesthState.geste3 = document.getElementById("cran-geste3") ? crAnVal("cran-geste3") : undefined;
   crAnesthState.valveType = document.querySelector('input[name="cran-valve"]:checked')?.value || "";
 crAnesthState.chirurgien1 = crAnVal("cran-chir1");
 crAnesthState.anesth1 = crAnVal("cran-an1");
@@ -10322,8 +10338,8 @@ function crAnMirrorGeste() {
 function crAnOnGesteChange() {
   crAnSyncState();
 
-  const gestes = [crAnesthState.geste1, crAnesthState.geste2].filter(Boolean);
-  const showValve = gestes.some(v => ["rva", "rvm", "bentall"].includes((v || "").toLowerCase()));
+  const gestes = [crAnesthState.geste1, crAnesthState.geste2, crAnesthState.geste3].filter(Boolean);
+const showValve = gestes.some(v => ["rva", "rvm", "bentall"].includes((v || "").toLowerCase()));
 
   if (!showValve) {
     crAnesthState.valveType = "";
@@ -10332,15 +10348,17 @@ function crAnOnGesteChange() {
   renderCrAnTabAnesth();
 }
 
-function crAnAddSecondGeste() {
+function crAnAddGeste() {
   if (crAnesthState.geste2 === undefined) {
     crAnesthState.geste2 = "";
+  } else if (crAnesthState.geste3 === undefined) {
+    crAnesthState.geste3 = "";
   }
   renderCrAnTabAnesth();
 }
 
 function crAnBuildGeste() {
-  const parts = [crAnesthState.geste1, crAnesthState.geste2,]
+  const parts = [crAnesthState.geste1, crAnesthState.geste2, crAnesthState.geste3]
     .map(crAnSafe)
     .filter(Boolean);
   return parts.join(" + ");
@@ -10364,14 +10382,14 @@ function crAnRenderSynth() {
   const intervention = [];
   if (crAnSafe(crAnesthState.date)) intervention.push(`Date : ${crAnesthState.date}.`);
 
-  const gesteParts = [crAnesthState.geste1, crAnesthState.geste2]
+ const gesteParts = [crAnesthState.geste1, crAnesthState.geste2, crAnesthState.geste3]
   .filter(Boolean)
   .map(v => (CRAN_GESTES.find(g => g.value === v)?.label || v));
 
 let gesteTxt = gesteParts.join(" + ");
 
 if (
-  [crAnesthState.geste1, crAnesthState.geste2].some(g => ["rva", "rvm", "bentall"].includes(g)) &&
+  [crAnesthState.geste1, crAnesthState.geste2, crAnesthState.geste3].some(g => ["rva", "rvm", "bentall"].includes(g)) &&
   crAnSafe(crAnesthState.valveType)
 ) {
   gesteTxt += ` (${crAnesthState.valveType})`;
@@ -10616,6 +10634,7 @@ async function crAnCopySynth() {
 function crAnReset() {
   crAnesthState = crAnInitState();
   crAnesthState.geste2 = undefined;
+  crAnesthState.geste3 = undefined;
   crAnesthState.valveType = "";
   renderCrAnTabAnesth();
 }
