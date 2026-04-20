@@ -10033,27 +10033,27 @@ function renderCrAnTabAnesth() {
 
             <div class="cr-an-flow-row cr-an-inline-title-row">
               <div class="cr-an-inline-title">Bilan entrée-sortie/transfusion :</div>
-              ${crAnFlowTextInput({ id: "cran-ringer", label: "Expansion", value: crAnesthState.ringer, placeholder: "Ringer", type: "number", cls: "is-micro" })}
-              ${crAnFlowTextInput({ id: "cran-cellsaver", label: "CellSaver", value: crAnesthState.cellsaver, placeholder: "XXX", type: "number", cls: "is-micro" })}
-              ${crAnFlowTextInput({ id: "cran-cgr", label: "CGR", value: crAnesthState.cgr, placeholder: "XX", type: "number", cls: "is-micro" })}
-              ${crAnFlowTextInput({ id: "cran-pfc", label: "PFC", value: crAnesthState.pfc, placeholder: "XX", type: "number", cls: "is-micro" })}
-              ${crAnFlowTextInput({ id: "cran-cup", label: "CUP", value: crAnesthState.cup, placeholder: "XX", type: "number", cls: "is-micro" })}
-              ${crAnFlowTextInput({ id: "cran-fibri", label: "Fibrinogène", value: crAnesthState.fibrinogene, placeholder: "XX", type: "number", cls: "is-micro" })}
-              ${crAnFlowTextInput({ id: "cran-ppsb", label: "PPSB", value: crAnesthState.ppsb, placeholder: "XX", type: "number", cls: "is-micro" })}
-              ${crAnFlowTextInput({ id: "cran-cacl", label: "CaCl", value: crAnesthState.cacl, placeholder: "XX", type: "number", cls: "is-micro" })}
-              ${crAnFlowTextInput({ id: "cran-diurese", label: "Diurèse", value: crAnesthState.diurese, placeholder: "XXX", type: "number", cls: "is-micro" })}
+              ${crAnFlowTextInput({ id: "cran-ringer", label: "Expansion", value: crAnesthState.ringer, placeholder: " ", type: "number", cls: "is-micro" })}
+              ${crAnFlowTextInput({ id: "cran-cellsaver", label: "CellSaver", value: crAnesthState.cellsaver, placeholder: " ", type: "number", cls: "is-micro" })}
+              ${crAnFlowTextInput({ id: "cran-cgr", label: "CGR", value: crAnesthState.cgr, placeholder: " ", type: "number", cls: "is-micro" })}
+              ${crAnFlowTextInput({ id: "cran-pfc", label: "PFC", value: crAnesthState.pfc, placeholder: " ", type: "number", cls: "is-micro" })}
+              ${crAnFlowTextInput({ id: "cran-cup", label: "CUP", value: crAnesthState.cup, placeholder: " ", type: "number", cls: "is-micro" })}
+              ${crAnFlowTextInput({ id: "cran-fibri", label: "Fibrinogène", value: crAnesthState.fibrinogene, placeholder: " ", type: "number", cls: "is-micro" })}
+              ${crAnFlowTextInput({ id: "cran-ppsb", label: "PPSB", value: crAnesthState.ppsb, placeholder: " ", type: "number", cls: "is-micro" })}
+              ${crAnFlowTextInput({ id: "cran-cacl", label: "CaCl", value: crAnesthState.cacl, placeholder: " ", type: "number", cls: "is-micro" })}
+              ${crAnFlowTextInput({ id: "cran-diurese", label: "Diurèse", value: crAnesthState.diurese, placeholder: " ", type: "number", cls: "is-micro" })}
             </div>
 
             <div class="cr-an-flow-row cr-an-inline-title-row">
               <div class="cr-an-inline-title">Catécholamines (max) :</div>
-              ${crAnFlowTextInput({ id: "cran-noradmax", label: "Noradrénaline", value: crAnesthState.noradMax, placeholder: "XX", type: "number", step: "any", cls: "is-micro" })}
-              ${crAnFlowTextInput({ id: "cran-dobumax", label: "Dobutamine", value: crAnesthState.dobuMax, placeholder: "XX", type: "number", step: "any", cls: "is-micro" })}
+              ${crAnFlowTextInput({ id: "cran-noradmax", label: "Noradrénaline", value: crAnesthState.noradMax, placeholder: " ", type: "number", step: "any", cls: "is-micro" })}
+              ${crAnFlowTextInput({ id: "cran-dobumax", label: "Dobutamine", value: crAnesthState.dobuMax, placeholder: " ", type: "number", step: "any", cls: "is-micro" })}
             </div>
 
             <div class="cr-an-flow-row cr-an-inline-title-row">
               <div class="cr-an-inline-title">ETO post-CEC :</div>
-              ${crAnFlowTextInput({ id: "cran-fevg", label: "FEVG", value: crAnesthState.fevg, placeholder: "XX", type: "number", cls: "is-micro" })}
-              ${crAnFlowTextInput({ id: "cran-itv", label: "ITV Ssao", value: crAnesthState.itvSsao, placeholder: "XX", type: "number", step: "any", cls: "is-micro" })}
+              ${crAnFlowTextInput({ id: "cran-fevg", label: "FEVG", value: crAnesthState.fevg, placeholder: " ", type: "number", cls: "is-micro" })}
+              ${crAnFlowTextInput({ id: "cran-itv", label: "ITV Ssao", value: crAnesthState.itvSsao, placeholder: " ", type: "number", step: "any", cls: "is-micro" })}
               ${crAnFlowCheck("cran-eto-cine", "cinétique segmentaire OK", crAnesthState.etoPost.cinesegOk)}
               ${crAnFlowCheck("cran-eto-va", "valve aortique OK", crAnesthState.etoPost.vaOk)}
               ${crAnFlowCheck("cran-eto-vm", "valve mitrale OK", crAnesthState.etoPost.vmOk)}
@@ -10065,18 +10065,18 @@ function renderCrAnTabAnesth() {
               <div class="cr-an-inline-title">Électrodes épicardiques :</div>
               ${crAnFlowCheck("cran-epi-sent", "Sentinelle", crAnesthState.epicardiques.sentinelle)}
               ${crAnFlowCheck("cran-epi-stim", "Stimulation", crAnesthState.epicardiques.stimulation)}
-              ${crAnFlowTextInput({ id: "cran-epi-freq", label: "à", value: crAnesthState.epicardiques.freq, placeholder: "XX", type: "number", cls: "is-micro" })}
-              ${crAnFlowTextInput({ id: "cran-epi-ss", label: "seuil sensibilité", value: crAnesthState.epicardiques.seuilSens, placeholder: "XX", type: "number", step: "any", cls: "is-micro" })}
-              ${crAnFlowTextInput({ id: "cran-epi-rs", label: "réglé à", value: crAnesthState.epicardiques.reglageSens, placeholder: "XX", type: "number", step: "any", cls: "is-micro" })}
-              ${crAnFlowTextInput({ id: "cran-epi-stv", label: "seuil stimulation", value: crAnesthState.epicardiques.seuilStim, placeholder: "XX", type: "number", step: "any", cls: "is-micro" })}
-              ${crAnFlowTextInput({ id: "cran-epi-rstv", label: "réglé à", value: crAnesthState.epicardiques.reglageStim, placeholder: "XX", type: "number", step: "any", cls: "is-micro" })}
+              ${crAnFlowTextInput({ id: "cran-epi-freq", label: "à", value: crAnesthState.epicardiques.freq, placeholder: " ", type: "number", cls: "is-micro" })}
+              ${crAnFlowTextInput({ id: "cran-epi-ss", label: "seuil sensibilité", value: crAnesthState.epicardiques.seuilSens, placeholder: " ", type: "number", step: "any", cls: "is-micro" })}
+              ${crAnFlowTextInput({ id: "cran-epi-rs", label: "réglé à", value: crAnesthState.epicardiques.reglageSens, placeholder: " ", type: "number", step: "any", cls: "is-micro" })}
+              ${crAnFlowTextInput({ id: "cran-epi-stv", label: "seuil stimulation", value: crAnesthState.epicardiques.seuilStim, placeholder: " ", type: "number", step: "any", cls: "is-micro" })}
+              ${crAnFlowTextInput({ id: "cran-epi-rstv", label: "réglé à", value: crAnesthState.epicardiques.reglageStim, placeholder: " ", type: "number", step: "any", cls: "is-micro" })}
             </div>
 
             <div class="cr-an-flow-row cr-an-inline-title-row">
               <div class="cr-an-inline-title">En fin d’intervention :</div>
-              ${crAnFlowTextInput({ id: "cran-hbfin", label: "Hb", value: crAnesthState.hbFin, placeholder: "XX", type: "number", step: "any", cls: "is-micro" })}
-              ${crAnFlowTextInput({ id: "cran-lactfin", label: "lactate", value: crAnesthState.lactateFin, placeholder: "XX", type: "number", step: "any", cls: "is-micro" })}
-              ${crAnFlowTextInput({ id: "cran-noradfin", label: "Noradrénaline", value: crAnesthState.noradFin, placeholder: "XX", type: "number", step: "any", cls: "is-micro" })}
+              ${crAnFlowTextInput({ id: "cran-hbfin", label: "Hb", value: crAnesthState.hbFin, placeholder: " ", type: "number", step: "any", cls: "is-micro" })}
+              ${crAnFlowTextInput({ id: "cran-lactfin", label: "lactate", value: crAnesthState.lactateFin, placeholder: " ", type: "number", step: "any", cls: "is-micro" })}
+              ${crAnFlowTextInput({ id: "cran-noradfin", label: "Noradrénaline", value: crAnesthState.noradFin, placeholder: " ", type: "number", step: "any", cls: "is-micro" })}
               ${crAnFlowCheck("cran-fin-vent", "Ventilé(e)", crAnesthState.ventile)}
               ${crAnFlowCheck("cran-fin-ext", "Extubé(e)", crAnesthState.extube)}
             </div>
