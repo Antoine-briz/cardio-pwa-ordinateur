@@ -10743,3 +10743,34 @@ body:not(.theme-light) .cr-an-modal textarea,
   max-width:52px !important;
   text-align:center;
 }
+
+/* =========================================================
+   Electrodes épicardiques : lignes compactes sur une ligne
+   ========================================================= */
+
+.cr-an-epi-line{
+  display:flex !important;
+  align-items:center !important;
+  flex-wrap:nowrap !important;
+  gap:4px !important;
+  white-space:nowrap !important;
+  margin-bottom:4px !important;
+}
+
+.cr-an-epi-line label{
+  margin:0 !important;
+  font-weight:700 !important;
+}
+
+.cr-an-epi-line span{
+  white-space:nowrap !important;
+}
+
+.cr-an-epi-line input{
+  width:42px !important;
+  min-width:42px !important;
+  max-width:42px !important;
+  height:26px !important;
+  padding:2px 4px !important;
+  text-align:center !important;
+}
