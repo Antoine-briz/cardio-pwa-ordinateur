@@ -10050,11 +10050,11 @@ body:not(.theme-light) .cr-an-modal *{
   min-height:0;
   display:grid;
 
-  /* 2 cellules en haut, 3 cellules en bas */
-  grid-template-columns: 0.75fr 0.75fr 1.2fr 1.2fr 1.55fr 1.55fr;
+  /* aa bbbbbb / cc ddd eee */
+  grid-template-columns: repeat(8, minmax(0, 1fr));
   grid-template-areas:
-    "a a b b b b"
-    "c d d e e e";
+    "a a b b b b b b"
+    "c c d d d e e e";
 
   gap:4px;
   overflow:auto;
