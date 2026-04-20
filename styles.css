@@ -10449,3 +10449,26 @@ body:not(.theme-light) .cr-an-modal textarea,
 .hidden{
   display:none !important;
 }
+
+/* =========================================================
+   PRISE EN CHARGE POST-CEC
+   Inputs 2x plus petits
+   ========================================================= */
+
+.cr-an-cell-post .cr-an-flow-field input,
+.cr-an-cell-post .cr-an-flow-field select,
+.cr-an-cell-post .compact-inputs input,
+.cr-an-cell-post .compact-inputs select,
+.cr-an-cell-post .cr-an-inline2 input,
+.cr-an-cell-post .cr-an-inline3 input,
+.cr-an-cell-post .cr-an-inline4 input,
+.cr-an-cell-post .cr-an-inline5 input,
+.cr-an-cell-post .cr-an-inline2 select,
+.cr-an-cell-post .cr-an-inline3 select,
+.cr-an-cell-post .cr-an-inline4 select,
+.cr-an-cell-post .cr-an-inline5 select{
+  width:48px !important;
+  min-width:48px !important;
+  max-width:48px !important;
+  padding:2px 4px !important;
+}
