@@ -9526,36 +9526,69 @@ function renderCrAnTabEto() {
   if (variant === "plastie_aortique") prefix = "rva";
   if (variant === "plastie_mitrale") prefix = "rvm";
 
-  let html = "";
+  let bodyHtml = "";
+
   try {
-    if (typeof getEtoFormHtml === "function") {
-      html = getEtoFormHtml(prefix);
-    } else if (typeof buildEtoFormHtml === "function") {
-      html = buildEtoFormHtml(prefix);
+    if (variant === "plastie_aortique" && typeof etoFormHtmlCompactPlastieAortique === "function") {
+      bodyHtml = etoFormHtmlCompactPlastieAortique(prefix);
+    } else if (variant === "plastie_mitrale" && typeof etoFormHtmlCompactPlastieMitrale === "function") {
+      bodyHtml = etoFormHtmlCompactPlastieMitrale(prefix);
+    } else if (typeof etoFormHtmlCompact === "function") {
+      bodyHtml = etoFormHtmlCompact(prefix);
     }
   } catch (e) {
     console.error("Erreur rendu CR ETO embarqué", e);
   }
 
-  if (!html) {
-    html = `
+  if (!bodyHtml) {
+    mount.innerHTML = `
       <div class="card" style="background:#fff;color:#000;border:1.5px solid #000;">
         <strong>Impossible d’embarquer le CR ETO automatiquement.</strong><br>
-        Vérifie le nom exact de ta fonction générant le HTML ETO
-        (ex. <code>getEtoFormHtml</code> ou <code>buildEtoFormHtml</code>).
+        Vérifie que les fonctions <code>etoFormHtmlCompact</code>,
+        <code>etoFormHtmlCompactPlastieAortique</code> et
+        <code>etoFormHtmlCompactPlastieMitrale</code> sont bien chargées.
       </div>
     `;
+    return;
   }
 
-  mount.innerHTML = `<div class="cr-an-eto-shell">${html}</div>`;
+  mount.innerHTML = `
+    <div class="cr-an-eto-shell eto-modal">
+      <div class="acr-modal-card eto-fullscreen" role="dialog" aria-modal="false">
+        <div class="acr-modal-head eto-head eto-head-inline">
+          <h3 class="eto-head-title">Compte rendu d'ETO</h3>
+
+          <div class="eto-head-fields">
+            <label class="eto-head-field">
+              Thorax
+              <select id="${prefix}-eto-thorax">
+                <option value="Fermé" selected>Fermé</option>
+                <option value="Ouvert">Ouvert</option>
+              </select>
+            </label>
+
+            <label class="eto-head-field">
+              Noradrénaline (mg/h)
+              <input type="number" id="${prefix}-eto-nora" step="0.1" min="0"/>
+            </label>
+
+            <label class="eto-head-field">
+              Dobutamine (µg/kg/min)
+              <input type="number" id="${prefix}-eto-dobu" step="0.1" min="0"/>
+            </label>
+          </div>
+        </div>
+
+        <div class="acr-modal-body">
+          ${bodyHtml}
+        </div>
+      </div>
+    </div>
+  `;
 
   try {
-    if (typeof initEtoFormModal === "function") {
-      initEtoFormModal(prefix);
-    } else if (typeof bindEtoFormEvents === "function") {
-      bindEtoFormEvents(prefix);
-    } else if (typeof updateEtoSynth === "function") {
-      updateEtoSynth();
+    if (typeof initEtoFormHandlers === "function") {
+      initEtoFormHandlers(prefix, mount);
     }
   } catch (e) {
     console.error("Erreur init CR ETO embarqué", e);
