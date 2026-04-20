@@ -10021,7 +10021,7 @@ body:not(.theme-light) .cr-an-modal *{
   min-height:0 !important;
   display:grid;
   grid-template-columns:minmax(0, 1fr) 440px;
-  gap:10px;
+  gap:8px;
   align-items:stretch;
 }
 
@@ -10046,22 +10046,18 @@ body:not(.theme-light) .cr-an-modal *{
    CR ANESTHÉSIE — grille des 5 cellules
    2 en haut / 3 en bas
    ========================================================= */
-/* =========================================================
-   CR ANESTHÉSIE — Grille principale sans espace vertical
-   ========================================================= */
-.cr-an-grid-5 {
-  flex: 1 1 auto;
-  min-height: 0;
-  display: grid;
-  /* deux colonnes : petite (intervention) + large (induction/anesthésie) */
-  grid-template-columns: 0.85fr 1.15fr;
+.cr-an-grid-5{
+  flex:1 1 auto;
+  min-height:0;
+  display:grid;
+  grid-template-columns:0.82fr 1.18fr;
   grid-template-areas:
     "a b"
     "c d"
     "c e";
-  gap: 0; /* plus aucun espace entre cellules */
-  overflow: auto;
-  padding-right: 0;
+  gap:4px;
+  overflow:auto;
+  padding-right:0;
 }
 
 .cr-an-grid-5 > section:nth-child(1){ grid-area:a; }
@@ -10069,15 +10065,6 @@ body:not(.theme-light) .cr-an-modal *{
 .cr-an-grid-5 > section:nth-child(3){ grid-area:c; }
 .cr-an-grid-5 > section:nth-child(4){ grid-area:d; }
 .cr-an-grid-5 > section:nth-child(5){ grid-area:e; }
-
-/* Enlève l’espacement ou bordure visuelle entre les deux blocs adjacents */
-.cr-an-grid-5 > section {
-  border-right: none !important;
-}
-.cr-an-grid-5 > section.cr-an-cell-induction {
-  border-left: 1.5px solid #000 !important; /* fine séparation interne */
-  border-right: none !important;
-}
 
 /* =========================================================
    CR ANESTHÉSIE — cellules
@@ -10087,7 +10074,7 @@ body:not(.theme-light) .cr-an-modal *{
   color:#000 !important;
   border:1.5px solid #000 !important;
   border-radius:10px !important;
-  padding:8px 10px !important;
+  padding:8px 12px !important;
   min-width:0;
   overflow:hidden;
 }
@@ -10103,7 +10090,7 @@ body:not(.theme-light) .cr-an-modal *{
 .cr-an-subtitle{
   font-weight:900 !important;
   font-size:0.90rem !important;
-  margin:8px 0 4px 0 !important;
+  margin:7px 0 4px 0 !important;
   line-height:1.05 !important;
 }
 
@@ -10116,11 +10103,11 @@ body:not(.theme-light) .cr-an-modal *{
 }
 
 /* =========================================================
-   CR ANESTHÉSIE — formulaires
+   CR ANESTHÉSIE — formulaires généraux
    ========================================================= */
 .cr-an-form-row{
   display:grid;
-  grid-template-columns:145px 1fr;
+  grid-template-columns:145px minmax(0,1fr);
   gap:8px;
   align-items:center;
   margin-bottom:6px;
@@ -10166,29 +10153,6 @@ body:not(.theme-light) .cr-an-modal *{
   font-weight:800 !important;
 }
 
-.cr-an-check-grid{
-  display:grid;
-  gap:4px 12px;
-  margin-bottom:4px;
-}
-
-.cr-an-check-grid.compact2{ grid-template-columns:repeat(2, minmax(0,1fr)); }
-.cr-an-check-grid.compact3{ grid-template-columns:repeat(3, minmax(0,1fr)); }
-
-.cr-an-check-grid label{
-  display:flex;
-  align-items:center;
-  gap:5px;
-  white-space:nowrap;
-}
-
-.compact-radios label{
-  display:flex;
-  align-items:center;
-  gap:6px;
-  white-space:nowrap;
-}
-
 .cr-an-eto-buttons{
   display:grid;
   gap:8px;
@@ -10199,6 +10163,157 @@ body:not(.theme-light) .cr-an-modal *{
   min-height:0 !important;
   font-size:0.92rem !important;
   line-height:1.1 !important;
+}
+
+/* =========================================================
+   CR ANESTHÉSIE — cellule Intervention
+   ========================================================= */
+.cr-an-cell-intervention{
+  max-width:none;
+}
+
+.cr-an-cell-intervention .cr-an-form-row{
+  grid-template-columns:118px minmax(0,1fr) !important;
+  align-items:center !important;
+  gap:10px !important;
+  margin-bottom:8px !important;
+}
+
+.cr-an-cell-intervention .cr-an-form-row label{
+  justify-content:flex-start !important;
+  text-align:left !important;
+  font-weight:700 !important;
+  white-space:nowrap !important;
+  margin:0 !important;
+}
+
+.cr-an-cell-intervention input[type="text"],
+.cr-an-cell-intervention input[type="number"],
+.cr-an-cell-intervention select{
+  width:100% !important;
+  min-width:0 !important;
+  max-width:none !important;
+}
+
+.cr-an-form-row-tight{
+  margin-bottom:6px !important;
+}
+
+.cr-an-geste-controls{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) 42px !important;
+  gap:8px !important;
+  align-items:center !important;
+  width:100% !important;
+}
+
+.cr-an-btn-plus{
+  width:42px !important;
+  min-width:42px !important;
+  height:32px !important;
+  padding:0 !important;
+  border:2px solid #000 !important;
+  border-radius:8px !important;
+  background:#fff !important;
+  color:#000 !important;
+  font-size:1.15rem !important;
+  font-weight:900 !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  cursor:pointer !important;
+}
+
+.cr-an-btn-plus:hover{
+  background:#eee !important;
+}
+
+.cr-an-btn-plus:active{
+  transform:translateY(1px);
+}
+
+.cr-an-line-radios{
+  display:flex !important;
+  align-items:center !important;
+  gap:18px !important;
+  flex-wrap:wrap !important;
+}
+
+.cr-an-line-radios label{
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:6px !important;
+  white-space:nowrap !important;
+  margin:0 !important;
+}
+
+/* =========================================================
+   CR ANESTHÉSIE — cases à cocher / radios compactes
+   Plus d’éléments par ligne
+   ========================================================= */
+.cr-an-check-grid{
+  display:grid !important;
+  gap:5px 14px !important;
+  margin-bottom:4px !important;
+}
+
+.cr-an-check-grid.compact2{
+  grid-template-columns:repeat(3, minmax(150px, 1fr)) !important;
+}
+
+.cr-an-check-grid.compact3{
+  grid-template-columns:repeat(4, minmax(120px, 1fr)) !important;
+}
+
+.cr-an-check-grid label{
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:5px !important;
+  white-space:nowrap !important;
+  font-size:0.84rem !important;
+  line-height:1.05 !important;
+  min-width:0 !important;
+}
+
+.compact-radios,
+.cr-an-line-radios{
+  display:flex !important;
+  align-items:center !important;
+  gap:10px 20px !important;
+  flex-wrap:wrap !important;
+}
+
+/* =========================================================
+   CR ANESTHÉSIE — ligne Sonde / Cormack / POGO
+   ========================================================= */
+.cr-an-inline3.compact-inputs{
+  display:grid !important;
+  grid-template-columns:92px 92px 70px !important;
+  gap:10px !important;
+  align-items:end !important;
+  justify-content:start !important;
+  margin-top:2px !important;
+  margin-bottom:6px !important;
+}
+
+.cr-an-inline3.compact-inputs > div{
+  min-width:0 !important;
+}
+
+.cr-an-inline3.compact-inputs label{
+  display:block !important;
+  margin-bottom:3px !important;
+  font-weight:800 !important;
+  white-space:nowrap !important;
+}
+
+.cr-an-inline3.compact-inputs input,
+.cr-an-inline3.compact-inputs select{
+  width:100% !important;
+  min-width:0 !important;
+  max-width:none !important;
+  height:30px !important;
+  padding:2px 6px !important;
 }
 
 /* =========================================================
@@ -10293,6 +10408,22 @@ body:not(.theme-light) .cr-an-modal textarea,
   .cr-an-right .eto-synth-panel{
     max-height:340px !important;
   }
+
+  .cr-an-grid-5{
+    grid-template-columns:1fr !important;
+    grid-template-areas:
+      "a"
+      "b"
+      "c"
+      "d"
+      "e" !important;
+    gap:8px !important;
+  }
+
+  .cr-an-check-grid.compact2,
+  .cr-an-check-grid.compact3{
+    grid-template-columns:repeat(2, minmax(140px, 1fr)) !important;
+  }
 }
 
 @media (max-width: 900px){
@@ -10327,256 +10458,21 @@ body:not(.theme-light) .cr-an-modal textarea,
     padding:10px 12px !important;
   }
 
-  .cr-an-grid-5{
-    grid-template-columns:1fr;
-    grid-template-areas:
-      "a"
-      "b"
-      "c"
-      "d"
-      "e";
+  .cr-an-cell-intervention .cr-an-form-row{
+    grid-template-columns:1fr !important;
   }
 
-  .cr-an-form-row{
-    grid-template-columns:1fr;
-  }
-
-  .cr-an-inline2,
-  .cr-an-inline3,
-  .cr-an-inline4,
-  .cr-an-inline5,
   .cr-an-check-grid.compact2,
   .cr-an-check-grid.compact3{
-    grid-template-columns:1fr;
+    grid-template-columns:1fr !important;
+  }
+
+  .cr-an-inline3.compact-inputs{
+    grid-template-columns:1fr 1fr 1fr !important;
   }
 
   .cr-an-check-grid label,
   .compact-radios label{
     white-space:normal;
   }
-}
-
-/* =========================================================
-   CR ANESTHÉSIE — Ajustements INTERVENTION
-   ========================================================= */
-
-.cr-an-cell-intervention {
-  max-width: 360px;
-}
-
-.cr-an-btn-plus {
-  background: #fff !important;
-  border: 2px solid #000 !important;
-  color: #000 !important;
-  font-weight: 700;
-  border-radius: 6px;
-  padding: 0 10px !important;
-  min-height: 28px;
-  cursor: pointer;
-  transition: transform .1s ease, background .1s ease;
-}
-
-.cr-an-btn-plus:hover {
-  background: #eee !important;
-  transform: translateY(-1px);
-}
-
-.cr-an-btn-plus:active {
-  transform: translateY(1px);
-}
-
-@media (max-width:1180px){
-  .cr-an-cell-intervention {
-    max-width: none;
-    width: 100%;
-  }
-}
-
-/* =========================================================
-   CR ANESTHÉSIE — Mise en page compacte et alignée
-   ========================================================= */
-
-/* Étendre un peu la zone centrale des formulaires */
-.cr-an-grid-5 {
-  grid-template-columns: 0.8fr 1.2fr;
-}
-
-/* Ligne de formulaire : label et input alignés sur une seule ligne */
-.cr-an-form-row {
-  display: flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-  justify-content: space-between !important;
-  margin-bottom: 6px !important;
-}
-
-.cr-an-form-row label {
-  flex: 0 0 145px !important;
-  font-weight: 700 !important;
-}
-
-.cr-an-form-row input[type="text"],
-.cr-an-form-row input[type="number"],
-.cr-an-form-row select {
-  flex: 0 0 auto !important;
-  width: 80px !important;
-  min-width: 70px !important;
-}
-
-/* Pour les variantes multi‑colonnes : autoriser 3–4 colonnes par ligne */
-.cr-an-check-grid.compact2 {
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-}
-
-.cr-an-check-grid.compact3 {
-  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-}
-
-.compact-radios,
-.cr-an-line-radios {
-  display: flex !important;
-  align-items: center !important;
-  flex-wrap: wrap;
-  gap: 12px 18px !important;
-  margin-bottom: 6px !important;
-}
-
-.cr-an-text-strong {
-  font-weight: 900 !important;
-  margin-right: 4px !important;
-}
-
-/* Écrans plus petits : repasser à 2 colonnes */
-@media (max-width: 1180px) {
-  .cr-an-check-grid.compact2 {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  }
-  .cr-an-check-grid.compact3 {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  }
-}
-
-/* =========================================================
-   CR ANESTHÉSIE — alignement compact des formulaires
-   ========================================================= */
-
-.cr-an-form-row {
-  display: flex !important;
-  align-items: center !important;
-  gap: 6px !important;
-  margin-bottom: 6px !important;
-}
-
-.cr-an-form-row label {
-  width: auto !important;
-  min-width: 90px !important;
-  margin-right: 6px !important;
-  font-weight: 700 !important;
-}
-
-.cr-an-form-row input[type="text"],
-.cr-an-form-row input[type="number"],
-.cr-an-form-row select {
-  flex: 1 1 auto !important;
-  max-width: 220px !important;
-  min-width: 100px !important;
-}
-
-.cr-an-form-row button.cr-an-btn-plus {
-  flex: 0 0 auto !important;
-  margin-left: 6px !important;
-}
-
-/* Alignement horizontal du sous-bloc Valve */
-#cran-valve-type .cr-an-line-radios {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-/* =========================================================
-   CR ANESTHÉSIE — présentation ULTRA COMPACTE des champs
-   ========================================================= */
-
-/* Grilles de cases à cocher beaucoup plus denses */
-.cr-an-check-grid {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  gap: 4px 12px !important; /* très serré */
-  margin-bottom: 4px !important;
-}
-
-.cr-an-check-grid label {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 5px !important;
-  white-space: nowrap !important;
-  font-size: 0.85rem !important;
-  line-height: 1.1 !important;
-}
-
-/* Autoriser 5 à 6 cases par ligne selon largeur */
-.cr-an-check-grid.compact2,
-.cr-an-check-grid.compact3 {
-  grid-template-columns: none !important; /* désactive le mode grille rigide */
-}
-
-/* Radios compactes, même principe */
-.compact-radios,
-.cr-an-line-radios {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  align-items: center !important;
-  gap: 8px 16px !important;
-}
-
-/* =========================================================
-   Alignement horizontal des "Sonde / Cormack / POGO"
-   ========================================================= */
-.cr-an-inline3.compact-inputs {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  gap: 10px !important;
-  flex-wrap: wrap;
-}
-
-.cr-an-inline3.compact-inputs > div {
-  display: flex !important;
-  align-items: center !important;
-  gap: 4px !important;
-  min-width: fit-content !important;
-}
-
-.cr-an-inline3.compact-inputs label {
-  margin: 0 !important;
-  font-weight: 700 !important;
-}
-
-/* Rétrécir les zones de saisie pour Sonde, Cormack, POGO */
-.cr-an-inline3.compact-inputs input[type="number"],
-.cr-an-inline3.compact-inputs input[type="text"],
-.cr-an-inline3.compact-inputs select {
-  width: 60px !important;
-  min-width: 55px !important;
-  max-width: 75px !important;
-  padding: 2px 5px !important;
-}
-
-/* Supprimer la grande largeur inutile des inputs standards */
-.cr-an-form-row input[type="text"],
-.cr-an-form-row input[type="number"],
-.cr-an-form-row select {
-  width: auto !important;
-  min-width: 80px !important;
-  max-width: 160px !important;
-}
-
-/* Réduire globalement les marges verticales */
-.cr-an-form-row {
-  margin-bottom: 4px !important;
-}
-
-.cr-an-subtitle {
-  margin: 6px 0 3px 0 !important;
-}
+}"
