@@ -10106,18 +10106,24 @@ function renderCrAnTabAnesth() {
 
         </div>
 
-        <div class="eto-synth-actions cr-an-bottom-actions">
-          <button class="btn" type="button" onclick="crAnCopySynth()">Copier la synthèse</button>
-          <button class="btn" type="button" onclick="crAnReset()">Effacer la saisie</button>
-        </div>
       </div>
 
       <div class="eto-right cr-an-right">
-        <div class="eto-synth-panel">
-          <div class="eto-synth-title">Synthèse CR d’anesthésie</div>
-          <pre id="cr-an-synth-text" class="eto-synth-box"></pre>
-        </div>
-      </div>
+  <div class="eto-synth-panel">
+    <div class="eto-synth-title">Synthèse CR d’anesthésie</div>
+    <pre id="cr-an-synth-text" class="eto-synth-box"></pre>
+  </div>
+
+  <div class="cr-an-bottom-actions cr-an-bottom-actions-right">
+    <button class="btn" type="button" onclick="crAnCopySynth()">
+      Copier la synthèse
+    </button>
+
+    <button class="btn" type="button" onclick="crAnReset()">
+      Effacer la saisie
+    </button>
+  </div>
+</div>
     </div>
   `;
 
