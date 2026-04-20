@@ -10774,3 +10774,72 @@ body:not(.theme-light) .cr-an-modal textarea,
   padding:2px 4px !important;
   text-align:center !important;
 }
+
+/* =========================================================
+   Electrodes épicardiques — ligne principale
+   ========================================================= */
+
+.cr-an-epi-head-line{
+  display:flex !important;
+  align-items:center !important;
+  flex-wrap:nowrap !important;
+  gap:8px !important;
+  white-space:nowrap !important;
+  margin-bottom:6px !important;
+}
+
+.cr-an-epi-title{
+  font-weight:900 !important;
+  white-space:nowrap !important;
+}
+
+.cr-an-epi-check{
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:4px !important;
+  font-weight:400 !important;
+  white-space:nowrap !important;
+  margin:0 !important;
+}
+
+.cr-an-epi-check span{
+  font-weight:400 !important;
+}
+
+/* cases plus petites que les autres */
+.cr-an-epi-check input[type="checkbox"]{
+  width:14px !important;
+  height:14px !important;
+  min-width:14px !important;
+  min-height:14px !important;
+  margin:0 !important;
+  transform:none !important;
+}
+
+/* lignes seuil/réglage compactes */
+.cr-an-epi-line{
+  display:flex !important;
+  align-items:center !important;
+  flex-wrap:nowrap !important;
+  gap:4px !important;
+  white-space:nowrap !important;
+  margin-bottom:4px !important;
+}
+
+.cr-an-epi-line label{
+  margin:0 !important;
+}
+
+.cr-an-epi-line input{
+  width:42px !important;
+  min-width:42px !important;
+  max-width:42px !important;
+  height:26px !important;
+  padding:2px 4px !important;
+  text-align:center !important;
+}
+
+.cr-an-epi-label{
+  font-weight:400 !important;
+  white-space:nowrap !important;
+}
