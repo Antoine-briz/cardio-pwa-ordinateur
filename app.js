@@ -9973,18 +9973,27 @@ function renderCrAnTabAnesth() {
               ${crAnFlowRadio("cran-cardioplegie", "custodiol", "Custodiol", crAnesthState.cardioplegie === "custodiol")}
             </div>
 
-            <div class="cr-an-form-row">
-              <label>Geste réalisé</label>
-              <input type="text" id="cran-geste-realise" value="${crAnEsc(crAnesthState.gesteRealise || crAnBuildGeste())}" oninput="crAnSyncState(); crAnRenderSynth();">
-            </div>
+            <div class="cr-an-flow-row cr-an-inline-title-row cr-an-geste-line">
+  <div class="cr-an-inline-title">Geste :</div>
+  <input
+    type="text"
+    id="cran-geste-realise"
+    value="${crAnEsc(crAnesthState.gesteRealise || crAnBuildGeste())}"
+    oninput="crAnSyncState(); crAnRenderSynth();"
+  >
+</div>
 
-            <div class="cr-an-flow-row">
-              ${crAnFlowTextInput({ id: "cran-duree-cec", label: "CEC", value: crAnesthState.dureeCec, placeholder: "XX", type: "number", cls: "is-micro" })}
-              ${crAnFlowTextInput({ id: "cran-clampage", label: "Clampage", value: crAnesthState.clampage, placeholder: "XX", type: "number", cls: "is-micro" })}
-              ${crAnFlowTextInput({ id: "cran-assistance", label: "Assistance", value: crAnesthState.assistance, placeholder: "XX", type: "number", cls: "is-micro" })}
-              ${crAnFlowTextInput({ id: "cran-heparine", label: "Héparine", value: crAnesthState.heparine, placeholder: "XX", type: "number", cls: "is-micro" })}
-              ${crAnFlowTextInput({ id: "cran-protamine", label: "Protamine", value: crAnesthState.protamine, placeholder: "XX", type: "number", cls: "is-micro" })}
-            </div>
+<div class="cr-an-flow-row cr-an-inline-title-row">
+  <div class="cr-an-inline-title">Durée :</div>
+  ${crAnFlowTextInput({ id: "cran-duree-cec", label: "CEC", value: crAnesthState.dureeCec, placeholder: " ", type: "number", cls: "is-nano" })}
+  ${crAnFlowTextInput({ id: "cran-clampage", label: "Clamp.", value: crAnesthState.clampage, placeholder: " ", type: "number", cls: "is-nano" })}
+  ${crAnFlowTextInput({ id: "cran-assistance", label: "Assist.", value: crAnesthState.assistance, placeholder: " ", type: "number", cls: "is-nano" })}
+</div>
+
+<div class="cr-an-flow-row cr-an-hep-prot-line">
+  ${crAnFlowTextInput({ id: "cran-heparine", label: "Héparine", value: crAnesthState.heparine, placeholder: " ", type: "number", cls: "is-nano" })}
+  ${crAnFlowTextInput({ id: "cran-protamine", label: "Protamine", value: crAnesthState.protamine, placeholder: " ", type: "number", cls: "is-nano" })}
+</div>
           </section>
 
           <!-- 5 -->
