@@ -10550,3 +10550,9 @@ body:not(.theme-light) .cr-an-modal textarea,
   -moz-appearance: textfield !important;
   appearance: textfield !important;
 }
+
+.acr-modal-card.eto-fullscreen.cr-an-modal{
+  max-height:calc(100vh - 24px) !important;
+  height:auto !important;
+  overflow:hidden !important;
+}
