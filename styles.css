@@ -11256,3 +11256,56 @@ body.theme-light .cr-an-right .eto-synth-title *{
     height:auto !important;
   }
 }
+ /* =========================================================
+   CR ANESTHÉSIE — correctif hauteur réelle de la synthèse
+   ========================================================= */
+
+/* Le body de la modal doit transmettre une vraie hauteur */
+.cr-an-modal .acr-modal-body,
+.cr-an-body,
+#cr-an-tab-content-anesth{
+  height:100% !important;
+  min-height:0 !important;
+}
+
+/* La grille principale doit aussi prendre toute la hauteur disponible */
+.cr-an-desktop-grid{
+  height:100% !important;
+  min-height:100% !important;
+}
+
+/* La colonne droite doit s'étirer sur toute la hauteur */
+.cr-an-right{
+  align-self:stretch !important;
+  height:100% !important;
+  min-height:0 !important;
+  display:flex !important;
+  flex-direction:column !important;
+}
+
+/* Le panneau synthèse prend tout l'espace restant */
+.cr-an-right .eto-synth-panel{
+  flex:1 1 auto !important;
+  height:100% !important;
+  min-height:0 !important;
+  display:flex !important;
+  flex-direction:column !important;
+  margin-bottom:0 !important;
+}
+
+/* Le vrai cadre de texte remplit le panneau jusqu'en bas */
+.cr-an-right .eto-synth-box{
+  flex:1 1 auto !important;
+  height:100% !important;
+  min-height:0 !important;
+  margin:0 !important;
+  overflow:auto !important;
+}
+
+/* Les boutons restent collés en bas sans créer d'espace parasite */
+.cr-an-bottom-actions-right{
+  margin-top:0 !important;
+  margin-bottom:0 !important;
+  padding-top:8px !important;
+  padding-bottom:0 !important;
+}
