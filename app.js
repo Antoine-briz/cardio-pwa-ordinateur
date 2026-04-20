@@ -10231,7 +10231,10 @@ function crAnRenderSynth() {
 
 let gesteTxt = gesteParts.join(" + ");
 
-if (["rva", "rvm", "bentall"].includes(crAnesthState.geste1) && crAnSafe(crAnesthState.valveType)) {
+if (
+  [crAnesthState.geste1, crAnesthState.geste2].some(g => ["rva", "rvm", "bentall"].includes(g)) &&
+  crAnSafe(crAnesthState.valveType)
+) {
   gesteTxt += ` (${crAnesthState.valveType})`;
 }
 
