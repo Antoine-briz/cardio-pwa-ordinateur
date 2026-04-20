@@ -10123,7 +10123,26 @@ ${crAnesthState.geste3 !== undefined ? `
               ${crAnFlowCheck("cran-eto-aorte", "paroi aortique OK", crAnesthState.etoPost.aorteOk)}
             </div>
 
-            <div class="cr-an-flow-row">
+            <div class="cr-an-subtitle">Electrodes épicardiques</div>
+
+<div class="cr-an-epi-line">
+  ${crAnCheck("cran-epi-sent", "Sentinelle", crAnesthState.epicardiques.sentinelle)}
+  ${crAnCheck("cran-epi-stim", "Stimulation", crAnesthState.epicardiques.stimulation)}
+
+  <span>à</span>
+
+  <input
+    type="number"
+    id="cran-epi-freq"
+    class="cr-an-mini-input"
+    value="${crAnEsc(crAnesthState.epicardiques.freq)}"
+    oninput="crAnSyncState(); crAnRenderSynth();"
+  >
+
+  <span>/min</span>
+</div>
+
+<div class="cr-an-flow-row">
   <label class="cr-an-flow-textstrong">Stimulation :</label>
   <span>seuil/réglage à</span>
 
@@ -10630,19 +10649,37 @@ if (ioLines.length) {
   if (etoPost.length) post.push(`ETO post-CEC : ${etoPost.join(", ")}.`);
 
   const epi = [];
-  if (crAnesthState.epicardiques.sentinelle && crAnSafe(crAnesthState.epicardiques.freq)) {
-    epi.push(`Réglées en sentinelle à ${crAnesthState.epicardiques.freq} /min`);
-  }
-  if (crAnesthState.epicardiques.stimulation && crAnSafe(crAnesthState.epicardiques.freq)) {
-    epi.push(`Réglées en stimulation à ${crAnesthState.epicardiques.freq} /min`);
-  }
-  if (crAnSafe(crAnesthState.epicardiques.seuilSens) || crAnSafe(crAnesthState.epicardiques.reglageSens)) {
-    epi.push(`seuil de sensibilité ${crAnesthState.epicardiques.seuilSens || "?"} mV (réglé à ${crAnesthState.epicardiques.reglageSens || "?"} mV)`);
-  }
-  if (crAnSafe(crAnesthState.epicardiques.seuilStim) || crAnSafe(crAnesthState.epicardiques.reglageStim)) {
-    epi.push(`seuil de stimulation ${crAnesthState.epicardiques.seuilStim || "?"} V (réglé à ${crAnesthState.epicardiques.reglageStim || "?"} V)`);
-  }
-  if (epi.length) post.push(`Électrodes épicardiques : ${epi.join(", ")}.`);
+
+if (crAnesthState.epicardiques.sentinelle) {
+  epi.push("Sentinelle");
+}
+
+if (crAnesthState.epicardiques.stimulation) {
+  const freq = crAnSafe(crAnesthState.epicardiques.freq);
+  epi.push(`Stimulation${freq ? ` à ${freq}/min` : ""}`);
+}
+
+if (
+  crAnSafe(crAnesthState.epicardiques.seuilStim) ||
+  crAnSafe(crAnesthState.epicardiques.reglageStim)
+) {
+  epi.push(
+    `Stimulation : seuil/réglage à ${crAnesthState.epicardiques.seuilStim || "XX"}/${crAnesthState.epicardiques.reglageStim || "XX"} V`
+  );
+}
+
+if (
+  crAnSafe(crAnesthState.epicardiques.seuilSens) ||
+  crAnSafe(crAnesthState.epicardiques.reglageSens)
+) {
+  epi.push(
+    `Sensibilité : seuil/réglage à ${crAnesthState.epicardiques.seuilSens || "XX"}/${crAnesthState.epicardiques.reglageSens || "XX"} mV`
+  );
+}
+
+if (epi.length) {
+  post.push(`Électrodes épicardiques : ${epi.join(", ")}.`);
+}
 
   const fin = [];
   if (crAnSafe(crAnesthState.hbFin)) fin.push(`Hb ${crAnesthState.hbFin} g/dL`);
