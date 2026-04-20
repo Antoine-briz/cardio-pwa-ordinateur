@@ -10033,12 +10033,12 @@ function renderCrAnTabAnesth() {
 
             <div class="cr-an-flow-row cr-an-inline-title-row">
               <div class="cr-an-inline-title">Bilan entrée-sortie/transfusion :</div>
-              ${crAnFlowTextInput({ id: "cran-ringer", label: "Expansion", value: crAnesthState.ringer, placeholder: " ", type: "number", cls: "is-micro" })}
+              ${crAnFlowTextInput({ id: "cran-ringer", label: "Cristalloïde", value: crAnesthState.ringer, placeholder: " ", type: "number", cls: "is-micro" })}
               ${crAnFlowTextInput({ id: "cran-cellsaver", label: "CellSaver", value: crAnesthState.cellsaver, placeholder: " ", type: "number", cls: "is-micro" })}
               ${crAnFlowTextInput({ id: "cran-cgr", label: "CGR", value: crAnesthState.cgr, placeholder: " ", type: "number", cls: "is-micro" })}
               ${crAnFlowTextInput({ id: "cran-pfc", label: "PFC", value: crAnesthState.pfc, placeholder: " ", type: "number", cls: "is-micro" })}
               ${crAnFlowTextInput({ id: "cran-cup", label: "CUP", value: crAnesthState.cup, placeholder: " ", type: "number", cls: "is-micro" })}
-              ${crAnFlowTextInput({ id: "cran-fibri", label: "Fibrinogène", value: crAnesthState.fibrinogene, placeholder: " ", type: "number", cls: "is-micro" })}
+              ${crAnFlowTextInput({ id: "cran-fibri", label: "Fibri.", value: crAnesthState.fibrinogene, placeholder: " ", type: "number", cls: "is-micro" })}
               ${crAnFlowTextInput({ id: "cran-ppsb", label: "PPSB", value: crAnesthState.ppsb, placeholder: " ", type: "number", cls: "is-micro" })}
               ${crAnFlowTextInput({ id: "cran-cacl", label: "CaCl", value: crAnesthState.cacl, placeholder: " ", type: "number", cls: "is-micro" })}
               ${crAnFlowTextInput({ id: "cran-diurese", label: "Diurèse", value: crAnesthState.diurese, placeholder: " ", type: "number", cls: "is-micro" })}
