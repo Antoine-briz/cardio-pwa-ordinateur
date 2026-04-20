@@ -10843,3 +10843,128 @@ body:not(.theme-light) .cr-an-modal textarea,
   font-weight:400 !important;
   white-space:nowrap !important;
 }
+
+/* =========================================================
+   CR ANESTHÉSIE — correctifs finaux de surcouche
+   ========================================================= */
+
+/* 1. Titres bleus = texte blanc */
+.cr-an-cell-title,
+.cr-an-tab,
+.cr-an-tab.is-active,
+.cr-an-right .eto-synth-title{
+  color:#fff !important;
+}
+
+/* 2. Titre des sections */
+.cr-an-cell-title{
+  background:#123e7a !important;
+  color:#fff !important;
+  border-bottom:1px solid #0d2f5c !important;
+}
+
+/* 3. Onglets */
+.cr-an-tab{
+  background:#123e7a !important;
+  color:#fff !important;
+  border-color:#0d2f5c !important;
+}
+
+.cr-an-tab.is-active{
+  background:#1f5aa8 !important;
+  color:#fff !important;
+  border-color:#0d2f5c !important;
+}
+
+/* 4. Titre synthèse */
+.cr-an-right .eto-synth-title{
+  background:#123e7a !important;
+  color:#fff !important;
+  padding:8px 12px !important;
+  border-radius:8px !important;
+  margin-bottom:8px !important;
+}
+
+/* 5. Annule le forçage noir global à l'intérieur de la synthèse */
+.cr-an-right .eto-synth-panel .eto-synth-title,
+.cr-an-right .eto-synth-panel .eto-synth-title *{
+  color:#fff !important;
+  background:#123e7a !important;
+}
+
+/* 6. Colonne droite en vraie colonne flex */
+.cr-an-right{
+  min-height:0 !important;
+  min-width:0 !important;
+  height:100% !important;
+  display:flex !important;
+  flex-direction:column !important;
+  gap:8px !important;
+}
+
+/* 7. La synthèse prend toute la hauteur disponible */
+.cr-an-right .eto-synth-panel{
+  flex:1 1 auto !important;
+  min-height:0 !important;
+  height:auto !important;
+  max-height:none !important;
+  display:flex !important;
+  flex-direction:column !important;
+}
+
+/* 8. Le texte de synthèse remplit le panneau */
+.cr-an-right .eto-synth-box{
+  flex:1 1 auto !important;
+  min-height:0 !important;
+  margin-bottom:0 !important;
+  overflow:auto !important;
+  font-family:inherit !important;
+}
+
+/* 9. Boutons collés en bas, sans espace parasite */
+.cr-an-bottom-actions,
+.cr-an-bottom-actions-right{
+  margin-top:auto !important;
+  margin-bottom:0 !important;
+  padding-top:0 !important;
+  padding-bottom:0 !important;
+  justify-content:stretch !important;
+}
+
+.cr-an-bottom-actions-right .btn,
+.cr-an-bottom-actions .btn{
+  flex:1 1 0 !important;
+}
+
+/* 10. La colonne gauche ne doit pas créer de hauteur fantôme */
+.cr-an-left{
+  min-height:0 !important;
+  height:100% !important;
+  overflow:hidden !important;
+}
+
+/* 11. Le bouton jaune d’entrée n’est plus utilisé */
+.cr-anesth-entry-wrap,
+.cr-anesth-entry-btn,
+.cr-anesth-text-btn{
+  all: unset;
+}
+
+/* =========================================================
+   Bouton menu CR anesthésie — même style que les autres
+   ========================================================= */
+
+.cr-an-menu-entry{
+  display:flex;
+  justify-content:center;
+  margin:12px 0 18px 0;
+}
+
+.cr-an-menu-entry-btn{
+  width:auto !important;
+  min-width:320px;
+  max-width:420px;
+  padding:14px 24px !important;
+  font-size:1.05rem !important;
+  font-weight:700 !important;
+}
