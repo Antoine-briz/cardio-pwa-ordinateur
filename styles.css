@@ -10042,13 +10042,13 @@ body:not(.theme-light) .cr-an-modal *{
 }
 
 /* =========================================================
-   CR anesthésie — disposition type CR ETO
+   CR ANESTHÉSIE — grille des 5 cellules
    ========================================================= */
 .cr-an-grid-5{
   flex:1 1 auto;
   min-height:0;
   display:grid;
-  grid-template-columns:0.76fr 1.24fr;
+  grid-template-columns:0.78fr 1.22fr;
   grid-template-areas:
     "a b"
     "c d"
@@ -10085,30 +10085,27 @@ body:not(.theme-light) .cr-an-modal *{
   border-bottom:1px solid #000 !important;
 }
 
-.cr-an-subtitle{
-  font-weight:900 !important;
-  font-size:0.90rem !important;
-  margin:7px 0 4px 0 !important;
-  line-height:1.05 !important;
-}
-
-.cr-an-mini-subtitle{
-  font-size:0.82rem !important;
-  font-weight:800 !important;
-  margin-top:6px !important;
-  margin-bottom:4px !important;
-  line-height:1.05 !important;
-}
-
 /* =========================================================
    CR anesthésie — lignes inline type ETO
    ========================================================= */
 .cr-an-flow-row{
   display:flex;
   flex-wrap:wrap;
-  align-items:flex-end;
-  gap:6px 14px;
-  margin-bottom:6px;
+  align-items:center;
+  gap:8px 14px;
+  margin-bottom:8px;
+}
+
+.cr-an-inline-title-row{
+  align-items:center !important;
+}
+
+.cr-an-inline-title{
+  font-weight:900 !important;
+  font-size:0.90rem !important;
+  line-height:1 !important;
+  white-space:nowrap !important;
+  margin-right:6px !important;
 }
 
 .cr-an-flow-item{
@@ -10120,8 +10117,8 @@ body:not(.theme-light) .cr-an-modal *{
 
 .cr-an-flow-check{
   white-space:nowrap;
-  font-size:0.84rem !important;
-  line-height:1.05 !important;
+  font-size:0.82rem !important;
+  line-height:1 !important;
 }
 
 .cr-an-flow-check span{
@@ -10137,46 +10134,38 @@ body:not(.theme-light) .cr-an-modal *{
 
 .cr-an-flow-field label{
   font-size:0.82rem !important;
-  font-weight:800 !important;
+  font-weight:400 !important;
   margin:0 !important;
   white-space:nowrap !important;
+  line-height:1 !important;
 }
 
 .cr-an-flow-field input,
 .cr-an-flow-field select{
-  width:95px !important;
-  min-width:95px !important;
-  max-width:95px !important;
-  height:30px !important;
+  width:64px !important;
+  min-width:64px !important;
+  max-width:64px !important;
+  height:28px !important;
   padding:2px 6px !important;
 }
 
-.cr-an-flow-field.is-mini input,
-.cr-an-flow-field.is-mini select{
-  width:78px !important;
-  min-width:78px !important;
-  max-width:78px !important;
+.cr-an-flow-field.is-micro input,
+.cr-an-flow-field.is-micro select{
+  width:52px !important;
+  min-width:52px !important;
+  max-width:52px !important;
 }
 
 .cr-an-flow-field.is-mini-wide input,
 .cr-an-flow-field.is-mini-wide select{
-  width:110px !important;
-  min-width:110px !important;
-  max-width:110px !important;
-}
-
-.cr-an-flow-textstrong{
-  font-weight:900 !important;
-  white-space:nowrap;
+  width:86px !important;
+  min-width:86px !important;
+  max-width:86px !important;
 }
 
 /* =========================================================
    CR ANESTHÉSIE — cellule Intervention
    ========================================================= */
-.cr-an-cell-intervention{
-  max-width:none;
-}
-
 .cr-an-cell-intervention .cr-an-form-row{
   display:grid !important;
   grid-template-columns:118px minmax(0,1fr) !important;
@@ -10250,7 +10239,22 @@ body:not(.theme-light) .cr-an-modal *{
 }
 
 /* =========================================================
-   CR ANESTHÉSIE — champs
+   CR ANESTHÉSIE — boutons ETO
+   ========================================================= */
+.cr-an-eto-buttons{
+  display:grid;
+  gap:8px;
+}
+
+.cr-an-eto-buttons .btn{
+  padding:10px 12px !important;
+  min-height:0 !important;
+  font-size:0.92rem !important;
+  line-height:1.1 !important;
+}
+
+/* =========================================================
+   CR ANESTHÉSIE — champs généraux
    ========================================================= */
 body:not(.theme-light) .cr-an-modal input[type="text"],
 body:not(.theme-light) .cr-an-modal input[type="number"],
@@ -10396,15 +10400,15 @@ body:not(.theme-light) .cr-an-modal textarea,
 
   .cr-an-flow-field input,
   .cr-an-flow-field select{
-    width:82px !important;
-    min-width:82px !important;
-    max-width:82px !important;
+    width:58px !important;
+    min-width:58px !important;
+    max-width:58px !important;
   }
 
-  .cr-an-flow-field.is-mini input,
-  .cr-an-flow-field.is-mini select{
-    width:70px !important;
-    min-width:70px !important;
-    max-width:70px !important;
+  .cr-an-flow-field.is-micro input,
+  .cr-an-flow-field.is-micro select{
+    width:46px !important;
+    min-width:46px !important;
+    max-width:46px !important;
   }
-}"
+}
