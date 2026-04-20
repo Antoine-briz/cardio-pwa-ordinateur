@@ -10379,5 +10379,68 @@ body:not(.theme-light) .cr-an-modal textarea,
   }
 }
 
+/* =========================================================
+   CR ANESTHÉSIE — Mise en page compacte et alignée
+   ========================================================= */
+
+/* Étendre un peu la zone centrale des formulaires */
+.cr-an-grid-5 {
+  grid-template-columns: 1.2fr 1.8fr;
+}
+
+/* Ligne de formulaire : label et input alignés sur une seule ligne */
+.cr-an-form-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  justify-content: space-between !important;
+  margin-bottom: 6px !important;
+}
+
+.cr-an-form-row label {
+  flex: 0 0 145px !important;
+  font-weight: 700 !important;
+}
+
+.cr-an-form-row input[type="text"],
+.cr-an-form-row input[type="number"],
+.cr-an-form-row select {
+  flex: 0 0 auto !important;
+  width: 80px !important;
+  min-width: 70px !important;
+}
+
+/* Pour les variantes multi‑colonnes : autoriser 3–4 colonnes par ligne */
+.cr-an-check-grid.compact2 {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
+.cr-an-check-grid.compact3 {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+}
+
+.compact-radios,
+.cr-an-line-radios {
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap;
+  gap: 12px 18px !important;
+  margin-bottom: 6px !important;
+}
+
+.cr-an-text-strong {
+  font-weight: 900 !important;
+  margin-right: 4px !important;
+}
+
+/* Écrans plus petits : repasser à 2 colonnes */
+@media (max-width: 1180px) {
+  .cr-an-check-grid.compact2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  .cr-an-check-grid.compact3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
 
 
