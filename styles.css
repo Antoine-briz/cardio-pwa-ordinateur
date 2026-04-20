@@ -10620,3 +10620,29 @@ body:not(.theme-light) .cr-an-modal textarea,
   margin-right:4px;
   white-space:nowrap;
 }
+
+/* =========================================================
+   Geste sur la même ligne
+   ========================================================= */
+
+.cr-an-geste-inline-row{
+  display:flex !important;
+  align-items:center !important;
+  gap:10px !important;
+  flex-wrap:nowrap !important;
+  margin-bottom:8px !important;
+}
+
+.cr-an-inline-main-label{
+  font-weight:900 !important;
+  white-space:nowrap !important;
+  margin:0 !important;
+  min-width:auto !important;
+}
+
+.cr-an-geste-inline-input{
+  flex:1 1 auto !important;
+  width:auto !important;
+  min-width:0 !important;
+  max-width:none !important;
+}
