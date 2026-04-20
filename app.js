@@ -10123,11 +10123,28 @@ ${crAnesthState.geste3 !== undefined ? `
               ${crAnFlowCheck("cran-eto-aorte", "paroi aortique OK", crAnesthState.etoPost.aorteOk)}
             </div>
 
-            <div class="cr-an-subtitle">Electrodes épicardiques</div>
+            <div class="cr-an-epi-head-line">
+  <span class="cr-an-epi-title">Electrodes épicardiques :</span>
 
-<div class="cr-an-epi-line">
-  ${crAnCheck("cran-epi-sent", "Sentinelle", crAnesthState.epicardiques.sentinelle)}
-  ${crAnCheck("cran-epi-stim", "Stimulation", crAnesthState.epicardiques.stimulation)}
+  <label class="cr-an-epi-check">
+    <input
+      type="checkbox"
+      id="cran-epi-sent"
+      ${crAnesthState.epicardiques.sentinelle ? "checked" : ""}
+      onchange="crAnSyncState(); crAnRenderSynth();"
+    >
+    <span>Sentinelle</span>
+  </label>
+
+  <label class="cr-an-epi-check">
+    <input
+      type="checkbox"
+      id="cran-epi-stim"
+      ${crAnesthState.epicardiques.stimulation ? "checked" : ""}
+      onchange="crAnSyncState(); crAnRenderSynth();"
+    >
+    <span>Stimulation</span>
+  </label>
 
   <span>à</span>
 
@@ -10143,7 +10160,7 @@ ${crAnesthState.geste3 !== undefined ? `
 </div>
 
 <div class="cr-an-flow-row">
-  <label class="cr-an-flow-textstrong">Stimulation :</label>
+  <label class="cr-an-epi-label">Stimulation :</label>
   <span>seuil/réglage à</span>
 
   <input
@@ -10170,7 +10187,7 @@ ${crAnesthState.geste3 !== undefined ? `
 </div>
 
 <div class="cr-an-flow-row">
-  <label class="cr-an-flow-textstrong">Sensibilité :</label>
+  <label class="cr-an-epi-label">Sensibilité :</label>
   <span>seuil/réglage à</span>
 
   <input
