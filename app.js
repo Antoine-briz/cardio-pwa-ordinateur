@@ -9711,7 +9711,10 @@ function renderCrAnTabAnesth() {
               </div>
             </div>
 
-            <div id="cran-geste2-wrap" class="cr-an-form-row cr-an-form-row-tight hidden">
+            <div id="cran-geste2-wrap"
+     class="cr-an-form-row cr-an-form-row-tight"
+     data-open="${crAnSafe(crAnesthState.geste2) ? "1" : "0"}"
+     style="display:${crAnSafe(crAnesthState.geste2) ? "grid" : "none"};">
               <label>Geste 2</label>
               <select id="cran-geste2" onchange="crAnOnGesteChange();">
                 <option value=""></option>
@@ -9723,7 +9726,9 @@ function renderCrAnTabAnesth() {
               </select>
             </div>
 
-            <div id="cran-valve-type" class="cr-an-form-row cr-an-form-row-tight hidden">
+            <div id="cran-valve-type"
+     class="cr-an-form-row cr-an-form-row-tight"
+     style="display:none;">
               <label>Valve</label>
               <div class="cr-an-line-radios">
                 <label>
@@ -10023,7 +10028,7 @@ function renderCrAnTabAnesth() {
               ${crAnFlowRadio("cran-rythme", "fv", "FV", crAnesthState.rythme === "fv")}
               ${crAnFlowRadio("cran-rythme", "fa", "FA", crAnesthState.rythme === "fa")}
               ${crAnFlowRadio("cran-rythme", "bav", "BAV", crAnesthState.rythme === "bav")}
-              ${crAnFlowTextInput({ id: "cran-cei", label: "Administration de", value: crAnesthState.cei, placeholder: "XX CEI", cls: "is-mini-wide" })}
+              ${crAnFlowTextInput({ id: "cran-cei", label: "CEI", value: crAnesthState.cei, placeholder: " ", cls: "is-mini-wide" })}
             </div>
 
             <div class="cr-an-flow-row cr-an-inline-title-row">
@@ -10268,17 +10273,16 @@ function crAnOnGesteChange() {
   const wrap2 = document.getElementById("cran-geste2-wrap");
   const valveWrap = document.getElementById("cran-valve-type");
 
-  const geste2Visible = !!crAnSafe(crAnesthState.geste2) || !wrap2?.classList.contains("hidden");
-
+  const geste2AlreadyVisible = wrap2?.dataset.open === "1";
   if (wrap2) {
-    wrap2.classList.toggle("hidden", !geste2Visible);
+    wrap2.style.display = geste2AlreadyVisible ? "grid" : "none";
   }
 
   const gestes = [crAnesthState.geste1, crAnesthState.geste2].filter(Boolean);
   const showValve = gestes.some(v => ["rva", "rvm", "bentall"].includes((v || "").toLowerCase()));
 
   if (valveWrap) {
-    valveWrap.classList.toggle("hidden", !showValve);
+    valveWrap.style.display = showValve ? "grid" : "none";
   }
 
   if (!showValve) {
@@ -10295,7 +10299,8 @@ function crAnOnGesteChange() {
 function crAnAddSecondGeste() {
   const wrap = document.getElementById("cran-geste2-wrap");
   if (wrap) {
-    wrap.classList.remove("hidden");
+    wrap.dataset.open = "1";
+    wrap.style.display = "grid";
   }
 }
 
