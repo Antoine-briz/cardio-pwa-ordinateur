@@ -10472,3 +10472,29 @@ body:not(.theme-light) .cr-an-modal textarea,
   max-width:48px !important;
   padding:2px 4px !important;
 }
+
+/* =========================================================
+   Lignes simplifiées post-CEC
+   ========================================================= */
+
+.cr-an-simple-line{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-bottom:4px;
+}
+
+.cr-an-simple-line label{
+  font-weight:700;
+  white-space:nowrap;
+  min-width:150px;
+}
+
+.cr-an-simple-line input{
+  width:46px !important;
+  min-width:46px !important;
+  max-width:46px !important;
+  height:28px !important;
+  padding:2px 4px !important;
+}
