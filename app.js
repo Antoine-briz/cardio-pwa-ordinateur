@@ -9232,7 +9232,7 @@ function openEtoSynthese(text) {
 /* =========================================================
    GESTES CEC — liste standard
    ========================================================= */
-const CEC_GESTES = [
+const CRAN_GESTES = [
   { label: "Pontages coronaires", value: "pontages" },
   { label: "RVA", value: "rva" },
   { label: "Plastie aortique", value: "plastie_aortique" },
@@ -9588,7 +9588,7 @@ function renderCrAnTabAnesth() {
     <label>Geste</label>
     <div class="cr-an-inline2" style="gap:6px;">
       <select id="cran-geste1" onchange="crAnOnGesteChange();">
-        ${CEC_GESTES.map(g => `
+        ${CRAN_GESTES.map(g => `
           <option value="${g.value}" ${crAnesthState.geste1===g.value?'selected':''}>
             ${crAnEsc(g.label)}
           </option>`).join("")}
@@ -9600,7 +9600,7 @@ function renderCrAnTabAnesth() {
   <div id="cran-geste2-wrap" class="cr-an-form-row hidden">
     <label>Geste 2</label>
     <select id="cran-geste2" onchange="crAnSyncState(); crAnRenderSynth();">
-      ${CEC_GESTES.map(g => `
+      ${CRAN_GESTES.map(g => `
         <option value="${g.value}" ${crAnesthState.geste2===g.value?'selected':''}>
           ${crAnEsc(g.label)}
         </option>`).join("")}
@@ -10170,7 +10170,7 @@ function crAnRenderSynth() {
 
   const gesteParts = [crAnesthState.geste1, crAnesthState.geste2]
   .filter(Boolean)
-  .map(v => (CEC_GESTES.find(g => g.value === v)?.label || v));
+  .map(v => (CRAN_GESTES.find(g => g.value === v)?.label || v));
 
 let gesteTxt = gesteParts.join(" + ");
 
