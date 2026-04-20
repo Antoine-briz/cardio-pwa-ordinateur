@@ -10412,3 +10412,33 @@ body:not(.theme-light) .cr-an-modal textarea,
     max-width:46px !important;
   }
 }
+
+/* =========================================================
+   Chirurgie & CEC — geste / durée / héparine-protamine
+   ========================================================= */
+
+.cr-an-geste-line{
+  align-items:center !important;
+}
+
+.cr-an-geste-line input{
+  flex:1 1 auto !important;
+  width:auto !important;
+  min-width:220px !important;
+  max-width:none !important;
+}
+
+.cr-an-flow-field.is-nano input,
+.cr-an-flow-field.is-nano select{
+  width:42px !important;
+  min-width:42px !important;
+  max-width:42px !important;
+}
+
+.cr-an-hep-prot-line{
+  gap:14px 22px !important;
+}
+
+.cr-an-hep-prot-line .cr-an-flow-field label{
+  font-weight:400 !important;
+}
