@@ -10123,16 +10123,59 @@ ${crAnesthState.geste3 !== undefined ? `
               ${crAnFlowCheck("cran-eto-aorte", "paroi aortique OK", crAnesthState.etoPost.aorteOk)}
             </div>
 
-            <div class="cr-an-flow-row cr-an-inline-title-row">
-              <div class="cr-an-inline-title">Électrodes épicardiques :</div>
-              ${crAnFlowCheck("cran-epi-sent", "Sentinelle", crAnesthState.epicardiques.sentinelle)}
-              ${crAnFlowCheck("cran-epi-stim", "Stimulation", crAnesthState.epicardiques.stimulation)}
-              ${crAnFlowTextInput({ id: "cran-epi-freq", label: "à", value: crAnesthState.epicardiques.freq, placeholder: " ", type: "number", cls: "is-micro" })}
-              ${crAnFlowTextInput({ id: "cran-epi-ss", label: "seuil sensibilité", value: crAnesthState.epicardiques.seuilSens, placeholder: " ", type: "number", step: "any", cls: "is-micro" })}
-              ${crAnFlowTextInput({ id: "cran-epi-rs", label: "réglé à", value: crAnesthState.epicardiques.reglageSens, placeholder: " ", type: "number", step: "any", cls: "is-micro" })}
-              ${crAnFlowTextInput({ id: "cran-epi-stv", label: "seuil stimulation", value: crAnesthState.epicardiques.seuilStim, placeholder: " ", type: "number", step: "any", cls: "is-micro" })}
-              ${crAnFlowTextInput({ id: "cran-epi-rstv", label: "réglé à", value: crAnesthState.epicardiques.reglageStim, placeholder: " ", type: "number", step: "any", cls: "is-micro" })}
-            </div>
+            <div class="cr-an-flow-row">
+  <label class="cr-an-flow-textstrong">Stimulation :</label>
+  <span>seuil/réglage à</span>
+
+  <input
+    type="number"
+    step="any"
+    id="cran-epi-stv"
+    class="cr-an-mini-input"
+    value="${crAnEsc(crAnesthState.epicardiques.seuilStim)}"
+    oninput="crAnSyncState(); crAnRenderSynth();"
+  >
+
+  <span>/</span>
+
+  <input
+    type="number"
+    step="any"
+    id="cran-epi-rstv"
+    class="cr-an-mini-input"
+    value="${crAnEsc(crAnesthState.epicardiques.reglageStim)}"
+    oninput="crAnSyncState(); crAnRenderSynth();"
+  >
+
+  <span>V</span>
+</div>
+
+<div class="cr-an-flow-row">
+  <label class="cr-an-flow-textstrong">Sensibilité :</label>
+  <span>seuil/réglage à</span>
+
+  <input
+    type="number"
+    step="any"
+    id="cran-epi-ss"
+    class="cr-an-mini-input"
+    value="${crAnEsc(crAnesthState.epicardiques.seuilSens)}"
+    oninput="crAnSyncState(); crAnRenderSynth();"
+  >
+
+  <span>/</span>
+
+  <input
+    type="number"
+    step="any"
+    id="cran-epi-rs"
+    class="cr-an-mini-input"
+    value="${crAnEsc(crAnesthState.epicardiques.reglageSens)}"
+    oninput="crAnSyncState(); crAnRenderSynth();"
+  >
+
+  <span>mV</span>
+</div>
 
             <div class="cr-an-flow-row cr-an-inline-title-row">
               <div class="cr-an-inline-title">En fin d’intervention :</div>
