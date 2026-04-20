@@ -10951,7 +10951,7 @@ body:not(.theme-light) .cr-an-modal textarea,
 }
 
 /* =========================================================
-   Bouton menu CR anesthésie — même style que les autres
+   Bouton menu CR anesthésie — jaune / orange
    ========================================================= */
 
 .cr-an-menu-entry{
@@ -10964,7 +10964,157 @@ body:not(.theme-light) .cr-an-modal textarea,
   width:auto !important;
   min-width:320px;
   max-width:420px;
-  padding:14px 24px !important;
-  font-size:1.05rem !important;
-  font-weight:700 !important;
+  padding:14px 26px !important;
+
+  font-size:1.08rem !important;
+  font-weight:900 !important;
+  letter-spacing:.2px !important;
+
+  color:#231600 !important;
+  background:linear-gradient(180deg,#ffe96b 0%,#ffc933 55%,#ffb100 100%) !important;
+  border:2px solid #d58a00 !important;
+  border-radius:16px !important;
+
+  box-shadow:
+    0 4px 0 rgba(180,110,0,.95),
+    0 10px 22px rgba(0,0,0,.22);
+
+  transition:
+    transform .08s ease,
+    box-shadow .08s ease,
+    filter .08s ease;
+}
+
+.cr-an-menu-entry-btn:hover{
+  filter:brightness(1.03);
+  transform:translateY(-1px);
+}
+
+.cr-an-menu-entry-btn:active{
+  transform:translateY(2px);
+  box-shadow:
+    0 2px 0 rgba(180,110,0,.95),
+    0 6px 14px rgba(0,0,0,.18);
+}
+
+/* =========================================================
+   CR ANESTHÉSIE — correctif final titres + synthèse
+   ========================================================= */
+
+/* 1) Tous les titres de sections en bleu foncé + texte blanc */
+.cr-an-cell-title{
+  background:#123e7a !important;
+  color:#fff !important;
+  border-bottom:1px solid #0d2f5c !important;
+}
+
+.cr-an-cell-title,
+.cr-an-cell-title *{
+  color:#fff !important;
+}
+
+/* 2) Onglets en haut à gauche */
+.cr-an-tab,
+.cr-an-tab.is-active{
+  color:#fff !important;
+}
+
+.cr-an-tab{
+  background:#123e7a !important;
+  border-color:#0d2f5c !important;
+}
+
+.cr-an-tab.is-active{
+  background:#1f5aa8 !important;
+  border-color:#0d2f5c !important;
+}
+
+/* 3) Colonne droite : vrai layout vertical */
+.cr-an-right{
+  min-height:0 !important;
+  min-width:0 !important;
+  height:100% !important;
+  display:flex !important;
+  flex-direction:column !important;
+  gap:8px !important;
+}
+
+/* 4) On supprime l'encadré extérieur de la synthèse */
+.cr-an-right .eto-synth-panel{
+  flex:1 1 auto !important;
+  min-height:0 !important;
+  height:auto !important;
+  max-height:none !important;
+
+  display:flex !important;
+  flex-direction:column !important;
+
+  background:transparent !important;
+  border:none !important;
+  border-radius:0 !important;
+  padding:0 !important;
+  box-shadow:none !important;
+  overflow:visible !important;
+}
+
+/* 5) Titre synthèse */
+.cr-an-right .eto-synth-title{
+  background:#123e7a !important;
+  color:#fff !important;
+  font-size:0.98rem !important;
+  font-weight:900 !important;
+  padding:8px 12px !important;
+  border-radius:8px !important;
+  margin:0 0 8px 0 !important;
+}
+
+.cr-an-right .eto-synth-title,
+.cr-an-right .eto-synth-title *{
+  color:#fff !important;
+}
+
+/* 6) Le vrai encadré de texte prend toute la hauteur disponible */
+.cr-an-right .eto-synth-box{
+  flex:1 1 auto !important;
+  min-height:0 !important;
+  height:auto !important;
+  margin:0 !important;
+
+  background:#fff !important;
+  color:#000 !important;
+  border:1.5px solid #000 !important;
+  border-radius:10px !important;
+  padding:10px !important;
+
+  overflow:auto !important;
+  white-space:pre-wrap !important;
+  font-family:inherit !important;
+}
+
+/* 7) Boutons collés en bas */
+.cr-an-bottom-actions,
+.cr-an-bottom-actions-right{
+  margin-top:auto !important;
+  margin-bottom:0 !important;
+  padding-top:0 !important;
+  padding-bottom:0 !important;
+  justify-content:stretch !important;
+}
+
+.cr-an-bottom-actions .btn,
+.cr-an-bottom-actions-right .btn{
+  flex:1 1 0 !important;
+}
+
+/* 8) Colonne gauche sans espace fantôme */
+.cr-an-left{
+  min-height:0 !important;
+  height:100% !important;
+  display:flex !important;
+  flex-direction:column !important;
+}
+
+.cr-an-grid-5{
+  flex:1 1 auto !important;
+  min-height:0 !important;
 }
