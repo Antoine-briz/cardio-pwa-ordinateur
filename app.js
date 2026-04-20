@@ -9233,23 +9233,23 @@ function openEtoSynthese(text) {
    GESTES CEC — liste standard
    ========================================================= */
 const CRAN_GESTES = [
-  { label: "Pontages coronaires", value: "pontages" },
-  { label: "RVA", value: "rva" },
-  { label: "Plastie aortique", value: "plastie_aortique" },
-  { label: "TSC", value: "tsc" },
-  { label: "Tirone-David", value: "david" },
-  { label: "Bentall", value: "bentall" },
-  { label: "Ross", value: "ross" },
-  { label: "Plastie mitrale", value: "plastie_mitrale" },
-  { label: "Remplacement valve mitrale", value: "rvm" },
-  { label: "Plastie tricuspide", value: "plastie_tricuspide" },
-  { label: "Remplacement valve tricuspide", value: "rvt" },
-  { label: "Fermeture de CIA", value: "fermeture_cia" },
-  { label: "Fermeture de FOP", value: "fermeture_fop" },
-  { label: "Exérèse de myxome", value: "myxome" },
-  { label: "Dissection aortique", value: "dissection" },
-  { label: "Transplantation cardiaque", value: "transplantation" },
-  { label: "Pose de LVAD", value: "lvad" }
+  { label: "Pontages coronaires", value: "Pontages coronaires" },
+  { label: "RVA", value: "Remplacement valvulaire aortique" },
+  { label: "Plastie aortique", value: "Plastie aortique" },
+  { label: "TSC", value: "Tube sus-coronaire" },
+  { label: "Tirone-David", value: "Tirone-David" },
+  { label: "Bentall", value: "Bentall" },
+  { label: "Ross", value: "Ross" },
+  { label: "Plastie mitrale", value: "Plastie mitrale" },
+  { label: "Remplacement valve mitrale", value: "Remplacement valvulaire mitral" },
+  { label: "Plastie tricuspide", value: "Plastie tricuspide" },
+  { label: "Remplacement valve tricuspide", value: "Remplacement valvulaire tricuspide" },
+  { label: "Fermeture de CIA", value: "Fermeture de CIA" },
+  { label: "Fermeture de FOP", value: "Fermeture de FOP" },
+  { label: "Exérèse de myxome", value: "Myxome" },
+  { label: "Dissection aortique", value: "Dissection aortique" },
+  { label: "Transplantation cardiaque", value: "Transplantation cardiaque" },
+  { label: "Pose de LVAD", value: "Implantation de LVAD" }
 ];
 
 
