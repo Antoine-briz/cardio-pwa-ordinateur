@@ -10268,12 +10268,13 @@ function crAnOnGesteChange() {
   const wrap2 = document.getElementById("cran-geste2-wrap");
   const valveWrap = document.getElementById("cran-valve-type");
 
-  const gestes = [crAnesthState.geste1, crAnesthState.geste2].filter(Boolean);
+  const geste2Visible = !!crAnSafe(crAnesthState.geste2) || !wrap2?.classList.contains("hidden");
 
   if (wrap2) {
-    wrap2.classList.toggle("hidden", !crAnesthState.geste2);
+    wrap2.classList.toggle("hidden", !geste2Visible);
   }
 
+  const gestes = [crAnesthState.geste1, crAnesthState.geste2].filter(Boolean);
   const showValve = gestes.some(v => ["rva", "rvm", "bentall"].includes((v || "").toLowerCase()));
 
   if (valveWrap) {
@@ -10293,7 +10294,9 @@ function crAnOnGesteChange() {
 
 function crAnAddSecondGeste() {
   const wrap = document.getElementById("cran-geste2-wrap");
-  if (wrap) wrap.classList.remove("hidden");
+  if (wrap) {
+    wrap.classList.remove("hidden");
+  }
 }
 
 function crAnBuildGeste() {
