@@ -10606,3 +10606,17 @@ body:not(.theme-light) .cr-an-modal textarea,
   overflow-y: auto !important;
   overflow-x: hidden !important;
 }
+
+/* Cristalloïde + Diurèse sur la même ligne */
+.cr-an-simple-line-double{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:6px 10px;
+}
+
+.cr-an-simple-line-double label{
+  min-width:0 !important;
+  margin-right:4px;
+  white-space:nowrap;
+}
