@@ -9943,16 +9943,15 @@ function renderCrAnTabAnesth() {
             <div class="cr-an-flow-row cr-an-inline-title-row">
               <div class="cr-an-inline-title">Abord :</div>
               ${crAnFlowRadio("cran-abord", "sternotomie", "Sternotomie", crAnesthState.abord === "sternotomie")}
-              ${crAnFlowRadio("cran-abord", "thoracotomie-droite", "Thoracotomie Dte", crAnesthState.abord === "thoracotomie-droite")}
-              ${crAnFlowRadio("cran-abord", "thoracotomie-gauche", "Thoracotomie Gche", crAnesthState.abord === "thoracotomie-gauche")}
-              ${crAnFlowRadio("cran-abord", "sous-xyphoidien", "Sous-xyphoïdien", crAnesthState.abord === "sous-xyphoidien")}
+              ${crAnFlowRadio("cran-abord", "thoracotomie", "Thoracotomie", crAnesthState.abord === "thoracotomie")}
+              ${crAnFlowRadio("cran-abord", "sous-xyphoidien", "Sous-xyph.", crAnesthState.abord === "sous-xyphoidien")}
             </div>
 
             <div class="cr-an-flow-row cr-an-inline-title-row">
-              <div class="cr-an-inline-title">Prélèvement :</div>
+              <div class="cr-an-inline-title">Prélèv.:</div>
               ${crAnFlowCheck("cran-prel-mig", "MIG", crAnesthState.prelevement.mig)}
               ${crAnFlowCheck("cran-prel-mid", "MID", crAnesthState.prelevement.mid)}
-              ${crAnFlowCheck("cran-prel-saph", "Saphène", crAnesthState.prelevement.saphene)}
+              ${crAnFlowCheck("cran-prel-saph", "Saph.", crAnesthState.prelevement.saphene)}
             </div>
 
             <div class="cr-an-flow-row cr-an-inline-title-row">
@@ -9967,8 +9966,7 @@ function renderCrAnTabAnesth() {
               <div class="cr-an-inline-title">Canulation veineuse :</div>
               ${crAnFlowRadio("cran-can-vein", "atrio-cave", "Atrio-cave", crAnesthState.canulationVein === "atrio-cave")}
               ${crAnFlowRadio("cran-can-vein", "bi-cavale", "Bi-cavale", crAnesthState.canulationVein === "bi-cavale")}
-              ${crAnFlowRadio("cran-can-vein", "femorale", "Fémorale", crAnesthState.canulationVein === "femorale")}
-              ${crAnFlowRadio("cran-can-vein", "jid", "Jugulaire interne droite", crAnesthState.canulationVein === "jid")}
+              ${crAnFlowRadio("cran-can-vein", "femorale", "Fém.", crAnesthState.canulationVein === "femorale")}
             </div>
 
             <div class="cr-an-flow-row cr-an-inline-title-row">
@@ -10000,7 +9998,7 @@ function renderCrAnTabAnesth() {
 
   ${crAnFlowTextInput({
     id: "cran-heparine",
-    label: "Héparine",
+    label: "HNF",
     value: crAnesthState.heparine,
     placeholder: "XX",
     type: "number",
@@ -10009,7 +10007,7 @@ function renderCrAnTabAnesth() {
 
   ${crAnFlowTextInput({
     id: "cran-protamine",
-    label: "Protamine",
+    label: "Prota.",
     value: crAnesthState.protamine,
     placeholder: "XX",
     type: "number",
@@ -10468,9 +10466,8 @@ else if (crAnesthState.vasopresseur === "10")
   const chircec = [];
   const abordMap = {
     "sternotomie": "Sternotomie sans complication",
-    "thoracotomie-droite": "Thoracotomie droite sans complication",
-    "thoracotomie-gauche": "Thoracotomie gauche sans complication",
-    "sous-xyphoidien": "Abord sous-xyphoïdien sans complication"
+    "thoracotomie": "Thoracotomie  sans complication",
+    "sous-xyph.": "Abord sous-xyphoïdien sans complication"
   };
   if (abordMap[crAnesthState.abord]) chircec.push(abordMap[crAnesthState.abord] + ".");
 
