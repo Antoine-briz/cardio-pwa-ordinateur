@@ -9990,9 +9990,26 @@ function renderCrAnTabAnesth() {
   ${crAnFlowTextInput({ id: "cran-assistance", label: "Assist.", value: crAnesthState.assistance, placeholder: " ", type: "number", cls: "is-nano" })}
 </div>
 
-<div class="cr-an-flow-row cr-an-hep-prot-line">
-  ${crAnFlowTextInput({ id: "cran-heparine", label: "Héparine", value: crAnesthState.heparine, placeholder: " ", type: "number", cls: "is-nano" })}
-  ${crAnFlowTextInput({ id: "cran-protamine", label: "Protamine", value: crAnesthState.protamine, placeholder: " ", type: "number", cls: "is-nano" })}
+<div class="cr-an-flow-row cr-an-inline-title-row cr-an-hep-prot-line">
+  <div class="cr-an-inline-title">Coagulation :</div>
+
+  ${crAnFlowTextInput({
+    id: "cran-heparine",
+    label: "Héparine",
+    value: crAnesthState.heparine,
+    placeholder: "XX",
+    type: "number",
+    cls: "is-nano"
+  })}
+
+  ${crAnFlowTextInput({
+    id: "cran-protamine",
+    label: "Protamine",
+    value: crAnesthState.protamine,
+    placeholder: "XX",
+    type: "number",
+    cls: "is-nano"
+  })}
 </div>
           </section>
 
