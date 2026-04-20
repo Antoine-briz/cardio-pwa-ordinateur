@@ -10556,3 +10556,53 @@ body:not(.theme-light) .cr-an-modal textarea,
   height:auto !important;
   overflow:hidden !important;
 }
+
+/* =========================================================
+   CR ANESTHÉSIE — correctif définitif scroll vertical
+   ========================================================= */
+
+.acr-modal .acr-modal-card.eto-fullscreen.cr-an-modal{
+  width: min(1780px, calc(100vw - 16px)) !important;
+  height: auto !important;
+  max-height: calc(100vh - 8px) !important;
+  margin: 4px auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+.acr-modal .acr-modal-card.eto-fullscreen.cr-an-modal .acr-modal-body,
+.acr-modal .acr-modal-card.eto-fullscreen.cr-an-modal .cr-an-body{
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding: 6px !important;
+}
+
+.acr-modal .acr-modal-card.eto-fullscreen.cr-an-modal .cr-an-desktop-grid{
+  height: auto !important;
+  min-height: 0 !important;
+  align-items: start !important;
+}
+
+.acr-modal .acr-modal-card.eto-fullscreen.cr-an-modal .cr-an-left{
+  min-height: 0 !important;
+  overflow: visible !important;
+}
+
+.acr-modal .acr-modal-card.eto-fullscreen.cr-an-modal .cr-an-grid-5{
+  min-height: 0 !important;
+  overflow: visible !important;
+}
+
+.acr-modal .acr-modal-card.eto-fullscreen.cr-an-modal .cr-an-right{
+  min-height: 0 !important;
+}
+
+.acr-modal .acr-modal-card.eto-fullscreen.cr-an-modal .eto-synth-panel{
+  height: auto !important;
+  max-height: calc(100vh - 170px) !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
