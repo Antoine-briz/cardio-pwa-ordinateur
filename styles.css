@@ -10050,7 +10050,7 @@ body:not(.theme-light) .cr-an-modal *{
   flex:1 1 auto;
   min-height:0;
   display:grid;
-  grid-template-columns:0.82fr 1.18fr;
+  grid-template-columns:0.72fr 1.28fr;
   grid-template-areas:
     "a b"
     "c d"
@@ -10253,26 +10253,30 @@ body:not(.theme-light) .cr-an-modal *{
    ========================================================= */
 .cr-an-check-grid{
   display:grid !important;
-  gap:5px 14px !important;
+  gap:4px 10px !important;
   margin-bottom:4px !important;
 }
 
 .cr-an-check-grid.compact2{
-  grid-template-columns:repeat(3, minmax(150px, 1fr)) !important;
+  grid-template-columns:repeat(3, minmax(110px, 1fr)) !important;
 }
 
 .cr-an-check-grid.compact3{
-  grid-template-columns:repeat(4, minmax(120px, 1fr)) !important;
+  grid-template-columns:repeat(4, minmax(95px, 1fr)) !important;
 }
 
 .cr-an-check-grid label{
-  display:inline-flex !important;
+  display:flex !important;
   align-items:center !important;
-  gap:5px !important;
+  gap:4px !important;
   white-space:nowrap !important;
-  font-size:0.84rem !important;
-  line-height:1.05 !important;
+  font-size:0.82rem !important;
+  line-height:1 !important;
   min-width:0 !important;
+}
+
+.cr-an-check-grid label span{
+  display:inline-block !important;
 }
 
 .compact-radios,
