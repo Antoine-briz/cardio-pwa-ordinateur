@@ -9864,7 +9864,7 @@ function renderCrAnTabAnesth() {
             <div class="cr-an-flow-row cr-an-inline-title-row">
               <div class="cr-an-inline-title">Intubation :</div>
               ${crAnFlowCheck("cran-int-vent", "Ventilation", crAnesthState.intubation.ventilation)}
-              ${crAnFlowCheck("cran-int-sr", "Séquence rapide", crAnesthState.intubation.sequenceRapide)}
+              ${crAnFlowCheck("cran-int-sr", "ISR", crAnesthState.intubation.sequenceRapide)}
               ${crAnFlowCheck("cran-int-esch", "Eschmann", crAnesthState.intubation.eschmann)}
               ${crAnFlowSelect({
                 id: "cran-int-sonde",
