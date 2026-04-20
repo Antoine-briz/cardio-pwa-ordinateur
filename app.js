@@ -27520,7 +27520,6 @@ function renderAnnuaire() {
         <tr><td>HIRWE Axel</td><td>28 355</td></tr>
         <tr><td>LABARRIERE Ambroise</td><td>28 308</td></tr>
         <tr><td>LANCELOT Aymeric</td><td>65 695</td></tr>
-        <tr><td>LEPERE Victoria</td><td>75 885</td></tr>
         <tr><td>LOEB Jules</td><td>62 997</td></tr>
         <tr><td>MANSOURI Sehm</td><td>28 256</td></tr>
         <tr><td>MARQUET Yann</td><td>28 356</td></tr>
@@ -27533,7 +27532,6 @@ function renderAnnuaire() {
         <tr><td>POUJADE Julien</td><td>27 816</td></tr>
         <tr><td>ROMBI Louise</td><td>28 106</td></tr>
         <tr><td>SCHRAMM Rémi</td><td>28 062</td></tr>
-        <tr><td>SOUILAMAS Dina</td><td>28 279</td></tr>
         <tr><td>VAUZANGES Quentin</td><td>27 613</td></tr>
       </tbody>
     </table>
