@@ -9229,6 +9229,30 @@ function openEtoSynthese(text) {
    CR ANESTHÉSIE — Chirurgie cardiaque sous CEC
    ========================================================= */
 
+/* =========================================================
+   GESTES CEC — liste standard
+   ========================================================= */
+const CEC_GESTES = [
+  { label: "Pontages coronaires", value: "pontages" },
+  { label: "RVA", value: "rva" },
+  { label: "Plastie aortique", value: "plastie_aortique" },
+  { label: "TSC", value: "tsc" },
+  { label: "Tirone-David", value: "david" },
+  { label: "Bentall", value: "bentall" },
+  { label: "Ross", value: "ross" },
+  { label: "Plastie mitrale", value: "plastie_mitrale" },
+  { label: "Remplacement valve mitrale", value: "rvm" },
+  { label: "Plastie tricuspide", value: "plastie_tricuspide" },
+  { label: "Remplacement valve tricuspide", value: "rvt" },
+  { label: "Fermeture de CIA", value: "fermeture_cia" },
+  { label: "Fermeture de FOP", value: "fermeture_fop" },
+  { label: "Exérèse de myxome", value: "myxome" },
+  { label: "Dissection aortique", value: "dissection" },
+  { label: "Transplantation cardiaque", value: "transplantation" },
+  { label: "Pose de LVAD", value: "lvad" }
+];
+
+
 let crAnesthState = null;
 
 function crAnSafe(v) {
@@ -9267,13 +9291,10 @@ function crAnInitState() {
     date: crAnTodayFR(),
 
     geste1: "",
-    geste2: "",
-    geste3: "",
-
-    chirurgien1: "",
-    chirurgien2: "",
-    anesth1: "",
-    anesth2: "",
+geste2: "",
+valveType: "",
+chirurgien1: "",
+anesth1: "",
 
     conditionnement: {
       scope: true,
@@ -9553,48 +9574,121 @@ function renderCrAnTabAnesth() {
 
           <!-- 1 -->
           <section class="cr-an-cell cr-an-cell-intervention">
-            <div class="cr-an-cell-title">Intervention</div>
+  <div class="cr-an-cell-title">Intervention</div>
 
-            <div class="cr-an-form-row">
-              <label>Date</label>
-              <input type="text" id="cran-date" value="${crAnEsc(crAnesthState.date)}" placeholder="XX/XX/XXXX" oninput="crAnSyncState(); crAnRenderSynth();">
-            </div>
+  <div class="cr-an-form-row">
+    <label>Date</label>
+    <input type="text" id="cran-date" 
+           value="${crAnEsc(crAnesthState.date)}" 
+           placeholder="JJ/MM/AAAA"
+           oninput="crAnSyncState(); crAnRenderSynth();">
+  </div>
 
-            <div class="cr-an-form-row">
-              <label>Geste</label>
-              <input type="text" id="cran-geste1" placeholder="Idem choix « Protocole CEC »" value="${crAnEsc(crAnesthState.geste1)}" oninput="crAnSyncState(); crAnMirrorGeste(); crAnRenderSynth();">
-            </div>
+  <div class="cr-an-form-row">
+    <label>Geste</label>
+    <div class="cr-an-inline2" style="gap:6px;">
+      <select id="cran-geste1" onchange="crAnOnGesteChange();">
+        ${CEC_GESTES.map(g => `
+          <option value="${g.value}" ${crAnesthState.geste1===g.value?'selected':''}>
+            ${crAnEsc(g.label)}
+          </option>`).join("")}
+      </select>
+      <button type="button" class="btn cr-an-btn-plus" onclick="crAnAddSecondGeste()">＋</button>
+    </div>
+  </div>
 
-            <div class="cr-an-form-row">
-              <label>+</label>
-              <input type="text" id="cran-geste2" placeholder="Ajout de geste possible" value="${crAnEsc(crAnesthState.geste2)}" oninput="crAnSyncState(); crAnMirrorGeste(); crAnRenderSynth();">
-            </div>
+  <div id="cran-geste2-wrap" class="cr-an-form-row hidden">
+    <label>Geste 2</label>
+    <select id="cran-geste2" onchange="crAnSyncState(); crAnRenderSynth();">
+      ${CEC_GESTES.map(g => `
+        <option value="${g.value}" ${crAnesthState.geste2===g.value?'selected':''}>
+          ${crAnEsc(g.label)}
+        </option>`).join("")}
+    </select>
+  </div>
 
-            <div class="cr-an-form-row">
-              <label>+</label>
-              <input type="text" id="cran-geste3" placeholder="Ajout de geste possible" value="${crAnEsc(crAnesthState.geste3)}" oninput="crAnSyncState(); crAnMirrorGeste(); crAnRenderSynth();">
-            </div>
+  <div id="cran-valve-type" class="cr-an-form-row hidden">
+    <label>Valve</label>
+    <div class="cr-an-check-grid compact2">
+      <label><input type="radio" name="cran-valve" value="Biologique"
+                    ${crAnesthState.valveType==="Biologique"?"checked":""}
+                    onchange="crAnSyncState(); crAnRenderSynth();"> Biologique</label>
+      <label><input type="radio" name="cran-valve" value="Mécanique"
+                    ${crAnesthState.valveType==="Mécanique"?"checked":""}
+                    onchange="crAnSyncState(); crAnRenderSynth();"> Mécanique</label>
+    </div>
+  </div>
 
-            <div class="cr-an-form-row">
-              <label>Chirurgien</label>
-              <input type="text" id="cran-chir1" placeholder="Idem choix annuaire" value="${crAnEsc(crAnesthState.chirurgien1)}" oninput="crAnSyncState(); crAnRenderSynth();">
-            </div>
+  <div class="cr-an-form-row">
+    <label>Chirurgien</label>
+    <input list="cran-chir-list" id="cran-chir1" placeholder="Choisir chirurgien"
+           value="${crAnEsc(crAnesthState.chirurgien1)}"
+           oninput="crAnSyncState(); crAnRenderSynth();">
+    <datalist id="cran-chir-list">
+      <option value="LEPRINCE Pascal">
+      <option value="BARREDA Theo">
+      <option value="D’ALESSANDRO Cosimo">
+      <option value="DANIAL Pichoy">
+      <option value="DEBAUCHEZ Mathieu">
+      <option value="FARAHMAND Patrick">
+      <option value="JUVIN Charles">
+      <option value="HENNEB Belkacem">
+      <option value="LAALI Mojgan">
+      <option value="LANSAC Emmanuel">
+      <option value="LEBRETON Guillaume">
+      <option value="SAIYDOUN Gabriel">
+      <option value="MEYER Horacio">
+      <option value="ZAMORANO Claudio">
+    </datalist>
+  </div>
 
-            <div class="cr-an-form-row">
-              <label>Chirurgien</label>
-              <input type="text" id="cran-chir2" placeholder="2e choix possible" value="${crAnEsc(crAnesthState.chirurgien2)}" oninput="crAnSyncState(); crAnRenderSynth();">
-            </div>
+  <div class="cr-an-form-row">
+    <label>Anesthésiste</label>
+    <input list="cran-an-list" id="cran-an1" placeholder="Choisir anesthésiste"
+           value="${crAnEsc(crAnesthState.anesth1)}"
+           oninput="crAnSyncState(); crAnRenderSynth();">
+    <datalist id="cran-an-list">
+      <option value="BOUGLE Adrien">
+      <option value="ABBES Ahmed">
+      <option value="ANNONAY Marianne">
+      <option value="ARZOINE Jérémy">
+      <option value="BEAUCOTE Victor">
+      <option value="BERECIBAR Jon Ander">
+      <option value="BOROUCHAKI Antoine">
+      <option value="BRIZARD Antoine">
+      <option value="CAMPEANU Aurélie">
+      <option value="CARILLION Aude">
+      <option value="CLAPIN Sixtine">
+      <option value="COELEMBIER Clément">
+      <option value="DE SARCUS Martin">
+      <option value="DJAVIDI Nima">
+      <option value="DUARTE Lucie">
+      <option value="DUCEAU Baptiste">
+      <option value="DUREAU Pauline">
+      <option value="GUILLEMIN Jérémie">
+      <option value="HAMIDI Dany">
+      <option value="HARIRI Geoffroy">
+      <option value="HENOCQ Paul">
+      <option value="HIRWE Axel">
+      <option value="LABARRIERE Ambroise">
+      <option value="LANCELOT Aymeric">
+      <option value="LOEB Jules">
+      <option value="MANSOURI Sehm">
+      <option value="MARQUET Yann">
+      <option value="MELLANO Vincent">
+      <option value="MONTANA Vincenzo">
+      <option value="MOHAMMEDI Neyla">
+      <option value="NICULESCU Michaela">
+      <option value="OMAR Edris">
+      <option value="PERRIER Johann">
+      <option value="POUJADE Julien">
+      <option value="ROMBI Louise">
+      <option value="SCHRAMM Rémi">
+      <option value="VAUZANGES Quentin">
+    </datalist>
+  </div>
+</section>
 
-            <div class="cr-an-form-row">
-              <label>Anesthésiste</label>
-              <input type="text" id="cran-an1" placeholder="Idem choix annuaire" value="${crAnEsc(crAnesthState.anesth1)}" oninput="crAnSyncState(); crAnRenderSynth();">
-            </div>
-
-            <div class="cr-an-form-row">
-              <label>Anesthésiste</label>
-              <input type="text" id="cran-an2" placeholder="2e choix possible" value="${crAnEsc(crAnesthState.anesth2)}" oninput="crAnSyncState(); crAnRenderSynth();">
-            </div>
-          </section>
 
           <!-- 2 -->
           <section class="cr-an-cell cr-an-cell-induction">
@@ -9892,12 +9986,9 @@ function crAnSyncState() {
   crAnesthState.date = crAnVal("cran-date");
   crAnesthState.geste1 = crAnVal("cran-geste1");
   crAnesthState.geste2 = crAnVal("cran-geste2");
-  crAnesthState.geste3 = crAnVal("cran-geste3");
-
-  crAnesthState.chirurgien1 = crAnVal("cran-chir1");
-  crAnesthState.chirurgien2 = crAnVal("cran-chir2");
-  crAnesthState.anesth1 = crAnVal("cran-an1");
-  crAnesthState.anesth2 = crAnVal("cran-an2");
+  crAnesthState.valveType = document.querySelector('input[name="cran-valve"]:checked')?.value || "";
+crAnesthState.chirurgien1 = crAnVal("cran-chir1");
+crAnesthState.anesth1 = crAnVal("cran-an1");
 
   crAnesthState.conditionnement = {
     scope: crAnChecked("cran-scope"),
@@ -10034,8 +10125,25 @@ function crAnMirrorGeste() {
   }
 }
 
+function crAnOnGesteChange() {
+  crAnSyncState();
+  const v = crAnesthState.geste1;
+  const valveWrap = document.getElementById("cran-valve-type");
+  if (["rva", "rvm", "bentall"].includes(v)) {
+    valveWrap?.classList.remove("hidden");
+  } else {
+    valveWrap?.classList.add("hidden");
+    crAnesthState.valveType = "";
+  }
+  crAnRenderSynth();
+}
+
+function crAnAddSecondGeste() {
+  document.getElementById("cran-geste2-wrap")?.classList.remove("hidden");
+}
+
 function crAnBuildGeste() {
-  const parts = [crAnesthState.geste1, crAnesthState.geste2, crAnesthState.geste3]
+  const parts = [crAnesthState.geste1, crAnesthState.geste2,]
     .map(crAnSafe)
     .filter(Boolean);
   return parts.join(" + ");
@@ -10059,14 +10167,24 @@ function crAnRenderSynth() {
   const intervention = [];
   if (crAnSafe(crAnesthState.date)) intervention.push(`Date : ${crAnesthState.date}.`);
 
-  const geste = crAnBuildGeste();
-  if (geste) intervention.push(`Geste : ${geste}.`);
+  const gesteParts = [crAnesthState.geste1, crAnesthState.geste2]
+  .filter(Boolean)
+  .map(v => (CEC_GESTES.find(g => g.value === v)?.label || v));
 
-  const chirs = [crAnesthState.chirurgien1, crAnesthState.chirurgien2].map(crAnSafe).filter(Boolean);
-  if (chirs.length) intervention.push(`Chirurgien${chirs.length > 1 ? "s" : ""} : ${chirs.join(" / ")}.`);
+let gesteTxt = gesteParts.join(" + ");
 
-  const anesths = [crAnesthState.anesth1, crAnesthState.anesth2].map(crAnSafe).filter(Boolean);
-  if (anesths.length) intervention.push(`Anesthésiste${anesths.length > 1 ? "s" : ""} : ${anesths.join(" / ")}.`);
+if (["rva", "rvm", "bentall"].includes(crAnesthState.geste1) && crAnSafe(crAnesthState.valveType)) {
+  gesteTxt += ` (${crAnesthState.valveType})`;
+}
+
+if (gesteTxt) intervention.push(`Geste : ${gesteTxt}.`);
+
+if (crAnSafe(crAnesthState.chirurgien1))
+  intervention.push(`Chirurgien : ${crAnesthState.chirurgien1}.`);
+
+if (crAnSafe(crAnesthState.anesth1))
+  intervention.push(`Anesthésiste : ${crAnesthState.anesth1}.`);
+
 
   crAnPushSection(out, "Intervention", intervention);
 
