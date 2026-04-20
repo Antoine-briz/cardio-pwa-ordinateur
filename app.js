@@ -10491,19 +10491,33 @@ else if (crAnesthState.vasopresseur === "10")
   if (rythmeMap[crAnesthState.rythme]) post.push(rythmeMap[crAnesthState.rythme] + ".");
   if (crAnSafe(crAnesthState.cei)) post.push(`Administration de ${crAnesthState.cei} CEI.`);
 
-  const io = [];
-  if (crAnSafe(crAnesthState.ringer)) io.push(`Expansion volémique : Ringer lactate ${crAnesthState.ringer} mL`);
-  const transf = [];
-  if (crAnSafe(crAnesthState.cellsaver)) transf.push(`CellSaver ${crAnesthState.cellsaver} mL`);
-  if (crAnSafe(crAnesthState.cgr)) transf.push(`${crAnesthState.cgr} CGR`);
-  if (crAnSafe(crAnesthState.pfc)) transf.push(`${crAnesthState.pfc} PFC`);
-  if (crAnSafe(crAnesthState.cup)) transf.push(`${crAnesthState.cup} CUP`);
-  if (crAnSafe(crAnesthState.fibrinogene)) transf.push(`fibrinogène ${crAnesthState.fibrinogene} g`);
-  if (crAnSafe(crAnesthState.ppsb)) transf.push(`PPSB ${crAnesthState.ppsb} UI`);
-  if (crAnSafe(crAnesthState.cacl)) transf.push(`CaCl ${crAnesthState.cacl} g`);
-  if (transf.length) io.push(`Transfusion / hémostase : ${transf.join(", ")}`);
-  if (crAnSafe(crAnesthState.diurese)) io.push(`Diurèse : ${crAnesthState.diurese} mL`);
-  if (io.length) post.push(`Bilan entrée-sortie / transfusion : ${io.join(" ; ")}.`);
+  const ioLines = [];
+
+if (crAnSafe(crAnesthState.ringer)) {
+  ioLines.push(`- Cristalloïde : ${crAnesthState.ringer} mL`);
+}
+
+const transf = [];
+if (crAnSafe(crAnesthState.cellsaver)) transf.push(`CellSaver ${crAnesthState.cellsaver} mL`);
+if (crAnSafe(crAnesthState.cgr)) transf.push(`${crAnesthState.cgr} CGR`);
+if (crAnSafe(crAnesthState.pfc)) transf.push(`${crAnesthState.pfc} PFC`);
+if (crAnSafe(crAnesthState.cup)) transf.push(`${crAnesthState.cup} CUP`);
+if (crAnSafe(crAnesthState.fibrinogene)) transf.push(`fibri. ${crAnesthState.fibrinogene} g`);
+if (crAnSafe(crAnesthState.ppsb)) transf.push(`PPSB ${crAnesthState.ppsb} UI`);
+if (crAnSafe(crAnesthState.cacl)) transf.push(`CaCl ${crAnesthState.cacl} g`);
+
+if (transf.length) {
+  ioLines.push(`- Transfusion / hémostase : ${transf.join(", ")}`);
+}
+
+if (crAnSafe(crAnesthState.diurese)) {
+  ioLines.push(`- Diurèse : ${crAnesthState.diurese} mL`);
+}
+
+if (ioLines.length) {
+  post.push(`Bilan entrée-sortie/transfusion :`);
+  post.push(...ioLines);
+}
 
   const cate = [];
   if (crAnSafe(crAnesthState.noradMax)) cate.push(`Noradrénaline ${crAnesthState.noradMax} mg/h`);
