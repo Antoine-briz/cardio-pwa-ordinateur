@@ -9978,26 +9978,19 @@ function renderCrAnTabAnesth() {
   ${crAnFlowTextInput({ id: "cran-assistance", label: "Assist.", value: crAnesthState.assistance, placeholder: " ", type: "number", cls: "is-nano" })}
 </div>
 
-<div class="cr-an-flow-row cr-an-inline-title-row cr-an-hep-prot-line">
-  <div class="cr-an-inline-title">Coagulation :</div>
+<div class="cr-an-flow-row cr-an-inline-title-row cr-an-heparine-line">
+  <div class="cr-an-inline-title">Héparine :</div>
 
-  ${crAnFlowTextInput({
-    id: "cran-heparine",
-    label: "Héparine",
-    value: crAnesthState.heparine,
-    placeholder: " ",
-    type: "number",
-    cls: "is-nano"
-  })}
+  <input
+    type="number"
+    id="cran-heparine"
+    class="cr-an-heparine-input"
+    placeholder="XX"
+    value="${crAnEsc(crAnesthState.heparine)}"
+    oninput="crAnSyncState(); crAnRenderSynth();"
+  >
 
-  ${crAnFlowTextInput({
-    id: "cran-protamine",
-    label: "Protamine",
-    value: crAnesthState.protamine,
-    placeholder: " ",
-    type: "number",
-    cls: "is-nano"
-  })}
+  <span class="cr-an-inline-unit">UI</span>
 </div>
           </section>
 
@@ -10030,6 +10023,10 @@ function renderCrAnTabAnesth() {
 
 <div class="cr-an-simple-line">
   <label>Transfusion / hémostase :</label>
+  
+  <input type="number" id="cran-protamine" placeholder="Prot"
+    value="${crAnEsc(crAnesthState.protamine)}"
+    oninput="crAnSyncState(); crAnRenderSynth();">
 
   <input type="number" id="cran-cellsaver" placeholder="CS"
     value="${crAnEsc(crAnesthState.cellsaver)}"
