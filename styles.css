@@ -10667,3 +10667,34 @@ body:not(.theme-light) .cr-an-modal textarea,
   font-weight:400 !important;
   white-space:nowrap !important;
 }
+
+.cr-an-right{
+  min-height:0 !important;
+  min-width:0 !important;
+  display:flex !important;
+  flex-direction:column !important;
+  gap:8px !important;
+}
+
+.cr-an-right .eto-synth-panel{
+  flex:1 1 auto !important;
+  min-height:0 !important;
+  display:flex !important;
+  flex-direction:column !important;
+}
+
+.cr-an-right .eto-synth-box{
+  flex:1 1 auto !important;
+  min-height:0 !important;
+  overflow:auto !important;
+}
+
+.cr-an-bottom-actions-right{
+  margin-top:0 !important;
+  padding-top:2px !important;
+  justify-content:stretch !important;
+}
+
+.cr-an-bottom-actions-right .btn{
+  flex:1 1 0 !important;
+}
