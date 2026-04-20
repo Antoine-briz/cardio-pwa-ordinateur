@@ -9576,53 +9576,89 @@ function renderCrAnTabAnesth() {
           <section class="cr-an-cell cr-an-cell-intervention">
   <div class="cr-an-cell-title">Intervention</div>
 
-  <div class="cr-an-form-row">
+  <div class="cr-an-form-row cr-an-form-row-tight">
     <label>Date</label>
-    <input type="text" id="cran-date" 
-           value="${crAnEsc(crAnesthState.date)}" 
-           placeholder="JJ/MM/AAAA"
-           oninput="crAnSyncState(); crAnRenderSynth();">
+    <input
+      type="text"
+      id="cran-date"
+      value="${crAnEsc(crAnesthState.date)}"
+      placeholder="JJ/MM/AAAA"
+      oninput="crAnSyncState(); crAnRenderSynth();"
+    >
   </div>
 
-  <div class="cr-an-form-row">
-  <label>Geste</label>
-  <select id="cran-geste1" onchange="crAnOnGesteChange();">
-    ${CRAN_GESTES.map(g => `
-      <option value="${g.value}" ${crAnesthState.geste1===g.value?'selected':''}>
-        ${crAnEsc(g.label)}
-      </option>`).join("")}
-  </select>
-  <button type="button" class="btn cr-an-btn-plus" onclick="crAnAddSecondGeste()">Ajouter geste</button>
-</div>
+  <div class="cr-an-form-row cr-an-form-row-tight">
+    <label>Geste</label>
+    <div class="cr-an-geste-controls">
+      <select id="cran-geste1" onchange="crAnOnGesteChange();">
+        <option value=""></option>
+        ${CRAN_GESTES.map(g => `
+          <option value="${g.value}" ${crAnesthState.geste1 === g.value ? "selected" : ""}>
+            ${crAnEsc(g.label)}
+          </option>
+        `).join("")}
+      </select>
 
-<div id="cran-geste2-wrap" class="cr-an-form-row hidden">
-  <label>Geste 2</label>
-  <select id="cran-geste2" onchange="crAnSyncState(); crAnRenderSynth();">
-    ${CRAN_GESTES.map(g => `
-      <option value="${g.value}" ${crAnesthState.geste2===g.value?'selected':''}>
-        ${crAnEsc(g.label)}
-      </option>`).join("")}
-  </select>
-</div>
-
-
-  <div id="cran-valve-type" class="cr-an-form-row hidden">
-  <label>Valve</label>
-  <div class="cr-an-line-radios">
-    <label><input type="radio" name="cran-valve" value="Biologique"
-                  ${crAnesthState.valveType==="Biologique"?"checked":""}
-                  onchange="crAnSyncState(); crAnRenderSynth();"> Biologique</label>
-    <label><input type="radio" name="cran-valve" value="Mécanique"
-                  ${crAnesthState.valveType==="Mécanique"?"checked":""}
-                  onchange="crAnSyncState(); crAnRenderSynth();"> Mécanique</label>
+      <button
+        type="button"
+        class="cr-an-btn-plus"
+        onclick="crAnAddSecondGeste()"
+        aria-label="Ajouter geste"
+        title="Ajouter geste"
+      >
+        +
+      </button>
+    </div>
   </div>
-</div>
 
-  <div class="cr-an-form-row">
+  <div id="cran-geste2-wrap" class="cr-an-form-row cr-an-form-row-tight hidden">
+    <label>Geste 2</label>
+    <select id="cran-geste2" onchange="crAnOnGesteChange();">
+      <option value=""></option>
+      ${CRAN_GESTES.map(g => `
+        <option value="${g.value}" ${crAnesthState.geste2 === g.value ? "selected" : ""}>
+          ${crAnEsc(g.label)}
+        </option>
+      `).join("")}
+    </select>
+  </div>
+
+  <div id="cran-valve-type" class="cr-an-form-row cr-an-form-row-tight hidden">
+    <label>Valve</label>
+    <div class="cr-an-line-radios">
+      <label>
+        <input
+          type="radio"
+          name="cran-valve"
+          value="Biologique"
+          ${crAnesthState.valveType === "Biologique" ? "checked" : ""}
+          onchange="crAnSyncState(); crAnRenderSynth();"
+        >
+        Biologique
+      </label>
+
+      <label>
+        <input
+          type="radio"
+          name="cran-valve"
+          value="Mécanique"
+          ${crAnesthState.valveType === "Mécanique" ? "checked" : ""}
+          onchange="crAnSyncState(); crAnRenderSynth();"
+        >
+        Mécanique
+      </label>
+    </div>
+  </div>
+
+  <div class="cr-an-form-row cr-an-form-row-tight">
     <label>Chirurgien</label>
-    <input list="cran-chir-list" id="cran-chir1" placeholder="Choisir chirurgien"
-           value="${crAnEsc(crAnesthState.chirurgien1)}"
-           oninput="crAnSyncState(); crAnRenderSynth();">
+    <input
+      list="cran-chir-list"
+      id="cran-chir1"
+      placeholder="Choisir chirurgien"
+      value="${crAnEsc(crAnesthState.chirurgien1)}"
+      oninput="crAnSyncState(); crAnRenderSynth();"
+    >
     <datalist id="cran-chir-list">
       <option value="LEPRINCE Pascal">
       <option value="BARREDA Theo">
@@ -9641,11 +9677,15 @@ function renderCrAnTabAnesth() {
     </datalist>
   </div>
 
-  <div class="cr-an-form-row">
+  <div class="cr-an-form-row cr-an-form-row-tight">
     <label>Anesthésiste</label>
-    <input list="cran-an-list" id="cran-an1" placeholder="Choisir anesthésiste"
-           value="${crAnEsc(crAnesthState.anesth1)}"
-           oninput="crAnSyncState(); crAnRenderSynth();">
+    <input
+      list="cran-an-list"
+      id="cran-an1"
+      placeholder="Choisir anesthésiste"
+      value="${crAnEsc(crAnesthState.anesth1)}"
+      oninput="crAnSyncState(); crAnRenderSynth();"
+    >
     <datalist id="cran-an-list">
       <option value="BOUGLE Adrien">
       <option value="ABBES Ahmed">
@@ -9688,7 +9728,7 @@ function renderCrAnTabAnesth() {
   </div>
 </section>
 
-
+          
           <!-- 2 -->
           <section class="cr-an-cell cr-an-cell-induction">
             <div class="cr-an-cell-title">Induction et entretien anesthésie</div>
@@ -10127,17 +10167,33 @@ function crAnMirrorGeste() {
 
 function crAnOnGesteChange() {
   crAnSyncState();
-  const v = crAnesthState.geste1;
+
+  const wrap2 = document.getElementById("cran-geste2-wrap");
   const valveWrap = document.getElementById("cran-valve-type");
-  // Affichage conditionnel du type de valve uniquement pour RVA / RVM / Bentall
-  if (["rva", "rvm", "bentall"].includes(v)) {
-    valveWrap?.classList.remove("hidden");
-  } else {
-    valveWrap?.classList.add("hidden");
-    crAnesthState.valveType = "";
+
+  const gestes = [crAnesthState.geste1, crAnesthState.geste2].filter(Boolean);
+
+  if (wrap2) {
+    wrap2.classList.toggle("hidden", !crAnesthState.geste2);
   }
+
+  const showValve = gestes.some(v => ["rva", "rvm", "bentall"].includes((v || "").toLowerCase()));
+
+  if (valveWrap) {
+    valveWrap.classList.toggle("hidden", !showValve);
+  }
+
+  if (!showValve) {
+    crAnesthState.valveType = "";
+    document.querySelectorAll('input[name="cran-valve"]').forEach(r => {
+      r.checked = false;
+    });
+  }
+
+  crAnMirrorGeste();
   crAnRenderSynth();
 }
+
 function crAnAddSecondGeste() {
   const wrap = document.getElementById("cran-geste2-wrap");
   if (wrap) wrap.classList.remove("hidden");
