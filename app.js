@@ -9976,11 +9976,13 @@ function renderCrAnTabAnesth() {
               ${crAnFlowRadio("cran-cardioplegie", "custodiol", "Custodiol", crAnesthState.cardioplegie === "custodiol")}
             </div>
 
-            <div class="cr-an-flow-row cr-an-inline-title-row cr-an-geste-line">
-  <div class="cr-an-inline-title">Geste :</div>
+            <div class="cr-an-flow-row cr-an-geste-inline-row">
+  <label class="cr-an-inline-main-label">Geste :</label>
+
   <input
     type="text"
     id="cran-geste-realise"
+    class="cr-an-geste-inline-input"
     value="${crAnEsc(crAnesthState.gesteRealise || crAnBuildGeste())}"
     oninput="crAnSyncState(); crAnRenderSynth();"
   >
