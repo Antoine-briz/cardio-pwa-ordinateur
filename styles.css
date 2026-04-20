@@ -10646,3 +10646,24 @@ body:not(.theme-light) .cr-an-modal textarea,
   min-width:0 !important;
   max-width:none !important;
 }
+
+/* Héparine : champ + unité UI */
+.cr-an-heparine-line{
+  display:flex !important;
+  align-items:center !important;
+  gap:8px !important;
+  flex-wrap:wrap !important;
+}
+
+.cr-an-heparine-input{
+  width:64px !important;
+  min-width:64px !important;
+  max-width:64px !important;
+  height:28px !important;
+  padding:2px 6px !important;
+}
+
+.cr-an-inline-unit{
+  font-weight:400 !important;
+  white-space:nowrap !important;
+}
