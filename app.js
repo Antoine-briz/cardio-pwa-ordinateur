@@ -9767,11 +9767,12 @@ function renderCrAnTabAnesth() {
               ${crAnCheck("cran-ent-eskeivse", "Eskétamine IVSE", crAnesthState.entretien.esketamineIvse)}
             </div>
 
-            <div class="cr-an-subtitle">Vasopresseur</div>
-            <div class="cr-an-inline2 compact-radios">
-              <label><input type="radio" name="cran-vaso" value="0,16" ${crAnesthState.vasopresseur==="0,16"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Noradrénaline 0,16 mg/mL</label>
-              <label><input type="radio" name="cran-vaso" value="0,01" ${crAnesthState.vasopresseur==="0,01"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> Noradrénaline 0,01 mg/mL</label>
-            </div>
+            <div class="cr-an-subtitle">Noradrénaline</div>
+<div class="cr-an-line-radios">
+  <label class="cr-an-text-strong">Noradrénaline :</label>
+  <label><input type="radio" name="cran-vaso" value="0,16" ${crAnesthState.vasopresseur==="0,16"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> 0,16 mg/mL</label>
+  <label><input type="radio" name="cran-vaso" value="10" ${crAnesthState.vasopresseur==="10"?"checked":""} onchange="crAnSyncState(); crAnRenderSynth();"> 10 µg/mL</label>
+</div>
 
             <div class="cr-an-subtitle">Autres</div>
             <div class="cr-an-check-grid compact2">
@@ -10246,8 +10247,10 @@ if (crAnSafe(crAnesthState.anesth1))
   if (crAnesthState.entretien.esketamineIvse) ent.push("Eskétamine IVSE");
   if (ent.length) ia.push(`Entretien : ${ent.join(", ")}.`);
 
-  if (crAnesthState.vasopresseur === "0,16") ia.push("Noradrénaline IVSE diluée à 0,16 mg/mL.");
-  if (crAnesthState.vasopresseur === "0,01") ia.push("Noradrénaline IVSE diluée à 0,01 mg/mL.");
+  if (crAnesthState.vasopresseur === "0,16")
+  ia.push("Noradrénaline IVSE 0,16 mg/mL.");
+else if (crAnesthState.vasopresseur === "10")
+  ia.push("Noradrénaline IVSE 10 µg/mL.");
 
   if (crAnesthState.autres.acideTranexamique) ia.push("Antifibrinolyse par Acide tranexamique 20mg/kg puis 2 mg/kg/h.");
   if (crAnesthState.autres.insulineIvse) ia.push("Insuline IVSE.");
