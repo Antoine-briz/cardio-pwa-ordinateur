@@ -10031,13 +10031,19 @@ function renderCrAnTabAnesth() {
               ${crAnFlowTextInput({ id: "cran-cei", label: "CEI", value: crAnesthState.cei, placeholder: " ", cls: "is-mini-wide" })}
             </div>
 
-            <div class="cr-an-simple-line">
+        <div class="cr-an-simple-line cr-an-simple-line-double">
   <label>Cristalloïde :</label>
   <input type="number" id="cran-ringer"
     placeholder="mL"
     value="${crAnEsc(crAnesthState.ringer)}"
     oninput="crAnSyncState(); crAnRenderSynth();">
-</div>
+
+  <label>Diurèse :</label>
+  <input type="number" id="cran-diurese"
+    placeholder="mL"
+    value="${crAnEsc(crAnesthState.diurese)}"
+    oninput="crAnSyncState(); crAnRenderSynth();">
+</div>    
 
 <div class="cr-an-simple-line">
   <label>Transfusion / hémostase :</label>
@@ -10071,13 +10077,6 @@ function renderCrAnTabAnesth() {
     oninput="crAnSyncState(); crAnRenderSynth();">
 </div>
 
-<div class="cr-an-simple-line">
-  <label>Diurèse :</label>
-  <input type="number" id="cran-diurese"
-    placeholder="mL"
-    value="${crAnEsc(crAnesthState.diurese)}"
-    oninput="crAnSyncState(); crAnRenderSynth();">
-</div>
 
             <div class="cr-an-flow-row cr-an-inline-title-row">
               <div class="cr-an-inline-title">Amines (max):</div>
