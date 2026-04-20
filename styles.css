@@ -11118,3 +11118,141 @@ body:not(.theme-light) .cr-an-modal textarea,
   flex:1 1 auto !important;
   min-height:0 !important;
 }
+
+/* =========================================================
+   CR ANESTHÉSIE — correctif définitif thème + hauteur synthèse
+   À placer TOUT EN BAS du fichier
+   ========================================================= */
+
+/* 1) Forcer les titres bleus en blanc, surtout en thème sombre */
+body:not(.theme-light) .cr-an-cell-title,
+body:not(.theme-light) .cr-an-cell-title *,
+body:not(.theme-light) .cr-an-tab,
+body:not(.theme-light) .cr-an-tab *,
+body:not(.theme-light) .cr-an-tab.is-active,
+body:not(.theme-light) .cr-an-tab.is-active *,
+body:not(.theme-light) .cr-an-right .eto-synth-title,
+body:not(.theme-light) .cr-an-right .eto-synth-title *{
+  color:#fff !important;
+}
+
+/* Même résultat en thème clair, pour homogénéiser */
+body.theme-light .cr-an-cell-title,
+body.theme-light .cr-an-cell-title *,
+body.theme-light .cr-an-tab,
+body.theme-light .cr-an-tab *,
+body.theme-light .cr-an-tab.is-active,
+body.theme-light .cr-an-tab.is-active *,
+body.theme-light .cr-an-right .eto-synth-title,
+body.theme-light .cr-an-right .eto-synth-title *{
+  color:#fff !important;
+}
+
+/* 2) Styles de fond des titres */
+.cr-an-cell-title{
+  background:#123e7a !important;
+  border-bottom:1px solid #0d2f5c !important;
+}
+
+.cr-an-tab{
+  background:#123e7a !important;
+  border-color:#0d2f5c !important;
+}
+
+.cr-an-tab.is-active{
+  background:#1f5aa8 !important;
+  border-color:#0d2f5c !important;
+}
+
+.cr-an-right .eto-synth-title{
+  background:#123e7a !important;
+  border:1px solid #0d2f5c !important;
+  border-radius:8px !important;
+  padding:8px 12px !important;
+  margin:0 0 8px 0 !important;
+}
+
+/* 3) IMPORTANT : donner une vraie hauteur à la grille */
+.cr-an-desktop-grid{
+  height:calc(100vh - 150px) !important;
+  min-height:calc(100vh - 150px) !important;
+  align-items:stretch !important;
+}
+
+/* 4) La colonne droite doit remplir toute la hauteur */
+.cr-an-right{
+  height:100% !important;
+  min-height:0 !important;
+  display:flex !important;
+  flex-direction:column !important;
+  gap:8px !important;
+}
+
+/* 5) Le panneau synthèse prend tout l’espace dispo */
+.cr-an-right .eto-synth-panel{
+  flex:1 1 auto !important;
+  min-height:0 !important;
+  height:100% !important;
+  max-height:none !important;
+
+  display:flex !important;
+  flex-direction:column !important;
+
+  background:transparent !important;
+  border:none !important;
+  border-radius:0 !important;
+  padding:0 !important;
+}
+
+/* 6) La zone de texte doit s’étirer jusqu’en bas */
+.cr-an-right .eto-synth-box{
+  flex:1 1 auto !important;
+  min-height:0 !important;
+  height:100% !important;
+  overflow:auto !important;
+
+  background:#fff !important;
+  color:#000 !important;
+  border:1.5px solid #000 !important;
+  border-radius:10px !important;
+  padding:10px !important;
+  margin:0 !important;
+
+  white-space:pre-wrap !important;
+  font-family:inherit !important;
+}
+
+/* 7) Les boutons restent collés tout en bas */
+.cr-an-bottom-actions,
+.cr-an-bottom-actions-right{
+  margin-top:auto !important;
+  margin-bottom:0 !important;
+  padding-top:0 !important;
+  padding-bottom:0 !important;
+}
+
+.cr-an-bottom-actions .btn,
+.cr-an-bottom-actions-right .btn{
+  flex:1 1 0 !important;
+}
+
+/* 8) Sécurité mobile/tablette */
+@media (max-width:1180px){
+  .cr-an-desktop-grid{
+    height:auto !important;
+    min-height:0 !important;
+  }
+
+  .cr-an-right{
+    height:auto !important;
+  }
+
+  .cr-an-right .eto-synth-panel{
+    height:auto !important;
+  }
+
+  .cr-an-right .eto-synth-box{
+    min-height:320px !important;
+    height:auto !important;
+  }
+}
