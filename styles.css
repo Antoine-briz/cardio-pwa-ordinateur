@@ -10736,3 +10736,10 @@ body:not(.theme-light) .cr-an-modal textarea,
 .cr-an-right .eto-synth-title{
   color:#fff !important;
 }
+
+.cr-an-mini-input{
+  width:52px !important;
+  min-width:52px !important;
+  max-width:52px !important;
+  text-align:center;
+}
