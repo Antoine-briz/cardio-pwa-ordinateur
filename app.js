@@ -11071,14 +11071,14 @@ if (epi.length) {
   if (crAnSafe(crAnesthState.noradFin)) fin.push(`Noradrénaline ${crAnesthState.noradFin} mg/h`);
   if (fin.length) post.push(`En fin d’intervention : ${fin.join(", ")}.`);
 
-  const destMap = {
+const destMap = {
   usip: "USIP",
   "rea-3eme": "réanimation 3ème",
   sspi: "SSPI",
   "rea-1er": "réanimation 1er"
 };
 if (destMap[crAnesthState.destination]) {
-  post.push(`Transfert intubé(e)/ventilé(e) en ${destMap[crAnesthState.destination]}.`);
+  post.push(`Destination : Transfert intubé(e)/ventilé(e) en ${destMap[crAnesthState.destination]}.`);
 }
 
   crAnPushSection(out, "Prise en charge post-CEC", post);
