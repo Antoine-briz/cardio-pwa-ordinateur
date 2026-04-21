@@ -9942,8 +9942,8 @@ ${crAnesthState.geste3 !== undefined && crAnIsValveGeste(crAnesthState.geste3) ?
               ${crAnFlowCheck("cran-ind-propofol", "Propofol", crAnesthState.induction.propofol)}
               ${crAnFlowCheck("cran-ind-eto", "Etomidate", crAnesthState.induction.etomidate)}
               ${crAnFlowCheck("cran-ind-suf", "Sufentanil", crAnesthState.induction.sufentanil)}
-              ${crAnFlowCheck("cran-ind-eske", "Eskétamine", crAnesthState.induction.esketamine)}
               ${crAnFlowCheck("cran-ind-remi", "Rémifentanil", crAnesthState.induction.remifentanil)}
+              ${crAnFlowCheck("cran-ind-eske", "Eskétamine", crAnesthState.induction.esketamine)}
             </div>
 
             <div class="cr-an-flow-row cr-an-inline-title-row">
@@ -9994,10 +9994,10 @@ ${crAnesthState.geste3 !== undefined && crAnIsValveGeste(crAnesthState.geste3) ?
             <div class="cr-an-flow-row cr-an-inline-title-row">
               <div class="cr-an-inline-title">Entretien :</div>
               ${crAnFlowCheck("cran-ent-prop", "Propofol", crAnesthState.entretien.propofol)}
-              ${crAnFlowCheck("cran-ent-atrivse", "Atracurium IVSE", crAnesthState.entretien.atracuriumIvse)}
               ${crAnFlowCheck("cran-ent-suf", "Sufentanil", crAnesthState.entretien.sufentanil)}
-              ${crAnFlowCheck("cran-ent-eskeivse", "Eskétamine IVSE", crAnesthState.entretien.esketamineIvse)}
               ${crAnFlowCheck("cran-ent-remi", "Rémifentanil", crAnesthState.entretien.remifentanil)}
+              ${crAnFlowCheck("cran-ent-atrivse", "Atracurium IVSE", crAnesthState.entretien.atracuriumIvse)}
+              ${crAnFlowCheck("cran-ent-eskeivse", "Eskétamine IVSE", crAnesthState.entretien.esketamineIvse)}
             </div>
 
             <div class="cr-an-flow-row cr-an-inline-title-row">
