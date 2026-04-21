@@ -9839,56 +9839,82 @@ table.bact-table p:last-child {
 }
 
 /* =========================================================
-   CR ANESTHÉSIE — bouton d’entrée
+   Bouton menu : CR d'anesthésie
+   Même style que .btn, version orange
    ========================================================= */
+
 .cr-anesth-entry-wrap{
-  margin-top: 12px;
-  margin-bottom: 8px;
+  display:flex;
+  justify-content:center;
+  margin:18px 0 22px 0;
 }
 
-.cr-anesth-entry-btn{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
+.cr-anesth-entry-btn,
+.cr-anesth-text-btn{
+  appearance:none;
+  -webkit-appearance:none;
+  border:none;
+  cursor:pointer;
+  text-decoration:none;
 }
 
+/* même structure que les autres boutons */
 .cr-anesth-text-btn{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  min-height:58px;
-  padding:14px 26px;
-  border-radius:18px;
-  border:3px solid #d58a00;
-  background: linear-gradient(180deg, #ffe96b 0%, #ffc933 55%, #ffb100 100%);
-  color:#231600 !important;
-  font-family: inherit !important;
-  font-weight:900;
-  font-size:1.35rem;
+
+  min-width:320px;
+  min-height:56px;
+  padding:14px 28px;
+
+  border-radius:14px;
+  border:2px solid #9a5200;
+
+  background:linear-gradient(
+    180deg,
+    #ffcc52 0%,
+    #f39a00 55%,
+    #d97600 100%
+  );
+
+  color:#ffffff !important;
+  font-family:inherit !important;
+  font-size:1.15rem !important;
+  font-weight:800 !important;
   line-height:1.1;
-  letter-spacing:0.2px;
-  text-align:center;
-  cursor:pointer;
+  letter-spacing:0;
+
   box-shadow:
-    0 4px 0 rgba(180,110,0,.95),
-    0 10px 22px rgba(0,0,0,.22);
-  transition: transform .08s ease, box-shadow .08s ease, filter .08s ease;
+    0 3px 0 #9a5200,
+    0 8px 18px rgba(0,0,0,.22);
+
+  transition:
+    transform .08s ease,
+    filter .12s ease,
+    box-shadow .12s ease;
 }
 
 .cr-anesth-text-btn:hover{
-  filter: brightness(1.02);
-  transform: translateY(-1px);
+  filter:brightness(1.04);
+  transform:translateY(-1px);
 }
 
 .cr-anesth-text-btn:active{
-  transform: translateY(2px);
+  transform:translateY(2px);
   box-shadow:
-    0 2px 0 rgba(180,110,0,.95),
-    0 6px 14px rgba(0,0,0,.18);
+    0 1px 0 #9a5200,
+    0 4px 10px rgba(0,0,0,.18);
+}
+
+@media (max-width: 900px){
+  .cr-anesth-text-btn{
+    min-width:100%;
+    width:100%;
+    font-size:1rem !important;
+    min-height:52px;
+    padding:12px 16px;
+  }
 }
 
 /* =========================================================
