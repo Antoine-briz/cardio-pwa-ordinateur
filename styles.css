@@ -9839,55 +9839,58 @@ table.bact-table p:last-child {
 }
 
 /* =========================================================
-   Bouton menu : CR d'anesthésie
-   Même style que .btn, version orange
+   Bouton CR anesthésie = style identique aux autres boutons
    ========================================================= */
 
 .cr-anesth-entry-wrap{
+  width:100%;
   display:flex;
   justify-content:center;
-  margin:18px 0 22px 0;
+  margin:2px 0 8px 0;
+  padding:0;
 }
 
-.cr-anesth-entry-btn,
-.cr-anesth-text-btn{
+.cr-anesth-entry-btn{
   appearance:none;
   -webkit-appearance:none;
-  border:none;
+  border:0;
+  background:none;
+  padding:0;
+  margin:0;
   cursor:pointer;
-  text-decoration:none;
 }
 
-/* même structure que les autres boutons */
 .cr-anesth-text-btn{
-  display:inline-flex;
+  min-width:420px;
+  max-width:520px;
+  height:70px;
+
+  display:flex;
   align-items:center;
   justify-content:center;
 
-  min-width:320px;
-  min-height:56px;
-  padding:14px 28px;
+  padding:0 26px;
+  border-radius:18px;
 
-  border-radius:14px;
-  border:2px solid #9a5200;
+  font-family:inherit !important;
+  font-size:1.18rem !important;
+  font-weight:800 !important;
+  letter-spacing:.2px;
+
+  color:#fff !important;
+
+  border:1px solid rgba(255,255,255,.08);
 
   background:linear-gradient(
     180deg,
-    #ffcc52 0%,
-    #f39a00 55%,
-    #d97600 100%
-  );
-
-  color:#ffffff !important;
-  font-family:inherit !important;
-  font-size:1.15rem !important;
-  font-weight:800 !important;
-  line-height:1.1;
-  letter-spacing:0;
+    #d67a00 0%,
+    #b86100 55%,
+    #8f4300 100%
+  ) !important;
 
   box-shadow:
-    0 3px 0 #9a5200,
-    0 8px 18px rgba(0,0,0,.22);
+    inset 0 1px 0 rgba(255,255,255,.18),
+    0 2px 6px rgba(0,0,0,.28);
 
   transition:
     transform .08s ease,
@@ -9896,27 +9899,16 @@ table.bact-table p:last-child {
 }
 
 .cr-anesth-text-btn:hover{
-  filter:brightness(1.04);
-  transform:translateY(-1px);
+  filter:brightness(1.06);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.22),
+    0 4px 10px rgba(0,0,0,.34);
 }
 
 .cr-anesth-text-btn:active{
-  transform:translateY(2px);
-  box-shadow:
-    0 1px 0 #9a5200,
-    0 4px 10px rgba(0,0,0,.18);
+  transform:translateY(1px);
+  filter:brightness(.98);
 }
-
-@media (max-width: 900px){
-  .cr-anesth-text-btn{
-    min-width:100%;
-    width:100%;
-    font-size:1rem !important;
-    min-height:52px;
-    padding:12px 16px;
-  }
-}
-
 /* =========================================================
    CR ANESTHÉSIE — modal générale
    ========================================================= */
