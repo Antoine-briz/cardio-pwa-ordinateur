@@ -11336,3 +11336,15 @@ body.theme-light .cr-an-right .eto-synth-title *{
   padding-top:8px !important;
   padding-bottom:0 !important;
 }
+
+.cr-an-synth-section{
+  font-weight:900;
+  text-transform:uppercase;
+  margin-top:14px;
+  margin-bottom:6px;
+  letter-spacing:.3px;
+}
+
+.cr-an-synth-box strong{
+  font-weight:800;
+}
