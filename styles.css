@@ -11459,3 +11459,33 @@ body.theme-light .cr-an-right .eto-synth-title *{
   appearance:none !important;
   -webkit-appearance:none !important;
 }
+
+/* =========================================================
+   CR anesthésie — Harmonisation Chirurgien / Anesthésiste
+   ========================================================= */
+
+.cr-an-cell-intervention #cran-chir1,
+.cr-an-cell-intervention #cran-an1{
+  width:100% !important;
+  min-width:0 !important;
+  max-width:none !important;
+
+  height:28px !important;
+  min-height:28px !important;
+  padding:2px 8px !important;
+
+  background:#fff !important;
+  color:#000 !important;
+  -webkit-text-fill-color:#000 !important;
+
+  border:1.6px solid #000 !important;
+  border-radius:8px !important;
+  box-shadow:none !important;
+
+  font-size:0.92rem !important;
+  font-family:inherit !important;
+  line-height:1.1 !important;
+
+  appearance:none !important;
+  -webkit-appearance:none !important;
+}
