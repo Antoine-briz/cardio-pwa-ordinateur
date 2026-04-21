@@ -2166,7 +2166,7 @@ function renderAnesthChirCecMenu() {
       <!-- Colonne gauche : titre + boutons -->
       <div class="intervention-main">
         <div class="hero cr-an-cec-hero">
-  <h2>Chirurgie cardiaque sous CEC</h2>
+  <h2>Chirurgie cardiaque sous CEC  </h2>
 
   <button class="btn cr-an-cec-entry-btn"
           type="button"
