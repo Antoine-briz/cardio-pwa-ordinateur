@@ -10199,7 +10199,7 @@ ${crAnesthState.geste3 !== undefined && crAnIsValveGeste(crAnesthState.geste3) ?
       type="checkbox"
       id="cran-epi-sent"
       ${crAnesthState.epicardiques.sentinelle ? "checked" : ""}
-      onchange="crAnSyncState(); crAnRenderSynth();"
+      onchange="crAnExclusiveCheck('cran-epi-sent','cran-epi-stim')"
     >
     <span>Sentinelle</span>
   </label>
@@ -10209,7 +10209,7 @@ ${crAnesthState.geste3 !== undefined && crAnIsValveGeste(crAnesthState.geste3) ?
       type="checkbox"
       id="cran-epi-stim"
       ${crAnesthState.epicardiques.stimulation ? "checked" : ""}
-      onchange="crAnSyncState(); crAnRenderSynth();"
+      onchange="crAnExclusiveCheck('cran-epi-stim','cran-epi-sent')"
     >
     <span>Stimulation</span>
   </label>
@@ -10286,8 +10286,18 @@ ${crAnesthState.geste3 !== undefined && crAnIsValveGeste(crAnesthState.geste3) ?
               ${crAnFlowTextInput({ id: "cran-hbfin", label: "Hb", value: crAnesthState.hbFin, placeholder: " ", type: "number", step: "any", cls: "is-micro" })}
               ${crAnFlowTextInput({ id: "cran-lactfin", label: "lactate", value: crAnesthState.lactateFin, placeholder: " ", type: "number", step: "any", cls: "is-micro" })}
               ${crAnFlowTextInput({ id: "cran-noradfin", label: "Noradrénaline", value: crAnesthState.noradFin, placeholder: " ", type: "number", step: "any", cls: "is-micro" })}
-              ${crAnFlowCheck("cran-fin-vent", "Ventilé(e)", crAnesthState.ventile)}
-              ${crAnFlowCheck("cran-fin-ext", "Extubé(e)", crAnesthState.extube)}
+              ${crAnCheck(
+  "cran-fin-vent",
+  "Ventilé(e)",
+  crAnesthState.ventile,
+  "crAnExclusiveCheck('cran-fin-vent','cran-fin-ext')"
+)}
+${crAnCheck(
+  "cran-fin-ext",
+  "Extubé(e)",
+  crAnesthState.extube,
+  "crAnExclusiveCheck('cran-fin-ext','cran-fin-vent')"
+)}
             </div>
 
             <div class="cr-an-flow-row cr-an-inline-title-row">
