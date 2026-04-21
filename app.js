@@ -25418,7 +25418,7 @@ window.renderCecUrgenceSevrageCecDifficile =
   renderCecUrgenceSevrageCecDifficile;
 
 
-function renderCECProcedures() {
+function renderCecProcedures() {
   $app.innerHTML = `
     <section class="intervention-shell">
 
