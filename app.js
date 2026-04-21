@@ -9770,16 +9770,32 @@ ${crAnesthState.geste3 !== undefined ? `
   </div>
 ` : ""}
 
-            ${[crAnesthState.geste1, crAnesthState.geste2].some(v => ["rva", "rvm", "bentall"].includes(v)) ? `
+${[crAnesthState.geste1, crAnesthState.geste2, crAnesthState.geste3]
+  .filter(Boolean)
+  .some(v => ["rva", "rvm", "bentall"].includes((v || "").toLowerCase())) ? `
   <div id="cran-valve-type" class="cr-an-form-row cr-an-form-row-tight">
     <label>Valve</label>
     <div class="cr-an-line-radios">
-      <label><input type="radio" name="cran-valve" value="Biologique"
-                    ${crAnesthState.valveType==="Biologique" ? "checked" : ""}
-                    onchange="crAnSyncState(); crAnRenderSynth();"> Biologique</label>
-      <label><input type="radio" name="cran-valve" value="Mécanique"
-                    ${crAnesthState.valveType==="Mécanique" ? "checked" : ""}
-                    onchange="crAnSyncState(); crAnRenderSynth();"> Mécanique</label>
+      <label>
+        <input
+          type="radio"
+          name="cran-valve"
+          value="Biologique"
+          ${crAnesthState.valveType === "Biologique" ? "checked" : ""}
+          onchange="crAnSyncState(); crAnRenderSynth();"
+        >
+        Biologique
+      </label>
+      <label>
+        <input
+          type="radio"
+          name="cran-valve"
+          value="Mécanique"
+          ${crAnesthState.valveType === "Mécanique" ? "checked" : ""}
+          onchange="crAnSyncState(); crAnRenderSynth();"
+        >
+        Mécanique
+      </label>
     </div>
   </div>
 ` : ""}
