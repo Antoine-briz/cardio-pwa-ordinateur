@@ -10374,18 +10374,19 @@ body:not(.theme-light) .cr-an-modal textarea,
 }
 
 .cr-an-right .eto-synth-box{
-  font-family: Inter, Segoe UI, Roboto, Arial, sans-serif !important;
-  font-size:0.90rem !important;
-  line-height:1.42 !important;
-  font-weight:400 !important;
-  letter-spacing:.1px !important;
+  font-family:inherit !important;
+  font-size:0.95rem !important;
+  line-height:1.45 !important;
 
   border:1.5px solid #000 !important;
   border-radius:8px !important;
+
   white-space:pre-wrap !important;
   overflow:auto !important;
 
-  padding:10px !important;
+  padding:12px !important;
+  background:#fff !important;
+  color:#000 !important;
 }
 
 /* =========================================================
