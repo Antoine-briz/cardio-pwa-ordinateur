@@ -10247,13 +10247,14 @@ body:not(.theme-light) .cr-an-modal *{
   align-items:center !important;
   gap:8px !important;
   flex:1 1 auto !important;
-  width:auto !important;
+  width:100% !important;
 }
 
 .cr-an-cell-intervention .cr-an-geste-controls select{
   flex:1 1 auto !important;
-  width:auto !important;
+  width:calc(100% - 52px) !important;
   min-width:0 !important;
+  max-width:calc(100% - 52px) !important;
 }
 
 .cr-an-cell-intervention .cr-an-btn-plus{
