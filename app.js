@@ -10380,15 +10380,18 @@ crAnesthState.anesth1 = crAnVal("cran-an1");
     aorteOk: crAnChecked("cran-eto-aorte")
   };
 
-  crAnesthState.epicardiques = {
-    sentinelle: crAnChecked("cran-epi-sent"),
-    stimulation: crAnChecked("cran-epi-stim"),
-    freq: crAnVal("cran-epi-freq"),
-    seuilSens: crAnVal("cran-epi-ss"),
-    reglageSens: crAnVal("cran-epi-rs"),
-    seuilStim: crAnVal("cran-epi-stv"),
-    reglageStim: crAnVal("cran-epi-rstv")
-  };
+  const epiSent = crAnChecked("cran-epi-sent");
+const epiStim = crAnChecked("cran-epi-stim");
+
+crAnesthState.epicardiques = {
+  sentinelle: epiSent && !epiStim,
+  stimulation: epiStim,
+  freq: crAnVal("cran-epi-freq"),
+  seuilSens: crAnVal("cran-epi-ss"),
+  reglageSens: crAnVal("cran-epi-rs"),
+  seuilStim: crAnVal("cran-epi-stv"),
+  reglageStim: crAnVal("cran-epi-rstv")
+};
 
   crAnesthState.hbFin = crAnVal("cran-hbfin");
   crAnesthState.lactateFin = crAnVal("cran-lactfin");
@@ -10541,13 +10544,22 @@ if (crAnSafe(crAnesthState.anesth1))
   if (crAnesthState.entretien.esketamineIvse) ent.push("Eskétamine IVSE");
   if (ent.length) ia.push(`Entretien : ${ent.join(", ")}.`);
 
-  if (crAnesthState.vasopresseur === "0,16")
-  ia.push("Noradrénaline IVSE 0,16 mg/mL.");
-else if (crAnesthState.vasopresseur === "10")
-  ia.push("Noradrénaline IVSE 10 µg/mL.");
+  if (crAnesthState.vasopresseur === "0,16") {
+  ia.push("Vasopresseur : Noradrénaline IVSE 0,16 mg/mL.");
+} else if (crAnesthState.vasopresseur === "10") {
+  ia.push("Vasopresseur : Noradrénaline IVSE 10 µg/mL.");
+}
 
-  if (crAnesthState.autres.acideTranexamique) ia.push("Antifibrinolyse par Acide tranexamique 20mg/kg puis 2 mg/kg/h.");
-  if (crAnesthState.autres.insulineIvse) ia.push("Insuline IVSE.");
+const autres = [];
+if (crAnesthState.autres.acideTranexamique) {
+  autres.push("Antifibrinolyse par Acide tranexamique 20mg/kg puis 2 mg/kg/h");
+}
+if (crAnesthState.autres.insulineIvse) {
+  autres.push("Insuline IVSE");
+}
+if (autres.length) {
+  ia.push(`Autre : ${autres.join(", ")}.`);
+}
 
   crAnPushSection(out, "Induction et entretien anesthésie", ia);
 
@@ -10604,8 +10616,9 @@ else if (crAnesthState.vasopresseur === "10")
   if (crAnSafe(crAnesthState.assistance)) durees.push(`Assistance ${crAnesthState.assistance} min`);
   if (durees.length) chircec.push(`Durées : ${durees.join(", ")}.`);
 
-  if (crAnSafe(crAnesthState.heparine)) chircec.push(`Héparine ${crAnesthState.heparine} UI pour maintenir un objectif d’ACT > 400s.`);
-  if (crAnSafe(crAnesthState.protamine)) chircec.push(`Antagonisation par Protamine ${crAnesthState.protamine} UI.`);
+  if (crAnSafe(crAnesthState.heparine)) {
+  chircec.push(`Héparine ${crAnesthState.heparine} UI pour maintenir un objectif d’ACT > 400s.`);
+}
 
   crAnPushSection(out, "Chirurgie & CEC", chircec);
 
@@ -10617,7 +10630,9 @@ else if (crAnesthState.vasopresseur === "10")
     fa: "Sortie de CEC en fibrillation auriculaire",
     bav: "Sortie de CEC en BAV complet"
   };
-  if (rythmeMap[crAnesthState.rythme]) post.push(rythmeMap[crAnesthState.rythme] + ".");
+  if (rythmeMap[crAnesthState.rythme]) {
+  post.push(`Rythme : ${rythmeMap[crAnesthState.rythme]}.`);
+}
   if (crAnSafe(crAnesthState.cei)) post.push(`Administration de ${crAnesthState.cei} CEI.`);
 
   const ioLines = [];
@@ -10627,7 +10642,8 @@ if (crAnSafe(crAnesthState.ringer)) {
 }
 
 const transf = [];
-if (crAnSafe(crAnesthState.cellsaver)) transf.push(`CellSaver ${crAnesthState.cellsaver} mL`);
+if (crAnSafe(crAnesthState.protamine)) transf.push(`Protamine ${crAnesthState.protamine} UI`);
+  if (crAnSafe(crAnesthState.cellsaver)) transf.push(`CellSaver ${crAnesthState.cellsaver} mL`);
 if (crAnSafe(crAnesthState.cgr)) transf.push(`${crAnesthState.cgr} CGR`);
 if (crAnSafe(crAnesthState.pfc)) transf.push(`${crAnesthState.pfc} PFC`);
 if (crAnSafe(crAnesthState.cup)) transf.push(`${crAnesthState.cup} CUP`);
@@ -10663,15 +10679,16 @@ if (ioLines.length) {
   if (crAnesthState.etoPost.aorteOk) etoPost.push("intégrité de la paroi aortique");
   if (etoPost.length) post.push(`ETO post-CEC : ${etoPost.join(", ")}.`);
 
-  const epi = [];
+const epi = [];
+const epiMode = crAnesthState.epicardiques.stimulation
+  ? "stimulation"
+  : (crAnesthState.epicardiques.sentinelle ? "sentinelle" : "");
 
-if (crAnesthState.epicardiques.sentinelle) {
-  epi.push("Sentinelle");
-}
-
-if (crAnesthState.epicardiques.stimulation) {
-  const freq = crAnSafe(crAnesthState.epicardiques.freq);
-  epi.push(`Stimulation${freq ? ` à ${freq}/min` : ""}`);
+if (epiMode) {
+  const freqTxt = crAnSafe(crAnesthState.epicardiques.freq)
+    ? ` à ${crAnesthState.epicardiques.freq}/min`
+    : "";
+  epi.push(`Électrodes en ${epiMode}${freqTxt}`);
 }
 
 if (
@@ -10695,7 +10712,7 @@ if (
 if (epi.length) {
   post.push(`Électrodes épicardiques : ${epi.join(", ")}.`);
 }
-
+  
   const fin = [];
   if (crAnSafe(crAnesthState.hbFin)) fin.push(`Hb ${crAnesthState.hbFin} g/dL`);
   if (crAnSafe(crAnesthState.lactateFin)) fin.push(`lactate ${crAnesthState.lactateFin} mmol/L`);
