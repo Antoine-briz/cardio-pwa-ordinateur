@@ -11636,3 +11636,88 @@ body.theme-light .cr-an-right .eto-synth-title *{
     grid-template-columns:1fr !important;
   }
 }
+
+/* ============================================================
+   MENU ANESTHÉSIE — responsive progressif
+   ============================================================ */
+
+/* Très grands écrans */
+.anesth-cards{
+  display:grid !important;
+  grid-template-columns:repeat(4, minmax(0,1fr)) !important;
+  gap:24px !important;
+}
+
+/* Ordinateur portable / écran moyen */
+@media (max-width: 1300px){
+  .anesth-cards{
+    grid-template-columns:repeat(4, minmax(220px,1fr)) !important;
+    gap:20px !important;
+  }
+}
+
+/* Petit laptop / grande tablette */
+@media (max-width: 1100px){
+  .anesth-cards{
+    grid-template-columns:repeat(2, minmax(260px,1fr)) !important;
+    gap:18px !important;
+  }
+}
+
+/* Tablette */
+@media (max-width: 800px){
+  .anesth-cards{
+    grid-template-columns:repeat(2, minmax(0,1fr)) !important;
+    gap:16px !important;
+  }
+}
+
+/* Mobile */
+@media (max-width: 700px){
+  .anesth-cards{
+    grid-template-columns:1fr !important;
+    gap:14px !important;
+  }
+}
+
+/* ============================================================
+   MENU CEC — responsive progressif
+   ============================================================ */
+
+.cec-menu-cards{
+  display:grid !important;
+  grid-template-columns:repeat(4, minmax(0,1fr)) !important;
+  gap:24px !important;
+}
+
+/* Écran moyen */
+@media (max-width: 1300px){
+  .cec-menu-cards{
+    grid-template-columns:repeat(4, minmax(220px,1fr)) !important;
+    gap:20px !important;
+  }
+}
+
+/* Petit laptop */
+@media (max-width: 1100px){
+  .cec-menu-cards{
+    grid-template-columns:repeat(2, minmax(260px,1fr)) !important;
+    gap:18px !important;
+  }
+}
+
+/* Tablette */
+@media (max-width: 800px){
+  .cec-menu-cards{
+    grid-template-columns:repeat(2, minmax(0,1fr)) !important;
+    gap:16px !important;
+  }
+}
+
+/* Mobile */
+@media (max-width: 700px){
+  .cec-menu-cards{
+    grid-template-columns:1fr !important;
+    gap:14px !important;
+  }
+}
