@@ -9643,38 +9643,15 @@ function crAnFlowTextInput({ id, label, value = "", placeholder = "", type = "te
   `;
 }
 
-function crAnValveToggle(slot, value) {
+function crAnValveSelect(slot, value) {
   const current = value || "Biologique";
 
   return `
-    <div class="cr-an-valve-toggle">
-      <button
-        type="button"
-        class="cr-an-valve-btn ${current === "Biologique" ? "is-active" : ""}"
-        onclick="crAnSetValveType(${slot}, 'Biologique')"
-      >
-        Biologique
-      </button>
-
-      <button
-        type="button"
-        class="cr-an-valve-btn ${current === "Mécanique" ? "is-active" : ""}"
-        onclick="crAnSetValveType(${slot}, 'Mécanique')"
-      >
-        Mécanique
-      </button>
-    </div>
+    <select id="cran-valve-${slot}" onchange="crAnSyncState(); crAnRenderSynth();">
+      <option value="Biologique" ${current === "Biologique" ? "selected" : ""}>Biologique</option>
+      <option value="Mécanique" ${current === "Mécanique" ? "selected" : ""}>Mécanique</option>
+    </select>
   `;
-}
-
-function crAnSetValveType(slot, value) {
-  if (!crAnesthState) return;
-
-  if (slot === 1) crAnesthState.valveType1 = value;
-  if (slot === 2) crAnesthState.valveType2 = value;
-  if (slot === 3) crAnesthState.valveType3 = value;
-
-  renderCrAnTabAnesth();
 }
 
 function crAnFlowSelect({ id, label, value = "", options = [], cls = "" }) {
@@ -9790,7 +9767,7 @@ function renderCrAnTabAnesth() {
 ${crAnIsValveGeste(crAnesthState.geste1) ? `
   <div class="cr-an-form-row cr-an-form-row-tight cr-an-valve-row">
     <label>Valve</label>
-    ${crAnValveToggle(1, crAnesthState.valveType1)}
+    ${crAnValveSelect(1, crAnesthState.valveType1)}
   </div>
 ` : ""}
 
@@ -9811,7 +9788,7 @@ ${crAnesthState.geste2 !== undefined ? `
 ${crAnesthState.geste2 !== undefined && crAnIsValveGeste(crAnesthState.geste2) ? `
   <div class="cr-an-form-row cr-an-form-row-tight cr-an-valve-row">
     <label>Valve 2</label>
-    ${crAnValveToggle(2, crAnesthState.valveType2)}
+    ${crAnValveSelect(2, crAnesthState.valveType2)}
   </div>
 ` : ""}
 
@@ -9832,7 +9809,7 @@ ${crAnesthState.geste3 !== undefined ? `
 ${crAnesthState.geste3 !== undefined && crAnIsValveGeste(crAnesthState.geste3) ? `
   <div class="cr-an-form-row cr-an-form-row-tight cr-an-valve-row">
     <label>Valve 3</label>
-    ${crAnValveToggle(3, crAnesthState.valveType3)}
+    ${crAnValveSelect(3, crAnesthState.valveType3)}
   </div>
 ` : ""}
 
@@ -10325,9 +10302,17 @@ function crAnSyncState() {
   crAnesthState.geste1 = crAnVal("cran-geste1");
   crAnesthState.geste2 = document.getElementById("cran-geste2") ? crAnVal("cran-geste2") : undefined;
   crAnesthState.geste3 = document.getElementById("cran-geste3") ? crAnVal("cran-geste3") : undefined;
-  crAnesthState.valveType1 = crAnesthState.valveType1 || "Biologique";
-crAnesthState.valveType2 = crAnesthState.valveType2 || "Biologique";
-crAnesthState.valveType3 = crAnesthState.valveType3 || "Biologique";
+crAnesthState.valveType1 = document.getElementById("cran-valve-1")
+  ? crAnVal("cran-valve-1")
+  : "Biologique";
+
+crAnesthState.valveType2 = document.getElementById("cran-valve-2")
+  ? crAnVal("cran-valve-2")
+  : "Biologique";
+
+crAnesthState.valveType3 = document.getElementById("cran-valve-3")
+  ? crAnVal("cran-valve-3")
+  : "Biologique";
 crAnesthState.chirurgien1 = crAnVal("cran-chir1");
 crAnesthState.anesth1 = crAnVal("cran-an1");
 
