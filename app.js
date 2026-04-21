@@ -10969,7 +10969,7 @@ if (autres.length) {
   if (durees.length) chircec.push(`Durées : ${durees.join(", ")}.`);
 
   if (crAnSafe(crAnesthState.heparine)) {
-  chircec.push(`Héparine ${crAnesthState.heparine} UI pour maintenir un objectif d’ACT > 400s.`);
+  chircec.push(`Anticoagulation : Héparine ${crAnesthState.heparine} UI pour maintenir un objectif d’ACT > 400s.`);
 }
 
   crAnPushSection(out, "Chirurgie & CEC", chircec);
