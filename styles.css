@@ -11326,20 +11326,20 @@ body.theme-light .cr-an-right .eto-synth-title *{
 
 /* bouton plus compact */
 .cr-an-cec-entry-btn{
-  width:120px !important;
-  height:120px !important;
-  min-width:120px !important;
-  min-height:120px !important;
+  width:96px !important;
+  height:96px !important;
+  min-width:96px !important;
+  min-height:96px !important;
 
-  padding:10px !important;
+  padding:6px !important;
 
   display:flex !important;
   flex-direction:column !important;
   align-items:center !important;
   justify-content:center !important;
-  gap:8px !important;
+  gap:4px !important;
 
-  border-radius:16px !important;
+  border-radius:14px !important;
   border:1px solid rgba(255,255,255,.10) !important;
 
   background:linear-gradient(
@@ -11353,8 +11353,8 @@ body.theme-light .cr-an-right .eto-synth-title *{
 
   font-family:inherit !important;
   font-weight:800 !important;
-  font-size:1rem !important;
-  line-height:1.15 !important;
+  font-size:1rem !important;   /* inchangé */
+  line-height:1.1 !important;
   text-align:center !important;
 
   box-shadow:
