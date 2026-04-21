@@ -9232,9 +9232,9 @@ function openEtoSynthese(text) {
    ========================================================= */
 const CRAN_GESTES = [
   { label: "Pontages coronaires", value: "Pontages coronaires" },
-  { label: "RVA", value: "Remplacement valvulaire aortique" },
+  { label: "Remplacement valve aortique", value: "Remplacement valvulaire aortique" },
   { label: "Plastie aortique", value: "Plastie aortique" },
-  { label: "TSC", value: "Tube sus-coronaire" },
+  { label: "Tube sus-coronaire", value: "Tube sus-coronaire" },
   { label: "Tirone-David", value: "Tirone-David" },
   { label: "Bentall", value: "Bentall" },
   { label: "Ross", value: "Ross" },
@@ -9273,6 +9273,14 @@ function crAnEsc(s) {
     .replace(/"/g, "&quot;");
 }
 
+function crAnIsValveGeste(v) {
+  return [
+    "Remplacement valvulaire aortique",
+    "Remplacement valvulaire mitral",
+    "Bentall"
+  ].includes(String(v || "").trim());
+}
+
 function crAnTodayFR() {
   const d = new Date();
   const dd = String(d.getDate()).padStart(2, "0");
@@ -9291,7 +9299,9 @@ function crAnInitState() {
 geste1: "",
 geste2: undefined,
 geste3: undefined,
-valveType: "",
+valveType1: "Biologique",
+valveType2: "Biologique",
+valveType3: "Biologique",
 chirurgien1: "",
 anesth1: "",
 
@@ -9633,6 +9643,40 @@ function crAnFlowTextInput({ id, label, value = "", placeholder = "", type = "te
   `;
 }
 
+function crAnValveToggle(slot, value) {
+  const current = value || "Biologique";
+
+  return `
+    <div class="cr-an-valve-toggle">
+      <button
+        type="button"
+        class="cr-an-valve-btn ${current === "Biologique" ? "is-active" : ""}"
+        onclick="crAnSetValveType(${slot}, 'Biologique')"
+      >
+        Biologique
+      </button>
+
+      <button
+        type="button"
+        class="cr-an-valve-btn ${current === "Mécanique" ? "is-active" : ""}"
+        onclick="crAnSetValveType(${slot}, 'Mécanique')"
+      >
+        Mécanique
+      </button>
+    </div>
+  `;
+}
+
+function crAnSetValveType(slot, value) {
+  if (!crAnesthState) return;
+
+  if (slot === 1) crAnesthState.valveType1 = value;
+  if (slot === 2) crAnesthState.valveType2 = value;
+  if (slot === 3) crAnesthState.valveType3 = value;
+
+  renderCrAnTabAnesth();
+}
+
 function crAnFlowSelect({ id, label, value = "", options = [], cls = "" }) {
   return `
     <div class="cr-an-flow-item cr-an-flow-field ${cls}">
@@ -9720,39 +9764,54 @@ function renderCrAnTabAnesth() {
             </div>
 
             <div class="cr-an-form-row cr-an-form-row-tight">
-              <label>Geste</label>
-              <div class="cr-an-geste-controls">
-                <select id="cran-geste1" onchange="crAnOnGesteChange();">
-                  <option value=""></option>
-                  ${CRAN_GESTES.map(g => `
-                    <option value="${g.value}" ${crAnesthState.geste1 === g.value ? "selected" : ""}>
-                      ${crAnEsc(g.label)}
-                    </option>
-                  `).join("")}
-                </select>
+  <label>Geste</label>
+  <div class="cr-an-geste-controls">
+    <select id="cran-geste1" onchange="crAnOnGesteChange();">
+      <option value=""></option>
+      ${CRAN_GESTES.map(g => `
+        <option value="${g.value}" ${crAnesthState.geste1 === g.value ? "selected" : ""}>
+          ${crAnEsc(g.label)}
+        </option>
+      `).join("")}
+    </select>
 
-                <button
-  type="button"
-  class="cr-an-btn-plus"
-  onclick="crAnAddGeste()"
-  aria-label="Ajouter geste"
-  title="Ajouter geste"
->
-  +
-</button>
-              </div>
-            </div>
+    <button
+      type="button"
+      class="cr-an-btn-plus"
+      onclick="crAnAddGeste()"
+      aria-label="Ajouter geste"
+      title="Ajouter geste"
+    >
+      +
+    </button>
+  </div>
+</div>
 
-            ${crAnesthState.geste2 !== undefined ? `
+${crAnIsValveGeste(crAnesthState.geste1) ? `
+  <div class="cr-an-form-row cr-an-form-row-tight cr-an-valve-row">
+    <label>Valve</label>
+    ${crAnValveToggle(1, crAnesthState.valveType1)}
+  </div>
+` : ""}
+
+${crAnesthState.geste2 !== undefined ? `
   <div id="cran-geste2-wrap" class="cr-an-form-row cr-an-form-row-tight">
     <label>Geste 2</label>
     <select id="cran-geste2" onchange="crAnOnGesteChange();">
       <option value=""></option>
       ${CRAN_GESTES.map(g => `
-        <option value="${g.value}" ${crAnesthState.geste2===g.value ? 'selected' : ''}>
+        <option value="${g.value}" ${crAnesthState.geste2 === g.value ? "selected" : ""}>
           ${crAnEsc(g.label)}
-        </option>`).join("")}
+        </option>
+      `).join("")}
     </select>
+  </div>
+` : ""}
+
+${crAnesthState.geste2 !== undefined && crAnIsValveGeste(crAnesthState.geste2) ? `
+  <div class="cr-an-form-row cr-an-form-row-tight cr-an-valve-row">
+    <label>Valve 2</label>
+    ${crAnValveToggle(2, crAnesthState.valveType2)}
   </div>
 ` : ""}
 
@@ -9770,33 +9829,10 @@ ${crAnesthState.geste3 !== undefined ? `
   </div>
 ` : ""}
 
-${[crAnesthState.geste1, crAnesthState.geste2, crAnesthState.geste3]
-  .filter(Boolean)
-  .some(v => ["rva", "rvm", "bentall"].includes((v || "").toLowerCase())) ? `
-  <div id="cran-valve-type" class="cr-an-form-row cr-an-form-row-tight">
-    <label>Valve</label>
-    <div class="cr-an-line-radios">
-      <label>
-        <input
-          type="radio"
-          name="cran-valve"
-          value="Biologique"
-          ${crAnesthState.valveType === "Biologique" ? "checked" : ""}
-          onchange="crAnSyncState(); crAnRenderSynth();"
-        >
-        Biologique
-      </label>
-      <label>
-        <input
-          type="radio"
-          name="cran-valve"
-          value="Mécanique"
-          ${crAnesthState.valveType === "Mécanique" ? "checked" : ""}
-          onchange="crAnSyncState(); crAnRenderSynth();"
-        >
-        Mécanique
-      </label>
-    </div>
+${crAnesthState.geste3 !== undefined && crAnIsValveGeste(crAnesthState.geste3) ? `
+  <div class="cr-an-form-row cr-an-form-row-tight cr-an-valve-row">
+    <label>Valve 3</label>
+    ${crAnValveToggle(3, crAnesthState.valveType3)}
   </div>
 ` : ""}
 
@@ -10289,7 +10325,9 @@ function crAnSyncState() {
   crAnesthState.geste1 = crAnVal("cran-geste1");
   crAnesthState.geste2 = document.getElementById("cran-geste2") ? crAnVal("cran-geste2") : undefined;
   crAnesthState.geste3 = document.getElementById("cran-geste3") ? crAnVal("cran-geste3") : undefined;
-  crAnesthState.valveType = document.querySelector('input[name="cran-valve"]:checked')?.value || "";
+  crAnesthState.valveType1 = crAnesthState.valveType1 || "Biologique";
+crAnesthState.valveType2 = crAnesthState.valveType2 || "Biologique";
+crAnesthState.valveType3 = crAnesthState.valveType3 || "Biologique";
 crAnesthState.chirurgien1 = crAnVal("cran-chir1");
 crAnesthState.anesth1 = crAnVal("cran-an1");
 
@@ -10434,11 +10472,14 @@ function crAnMirrorGeste() {
 function crAnOnGesteChange() {
   crAnSyncState();
 
-  const gestes = [crAnesthState.geste1, crAnesthState.geste2, crAnesthState.geste3].filter(Boolean);
-const showValve = gestes.some(v => ["rva", "rvm", "bentall"].includes((v || "").toLowerCase()));
-
-  if (!showValve) {
-    crAnesthState.valveType = "";
+  if (!crAnIsValveGeste(crAnesthState.geste1)) {
+    crAnesthState.valveType1 = "Biologique";
+  }
+  if (!crAnIsValveGeste(crAnesthState.geste2)) {
+    crAnesthState.valveType2 = "Biologique";
+  }
+  if (!crAnIsValveGeste(crAnesthState.geste3)) {
+    crAnesthState.valveType3 = "Biologique";
   }
 
   renderCrAnTabAnesth();
@@ -10454,9 +10495,19 @@ function crAnAddGeste() {
 }
 
 function crAnBuildGeste() {
-  const parts = [crAnesthState.geste1, crAnesthState.geste2, crAnesthState.geste3]
-    .map(crAnSafe)
-    .filter(Boolean);
+  const parts = [
+    { geste: crAnesthState.geste1, valve: crAnesthState.valveType1 },
+    { geste: crAnesthState.geste2, valve: crAnesthState.valveType2 },
+    { geste: crAnesthState.geste3, valve: crAnesthState.valveType3 }
+  ]
+    .filter(x => crAnSafe(x.geste))
+    .map(x => {
+      const label = crAnSafe(x.geste);
+      return crAnIsValveGeste(x.geste)
+        ? `${label} (${x.valve || "Biologique"})`
+        : label;
+    });
+
   return parts.join(" + ");
 }
 
@@ -10478,18 +10529,20 @@ function crAnRenderSynth() {
   const intervention = [];
   if (crAnSafe(crAnesthState.date)) intervention.push(`Date : ${crAnesthState.date}.`);
 
- const gesteParts = [crAnesthState.geste1, crAnesthState.geste2, crAnesthState.geste3]
-  .filter(Boolean)
-  .map(v => (CRAN_GESTES.find(g => g.value === v)?.label || v));
+ const gestesAvecValve = [
+  { geste: crAnesthState.geste1, valve: crAnesthState.valveType1 },
+  { geste: crAnesthState.geste2, valve: crAnesthState.valveType2 },
+  { geste: crAnesthState.geste3, valve: crAnesthState.valveType3 }
+]
+.filter(x => x.geste)
+.map(x => {
+  const label = CRAN_GESTES.find(g => g.value === x.geste)?.label || x.geste;
+  return crAnIsValveGeste(x.geste)
+    ? `${label} (${x.valve || "Biologique"})`
+    : label;
+});
 
-let gesteTxt = gesteParts.join(" + ");
-
-if (
-  [crAnesthState.geste1, crAnesthState.geste2, crAnesthState.geste3].some(g => ["rva", "rvm", "bentall"].includes(g)) &&
-  crAnSafe(crAnesthState.valveType)
-) {
-  gesteTxt += ` (${crAnesthState.valveType})`;
-}
+let gesteTxt = gestesAvecValve.join(" + ");
 
 if (gesteTxt) intervention.push(`Geste : ${gesteTxt}.`);
 
@@ -10789,7 +10842,9 @@ function crAnReset() {
   crAnesthState = crAnInitState();
   crAnesthState.geste2 = undefined;
   crAnesthState.geste3 = undefined;
-  crAnesthState.valveType = "";
+  crAnesthState.valveType1 = "Biologique";
+  crAnesthState.valveType2 = "Biologique";
+  crAnesthState.valveType3 = "Biologique";
   renderCrAnTabAnesth();
 }
 
