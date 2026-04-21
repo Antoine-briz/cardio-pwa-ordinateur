@@ -10286,18 +10286,6 @@ ${crAnesthState.geste3 !== undefined && crAnIsValveGeste(crAnesthState.geste3) ?
               ${crAnFlowTextInput({ id: "cran-hbfin", label: "Hb", value: crAnesthState.hbFin, placeholder: " ", type: "number", step: "any", cls: "is-micro" })}
               ${crAnFlowTextInput({ id: "cran-lactfin", label: "lactate", value: crAnesthState.lactateFin, placeholder: " ", type: "number", step: "any", cls: "is-micro" })}
               ${crAnFlowTextInput({ id: "cran-noradfin", label: "Noradrénaline", value: crAnesthState.noradFin, placeholder: " ", type: "number", step: "any", cls: "is-micro" })}
-              ${crAnCheck(
-  "cran-fin-vent",
-  "Ventilé(e)",
-  crAnesthState.ventile,
-  "crAnExclusiveCheck('cran-fin-vent','cran-fin-ext')"
-)}
-${crAnCheck(
-  "cran-fin-ext",
-  "Extubé(e)",
-  crAnesthState.extube,
-  "crAnExclusiveCheck('cran-fin-ext','cran-fin-vent')"
-)}
             </div>
 
             <div class="cr-an-flow-row cr-an-inline-title-row">
@@ -10487,11 +10475,8 @@ crAnesthState.epicardiques = {
 crAnesthState.lactateFin = crAnVal("cran-lactfin");
 crAnesthState.noradFin = crAnVal("cran-noradfin");
 
-const finVent = crAnChecked("cran-fin-vent");
-const finExt = crAnChecked("cran-fin-ext");
-
-crAnesthState.ventile = finVent && !finExt;
-crAnesthState.extube = finExt;
+crAnesthState.ventile = true;
+crAnesthState.extube = false;
 
   crAnesthState.destination = document.querySelector('input[name="cran-dest"]:checked')?.value || "usip";
 }
@@ -10826,17 +10811,17 @@ if (epi.length) {
   if (crAnSafe(crAnesthState.hbFin)) fin.push(`Hb ${crAnesthState.hbFin} g/dL`);
   if (crAnSafe(crAnesthState.lactateFin)) fin.push(`lactate ${crAnesthState.lactateFin} mmol/L`);
   if (crAnSafe(crAnesthState.noradFin)) fin.push(`Noradrénaline ${crAnesthState.noradFin} mg/h`);
-  if (crAnesthState.ventile) fin.push("poursuite de la ventilation mécanique");
-  if (crAnesthState.extube) fin.push("extubation au bloc opératoire");
   if (fin.length) post.push(`En fin d’intervention : ${fin.join(", ")}.`);
 
   const destMap = {
-    usip: "USIP",
-    "rea-3eme": "réanimation 3ème",
-    sspi: "SSPI",
-    "rea-1er": "réanimation 1er"
-  };
-  if (destMap[crAnesthState.destination]) post.push(`Transfert en ${destMap[crAnesthState.destination]}.`);
+  usip: "USIP",
+  "rea-3eme": "réanimation 3ème",
+  sspi: "SSPI",
+  "rea-1er": "réanimation 1er"
+};
+if (destMap[crAnesthState.destination]) {
+  post.push(`Transfert intubé(e)/ventilé(e) en ${destMap[crAnesthState.destination]}.`);
+}
 
   crAnPushSection(out, "Prise en charge post-CEC", post);
 
