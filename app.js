@@ -2165,13 +2165,23 @@ function renderAnesthChirCecMenu() {
       
       <!-- Colonne gauche : titre + boutons -->
       <div class="intervention-main">
-        <div class="hero">
-          <h2>Chirurgie cardiaque sous CEC</h2>
-        </div>
+        <div class="hero cr-an-cec-hero">
+  <h2>Chirurgie cardiaque sous CEC</h2>
 
-<div class="cr-an-menu-entry">
-  <button class="btn cr-an-menu-entry-btn" type="button" onclick="openCrAnesthModal()">
-    Compte rendu d’anesthésie
+  <button class="btn cr-an-cec-entry-btn"
+          type="button"
+          onclick="openCrAnesthModal()">
+    <span class="cr-an-cec-entry-label">CR d’anesthésie</span>
+
+    <span class="cr-an-cec-entry-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M8 4.5h8.2a1.8 1.8 0 0 1 1.8 1.8v11.4a1.8 1.8 0 0 1-1.8 1.8H7.8A1.8 1.8 0 0 1 6 17.7V6.3a1.8 1.8 0 0 1 1.8-1.8H8Zm1.2 3.3h5.6M9.2 11h5.6M9.2 14.2h3.8"
+              stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M14.8 3.8 18.7 7.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="m13.9 8.6 4.8-4.8a1.35 1.35 0 1 1 1.9 1.9l-4.8 4.8-2.5.6.6-2.5Z"
+              stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+      </svg>
+    </span>
   </button>
 </div>
 
