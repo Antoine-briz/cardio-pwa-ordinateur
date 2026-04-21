@@ -2168,25 +2168,22 @@ function renderAnesthChirCecMenu() {
         <div class="hero cr-an-cec-hero">
   <h2>Chirurgie cardiaque sous CEC</h2>
 
- <button class="btn cr-an-cec-entry-btn"
-        type="button"
-        onclick="openCrAnesthModal()">
+  <button class="btn cr-an-cec-entry-btn"
+          type="button"
+          onclick="openCrAnesthModal()">
+    <span class="cr-an-cec-entry-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M8 4.5h8.2a1.8 1.8 0 0 1 1.8 1.8v11.4a1.8 1.8 0 0 1-1.8 1.8H7.8A1.8 1.8 0 0 1 6 17.7V6.3a1.8 1.8 0 0 1 1.8-1.8Z"
+              stroke="currentColor" stroke-width="1.7"/>
+        <path d="M9.2 8h5.5M9.2 11h5.5M9.2 14h3.8"
+              stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+        <path d="m14.2 9.3 4.5-4.5a1.2 1.2 0 1 1 1.7 1.7l-4.5 4.5-2.3.5.6-2.2Z"
+              stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+      </svg>
+    </span>
 
-  <span class="cr-an-cec-entry-icon" aria-hidden="true">
-    <svg viewBox="0 0 24 24" fill="none">
-      <path d="M8 4.5h8.2a1.8 1.8 0 0 1 1.8 1.8v11.4a1.8 1.8 0 0 1-1.8 1.8H7.8A1.8 1.8 0 0 1 6 17.7V6.3a1.8 1.8 0 0 1 1.8-1.8Z"
-            stroke="currentColor" stroke-width="1.7"/>
-      <path d="M9.2 8h5.5M9.2 11h5.5M9.2 14h3.8"
-            stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-      <path d="m14.2 9.3 4.5-4.5a1.2 1.2 0 1 1 1.7 1.7l-4.5 4.5-2.3.5.6-2.2Z"
-            stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-    </svg>
-  </span>
-
-  <span class="cr-an-cec-entry-label">
-    CR anesth.
-  </span>
-</button>
+    <span class="cr-an-cec-entry-label">CR anesth.</span>
+  </button>
 </div>
 
         <h3>Chirurgies programmées sous CEC</h3>
