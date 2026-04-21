@@ -10993,6 +10993,10 @@ if (crAnSafe(crAnesthState.ringer)) {
   ioLines.push(`- Cristalloïde : ${crAnesthState.ringer} mL`);
 }
 
+  if (crAnSafe(crAnesthState.diurese)) {
+  ioLines.push(`- Diurèse : ${crAnesthState.diurese} mL`);
+}
+  
 const transf = [];
 if (crAnSafe(crAnesthState.protamine)) transf.push(`Protamine ${crAnesthState.protamine} UI`);
   if (crAnSafe(crAnesthState.cellsaver)) transf.push(`CellSaver ${crAnesthState.cellsaver} mL`);
@@ -11005,10 +11009,6 @@ if (crAnSafe(crAnesthState.cacl)) transf.push(`CaCl ${crAnesthState.cacl} g`);
 
 if (transf.length) {
   ioLines.push(`- Transfusion / hémostase : ${transf.join(", ")}`);
-}
-
-if (crAnSafe(crAnesthState.diurese)) {
-  ioLines.push(`- Diurèse : ${crAnesthState.diurese} mL`);
 }
 
 if (ioLines.length) {
