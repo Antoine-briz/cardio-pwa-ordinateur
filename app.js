@@ -9261,6 +9261,194 @@ const CRAN_GESTES = [
   { label: "Exérèse de myxome", value: "Myxome" }
 ];
 
+const CRAN_GESTE_PROFILES = {
+  "Pontages coronaires": {
+    vein: "atrio-cave",
+    art: "aortique",
+    cp: "sang-froid",
+    mig: true,
+    mid: true,
+    nirs: false,
+    etomidate: false,
+    swan: false
+  },
+
+  "Remplacement valvulaire aortique": {
+    vein: "atrio-cave",
+    art: "aortique",
+    cp: "sang-froid",
+    mig: false,
+    mid: false,
+    nirs: false,
+    etomidate: false,
+    swan: false
+  },
+
+  "Plastie aortique": {
+    vein: "atrio-cave",
+    art: "aortique",
+    cp: "custodiol",
+    mig: false,
+    mid: false,
+    nirs: true,
+    etomidate: false,
+    swan: false
+  },
+
+  "Tube sus-coronaire": {
+    vein: "atrio-cave",
+    art: "aortique",
+    cp: "sang-froid",
+    mig: false,
+    mid: false,
+    nirs: true,
+    etomidate: false,
+    swan: false
+  },
+
+  "Tirone-David": {
+    vein: "atrio-cave",
+    art: "aortique",
+    cp: "sang-froid",
+    mig: false,
+    mid: false,
+    nirs: true,
+    etomidate: false,
+    swan: false
+  },
+
+  "Bentall": {
+    vein: "atrio-cave",
+    art: "aortique",
+    cp: "sang-froid",
+    mig: false,
+    mid: false,
+    nirs: true,
+    etomidate: false,
+    swan: false
+  },
+
+  "Ross": {
+    vein: "atrio-cave",
+    art: "aortique",
+    cp: "custodiol",
+    mig: false,
+    mid: false,
+    nirs: true,
+    etomidate: false,
+    swan: false
+  },
+
+  "Plastie mitrale": {
+    vein: "bi-cavale",
+    art: "aortique",
+    cp: "sang-froid",
+    mig: false,
+    mid: false,
+    nirs: false,
+    etomidate: false,
+    swan: false
+  },
+
+  "Remplacement valvulaire mitral": {
+    vein: "bi-cavale",
+    art: "aortique",
+    cp: "sang-froid",
+    mig: false,
+    mid: false,
+    nirs: false,
+    etomidate: false,
+    swan: false
+  },
+
+  "Plastie tricuspide": {
+    vein: "bi-cavale",
+    art: "aortique",
+    cp: "sang-froid",
+    mig: false,
+    mid: false,
+    nirs: false,
+    etomidate: false,
+    swan: false
+  },
+
+  "Remplacement valvulaire tricuspide": {
+    vein: "bi-cavale",
+    art: "aortique",
+    cp: "sang-froid",
+    mig: false,
+    mid: false,
+    nirs: false,
+    etomidate: false,
+    swan: false
+  },
+
+  "Fermeture de CIA": {
+    vein: "bi-cavale",
+    art: "aortique",
+    cp: "sang-froid",
+    mig: false,
+    mid: false,
+    nirs: false,
+    etomidate: false,
+    swan: false
+  },
+
+  "Fermeture de FOP": {
+    vein: "bi-cavale",
+    art: "aortique",
+    cp: "sang-froid",
+    mig: false,
+    mid: false,
+    nirs: false,
+    etomidate: false,
+    swan: false
+  },
+
+  "Myxome": {
+    vein: "bi-cavale",
+    art: "aortique",
+    cp: "sang-froid",
+    mig: false,
+    mid: false,
+    nirs: false,
+    etomidate: false,
+    swan: false
+  },
+
+  "Dissection aortique": {
+    vein: "atrio-cave",
+    art: "axillaire-droite",
+    cp: "custodiol",
+    mig: false,
+    mid: false,
+    nirs: true,
+    etomidate: true,
+    swan: false
+  },
+
+  "Transplantation cardiaque": {
+    vein: "bi-cavale",
+    art: "aortique",
+    cp: "sang-froid",
+    mig: false,
+    mid: false,
+    nirs: false,
+    etomidate: true,
+    swan: true
+  },
+
+  "Implantation de LVAD": {
+    vein: "atrio-cave",
+    art: "aortique",
+    cp: "sang-froid",
+    mig: false,
+    mid: false,
+    nirs: false,
+    etomidate: true,
+    swan: true
+  }
+};
 
 let crAnesthState = null;
 
@@ -9302,6 +9490,73 @@ function crAnIsValveGeste(v) {
     "Remplacement valvulaire mitral",
     "Bentall"
   ].includes(String(v || "").trim());
+}
+
+function crAnGetSelectedGestes() {
+  return [
+    crAnesthState?.geste1,
+    crAnesthState?.geste2,
+    crAnesthState?.geste3
+  ].filter(Boolean);
+}
+
+function crAnBuildMergedGestureProfile(gestes) {
+  const merged = {
+    vein: "atrio-cave",
+    art: "aortique",
+    cp: "sang-froid",
+    mig: false,
+    mid: false,
+    nirs: false,
+    etomidate: false,
+    swan: false
+  };
+
+  gestes.forEach(geste => {
+    const p = CRAN_GESTE_PROFILES[geste];
+    if (!p) return;
+
+    // Spécificités additives
+    merged.mig = merged.mig || !!p.mig;
+    merged.mid = merged.mid || !!p.mid;
+    merged.nirs = merged.nirs || !!p.nirs;
+    merged.etomidate = merged.etomidate || !!p.etomidate;
+    merged.swan = merged.swan || !!p.swan;
+
+    // Priorités
+    if (p.vein === "bi-cavale") {
+      merged.vein = "bi-cavale";
+    }
+
+    if (p.art === "axillaire-droite") {
+      merged.art = "axillaire-droite";
+    }
+
+    if (p.cp === "custodiol") {
+      merged.cp = "custodiol";
+    }
+  });
+
+  return merged;
+}
+
+function crAnApplyGestureProfiles() {
+  if (!crAnesthState) return;
+
+  const gestes = crAnGetSelectedGestes();
+  const merged = crAnBuildMergedGestureProfile(gestes);
+
+  // Canulations / cardioplégie
+  crAnesthState.canulationVein = merged.vein;
+  crAnesthState.canulationArt = merged.art;
+  crAnesthState.cardioplegie = merged.cp;
+
+  // Spécificités additives
+  crAnesthState.prelevement.mig = merged.mig;
+  crAnesthState.prelevement.mid = merged.mid;
+  crAnesthState.conditionnement.nirs = merged.nirs;
+  crAnesthState.conditionnement.swan = merged.swan;
+  crAnesthState.induction.etomidate = merged.etomidate;
 }
 
 function crAnTodayFR() {
@@ -10507,6 +10762,7 @@ function crAnOnGesteChange() {
     crAnesthState.valveType3 = "Biologique";
   }
 
+  crAnApplyGestureProfiles();
   renderCrAnTabAnesth();
 }
 
@@ -10516,6 +10772,8 @@ function crAnAddGeste() {
   } else if (crAnesthState.geste3 === undefined) {
     crAnesthState.geste3 = "";
   }
+
+  crAnApplyGestureProfiles();
   renderCrAnTabAnesth();
 }
 
