@@ -9293,6 +9293,7 @@ function crAnInitState() {
   return {
     activeTab: "anesth",
     etoVariant: "standard",
+    etoLoadedVariant: null,
 
     date: crAnTodayFR(),
 
@@ -9515,12 +9516,20 @@ function switchCrAnTab(tab) {
   if (p1) p1.classList.toggle("hidden", tab !== "anesth");
   if (p2) p2.classList.toggle("hidden", tab !== "eto");
 
-  if (tab === "eto") {
+  // ✅ très important :
+  // on ne rerend l'ETO que s'il n'a jamais été chargé
+  // ou si on demande une autre variante
+  if (
+    tab === "eto" &&
+    crAnesthState.etoLoadedVariant !== crAnesthState.etoVariant
+  ) {
     renderCrAnTabEto();
   }
 }
+
 function crAnOpenEtoVariant(variant) {
   if (!crAnesthState) return;
+
   crAnesthState.etoVariant = variant || "standard";
   switchCrAnTab("eto");
 }
@@ -9531,6 +9540,14 @@ function renderCrAnTabEto() {
 
   const variant = crAnesthState?.etoVariant || "standard";
 
+if (
+  crAnesthState &&
+  crAnesthState.etoLoadedVariant === variant &&
+  mount.children.length > 0
+) {
+  return;
+}
+  
   let prefix = "pc";
   if (variant === "plastie_aortique") prefix = "rva";
   if (variant === "plastie_mitrale") prefix = "rvm";
@@ -9602,6 +9619,7 @@ function renderCrAnTabEto() {
   } catch (e) {
     console.error("Erreur init CR ETO embarqué", e);
   }
+  crAnesthState.etoLoadedVariant = variant;
 }
 
 function crAnFlowCheck(id, label, checked) {
@@ -10830,6 +10848,7 @@ function crAnReset() {
   crAnesthState.valveType1 = "Biologique";
   crAnesthState.valveType2 = "Biologique";
   crAnesthState.valveType3 = "Biologique";
+  crAnesthState.etoLoadedVariant = null;
   renderCrAnTabAnesth();
 }
 
