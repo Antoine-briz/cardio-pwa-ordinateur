@@ -11305,7 +11305,7 @@ body.theme-light .cr-an-right .eto-synth-title *{
 }
 
 /* =========================================================
-   CR anesthésie — bouton collé au titre et centré
+   CR anesthésie — titre + bouton collés et centrés ensemble
    ========================================================= */
 
 .cr-an-cec-hero{
@@ -11321,7 +11321,7 @@ body.theme-light .cr-an-right .eto-synth-title *{
   margin:0 !important;
   text-align:center !important;
   white-space:nowrap !important;
-  flex:0 0 auto !important; /* IMPORTANT */
+  flex:0 0 auto !important;
 }
 
 /* bouton plus compact */
@@ -11399,16 +11399,17 @@ body.theme-light .cr-an-right .eto-synth-title *{
   display:block;
 }
 
-/* neutralisation anciens styles */
+/* neutralise les anciens styles du vieux bouton */
 .cr-anesth-entry-wrap,
 .cr-anesth-entry-btn,
 .cr-anesth-text-btn,
 .cr-an-menu-entry,
 .cr-an-menu-entry-btn{
-  all: unset;
+  all:unset !important;
+  display:none !important;
 }
 
-/* Responsive propre (SANS absolute) */
+/* responsive */
 @media (max-width: 900px){
   .cr-an-cec-hero{
     flex-direction:column !important;
