@@ -9476,6 +9476,18 @@ function crAnExclusiveCheck(currentId, otherId) {
   crAnRenderSynth();
 }
 
+function crAnExclusiveCurare(currentId, otherIds) {
+  const current = document.getElementById(currentId);
+  if (current?.checked) {
+    otherIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.checked = false;
+    });
+  }
+  crAnSyncState();
+  crAnRenderSynth();
+}
+
 function crAnEsc(s) {
   return String(s ?? "")
     .replace(/&/g, "&amp;")
@@ -10214,11 +10226,38 @@ ${crAnesthState.geste3 !== undefined && crAnIsValveGeste(crAnesthState.geste3) ?
             </div>
 
             <div class="cr-an-flow-row cr-an-inline-title-row">
-              <div class="cr-an-inline-title">Curarisation :</div>
-              ${crAnFlowCheck("cran-cur-atr", "Atracurium", crAnesthState.curarisation.atracurium)}
-              ${crAnFlowCheck("cran-cur-celo", "Célocurine", crAnesthState.curarisation.celocurine)}
-              ${crAnFlowCheck("cran-cur-rocu", "Rocuronium", crAnesthState.curarisation.rocuronium)}
-            </div>
+  <div class="cr-an-inline-title">Curare :</div>
+
+  <label class="cr-an-flow-check">
+    <input
+      type="checkbox"
+      id="cran-cur-atr"
+      ${crAnesthState.curarisation.atracurium ? "checked" : ""}
+      onchange="crAnExclusiveCurare('cran-cur-atr',['cran-cur-celo','cran-cur-rocu'])"
+    >
+    <span>Atracurium</span>
+  </label>
+
+  <label class="cr-an-flow-check">
+    <input
+      type="checkbox"
+      id="cran-cur-celo"
+      ${crAnesthState.curarisation.celocurine ? "checked" : ""}
+      onchange="crAnExclusiveCurare('cran-cur-celo',['cran-cur-atr','cran-cur-rocu'])"
+    >
+    <span>Célocurine</span>
+  </label>
+
+  <label class="cr-an-flow-check">
+    <input
+      type="checkbox"
+      id="cran-cur-rocu"
+      ${crAnesthState.curarisation.rocuronium ? "checked" : ""}
+      onchange="crAnExclusiveCurare('cran-cur-rocu',['cran-cur-atr','cran-cur-celo'])"
+    >
+    <span>Rocuronium</span>
+  </label>
+</div>
 
             <div class="cr-an-flow-row cr-an-inline-title-row">
               <div class="cr-an-inline-title">Intubation :</div>
@@ -10875,7 +10914,7 @@ if (crAnSafe(crAnesthState.anesth1))
   if (crAnSafe(crAnesthState.intubation.sonde)) intu.push(`Sonde ${crAnesthState.intubation.sonde}`);
   if (crAnSafe(crAnesthState.intubation.cormack)) intu.push(`Cormack ${crAnesthState.intubation.cormack}`);
   if (crAnSafe(crAnesthState.intubation.pogo)) intu.push(`Vidéo-laryngoscopie par McGrath, POGO ${crAnesthState.intubation.pogo}%`);
-  if (crAnesthState.intubation.eschmann) intu.push("Utilisation d’un mandrin d’Eschmann");
+  if (crAnesthState.intubation.eschmann) intu.push("utilisation d’un mandrin d’Eschmann");
   if (intu.length) ia.push(`Intubation : ${intu.join(", ")}.`);
 
   const atb = [];
@@ -10977,15 +11016,19 @@ if (autres.length) {
   // POST CEC
   const post = [];
   const rythmeMap = {
-    sinusal: "Sortie de CEC en rythme régulier et sinusal",
-    fv: "Sortie de CEC en fibrillation ventriculaire",
-    fa: "Sortie de CEC en fibrillation auriculaire",
-    bav: "Sortie de CEC en BAV complet"
-  };
-  if (rythmeMap[crAnesthState.rythme]) {
-  post.push(`Rythme : ${rythmeMap[crAnesthState.rythme]}.`);
+  sinusal: "Sortie de CEC en rythme régulier et sinusal",
+  fv: "Sortie de CEC en fibrillation ventriculaire",
+  fa: "Sortie de CEC en fibrillation auriculaire",
+  bav: "Sortie de CEC en BAV complet"
+};
+
+if (rythmeMap[crAnesthState.rythme]) {
+  let rythmeLine = rythmeMap[crAnesthState.rythme];
+  if (crAnSafe(crAnesthState.cei)) {
+    rythmeLine += `, administration de ${crAnesthState.cei} CEI`;
+  }
+  post.push(`Rythme : ${rythmeLine}.`);
 }
-  if (crAnSafe(crAnesthState.cei)) post.push(`Administration de ${crAnesthState.cei} CEI.`);
 
   const ioLines = [];
 
