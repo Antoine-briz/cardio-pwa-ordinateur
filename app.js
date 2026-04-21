@@ -10224,7 +10224,6 @@ ${crAnesthState.geste3 !== undefined && crAnIsValveGeste(crAnesthState.geste3) ?
               <div class="cr-an-inline-title">Intubation :</div>
               ${crAnFlowCheck("cran-int-vent", "Ventilation", crAnesthState.intubation.ventilation)}
               ${crAnFlowCheck("cran-int-sr", "ISR", crAnesthState.intubation.sequenceRapide)}
-              ${crAnFlowCheck("cran-int-esch", "Eschmann", crAnesthState.intubation.eschmann)}
               ${crAnFlowSelect({
                 id: "cran-int-sonde",
                 label: "Sonde",
@@ -10236,7 +10235,7 @@ ${crAnesthState.geste3 !== undefined && crAnIsValveGeste(crAnesthState.geste3) ?
                 id: "cran-int-cormack",
                 label: "Cormack",
                 value: crAnesthState.intubation.cormack,
-                options: ["1", "2", "3", "4"],
+                options: [" ", "1", "2", "3", "4"],
                 cls: "is-micro"
               })}
               ${crAnFlowTextInput({
@@ -10247,6 +10246,7 @@ ${crAnesthState.geste3 !== undefined && crAnIsValveGeste(crAnesthState.geste3) ?
                 type: "number",
                 cls: "is-micro"
               })}
+              ${crAnFlowCheck("cran-int-esch", "Eschmann", crAnesthState.intubation.eschmann)}
             </div>
 
             <div class="cr-an-flow-row cr-an-inline-title-row">
@@ -10870,8 +10870,8 @@ if (crAnSafe(crAnesthState.anesth1))
   if (cura.length) ia.push(`Curarisation par ${cura.join(", ")}.`);
 
   const intu = [];
-  if (crAnesthState.intubation.ventilation) intu.push("Ventilation aisée au masque facial");
-  if (crAnesthState.intubation.sequenceRapide) intu.push("Intubation en séquence rapide");
+  if (crAnesthState.intubation.ventilation) intu.push("Ventilation aisée au masque facial, intubation oro-trachéale atraumatique");
+  if (crAnesthState.intubation.sequenceRapide) intu.push("Intubation oro-trachéale en séquence rapide atraumatique");
   if (crAnSafe(crAnesthState.intubation.sonde)) intu.push(`Sonde ${crAnesthState.intubation.sonde}`);
   if (crAnSafe(crAnesthState.intubation.cormack)) intu.push(`Cormack ${crAnesthState.intubation.cormack}`);
   if (crAnSafe(crAnesthState.intubation.pogo)) intu.push(`Vidéo-laryngoscopie par McGrath, POGO ${crAnesthState.intubation.pogo}%`);
