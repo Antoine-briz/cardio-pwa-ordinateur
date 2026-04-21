@@ -22858,48 +22858,35 @@ function renderEtoBibliotheque() {
 // -------------------------------------------------
 // 1) Page menu CEC
 // -------------------------------------------------
+
 function renderCEC() {
   $app.innerHTML = `
     <section class="cec-page">
-
-      <div class="cec-title-strip">
-        <img src="img/titre5.png" alt="CEC" class="cec-title-img">
+      <div class="title-strip">
+        <img src="img/titre5.png" alt="CEC" class="title-strip-img">
       </div>
 
-      <div class="cec-content">
+      <div class="cec-menu-cards">
 
-        <div class="cec-main">
+        <div class="card cec-menu-card" onclick="openImageLightbox('img/schemaCEC.png','Schéma CEC')">
+          <img src="img/schemaCEC.png" alt="Schéma CEC" class="menu-section-img" />
+          <h3>Schéma CEC</h3>
+        </div>
 
-          <button class="btn cec-btn-blue cec-proto-btn" type="button"
-                  onclick="location.hash = '#/cec-protocoles'">
-            Protocoles CEC
-          </button>
+        <div class="card cec-menu-card" onclick="location.hash = '#/cec-protocoles'">
+          <img src="img/cecprotocole.png" alt="Protocole standard" class="menu-section-img" />
+          <h3>Protocole standard</h3>
+        </div>
 
-          <div class="cec-grid">
-            <button class="btn" onclick="location.hash = '#/cec-procedures'">
-              Procédures spécifiques
-            </button>
+        <div class="card cec-menu-card" onclick="location.hash = '#/cec-procedures'">
+          <img src="img/cecspecifique.png" alt="Procédures spécifiques" class="menu-section-img" />
+          <h3>Procédures spécifiques</h3>
+        </div>
 
-            <button class="btn btn-red" onclick="location.hash = '#/cec-urgences'">
-              Situations d'urgences CEC
-            </button>
-          </div>
-
-<div class="cec-box">
-            <div class="cec-box-title">Schéma de la CEC</div>
-            <button class="cec-thumb-btn" type="button"
-                    onclick="openImageLightbox('img/schemaCEC.png','Schéma de la CEC')"
-                    aria-label="Ouvrir le schéma de la CEC">
-              <img src="img/schemaCEC.png" alt="Schéma de la CEC" class="cec-thumb">
-              <div class="cec-thumb-hint">Cliquer pour agrandir</div>
-            </button>
-          </div>
-          </div>
-
-
-        <aside class="cec-side">
-          <img src="img/cec1.png" alt="Circulation extra-corporelle">
-        </aside>
+        <div class="card cec-menu-card cec-menu-card-urgent" onclick="location.hash = '#/cec-urgences'">
+          <img src="img/cecurgence.png" alt="Situations d'urgence" class="menu-section-img" />
+          <h3>Situations d'urgence</h3>
+        </div>
 
       </div>
     </section>
