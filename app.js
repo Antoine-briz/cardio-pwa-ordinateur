@@ -10715,7 +10715,33 @@ if (epi.length) {
   crAnPushSection(out, "Prise en charge post-CEC", post);
 
   const box = document.getElementById("cr-an-synth-text");
-  if (box) box.textContent = out.join("\n");
+
+if (box) {
+  const sections = [
+    "INTERVENTION",
+    "INDUCTION ET ENTRETIEN ANESTHÉSIE",
+    "ETO PRÉ-CEC",
+    "CHIRURGIE & CEC",
+    "PRISE EN CHARGE POST-CEC"
+  ];
+
+  const lines = out.map(line => {
+    const txt = line.trim();
+
+    if (sections.includes(txt.toUpperCase())) {
+      return `<div class="cr-an-synth-section">${txt.toUpperCase()}</div>`;
+    }
+
+    if (txt.includes(" :")) {
+      const parts = txt.split(" :");
+      return `<div><strong>${parts[0]} :</strong>${parts.slice(1).join(" :")}</div>`;
+    }
+
+    return `<div>${txt}</div>`;
+  });
+
+  box.innerHTML = lines.join("");
+}
 }
 
 async function crAnCopySynth() {
