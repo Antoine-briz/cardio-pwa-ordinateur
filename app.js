@@ -9253,12 +9253,12 @@ const CRAN_GESTES = [
   { label: "Remplacement valve mitrale", value: "Remplacement valvulaire mitral" },
   { label: "Plastie tricuspide", value: "Plastie tricuspide" },
   { label: "Remplacement valve tricuspide", value: "Remplacement valvulaire tricuspide" },
-  { label: "Fermeture de CIA", value: "Fermeture de CIA" },
-  { label: "Fermeture de FOP", value: "Fermeture de FOP" },
-  { label: "Exérèse de myxome", value: "Myxome" },
   { label: "Dissection aortique", value: "Dissection aortique" },
   { label: "Transplantation cardiaque", value: "Transplantation cardiaque" },
-  { label: "Pose de LVAD", value: "Implantation de LVAD" }
+  { label: "Pose de LVAD", value: "Implantation de LVAD" },
+  { label: "Fermeture de CIA", value: "Fermeture de CIA" },
+  { label: "Fermeture de FOP", value: "Fermeture de FOP" },
+  { label: "Exérèse de myxome", value: "Myxome" }
 ];
 
 
