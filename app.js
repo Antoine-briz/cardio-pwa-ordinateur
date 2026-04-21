@@ -10906,7 +10906,7 @@ if (crAnSafe(crAnesthState.anesth1))
   if (crAnesthState.curarisation.atracurium) cura.push("Atracurium");
   if (crAnesthState.curarisation.celocurine) cura.push("Célocurine");
   if (crAnesthState.curarisation.rocuronium) cura.push("Rocuronium");
-  if (cura.length) ia.push(`Curarisation par ${cura.join(", ")}.`);
+  if (cura.length) ia.push(`Curare : Curarisation par ${cura.join(", ")}.`);
 
   const intu = [];
   if (crAnesthState.intubation.ventilation) intu.push("Ventilation aisée au masque facial, intubation oro-trachéale atraumatique");
