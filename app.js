@@ -9276,6 +9276,18 @@ function crAnVal(id) {
   return document.getElementById(id)?.value ?? "";
 }
 
+function crAnExclusiveCheck(currentId, otherId) {
+  const current = document.getElementById(currentId);
+  const other = document.getElementById(otherId);
+
+  if (current?.checked && other) {
+    other.checked = false;
+  }
+
+  crAnSyncState();
+  crAnRenderSynth();
+}
+
 function crAnEsc(s) {
   return String(s ?? "")
     .replace(/&/g, "&amp;")
@@ -9326,7 +9338,7 @@ anesth1: "",
       kta: true,
       ktc: true,
       eto: true,
-      swan: true
+      swan: false
     },
 
     induction: {
@@ -10315,10 +10327,10 @@ crAnInitAutocomplete();
 crAnRenderSynth();
 }
 
-function crAnCheck(id, label, checked) {
+function crAnCheck(id, label, checked, onchange = "crAnSyncState(); crAnRenderSynth();") {
   return `
     <label class="checkbox">
-      <input type="checkbox" id="${id}" ${checked ? "checked" : ""} onchange="crAnSyncState(); crAnRenderSynth();">
+      <input type="checkbox" id="${id}" ${checked ? "checked" : ""} onchange="${onchange}">
       <span>${label}</span>
     </label>
   `;
@@ -10462,10 +10474,14 @@ crAnesthState.epicardiques = {
 };
 
   crAnesthState.hbFin = crAnVal("cran-hbfin");
-  crAnesthState.lactateFin = crAnVal("cran-lactfin");
-  crAnesthState.noradFin = crAnVal("cran-noradfin");
-  crAnesthState.ventile = crAnChecked("cran-fin-vent");
-  crAnesthState.extube = crAnChecked("cran-fin-ext");
+crAnesthState.lactateFin = crAnVal("cran-lactfin");
+crAnesthState.noradFin = crAnVal("cran-noradfin");
+
+const finVent = crAnChecked("cran-fin-vent");
+const finExt = crAnChecked("cran-fin-ext");
+
+crAnesthState.ventile = finVent && !finExt;
+crAnesthState.extube = finExt;
 
   crAnesthState.destination = document.querySelector('input[name="cran-dest"]:checked')?.value || "usip";
 }
