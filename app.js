@@ -25418,20 +25418,42 @@ window.renderCecUrgenceSevrageCecDifficile =
   renderCecUrgenceSevrageCecDifficile;
 
 
-function renderCecProcedures() {
+function renderCECProcedures() {
   $app.innerHTML = `
-    <section class="page">
-      <h2>Procédures spécifiques – CEC</h2>
+    <section class="intervention-shell">
 
-      <p>
-        Cette section regroupera les procédures spécifiques liées à la CEC.
-      </p>
+      <!-- Colonne gauche -->
+      <div class="intervention-main">
 
-      <p>
-        (Contenu en cours de construction)
-      </p>
+        <div class="hero">
+          <h2>Procédures spécifiques</h2>
+        </div>
+
+        <div class="grid">
+
+          <button class="btn"
+            onclick="location.hash='#/cec/procedure/tih'">
+            Thrombopénie induite à l'héparine
+          </button>
+
+          <button class="btn"
+            onclick="location.hash='#/cec/procedure/drepanocytaire'">
+            Patient drépanocytaire
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- Colonne droite -->
+      <aside class="intervention-side">
+        <img src="img/cec1.png" alt="Procédures spécifiques CEC">
+      </aside>
+
     </section>
   `;
+
+  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
 }
 
 // ===== Enseignement : code admin (1 fois par session) =====
