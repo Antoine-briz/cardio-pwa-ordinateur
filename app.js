@@ -943,7 +943,7 @@ function renderAnesthMenu() {
 
         <div class="card anesth-card" onclick="location.hash = '#/anesthesie/cardio-struct'">
           <img src="img/cardiostruct.png" class="menu-section-img">
-          <h3>Cardiologie structurelle</h3>
+          <h3>Cardiologie structurelle & rythmologie</h3>
         </div>
 
         <div class="card anesth-card" onclick="location.hash = '#/anesthesie/vasculaire'">
