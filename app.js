@@ -10223,7 +10223,7 @@ ${crAnesthState.geste3 !== undefined && crAnIsValveGeste(crAnesthState.geste3) ?
                 <option value="LABARRIERE Ambroise">
                 <option value="LANCELOT Aymeric">
                 <option value="LOEB Jules">
-                <option value="MANSOURI Sehm">
+                <option value="MANSOURI Sehmi">
                 <option value="MARQUET Yann">
                 <option value="MOHAMMEDI Neyla">
                 <option value="NICULESCU Michaela">
@@ -28457,7 +28457,7 @@ function renderAnnuaire() {
         <tr><td>LABARRIERE Ambroise</td><td>28 308</td></tr>
         <tr><td>LANCELOT Aymeric</td><td>65 695</td></tr>
         <tr><td>LOEB Jules</td><td>62 997</td></tr>
-        <tr><td>MANSOURI Sehm</td><td>28 256</td></tr>
+        <tr><td>MANSOURI Sehmi</td><td>28 256</td></tr>
         <tr><td>MARQUET Yann</td><td>28 356</td></tr>
         <tr><td>MOHAMMEDI Neyla</td><td>28 257</td></tr>
         <tr><td>NICULESCU Michaela</td><td>62 996</td></tr>
