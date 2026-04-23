@@ -7636,6 +7636,10 @@ function etoFormHtmlCompact(prefix) {
                       <label>Surface (cm²)
                         <input type="number" id="${prefix}-eto-ra-surface" step="0.1" min="0"/>
                       </label>
+
+                      <label>IP
+  <input type="number" id="${prefix}-eto-ra-ip" step="0.01" min="0" readonly/>
+</label>
                     </div>
                   </div>
 
@@ -8601,6 +8605,29 @@ const plastieMitraleRow = `
   return base.replace(mitraleRegex, plastieMitraleRow);
 }
 
+function etoParseNum(v) {
+  const n = parseFloat(String(v ?? "").replace(",", "."));
+  return Number.isFinite(n) ? n : null;
+}
+
+function etoUpdateRaIp(prefix, root = document) {
+  const ccvg = root.querySelector(`#${prefix}-eto-itv-ccvg`);
+  const itvVa = root.querySelector(`#${prefix}-eto-ra-itv`);
+  const ip = root.querySelector(`#${prefix}-eto-ra-ip`);
+
+  if (!ccvg || !itvVa || !ip) return;
+
+  const a = etoParseNum(ccvg.value);
+  const b = etoParseNum(itvVa.value);
+
+  if (a !== null && b !== null && b > 0) {
+    ip.value = (a / b).toFixed(2);
+  } else {
+    ip.value = "";
+  }
+}
+
+
 function initEtoFormHandlers(prefix, root) {
   const g = (id) => root.querySelector(`#${prefix}-eto-${id}`);
 
@@ -8784,6 +8811,19 @@ function initEtoFormHandlers(prefix, root) {
     });
   }
 
+ /* ===== Calcul automatique IP (ITV CCVG / ITV VA) ===== */
+  const raIpSources = [
+    root.querySelector(`#${prefix}-eto-itv-ccvg`),
+    root.querySelector(`#${prefix}-eto-ra-itv`)
+  ].filter(Boolean);
+
+  raIpSources.forEach(el => {
+    el.addEventListener("input", () => etoUpdateRaIp(prefix, root));
+    el.addEventListener("change", () => etoUpdateRaIp(prefix, root));
+  });
+
+  etoUpdateRaIp(prefix, root);
+  
   // ===== Initialisation =====
   sync();
 }
@@ -8902,6 +8942,7 @@ if (valveType) {
       const gdmax = val(q("ra-gdmax"));
       const itvva = val(q("ra-itv"));
       const surf = val(q("ra-surface"));
+      const ip = val(q("ra-ip"));
 
       const details = [];
       if (sev) details.push(sev.toLowerCase());
@@ -8909,6 +8950,7 @@ if (valveType) {
       if (gdmax) details.push(`gradient max ${gdmax} mmHg`);
       if (itvva) details.push(`ITV VA ${itvva} cm`);
       if (surf) details.push(`surface ${surf} cm²`);
+      if (ip) details.push(`IP ${ip}`);
 
       let txt = "rétrécissement aortique";
       if (details.length) txt += ` (${details.join(", ")})`;
