@@ -8821,11 +8821,10 @@ function initEtoFormHandlers(prefix, root) {
     el.addEventListener("input", () => etoUpdateRaIp(prefix, root));
     el.addEventListener("change", () => etoUpdateRaIp(prefix, root));
   });
-
-  etoUpdateRaIp(prefix, root);
   
   // ===== Initialisation =====
   sync();
+  etoUpdateRaIp(prefix, root);
 }
 
 
