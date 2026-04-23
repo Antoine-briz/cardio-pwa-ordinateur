@@ -10213,7 +10213,6 @@ ${crAnesthState.geste3 !== undefined && crAnIsValveGeste(crAnesthState.geste3) ?
                 <option value="COELEMBIER Clément">
                 <option value="DE SARCUS Martin">
                 <option value="DJAVIDI Nima">
-                <option value="DUARTE Lucie">
                 <option value="DUCEAU Baptiste">
                 <option value="DUREAU Pauline">
                 <option value="GUILLEMIN Jérémie">
@@ -10226,8 +10225,6 @@ ${crAnesthState.geste3 !== undefined && crAnIsValveGeste(crAnesthState.geste3) ?
                 <option value="LOEB Jules">
                 <option value="MANSOURI Sehm">
                 <option value="MARQUET Yann">
-                <option value="MELLANO Vincent">
-                <option value="MONTANA Vincenzo">
                 <option value="MOHAMMEDI Neyla">
                 <option value="NICULESCU Michaela">
                 <option value="OMAR Edris">
@@ -28450,7 +28447,6 @@ function renderAnnuaire() {
         <tr><td>COELEMBIER Clément</td><td>65 689</td></tr>
         <tr><td>DE SARCUS Martin</td><td>75 869</td></tr>
         <tr><td>DJAVIDI Nima</td><td>28 363</td></tr>
-        <tr><td>DUARTE Lucie</td><td>62 315</td></tr>
         <tr><td>DUCEAU Baptiste</td><td>27 915</td></tr>
         <tr><td>DUREAU Pauline</td><td>27 689</td></tr>
         <tr><td>GUILLEMIN Jérémie</td><td>28 258</td></tr>
@@ -28463,8 +28459,6 @@ function renderAnnuaire() {
         <tr><td>LOEB Jules</td><td>62 997</td></tr>
         <tr><td>MANSOURI Sehm</td><td>28 256</td></tr>
         <tr><td>MARQUET Yann</td><td>28 356</td></tr>
-        <tr><td>MELLANO Vincent</td><td>28 358</td></tr>
-        <tr><td>MONTANA Vincenzo</td><td>62 995</td></tr>
         <tr><td>MOHAMMEDI Neyla</td><td>28 257</td></tr>
         <tr><td>NICULESCU Michaela</td><td>62 996</td></tr>
         <tr><td>OMAR Edris</td><td>27 386</td></tr>
