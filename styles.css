@@ -12508,3 +12508,68 @@ main.container,
   background: #f3f4f6 !important;
   color: #000 !important;
 }
+
+/* ============================================================
+   ADMIN - Edition médecins / postes
+   ============================================================ */
+
+.saric-admin-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.saric-admin-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.saric-mini-btn {
+  width: auto !important;
+  padding: 10px 14px !important;
+  border-radius: 12px !important;
+  font-size: 0.85rem !important;
+}
+
+.saric-editable-row {
+  position: relative;
+}
+
+.saric-delete-x {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  border: 0;
+  background: #dc2626;
+  color: #fff;
+  font-weight: 900;
+  cursor: pointer;
+  line-height: 1;
+  z-index: 5;
+}
+
+.saric-edit-btn {
+  grid-column: 1 / -1;
+  border: 1px solid #94a3b8;
+  background: #fff;
+  color: #000;
+  border-radius: 8px;
+  padding: 6px 8px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.saric-post-row.saric-editable-row {
+  padding-right: 32px;
+}
+
+.saric-doctor-row.saric-editable-row {
+  padding-right: 32px;
+}
