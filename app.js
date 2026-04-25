@@ -28339,7 +28339,7 @@ window.addEventListener("hashchange", () => {
   if (location.hash === "#/planning-medical") renderPlanningMedical();
 });
 
-const SARIC_ADMIN_CODE = "SARICadmin12345678";
+const SARIC_PLANNING_ADMIN_CODE = "SARICadmin12345678";
 const SARIC_DEFAULT_PASSWORD = "SARIC2026";
 const SARIC_PLANNING_KEY = "saric_planning_state_v4";
 const SARIC_USERS_KEY = "saric_planning_users_v2";
@@ -28811,7 +28811,7 @@ function saricAdminOk() {
 
 function saricUnlockAdmin() {
   const code = document.getElementById("saric-admin-code")?.value || "";
-  if (code === SARIC_ADMIN_CODE) {
+  if (code === SARIC_PLANNING_ADMIN_CODE) {
     sessionStorage.setItem(SARIC_ADMIN_SESSION_KEY, "1");
     saricRenderAdmin();
   } else {
