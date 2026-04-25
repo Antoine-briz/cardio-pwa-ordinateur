@@ -12108,3 +12108,78 @@ body.theme-light .cr-an-right .eto-synth-title *{
     grid-template-columns: 1fr;
   }
 }
+
+/* ============================================================
+   TABLEAU PLANNING GLOBAL — lisible thème clair/sombre
+   ============================================================ */
+
+.saric-global-table-card {
+  margin-top: 16px;
+}
+
+.saric-global-scroll {
+  overflow-x: auto;
+  overflow-y: auto;
+  max-width: 100%;
+  border: 2px solid #000;
+  background: #fff;
+}
+
+.saric-global-table {
+  border-collapse: collapse;
+  min-width: 1400px;
+  width: max-content;
+  background: #fff !important;
+  color: #000 !important;
+  font-size: 0.78rem;
+}
+
+.saric-global-table th,
+.saric-global-table td {
+  border: 1px solid #000 !important;
+  background: #fff !important;
+  color: #000 !important;
+  padding: 6px 8px;
+  text-align: center;
+  min-width: 64px;
+  height: 34px;
+  white-space: nowrap;
+}
+
+.saric-global-table th {
+  font-weight: 800;
+  background: #e5e7eb !important;
+}
+
+.saric-global-table .saric-post-col {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  min-width: 210px;
+  text-align: left;
+  font-weight: 700;
+  background: #f3f4f6 !important;
+  color: #000 !important;
+}
+
+.saric-global-table thead .saric-post-col {
+  z-index: 3;
+  background: #d1d5db !important;
+}
+
+@media (max-width: 900px) {
+  .saric-global-table {
+    min-width: 1200px;
+    font-size: 0.72rem;
+  }
+
+  .saric-global-table th,
+  .saric-global-table td {
+    min-width: 58px;
+    padding: 5px;
+  }
+
+  .saric-global-table .saric-post-col {
+    min-width: 180px;
+  }
+}
