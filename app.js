@@ -28555,7 +28555,7 @@ const SARIC_DEFAULT_DOCTORS = [
   id: "doc_" + i,
   name,
   category,
-  email: "",
+  email: saricDefaultEmail(name),
   enabled: true
 }));
 
@@ -28781,6 +28781,17 @@ function saricInitUsers() {
     }
   });
 
+  st.doctors.forEach(doc => {
+  if (!doc.email || !doc.email.trim()) {
+    doc.email = saricDefaultEmail(doc.name);
+  }
+
+  if (users[doc.id]) {
+    users[doc.id].email = doc.email;
+  }
+});
+
+saricSaveState(st);
   saricSaveUsers(users);
 }
 
@@ -29042,16 +29053,19 @@ function saricSelectPlanningDoctor(id) {
 function saricRenderDesiderata() {
   const st = saricLoadState();
   const current = saricCurrentUser();
-  if (!st.selectedDoctorId || st.selectedDoctorId === "global") st.selectedDoctorId = current.doctorId;
+
+  st.selectedDoctorId = current.doctorId;
   saricSaveState(st);
 
+  const currentDoctor = st.doctors.find(d => d.id === current.doctorId);
+
   const extra = `
-    <select onchange="saricSelectDesiderataDoctor(this.value)">
-      ${saricDoctorsSorted(st.doctors).map(d => `
-        <option value="${d.id}" ${st.selectedDoctorId === d.id ? "selected" : ""}>${saricEscape(d.name)}</option>
-      `).join("")}
-    </select>
-    <button class="btn saric-small-btn" onclick="saricSubmitDesiderataMonth()">Valider mes désidératas du mois</button>
+    <div class="saric-current-doctor-label">
+      ${saricEscape(currentDoctor?.name || current.name)}
+    </div>
+    <button class="btn saric-small-btn" onclick="saricSubmitDesiderataMonth()">
+      Valider mes désidératas du mois
+    </button>
   `;
 
   document.getElementById("saric-planning-body").innerHTML = `
@@ -29388,6 +29402,12 @@ function saricSetOptionalRule(key, value) {
 }
 
 function saricRenderAccount() {
+  const current = saricCurrentUser();
+  const st = saricLoadState();
+  const doc = st.doctors.find(d => d.id === current.doctorId);
+  const users = saricLoadUsers();
+  const user = users[current.doctorId];
+
   document.getElementById("saric-planning-body").innerHTML = `
     <div class="card saric-account-card">
       <h3>Modifier mon mot de passe</h3>
@@ -29404,10 +29424,73 @@ function saricRenderAccount() {
         <input id="saric-confirm-password" type="password">
       </label>
 
-      <button class="btn" onclick="saricChangePassword()">Modifier</button>
+      <button class="btn" onclick="saricChangePassword()">Modifier le mot de passe</button>
       <div id="saric-password-msg" class="saric-form-msg"></div>
     </div>
+
+    <div class="card saric-account-card">
+      <h3>Modifier mon mail</h3>
+
+      <label>Email
+        <input id="saric-account-email" type="email" value="${saricEscape(doc?.email || user?.email || "")}">
+      </label>
+
+      <button class="btn" onclick="saricChangeEmail()">Modifier mon mail</button>
+      <div id="saric-email-msg" class="saric-form-msg"></div>
+    </div>
   `;
+}
+
+function saricChangeEmail() {
+  const current = saricCurrentUser();
+  if (!current) return;
+
+  const email = document.getElementById("saric-account-email")?.value.trim() || "";
+
+  if (!email || !email.includes("@")) {
+    document.getElementById("saric-email-msg").textContent = "Email invalide.";
+    return;
+  }
+
+  const st = saricLoadState();
+  const doc = st.doctors.find(d => d.id === current.doctorId);
+
+  if (doc) {
+    doc.email = email;
+  }
+
+  saricSaveState(st);
+
+  const users = saricLoadUsers();
+  if (users[current.doctorId]) {
+    users[current.doctorId].email = email;
+  }
+
+  saricSaveUsers(users);
+
+  document.getElementById("saric-email-msg").textContent = "Email modifié.";
+}
+
+function saricDefaultEmail(fullName) {
+  const parts = String(fullName || "").trim().split(/\s+/);
+  if (parts.length < 2) return "";
+
+  const lastName = parts[0];
+  const firstName = parts.slice(1).join(" ");
+
+  const normalize = (txt) =>
+    txt
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-zA-Z -]/g, "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, "-");
+
+  const first = normalize(firstName);
+  const last = normalize(lastName);
+
+  return `${first}.${last}@aphp.fr`;
 }
 
 function saricGenerateMonthPlanning() {
