@@ -12645,3 +12645,85 @@ main.container,
     grid-template-columns: 1fr;
   }
 }
+
+/* ============================================================
+   MON COMPTE - version large horizontale empilée
+   ============================================================ */
+
+.saric-account-grid {
+  display: grid;
+  grid-template-columns: 1fr !important;
+  gap: 18px;
+  max-width: 1400px;
+}
+
+.saric-account-card {
+  width: 100%;
+  padding: 22px 26px;
+}
+
+.saric-account-card h3 {
+  margin-bottom: 18px;
+}
+
+/* Mot de passe : 3 champs sur la même ligne */
+.saric-account-card:first-child .saric-fields-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  gap: 14px;
+  align-items: end;
+  margin-bottom: 14px;
+}
+
+/* Mail : champ + bouton sur la même ligne */
+.saric-account-card:last-child .saric-fields-2 {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 14px;
+  align-items: end;
+}
+
+.saric-account-card label {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.saric-account-card input {
+  width: 100%;
+  height: 48px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: #0b1220;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+.saric-account-card .btn {
+  width: 100%;
+  height: 48px;
+  margin-top: 0;
+}
+
+.saric-form-msg {
+  margin-top: 10px;
+}
+
+/* Responsive */
+@media (max-width: 1000px) {
+  .saric-account-card:first-child .saric-fields-3,
+  .saric-account-card:last-child .saric-fields-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.saric-post-list {
+  margin-top: 6px;
+}
+
+.saric-post-list::before {
+  content: "";
+  display: block;
+  height: 12px;
+}
