@@ -28332,7 +28332,6 @@ const renderPreview = (doc) => {
 
 function openHopiaPlanning() {
   location.hash = "#/planning-medical";
-  renderPlanningMedical();
 }
 
 window.addEventListener("hashchange", () => {
@@ -31867,6 +31866,7 @@ const routes = {
   "#/recherche": () => renderProtectedPage(renderRecherche, "Recherche"),
   
   // Divers
+  "#/planning-medical": renderPlanningMedical,
   "#/annuaire": renderAnnuaire,
   "#/codes": () => renderProtectedPage(renderCodesAcces, "Codes d'accès"),
   "#/acr": renderAcrChirCardiaque,
