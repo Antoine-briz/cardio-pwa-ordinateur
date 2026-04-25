@@ -12573,3 +12573,75 @@ main.container,
 .saric-doctor-row.saric-editable-row {
   padding-right: 32px;
 }
+
+/* ============================================================
+   LOGIN SARIC - champ mot de passe même style que médecin
+   ============================================================ */
+
+.saric-login-card input[type="password"] {
+  width: 100%;
+  max-width: 560px;
+  height: 54px;
+  padding: 0 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: #0b1220;
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 500;
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.saric-login-card input[type="password"]:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.18);
+}
+
+.saric-login-card input[type="password"]::placeholder {
+  color: rgba(255,255,255,0.55);
+}
+
+/* ============================================================
+   MON COMPTE - cartes côte à côte
+   ============================================================ */
+
+.saric-account-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(320px, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+
+.saric-account-card {
+  height: 100%;
+}
+
+.saric-account-card label {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.saric-account-card input {
+  width: 100%;
+  height: 48px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: #0b1220;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+.saric-account-card .btn {
+  width: 100%;
+  margin-top: 8px;
+}
+
+@media (max-width: 900px) {
+  .saric-account-grid {
+    grid-template-columns: 1fr;
+  }
+}
