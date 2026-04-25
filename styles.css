@@ -12278,3 +12278,39 @@ body.theme-light .cr-an-right .eto-synth-title *{
   background: #0f172a !important;
   color: #fff !important;
 }
+
+/* ===============================
+   ADMIN - Gestion des postes
+=============================== */
+
+.saric-post-list {
+  display: grid;
+  gap: 8px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.saric-post-row {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 10px;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.saric-post-row strong {
+  color: #000 !important;
+}
+
+.saric-post-row select {
+  background: #fff !important;
+  color: #000 !important;
+  border: 1px solid #999 !important;
+  padding: 6px;
+  border-radius: 8px;
+}
+
+.theme-dark .saric-post-row strong {
+  color: #fff !important;
+}
