@@ -12314,3 +12314,69 @@ body.theme-light .cr-an-right .eto-synth-title *{
 .theme-dark .saric-post-row strong {
   color: #fff !important;
 }
+
+/* ============================================================
+   ADMIN - Ajustements gestion postes / médecins / habilitations
+   ============================================================ */
+
+/* 1) Gestion des postes compacte : 5-6 postes par ligne */
+.saric-post-list {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 8px 10px;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.saric-post-row {
+  display: grid !important;
+  grid-template-columns: 1fr;
+  gap: 4px;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.saric-post-row strong {
+  font-size: 0.78rem;
+  line-height: 1.15;
+}
+
+/* 2) Catégories médecins : noms lisibles thème clair/sombre */
+.saric-doctor-row strong {
+  color: var(--fg) !important;
+}
+
+.theme-light .saric-doctor-row strong {
+  color: #000 !important;
+}
+
+body:not(.theme-light) .saric-doctor-row strong {
+  color: #fff !important;
+}
+
+/* 3) Catégories médecins et habilitations : même hauteur + scroll interne */
+.saric-admin-grid > .card {
+  height: 620px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.saric-doctor-list,
+.saric-matrix-wrap {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto !important;
+}
+
+.saric-matrix-wrap {
+  overflow-x: auto !important;
+}
+
+/* En-tête du tableau habilitations visible pendant le scroll */
+.saric-matrix thead th {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+}
