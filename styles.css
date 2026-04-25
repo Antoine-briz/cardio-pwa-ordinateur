@@ -12380,3 +12380,34 @@ body:not(.theme-light) .saric-doctor-row strong {
   top: 0;
   z-index: 3;
 }
+
+/* Gestion des postes : noms lisibles en thème sombre */
+body:not(.theme-light) .saric-post-row strong {
+  color: #fff !important;
+}
+
+.theme-light .saric-post-row strong {
+  color: #000 !important;
+}
+
+/* Planning global : défilement horizontal complet */
+.saric-global-scroll {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto !important;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.saric-global-table {
+  width: max-content !important;
+  min-width: 1800px !important;
+}
+
+.saric-current-doctor-label {
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: #0f172a;
+  color: #fff;
+  font-weight: 700;
+}
