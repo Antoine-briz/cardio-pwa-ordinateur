@@ -28938,21 +28938,37 @@ function saricMonthControl(extra = "") {
 
 function saricRenderPlanning() {
   const st = saricLoadState();
+  const current = saricCurrentUser();
+
+  if (!st.selectedDoctorId || st.selectedDoctorId === "global") {
+    st.selectedDoctorId = "global";
+  }
+
+  const currentDoctor = st.doctors.find(d => d.id === current.doctorId);
 
   const extra = `
     <select id="saric-planning-doctor" onchange="saricSelectPlanningDoctor(this.value)">
       <option value="global" ${st.selectedDoctorId === "global" ? "selected" : ""}>Planning global</option>
-      ${st.doctors.map(d => `
-        <option value="${d.id}" ${st.selectedDoctorId === d.id ? "selected" : ""}>${saricEscape(d.name)}</option>
-      `).join("")}
+      <option value="${current.doctorId}" ${st.selectedDoctorId === current.doctorId ? "selected" : ""}>
+        ${saricEscape(currentDoctor?.name || current.name)}
+      </option>
     </select>
   `;
 
+  saricSaveState(st);
+
   document.getElementById("saric-planning-body").innerHTML = `
     ${saricMonthControl(extra)}
-    ${saricCalendarHtml("planning")}
-    ${saricPlanningGlobalTable()}
+    ${
+      st.selectedDoctorId === "global"
+        ? saricPlanningGlobalTable()
+        : saricPersonalCalendarHtml()
+    }
   `;
+}
+
+function saricPersonalCalendarHtml() {
+  return saricCalendarHtml("planning");
 }
 
 function saricSelectPlanningDoctor(id) {
@@ -29108,28 +29124,41 @@ function saricDesiderataCellContent(st, iso) {
 function saricPlanningGlobalTable() {
   const st = saricLoadState();
   const days = saricDaysInMonth(st.month);
-  const posts = [...SARIC_NIGHT_POSTS, ...SARIC_COORD_POSTS, ...SARIC_DAY_POSTS.filter(p => !SARIC_COORD_POSTS.includes(p))];
+
+  const posts = [
+    ...SARIC_NIGHT_POSTS,
+    ...SARIC_COORD_POSTS,
+    ...SARIC_DAY_POSTS.filter(p => !SARIC_COORD_POSTS.includes(p))
+  ];
 
   return `
     <div class="card saric-global-table-card">
       <h3>Planning global - ${saricEscape(saricMonthLabel(st.month))}</h3>
+
       <div class="saric-global-scroll">
         <table class="saric-global-table">
           <thead>
             <tr>
-              <th>Poste</th>
-              ${days.map(d => `<th>${d.getDate()}</th>`).join("")}
+              <th class="saric-post-col">Poste</th>
+              ${days.map(d => {
+                const label = d.toLocaleDateString("fr-FR", {
+                  weekday: "short",
+                  day: "numeric"
+                });
+                return `<th>${saricEscape(label)}</th>`;
+              }).join("")}
             </tr>
           </thead>
+
           <tbody>
             ${posts.map(post => `
               <tr>
-                <td>${saricEscape(post)}</td>
+                <td class="saric-post-col">${saricEscape(post)}</td>
                 ${days.map(d => {
                   const iso = saricDateKey(d);
                   const docId = st.assignments?.[iso]?.[post];
                   const doc = st.doctors.find(x => x.id === docId);
-                  return `<td>${doc ? saricEscape(doc.name) : ""}</td>`;
+                  return `<td>${doc ? saricDoctorInitials(doc.name) : ""}</td>`;
                 }).join("")}
               </tr>
             `).join("")}
@@ -29138,6 +29167,21 @@ function saricPlanningGlobalTable() {
       </div>
     </div>
   `;
+}
+
+function saricDoctorInitials(fullName) {
+  const parts = String(fullName || "").trim().split(/\s+/);
+  if (parts.length < 2) return fullName || "";
+
+  const last = parts[0];
+  const first = parts.slice(1).join(" ");
+
+  const firstInitial = first.charAt(0).toUpperCase();
+  const lastCode =
+    last.charAt(0).toUpperCase() +
+    last.slice(1, 3).toLowerCase();
+
+  return `${firstInitial}${lastCode}`;
 }
 
 function saricRenderAdmin() {
