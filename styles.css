@@ -12867,3 +12867,87 @@ main.container,
 .saric-account-card:first-child {
   padding-bottom: 12px !important;
 }
+
+/* ============================================================
+   MON COMPTE - override final hauteur compacte
+   ============================================================ */
+
+#saric-planning-body .saric-account-grid {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 12px !important;
+  align-items: start !important;
+}
+
+#saric-planning-body .saric-account-card.card {
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 12px 18px !important;
+  margin: 0 !important;
+  display: block !important;
+  overflow: visible !important;
+}
+
+#saric-planning-body .saric-account-card h3 {
+  margin: 0 0 8px 0 !important;
+  padding: 0 !important;
+  line-height: 1.15 !important;
+}
+
+#saric-planning-body .saric-fields-3 {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(220px, 1fr)) !important;
+  gap: 10px !important;
+  align-items: end !important;
+  margin: 0 0 8px 0 !important;
+  padding: 0 !important;
+}
+
+#saric-planning-body .saric-fields-2 {
+  display: grid !important;
+  grid-template-columns: 1fr 300px !important;
+  gap: 10px !important;
+  align-items: end !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#saric-planning-body .saric-account-card label {
+  display: grid !important;
+  gap: 4px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#saric-planning-body .saric-account-card input {
+  height: 40px !important;
+  min-height: 40px !important;
+  padding: 0 12px !important;
+  margin: 0 !important;
+}
+
+#saric-planning-body .saric-account-card .btn {
+  height: 40px !important;
+  min-height: 40px !important;
+  padding: 0 12px !important;
+  margin: 0 !important;
+}
+
+#saric-planning-body .saric-form-msg {
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 4px 0 0 0 !important;
+  padding: 0 !important;
+}
+
+@media (max-width: 1100px) {
+  #saric-planning-body .saric-fields-3,
+  #saric-planning-body .saric-fields-2 {
+    grid-template-columns: 1fr !important;
+  }
+}
