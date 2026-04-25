@@ -28675,7 +28675,6 @@ function saricRenderDoctorManagementCard(st) {
       <div class="saric-admin-card-head">
         <div>
           <h3>Catégories médecins</h3>
-          <p>Déplacez les médecins par menu déroulant. Les médecins en Stand by sont exclus.</p>
         </div>
 
         <div class="saric-admin-actions">
@@ -28730,7 +28729,6 @@ function saricRenderPostManagementCard(st) {
       <div class="saric-admin-card-head">
         <div>
           <h3>Gestion des postes</h3>
-          <p>Ajoutez, modifiez ou classez les postes. Les postes en Stand by ne sont pas générés.</p>
         </div>
 
         <div class="saric-admin-actions">
@@ -29712,34 +29710,46 @@ function saricRenderAccount() {
   const user = users[current.doctorId];
 
   document.getElementById("saric-planning-body").innerHTML = `
-    <div class="card saric-account-card">
-      <h3>Modifier mon mot de passe</h3>
+    <div class="saric-account-grid">
 
-      <label>Ancien mot de passe
-        <input id="saric-old-password" type="password">
-      </label>
+      <div class="card saric-account-card">
+        <h3>Modifier mon mot de passe</h3>
 
-      <label>Nouveau mot de passe
-        <input id="saric-new-password" type="password">
-      </label>
+        <label>Ancien mot de passe
+          <input id="saric-old-password" type="password" placeholder="Ancien mot de passe">
+        </label>
 
-      <label>Confirmation
-        <input id="saric-confirm-password" type="password">
-      </label>
+        <label>Nouveau mot de passe
+          <input id="saric-new-password" type="password" placeholder="Nouveau mot de passe">
+        </label>
 
-      <button class="btn" onclick="saricChangePassword()">Modifier le mot de passe</button>
-      <div id="saric-password-msg" class="saric-form-msg"></div>
-    </div>
+        <label>Confirmation
+          <input id="saric-confirm-password" type="password" placeholder="Confirmation">
+        </label>
 
-    <div class="card saric-account-card">
-      <h3>Modifier mon mail</h3>
+        <button class="btn" onclick="saricChangePassword()">
+          Modifier le mot de passe
+        </button>
 
-      <label>Email
-        <input id="saric-account-email" type="email" value="${saricEscape(doc?.email || user?.email || "")}">
-      </label>
+        <div id="saric-password-msg" class="saric-form-msg"></div>
+      </div>
 
-      <button class="btn" onclick="saricChangeEmail()">Modifier mon mail</button>
-      <div id="saric-email-msg" class="saric-form-msg"></div>
+      <div class="card saric-account-card">
+        <h3>Modifier mon mail</h3>
+
+        <label>Email
+          <input id="saric-account-email" type="email"
+                 value="${saricEscape(doc?.email || user?.email || "")}"
+                 placeholder="prenom.nom@aphp.fr">
+        </label>
+
+        <button class="btn" onclick="saricChangeEmail()">
+          Modifier mon mail
+        </button>
+
+        <div id="saric-email-msg" class="saric-form-msg"></div>
+      </div>
+
     </div>
   `;
 }
