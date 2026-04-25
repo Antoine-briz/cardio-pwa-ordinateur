@@ -12183,3 +12183,53 @@ body.theme-light .cr-an-right .eto-synth-title *{
     min-width: 180px;
   }
 }
+
+/* ============================================================
+   PLANNING PERSONNEL : pleine largeur écran
+   ============================================================ */
+
+.saric-planning-page {
+  max-width: 100% !important;
+  width: 100%;
+}
+
+#saric-planning-body {
+  width: 100%;
+}
+
+.saric-calendar {
+  width: 100%;
+  grid-template-columns: repeat(7, minmax(170px, 1fr)) !important;
+  gap: 10px;
+}
+
+.saric-weekdays {
+  width: 100%;
+  grid-template-columns: repeat(7, minmax(170px, 1fr)) !important;
+}
+
+.saric-cal-cell {
+  min-height: 210px;
+  width: 100%;
+}
+
+@media (min-width: 1600px) {
+  .saric-calendar,
+  .saric-weekdays {
+    grid-template-columns: repeat(7, minmax(210px, 1fr)) !important;
+  }
+
+  .saric-cal-cell {
+    min-height: 240px;
+  }
+}
+
+@media (max-width: 900px) {
+  .saric-calendar {
+    grid-template-columns: 1fr !important;
+  }
+
+  .saric-cal-cell {
+    min-height: auto;
+  }
+}
