@@ -12811,3 +12811,59 @@ main.container,
     grid-template-columns: 1fr !important;
   }
 }
+
+/* ============================================================
+   MON COMPTE - réduire fortement la hauteur des encadrés
+   ============================================================ */
+
+/* cartes plus compactes */
+.saric-account-card {
+  padding: 14px 18px !important;
+  min-height: unset !important;
+}
+
+/* titre plus serré */
+.saric-account-card h3 {
+  margin: 0 0 8px 0 !important;
+}
+
+/* grilles internes : moins d'espace */
+.saric-fields-3,
+.saric-fields-2 {
+  margin-bottom: 8px !important;
+  gap: 10px !important;
+}
+
+/* labels plus serrés */
+.saric-account-card label {
+  gap: 4px !important;
+}
+
+/* champs légèrement plus bas */
+.saric-account-card input {
+  height: 42px !important;
+}
+
+/* bouton plus compact */
+.saric-account-card .btn {
+  height: 42px !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* message de retour compact */
+.saric-form-msg {
+  margin-top: 4px !important;
+  min-height: 0 !important;
+}
+
+/* si la card mail garde trop de vide */
+.saric-account-card:last-child {
+  padding-bottom: 12px !important;
+}
+
+/* si la card mot de passe garde trop de vide */
+.saric-account-card:first-child {
+  padding-bottom: 12px !important;
+}
