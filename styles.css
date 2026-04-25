@@ -12951,3 +12951,33 @@ main.container,
     grid-template-columns: 1fr !important;
   }
 }
+
+/* ============================================================
+   MON COMPTE - bouton mot de passe sur la même ligne
+   ============================================================ */
+
+#saric-planning-body .saric-fields-3 {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr 1fr auto !important;
+  gap: 10px !important;
+  align-items: end !important;
+}
+
+#saric-planning-body .saric-fields-3 .btn {
+  width: 260px !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  margin: 0 !important;
+  align-self: end !important;
+}
+
+/* Responsive */
+@media (max-width: 1300px) {
+  #saric-planning-body .saric-fields-3 {
+    grid-template-columns: 1fr !important;
+  }
+
+  #saric-planning-body .saric-fields-3 .btn {
+    width: 100% !important;
+  }
+}
