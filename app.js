@@ -28466,6 +28466,56 @@ const SARIC_OPTIONAL_RULES_DEFAULT = {
   demandesSiPossible: false
 };
 
+function saricDefaultPostCategories() {
+  const out = {};
+
+  SARIC_ALL_POSTS.forEach(post => {
+    out[post] = "Mixte";
+  });
+
+  return out;
+}
+
+function saricSetPostCategory(post, category) {
+  const st = saricLoadState();
+
+  if (!st.postCategories) {
+    st.postCategories = saricDefaultPostCategories();
+  }
+
+  st.postCategories[post] = category;
+
+  saricSaveState(st);
+  saricRenderAdmin();
+}
+
+function saricRenderPostManagementCard(st) {
+  const cats = st.postCategories || saricDefaultPostCategories();
+
+  return `
+    <div class="card">
+      <h3>Gestion des postes</h3>
+      <p>Attribuez une catégorie à chaque poste.</p>
+
+      <div class="saric-post-list">
+        ${SARIC_ALL_POSTS.map(post => `
+          <div class="saric-post-row">
+            <strong>${saricEscape(post)}</strong>
+
+            <select onchange="saricSetPostCategory('${post.replaceAll("'", "\\'")}', this.value)">
+              ${SARIC_CATEGORIES.map(cat => `
+                <option value="${cat}" ${cats[post] === cat ? "selected" : ""}>
+                  ${saricEscape(cat)}
+                </option>
+              `).join("")}
+            </select>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `;
+}
+
 const SARIC_DEFAULT_DOCTORS = [
   ["BOUGLE Adrien", "Chirurgie cardiaque"],
   ["ABBES Ahmed", "Chirurgie cardiaque"],
@@ -28660,6 +28710,7 @@ function saricDefaultState() {
     activeTab: "planning",
     selectedDoctorId: "global",
     doctors,
+    postCategories: saricDefaultPostCategories(),
     abilities: saricDefaultAbilities(doctors),
     optionalRules: { ...SARIC_OPTIONAL_RULES_DEFAULT },
     desiderata: {},
@@ -28677,6 +28728,10 @@ function saricLoadState() {
     return {
       ...base,
       ...saved,
+      postCategories: {
+  ...base.postCategories,
+  ...(saved.postCategories || {})
+},
       doctors: saved.doctors || base.doctors,
       abilities: saved.abilities || base.abilities,
       optionalRules: { ...base.optionalRules, ...(saved.optionalRules || {}) },
@@ -29255,6 +29310,8 @@ function saricRenderAdmin() {
         </div>
       </div>
     </div>
+
+    ${saricRenderPostManagementCard(st)}
 
     <div class="card saric-rules">
       <h3>Règles fondamentales nécessaires</h3>
