@@ -12411,3 +12411,100 @@ body:not(.theme-light) .saric-post-row strong {
   color: #fff;
   font-weight: 700;
 }
+
+/* ============================================================
+   ADMIN - Règles obligatoires repliables
+   ============================================================ */
+
+.saric-rules-collapsible {
+  overflow: visible !important;
+}
+
+.saric-rules-collapsible summary {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  list-style: none;
+}
+
+.saric-rules-collapsible summary::-webkit-details-marker {
+  display: none;
+}
+
+.saric-rules-collapsible summary h3 {
+  margin: 0;
+}
+
+.saric-rules-collapsible summary span {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.saric-rules-collapsible summary::after {
+  content: "▼";
+  font-weight: 800;
+}
+
+.saric-rules-collapsible[open] summary::after {
+  content: "▲";
+}
+
+/* ============================================================
+   Planning global - scroll horizontal forcé
+   Corrige les conflits avec overflow:hidden et flex
+   ============================================================ */
+
+#app,
+.container,
+main.container,
+.saric-planning-page,
+#saric-planning-body,
+.saric-global-table-card {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+.saric-global-table-card {
+  width: 100% !important;
+  overflow: hidden !important;
+}
+
+.saric-global-scroll {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: scroll !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+  border: 2px solid #000;
+  background: #fff;
+}
+
+.saric-global-table {
+  width: max-content !important;
+  min-width: 2600px !important;
+  table-layout: auto !important;
+  border-collapse: collapse !important;
+  background: #fff !important;
+  color: #000 !important;
+}
+
+.saric-global-table th,
+.saric-global-table td {
+  min-width: 78px !important;
+  white-space: nowrap !important;
+  border: 1px solid #000 !important;
+  background: #fff !important;
+  color: #000 !important;
+}
+
+.saric-global-table .saric-post-col {
+  min-width: 220px !important;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: #f3f4f6 !important;
+  color: #000 !important;
+}
