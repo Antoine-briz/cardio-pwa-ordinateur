@@ -28344,7 +28344,7 @@ const SARIC_DEFAULT_PASSWORD = "SARIC2026";
 const SARIC_PLANNING_KEY = "saric_planning_state_v4";
 const SARIC_USERS_KEY = "saric_planning_users_v2";
 const SARIC_SESSION_KEY = "saric_planning_session_v2";
-const SARIC_ADMIN_SESSION_KEY = "saric_admin_ok_v1";
+const SARIC_PLANNING_ADMIN_SESSION_KEY = "saric_admin_ok_v1";
 
 const SARIC_CATEGORIES = [
   "Chirurgie cardiaque",
@@ -28806,13 +28806,13 @@ function saricChangePassword() {
 }
 
 function saricAdminOk() {
-  return sessionStorage.getItem(SARIC_ADMIN_SESSION_KEY) === "1";
+  return sessionStorage.getItem(SARIC_PLANNING_ADMIN_SESSION_KEY) === "1";
 }
 
 function saricUnlockAdmin() {
   const code = document.getElementById("saric-admin-code")?.value || "";
   if (code === SARIC_PLANNING_ADMIN_CODE) {
-    sessionStorage.setItem(SARIC_ADMIN_SESSION_KEY, "1");
+    sessionStorage.setItem(SARIC_PLANNING_ADMIN_SESSION_KEY, "1");
     saricRenderAdmin();
   } else {
     document.getElementById("saric-admin-msg").textContent = "Code admin incorrect.";
