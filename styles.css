@@ -12233,3 +12233,48 @@ body.theme-light .cr-an-right .eto-synth-title *{
     min-height: auto;
   }
 }
+
+/* ============================================================
+   ADMIN : lisibilité noms médecins clair / sombre
+   ============================================================ */
+
+/* Bloc catégories médecins : texte noir sur fond clair */
+.saric-doctor-list,
+.saric-doctor-row,
+.saric-doctor-row strong,
+.saric-doctor-row select,
+.saric-doctor-row input {
+  color: #000 !important;
+}
+
+.saric-doctor-row select,
+.saric-doctor-row input {
+  background: #fff !important;
+  border: 1px solid #999 !important;
+}
+
+/* Tableau habilitations : colonne noms en fond noir + texte blanc */
+.saric-matrix th:first-child,
+.saric-matrix td:first-child {
+  background: #111827 !important;
+  color: #fff !important;
+  font-weight: 700;
+}
+
+/* Reste du tableau habilitations */
+.saric-matrix th,
+.saric-matrix td {
+  border: 1px solid #cbd5e1 !important;
+}
+
+/* En-têtes colonnes gardes */
+.saric-matrix thead th:not(:first-child) {
+  background: #111827 !important;
+  color: #fff !important;
+}
+
+/* Cases centrales */
+.saric-matrix tbody td:not(:first-child) {
+  background: #0f172a !important;
+  color: #fff !important;
+}
