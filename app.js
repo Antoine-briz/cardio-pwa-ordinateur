@@ -28466,6 +28466,310 @@ const SARIC_OPTIONAL_RULES_DEFAULT = {
   demandesSiPossible: false
 };
 
+const SARIC_DOCTOR_EDIT_KEY = "saric_doctor_edit_mode";
+const SARIC_POST_EDIT_KEY = "saric_post_edit_mode";
+
+function saricDoctorEditMode() {
+  return sessionStorage.getItem(SARIC_DOCTOR_EDIT_KEY) === "1";
+}
+
+function saricPostEditMode() {
+  return sessionStorage.getItem(SARIC_POST_EDIT_KEY) === "1";
+}
+
+function saricToggleDoctorEditMode() {
+  sessionStorage.setItem(SARIC_DOCTOR_EDIT_KEY, saricDoctorEditMode() ? "0" : "1");
+  saricRenderAdmin();
+}
+
+function saricTogglePostEditMode() {
+  sessionStorage.setItem(SARIC_POST_EDIT_KEY, saricPostEditMode() ? "0" : "1");
+  saricRenderAdmin();
+}
+
+function saricGetDayPosts(st = saricLoadState()) {
+  return st.customDayPosts || [...SARIC_DAY_POSTS];
+}
+
+function saricGetNightPosts(st = saricLoadState()) {
+  return st.customNightPosts || [...SARIC_NIGHT_POSTS];
+}
+
+function saricGetAllPosts(st = saricLoadState()) {
+  return [...saricGetDayPosts(st), ...saricGetNightPosts(st)];
+}
+
+function saricDefaultPostCategories() {
+  const out = {};
+  saricGetAllPosts({ customDayPosts: [...SARIC_DAY_POSTS], customNightPosts: [...SARIC_NIGHT_POSTS] })
+    .forEach(post => out[post] = "Mixte");
+  return out;
+}
+
+function saricAddDoctor() {
+  const name = prompt("Nom du médecin au format NOM Prénom :");
+  if (!name || !name.trim()) return;
+
+  const st = saricLoadState();
+  const id = "doc_" + Date.now();
+
+  const doc = {
+    id,
+    name: name.trim(),
+    category: "Mixte",
+    email: typeof saricDefaultEmail === "function" ? saricDefaultEmail(name.trim()) : "",
+    enabled: true
+  };
+
+  st.doctors.push(doc);
+  st.abilities[id] = {};
+
+  [...saricGetNightPosts(st), ...SARIC_COORD_POSTS].forEach(post => {
+    st.abilities[id][post] = false;
+  });
+
+  saricSaveState(st);
+  saricInitUsers();
+  saricRenderAdmin();
+}
+
+function saricRenameDoctor(docId) {
+  const st = saricLoadState();
+  const doc = st.doctors.find(d => d.id === docId);
+  if (!doc) return;
+
+  const newName = prompt("Nouveau nom du médecin :", doc.name);
+  if (!newName || !newName.trim()) return;
+
+  doc.name = newName.trim();
+
+  const users = saricLoadUsers();
+  if (users[docId]) users[docId].name = doc.name;
+
+  saricSaveUsers(users);
+  saricSaveState(st);
+  saricInitUsers();
+  saricRenderAdmin();
+}
+
+function saricRemoveDoctor(docId) {
+  const st = saricLoadState();
+  const doc = st.doctors.find(d => d.id === docId);
+  if (!doc) return;
+
+  if (!confirm(`Supprimer ${doc.name} ?`)) return;
+
+  st.doctors = st.doctors.filter(d => d.id !== docId);
+  delete st.abilities[docId];
+
+  const users = saricLoadUsers();
+  delete users[docId];
+  saricSaveUsers(users);
+
+  if (st.selectedDoctorId === docId) st.selectedDoctorId = "global";
+
+  const current = saricCurrentUser();
+  if (current?.doctorId === docId) {
+    sessionStorage.removeItem(SARIC_SESSION_KEY);
+  }
+
+  saricSaveState(st);
+  saricRenderAdmin();
+}
+
+function saricAddPost() {
+  const name = prompt("Nom du nouveau poste :");
+  if (!name || !name.trim()) return;
+
+  const post = name.trim();
+  const st = saricLoadState();
+
+  st.customDayPosts = saricGetDayPosts(st);
+  st.customNightPosts = saricGetNightPosts(st);
+
+  if (saricGetAllPosts(st).includes(post)) {
+    alert("Ce poste existe déjà.");
+    return;
+  }
+
+  const isNight = confirm("OK = garde / demi-garde du soir. Annuler = poste de journée.");
+
+  if (isNight) st.customNightPosts.push(post);
+  else st.customDayPosts.push(post);
+
+  st.postCategories = st.postCategories || saricDefaultPostCategories();
+  st.postCategories[post] = "Mixte";
+
+  st.doctors.forEach(doc => {
+    st.abilities[doc.id] = st.abilities[doc.id] || {};
+    if (isNight || SARIC_COORD_POSTS.includes(post)) {
+      st.abilities[doc.id][post] = false;
+    }
+  });
+
+  saricSaveState(st);
+  saricRenderAdmin();
+}
+
+function saricRenamePost(oldPost) {
+  const st = saricLoadState();
+  const newPost = prompt("Nouveau nom du poste :", oldPost);
+  if (!newPost || !newPost.trim()) return;
+
+  const clean = newPost.trim();
+  if (clean === oldPost) return;
+
+  st.customDayPosts = saricGetDayPosts(st).map(p => p === oldPost ? clean : p);
+  st.customNightPosts = saricGetNightPosts(st).map(p => p === oldPost ? clean : p);
+
+  if (st.postCategories?.[oldPost] !== undefined) {
+    st.postCategories[clean] = st.postCategories[oldPost];
+    delete st.postCategories[oldPost];
+  }
+
+  Object.keys(st.abilities || {}).forEach(docId => {
+    if (st.abilities[docId]?.[oldPost] !== undefined) {
+      st.abilities[docId][clean] = st.abilities[docId][oldPost];
+      delete st.abilities[docId][oldPost];
+    }
+  });
+
+  Object.values(st.assignments || {}).forEach(day => {
+    if (day[oldPost] !== undefined) {
+      day[clean] = day[oldPost];
+      delete day[oldPost];
+    }
+  });
+
+  saricSaveState(st);
+  saricRenderAdmin();
+}
+
+function saricRemovePost(post) {
+  if (!confirm(`Supprimer le poste "${post}" ?`)) return;
+
+  const st = saricLoadState();
+
+  st.customDayPosts = saricGetDayPosts(st).filter(p => p !== post);
+  st.customNightPosts = saricGetNightPosts(st).filter(p => p !== post);
+
+  if (st.postCategories) delete st.postCategories[post];
+
+  Object.keys(st.abilities || {}).forEach(docId => {
+    if (st.abilities[docId]) delete st.abilities[docId][post];
+  });
+
+  Object.values(st.assignments || {}).forEach(day => {
+    delete day[post];
+  });
+
+  saricSaveState(st);
+  saricRenderAdmin();
+}
+
+function saricRenderDoctorManagementCard(st) {
+  const edit = saricDoctorEditMode();
+
+  return `
+    <div class="card">
+      <div class="saric-admin-card-head">
+        <div>
+          <h3>Catégories médecins</h3>
+          <p>Déplacez les médecins par menu déroulant. Les médecins en Stand by sont exclus.</p>
+        </div>
+
+        <div class="saric-admin-actions">
+          <button class="btn saric-mini-btn" onclick="saricAddDoctor()">Ajouter</button>
+          <button class="btn saric-mini-btn" onclick="saricToggleDoctorEditMode()">
+            ${edit ? "Terminer" : "Modifier"}
+          </button>
+        </div>
+      </div>
+
+      <div class="saric-doctor-list">
+        ${saricDoctorsSorted(st.doctors).map(d => `
+          <div class="saric-doctor-row saric-editable-row">
+            ${edit ? `
+              <button class="saric-delete-x" onclick="saricRemoveDoctor('${d.id}')">×</button>
+            ` : ""}
+
+            <strong>${saricEscape(d.name)}</strong>
+
+            <select onchange="saricSetDoctorCategory('${d.id}', this.value)">
+              ${SARIC_CATEGORIES.map(c => `
+                <option value="${c}" ${d.category === c ? "selected" : ""}>
+                  ${saricEscape(c)}
+                </option>
+              `).join("")}
+            </select>
+
+            <input type="email"
+                   value="${saricEscape(d.email || "")}"
+                   placeholder="email"
+                   onchange="saricSetDoctorEmail('${d.id}', this.value)">
+
+            ${edit ? `
+              <button class="saric-edit-btn" onclick="saricRenameDoctor('${d.id}')">
+                Modifier le nom
+              </button>
+            ` : ""}
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function saricRenderPostManagementCard(st) {
+  const edit = saricPostEditMode();
+  const cats = st.postCategories || saricDefaultPostCategories();
+  const posts = saricGetAllPosts(st);
+
+  return `
+    <div class="card">
+      <div class="saric-admin-card-head">
+        <div>
+          <h3>Gestion des postes</h3>
+          <p>Ajoutez, modifiez ou classez les postes. Les postes en Stand by ne sont pas générés.</p>
+        </div>
+
+        <div class="saric-admin-actions">
+          <button class="btn saric-mini-btn" onclick="saricAddPost()">Ajouter</button>
+          <button class="btn saric-mini-btn" onclick="saricTogglePostEditMode()">
+            ${edit ? "Terminer" : "Modifier"}
+          </button>
+        </div>
+      </div>
+
+      <div class="saric-post-list">
+        ${posts.map(post => `
+          <div class="saric-post-row saric-editable-row">
+            ${edit ? `
+              <button class="saric-delete-x" onclick='saricRemovePost(${JSON.stringify(post)})'>×</button>
+            ` : ""}
+
+            <strong>${saricEscape(post)}</strong>
+
+            <select onchange='saricSetPostCategory(${JSON.stringify(post)}, this.value)'>
+              ${SARIC_CATEGORIES.map(cat => `
+                <option value="${cat}" ${cats[post] === cat ? "selected" : ""}>
+                  ${saricEscape(cat)}
+                </option>
+              `).join("")}
+            </select>
+
+            ${edit ? `
+              <button class="saric-edit-btn" onclick='saricRenamePost(${JSON.stringify(post)})'>
+                Modifier
+              </button>
+            ` : ""}
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `;
+}
+
 function saricDefaultPostCategories() {
   const out = {};
 
@@ -28711,6 +29015,9 @@ function saricDefaultState() {
     selectedDoctorId: "global",
     doctors,
     postCategories: saricDefaultPostCategories(),
+    customDayPosts: [...SARIC_DAY_POSTS],
+customNightPosts: [...SARIC_NIGHT_POSTS],
+postCategories: saricDefaultPostCategories(),
     abilities: saricDefaultAbilities(doctors),
     optionalRules: { ...SARIC_OPTIONAL_RULES_DEFAULT },
     desiderata: {},
@@ -28729,6 +29036,12 @@ function saricLoadState() {
       ...base,
       ...saved,
       postCategories: {
+  ...base.postCategories,
+  ...(saved.postCategories || {})
+},
+      customDayPosts: saved.customDayPosts || base.customDayPosts,
+customNightPosts: saved.customNightPosts || base.customNightPosts,
+postCategories: {
   ...base.postCategories,
   ...(saved.postCategories || {})
 },
@@ -29281,20 +29594,7 @@ function saricRenderAdmin() {
     ${saricMonthControl("")}
 
     <div class="saric-admin-grid">
-      <div class="card">
-        <h3>Catégories médecins</h3>
-        <div class="saric-doctor-list">
-          ${saricDoctorsSorted(st.doctors).map(d => `
-            <div class="saric-doctor-row">
-              <strong>${saricEscape(d.name)}</strong>
-              <select onchange="saricSetDoctorCategory('${d.id}', this.value)">
-                ${SARIC_CATEGORIES.map(c => `<option value="${c}" ${d.category === c ? "selected" : ""}>${saricEscape(c)}</option>`).join("")}
-              </select>
-              <input type="email" value="${saricEscape(d.email || "")}" placeholder="email" onchange="saricSetDoctorEmail('${d.id}', this.value)">
-            </div>
-          `).join("")}
-        </div>
-      </div>
+      ${saricRenderDoctorManagementCard(st)}
 
       <div class="card">
         <h3>Habilitations gardes / demi-gardes / coordinations</h3>
