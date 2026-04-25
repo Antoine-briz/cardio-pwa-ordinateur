@@ -28324,26 +28324,1242 @@ const renderPreview = (doc) => {
 //  PAGES “PLANNING” ET “ANNUAIRE” (PLACEHOLDERS)
 // =====================================================================
 
+/* ============================================================
+   PLANNING MÉDICAL SARIC
+   Remplace le lien Hopia par une PWA planning.
+   Accès Admin : SARICadmin12345678
+   ============================================================ */
+
 function openHopiaPlanning() {
-  const hopiaWebUrl = "https://app.hopia.eu/app/my-plannings";
+  location.hash = "#/planning-medical";
+  renderPlanningMedical();
+}
 
-  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+window.addEventListener("hashchange", () => {
+  if (location.hash === "#/planning-medical") renderPlanningMedical();
+});
 
-  if (isMobile) {
-    // Tentative ouverture app Hopia (deep link)
-    const hopiaAppUrl = "hopia://app/my-plannings";
+const SARIC_ADMIN_CODE = "SARICadmin12345678";
+const SARIC_DEFAULT_PASSWORD = "SARIC2026";
+const SARIC_PLANNING_KEY = "saric_planning_state_v4";
+const SARIC_USERS_KEY = "saric_planning_users_v2";
+const SARIC_SESSION_KEY = "saric_planning_session_v2";
+const SARIC_ADMIN_SESSION_KEY = "saric_admin_ok_v1";
 
-    // Fallback vers web si l'app n'est pas installée
-    const timeout = setTimeout(() => {
-      window.location.href = hopiaWebUrl;
-    }, 800);
+const SARIC_CATEGORIES = [
+  "Chirurgie cardiaque",
+  "Chirurgie vasculaire",
+  "Mixte",
+  "Stand by"
+];
 
-    // Si l'app s'ouvre, le navigateur perd le focus → timeout annulé implicitement
-    window.location.href = hopiaAppUrl;
-  } else {
-    // Ordinateur → site web direct
-    window.open(hopiaWebUrl, "_blank");
+const SARIC_DAY_POSTS = [
+  "Bloc CEC 1",
+  "Bloc CEC 2",
+  "Bloc CEC 3",
+  "Bloc CEC 4",
+  "Coordo bloc",
+  "Réa 1",
+  "Réa 2",
+  "Réa 3",
+  "Coordo réa",
+  "PTI",
+  "Consult. chir. Card.",
+  "Consult. Cardio. Med",
+  "Hors salle",
+  "Bloc vasc. 1",
+  "Bloc vasc. 2",
+  "SSPI",
+  "Consult. Vasculaire",
+  "Visite/étage",
+  "Radio-vasculaire",
+  "USIP1",
+  "USIP2"
+];
+
+const SARIC_NIGHT_POSTS = [
+  "Garde anesth CEC",
+  "Garde réa",
+  "Garde USIP",
+  "½ garde CEC",
+  "½ garde vasc"
+];
+
+const SARIC_GARDES_COMPLETES = [
+  "Garde anesth CEC",
+  "Garde réa",
+  "Garde USIP"
+];
+
+const SARIC_HALF_GARDES = [
+  "½ garde CEC",
+  "½ garde vasc"
+];
+
+const SARIC_COORD_POSTS = [
+  "Coordo bloc",
+  "Coordo réa"
+];
+
+const SARIC_ALL_POSTS = [
+  ...SARIC_DAY_POSTS,
+  ...SARIC_NIGHT_POSTS
+];
+
+const SARIC_WEEK_FIXED_POSTS = [
+  "Réa 1",
+  "Réa 2",
+  "Réa 3",
+  "Coordo réa",
+  "USIP1",
+  "USIP2"
+];
+
+const SARIC_DESIDERATA_TYPES = [
+  { id: "indispo_journee", label: "Indispo journée" },
+  { id: "indispo_24h", label: "Indispo 24h" },
+  { id: "indispo_garde", label: "Indispo garde" },
+  { id: "ca", label: "CA" },
+  { id: "formation", label: "Formation/DU" },
+  { id: "enseignement", label: "Enseignement/recherche" },
+  { id: "hors_clinique", label: "Hors clinique" },
+  { id: "garde_souhaitee", label: "Garde souhaitée" }
+];
+
+const SARIC_FIXED_RULES = [
+  "Les postes médicaux SARIC et les coordinations bloc/réa sont des postes de journée.",
+  "Le soir, il faut systématiquement une personne différente pour chaque garde et ½ garde : garde anesth CEC, garde réa, garde USIP, ½ garde CEC, ½ garde vasc.",
+  "Il faut une personne différente pour chaque poste de journée, sauf Coordo bloc qui se cumule avec Bloc CEC 1/2/3/4.",
+  "Coordo réa est un poste indépendant non cumulable.",
+  "Les gardes et ½ gardes doivent être attribuées à des personnes déjà présentes la journée.",
+  "Garde anesth CEC et ½ garde CEC doivent être attribuées à Bloc CEC 1/2/3/4.",
+  "Garde anesth CEC et ½ garde CEC ne doivent pas être attribuées à la même personne.",
+  "½ garde vasc doit être attribuée à Bloc vasc. 1 ou Bloc vasc. 2.",
+  "Tous les postes, gardes et ½ gardes sont à remplir en semaine hors week-end et jours fériés.",
+  "Samedi, dimanche et jours fériés : seuls Garde anesth CEC, Garde réa et Garde USIP sont à pourvoir.",
+  "Toute personne de garde complète est automatiquement en repos de sécurité 24 h le lendemain.",
+  "Les ½ gardes ne génèrent pas de repos de sécurité.",
+  "Les médecins en Stand by sont exclus du planning.",
+  "L’attribution des postes de journée dépend de la catégorie : chirurgie cardiaque, chirurgie vasculaire ou mixte.",
+  "L’attribution des gardes, ½ gardes et coordinations dépend des cases cochées dans Admin.",
+  "Indispo journée et Formation/DU bloquent les postes de journée et les ½ gardes, mais autorisent une garde complète.",
+  "Indispo 24h, CA et Hors clinique bloquent journée, garde et ½ garde.",
+  "Indispo garde bloque garde et ½ garde, mais autorise un poste de journée."
+];
+
+const SARIC_OPTIONAL_RULES_LABELS = {
+  max2GardesSemaine: "Maximum deux gardes par semaine",
+  max2DemiGardesSemaine: "Maximum deux ½ gardes par semaine",
+  max2GardesWEFerieMois: "Maximum deux gardes de week-end ou jours fériés par mois",
+  jamais2DemiGardesAffile: "Jamais deux ½ gardes d’affilée",
+  postesFixesSemaine: "Réa 1/2/3, Coordo réa, USIP1/2 fixes sur la semaine avec un jour d’absence/repos possible",
+  demandesImperatives: "Demandes impérativement respectées",
+  demandesSiPossible: "Demandes respectées si possible"
+};
+
+const SARIC_OPTIONAL_RULES_DEFAULT = {
+  max2GardesSemaine: true,
+  max2DemiGardesSemaine: true,
+  max2GardesWEFerieMois: true,
+  jamais2DemiGardesAffile: true,
+  postesFixesSemaine: true,
+  demandesImperatives: true,
+  demandesSiPossible: false
+};
+
+const SARIC_DEFAULT_DOCTORS = [
+  ["BOUGLE Adrien", "Chirurgie cardiaque"],
+  ["ABBES Ahmed", "Chirurgie cardiaque"],
+  ["ANNONAY Marianne", "Chirurgie cardiaque"],
+  ["CAMPEANU Aurélie", "Chirurgie cardiaque"],
+  ["CARILLION Aude", "Chirurgie cardiaque"],
+  ["DJAVIDI Nima", "Chirurgie cardiaque"],
+  ["DUREAU Pauline", "Chirurgie cardiaque"],
+  ["GUILLEMIN Jérémie", "Chirurgie cardiaque"],
+  ["HAMIDI Dany", "Chirurgie cardiaque"],
+  ["HARIRI Geoffroy", "Chirurgie cardiaque"],
+  ["HIRWE Axel", "Chirurgie cardiaque"],
+  ["LABARRIERE Ambroise", "Chirurgie cardiaque"],
+  ["LANCELOT Aymeric", "Chirurgie cardiaque"],
+  ["MANSOURI Sehmi", "Chirurgie cardiaque"],
+  ["NICULESCU Michaela", "Chirurgie cardiaque"],
+  ["OMAR Edris", "Chirurgie cardiaque"],
+  ["DE SARCUS Martin", "Chirurgie vasculaire"],
+  ["ARZOINE Jérémy", "Mixte"],
+  ["BEAUCOTE Victor", "Mixte"],
+  ["BERECIBAR Jon Ander", "Mixte"],
+  ["BOROUCHAKI Antoine", "Mixte"],
+  ["BRIZARD Antoine", "Mixte"],
+  ["COELEMBIER Clément", "Mixte"],
+  ["DUCEAU Baptiste", "Mixte"],
+  ["HENOCQ Paul", "Mixte"],
+  ["MARQUET Yann", "Mixte"],
+  ["MOHAMMEDI Neyla", "Mixte"],
+  ["LOEB Jules", "Mixte"],
+  ["PERRIER Johann", "Mixte"],
+  ["POUJADE Julien", "Mixte"],
+  ["SCHRAMM Rémi", "Mixte"],
+  ["VAUZANGES Quentin", "Mixte"],
+  ["ROMBI Louise", "Stand by"],
+  ["CLAPIN Sixtine", "Stand by"]
+].map(([name, category], i) => ({
+  id: "doc_" + i,
+  name,
+  category,
+  email: "",
+  enabled: true
+}));
+
+const SARIC_DEFAULT_ABILITIES_BY_NAME = {
+  "BOUGLE Adrien": ["Garde anesth CEC", "Garde réa", "Garde USIP", "½ garde CEC", "Coordo bloc", "Coordo réa"],
+  "ABBES Ahmed": ["Garde anesth CEC", "Garde réa", "Garde USIP", "½ garde CEC", "Coordo bloc", "Coordo réa"],
+  "ANNONAY Marianne": ["Garde anesth CEC", "Garde USIP", "½ garde CEC", "½ garde vasc", "Coordo bloc"],
+  "ARZOINE Jérémy": ["Garde anesth CEC", "Garde USIP", "½ garde CEC", "½ garde vasc", "Coordo bloc"],
+  "BEAUCOTE Victor": ["Garde anesth CEC", "Garde USIP", "½ garde CEC", "½ garde vasc"],
+  "BERECIBAR Jon Ander": ["Garde anesth CEC", "Garde USIP", "½ garde CEC", "½ garde vasc"],
+  "BOROUCHAKI Antoine": ["Garde anesth CEC", "Garde réa", "Garde USIP", "½ garde CEC", "½ garde vasc"],
+  "BRIZARD Antoine": ["Garde anesth CEC", "Garde USIP", "½ garde CEC", "½ garde vasc"],
+  "CAMPEANU Aurélie": ["Garde anesth CEC", "Garde réa", "Garde USIP", "½ garde CEC", "Coordo bloc"],
+  "CARILLION Aude": ["Garde anesth CEC", "Garde réa", "Garde USIP", "½ garde CEC", "Coordo bloc", "Coordo réa"],
+  "CLAPIN Sixtine": ["Garde anesth CEC", "Garde réa", "Garde USIP", "½ garde CEC", "½ garde vasc", "Coordo bloc"],
+  "COELEMBIER Clément": ["Garde anesth CEC", "Garde USIP", "½ garde CEC", "½ garde vasc", "Coordo bloc"],
+  "DE SARCUS Martin": ["Garde USIP", "½ garde vasc"],
+  "DJAVIDI Nima": ["Garde anesth CEC", "Garde réa", "Garde USIP", "½ garde CEC", "Coordo bloc", "Coordo réa"],
+  "DUCEAU Baptiste": ["Garde anesth CEC", "Garde réa", "Garde USIP", "½ garde CEC", "½ garde vasc", "Coordo bloc", "Coordo réa"],
+  "DUREAU Pauline": ["Garde anesth CEC", "Garde réa", "Garde USIP", "½ garde CEC", "Coordo bloc", "Coordo réa"],
+  "GUILLEMIN Jérémie": ["Garde anesth CEC", "Garde réa", "Garde USIP", "½ garde CEC", "Coordo bloc"],
+  "HAMIDI Dany": ["Garde anesth CEC", "Garde réa", "Garde USIP", "½ garde CEC", "Coordo bloc"],
+  "HARIRI Geoffroy": ["Garde anesth CEC", "Garde réa", "Garde USIP", "½ garde CEC", "Coordo bloc", "Coordo réa"],
+  "HENOCQ Paul": ["Garde anesth CEC", "Garde réa", "Garde USIP", "½ garde CEC", "½ garde vasc"],
+  "HIRWE Axel": ["Garde anesth CEC", "Garde réa", "Garde USIP", "½ garde CEC", "½ garde vasc"],
+  "LABARRIERE Ambroise": ["Garde anesth CEC", "Garde réa", "Garde USIP", "½ garde CEC", "Coordo bloc"],
+  "LANCELOT Aymeric": ["Garde anesth CEC", "Garde réa", "Garde USIP", "½ garde CEC", "Coordo bloc", "Coordo réa"],
+  "LOEB Jules": ["Garde anesth CEC", "Garde USIP", "½ garde CEC", "½ garde vasc"],
+  "MANSOURI Sehmi": ["Garde anesth CEC", "Garde réa", "Garde USIP", "½ garde CEC", "Coordo bloc"],
+  "MARQUET Yann": ["Garde anesth CEC", "Garde réa", "Garde USIP", "½ garde CEC", "½ garde vasc"],
+  "MOHAMMEDI Neyla": ["Garde anesth CEC", "Garde USIP", "½ garde CEC", "½ garde vasc"],
+  "NICULESCU Michaela": ["Garde anesth CEC", "Garde réa", "Garde USIP", "½ garde CEC", "Coordo bloc", "Coordo réa"],
+  "OMAR Edris": ["Garde anesth CEC", "Garde réa", "Garde USIP", "½ garde CEC", "Coordo bloc", "Coordo réa"],
+  "PERRIER Johann": ["Garde anesth CEC", "Garde réa", "Garde USIP", "½ garde CEC", "½ garde vasc", "Coordo bloc"],
+  "POUJADE Julien": ["Garde anesth CEC", "Garde USIP", "½ garde CEC", "½ garde vasc", "Coordo bloc"],
+  "ROMBI Louise": ["Garde anesth CEC", "Garde réa", "Garde USIP", "½ garde CEC", "½ garde vasc", "Coordo bloc"],
+  "SCHRAMM Rémi": ["Garde anesth CEC", "Garde réa", "Garde USIP", "½ garde CEC", "½ garde vasc", "Coordo bloc", "Coordo réa"],
+  "VAUZANGES Quentin": ["Garde anesth CEC", "Garde réa", "Garde USIP", "½ garde CEC", "½ garde vasc"]
+};
+
+function saricEscape(s) {
+  return String(s ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
+function saricMonthKey(d) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+}
+
+function saricDateKey(d) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
+function saricTodayMonthKey() {
+  return saricMonthKey(new Date());
+}
+
+function saricMonthLabel(monthKey) {
+  const [y, m] = monthKey.split("-").map(Number);
+  return new Date(y, m - 1, 1).toLocaleDateString("fr-FR", { month: "long", year: "numeric" });
+}
+
+function saricDaysInMonth(monthKey) {
+  const [y, m] = monthKey.split("-").map(Number);
+  const first = new Date(y, m - 1, 1);
+  const last = new Date(y, m, 0);
+  const out = [];
+  for (let d = new Date(first); d <= last; d.setDate(d.getDate() + 1)) out.push(new Date(d));
+  return out;
+}
+
+function saricIsWeekend(d) {
+  return d.getDay() === 0 || d.getDay() === 6;
+}
+
+function saricIsHoliday(d) {
+  const y = d.getFullYear();
+  const iso = saricDateKey(d);
+  const fixed = [`${y}-01-01`, `${y}-05-01`, `${y}-05-08`, `${y}-07-14`, `${y}-08-15`, `${y}-11-01`, `${y}-11-11`, `${y}-12-25`];
+  const easter = saricEasterDate(y);
+  const easterMonday = saricAddDays(easter, 1);
+  const ascension = saricAddDays(easter, 39);
+  const pentecostMonday = saricAddDays(easter, 50);
+  const moving = [easterMonday, ascension, pentecostMonday].map(saricDateKey);
+  return fixed.includes(iso) || moving.includes(iso);
+}
+
+function saricEasterDate(year) {
+  const a = year % 19;
+  const b = Math.floor(year / 100);
+  const c = year % 100;
+  const d = Math.floor(b / 4);
+  const e = b % 4;
+  const f = Math.floor((b + 8) / 25);
+  const g = Math.floor((b - f + 1) / 3);
+  const h = (19 * a + b - d - g + 15) % 30;
+  const i = Math.floor(c / 4);
+  const k = c % 4;
+  const l = (32 + 2 * e + 2 * i - h - k) % 7;
+  const m = Math.floor((a + 11 * h + 22 * l) / 451);
+  const month = Math.floor((h + l - 7 * m + 114) / 31);
+  const day = ((h + l - 7 * m + 114) % 31) + 1;
+  return new Date(year, month - 1, day);
+}
+
+function saricAddDays(date, n) {
+  const d = new Date(date);
+  d.setDate(d.getDate() + n);
+  return d;
+}
+
+function saricWeekKey(date) {
+  const d = new Date(date);
+  const day = d.getDay() || 7;
+  d.setDate(d.getDate() + 4 - day);
+  const y0 = new Date(d.getFullYear(), 0, 1);
+  const week = Math.ceil((((d - y0) / 86400000) + 1) / 7);
+  return `${d.getFullYear()}-W${String(week).padStart(2, "0")}`;
+}
+
+function saricRequiredPostsForDate(date) {
+  if (saricIsWeekend(date) || saricIsHoliday(date)) {
+    return ["Garde anesth CEC", "Garde réa", "Garde USIP"];
   }
+  return [...SARIC_DAY_POSTS, ...SARIC_NIGHT_POSTS];
+}
+
+function saricDefaultAbilities(doctors) {
+  const abilities = {};
+  doctors.forEach(doc => {
+    abilities[doc.id] = {};
+    [...SARIC_NIGHT_POSTS, ...SARIC_COORD_POSTS].forEach(post => {
+      abilities[doc.id][post] = (SARIC_DEFAULT_ABILITIES_BY_NAME[doc.name] || []).includes(post);
+    });
+  });
+  return abilities;
+}
+
+function saricDefaultState() {
+  const doctors = JSON.parse(JSON.stringify(SARIC_DEFAULT_DOCTORS));
+  return {
+    month: saricTodayMonthKey(),
+    activeTab: "planning",
+    selectedDoctorId: "global",
+    doctors,
+    abilities: saricDefaultAbilities(doctors),
+    optionalRules: { ...SARIC_OPTIONAL_RULES_DEFAULT },
+    desiderata: {},
+    desiderataSubmitted: {},
+    assignments: {},
+    generationLogs: {}
+  };
+}
+
+function saricLoadState() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(SARIC_PLANNING_KEY) || "null");
+    if (!saved) return saricDefaultState();
+    const base = saricDefaultState();
+    return {
+      ...base,
+      ...saved,
+      doctors: saved.doctors || base.doctors,
+      abilities: saved.abilities || base.abilities,
+      optionalRules: { ...base.optionalRules, ...(saved.optionalRules || {}) },
+      desiderata: saved.desiderata || {},
+      desiderataSubmitted: saved.desiderataSubmitted || {},
+      assignments: saved.assignments || {},
+      generationLogs: saved.generationLogs || {}
+    };
+  } catch {
+    return saricDefaultState();
+  }
+}
+
+function saricSaveState(st) {
+  localStorage.setItem(SARIC_PLANNING_KEY, JSON.stringify(st));
+}
+
+function saricLoadUsers() {
+  try {
+    return JSON.parse(localStorage.getItem(SARIC_USERS_KEY) || "{}");
+  } catch {
+    return {};
+  }
+}
+
+function saricSaveUsers(users) {
+  localStorage.setItem(SARIC_USERS_KEY, JSON.stringify(users));
+}
+
+function saricInitUsers() {
+  const st = saricLoadState();
+  const users = saricLoadUsers();
+
+  st.doctors.forEach(doc => {
+    if (!users[doc.id]) {
+      users[doc.id] = {
+        doctorId: doc.id,
+        name: doc.name,
+        email: doc.email || "",
+        password: SARIC_DEFAULT_PASSWORD,
+        mustChangePassword: true,
+        resetToken: ""
+      };
+    } else {
+      users[doc.id].name = doc.name;
+      users[doc.id].email = doc.email || users[doc.id].email || "";
+    }
+  });
+
+  saricSaveUsers(users);
+}
+
+function saricCurrentUser() {
+  try {
+    return JSON.parse(sessionStorage.getItem(SARIC_SESSION_KEY) || "null");
+  } catch {
+    return null;
+  }
+}
+
+function saricSetCurrentUser(user) {
+  sessionStorage.setItem(SARIC_SESSION_KEY, JSON.stringify(user));
+}
+
+function saricLogout() {
+  sessionStorage.removeItem(SARIC_SESSION_KEY);
+  renderPlanningMedical();
+}
+
+function saricLogin() {
+  const doctorId = document.getElementById("saric-login-doctor")?.value;
+  const password = document.getElementById("saric-login-password")?.value || "";
+  const users = saricLoadUsers();
+  const user = users[doctorId];
+
+  if (!user || user.password !== password) {
+    document.getElementById("saric-login-msg").textContent = "Identifiant ou mot de passe incorrect.";
+    return;
+  }
+
+  saricSetCurrentUser({ doctorId: user.doctorId, name: user.name });
+  renderPlanningMedical();
+}
+
+function saricRequestPasswordReset() {
+  const doctorId = document.getElementById("saric-login-doctor")?.value;
+  const users = saricLoadUsers();
+  const user = users[doctorId];
+
+  if (!user || !user.email) {
+    document.getElementById("saric-login-msg").textContent = "Aucun email n’est renseigné pour ce médecin.";
+    return;
+  }
+
+  user.resetToken = Math.random().toString(36).slice(2) + Date.now().toString(36);
+  user.resetRequestedAt = new Date().toISOString();
+  saricSaveUsers(users);
+
+  document.getElementById("saric-login-msg").textContent =
+    "Demande enregistrée. L’envoi réel d’email nécessite un backend : Firebase, Supabase ou Google Apps Script.";
+}
+
+function saricChangePassword() {
+  const current = saricCurrentUser();
+  if (!current) return;
+
+  const oldPass = document.getElementById("saric-old-password")?.value || "";
+  const newPass = document.getElementById("saric-new-password")?.value || "";
+  const confirm = document.getElementById("saric-confirm-password")?.value || "";
+  const users = saricLoadUsers();
+  const user = users[current.doctorId];
+
+  if (!user || user.password !== oldPass) {
+    document.getElementById("saric-password-msg").textContent = "Ancien mot de passe incorrect.";
+    return;
+  }
+
+  if (newPass.length < 8) {
+    document.getElementById("saric-password-msg").textContent = "8 caractères minimum.";
+    return;
+  }
+
+  if (newPass !== confirm) {
+    document.getElementById("saric-password-msg").textContent = "Les mots de passe ne correspondent pas.";
+    return;
+  }
+
+  user.password = newPass;
+  user.mustChangePassword = false;
+  saricSaveUsers(users);
+  document.getElementById("saric-password-msg").textContent = "Mot de passe modifié.";
+}
+
+function saricAdminOk() {
+  return sessionStorage.getItem(SARIC_ADMIN_SESSION_KEY) === "1";
+}
+
+function saricUnlockAdmin() {
+  const code = document.getElementById("saric-admin-code")?.value || "";
+  if (code === SARIC_ADMIN_CODE) {
+    sessionStorage.setItem(SARIC_ADMIN_SESSION_KEY, "1");
+    saricRenderAdmin();
+  } else {
+    document.getElementById("saric-admin-msg").textContent = "Code admin incorrect.";
+  }
+}
+
+function renderPlanningMedical() {
+  saricInitUsers();
+
+  const current = saricCurrentUser();
+  if (!current) {
+    saricRenderLogin();
+    return;
+  }
+
+  const st = saricLoadState();
+
+  $app.innerHTML = `
+    <section class="saric-planning-page">
+      <div class="saric-planning-head">
+        <button class="btn ghost saric-small-btn" onclick="location.hash='#/'">← Menu</button>
+        <div>
+          <h2>Planning médical SARIC</h2>
+          <p>Connecté : <strong>${saricEscape(current.name)}</strong></p>
+        </div>
+        <button class="btn ghost saric-small-btn" onclick="saricLogout()">Déconnexion</button>
+      </div>
+
+      <div class="saric-tabs">
+        ${[
+          ["planning", "Planning"],
+          ["desiderata", "Désidératas"],
+          ["admin", "Admin"],
+          ["account", "Mon compte"]
+        ].map(([id, label]) => `
+          <button class="saric-tab ${st.activeTab === id ? "active" : ""}" onclick="saricSwitchTab('${id}')">
+            ${label}
+          </button>
+        `).join("")}
+      </div>
+
+      <div id="saric-planning-body"></div>
+    </section>
+  `;
+
+  saricRenderActiveTab();
+}
+
+function saricRenderLogin() {
+  const st = saricLoadState();
+
+  $app.innerHTML = `
+    <section class="saric-planning-page">
+      <div class="card saric-login-card">
+        <h2>Planning médical SARIC</h2>
+        <p>Authentification médecin</p>
+
+        <label>
+          Médecin
+          <select id="saric-login-doctor">
+            ${st.doctors.map(d => `<option value="${d.id}">${saricEscape(d.name)}</option>`).join("")}
+          </select>
+        </label>
+
+        <label>
+          Mot de passe
+          <input id="saric-login-password" type="password" placeholder="Mot de passe">
+        </label>
+
+        <button class="btn" onclick="saricLogin()">Se connecter</button>
+        <button class="btn ghost" onclick="saricRequestPasswordReset()">Mot de passe oublié</button>
+
+        <div id="saric-login-msg" class="saric-form-msg"></div>
+        <p class="saric-help">Mot de passe initial : SARIC2026</p>
+      </div>
+    </section>
+  `;
+}
+
+function saricSwitchTab(tab) {
+  const st = saricLoadState();
+  st.activeTab = tab;
+  saricSaveState(st);
+  renderPlanningMedical();
+}
+
+function saricRenderActiveTab() {
+  const st = saricLoadState();
+  if (st.activeTab === "desiderata") return saricRenderDesiderata();
+  if (st.activeTab === "admin") return saricRenderAdmin();
+  if (st.activeTab === "account") return saricRenderAccount();
+  return saricRenderPlanning();
+}
+
+function saricSetMonth(monthKey) {
+  const st = saricLoadState();
+  st.month = monthKey;
+  saricSaveState(st);
+  saricRenderActiveTab();
+}
+
+function saricShiftMonth(delta) {
+  const st = saricLoadState();
+  const [y, m] = st.month.split("-").map(Number);
+  st.month = saricMonthKey(new Date(y, m - 1 + delta, 1));
+  saricSaveState(st);
+  saricRenderActiveTab();
+}
+
+function saricMonthControl(extra = "") {
+  const st = saricLoadState();
+  return `
+    <div class="saric-toolbar">
+      <div class="saric-month-nav">
+        <button class="saric-month-arrow" onclick="saricShiftMonth(-1)">←</button>
+        <div class="saric-month-title">${saricEscape(saricMonthLabel(st.month))}</div>
+        <button class="saric-month-arrow" onclick="saricShiftMonth(1)">→</button>
+        <input type="month" value="${st.month}" onchange="saricSetMonth(this.value)">
+      </div>
+      ${extra}
+    </div>
+  `;
+}
+
+function saricRenderPlanning() {
+  const st = saricLoadState();
+
+  const extra = `
+    <select id="saric-planning-doctor" onchange="saricSelectPlanningDoctor(this.value)">
+      <option value="global" ${st.selectedDoctorId === "global" ? "selected" : ""}>Planning global</option>
+      ${st.doctors.map(d => `
+        <option value="${d.id}" ${st.selectedDoctorId === d.id ? "selected" : ""}>${saricEscape(d.name)}</option>
+      `).join("")}
+    </select>
+  `;
+
+  document.getElementById("saric-planning-body").innerHTML = `
+    ${saricMonthControl(extra)}
+    ${saricCalendarHtml("planning")}
+    ${saricPlanningGlobalTable()}
+  `;
+}
+
+function saricSelectPlanningDoctor(id) {
+  const st = saricLoadState();
+  st.selectedDoctorId = id;
+  saricSaveState(st);
+  saricRenderPlanning();
+}
+
+function saricRenderDesiderata() {
+  const st = saricLoadState();
+  const current = saricCurrentUser();
+  if (!st.selectedDoctorId || st.selectedDoctorId === "global") st.selectedDoctorId = current.doctorId;
+  saricSaveState(st);
+
+  const extra = `
+    <select onchange="saricSelectDesiderataDoctor(this.value)">
+      ${st.doctors.map(d => `
+        <option value="${d.id}" ${st.selectedDoctorId === d.id ? "selected" : ""}>${saricEscape(d.name)}</option>
+      `).join("")}
+    </select>
+    <button class="btn saric-small-btn" onclick="saricSubmitDesiderataMonth()">Valider mes désidératas du mois</button>
+  `;
+
+  document.getElementById("saric-planning-body").innerHTML = `
+    ${saricMonthControl(extra)}
+    <div class="card saric-choice-panel" id="saric-choice-panel">
+      <h3>Désidératas</h3>
+      <p>Sélectionnez une date du calendrier.</p>
+    </div>
+    ${saricCalendarHtml("desiderata")}
+  `;
+}
+
+function saricSelectDesiderataDoctor(id) {
+  const st = saricLoadState();
+  st.selectedDoctorId = id;
+  saricSaveState(st);
+  saricRenderDesiderata();
+}
+
+function saricOpenDesiderataDay(iso) {
+  const st = saricLoadState();
+  const docId = st.selectedDoctorId;
+  const selected = st.desiderata?.[docId]?.[iso] || [];
+
+  document.getElementById("saric-choice-panel").innerHTML = `
+    <h3>Désidératas du ${iso}</h3>
+    <div class="saric-choice-grid">
+      ${SARIC_DESIDERATA_TYPES.map(t => `
+        <label class="saric-choice">
+          <input type="checkbox" value="${t.id}" ${selected.includes(t.id) ? "checked" : ""}>
+          ${saricEscape(t.label)}
+        </label>
+      `).join("")}
+    </div>
+    <button class="btn" onclick="saricSaveDesiderata('${iso}')">Enregistrer</button>
+  `;
+}
+
+function saricSaveDesiderata(iso) {
+  const st = saricLoadState();
+  const docId = st.selectedDoctorId;
+  const checked = [...document.querySelectorAll("#saric-choice-panel input:checked")].map(i => i.value);
+
+  st.desiderata[docId] = st.desiderata[docId] || {};
+  if (checked.length) st.desiderata[docId][iso] = checked;
+  else delete st.desiderata[docId][iso];
+
+  st.desiderataSubmitted[st.month] = st.desiderataSubmitted[st.month] || {};
+  st.desiderataSubmitted[st.month][docId] = true;
+
+  saricSaveState(st);
+  saricRenderDesiderata();
+}
+
+function saricSubmitDesiderataMonth() {
+  const st = saricLoadState();
+  const docId = st.selectedDoctorId;
+  st.desiderataSubmitted[st.month] = st.desiderataSubmitted[st.month] || {};
+  st.desiderataSubmitted[st.month][docId] = true;
+  saricSaveState(st);
+  saricRenderDesiderata();
+}
+
+function saricCalendarHtml(mode) {
+  const st = saricLoadState();
+  const days = saricDaysInMonth(st.month);
+  const pad = (days[0].getDay() + 6) % 7;
+
+  return `
+    <div class="saric-weekdays">
+      ${["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"].map(d => `<b>${d}</b>`).join("")}
+    </div>
+    <div class="saric-calendar">
+      ${Array.from({ length: pad }).map(() => `<div class="saric-cal-cell muted"></div>`).join("")}
+      ${days.map(date => {
+        const iso = saricDateKey(date);
+        const weekend = saricIsWeekend(date);
+        const holiday = saricIsHoliday(date);
+        return `
+          <div class="saric-cal-cell ${weekend ? "weekend" : ""} ${holiday ? "holiday" : ""} ${mode === "desiderata" ? "saric-click-cell" : ""}"
+               ${mode === "desiderata" ? `onclick="saricOpenDesiderataDay('${iso}')"` : ""}>
+            <div class="saric-day">
+              <strong>${date.getDate()}</strong>
+              <small>${holiday ? "Férié" : weekend ? "WE" : ""}</small>
+            </div>
+            ${mode === "planning" ? saricPlanningCellContent(st, iso, date) : saricDesiderataCellContent(st, iso)}
+          </div>
+        `;
+      }).join("")}
+    </div>
+  `;
+}
+
+function saricPlanningCellContent(st, iso, date) {
+  const day = st.assignments[iso] || {};
+  const filter = st.selectedDoctorId;
+
+  if (filter && filter !== "global") {
+    const rows = Object.entries(day)
+      .filter(([, docId]) => docId === filter)
+      .map(([post]) => `<div class="saric-shift"><span>${saricEscape(post)}</span></div>`);
+    return rows.length ? rows.join("") : `<div class="saric-empty">—</div>`;
+  }
+
+  return saricRequiredPostsForDate(date).map(post => {
+    const doc = st.doctors.find(d => d.id === day[post]);
+    return `
+      <div class="saric-shift">
+        <span>${saricEscape(post)}</span>
+        <strong>${doc ? saricEscape(doc.name) : "À pourvoir"}</strong>
+      </div>
+    `;
+  }).join("");
+}
+
+function saricDesiderataCellContent(st, iso) {
+  const docId = st.selectedDoctorId;
+  const values = st.desiderata?.[docId]?.[iso] || [];
+  if (!values.length) return `<div class="saric-empty">Aucune demande</div>`;
+
+  return `
+    <div class="saric-tags">
+      ${values.map(v => {
+        const item = SARIC_DESIDERATA_TYPES.find(t => t.id === v);
+        return `<span>${saricEscape(item?.label || v)}</span>`;
+      }).join("")}
+    </div>
+  `;
+}
+
+function saricPlanningGlobalTable() {
+  const st = saricLoadState();
+  const days = saricDaysInMonth(st.month);
+  const posts = [...SARIC_NIGHT_POSTS, ...SARIC_COORD_POSTS, ...SARIC_DAY_POSTS.filter(p => !SARIC_COORD_POSTS.includes(p))];
+
+  return `
+    <div class="card saric-global-table-card">
+      <h3>Planning global - ${saricEscape(saricMonthLabel(st.month))}</h3>
+      <div class="saric-global-scroll">
+        <table class="saric-global-table">
+          <thead>
+            <tr>
+              <th>Poste</th>
+              ${days.map(d => `<th>${d.getDate()}</th>`).join("")}
+            </tr>
+          </thead>
+          <tbody>
+            ${posts.map(post => `
+              <tr>
+                <td>${saricEscape(post)}</td>
+                ${days.map(d => {
+                  const iso = saricDateKey(d);
+                  const docId = st.assignments?.[iso]?.[post];
+                  const doc = st.doctors.find(x => x.id === docId);
+                  return `<td>${doc ? saricEscape(doc.name) : ""}</td>`;
+                }).join("")}
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+function saricRenderAdmin() {
+  if (!saricAdminOk()) {
+    document.getElementById("saric-planning-body").innerHTML = `
+      <div class="card saric-login-card">
+        <h3>Accès Admin</h3>
+        <p>Veuillez saisir le code administrateur.</p>
+        <input id="saric-admin-code" type="password" placeholder="Code admin">
+        <button class="btn" onclick="saricUnlockAdmin()">Valider</button>
+        <div id="saric-admin-msg" class="saric-form-msg"></div>
+      </div>
+    `;
+    return;
+  }
+
+  const st = saricLoadState();
+  const adminMonth = st.month;
+  const submitted = st.desiderataSubmitted?.[adminMonth] || {};
+
+  document.getElementById("saric-planning-body").innerHTML = `
+    ${saricMonthControl("")}
+
+    <div class="saric-admin-grid">
+      <div class="card">
+        <h3>Catégories médecins</h3>
+        <p>Déplacez les médecins par menu déroulant. Les médecins en Stand by sont exclus.</p>
+        <div class="saric-doctor-list">
+          ${st.doctors.map(d => `
+            <div class="saric-doctor-row">
+              <strong>${saricEscape(d.name)}</strong>
+              <select onchange="saricSetDoctorCategory('${d.id}', this.value)">
+                ${SARIC_CATEGORIES.map(c => `<option value="${c}" ${d.category === c ? "selected" : ""}>${saricEscape(c)}</option>`).join("")}
+              </select>
+              <input type="email" value="${saricEscape(d.email || "")}" placeholder="email" onchange="saricSetDoctorEmail('${d.id}', this.value)">
+            </div>
+          `).join("")}
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Habilitations gardes / demi-gardes / coordinations</h3>
+        <div class="saric-matrix-wrap">
+          <table class="saric-matrix">
+            <thead>
+              <tr>
+                <th>Médecin</th>
+                ${[...SARIC_NIGHT_POSTS, ...SARIC_COORD_POSTS].map(p => `<th>${saricEscape(p)}</th>`).join("")}
+              </tr>
+            </thead>
+            <tbody>
+              ${st.doctors.map(d => `
+                <tr>
+                  <td>${saricEscape(d.name)}</td>
+                  ${[...SARIC_NIGHT_POSTS, ...SARIC_COORD_POSTS].map(p => `
+                    <td>
+                      <input type="checkbox" ${st.abilities?.[d.id]?.[p] ? "checked" : ""}
+                             onchange="saricSetAbility('${d.id}', '${p}', this.checked)">
+                    </td>
+                  `).join("")}
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="card saric-rules">
+      <h3>Règles fondamentales nécessaires</h3>
+      <p>Visibles mais non modifiables.</p>
+      <ol>${SARIC_FIXED_RULES.map(r => `<li>${saricEscape(r)}</li>`).join("")}</ol>
+    </div>
+
+    <div class="card saric-rules">
+      <h3>Règles optionnelles</h3>
+      <p>Cochées = prises en compte par l’algorithme. Décochées = ignorées.</p>
+      ${Object.entries(SARIC_OPTIONAL_RULES_LABELS).map(([key, label]) => `
+        <label>
+          <input type="checkbox" ${st.optionalRules[key] ? "checked" : ""}
+                 onchange="saricSetOptionalRule('${key}', this.checked)">
+          ${saricEscape(label)}
+        </label>
+      `).join("")}
+    </div>
+
+    <div class="card saric-rules">
+      <h3>Suivi des désidératas - ${saricEscape(saricMonthLabel(adminMonth))}</h3>
+      <div class="saric-desid-status">
+        ${st.doctors.map(d => `
+          <div class="saric-desid-line">
+            <span>${submitted[d.id] ? "✅" : "❌"}</span>
+            <strong>${saricEscape(d.name)}</strong>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+
+    <div class="card saric-generate-card">
+      <button class="btn saric-big-generate" onclick="saricGenerateMonthPlanning()">
+        Générer planning ${saricEscape(saricMonthLabel(adminMonth))}
+      </button>
+      <div class="saric-log">
+        ${(st.generationLogs?.[adminMonth] || []).map(x => `<div>${saricEscape(x)}</div>`).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function saricSetDoctorCategory(docId, category) {
+  const st = saricLoadState();
+  const doc = st.doctors.find(d => d.id === docId);
+  if (doc) doc.category = category;
+  saricSaveState(st);
+}
+
+function saricSetDoctorEmail(docId, email) {
+  const st = saricLoadState();
+  const doc = st.doctors.find(d => d.id === docId);
+  if (doc) doc.email = email;
+  saricSaveState(st);
+  saricInitUsers();
+}
+
+function saricSetAbility(docId, post, value) {
+  const st = saricLoadState();
+  st.abilities[docId] = st.abilities[docId] || {};
+  st.abilities[docId][post] = value;
+  saricSaveState(st);
+}
+
+function saricSetOptionalRule(key, value) {
+  const st = saricLoadState();
+  st.optionalRules[key] = value;
+
+  if (key === "demandesImperatives" && value) st.optionalRules.demandesSiPossible = false;
+  if (key === "demandesSiPossible" && value) st.optionalRules.demandesImperatives = false;
+
+  saricSaveState(st);
+  saricRenderAdmin();
+}
+
+function saricRenderAccount() {
+  document.getElementById("saric-planning-body").innerHTML = `
+    <div class="card saric-account-card">
+      <h3>Modifier mon mot de passe</h3>
+
+      <label>Ancien mot de passe
+        <input id="saric-old-password" type="password">
+      </label>
+
+      <label>Nouveau mot de passe
+        <input id="saric-new-password" type="password">
+      </label>
+
+      <label>Confirmation
+        <input id="saric-confirm-password" type="password">
+      </label>
+
+      <button class="btn" onclick="saricChangePassword()">Modifier</button>
+      <div id="saric-password-msg" class="saric-form-msg"></div>
+    </div>
+  `;
+}
+
+function saricGenerateMonthPlanning() {
+  const st = saricLoadState();
+  const month = st.month;
+  const days = saricDaysInMonth(month);
+  const logs = [];
+
+  days.forEach(date => {
+    delete st.assignments[saricDateKey(date)];
+  });
+
+  const weekFixedMap = {};
+
+  days.forEach(date => {
+    const iso = saricDateKey(date);
+    const required = saricRequiredPostsForDate(date);
+    const dayAssign = {};
+    const usedDay = new Set();
+    const usedNight = new Set();
+
+    const dayPosts = required.filter(p => SARIC_DAY_POSTS.includes(p));
+    const nightPosts = required.filter(p => SARIC_NIGHT_POSTS.includes(p));
+
+    dayPosts.forEach(post => {
+      let preselected = null;
+
+      if (st.optionalRules.postesFixesSemaine && SARIC_WEEK_FIXED_POSTS.includes(post)) {
+        const wk = saricWeekKey(date);
+        weekFixedMap[wk] = weekFixedMap[wk] || {};
+        preselected = weekFixedMap[wk][post] || null;
+      }
+
+      const doc = preselected && saricCanAssign(st, preselected, date, post, dayAssign, usedDay, usedNight, false)
+        ? preselected
+        : saricFindBestDoctorForPost(st, date, post, dayAssign, usedDay, usedNight, false);
+
+      if (doc) {
+        dayAssign[post] = doc.id;
+
+        if (post !== "Coordo bloc") usedDay.add(doc.id);
+
+        if (st.optionalRules.postesFixesSemaine && SARIC_WEEK_FIXED_POSTS.includes(post)) {
+          const wk = saricWeekKey(date);
+          weekFixedMap[wk] = weekFixedMap[wk] || {};
+          weekFixedMap[wk][post] = doc;
+        }
+      } else {
+        logs.push(`${iso} : poste non pourvu - ${post}`);
+      }
+    });
+
+    nightPosts.forEach(post => {
+      const doc = saricFindBestDoctorForPost(st, date, post, dayAssign, usedDay, usedNight, true);
+      if (doc) {
+        dayAssign[post] = doc.id;
+        usedNight.add(doc.id);
+      } else {
+        logs.push(`${iso} : garde/demi-garde non pourvue - ${post}`);
+      }
+    });
+
+    st.assignments[iso] = dayAssign;
+  });
+
+  st.generationLogs[month] = logs.length ? logs : [`Planning ${saricMonthLabel(month)} généré sans poste manquant.`];
+  saricSaveState(st);
+  saricRenderAdmin();
+}
+
+function saricFindBestDoctorForPost(st, date, post, dayAssign, usedDay, usedNight, nightStep) {
+  const candidates = st.doctors
+    .filter(doc => saricCanAssign(st, doc, date, post, dayAssign, usedDay, usedNight, nightStep))
+    .sort((a, b) => saricDoctorPenalty(st, a, date, post) - saricDoctorPenalty(st, b, date, post));
+
+  return candidates[0] || null;
+}
+
+function saricCanAssign(st, doc, date, post, dayAssign, usedDay, usedNight, nightStep) {
+  if (!doc || doc.category === "Stand by" || doc.enabled === false) return false;
+
+  const iso = saricDateKey(date);
+  const desiderata = st.desiderata?.[doc.id]?.[iso] || [];
+  const isDayPost = SARIC_DAY_POSTS.includes(post);
+  const isFullGuard = SARIC_GARDES_COMPLETES.includes(post);
+  const isHalfGuard = SARIC_HALF_GARDES.includes(post);
+  const isNightPost = SARIC_NIGHT_POSTS.includes(post);
+  const isCoord = SARIC_COORD_POSTS.includes(post);
+  const isWeekendOrHoliday = saricIsWeekend(date) || saricIsHoliday(date);
+
+  if (!saricCategoryAllowsPost(doc.category, post)) return false;
+
+  if ((isNightPost || isCoord) && !st.abilities?.[doc.id]?.[post]) return false;
+
+  if (isDayPost && post !== "Coordo bloc" && usedDay.has(doc.id)) return false;
+  if (isNightPost && usedNight.has(doc.id)) return false;
+
+  if (post === "Coordo bloc") {
+    const onCec = ["Bloc CEC 1", "Bloc CEC 2", "Bloc CEC 3", "Bloc CEC 4"].some(p => dayAssign[p] === doc.id);
+    if (!onCec) return false;
+  }
+
+  if (post === "Coordo réa" && usedDay.has(doc.id)) return false;
+
+  if ((isFullGuard || isHalfGuard) && !isWeekendOrHoliday) {
+    const presentDay = Object.values(dayAssign).includes(doc.id);
+    if (!presentDay) return false;
+  }
+
+  if (post === "Garde anesth CEC" || post === "½ garde CEC") {
+    if (!isWeekendOrHoliday) {
+      const onCec = ["Bloc CEC 1", "Bloc CEC 2", "Bloc CEC 3", "Bloc CEC 4"].some(p => dayAssign[p] === doc.id);
+      if (!onCec) return false;
+    }
+    if (post === "Garde anesth CEC" && dayAssign["½ garde CEC"] === doc.id) return false;
+    if (post === "½ garde CEC" && dayAssign["Garde anesth CEC"] === doc.id) return false;
+  }
+
+  if (post === "½ garde vasc") {
+    if (!isWeekendOrHoliday) {
+      const onVasc = dayAssign["Bloc vasc. 1"] === doc.id || dayAssign["Bloc vasc. 2"] === doc.id;
+      if (!onVasc) return false;
+    }
+  }
+
+  if (saricHasSecurityRest(st, doc.id, date)) return false;
+
+  if (saricDesiderataBlocks(st, desiderata, isDayPost, isFullGuard, isHalfGuard)) return false;
+
+  if (st.optionalRules.max2GardesSemaine && isFullGuard) {
+    if (saricCountAssignments(st, doc.id, date, "week", SARIC_GARDES_COMPLETES) >= 2) return false;
+  }
+
+  if (st.optionalRules.max2DemiGardesSemaine && isHalfGuard) {
+    if (saricCountAssignments(st, doc.id, date, "week", SARIC_HALF_GARDES) >= 2) return false;
+  }
+
+  if (st.optionalRules.max2GardesWEFerieMois && isFullGuard && isWeekendOrHoliday) {
+    if (saricCountWeekendHolidayGuardsInMonth(st, doc.id, date) >= 2) return false;
+  }
+
+  if (st.optionalRules.jamais2DemiGardesAffile && isHalfGuard) {
+    if (saricHadHalfGuardYesterday(st, doc.id, date)) return false;
+  }
+
+  return true;
+}
+
+function saricCategoryAllowsPost(category, post) {
+  if (SARIC_NIGHT_POSTS.includes(post) || SARIC_COORD_POSTS.includes(post)) return true;
+  if (category === "Stand by") return false;
+  if (category === "Mixte") return true;
+
+  const cardiac = [
+    "Bloc CEC 1", "Bloc CEC 2", "Bloc CEC 3", "Bloc CEC 4",
+    "Coordo bloc", "Réa 1", "Réa 2", "Réa 3", "Coordo réa",
+    "PTI", "Consult. chir. Card.", "Consult. Cardio. Med", "Hors salle"
+  ];
+
+  const vascular = [
+    "Bloc vasc. 1", "Bloc vasc. 2", "SSPI", "Consult. Vasculaire", "Visite/étage"
+  ];
+
+  if (category === "Chirurgie cardiaque") return cardiac.includes(post);
+  if (category === "Chirurgie vasculaire") return vascular.includes(post);
+  return false;
+}
+
+function saricDesiderataBlocks(st, desiderata, isDayPost, isFullGuard, isHalfGuard) {
+  const imperative = st.optionalRules.demandesImperatives;
+  if (!imperative) return false;
+
+  if (desiderata.includes("indispo_journee") || desiderata.includes("formation") || desiderata.includes("enseignement")) {
+    if (isDayPost || isHalfGuard) return true;
+  }
+
+  if (desiderata.includes("indispo_24h") || desiderata.includes("ca") || desiderata.includes("hors_clinique")) {
+    if (isDayPost || isFullGuard || isHalfGuard) return true;
+  }
+
+  if (desiderata.includes("indispo_garde")) {
+    if (isFullGuard || isHalfGuard) return true;
+  }
+
+  return false;
+}
+
+function saricDoctorPenalty(st, doc, date, post) {
+  const iso = saricDateKey(date);
+  const desiderata = st.desiderata?.[doc.id]?.[iso] || [];
+  let score = 0;
+
+  const isFullGuard = SARIC_GARDES_COMPLETES.includes(post);
+  const isHalfGuard = SARIC_HALF_GARDES.includes(post);
+  const isDayPost = SARIC_DAY_POSTS.includes(post);
+
+  if (desiderata.includes("garde_souhaitee") && isFullGuard) {
+    score += st.optionalRules.demandesImperatives ? -1000 : -150;
+  }
+
+  if (st.optionalRules.demandesSiPossible) {
+    if ((desiderata.includes("indispo_journee") || desiderata.includes("formation") || desiderata.includes("enseignement")) && (isDayPost || isHalfGuard)) score += 250;
+    if ((desiderata.includes("indispo_24h") || desiderata.includes("ca") || desiderata.includes("hors_clinique")) && (isDayPost || isFullGuard || isHalfGuard)) score += 400;
+    if (desiderata.includes("indispo_garde") && (isFullGuard || isHalfGuard)) score += 300;
+  }
+
+  score += saricCountAssignments(st, doc.id, date, "month", SARIC_GARDES_COMPLETES) * 30;
+  score += saricCountAssignments(st, doc.id, date, "month", SARIC_HALF_GARDES) * 12;
+  score += saricCountAssignments(st, doc.id, date, "week", SARIC_ALL_POSTS) * 4;
+
+  return score;
+}
+
+function saricHasSecurityRest(st, docId, date) {
+  const yesterday = saricAddDays(date, -1);
+  const day = st.assignments?.[saricDateKey(yesterday)] || {};
+  return SARIC_GARDES_COMPLETES.some(post => day[post] === docId);
+}
+
+function saricHadHalfGuardYesterday(st, docId, date) {
+  const yesterday = saricAddDays(date, -1);
+  const day = st.assignments?.[saricDateKey(yesterday)] || {};
+  return SARIC_HALF_GARDES.some(post => day[post] === docId);
+}
+
+function saricCountAssignments(st, docId, date, scope, posts) {
+  const targetMonth = saricMonthKey(date);
+  const targetWeek = saricWeekKey(date);
+  let count = 0;
+
+  Object.entries(st.assignments || {}).forEach(([iso, day]) => {
+    const d = new Date(iso + "T00:00:00");
+    if (scope === "month" && saricMonthKey(d) !== targetMonth) return;
+    if (scope === "week" && saricWeekKey(d) !== targetWeek) return;
+
+    posts.forEach(post => {
+      if (day[post] === docId) count++;
+    });
+  });
+
+  return count;
+}
+
+function saricCountWeekendHolidayGuardsInMonth(st, docId, date) {
+  const month = saricMonthKey(date);
+  let count = 0;
+
+  Object.entries(st.assignments || {}).forEach(([iso, day]) => {
+    const d = new Date(iso + "T00:00:00");
+    if (saricMonthKey(d) !== month) return;
+    if (!saricIsWeekend(d) && !saricIsHoliday(d)) return;
+
+    SARIC_GARDES_COMPLETES.forEach(post => {
+      if (day[post] === docId) count++;
+    });
+  });
+
+  return count;
 }
 
 // Fusion automatique de la colonne "Nom" (1ère colonne) sur les répétitions consécutives
