@@ -29715,17 +29715,22 @@ function saricRenderAccount() {
       <div class="card saric-account-card">
         <h3>Modifier mon mot de passe</h3>
 
-        <label>Ancien mot de passe
-          <input id="saric-old-password" type="password" placeholder="Ancien mot de passe">
-        </label>
+        <div class="saric-fields-3">
+          <label>
+            Ancien mot de passe
+            <input id="saric-old-password" type="password" placeholder="Ancien">
+          </label>
 
-        <label>Nouveau mot de passe
-          <input id="saric-new-password" type="password" placeholder="Nouveau mot de passe">
-        </label>
+          <label>
+            Nouveau mot de passe
+            <input id="saric-new-password" type="password" placeholder="Nouveau">
+          </label>
 
-        <label>Confirmation
-          <input id="saric-confirm-password" type="password" placeholder="Confirmation">
-        </label>
+          <label>
+            Confirmation
+            <input id="saric-confirm-password" type="password" placeholder="Confirmation">
+          </label>
+        </div>
 
         <button class="btn" onclick="saricChangePassword()">
           Modifier le mot de passe
@@ -29737,15 +29742,18 @@ function saricRenderAccount() {
       <div class="card saric-account-card">
         <h3>Modifier mon mail</h3>
 
-        <label>Email
-          <input id="saric-account-email" type="email"
-                 value="${saricEscape(doc?.email || user?.email || "")}"
-                 placeholder="prenom.nom@aphp.fr">
-        </label>
+        <div class="saric-fields-2">
+          <label>
+            Email
+            <input id="saric-account-email" type="email"
+              value="${saricEscape(doc?.email || user?.email || "")}"
+              placeholder="prenom.nom@aphp.fr">
+          </label>
 
-        <button class="btn" onclick="saricChangeEmail()">
-          Modifier mon mail
-        </button>
+          <button class="btn" onclick="saricChangeEmail()">
+            Modifier mon mail
+          </button>
+        </div>
 
         <div id="saric-email-msg" class="saric-form-msg"></div>
       </div>
