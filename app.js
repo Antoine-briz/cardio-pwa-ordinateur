@@ -28546,6 +28546,12 @@ const SARIC_DEFAULT_ABILITIES_BY_NAME = {
   "VAUZANGES Quentin": ["Garde anesth CEC", "Garde réa", "Garde USIP", "½ garde CEC", "½ garde vasc"]
 };
 
+function saricDoctorsSorted(doctors) {
+  return [...doctors].sort((a, b) =>
+    a.name.localeCompare(b.name, "fr", { sensitivity: "base" })
+  );
+}
+
 function saricEscape(s) {
   return String(s ?? "")
     .replaceAll("&", "&amp;")
@@ -28872,7 +28878,7 @@ function saricRenderLogin() {
         <label>
           Médecin
           <select id="saric-login-doctor">
-            ${st.doctors.map(d => `<option value="${d.id}">${saricEscape(d.name)}</option>`).join("")}
+            ${saricDoctorsSorted(st.doctors).map(d => `<option value="${d.id}">${saricEscape(d.name)}</option>`).join("")}
           </select>
         </label>
 
@@ -28986,7 +28992,7 @@ function saricRenderDesiderata() {
 
   const extra = `
     <select onchange="saricSelectDesiderataDoctor(this.value)">
-      ${st.doctors.map(d => `
+      ${saricDoctorsSorted(st.doctors).map(d => `
         <option value="${d.id}" ${st.selectedDoctorId === d.id ? "selected" : ""}>${saricEscape(d.name)}</option>
       `).join("")}
     </select>
@@ -29210,7 +29216,7 @@ function saricRenderAdmin() {
         <h3>Catégories médecins</h3>
         <p>Déplacez les médecins par menu déroulant. Les médecins en Stand by sont exclus.</p>
         <div class="saric-doctor-list">
-          ${st.doctors.map(d => `
+          ${saricDoctorsSorted(st.doctors).map(d => `
             <div class="saric-doctor-row">
               <strong>${saricEscape(d.name)}</strong>
               <select onchange="saricSetDoctorCategory('${d.id}', this.value)">
@@ -29233,7 +29239,7 @@ function saricRenderAdmin() {
               </tr>
             </thead>
             <tbody>
-              ${st.doctors.map(d => `
+              ${saricDoctorsSorted(st.doctors).map(d => `
                 <tr>
                   <td>${saricEscape(d.name)}</td>
                   ${[...SARIC_NIGHT_POSTS, ...SARIC_COORD_POSTS].map(p => `
@@ -29271,7 +29277,7 @@ function saricRenderAdmin() {
     <div class="card saric-rules">
       <h3>Suivi des désidératas - ${saricEscape(saricMonthLabel(adminMonth))}</h3>
       <div class="saric-desid-status">
-        ${st.doctors.map(d => `
+        ${saricDoctorsSorted(st.doctors).map(d => `
           <div class="saric-desid-line">
             <span>${submitted[d.id] ? "✅" : "❌"}</span>
             <strong>${saricEscape(d.name)}</strong>
