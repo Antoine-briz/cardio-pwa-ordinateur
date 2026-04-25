@@ -12727,3 +12727,80 @@ main.container,
   display: block;
   height: 12px;
 }
+
+/* ============================================================
+   ADMIN - pleine largeur + moins d'espaces verticaux
+   ============================================================ */
+
+/* Le conteneur principal prend toute la largeur */
+.saric-planning-page,
+#saric-planning-body {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Grille admin sur toute la largeur */
+.saric-admin-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  width: 100%;
+  max-width: 100%;
+  align-items: start;
+}
+
+/* Tous les encadrés utilisent toute la largeur */
+.saric-admin-grid > .card,
+#saric-planning-body > .card,
+.saric-rules,
+.saric-generate-card {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+}
+
+/* Padding réduit */
+.card {
+  padding: 16px 18px !important;
+}
+
+/* Titres plus compacts */
+.card h3 {
+  margin: 0 0 10px 0 !important;
+}
+
+/* Paragraphes compacts */
+.card p {
+  margin: 0 0 10px 0 !important;
+}
+
+/* Listes médecins et postes plus serrées */
+.saric-doctor-list,
+.saric-post-list {
+  gap: 6px !important;
+}
+
+/* Lignes internes compactes */
+.saric-doctor-row,
+.saric-post-row {
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+}
+
+/* Règles : moins d'espace */
+.saric-rules label,
+.saric-rules li {
+  margin-bottom: 6px;
+}
+
+/* Bouton génération plus compact */
+.saric-big-generate {
+  margin-top: 8px !important;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .saric-admin-grid {
+    grid-template-columns: 1fr;
+  }
+}
