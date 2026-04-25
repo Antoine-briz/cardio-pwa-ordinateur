@@ -29283,7 +29283,6 @@ function saricRenderAdmin() {
     <div class="saric-admin-grid">
       <div class="card">
         <h3>Catégories médecins</h3>
-        <p>Déplacez les médecins par menu déroulant. Les médecins en Stand by sont exclus.</p>
         <div class="saric-doctor-list">
           ${saricDoctorsSorted(st.doctors).map(d => `
             <div class="saric-doctor-row">
@@ -29327,11 +29326,15 @@ function saricRenderAdmin() {
 
     ${saricRenderPostManagementCard(st)}
 
-    <div class="card saric-rules">
-      <h3>Règles fondamentales nécessaires</h3>
-      <p>Visibles mais non modifiables.</p>
-      <ol>${SARIC_FIXED_RULES.map(r => `<li>${saricEscape(r)}</li>`).join("")}</ol>
-    </div>
+    <details class="card saric-rules saric-rules-collapsible">
+  <summary>
+    <h3>Règles fondamentales nécessaires</h3>
+    <span>Cliquer pour afficher/masquer</span>
+  </summary>
+
+  <p>Visibles mais non modifiables.</p>
+  <ol>${SARIC_FIXED_RULES.map(r => `<li>${saricEscape(r)}</li>`).join("")}</ol>
+</details>
 
     <div class="card saric-rules">
       <h3>Règles optionnelles</h3>
