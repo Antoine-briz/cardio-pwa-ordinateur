@@ -13312,3 +13312,48 @@ main.container,
   background: #0b3c6d !important;
   color: #fff !important;
 }
+
+/* Popup désidératas */
+.saric-popup-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+
+.saric-popup-box{
+  background:var(--card-bg,#111a28);
+  color:white;
+  width:360px;
+  max-width:90vw;
+  border-radius:18px;
+  padding:20px;
+  box-shadow:0 20px 40px rgba(0,0,0,.35);
+}
+
+.saric-popup-box h3{
+  margin-top:0;
+  margin-bottom:14px;
+}
+
+.saric-popup-options{
+  display:grid;
+  gap:10px;
+  max-height:50vh;
+  overflow:auto;
+  margin-bottom:18px;
+}
+
+.saric-popup-options label{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  font-size:15px;
+}
+
+.saric-popup-ok{
+  width:100%;
+}
