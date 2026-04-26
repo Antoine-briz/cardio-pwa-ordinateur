@@ -13054,3 +13054,36 @@ main.container,
     max-width:none !important;
   }
 }
+
+#saric-planning-body .saric-fields-4 {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr 1fr 320px !important;
+  gap: 12px !important;
+  align-items: end !important;
+}
+
+#saric-planning-body .saric-fields-4 label {
+  min-width: 0 !important;
+}
+
+#saric-planning-body .saric-fields-4 input,
+#saric-planning-body .saric-fields-4 .btn {
+  height: 50px !important;
+}
+
+#saric-planning-body .saric-fields-4 .btn {
+  width: 320px !important;
+  margin: 0 !important;
+  padding: 0 16px !important;
+  white-space: nowrap !important;
+}
+
+@media (max-width: 1300px) {
+  #saric-planning-body .saric-fields-4 {
+    grid-template-columns: 1fr !important;
+  }
+
+  #saric-planning-body .saric-fields-4 .btn {
+    width: 100% !important;
+  }
+}
