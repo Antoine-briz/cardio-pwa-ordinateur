@@ -13463,3 +13463,71 @@ main.container,
     grid-template-columns: 1fr;
   }
 }
+
+/* ==========================================================
+   ADMIN - Thème clair / sombre corrections
+   ========================================================== */
+
+/* ---------- 1) Tableau habilitations en thème clair ---------- */
+body.light-theme .saric-matrix-wrap,
+body.light .saric-matrix-wrap,
+[data-theme="light"] .saric-matrix-wrap {
+  background: #ffffff !important;
+  border: 1px solid #d7dde7 !important;
+}
+
+body.light-theme .saric-matrix,
+body.light .saric-matrix,
+[data-theme="light"] .saric-matrix {
+  background: #ffffff !important;
+  color: #111111 !important;
+}
+
+body.light-theme .saric-matrix th,
+body.light-theme .saric-matrix td,
+body.light .saric-matrix th,
+body.light .saric-matrix td,
+[data-theme="light"] .saric-matrix th,
+[data-theme="light"] .saric-matrix td {
+  background: #ffffff !important;
+  color: #111111 !important;
+  border-color: #cfd6e2 !important;
+}
+
+body.light-theme .saric-matrix thead th,
+body.light .saric-matrix thead th,
+[data-theme="light"] .saric-matrix thead th {
+  background: #eef3f9 !important;
+  color: #111111 !important;
+  font-weight: 800;
+}
+
+body.light-theme .saric-matrix tbody tr:nth-child(even) td,
+body.light .saric-matrix tbody tr:nth-child(even) td,
+[data-theme="light"] .saric-matrix tbody tr:nth-child(even) td {
+  background: #f8fafc !important;
+}
+
+
+/* ---------- 2) Logs "Générer planning" lisibles en thème sombre ---------- */
+body.dark-theme .saric-log,
+body.dark .saric-log,
+[data-theme="dark"] .saric-log {
+  color: #ffffff !important;
+}
+
+body.dark-theme .saric-log div,
+body.dark .saric-log div,
+[data-theme="dark"] .saric-log div {
+  color: #ffffff !important;
+  opacity: 0.95;
+}
+
+/* Optionnel : meilleure lisibilité */
+body.dark-theme .saric-log,
+body.dark .saric-log,
+[data-theme="dark"] .saric-log {
+  background: rgba(255,255,255,0.03);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
