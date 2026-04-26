@@ -28439,7 +28439,7 @@ const SARIC_FIXED_RULES = [
   "Toute personne de garde complète est automatiquement en repos de sécurité 24 h le lendemain. Les ½ gardes ne génèrent pas de repos de sécurité.",
   "Les médecins en Stand by sont exclus du planning. Les postes en Stand By sont exclus sur planning.",
   "L’attribution des postes de journée et des gardes dépend de la catégorie du médecin (chirurgie cardiaque, chirurgie vasculaire ou mixte), et de ses habilitations cochées.",
-  "Gestion des demandes d'absence: les demandes CA, indisponible (journée, 24h, garde) formation/DU sont systématiquement respectées. Les demandes Hors clinique et Enseignement/recherche sont respectées si possible.
+  "Gestion des demandes d'absence: les demandes CA, indisponible (journée, 24h, garde) formation/DU sont systématiquement respectées. Les demandes Hors clinique et Enseignement/recherche sont respectées si possible.",
   "Indispo journée et Formation/DU bloquent les postes de journée et les ½ gardes, mais autorisent une garde complète.",
   "Indispo 24h, CA et Hors clinique bloquent journée, garde et ½ garde.",
   "Indispo garde bloque garde et ½ garde, mais autorise un poste de journée."
