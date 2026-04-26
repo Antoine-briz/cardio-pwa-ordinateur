@@ -28574,6 +28574,7 @@ function saricBuildMonthlyAbsences(st, monthKey) {
     st.doctors.forEach(doc => {
       const des = st.desiderata?.[doc.id]?.[iso] || [];
 
+      // Absences toujours affichées dans le global
       if (des.includes("ca")) {
         saricSetAbsence(st, iso, "CA", doc.id);
       }
@@ -28582,15 +28583,25 @@ function saricBuildMonthlyAbsences(st, monthKey) {
         saricSetAbsence(st, iso, "Formation", doc.id);
       }
 
-      if (des.includes("hors_clinique")) {
+      // Absences affichées seulement si elles sont respectées
+      const hasAssignmentThatDay = Object.values(st.assignments?.[iso] || {}).includes(doc.id);
+
+      if (
+        des.includes("hors_clinique") &&
+        !hasAssignmentThatDay
+      ) {
         saricSetAbsence(st, iso, "Hors clinique", doc.id);
       }
 
-      if (des.includes("enseignement")) {
+      if (
+        des.includes("enseignement") &&
+        !hasAssignmentThatDay
+      ) {
         saricSetAbsence(st, iso, "Enseignement/recherche", doc.id);
       }
     });
 
+    // Repos automatique après garde complète
     const yesterday = saricAddDays(date, -1);
     const yIso = saricDateKey(yesterday);
     const yAssign = st.assignments?.[yIso] || {};
@@ -29674,7 +29685,7 @@ function saricPlanningCellContent(st, iso, date) {
   const filter = st.selectedDoctorId;
 
   if (filter && filter !== "global") {
-    const rows = saricSortedPosts(Object.keys(day))
+    const assignedPosts = saricSortedPosts(Object.keys(day))
       .filter(post => day[post] === filter)
       .map(post => `
         <div class="saric-personal-post-badge"
@@ -29682,6 +29693,48 @@ function saricPlanningCellContent(st, iso, date) {
           ${saricEscape(post)}
         </div>
       `);
+
+    const des = st.desiderata?.[filter]?.[iso] || [];
+    const absenceBadges = [];
+
+    if (des.includes("indispo_journee")) {
+      absenceBadges.push(["Indispo journée", "#b7b7b7"]);
+    }
+
+    if (des.includes("indispo_24h")) {
+      absenceBadges.push(["Indispo 24h", "#b7b7b7"]);
+    }
+
+    if (des.includes("indispo_garde")) {
+      absenceBadges.push(["Indispo garde", "#b7b7b7"]);
+    }
+
+    if (des.includes("ca")) {
+      absenceBadges.push(["CA", saricPostColor("CA")]);
+    }
+
+    if (des.includes("formation")) {
+      absenceBadges.push(["Formation", saricPostColor("Formation")]);
+    }
+
+    const hasAssignmentThatDay = Object.values(day).includes(filter);
+
+    if (des.includes("hors_clinique") && !hasAssignmentThatDay) {
+      absenceBadges.push(["Hors clinique", saricPostColor("Hors clinique")]);
+    }
+
+    if (des.includes("enseignement") && !hasAssignmentThatDay) {
+      absenceBadges.push(["Enseignement/recherche", saricPostColor("Enseignement/recherche")]);
+    }
+
+    const renderedAbsences = absenceBadges.map(([label, color]) => `
+      <div class="saric-personal-post-badge"
+           style="background:${color};">
+        ${saricEscape(label)}
+      </div>
+    `);
+
+    const rows = [...assignedPosts, ...renderedAbsences];
 
     return rows.length ? rows.join("") : `<div class="saric-empty">—</div>`;
   }
@@ -30236,33 +30289,42 @@ function saricCategoryAllowsPost(category, post) {
 }
 
 function saricDesiderataBlocks(st, desiderata, isDayPost, isFullGuard, isHalfGuard) {
-  const imperative = st.optionalRules.demandesImperatives;
+  /*
+    Contraintes dures, toujours respectées :
+    - CA : bloque journée + garde + ½ garde
+    - Indispo 24h : bloque journée + garde + ½ garde
+    - Formation/DU : bloque journée + ½ garde, garde complète possible
+    - Indispo journée : bloque journée + ½ garde, garde complète possible
+    - Indispo garde : bloque garde + ½ garde, journée possible
+  */
 
-  /* Toujours appliqués */
-  if (desiderata.includes("ca")) {
+  if (desiderata.includes("ca") || desiderata.includes("indispo_24h")) {
     return isDayPost || isFullGuard || isHalfGuard;
   }
 
-  if (desiderata.includes("formation")) {
+  if (desiderata.includes("formation") || desiderata.includes("indispo_journee")) {
     return isDayPost || isHalfGuard;
   }
 
-  if (!imperative) return false;
-
-  if (desiderata.includes("indispo_journee")) {
-    if (isDayPost || isHalfGuard) return true;
-  }
-
-  if (desiderata.includes("indispo_24h")) {
-    if (isDayPost || isFullGuard || isHalfGuard) return true;
-  }
-
   if (desiderata.includes("indispo_garde")) {
-    if (isFullGuard || isHalfGuard) return true;
+    return isFullGuard || isHalfGuard;
   }
 
-  /* Hors clinique et enseignement/recherche sont affichés comme absences,
-     mais seulement pris en compte “si possible”, donc pas bloquants ici. */
+  /*
+    Contraintes souples :
+    Hors clinique et Enseignement/recherche ne bloquent que si l’option
+    "demandes impératives" est cochée. Sinon elles sont seulement pénalisées
+    dans saricDoctorPenalty().
+  */
+  if (st.optionalRules.demandesImperatives) {
+    if (desiderata.includes("hors_clinique")) {
+      return isDayPost || isFullGuard || isHalfGuard;
+    }
+
+    if (desiderata.includes("enseignement")) {
+      return isDayPost || isHalfGuard;
+    }
+  }
 
   return false;
 }
