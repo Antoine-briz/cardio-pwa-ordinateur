@@ -29220,6 +29220,10 @@ function saricDefaultState() {
     selectedDoctorId: "global",
     doctors,
     absences: {},
+    adminDraftAssignments: {},
+adminDraftAbsences: {},
+publishedAssignments: {},
+publishedAbsences: {},
     postCategories: saricDefaultPostCategories(),
     customDayPosts: [...SARIC_DAY_POSTS],
 customNightPosts: [...SARIC_NIGHT_POSTS],
@@ -29253,6 +29257,10 @@ postCategories: {
 },
       doctors: saved.doctors || base.doctors,
       absences: saved.absences || {},
+      adminDraftAssignments: saved.adminDraftAssignments || {},
+adminDraftAbsences: saved.adminDraftAbsences || {},
+publishedAssignments: saved.publishedAssignments || {},
+publishedAbsences: saved.publishedAbsences || {},
       abilities: saved.abilities || base.abilities,
       optionalRules: { ...base.optionalRules, ...(saved.optionalRules || {}) },
       desiderata: saved.desiderata || {},
@@ -29408,6 +29416,296 @@ function saricUnlockAdmin() {
   } else {
     document.getElementById("saric-admin-msg").textContent = "Code admin incorrect.";
   }
+}
+
+function saricClone(obj) {
+  return JSON.parse(JSON.stringify(obj || {}));
+}
+
+function saricMonthAssignmentsOnly(st, monthKey) {
+  const out = {};
+  Object.entries(st.assignments || {}).forEach(([iso, day]) => {
+    if (iso.startsWith(monthKey)) out[iso] = saricClone(day);
+  });
+  return out;
+}
+
+function saricMonthAbsencesOnly(st, monthKey) {
+  const out = {};
+  Object.entries(st.absences || {}).forEach(([iso, day]) => {
+    if (iso.startsWith(monthKey)) out[iso] = saricClone(day);
+  });
+  return out;
+}
+
+function saricCreateAdminDraftFromGenerated(st, monthKey) {
+  st.adminDraftAssignments = st.adminDraftAssignments || {};
+  st.adminDraftAbsences = st.adminDraftAbsences || {};
+
+  st.adminDraftAssignments[monthKey] = saricMonthAssignmentsOnly(st, monthKey);
+  st.adminDraftAbsences[monthKey] = saricMonthAbsencesOnly(st, monthKey);
+}
+
+function saricAdminDraftExists(st, monthKey) {
+  return !!st.adminDraftAssignments?.[monthKey];
+}
+
+function saricAdminDraftEditMode() {
+  return sessionStorage.getItem("saric_admin_draft_edit_mode") === "1";
+}
+
+function saricSetAdminDraftEditMode(value) {
+  sessionStorage.setItem("saric_admin_draft_edit_mode", value ? "1" : "0");
+}
+
+function saricAdminEditPlanning() {
+  saricSetAdminDraftEditMode(true);
+  saricRenderAdmin();
+}
+
+function saricAdminCancelEditPlanning() {
+  saricSetAdminDraftEditMode(false);
+  saricRenderAdmin();
+}
+
+function saricInitialsToDoctorId(text, st) {
+  const clean = String(text || "").trim();
+  if (!clean) return "";
+
+  const found = st.doctors.find(d => saricDoctorInitials(d.name) === clean);
+  return found?.id || "";
+}
+
+function saricInitialsListToDoctorIds(text, st) {
+  return String(text || "")
+    .trim()
+    .split(/\s+/)
+    .map(x => saricInitialsToDoctorId(x, st))
+    .filter(Boolean);
+}
+
+function saricSaveAdminDraftPlanning() {
+  const st = saricLoadState();
+  const month = st.month;
+
+  st.adminDraftAssignments = st.adminDraftAssignments || {};
+  st.adminDraftAbsences = st.adminDraftAbsences || {};
+  st.adminDraftAssignments[month] = st.adminDraftAssignments[month] || {};
+  st.adminDraftAbsences[month] = st.adminDraftAbsences[month] || {};
+
+  document.querySelectorAll("[data-saric-admin-cell='1']").forEach(cell => {
+    const iso = cell.dataset.iso;
+    const post = cell.dataset.post;
+    const value = cell.textContent.trim();
+
+    if (SARIC_ABSENCE_POSTS.includes(post)) {
+      st.adminDraftAbsences[month][iso] = st.adminDraftAbsences[month][iso] || {};
+      const ids = saricInitialsListToDoctorIds(value, st);
+
+      if (ids.length) st.adminDraftAbsences[month][iso][post] = ids;
+      else delete st.adminDraftAbsences[month][iso][post];
+    } else {
+      st.adminDraftAssignments[month][iso] = st.adminDraftAssignments[month][iso] || {};
+      const id = saricInitialsToDoctorId(value, st);
+
+      if (id) st.adminDraftAssignments[month][iso][post] = id;
+      else delete st.adminDraftAssignments[month][iso][post];
+    }
+  });
+
+  saricSaveState(st);
+  saricSetAdminDraftEditMode(false);
+  saricRenderAdmin();
+}
+
+function saricDeleteAdminDraftPlanning() {
+  const st = saricLoadState();
+  const month = st.month;
+
+  if (!confirm(`Supprimer la version générée/modifiable du planning ${saricMonthLabel(month)} ?`)) return;
+
+  delete st.adminDraftAssignments?.[month];
+  delete st.adminDraftAbsences?.[month];
+
+  saricSaveState(st);
+  saricSetAdminDraftEditMode(false);
+  saricRenderAdmin();
+}
+
+function saricPublishAdminDraftPlanning() {
+  const st = saricLoadState();
+  const month = st.month;
+
+  if (!saricAdminDraftExists(st, month)) {
+    alert("Aucun planning généré à publier.");
+    return;
+  }
+
+  if (!confirm(`Publier le planning ${saricMonthLabel(month)} ? Il deviendra la référence pour le planning global et les plannings personnels.`)) {
+    return;
+  }
+
+  st.publishedAssignments = st.publishedAssignments || {};
+  st.publishedAbsences = st.publishedAbsences || {};
+
+  st.publishedAssignments[month] = saricClone(st.adminDraftAssignments[month]);
+  st.publishedAbsences[month] = saricClone(st.adminDraftAbsences?.[month] || {});
+
+  /*
+    Important :
+    on remplace aussi st.assignments/st.absences pour que toute l'application
+    utilise immédiatement la version publiée.
+  */
+  Object.keys(st.assignments || {}).forEach(iso => {
+    if (iso.startsWith(month)) delete st.assignments[iso];
+  });
+
+  Object.entries(st.publishedAssignments[month]).forEach(([iso, day]) => {
+    st.assignments[iso] = saricClone(day);
+  });
+
+  Object.keys(st.absences || {}).forEach(iso => {
+    if (iso.startsWith(month)) delete st.absences[iso];
+  });
+
+  Object.entries(st.publishedAbsences[month]).forEach(([iso, day]) => {
+    st.absences[iso] = saricClone(day);
+  });
+
+  saricSaveState(st);
+  saricSetAdminDraftEditMode(false);
+  saricRenderAdmin();
+}
+
+function saricRenderAdminDraftPlanningCard(st) {
+  const month = st.month;
+
+  if (!saricAdminDraftExists(st, month)) {
+    return "";
+  }
+
+  const edit = saricAdminDraftEditMode();
+
+  return `
+    <div class="card saric-admin-published-card">
+      <h3>Version générée / publiée - ${saricEscape(saricMonthLabel(month))}</h3>
+      <p>
+        Ce tableau est la version modifiable par l’admin. Après publication,
+        il devient la référence pour le planning global et les plannings personnels.
+      </p>
+
+      ${saricAdminEditablePlanningTable(st, edit)}
+
+      <div class="saric-admin-planning-actions">
+        ${edit ? `
+          <button class="btn" onclick="saricSaveAdminDraftPlanning()">Sauvegarder</button>
+          <button class="btn ghost" onclick="saricAdminCancelEditPlanning()">Annuler</button>
+        ` : `
+          <button class="btn" onclick="saricAdminEditPlanning()">Modifier</button>
+        `}
+
+        <button class="btn ghost" onclick="saricDeleteAdminDraftPlanning()">Supprimer</button>
+
+        <button class="btn saric-publish-btn" onclick="saricPublishAdminDraftPlanning()">
+          Publier
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function saricAdminEditablePlanningTable(st, editable) {
+  const month = st.month;
+  const days = saricDaysInMonth(month);
+
+  const basePosts = typeof saricGetAllPosts === "function"
+    ? saricGetAllPosts(st)
+    : [
+        ...SARIC_NIGHT_POSTS,
+        ...SARIC_COORD_POSTS,
+        ...SARIC_DAY_POSTS.filter(p => !SARIC_COORD_POSTS.includes(p))
+      ];
+
+  const posts = typeof saricSortedPosts === "function"
+    ? saricSortedPosts([...basePosts, ...SARIC_ABSENCE_POSTS])
+    : [...basePosts, ...SARIC_ABSENCE_POSTS];
+
+  const weekGroups = saricWeekGroupsForMonth(days);
+  const draftAssignments = st.adminDraftAssignments?.[month] || {};
+  const draftAbsences = st.adminDraftAbsences?.[month] || {};
+
+  return `
+    <div class="saric-global-scroll saric-admin-edit-scroll">
+      <table class="saric-global-table saric-admin-edit-table">
+        <thead>
+          <tr class="saric-week-row">
+            <th class="saric-post-col"></th>
+            ${weekGroups.map(g => `
+              <th colspan="${g.colspan}" class="saric-week-header">
+                ${saricEscape(saricWeekLabel(g))}
+              </th>
+            `).join("")}
+          </tr>
+
+          <tr>
+            <th class="saric-post-col">Poste</th>
+            ${days.map(d => {
+              const label = d.toLocaleDateString("fr-FR", {
+                weekday: "short",
+                day: "numeric"
+              });
+              return `<th>${saricEscape(label)}</th>`;
+            }).join("")}
+          </tr>
+        </thead>
+
+        <tbody>
+          ${posts.map(post => {
+            const bg = typeof saricPostColorPastel === "function"
+              ? saricPostColorPastel(post)
+              : "#ffffff";
+
+            return `
+              <tr style="background:${bg};">
+                <td class="saric-post-col" style="background:${bg};">
+                  ${saricEscape(post)}
+                </td>
+
+                ${days.map(d => {
+                  const iso = saricDateKey(d);
+
+                  let value = "";
+
+                  if (SARIC_ABSENCE_POSTS.includes(post)) {
+                    const ids = draftAbsences?.[iso]?.[post] || [];
+                    value = ids
+                      .map(id => st.doctors.find(x => x.id === id))
+                      .filter(Boolean)
+                      .map(doc => saricDoctorInitials(doc.name))
+                      .join(" ");
+                  } else {
+                    const docId = draftAssignments?.[iso]?.[post];
+                    const doc = st.doctors.find(x => x.id === docId);
+                    value = doc ? saricDoctorInitials(doc.name) : "";
+                  }
+
+                  return `
+                    <td style="background:${bg};"
+                        data-saric-admin-cell="1"
+                        data-iso="${iso}"
+                        data-post="${saricEscape(post)}"
+                        ${editable ? `contenteditable="true"` : ""}>
+                      ${saricEscape(value)}
+                    </td>
+                  `;
+                }).join("")}
+              </tr>
+            `;
+          }).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
 }
 
 function renderPlanningMedical() {
@@ -29938,29 +30236,37 @@ function saricRenderAdmin() {
   <ol>${SARIC_FIXED_RULES.map(r => `<li>${saricEscape(r)}</li>`).join("")}</ol>
 </details>
 
-    <div class="card saric-rules">
-      <h3>Règles optionnelles</h3>
-      <p>Cochées = prises en compte par l’algorithme. Décochées = ignorées.</p>
-      ${Object.entries(SARIC_OPTIONAL_RULES_LABELS).map(([key, label]) => `
-        <label>
-          <input type="checkbox" ${st.optionalRules[key] ? "checked" : ""}
-                 onchange="saricSetOptionalRule('${key}', this.checked)">
-          ${saricEscape(label)}
-        </label>
-      `).join("")}
-    </div>
+    <details class="card saric-rules saric-rules-collapsible">
+  <summary>
+    <h3>Règles optionnelles</h3>
+    <span>Cliquer pour afficher/masquer</span>
+  </summary>
 
-    <div class="card saric-rules">
-      <h3>Suivi des désidératas - ${saricEscape(saricMonthLabel(adminMonth))}</h3>
-      <div class="saric-desid-status">
-        ${saricDoctorsSorted(st.doctors).map(d => `
-          <div class="saric-desid-line">
-            <span>${submitted[d.id] ? "✅" : "❌"}</span>
-            <strong>${saricEscape(d.name)}</strong>
-          </div>
-        `).join("")}
+  <p>Cochées = prises en compte par l’algorithme. Décochées = ignorées.</p>
+  ${Object.entries(SARIC_OPTIONAL_RULES_LABELS).map(([key, label]) => `
+    <label>
+      <input type="checkbox" ${st.optionalRules[key] ? "checked" : ""}
+             onchange="saricSetOptionalRule('${key}', this.checked)">
+      ${saricEscape(label)}
+    </label>
+  `).join("")}
+</details>
+
+    <details class="card saric-rules saric-rules-collapsible">
+  <summary>
+    <h3>Suivi des désidératas - ${saricEscape(saricMonthLabel(adminMonth))}</h3>
+    <span>Cliquer pour afficher/masquer</span>
+  </summary>
+
+  <div class="saric-desid-status">
+    ${saricDoctorsSorted(st.doctors).map(d => `
+      <div class="saric-desid-line">
+        <span>${submitted[d.id] ? "✅" : "❌"}</span>
+        <strong>${saricEscape(d.name)}</strong>
       </div>
-    </div>
+    `).join("")}
+  </div>
+</details>
 
     <div class="card saric-generate-card">
       <button class="btn saric-big-generate" onclick="saricGenerateMonthPlanning()">
@@ -29969,6 +30275,7 @@ function saricRenderAdmin() {
       <div class="saric-log">
         ${(st.generationLogs?.[adminMonth] || []).map(x => `<div>${saricEscape(x)}</div>`).join("")}
       </div>
+      ${saricRenderAdminDraftPlanningCard(st)}
     </div>
   `;
 }
@@ -30183,6 +30490,7 @@ function saricGenerateMonthPlanning() {
 
   st.generationLogs[month] = logs.length ? logs : [`Planning ${saricMonthLabel(month)} généré sans poste manquant.`];
   saricBuildMonthlyAbsences(st, month);
+  saricCreateAdminDraftFromGenerated(st, month);
   saricSaveState(st);
   saricRenderAdmin();
 }
