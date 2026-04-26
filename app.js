@@ -28542,6 +28542,69 @@ const SARIC_POST_COLORS = {
   "Formation": "#674ea7"
 };
 
+const SARIC_ABSENCE_POSTS = [
+  "Hors clinique",
+  "Enseignement/recherche",
+  "Repos de garde",
+  "CA",
+  "Formation"
+];
+
+function saricEnsureAbsences(st) {
+  st.absences = st.absences || {};
+  return st.absences;
+}
+
+function saricSetAbsence(st, iso, post, docId) {
+  saricEnsureAbsences(st);
+  st.absences[iso] = st.absences[iso] || {};
+  st.absences[iso][post] = st.absences[iso][post] || [];
+
+  if (!st.absences[iso][post].includes(docId)) {
+    st.absences[iso][post].push(docId);
+  }
+}
+
+function saricBuildMonthlyAbsences(st, monthKey) {
+  saricEnsureAbsences(st);
+
+  saricDaysInMonth(monthKey).forEach(date => {
+    const iso = saricDateKey(date);
+    st.absences[iso] = {};
+
+    st.doctors.forEach(doc => {
+      const des = st.desiderata?.[doc.id]?.[iso] || [];
+
+      if (des.includes("ca")) {
+        saricSetAbsence(st, iso, "CA", doc.id);
+      }
+
+      if (des.includes("formation")) {
+        saricSetAbsence(st, iso, "Formation", doc.id);
+      }
+
+      if (des.includes("hors_clinique")) {
+        saricSetAbsence(st, iso, "Hors clinique", doc.id);
+      }
+
+      if (des.includes("enseignement")) {
+        saricSetAbsence(st, iso, "Enseignement/recherche", doc.id);
+      }
+    });
+
+    const yesterday = saricAddDays(date, -1);
+    const yIso = saricDateKey(yesterday);
+    const yAssign = st.assignments?.[yIso] || {};
+
+    SARIC_GARDES_COMPLETES.forEach(post => {
+      const docId = yAssign[post];
+      if (docId) {
+        saricSetAbsence(st, iso, "Repos de garde", docId);
+      }
+    });
+  });
+}
+
 function saricSortedPosts(posts) {
   return [...posts].sort((a, b) => {
     const ia = SARIC_POST_DISPLAY_ORDER.indexOf(a);
@@ -29147,6 +29210,7 @@ function saricDefaultState() {
     activeTab: "planning",
     selectedDoctorId: "global",
     doctors,
+    absences: {},
     postCategories: saricDefaultPostCategories(),
     customDayPosts: [...SARIC_DAY_POSTS],
 customNightPosts: [...SARIC_NIGHT_POSTS],
@@ -29179,6 +29243,7 @@ postCategories: {
   ...(saved.postCategories || {})
 },
       doctors: saved.doctors || base.doctors,
+      absences: saved.absences || {},
       abilities: saved.abilities || base.abilities,
       optionalRules: { ...base.optionalRules, ...(saved.optionalRules || {}) },
       desiderata: saved.desiderata || {},
@@ -29660,9 +29725,11 @@ function saricPlanningGlobalTable() {
         ...SARIC_DAY_POSTS.filter(p => !SARIC_COORD_POSTS.includes(p))
       ];
 
-  const posts = typeof saricSortedPosts === "function"
-    ? saricSortedPosts(basePosts)
-    : basePosts;
+  saricBuildMonthlyAbsences(st, st.month);
+
+const posts = typeof saricSortedPosts === "function"
+  ? saricSortedPosts([...basePosts, ...SARIC_ABSENCE_POSTS])
+  : [...basePosts, ...SARIC_ABSENCE_POSTS];
 
   const weekGroups = saricWeekGroupsForMonth(days);
 
@@ -29708,14 +29775,30 @@ function saricPlanningGlobalTable() {
 
                   ${days.map(d => {
                     const iso = saricDateKey(d);
-                    const docId = st.assignments?.[iso]?.[post];
-                    const doc = st.doctors.find(x => x.id === docId);
+                    const absenceIds = st.absences?.[iso]?.[post] || [];
 
-                    return `
-                      <td style="background:${bg};">
-                        ${doc ? saricDoctorInitials(doc.name) : ""}
-                      </td>
-                    `;
+if (SARIC_ABSENCE_POSTS.includes(post)) {
+  const names = absenceIds
+    .map(id => st.doctors.find(x => x.id === id))
+    .filter(Boolean)
+    .map(doc => saricDoctorInitials(doc.name))
+    .join(" ");
+
+  return `
+    <td style="background:${bg};">
+      ${names}
+    </td>
+  `;
+}
+
+const docId = st.assignments?.[iso]?.[post];
+const doc = st.doctors.find(x => x.id === docId);
+
+return `
+  <td style="background:${bg};">
+    ${doc ? saricDoctorInitials(doc.name) : ""}
+  </td>
+`;
                   }).join("")}
                 </tr>
               `;
@@ -30050,6 +30133,7 @@ function saricGenerateMonthPlanning() {
   });
 
   st.generationLogs[month] = logs.length ? logs : [`Planning ${saricMonthLabel(month)} généré sans poste manquant.`];
+  saricBuildMonthlyAbsences(st, month);
   saricSaveState(st);
   saricRenderAdmin();
 }
@@ -30154,19 +30238,32 @@ function saricCategoryAllowsPost(category, post) {
 
 function saricDesiderataBlocks(st, desiderata, isDayPost, isFullGuard, isHalfGuard) {
   const imperative = st.optionalRules.demandesImperatives;
+
+  /* Toujours appliqués */
+  if (desiderata.includes("ca")) {
+    return isDayPost || isFullGuard || isHalfGuard;
+  }
+
+  if (desiderata.includes("formation")) {
+    return isDayPost || isHalfGuard;
+  }
+
   if (!imperative) return false;
 
-  if (desiderata.includes("indispo_journee") || desiderata.includes("formation") || desiderata.includes("enseignement")) {
+  if (desiderata.includes("indispo_journee")) {
     if (isDayPost || isHalfGuard) return true;
   }
 
-  if (desiderata.includes("indispo_24h") || desiderata.includes("ca") || desiderata.includes("hors_clinique")) {
+  if (desiderata.includes("indispo_24h")) {
     if (isDayPost || isFullGuard || isHalfGuard) return true;
   }
 
   if (desiderata.includes("indispo_garde")) {
     if (isFullGuard || isHalfGuard) return true;
   }
+
+  /* Hors clinique et enseignement/recherche sont affichés comme absences,
+     mais seulement pris en compte “si possible”, donc pas bloquants ici. */
 
   return false;
 }
