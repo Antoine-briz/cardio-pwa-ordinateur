@@ -30278,6 +30278,7 @@ function saricRenderAdmin() {
       ${saricRenderAdminDraftPlanningCard(st)}
     </div>
   `;
+   saricPreventDetailsCloseFromInputs();
 }
 
 function saricSetDoctorCategory(docId, category) {
@@ -30836,6 +30837,24 @@ function saricCloseDesiderataPopup(event) {
   if (event.target?.id === "saric-popup") {
     event.target.remove();
   }
+}
+
+function saricPreventDetailsCloseFromInputs() {
+  document.querySelectorAll(".saric-rules-collapsible").forEach(box => {
+    const contentInputs = box.querySelectorAll(
+      'input, label, select, textarea, button'
+    );
+
+    contentInputs.forEach(el => {
+      el.addEventListener("click", function (e) {
+        e.stopPropagation();
+      });
+
+      el.addEventListener("change", function (e) {
+        e.stopPropagation();
+      });
+    });
+  });
 }
 
 function mergeAllAnnuaireTables(root = document) {
