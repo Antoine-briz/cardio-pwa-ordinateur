@@ -29713,31 +29713,31 @@ function saricRenderAccount() {
     <div class="saric-account-grid">
 
       <div class="card saric-account-card">
-        <h3>Modifier mon mot de passe</h3>
+  <h3>Modifier mon mot de passe</h3>
 
-        <div class="saric-fields-3">
-          <label>
-            Ancien mot de passe
-            <input id="saric-old-password" type="password" placeholder="Ancien">
-          </label>
+  <div class="saric-fields-4">
+    <label>
+      Ancien mot de passe
+      <input id="saric-old-password" type="password" placeholder="Ancien">
+    </label>
 
-          <label>
-            Nouveau mot de passe
-            <input id="saric-new-password" type="password" placeholder="Nouveau">
-          </label>
+    <label>
+      Nouveau mot de passe
+      <input id="saric-new-password" type="password" placeholder="Nouveau">
+    </label>
 
-          <label>
-            Confirmation
-            <input id="saric-confirm-password" type="password" placeholder="Confirmation">
-          </label>
-        </div>
+    <label>
+      Confirmation
+      <input id="saric-confirm-password" type="password" placeholder="Confirmation">
+    </label>
 
-        <button class="btn" onclick="saricChangePassword()">
-          Modifier le mot de passe
-        </button>
+    <button class="btn" onclick="saricChangePassword()">
+      Modifier le mot de passe
+    </button>
+  </div>
 
-        <div id="saric-password-msg" class="saric-form-msg"></div>
-      </div>
+  <div id="saric-password-msg" class="saric-form-msg"></div>
+</div>
 
       <div class="card saric-account-card">
         <h3>Modifier mon mail</h3>
