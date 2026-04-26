@@ -13184,3 +13184,106 @@ main.container,
 .saric-post-row strong {
   font-weight: 900;
 }
+
+/* ============================================================
+   PLANNING GLOBAL - style final tableau
+   ============================================================ */
+
+.saric-global-table-card {
+  border-radius: 18px !important;
+  overflow: hidden !important;
+}
+
+.saric-global-scroll {
+  border: 2px solid #0b3c6d !important;
+  border-radius: 16px !important;
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+  background: #ffffff !important;
+}
+
+/* Tableau */
+.saric-global-table {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  background: #ffffff !important;
+  color: #000000 !important;
+  overflow: hidden !important;
+}
+
+/* Cellules */
+.saric-global-table th,
+.saric-global-table td {
+  border-right: 1px solid #111827 !important;
+  border-bottom: 1px solid #111827 !important;
+  color: #000000 !important;
+  font-weight: 700;
+}
+
+/* Bandeau semaines */
+.saric-global-table .saric-week-header {
+  background: #0b3c6d !important;
+  color: #ffffff !important;
+  font-weight: 900 !important;
+  text-align: center !important;
+  letter-spacing: 0.2px;
+  height: 36px !important;
+}
+
+/* Ligne jours */
+.saric-global-table thead tr:nth-child(2) th {
+  background: #dbeafe !important;
+  color: #0b1f3b !important;
+  font-weight: 900 !important;
+}
+
+/* Colonne postes */
+.saric-global-table .saric-post-col {
+  background: inherit !important;
+  color: #000000 !important;
+  font-weight: 900 !important;
+  text-align: left !important;
+  padding-left: 12px !important;
+}
+
+/* Cellule vide en haut à gauche */
+.saric-global-table thead .saric-post-col {
+  background: #dbeafe !important;
+  color: #0b1f3b !important;
+}
+
+/* Arrondis visuels */
+.saric-global-table thead tr:first-child th:first-child {
+  border-top-left-radius: 14px;
+}
+
+.saric-global-table thead tr:first-child th:last-child {
+  border-top-right-radius: 14px;
+}
+
+/* Lisibilité des cases */
+.saric-global-table tbody td {
+  min-height: 34px !important;
+  font-size: 0.82rem;
+}
+
+/* Effet hover ligne */
+.saric-global-table tbody tr:hover td {
+  filter: brightness(0.94);
+}
+
+/* Scrollbar plus propre */
+.saric-global-scroll::-webkit-scrollbar {
+  height: 12px;
+  width: 12px;
+}
+
+.saric-global-scroll::-webkit-scrollbar-thumb {
+  background: #0b3c6d;
+  border-radius: 999px;
+}
+
+.saric-global-scroll::-webkit-scrollbar-track {
+  background: #e5e7eb;
+  border-radius: 999px;
+}
