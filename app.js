@@ -28469,6 +28469,141 @@ const SARIC_OPTIONAL_RULES_DEFAULT = {
 const SARIC_DOCTOR_EDIT_KEY = "saric_doctor_edit_mode";
 const SARIC_POST_EDIT_KEY = "saric_post_edit_mode";
 
+const SARIC_POST_DISPLAY_ORDER = [
+  "Garde anesth CEC",
+  "Garde réa",
+  "Garde USIP",
+  "½ garde CEC",
+  "½ garde vasc",
+  "Coordo bloc",
+  "Bloc CEC 1",
+  "Bloc CEC 2",
+  "Bloc CEC 3",
+  "Bloc CEC 4",
+  "Bloc vasc. 1",
+  "Bloc vasc. 2",
+  "SSPI",
+  "PTI",
+  "Radio-vasculaire",
+  "Coordo réa",
+  "Réa 1",
+  "Réa 2",
+  "Réa 3",
+  "USIP1",
+  "USIP2",
+  "Consult. chir. Card.",
+  "Consult. Cardio. Med",
+  "Consult. Vasculaire",
+  "Hors salle",
+  "Visite/étage",
+  "Hors clinique",
+  "Enseignement/recherche",
+  "Repos de garde",
+  "CA",
+  "Formation"
+];
+
+const SARIC_POST_COLORS = {
+  "Garde anesth CEC": "#ff0000",
+  "Garde réa": "#ff0000",
+  "Garde USIP": "#ff0000",
+  "½ garde CEC": "#f06292",
+  "½ garde vasc": "#f06292",
+
+  "Coordo bloc": "#2f5597",
+  "Bloc CEC 1": "#2f5597",
+  "Bloc CEC 2": "#2f5597",
+  "Bloc CEC 3": "#2f5597",
+  "Bloc CEC 4": "#2f5597",
+  "Bloc vasc. 1": "#2f5597",
+  "Bloc vasc. 2": "#2f5597",
+
+  "SSPI": "#76a5af",
+  "PTI": "#76a5af",
+  "Radio-vasculaire": "#76a5af",
+
+  "Coordo réa": "#6aa84f",
+  "Réa 1": "#6aa84f",
+  "Réa 2": "#6aa84f",
+  "Réa 3": "#6aa84f",
+  "USIP1": "#93c47d",
+  "USIP2": "#93c47d",
+
+  "Consult. chir. Card.": "#e69138",
+  "Consult. Cardio. Med": "#e69138",
+  "Consult. Vasculaire": "#e69138",
+  "Hors salle": "#e69138",
+  "Visite/étage": "#e69138",
+
+  "Hors clinique": "#b7b7b7",
+  "Enseignement/recherche": "#b7b7b7",
+  "Repos de garde": "#674ea7",
+  "CA": "#674ea7",
+  "Formation": "#674ea7"
+};
+
+function saricSortedPosts(posts) {
+  return [...posts].sort((a, b) => {
+    const ia = SARIC_POST_DISPLAY_ORDER.indexOf(a);
+    const ib = SARIC_POST_DISPLAY_ORDER.indexOf(b);
+    if (ia === -1 && ib === -1) return a.localeCompare(b, "fr");
+    if (ia === -1) return 1;
+    if (ib === -1) return -1;
+    return ia - ib;
+  });
+}
+
+function saricPostColor(post) {
+  return SARIC_POST_COLORS[post] || "#64748b";
+}
+
+function saricPostColorPastel(post) {
+  const hex = saricPostColor(post).replace("#", "");
+  const r = parseInt(hex.slice(0, 2), 16);
+  const g = parseInt(hex.slice(2, 4), 16);
+  const b = parseInt(hex.slice(4, 6), 16);
+
+  const mix = 0.78;
+  const pr = Math.round(r + (255 - r) * mix);
+  const pg = Math.round(g + (255 - g) * mix);
+  const pb = Math.round(b + (255 - b) * mix);
+
+  return `rgb(${pr}, ${pg}, ${pb})`;
+}
+
+function saricWeekGroupsForMonth(days) {
+  const groups = [];
+  let current = null;
+
+  days.forEach((d, index) => {
+    const monday = saricAddDays(d, -((d.getDay() + 6) % 7));
+    const sunday = saricAddDays(monday, 6);
+    const key = saricDateKey(monday);
+
+    if (!current || current.key !== key) {
+      current = {
+        key,
+        start: d,
+        end: d,
+        colspan: 1
+      };
+      groups.push(current);
+    } else {
+      current.end = d;
+      current.colspan++;
+    }
+  });
+
+  return groups;
+}
+
+function saricWeekLabel(group) {
+  const startDay = group.start.getDate();
+  const endDay = group.end.getDate();
+  const month = group.start.toLocaleDateString("fr-FR", { month: "long" });
+  return `Semaine du ${startDay} au ${endDay} ${month}`;
+}
+
 function saricDoctorEditMode() {
   return sessionStorage.getItem(SARIC_DOCTOR_EDIT_KEY) === "1";
 }
@@ -28722,7 +28857,7 @@ function saricRenderDoctorManagementCard(st) {
 function saricRenderPostManagementCard(st) {
   const edit = saricPostEditMode();
   const cats = st.postCategories || saricDefaultPostCategories();
-  const posts = saricGetAllPosts(st);
+  const posts = saricSortedPosts(saricGetAllPosts(st));
 
   return `
     <div class="card">
@@ -28741,7 +28876,7 @@ function saricRenderPostManagementCard(st) {
 
       <div class="saric-post-list">
         ${posts.map(post => `
-          <div class="saric-post-row saric-editable-row">
+          <div class="saric-post-row saric-editable-row" style="--post-color:${saricPostColor(post)};">
             ${edit ? `
               <button class="saric-delete-x" onclick='saricRemovePost(${JSON.stringify(post)})'>×</button>
             ` : ""}
@@ -28800,7 +28935,7 @@ function saricRenderPostManagementCard(st) {
       <p>Attribuez une catégorie à chaque poste.</p>
 
       <div class="saric-post-list">
-        ${SARIC_ALL_POSTS.map(post => `
+        ${saricSortedPosts(SARIC_ALL_POSTS).map(post => `
           <div class="saric-post-row">
             <strong>${saricEscape(post)}</strong>
 
@@ -29475,9 +29610,15 @@ function saricPlanningCellContent(st, iso, date) {
   const filter = st.selectedDoctorId;
 
   if (filter && filter !== "global") {
-    const rows = Object.entries(day)
-      .filter(([, docId]) => docId === filter)
-      .map(([post]) => `<div class="saric-shift"><span>${saricEscape(post)}</span></div>`);
+    const rows = saricSortedPosts(Object.keys(day))
+      .filter(post => day[post] === filter)
+      .map(post => `
+        <div class="saric-personal-post-badge"
+             style="background:${saricPostColor(post)};">
+          ${saricEscape(post)}
+        </div>
+      `);
+
     return rows.length ? rows.join("") : `<div class="saric-empty">—</div>`;
   }
 
@@ -29511,11 +29652,19 @@ function saricPlanningGlobalTable() {
   const st = saricLoadState();
   const days = saricDaysInMonth(st.month);
 
-  const posts = [
-    ...SARIC_NIGHT_POSTS,
-    ...SARIC_COORD_POSTS,
-    ...SARIC_DAY_POSTS.filter(p => !SARIC_COORD_POSTS.includes(p))
-  ];
+  const basePosts = typeof saricGetAllPosts === "function"
+    ? saricGetAllPosts(st)
+    : [
+        ...SARIC_NIGHT_POSTS,
+        ...SARIC_COORD_POSTS,
+        ...SARIC_DAY_POSTS.filter(p => !SARIC_COORD_POSTS.includes(p))
+      ];
+
+  const posts = typeof saricSortedPosts === "function"
+    ? saricSortedPosts(basePosts)
+    : basePosts;
+
+  const weekGroups = saricWeekGroupsForMonth(days);
 
   return `
     <div class="card saric-global-table-card">
@@ -29524,6 +29673,15 @@ function saricPlanningGlobalTable() {
       <div class="saric-global-scroll">
         <table class="saric-global-table">
           <thead>
+            <tr class="saric-week-row">
+              <th class="saric-post-col"></th>
+              ${weekGroups.map(g => `
+                <th colspan="${g.colspan}" class="saric-week-header">
+                  ${saricEscape(saricWeekLabel(g))}
+                </th>
+              `).join("")}
+            </tr>
+
             <tr>
               <th class="saric-post-col">Poste</th>
               ${days.map(d => {
@@ -29537,17 +29695,31 @@ function saricPlanningGlobalTable() {
           </thead>
 
           <tbody>
-            ${posts.map(post => `
-              <tr>
-                <td class="saric-post-col">${saricEscape(post)}</td>
-                ${days.map(d => {
-                  const iso = saricDateKey(d);
-                  const docId = st.assignments?.[iso]?.[post];
-                  const doc = st.doctors.find(x => x.id === docId);
-                  return `<td>${doc ? saricDoctorInitials(doc.name) : ""}</td>`;
-                }).join("")}
-              </tr>
-            `).join("")}
+            ${posts.map(post => {
+              const bg = typeof saricPostColorPastel === "function"
+                ? saricPostColorPastel(post)
+                : "#ffffff";
+
+              return `
+                <tr style="background:${bg};">
+                  <td class="saric-post-col" style="background:${bg};">
+                    ${saricEscape(post)}
+                  </td>
+
+                  ${days.map(d => {
+                    const iso = saricDateKey(d);
+                    const docId = st.assignments?.[iso]?.[post];
+                    const doc = st.doctors.find(x => x.id === docId);
+
+                    return `
+                      <td style="background:${bg};">
+                        ${doc ? saricDoctorInitials(doc.name) : ""}
+                      </td>
+                    `;
+                  }).join("")}
+                </tr>
+              `;
+            }).join("")}
           </tbody>
         </table>
       </div>
