@@ -29573,30 +29573,103 @@ function saricSelectPlanningDoctor(id) {
 
 function saricRenderDesiderata() {
   const st = saricLoadState();
-  const current = saricCurrentUser();
+  const doctor = saricCurrentDoctor();
+  if (!doctor) return;
 
-  st.selectedDoctorId = current.doctorId;
-  saricSaveState(st);
-
-  const currentDoctor = st.doctors.find(d => d.id === current.doctorId);
-
-  const extra = `
-    <div class="saric-current-doctor-label">
-      ${saricEscape(currentDoctor?.name || current.name)}
-    </div>
-    <button class="btn saric-small-btn" onclick="saricSubmitDesiderataMonth()">
-      Valider mes désidératas du mois
-    </button>
-  `;
+  const days = saricDaysInMonth(st.month);
 
   document.getElementById("saric-planning-body").innerHTML = `
-    ${saricMonthControl(extra)}
-    <div class="card saric-choice-panel" id="saric-choice-panel">
-      <h3>Désidératas</h3>
-      <p>Sélectionnez une date du calendrier.</p>
+    ${saricMonthControl("")}
+
+    <div class="card">
+      <h3>Désidératas - ${saricEscape(doctor.name)}</h3>
+      <p>Cliquez sur une date pour choisir vos demandes.</p>
+
+      <div class="saric-calendar-grid">
+        ${days.map(d => {
+          const iso = saricDateKey(d);
+          const des = st.desiderata?.[doctor.id]?.[iso] || [];
+
+          return `
+            <div class="saric-day-cell ${des.length ? "filled" : ""}"
+                 onclick="saricOpenDesiderataPopup('${iso}')">
+
+              <div class="saric-day-number">${d.getDate()}</div>
+
+              <div class="saric-day-tags">
+                ${des.map(x => `
+                  <span class="saric-tag">
+                    ${saricEscape(SARIC_DESIDERATA_LABELS[x] || x)}
+                  </span>
+                `).join("")}
+              </div>
+            </div>
+          `;
+        }).join("")}
+      </div>
+
+      <div class="saric-actions">
+        <button class="btn" onclick="saricSubmitDesiderata()">
+          Valider mes désidératas
+        </button>
+      </div>
     </div>
-    ${saricCalendarHtml("desiderata")}
   `;
+}
+
+function saricOpenDesiderataPopup(iso) {
+  const st = saricLoadState();
+  const doctor = saricCurrentDoctor();
+  if (!doctor) return;
+
+  const selected = st.desiderata?.[doctor.id]?.[iso] || [];
+
+  const html = `
+    <div class="saric-popup-overlay" id="saric-popup">
+      <div class="saric-popup-box">
+
+        <h3>${saricEscape(saricDateLabel(iso))}</h3>
+
+        <div class="saric-popup-options">
+          ${Object.entries(SARIC_DESIDERATA_LABELS).map(([key, label]) => `
+            <label>
+              <input type="checkbox"
+                     value="${key}"
+                     ${selected.includes(key) ? "checked" : ""}>
+              ${saricEscape(label)}
+            </label>
+          `).join("")}
+        </div>
+
+        <button class="btn saric-popup-ok"
+                onclick="saricSaveDesiderataPopup('${iso}')">
+          OK
+        </button>
+
+      </div>
+    </div>
+  `;
+
+  document.body.insertAdjacentHTML("beforeend", html);
+}
+
+function saricSaveDesiderataPopup(iso) {
+  const popup = document.getElementById("saric-popup");
+  if (!popup) return;
+
+  const checked = [...popup.querySelectorAll("input:checked")]
+    .map(x => x.value);
+
+  const st = saricLoadState();
+  const doctor = saricCurrentDoctor();
+
+  if (!st.desiderata[doctor.id]) st.desiderata[doctor.id] = {};
+  st.desiderata[doctor.id][iso] = checked;
+
+  saricSaveState(st);
+
+  popup.remove();
+  saricRenderDesiderata();
 }
 
 function saricSelectDesiderataDoctor(id) {
