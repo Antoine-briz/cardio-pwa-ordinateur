@@ -28448,10 +28448,18 @@ const SARIC_FIXED_RULES = [
 const SARIC_OPTIONAL_RULES_LABELS = {
   max2GardesSemaine: "Maximum deux gardes par semaine",
   max2DemiGardesSemaine: "Maximum deux ½ gardes par semaine",
-  max2GardesWEFerieMois: "Maximum deux gardes de week-end ou jours fériés par mois",
+  max2GardesWEFerieMois: "Maximum deux gardes de WE ou jours fériés par mois",
   jamais2DemiGardesAffile: "Jamais deux ½ gardes d’affilée",
-  postesFixesSemaine: "Réa 1/2/3, Coordo réa, USIP1/2 fixes sur la semaine avec un jour d’absence/repos possible",
+
+  postesFixesReaUsip1: "Même personne au moins 4 jours dans la semaine pour : Réa 1, Réa 2, Réa 3, Coordo réa, USIP 1.",
+  posteFixeUsip2: "Même personne au moins 2 jours dans la semaine pour : USIP 2.",
+
+  blocagePostesSecondaires: "En cas de blocage, ne pas attribuer en priorité : Hors clinique, Enseignement/recherche, puis Radio-vasculaire, PTI, USIP2, consultations, Visite/étage.",
+
   demandesImperatives: "Demandes Hors clinique et Enseignement/recherche impérativement respectées",
+
+  equilibreJoursPostes: "Même nombre de jours postés dans le mois pour tous les médecins, à 25% près.",
+  equilibreGardesDemiGardes: "Même nombre de gardes et ½ garde pour tous les médecins, à 30% près."
 };
 
 const SARIC_OPTIONAL_RULES_DEFAULT = {
@@ -28459,10 +28467,38 @@ const SARIC_OPTIONAL_RULES_DEFAULT = {
   max2DemiGardesSemaine: true,
   max2GardesWEFerieMois: true,
   jamais2DemiGardesAffile: true,
-  postesFixesSemaine: true,
-  demandesImperatives: true,
-  demandesSiPossible: false
+
+  postesFixesReaUsip1: true,
+  posteFixeUsip2: true,
+
+  blocagePostesSecondaires: true,
+  demandesImperatives: false,
+
+  equilibreJoursPostes: true,
+  equilibreGardesDemiGardes: true
 };
+
+const SARIC_WEEK_FIXED_4DAYS_POSTS = [
+  "Réa 1",
+  "Réa 2",
+  "Réa 3",
+  "Coordo réa",
+  "USIP1"
+];
+
+const SARIC_WEEK_FIXED_2DAYS_POSTS = [
+  "USIP2"
+];
+
+const SARIC_SECONDARY_BLOCKABLE_POSTS = [
+  "Radio-vasculaire",
+  "PTI",
+  "USIP2",
+  "Consult. chir. Card.",
+  "Consult. Cardio. Med",
+  "Consult. Vasculaire",
+  "Visite/étage"
+];
 
 const SARIC_DOCTOR_EDIT_KEY = "saric_doctor_edit_mode";
 const SARIC_POST_EDIT_KEY = "saric_post_edit_mode";
@@ -30451,7 +30487,11 @@ function saricGenerateMonthPlanning() {
     dayPosts.forEach(post => {
       let preselected = null;
 
-      if (st.optionalRules.postesFixesSemaine && SARIC_WEEK_FIXED_POSTS.includes(post)) {
+      const shouldKeepFixed =
+  (st.optionalRules.postesFixesReaUsip1 && SARIC_WEEK_FIXED_4DAYS_POSTS.includes(post)) ||
+  (st.optionalRules.posteFixeUsip2 && SARIC_WEEK_FIXED_2DAYS_POSTS.includes(post));
+
+if (shouldKeepFixed) {
         const wk = saricWeekKey(date);
         weekFixedMap[wk] = weekFixedMap[wk] || {};
         preselected = weekFixedMap[wk][post] || null;
@@ -30466,7 +30506,7 @@ function saricGenerateMonthPlanning() {
 
         if (post !== "Coordo bloc") usedDay.add(doc.id);
 
-        if (st.optionalRules.postesFixesSemaine && SARIC_WEEK_FIXED_POSTS.includes(post)) {
+        if (shouldKeepFixed) {
           const wk = saricWeekKey(date);
           weekFixedMap[wk] = weekFixedMap[wk] || {};
           weekFixedMap[wk][post] = doc;
@@ -30657,8 +30697,75 @@ function saricDoctorPenalty(st, doc, date, post) {
   score += saricCountAssignments(st, doc.id, date, "month", SARIC_GARDES_COMPLETES) * 30;
   score += saricCountAssignments(st, doc.id, date, "month", SARIC_HALF_GARDES) * 12;
   score += saricCountAssignments(st, doc.id, date, "week", SARIC_ALL_POSTS) * 4;
+const currentMonth = saricMonthKey(date);
 
+/* Règle : éviter les postes secondaires en cas de blocage */
+if (st.optionalRules.blocagePostesSecondaires) {
+  if (
+    SARIC_SECONDARY_BLOCKABLE_POSTS.includes(post) &&
+    (desiderata.includes("hors_clinique") || desiderata.includes("enseignement"))
+  ) {
+    score += 500;
+  }
+}
+
+/* Règle : équilibrer le nombre de jours postés */
+if (st.optionalRules.equilibreJoursPostes && isDayPost) {
+  const absenceCount = saricCountDoctorAbsenceRequestsInMonth?.(st, doc.id, currentMonth) || 0;
+
+  if (absenceCount <= 5) {
+    const workedDays = saricCountDoctorWorkedDaysInMonth(st, doc.id, currentMonth);
+    score += workedDays * 20;
+  }
+}
+
+/* Règle : équilibrer gardes et demi-gardes */
+if (st.optionalRules.equilibreGardesDemiGardes && (isFullGuard || isHalfGuard)) {
+  const guardCount = saricCountAssignments(st, doc.id, date, "month", [
+    ...SARIC_GARDES_COMPLETES,
+    ...SARIC_HALF_GARDES
+  ]);
+
+  score += guardCount * 30;
+}
   return score;
+}
+
+function saricCountDoctorWorkedDaysInMonth(st, docId, monthKey) {
+  const days = new Set();
+
+  Object.entries(st.assignments || {}).forEach(([iso, assign]) => {
+    if (!iso.startsWith(monthKey)) return;
+
+    Object.entries(assign || {}).forEach(([post, assignedDocId]) => {
+      if (assignedDocId === docId && SARIC_DAY_POSTS.includes(post)) {
+        days.add(iso);
+      }
+    });
+  });
+
+  return days.size;
+}
+
+function saricCountDoctorAbsenceRequestsInMonth(st, docId, monthKey) {
+  let count = 0;
+  const des = st.desiderata?.[docId] || {};
+
+  Object.entries(des).forEach(([iso, values]) => {
+    if (!iso.startsWith(monthKey)) return;
+
+    if (
+      values.includes("ca") ||
+      values.includes("indispo_journee") ||
+      values.includes("indispo_24h") ||
+      values.includes("indispo_garde") ||
+      values.includes("formation")
+    ) {
+      count++;
+    }
+  });
+
+  return count;
 }
 
 function saricHasSecurityRest(st, docId, date) {
