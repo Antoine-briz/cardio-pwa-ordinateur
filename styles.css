@@ -13587,3 +13587,50 @@ body.theme-light .saric-generate-card .saric-log * {
   color: #000000 !important;
   opacity: 1 !important;
 }
+
+.saric-global-table td.saric-voluntary-empty {
+  background: #d1d5db !important;
+  color: #6b7280 !important;
+}
+
+.saric-global-table td.saric-unfilled-cell {
+  background: #ffffff !important;
+  color: #dc2626 !important;
+  font-size: 1.1rem !important;
+  font-weight: 900 !important;
+}
+
+.saric-counts-wrap {
+  margin-top: 18px;
+}
+
+.saric-counts-table {
+  border-collapse: collapse;
+  min-width: 1400px;
+  background: #fff;
+  color: #000;
+}
+
+.saric-counts-table th,
+.saric-counts-table td {
+  border: 1px solid #111827;
+  padding: 8px 10px;
+  text-align: center;
+  white-space: nowrap;
+  color: #000;
+}
+
+.saric-counts-table th:first-child,
+.saric-counts-table td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: #e5e7eb;
+  text-align: left;
+  font-weight: 900;
+}
+
+.saric-counts-table thead th {
+  background: #0b3c6d;
+  color: #fff;
+}
