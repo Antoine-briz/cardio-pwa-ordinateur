@@ -29646,6 +29646,7 @@ function saricRenderAdminDraftPlanningCard(st) {
           Publier
         </button>
       </div>
+      ${saricRenderAdminPlanningCounts(st)}
     </div>
   `;
 }
@@ -29709,11 +29710,11 @@ function saricAdminEditablePlanningTable(st, editable) {
 
                 ${days.map(d => {
                   const iso = saricDateKey(d);
-
                   let value = "";
 
                   if (SARIC_ABSENCE_POSTS.includes(post)) {
                     const ids = draftAbsences?.[iso]?.[post] || [];
+
                     value = ids
                       .map(id => st.doctors.find(x => x.id === id))
                       .filter(Boolean)
@@ -29722,16 +29723,20 @@ function saricAdminEditablePlanningTable(st, editable) {
                   } else {
                     const docId = draftAssignments?.[iso]?.[post];
                     const doc = st.doctors.find(x => x.id === docId);
+
                     value = doc ? saricDoctorInitials(doc.name) : "";
                   }
 
+                  const cls = saricGlobalCellClass(post, d, value);
+
                   return `
-                    <td style="background:${bg};"
+                    <td class="${cls}"
+                        style="background:${bg};"
                         data-saric-admin-cell="1"
                         data-iso="${iso}"
                         data-post="${saricEscape(post)}"
                         ${editable ? `contenteditable="true"` : ""}>
-                      ${saricEscape(value)}
+                      ${saricRenderGlobalCellValue(post, value)}
                     </td>
                   `;
                 }).join("")}
@@ -29740,6 +29745,97 @@ function saricAdminEditablePlanningTable(st, editable) {
           }).join("")}
         </tbody>
       </table>
+    </div>
+  `;
+}
+
+function saricGetAdminReferenceAssignments(st, month) {
+  return st.adminDraftAssignments?.[month] || saricMonthAssignmentsOnly(st, month);
+}
+
+function saricGetAdminReferenceAbsences(st, month) {
+  return st.adminDraftAbsences?.[month] || saricMonthAbsencesOnly(st, month);
+}
+
+function saricDoctorAdminCounts(st, docId, month) {
+  const assignments = saricGetAdminReferenceAssignments(st, month);
+  const absences = saricGetAdminReferenceAbsences(st, month);
+
+  const workedDays = new Set();
+  let gardeWEFerie = 0;
+  let gardeSemaine = 0;
+  let horsClinique = 0;
+  let enseignement = 0;
+
+  Object.entries(assignments).forEach(([iso, day]) => {
+    const date = new Date(iso + "T00:00:00");
+    const isWEFerie = saricIsWeekend(date) || saricIsHoliday(date);
+
+    Object.entries(day || {}).forEach(([post, assignedDocId]) => {
+      if (assignedDocId !== docId) return;
+
+      if (SARIC_DAY_POSTS.includes(post) || SARIC_COORD_POSTS.includes(post)) {
+        workedDays.add(iso);
+      }
+
+      if (SARIC_GARDES_COMPLETES.includes(post)) {
+        if (isWEFerie) gardeWEFerie++;
+        else gardeSemaine++;
+      }
+    });
+  });
+
+  Object.entries(absences).forEach(([, day]) => {
+    if ((day?.["Hors clinique"] || []).includes(docId)) horsClinique++;
+    if ((day?.["Enseignement/recherche"] || []).includes(docId)) enseignement++;
+  });
+
+  return {
+    workedDays: workedDays.size,
+    gardeWEFerie,
+    gardeSemaine,
+    horsClinique,
+    enseignement
+  };
+}
+
+function saricRenderAdminPlanningCounts(st) {
+  const month = st.month;
+  const doctors = saricDoctorsSorted(st.doctors);
+
+  const rows = [
+    ["Jours postés", "workedDays"],
+    ["Garde WE/férié", "gardeWEFerie"],
+    ["Garde semaine", "gardeSemaine"],
+    ["Hors clinique", "horsClinique"],
+    ["Enseignement/recherche", "enseignement"]
+  ];
+
+  return `
+    <div class="saric-counts-wrap">
+      <h3>Décompte mensuel - ${saricEscape(saricMonthLabel(month))}</h3>
+
+      <div class="saric-global-scroll">
+        <table class="saric-counts-table">
+          <thead>
+            <tr>
+              <th>Catégorie</th>
+              ${doctors.map(d => `<th>${saricEscape(saricDoctorInitials(d.name))}</th>`).join("")}
+            </tr>
+          </thead>
+          <tbody>
+            ${rows.map(([label, key]) => `
+              <tr>
+                <td>${saricEscape(label)}</td>
+                ${doctors.map(d => {
+                  const c = saricDoctorAdminCounts(st, d.id, month);
+                  return `<td>${c[key]}</td>`;
+                }).join("")}
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      </div>
     </div>
   `;
 }
@@ -30110,9 +30206,9 @@ function saricPlanningGlobalTable() {
 
   saricBuildMonthlyAbsences(st, st.month);
 
-const posts = typeof saricSortedPosts === "function"
-  ? saricSortedPosts([...basePosts, ...SARIC_ABSENCE_POSTS])
-  : [...basePosts, ...SARIC_ABSENCE_POSTS];
+  const posts = typeof saricSortedPosts === "function"
+    ? saricSortedPosts([...basePosts, ...SARIC_ABSENCE_POSTS])
+    : [...basePosts, ...SARIC_ABSENCE_POSTS];
 
   const weekGroups = saricWeekGroupsForMonth(days);
 
@@ -30158,30 +30254,30 @@ const posts = typeof saricSortedPosts === "function"
 
                   ${days.map(d => {
                     const iso = saricDateKey(d);
-                    const absenceIds = st.absences?.[iso]?.[post] || [];
+                    let value = "";
 
-if (SARIC_ABSENCE_POSTS.includes(post)) {
-  const names = absenceIds
-    .map(id => st.doctors.find(x => x.id === id))
-    .filter(Boolean)
-    .map(doc => saricDoctorInitials(doc.name))
-    .join(" ");
+                    if (SARIC_ABSENCE_POSTS.includes(post)) {
+                      const absenceIds = st.absences?.[iso]?.[post] || [];
 
-  return `
-    <td style="background:${bg};">
-      ${names}
-    </td>
-  `;
-}
+                      value = absenceIds
+                        .map(id => st.doctors.find(x => x.id === id))
+                        .filter(Boolean)
+                        .map(doc => saricDoctorInitials(doc.name))
+                        .join(" ");
+                    } else {
+                      const docId = st.assignments?.[iso]?.[post];
+                      const doc = st.doctors.find(x => x.id === docId);
 
-const docId = st.assignments?.[iso]?.[post];
-const doc = st.doctors.find(x => x.id === docId);
+                      value = doc ? saricDoctorInitials(doc.name) : "";
+                    }
 
-return `
-  <td style="background:${bg};">
-    ${doc ? saricDoctorInitials(doc.name) : ""}
-  </td>
-`;
+                    const cls = saricGlobalCellClass(post, d, value);
+
+                    return `
+                      <td class="${cls}" style="background:${bg};">
+                        ${saricRenderGlobalCellValue(post, value)}
+                      </td>
+                    `;
                   }).join("")}
                 </tr>
               `;
@@ -30197,15 +30293,29 @@ function saricDoctorInitials(fullName) {
   const parts = String(fullName || "").trim().split(/\s+/);
   if (parts.length < 2) return fullName || "";
 
-  const last = parts[0];
+  const last = parts[0].toUpperCase();
   const first = parts.slice(1).join(" ");
 
   const firstInitial = first.charAt(0).toUpperCase();
-  const lastCode =
-    last.charAt(0).toUpperCase() +
-    last.slice(1, 3).toLowerCase();
+  const lastCode = last.slice(0, 3).toUpperCase();
 
-  return `${firstInitial}${lastCode}`;
+  return `${firstInitial}. ${lastCode}`;
+}
+
+function saricIsPostRequiredOnDate(post, date) {
+  if (SARIC_ABSENCE_POSTS?.includes(post)) return true;
+  return saricRequiredPostsForDate(date).includes(post);
+}
+
+function saricGlobalCellClass(post, date, value) {
+  if (!saricIsPostRequiredOnDate(post, date)) return "saric-voluntary-empty";
+  if (!value && !SARIC_ABSENCE_POSTS.includes(post)) return "saric-unfilled-cell";
+  return "";
+}
+
+function saricRenderGlobalCellValue(post, value) {
+  if (!value && !SARIC_ABSENCE_POSTS.includes(post)) return "?";
+  return saricEscape(value || "");
 }
 
 function saricRenderAdmin() {
