@@ -13357,3 +13357,109 @@ main.container,
 .saric-popup-ok{
   width:100%;
 }
+
+/* ============================================================
+   ADMIN - Règles / suivi repliables
+   ============================================================ */
+
+.saric-rules-collapsible {
+  overflow: visible !important;
+}
+
+.saric-rules-collapsible summary {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  list-style: none;
+}
+
+.saric-rules-collapsible summary::-webkit-details-marker {
+  display: none;
+}
+
+.saric-rules-collapsible summary h3 {
+  margin: 0 !important;
+}
+
+.saric-rules-collapsible summary span {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.saric-rules-collapsible summary::after {
+  content: "▼";
+  font-weight: 900;
+}
+
+.saric-rules-collapsible[open] summary::after {
+  content: "▲";
+}
+
+/* ============================================================
+   ADMIN - Tableau généré éditable / publié
+   ============================================================ */
+
+.saric-admin-published-card {
+  margin-top: 18px !important;
+}
+
+.saric-admin-published-card h3 {
+  margin-bottom: 6px !important;
+}
+
+.saric-admin-edit-scroll {
+  margin-top: 12px;
+  border: 2px solid #0b3c6d !important;
+  border-radius: 16px !important;
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+  background: #fff !important;
+}
+
+.saric-admin-edit-table td[contenteditable="true"] {
+  outline: 2px solid rgba(11, 60, 109, 0.35);
+  outline-offset: -2px;
+  cursor: text;
+  background-image: linear-gradient(
+    135deg,
+    rgba(255,255,255,.25),
+    rgba(255,255,255,0)
+  );
+}
+
+.saric-admin-edit-table td[contenteditable="true"]:focus {
+  outline: 3px solid #d4af37 !important;
+  background: #fff8dc !important;
+}
+
+.saric-admin-planning-actions {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.saric-admin-planning-actions .btn {
+  height: 48px;
+}
+
+.saric-publish-btn {
+  border: 3px solid #d4af37 !important;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18);
+  background: #0b3c6d !important;
+  color: #fff !important;
+  font-weight: 900 !important;
+}
+
+.saric-publish-btn:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.28);
+}
+
+@media (max-width: 900px) {
+  .saric-admin-planning-actions {
+    grid-template-columns: 1fr;
+  }
+}
