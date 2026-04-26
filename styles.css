@@ -13011,3 +13011,46 @@ main.container,
     width: 100% !important;
   }
 }
+
+/* =========================================================
+   MON COMPTE - bouton sur la même ligne (version forcée)
+   ========================================================= */
+
+#saric-planning-body .saric-fields-3{
+  display:grid !important;
+  grid-template-columns: 1fr 1fr 1fr 320px !important;
+  gap:12px !important;
+  align-items:end !important;
+}
+
+#saric-planning-body .saric-fields-3 > div{
+  min-width:0;
+}
+
+#saric-planning-body .saric-fields-3 .btn,
+#saric-planning-body .saric-fields-3 button{
+  display:flex !important;
+  width:320px !important;
+  min-width:320px !important;
+  max-width:320px !important;
+  height:56px !important;
+  margin:0 !important;
+  padding:0 16px !important;
+  align-self:end !important;
+  justify-content:center !important;
+  white-space:nowrap !important;
+}
+
+/* Responsive */
+@media (max-width: 1400px){
+  #saric-planning-body .saric-fields-3{
+    grid-template-columns:1fr !important;
+  }
+
+  #saric-planning-body .saric-fields-3 .btn,
+  #saric-planning-body .saric-fields-3 button{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+  }
+}
