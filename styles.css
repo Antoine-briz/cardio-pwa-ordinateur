@@ -13287,3 +13287,28 @@ main.container,
   background: #e5e7eb;
   border-radius: 999px;
 }
+
+/* ============================================================
+   PLANNING GLOBAL - laisser les couleurs JS visibles
+   ============================================================ */
+
+.saric-global-table tbody td {
+  background-color: inherit !important;
+}
+
+.saric-global-table tbody tr {
+  background-clip: padding-box;
+}
+
+.saric-global-table tbody .saric-post-col {
+  background-color: inherit !important;
+}
+
+.saric-global-table thead th {
+  background: #dbeafe !important;
+}
+
+.saric-global-table .saric-week-header {
+  background: #0b3c6d !important;
+  color: #fff !important;
+}
