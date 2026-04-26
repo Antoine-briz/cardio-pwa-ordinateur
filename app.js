@@ -28451,8 +28451,7 @@ const SARIC_OPTIONAL_RULES_LABELS = {
   max2GardesWEFerieMois: "Maximum deux gardes de week-end ou jours fériés par mois",
   jamais2DemiGardesAffile: "Jamais deux ½ gardes d’affilée",
   postesFixesSemaine: "Réa 1/2/3, Coordo réa, USIP1/2 fixes sur la semaine avec un jour d’absence/repos possible",
-  demandesImperatives: "Demandes impérativement respectées",
-  demandesSiPossible: "Demandes respectées si possible"
+  demandesImperatives: "Demandes Hors clinique et Enseignement/recherche impérativement respectées",
 };
 
 const SARIC_OPTIONAL_RULES_DEFAULT = {
