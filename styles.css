@@ -13531,3 +13531,59 @@ body.dark .saric-log,
   border-radius: 10px;
   padding: 10px 12px;
 }
+
+/* ==========================================================
+   ADMIN - correction définitive thème clair/sombre
+   ========================================================== */
+
+/* Tableau habilitations : clair en thème clair */
+body.theme-light .saric-matrix-wrap,
+body.theme-light .saric-matrix,
+body.theme-light .saric-matrix thead,
+body.theme-light .saric-matrix tbody,
+body.theme-light .saric-matrix tr,
+body.theme-light .saric-matrix th,
+body.theme-light .saric-matrix td {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #111827 !important;
+}
+
+body.theme-light .saric-matrix thead th {
+  background: #e5e7eb !important;
+  color: #000000 !important;
+}
+
+body.theme-light .saric-matrix tbody tr:nth-child(even) td {
+  background: #f3f4f6 !important;
+}
+
+body.theme-light .saric-matrix input[type="checkbox"] {
+  accent-color: #d99021;
+}
+
+/* Ne rien changer au tableau en thème sombre */
+body:not(.theme-light) .saric-matrix,
+body:not(.theme-light) .saric-matrix th,
+body:not(.theme-light) .saric-matrix td {
+  background: #111827 !important;
+  color: #ffffff !important;
+}
+
+/* Logs génération planning : texte blanc en thème sombre */
+body:not(.theme-light) .saric-log,
+body:not(.theme-light) .saric-log *,
+body:not(.theme-light) .saric-generate-card .saric-log,
+body:not(.theme-light) .saric-generate-card .saric-log * {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+/* Logs génération planning : texte noir en thème clair */
+body.theme-light .saric-log,
+body.theme-light .saric-log *,
+body.theme-light .saric-generate-card .saric-log,
+body.theme-light .saric-generate-card .saric-log * {
+  color: #000000 !important;
+  opacity: 1 !important;
+}
