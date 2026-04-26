@@ -29617,61 +29617,6 @@ function saricRenderDesiderata() {
   `;
 }
 
-function saricOpenDesiderataPopup(iso) {
-  const st = saricLoadState();
-  const doctor = saricCurrentDoctor();
-  if (!doctor) return;
-
-  const selected = st.desiderata?.[doctor.id]?.[iso] || [];
-
-  const html = `
-    <div class="saric-popup-overlay" id="saric-popup">
-      <div class="saric-popup-box">
-
-        <h3>${saricEscape(saricDateLabel(iso))}</h3>
-
-        <div class="saric-popup-options">
-          ${Object.entries(SARIC_DESIDERATA_LABELS).map(([key, label]) => `
-            <label>
-              <input type="checkbox"
-                     value="${key}"
-                     ${selected.includes(key) ? "checked" : ""}>
-              ${saricEscape(label)}
-            </label>
-          `).join("")}
-        </div>
-
-        <button class="btn saric-popup-ok"
-                onclick="saricSaveDesiderataPopup('${iso}')">
-          OK
-        </button>
-
-      </div>
-    </div>
-  `;
-
-  document.body.insertAdjacentHTML("beforeend", html);
-}
-
-function saricSaveDesiderataPopup(iso) {
-  const popup = document.getElementById("saric-popup");
-  if (!popup) return;
-
-  const checked = [...popup.querySelectorAll("input:checked")]
-    .map(x => x.value);
-
-  const st = saricLoadState();
-  const doctor = saricCurrentDoctor();
-
-  if (!st.desiderata[doctor.id]) st.desiderata[doctor.id] = {};
-  st.desiderata[doctor.id][iso] = checked;
-
-  saricSaveState(st);
-
-  popup.remove();
-  saricRenderDesiderata();
-}
-
 function saricSelectDesiderataDoctor(id) {
   const st = saricLoadState();
   st.selectedDoctorId = id;
@@ -30528,6 +30473,61 @@ function mergeAnnuaireFirstColumn(table) {
   }
 
   flush();
+}
+
+function saricOpenDesiderataPopup(iso) {
+  const st = saricLoadState();
+  const doctor = saricCurrentDoctor();
+  if (!doctor) return;
+
+  const selected = st.desiderata?.[doctor.id]?.[iso] || [];
+
+  const html = `
+    <div class="saric-popup-overlay" id="saric-popup">
+      <div class="saric-popup-box">
+
+        <h3>${saricEscape(saricDateLabel(iso))}</h3>
+
+        <div class="saric-popup-options">
+          ${Object.entries(SARIC_DESIDERATA_LABELS).map(([key, label]) => `
+            <label>
+              <input type="checkbox"
+                     value="${key}"
+                     ${selected.includes(key) ? "checked" : ""}>
+              ${saricEscape(label)}
+            </label>
+          `).join("")}
+        </div>
+
+        <button class="btn saric-popup-ok"
+                onclick="saricSaveDesiderataPopup('${iso}')">
+          OK
+        </button>
+
+      </div>
+    </div>
+  `;
+
+  document.body.insertAdjacentHTML("beforeend", html);
+}
+
+function saricSaveDesiderataPopup(iso) {
+  const popup = document.getElementById("saric-popup");
+  if (!popup) return;
+
+  const checked = [...popup.querySelectorAll("input:checked")]
+    .map(x => x.value);
+
+  const st = saricLoadState();
+  const doctor = saricCurrentDoctor();
+
+  if (!st.desiderata[doctor.id]) st.desiderata[doctor.id] = {};
+  st.desiderata[doctor.id][iso] = checked;
+
+  saricSaveState(st);
+
+  popup.remove();
+  saricRenderDesiderata();
 }
 
 function mergeAllAnnuaireTables(root = document) {
