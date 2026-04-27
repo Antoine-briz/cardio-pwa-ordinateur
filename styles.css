@@ -13954,3 +13954,104 @@ body:not(.theme-light) .saric-cal-cell.weekend.holiday {
     grid-template-columns: 1fr;
   }
 }
+
+/* ============================================================
+   RECHERCHE - affichage protocoles compact forcé
+   ============================================================ */
+
+#app .recherche-page .rch-protocol-table-wrap {
+  overflow: visible !important;
+}
+
+#app .recherche-page .rch-protocol-table {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  background: transparent !important;
+}
+
+#app .recherche-page .rch-protocol-table thead {
+  display: none !important;
+}
+
+#app .recherche-page .rch-protocol-table tbody {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(520px, 1fr)) !important;
+  gap: 10px !important;
+  width: 100% !important;
+}
+
+#app .recherche-page .rch-protocol-table tr {
+  display: grid !important;
+  grid-template-columns: 1.1fr 1fr 0.85fr 180px !important;
+  align-items: center !important;
+  border: 2px solid #dbeafe !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  background: #ffffff !important;
+}
+
+#app .recherche-page .rch-protocol-table td {
+  display: flex !important;
+  align-items: center !important;
+  min-height: 42px !important;
+  padding: 6px 8px !important;
+  border-right: 1px solid #111827 !important;
+  border-bottom: 0 !important;
+  background: #ffffff !important;
+  color: #000000 !important;
+  font-size: 0.9rem !important;
+}
+
+#app .recherche-page .rch-protocol-table td:last-child {
+  border-right: 0 !important;
+}
+
+#app .recherche-page .rch-protocol-actions {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+#app .recherche-page .rch-protocol-actions .btn {
+  display: inline-flex !important;
+  width: auto !important;
+  min-width: 76px !important;
+  height: 34px !important;
+  padding: 0 10px !important;
+  margin: 0 !important;
+  border-radius: 9px !important;
+  font-size: 0.82rem !important;
+  line-height: 1 !important;
+}
+
+#app .recherche-page .rch-status-badge {
+  padding: 4px 8px !important;
+  border-radius: 999px !important;
+  font-size: 0.78rem !important;
+  font-weight: 900 !important;
+}
+
+/* Mode édition */
+#app .recherche-page .rch-protocol-row-edit {
+  grid-template-columns: 1.1fr 1fr 0.85fr 200px !important;
+}
+
+#app .recherche-page .rch-protocol-row-edit input,
+#app .recherche-page .rch-protocol-row-edit select {
+  height: 32px !important;
+  min-height: 32px !important;
+  padding: 4px 8px !important;
+  font-size: 0.85rem !important;
+}
+
+/* Responsive */
+@media (max-width: 1250px) {
+  #app .recherche-page .rch-protocol-table tbody {
+    grid-template-columns: 1fr !important;
+  }
+}
