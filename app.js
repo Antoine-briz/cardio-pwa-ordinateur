@@ -30740,7 +30740,17 @@ if (shouldKeepFixed) {
           weekFixedMap[wk][post] = doc;
         }
       } else {
-        logs.push(`${iso} : poste non pourvu - ${post}`);
+        logs.push(
+  `${post} non pourvu le ${saricFormatDateFR(iso)} ${saricVacancySuggestion(
+    st,
+    date,
+    post,
+    dayAssign,
+    usedDay,
+    usedNight,
+    false
+  )}`
+);
       }
     });
 
@@ -30750,7 +30760,17 @@ if (shouldKeepFixed) {
         dayAssign[post] = doc.id;
         usedNight.add(doc.id);
       } else {
-        logs.push(`${iso} : garde/demi-garde non pourvue - ${post}`);
+        logs.push(
+  `${post} non pourvu le ${saricFormatDateFR(iso)} ${saricVacancySuggestion(
+    st,
+    date,
+    post,
+    dayAssign,
+    usedDay,
+    usedNight,
+    true
+  )}`
+);
       }
     });
 
@@ -30764,6 +30784,11 @@ if (shouldKeepFixed) {
   saricRenderAdmin();
 }
 
+function saricFormatDateFR(iso) {
+  const d = new Date(iso + "T00:00:00");
+  return d.toLocaleDateString("fr-FR");
+}
+
 function saricFindBestDoctorForPost(st, date, post, dayAssign, usedDay, usedNight, nightStep) {
   const candidates = st.doctors
     .filter(doc => saricCanAssign(st, doc, date, post, dayAssign, usedDay, usedNight, nightStep))
@@ -30771,6 +30796,84 @@ function saricFindBestDoctorForPost(st, date, post, dayAssign, usedDay, usedNigh
 
   return candidates[0] || null;
 }
+
+function saricCloneStateForRuleTest(st) {
+  return JSON.parse(JSON.stringify(st));
+}
+
+function saricDisabledRulesLabel(keys) {
+  return keys
+    .map(k => `« ${SARIC_OPTIONAL_RULES_LABELS[k] || k} »`)
+    .join(" + ");
+}
+
+function saricFindDoctorIfRulesDisabled(st, date, post, dayAssign, usedDay, usedNight, nightStep, disabledKeys) {
+  const testSt = saricCloneStateForRuleTest(st);
+
+  disabledKeys.forEach(key => {
+    if (testSt.optionalRules && key in testSt.optionalRules) {
+      testSt.optionalRules[key] = false;
+    }
+  });
+
+  return saricFindBestDoctorForPost(
+    testSt,
+    date,
+    post,
+    { ...dayAssign },
+    new Set([...usedDay]),
+    new Set([...usedNight]),
+    nightStep
+  );
+}
+
+function saricVacancySuggestion(st, date, post, dayAssign, usedDay, usedNight, nightStep) {
+  const activeOptionalRules = Object.keys(st.optionalRules || {})
+    .filter(key => st.optionalRules[key] === true);
+
+  // Test 1 : décocher une seule règle
+  for (const key of activeOptionalRules) {
+    const doc = saricFindDoctorIfRulesDisabled(
+      st,
+      date,
+      post,
+      dayAssign,
+      usedDay,
+      usedNight,
+      nightStep,
+      [key]
+    );
+
+    if (doc) {
+      return `=> Décocher ${saricDisabledRulesLabel([key])} permettrait probablement d’attribuer ${saricDoctorInitials(doc.name)}.`;
+    }
+  }
+
+  // Test 2 : décocher deux règles si une seule ne suffit pas
+  for (let i = 0; i < activeOptionalRules.length; i++) {
+    for (let j = i + 1; j < activeOptionalRules.length; j++) {
+      const keys = [activeOptionalRules[i], activeOptionalRules[j]];
+
+      const doc = saricFindDoctorIfRulesDisabled(
+        st,
+        date,
+        post,
+        dayAssign,
+        usedDay,
+        usedNight,
+        nightStep,
+        keys
+      );
+
+      if (doc) {
+        return `=> Décocher ${saricDisabledRulesLabel(keys)} permettrait probablement d’attribuer ${saricDoctorInitials(doc.name)}.`;
+      }
+    }
+  }
+
+  return "=> Aucune règle optionnelle décochée seule ou par paire ne suffit : blocage probablement lié à une règle nécessaire, une habilitation, une catégorie médecin/poste, ou une indisponibilité impérative.";
+}
+
 
 function saricCanAssign(st, doc, date, post, dayAssign, usedDay, usedNight, nightStep) {
   if (!doc || doc.category === "Stand by" || doc.enabled === false) return false;
