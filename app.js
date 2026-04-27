@@ -27939,10 +27939,9 @@ const selectProtocolById = async (id) => {
 
   const hideDocModal = () => $docModalBackdrop.classList.add("hidden");
 
-  $btnAddProtocol.addEventListener("click", async () => {
-    if (!(await ensureEnsAdminCodeOnce())) return;
-    showProtoModal();
-  });
+  $btnAddProtocol.addEventListener("click", () => {
+  showProtoModal();
+});
 
   $protoModalClose.addEventListener("click", hideProtoModal);
   $protoCancel.addEventListener("click", hideProtoModal);
