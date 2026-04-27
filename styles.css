@@ -14154,3 +14154,141 @@ body:not(.theme-light) .saric-cal-cell.weekend.holiday {
   font-weight: 900;
   color: var(--fg);
 }
+
+/* ============================================================
+   RECHERCHE - correction finale liste protocoles
+   ============================================================ */
+
+/* évite le dépassement à gauche */
+#app .recherche-page {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+  padding-left: 12px !important;
+  padding-right: 12px !important;
+}
+
+#app .recherche-page .rch-protocol-list-card {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+}
+
+/* grille globale en 2 colonnes */
+#app .recherche-page .rch-protocol-table {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+  width: 100% !important;
+}
+
+/* en-tête doublé : un header par colonne */
+#app .recherche-page .rch-protocol-table thead {
+  display: contents !important;
+}
+
+#app .recherche-page .rch-protocol-table thead tr {
+  display: grid !important;
+  grid-template-columns: 1.2fr 1.1fr 0.9fr 180px !important;
+  grid-column: span 1 !important;
+  border: 2px solid #0b3c6d !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  background: #0b3c6d !important;
+}
+
+/* duplique visuellement le header dans la 2e colonne */
+#app .recherche-page .rch-protocol-table thead::after {
+  content: "Protocole  Investigateur local  Statut  Actions";
+  display: grid !important;
+  grid-template-columns: 1.2fr 1.1fr 0.9fr 180px !important;
+  grid-column: span 1 !important;
+  align-items: center;
+  min-height: 50px;
+  padding: 0 14px;
+  border: 2px solid #0b3c6d;
+  border-radius: 12px;
+  background: #0b3c6d;
+  color: #fff;
+  font-weight: 900;
+  white-space: pre;
+  word-spacing: 42px;
+}
+
+#app .recherche-page .rch-protocol-table thead th {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #0b3c6d !important;
+  color: #fff !important;
+  border-right: 1px solid rgba(255,255,255,.35) !important;
+  min-height: 50px !important;
+  padding: 8px !important;
+}
+
+#app .recherche-page .rch-protocol-table thead th:last-child {
+  border-right: 0 !important;
+}
+
+#app .recherche-page .rch-protocol-table tbody {
+  display: contents !important;
+}
+
+/* lignes protocoles */
+#app .recherche-page .rch-protocol-table tbody tr {
+  display: grid !important;
+  grid-template-columns: 1.2fr 1.1fr 0.9fr 180px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  border: 2px solid #dbeafe !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  background: #fff !important;
+}
+
+#app .recherche-page .rch-protocol-table tbody td {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  border-right: 1px solid #111827 !important;
+  color: #000 !important;
+  background: #fff !important;
+}
+
+#app .recherche-page .rch-protocol-table tbody td:last-child {
+  border-right: 0 !important;
+}
+
+/* boutons côte à côte */
+#app .recherche-page .rch-protocol-actions {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 8px !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+#app .recherche-page .rch-protocol-actions .btn,
+#app .recherche-page .rch-protocol-actions .btn.ghost {
+  width: auto !important;
+  min-width: 78px !important;
+  height: 36px !important;
+  padding: 0 12px !important;
+  background: #0b3c6d !important;
+  color: #fff !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+}
+
+/* mobile : une seule colonne */
+@media (max-width: 1250px) {
+  #app .recherche-page .rch-protocol-table {
+    grid-template-columns: 1fr !important;
+  }
+
+  #app .recherche-page .rch-protocol-table thead::after {
+    display: none !important;
+  }
+}
