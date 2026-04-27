@@ -27489,6 +27489,7 @@ function renderRecherche() {
         </select>
 
         <button class="btn" id="rch-add-protocol">Ajouter un protocole</button>
+<button class="btn hidden" id="rch-back-to-protocols">Retour aux protocoles</button>
       </div>
 
       <div class="rch-protocol-list-card card">
@@ -27511,13 +27512,9 @@ function renderRecherche() {
         </div>
       </div>
 
-      <div id="rch-body" class="hidden">
+     <div id="rch-body" class="hidden">
 
   <div class="rch-open-protocol-head">
-    <button class="btn ghost" id="rch-back-to-protocols">
-      ← Retour à la liste des protocoles
-    </button>
-
     <div class="rch-open-protocol-title" id="rch-open-protocol-title"></div>
   </div>
 
@@ -27864,12 +27861,14 @@ const $protocolListCard = document.querySelector(".rch-protocol-list-card");
     updateButtons();
   };
 
-  const selectProtocolById = async (id) => {
+const selectProtocolById = async (id) => {
   currentProtocolId = id || "";
 
   const p = protocols.find(x => x.id === currentProtocolId);
   currentProtocolName = p?.name || "";
 
+  const $backToProtocols = document.getElementById("rch-back-to-protocols");
+  const $openProtocolTitle = document.getElementById("rch-open-protocol-title");
   const $protocolListCard = document.querySelector(".rch-protocol-list-card");
 
   // Aucun protocole sélectionné
@@ -27878,6 +27877,14 @@ const $protocolListCard = document.querySelector(".rch-protocol-list-card");
 
     if ($protocolListCard) {
       $protocolListCard.style.display = "";
+    }
+
+    if ($backToProtocols) {
+      $backToProtocols.classList.add("hidden");
+    }
+
+    if ($openProtocolTitle) {
+      $openProtocolTitle.textContent = "";
     }
 
     renderPreview(null);
@@ -27891,12 +27898,14 @@ const $protocolListCard = document.querySelector(".rch-protocol-list-card");
     $protocolListCard.style.display = "none";
   }
 
-    if ($openProtocolTitle) {
-  $openProtocolTitle.textContent = currentProtocolName
-    ? `Protocole : ${currentProtocolName}`
-    : "";
-}
-    
+  if ($backToProtocols) {
+    $backToProtocols.classList.remove("hidden");
+  }
+
+  if ($openProtocolTitle) {
+    $openProtocolTitle.textContent = `Protocole : ${currentProtocolName}`;
+  }
+
   await loadDocs();
 };
 
