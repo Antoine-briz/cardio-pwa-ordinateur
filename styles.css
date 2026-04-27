@@ -13828,3 +13828,32 @@ body.theme-light .saric-generate-card .saric-log * {
   text-align: left !important;
   padding-left: 16px !important;
 }
+
+/* ============================================================
+   WE + Jours fériés : fond gris clair
+   Planning personnel + Désidératas
+   ============================================================ */
+
+.saric-cal-cell.weekend,
+.saric-cal-cell.holiday,
+.saric-cal-cell.weekend.holiday {
+  background: #e5e7eb !important;   /* gris clair */
+  color: #111827 !important;
+}
+
+/* Thème sombre : légèrement plus soutenu */
+body:not(.theme-light) .saric-cal-cell.weekend,
+body:not(.theme-light) .saric-cal-cell.holiday,
+body:not(.theme-light) .saric-cal-cell.weekend.holiday {
+  background: #d1d5db !important;
+  color: #111827 !important;
+}
+
+/* garde le contour orange / rouge déjà existant */
+.saric-cal-cell.weekend {
+  border-color: #f97316 !important;
+}
+
+.saric-cal-cell.holiday {
+  border-color: #ef4444 !important;
+}
