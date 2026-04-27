@@ -29716,10 +29716,10 @@ function saricAdminEditablePlanningTable(st, editable) {
                     const ids = draftAbsences?.[iso]?.[post] || [];
 
                     value = ids
-                      .map(id => st.doctors.find(x => x.id === id))
-                      .filter(Boolean)
-                      .map(doc => saricDoctorInitials(doc.name))
-                      .join(" ");
+  .map(id => st.doctors.find(x => x.id === id))
+  .filter(Boolean)
+  .map(doc => saricDoctorInitials(doc.name))
+  .join("<br>");
                   } else {
                     const docId = draftAssignments?.[iso]?.[post];
                     const doc = st.doctors.find(x => x.id === docId);
@@ -29736,7 +29736,9 @@ function saricAdminEditablePlanningTable(st, editable) {
                         data-iso="${iso}"
                         data-post="${saricEscape(post)}"
                         ${editable ? `contenteditable="true"` : ""}>
-                      ${saricRenderGlobalCellValue(post, value)}
+                      ${cls.includes("saric-absence-multi")
+  ? (value || "")
+  : saricRenderGlobalCellValue(post, value, cls)}
                     </td>
                   `;
                 }).join("")}
@@ -30260,10 +30262,10 @@ function saricPlanningGlobalTable() {
                       const absenceIds = st.absences?.[iso]?.[post] || [];
 
                       value = absenceIds
-                        .map(id => st.doctors.find(x => x.id === id))
-                        .filter(Boolean)
-                        .map(doc => saricDoctorInitials(doc.name))
-                        .join(" ");
+  .map(id => st.doctors.find(x => x.id === id))
+  .filter(Boolean)
+  .map(doc => saricDoctorInitials(doc.name))
+  .join("<br>");
                     } else {
                       const docId = st.assignments?.[iso]?.[post];
                       const doc = st.doctors.find(x => x.id === docId);
@@ -30275,7 +30277,9 @@ function saricPlanningGlobalTable() {
 
                     return `
                       <td class="${cls}" style="background:${bg};">
-                        ${saricRenderGlobalCellValue(post, value)}
+                        ${cls.includes("saric-absence-multi")
+  ? (value || "")
+  : saricRenderGlobalCellValue(post, value, cls)}
                       </td>
                     `;
                   }).join("")}
@@ -30313,7 +30317,8 @@ function saricGlobalCellClass(post, date, value) {
   return "";
 }
 
-function saricRenderGlobalCellValue(post, value) {
+function saricRenderGlobalCellValue(post, value, cls = "") {
+  if (cls.includes("saric-voluntary-empty")) return "";
   if (!value && !SARIC_ABSENCE_POSTS.includes(post)) return "?";
   return saricEscape(value || "");
 }
