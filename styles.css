@@ -13711,3 +13711,101 @@ body.theme-light .saric-generate-card .saric-log * {
   font-size: 0.72rem !important;
   font-weight: 800 !important;
 }
+
+/* ============================================================
+   PLANNING GLOBAL - colonne postes séparée et fixe
+   ============================================================ */
+
+.saric-split-planning {
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  border: 2px solid #0b3c6d;
+  border-radius: 16px;
+  background: #fff;
+}
+
+.saric-fixed-posts {
+  flex: 0 0 290px;
+  width: 290px;
+  overflow: hidden;
+  background: #fff;
+  z-index: 5;
+  box-shadow: 4px 0 0 #111827;
+}
+
+.saric-scroll-days {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+}
+
+.saric-posts-only-table,
+.saric-days-only-table {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  margin: 0 !important;
+}
+
+.saric-posts-only-table {
+  width: 290px !important;
+  min-width: 290px !important;
+}
+
+.saric-days-only-table {
+  width: max-content !important;
+  min-width: 2300px !important;
+}
+
+/* même hauteur des lignes à gauche et à droite */
+.saric-posts-only-table th,
+.saric-days-only-table th {
+  height: 42px !important;
+}
+
+.saric-posts-only-table td,
+.saric-days-only-table td {
+  height: 43px !important;
+}
+
+/* colonne poste plus marquée */
+.saric-posts-only-table .saric-post-col {
+  min-width: 290px !important;
+  width: 290px !important;
+  color: #000 !important;
+  font-weight: 900 !important;
+  text-align: left !important;
+  padding-left: 14px !important;
+  filter: brightness(0.88);
+}
+
+/* suppression du sticky résiduel */
+.saric-days-only-table .saric-post-col,
+.saric-posts-only-table .saric-post-col {
+  position: static !important;
+}
+
+/* absences multilignes */
+.saric-days-only-table td.saric-absence-multi {
+  white-space: normal !important;
+  line-height: 1.2 !important;
+  font-size: 0.72rem !important;
+  font-weight: 800 !important;
+}
+
+/* cases volontairement vides */
+.saric-days-only-table td.saric-voluntary-empty {
+  background: #cfd4dc !important;
+  color: transparent !important;
+}
+
+/* cases non pourvues */
+.saric-days-only-table td.saric-unfilled-cell {
+  color: #dc2626 !important;
+  font-size: 1.1rem !important;
+  font-weight: 900 !important;
+}
