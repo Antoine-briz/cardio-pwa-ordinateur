@@ -29868,8 +29868,8 @@ function renderPlanningMedical() {
         ${[
           ["planning", "Planning"],
           ["desiderata", "Désidératas"],
-          ["admin", "Admin"],
           ["account", "Mon compte"]
+          ["admin", "⚙️ Admin"],
         ].map(([id, label]) => `
           <button class="saric-tab ${st.activeTab === id ? "active" : ""}" onclick="saricSwitchTab('${id}')">
             ${label}
