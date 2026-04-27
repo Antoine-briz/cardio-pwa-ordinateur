@@ -27512,10 +27512,19 @@ function renderRecherche() {
       </div>
 
       <div id="rch-body" class="hidden">
-        <div class="enseignement-layout">
-          <div class="enseignement-left">
-            <div class="table-wrap">
-              <table class="enseignement-table">
+
+  <div class="rch-open-protocol-head">
+    <button class="btn ghost" id="rch-back-to-protocols">
+      ← Retour à la liste des protocoles
+    </button>
+
+    <div class="rch-open-protocol-title" id="rch-open-protocol-title"></div>
+  </div>
+
+  <div class="enseignement-layout">
+    <div class="enseignement-left">
+      <div class="table-wrap">
+        <table class="enseignement-table">
                 <thead>
                   <tr>
                     <th style="width:110px;">Fichier</th>
@@ -27624,6 +27633,8 @@ function renderRecherche() {
   const $page = document.querySelector(".recherche-page");
   const $select = document.getElementById("rch-protocol-select");
   const $body = document.getElementById("rch-body");
+  const $backToProtocols = document.getElementById("rch-back-to-protocols");
+const $openProtocolTitle = document.getElementById("rch-open-protocol-title");
   const $protoListBody = document.getElementById("rch-protocol-list-tbody");
 
   const $btnAddProtocol = document.getElementById("rch-add-protocol");
@@ -27636,8 +27647,9 @@ function renderRecherche() {
   const $protoStatus = document.getElementById("rch-proto-status");
 
   const $tbody = document.getElementById("rch-tbody");
-  const $pagination = document.getElementById("rch-pagination");
-  const $preview = document.getElementById("rch-preview");
+const $pagination = document.getElementById("rch-pagination");
+const $preview = document.getElementById("rch-preview");
+const $protocolListCard = document.querySelector(".rch-protocol-list-card");
 
   const $btnAdd = document.getElementById("rch-add");
   const $btnEdit = document.getElementById("rch-edit");
@@ -27853,20 +27865,40 @@ function renderRecherche() {
   };
 
   const selectProtocolById = async (id) => {
-    currentProtocolId = id || "";
-    const p = protocols.find(x => x.id === currentProtocolId);
-    currentProtocolName = p?.name || "";
+  currentProtocolId = id || "";
 
-    $select.value = currentProtocolId;
+  const p = protocols.find(x => x.id === currentProtocolId);
+  currentProtocolName = p?.name || "";
 
-    if (!currentProtocolId) {
-      $body.classList.add("hidden");
-      return;
+  const $protocolListCard = document.querySelector(".rch-protocol-list-card");
+
+  // Aucun protocole sélectionné
+  if (!currentProtocolId) {
+    $body.classList.add("hidden");
+
+    if ($protocolListCard) {
+      $protocolListCard.style.display = "";
     }
 
-    $body.classList.remove("hidden");
-    await loadDocs();
-  };
+    renderPreview(null);
+    return;
+  }
+
+  // Protocole ouvert
+  $body.classList.remove("hidden");
+
+  if ($protocolListCard) {
+    $protocolListCard.style.display = "none";
+  }
+
+    if ($openProtocolTitle) {
+  $openProtocolTitle.textContent = currentProtocolName
+    ? `Protocole : ${currentProtocolName}`
+    : "";
+}
+    
+  await loadDocs();
+};
 
   const showProtoModal = () => {
     $protoName.value = "";
@@ -28017,6 +28049,11 @@ function renderRecherche() {
     await selectProtocolById($select.value || "");
   });
 
+$backToProtocols.addEventListener("click", async () => {
+  $select.value = "";
+  await selectProtocolById("");
+});
+  
   $docModalClose.addEventListener("click", hideDocModal);
   $docCancel.addEventListener("click", hideDocModal);
   $docModalBackdrop.addEventListener("click", e => {
