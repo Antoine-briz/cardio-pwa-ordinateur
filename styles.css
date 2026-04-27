@@ -13674,3 +13674,40 @@ body.theme-light .saric-generate-card .saric-log * {
   font-size: 0.72rem;
   font-weight: 700;
 }
+
+/* ============================================================
+   PLANNING GLOBAL - colonne postes fixe + absences multilignes
+   ============================================================ */
+
+.saric-global-scroll {
+  position: relative !important;
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+}
+
+.saric-global-table {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+.saric-global-table .saric-post-col {
+  position: sticky !important;
+  left: 0 !important;
+  z-index: 50 !important;
+  min-width: 230px !important;
+  background-color: #cbd5e1 !important;
+  color: #000 !important;
+  box-shadow: 4px 0 0 #111827 !important;
+}
+
+.saric-global-table thead .saric-post-col {
+  z-index: 80 !important;
+  background-color: #bfdbfe !important;
+}
+
+.saric-global-table td.saric-absence-multi {
+  white-space: normal !important;
+  line-height: 1.25 !important;
+  font-size: 0.72rem !important;
+  font-weight: 800 !important;
+}
