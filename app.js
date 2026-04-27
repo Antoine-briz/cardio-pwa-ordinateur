@@ -30218,77 +30218,98 @@ function saricPlanningGlobalTable() {
     <div class="card saric-global-table-card">
       <h3>Planning global - ${saricEscape(saricMonthLabel(st.month))}</h3>
 
-      <div class="saric-global-scroll">
-        <table class="saric-global-table">
-          <thead>
-            <tr class="saric-week-row">
-              <th class="saric-post-col"></th>
-              ${weekGroups.map(g => `
-                <th colspan="${g.colspan}" class="saric-week-header">
-                  ${saricEscape(saricWeekLabel(g))}
-                </th>
-              `).join("")}
-            </tr>
+      <div class="saric-split-planning">
 
-            <tr>
-              <th class="saric-post-col">Poste</th>
-              ${days.map(d => {
-                const label = d.toLocaleDateString("fr-FR", {
-                  weekday: "short",
-                  day: "numeric"
-                });
-                return `<th>${saricEscape(label)}</th>`;
+        <div class="saric-fixed-posts">
+          <table class="saric-global-table saric-posts-only-table">
+            <thead>
+              <tr><th class="saric-post-col"></th></tr>
+              <tr><th class="saric-post-col">Poste</th></tr>
+            </thead>
+            <tbody>
+              ${posts.map(post => {
+                const bg = typeof saricPostColorPastel === "function"
+                  ? saricPostColorPastel(post)
+                  : "#ffffff";
+
+                return `
+                  <tr style="background:${bg};">
+                    <td class="saric-post-col" style="background:${bg};">
+                      ${saricEscape(post)}
+                    </td>
+                  </tr>
+                `;
               }).join("")}
-            </tr>
-          </thead>
+            </tbody>
+          </table>
+        </div>
 
-          <tbody>
-            ${posts.map(post => {
-              const bg = typeof saricPostColorPastel === "function"
-                ? saricPostColorPastel(post)
-                : "#ffffff";
+        <div class="saric-global-scroll saric-scroll-days">
+          <table class="saric-global-table saric-days-only-table">
+            <thead>
+              <tr class="saric-week-row">
+                ${weekGroups.map(g => `
+                  <th colspan="${g.colspan}" class="saric-week-header">
+                    ${saricEscape(saricWeekLabel(g))}
+                  </th>
+                `).join("")}
+              </tr>
 
-              return `
-                <tr style="background:${bg};">
-                  <td class="saric-post-col" style="background:${bg};">
-                    ${saricEscape(post)}
-                  </td>
+              <tr>
+                ${days.map(d => {
+                  const label = d.toLocaleDateString("fr-FR", {
+                    weekday: "short",
+                    day: "numeric"
+                  });
+                  return `<th>${saricEscape(label)}</th>`;
+                }).join("")}
+              </tr>
+            </thead>
 
-                  ${days.map(d => {
-                    const iso = saricDateKey(d);
-                    let value = "";
+            <tbody>
+              ${posts.map(post => {
+                const bg = typeof saricPostColorPastel === "function"
+                  ? saricPostColorPastel(post)
+                  : "#ffffff";
 
-                    if (SARIC_ABSENCE_POSTS.includes(post)) {
-                      const absenceIds = st.absences?.[iso]?.[post] || [];
+                return `
+                  <tr style="background:${bg};">
+                    ${days.map(d => {
+                      const iso = saricDateKey(d);
+                      let value = "";
 
-                      value = absenceIds
-  .map(id => st.doctors.find(x => x.id === id))
-  .filter(Boolean)
-  .map(doc => saricDoctorInitials(doc.name))
-  .join("<br>");
-                    } else {
-                      const docId = st.assignments?.[iso]?.[post];
-                      const doc = st.doctors.find(x => x.id === docId);
+                      if (SARIC_ABSENCE_POSTS.includes(post)) {
+                        const absenceIds = st.absences?.[iso]?.[post] || [];
 
-                      value = doc ? saricDoctorInitials(doc.name) : "";
-                    }
+                        value = absenceIds
+                          .map(id => st.doctors.find(x => x.id === id))
+                          .filter(Boolean)
+                          .map(doc => saricEscape(saricDoctorInitials(doc.name)))
+                          .join("<br>");
+                      } else {
+                        const docId = st.assignments?.[iso]?.[post];
+                        const doc = st.doctors.find(x => x.id === docId);
+                        value = doc ? saricEscape(saricDoctorInitials(doc.name)) : "";
+                      }
 
-                    const cls = saricGlobalCellClass(post, d, value);
+                      const cls = saricGlobalCellClass(post, d, value);
 
-                    return `
-                      <td class="${cls} ${SARIC_ABSENCE_POSTS.includes(post) ? "saric-absence-multi" : ""}"
-    style="background:${bg};">
-  ${SARIC_ABSENCE_POSTS.includes(post)
-    ? (value || "")
-    : saricRenderGlobalCellValue(post, value, cls)}
-</td>
-                    `;
-                  }).join("")}
-                </tr>
-              `;
-            }).join("")}
-          </tbody>
-        </table>
+                      return `
+                        <td class="${cls} ${SARIC_ABSENCE_POSTS.includes(post) ? "saric-absence-multi" : ""}"
+                            style="background:${bg};">
+                          ${SARIC_ABSENCE_POSTS.includes(post)
+                            ? value
+                            : saricRenderGlobalCellValue(post, value, cls)}
+                        </td>
+                      `;
+                    }).join("")}
+                  </tr>
+                `;
+              }).join("")}
+            </tbody>
+          </table>
+        </div>
+
       </div>
     </div>
   `;
