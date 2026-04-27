@@ -28352,6 +28352,42 @@ const SARIC_CATEGORIES = [
   "Stand by"
 ];
 
+const SARIC_DEFAULT_POST_CATEGORIES = {
+  "Garde anesth CEC": "Chirurgie cardiaque",
+  "Garde réa": "Chirurgie cardiaque",
+  "Garde USIP": "Mixte",
+  "½ garde CEC": "Chirurgie cardiaque",
+  "½ garde vasc": "Chirurgie vasculaire",
+
+  "Coordo bloc": "Chirurgie cardiaque",
+  "Bloc CEC 1": "Chirurgie cardiaque",
+  "Bloc CEC 2": "Chirurgie cardiaque",
+  "Bloc CEC 3": "Chirurgie cardiaque",
+  "Bloc CEC 4": "Chirurgie cardiaque",
+
+  "Bloc vasc. 1": "Chirurgie vasculaire",
+  "Bloc vasc. 2": "Chirurgie vasculaire",
+
+  "SSPI": "Chirurgie vasculaire",
+  "PTI": "Chirurgie cardiaque",
+  "Radio-vasculaire": "Mixte",
+
+  "Coordo réa": "Chirurgie cardiaque",
+  "Réa 1": "Chirurgie cardiaque",
+  "Réa 2": "Chirurgie cardiaque",
+  "Réa 3": "Chirurgie cardiaque",
+
+  "USIP1": "Mixte",
+  "USIP2": "Mixte",
+
+  "Consult. chir. Card.": "Chirurgie cardiaque",
+  "Consult. Cardio. Med": "Chirurgie cardiaque",
+  "Consult. Vasculaire": "Chirurgie vasculaire",
+
+  "Hors salle": "Chirurgie cardiaque",
+  "Visite/étage": "Chirurgie vasculaire"
+};
+
 const SARIC_DAY_POSTS = [
   "Bloc CEC 1",
   "Bloc CEC 2",
@@ -29015,7 +29051,7 @@ function saricDefaultPostCategories() {
   const out = {};
 
   SARIC_ALL_POSTS.forEach(post => {
-    out[post] = "Mixte";
+    out[post] = SARIC_DEFAULT_POST_CATEGORIES[post] || "Mixte";
   });
 
   return out;
@@ -29250,20 +29286,25 @@ function saricDefaultAbilities(doctors) {
 
 function saricDefaultState() {
   const doctors = JSON.parse(JSON.stringify(SARIC_DEFAULT_DOCTORS));
+
   return {
     month: saricTodayMonthKey(),
     activeTab: "planning",
     selectedDoctorId: "global",
+
     doctors,
+
     absences: {},
     adminDraftAssignments: {},
-adminDraftAbsences: {},
-publishedAssignments: {},
-publishedAbsences: {},
-    postCategories: saricDefaultPostCategories(),
+    adminDraftAbsences: {},
+    publishedAssignments: {},
+    publishedAbsences: {},
+
     customDayPosts: [...SARIC_DAY_POSTS],
-customNightPosts: [...SARIC_NIGHT_POSTS],
-postCategories: saricDefaultPostCategories(),
+    customNightPosts: [...SARIC_NIGHT_POSTS],
+
+    postCategories: saricDefaultPostCategories(),
+
     abilities: saricDefaultAbilities(doctors),
     optionalRules: { ...SARIC_OPTIONAL_RULES_DEFAULT },
     desiderata: {},
@@ -29277,26 +29318,29 @@ function saricLoadState() {
   try {
     const saved = JSON.parse(localStorage.getItem(SARIC_PLANNING_KEY) || "null");
     if (!saved) return saricDefaultState();
+
     const base = saricDefaultState();
+
     return {
       ...base,
       ...saved,
-      postCategories: {
-  ...base.postCategories,
-  ...(saved.postCategories || {})
-},
-      customDayPosts: saved.customDayPosts || base.customDayPosts,
-customNightPosts: saved.customNightPosts || base.customNightPosts,
-postCategories: {
-  ...base.postCategories,
-  ...(saved.postCategories || {})
-},
+
       doctors: saved.doctors || base.doctors,
+
+      customDayPosts: saved.customDayPosts || base.customDayPosts,
+      customNightPosts: saved.customNightPosts || base.customNightPosts,
+
+      postCategories: {
+        ...base.postCategories,
+        ...(saved.postCategories || {})
+      },
+
       absences: saved.absences || {},
       adminDraftAssignments: saved.adminDraftAssignments || {},
-adminDraftAbsences: saved.adminDraftAbsences || {},
-publishedAssignments: saved.publishedAssignments || {},
-publishedAbsences: saved.publishedAbsences || {},
+      adminDraftAbsences: saved.adminDraftAbsences || {},
+      publishedAssignments: saved.publishedAssignments || {},
+      publishedAbsences: saved.publishedAbsences || {},
+
       abilities: saved.abilities || base.abilities,
       optionalRules: { ...base.optionalRules, ...(saved.optionalRules || {}) },
       desiderata: saved.desiderata || {},
