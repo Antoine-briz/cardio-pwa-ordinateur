@@ -14055,3 +14055,77 @@ body:not(.theme-light) .saric-cal-cell.weekend.holiday {
     grid-template-columns: 1fr !important;
   }
 }
+
+/* ============================================================
+   RECHERCHE - corrections tableau protocoles 2 colonnes
+   ============================================================ */
+
+/* évite le débordement à gauche/droite */
+#app .recherche-page .rch-protocol-list-card {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+#app .recherche-page .rch-protocol-table-wrap {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
+
+/* garde les titres visibles */
+#app .recherche-page .rch-protocol-table thead {
+  display: table-header-group !important;
+}
+
+#app .recherche-page .rch-protocol-table thead tr {
+  display: grid !important;
+  grid-template-columns: 1.1fr 1fr 0.85fr 180px !important;
+  border: 2px solid #0b3c6d !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  margin-bottom: 10px !important;
+}
+
+#app .recherche-page .rch-protocol-table thead th {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 38px !important;
+  padding: 6px 8px !important;
+  background: #0b3c6d !important;
+  color: #ffffff !important;
+  border-right: 1px solid #ffffff55 !important;
+  font-weight: 900 !important;
+}
+
+#app .recherche-page .rch-protocol-table thead th:last-child {
+  border-right: 0 !important;
+}
+
+/* évite que les cartes dépassent */
+#app .recherche-page .rch-protocol-table tbody {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+/* bouton Modifier identique à Ouvrir */
+#app .recherche-page .rch-protocol-actions .btn,
+#app .recherche-page .rch-protocol-actions .btn.ghost {
+  background: #0b3c6d !important;
+  border: 0 !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+/* responsive */
+@media (max-width: 1250px) {
+  #app .recherche-page .rch-protocol-table thead tr {
+    grid-template-columns: 1.1fr 1fr 0.85fr 180px !important;
+  }
+
+  #app .recherche-page .rch-protocol-table tbody {
+    grid-template-columns: 1fr !important;
+  }
+}
