@@ -29678,8 +29678,8 @@ function saricAdminEditablePlanningTable(st, editable) {
       <div class="saric-fixed-posts">
         <table class="saric-global-table saric-posts-only-table">
           <thead>
-            <tr><th class="saric-post-col"></th></tr>
-            <tr><th class="saric-post-col">Poste</th></tr>
+            <tr><th class="saric-post-col">Semaine du mois</th></tr>
+            <tr><th class="saric-post-col">Jour de la semaine</th></tr>
           </thead>
 
           <tbody>
