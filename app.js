@@ -27378,17 +27378,32 @@ const renderPreview = (doc) => {
   load();
 }
 
-
 function renderRecherche() {
-  // ==============================
-  // Firestore collections
-  // ==============================
   const protoCol = () => window.db.collection("researchProtocols");
   const docsCol = () => window.db.collection("researchDocs");
 
-  // ==============================
-  // Helpers
-  // ==============================
+  const RCH_STATUS_OPTIONS = [
+    "Inclusion",
+    "Accord réglementaire",
+    "Fin inclusion",
+    "Publié",
+    "Phase II",
+    "Finalisation protocole",
+    "Base de données",
+    "En attente"
+  ];
+
+  const RCH_STATUS_COLORS = {
+    "Inclusion": "#16a34a",
+    "Accord réglementaire": "#2563eb",
+    "Fin inclusion": "#64748b",
+    "Publié": "#7c3aed",
+    "Phase II": "#f59e0b",
+    "Finalisation protocole": "#dc2626",
+    "Base de données": "#0891b2",
+    "En attente": "#6b7280"
+  };
+
   const esc = (s) =>
     String(s ?? "")
       .replaceAll("&", "&amp;")
@@ -27404,31 +27419,40 @@ function renderRecherche() {
     return "file";
   };
 
-  const resolveFileUrl = (fileUrl) => fileUrl || "";
-
-  const openInNewTab = (url) => {
-    if (!url) return;
-    window.open(resolveFileUrl(url), "_blank", "noopener");
-  };
-
   const safeFileName = (name) =>
     String(name || "fichier").replace(/[^\w.\-]+/g, "_");
+
+  const openInNewTab = (url) => {
+    if (url) window.open(url, "_blank", "noopener");
+  };
 
   const uploadToStorage = async (file, protocolId) => {
     if (!file) throw new Error("Aucun fichier sélectionné.");
 
-    // Limites (mêmes que ce que tu voulais)
-    const isPdf = file.type === "application/pdf" || String(file.name).toLowerCase().endsWith(".pdf");
+    const isPdf =
+      file.type === "application/pdf" ||
+      String(file.name).toLowerCase().endsWith(".pdf");
+
     const max = isPdf ? 40 * 1024 * 1024 : 80 * 1024 * 1024;
+
     if (file.size > max) {
-      throw new Error(isPdf ? "PDF trop volumineux (max 40 Mo)." : "Fichier trop volumineux (max 80 Mo).");
+      throw new Error(
+        isPdf
+          ? "PDF trop volumineux (max 40 Mo)."
+          : "Fichier trop volumineux (max 80 Mo)."
+      );
     }
 
     const path = `SARIC/research/${protocolId}/${Date.now()}__${safeFileName(file.name)}`;
     const ref = window.storage.ref().child(path);
+
     await ref.put(file);
-    const fileUrl = await ref.getDownloadURL();
-    return { fileUrl, storagePath: path, fileName: file.name };
+
+    return {
+      fileUrl: await ref.getDownloadURL(),
+      storagePath: path,
+      fileName: file.name
+    };
   };
 
   const deleteFromStorage = async (storagePath) => {
@@ -27436,345 +27460,171 @@ function renderRecherche() {
     try {
       await window.storage.ref().child(storagePath).delete();
     } catch (e) {
-      // Si le fichier est déjà absent, on ne bloque pas
       console.warn("deleteFromStorage:", e?.message || e);
     }
   };
 
-let selectedProtoEditId = "";
-
-const showEditProtocolsModal = async () => {
-  if (!(await ensureEnsAdminCodeOnce())) return;
-
-  await loadProtocols();
-  selectedProtoEditId = "";
-
-  $protoEditList.innerHTML = protocols.map(p => `
-    <label class="rch-proto-edit-item">
-      <input type="radio" name="rch-proto-edit" value="${p.id}">
-      <span class="rch-proto-edit-name">${esc(p.name || "")}</span>
-    </label>
-  `).join("");
-
-  $protoEditList.querySelectorAll("input[type=radio]").forEach(r => {
-    r.addEventListener("change", () => {
-      selectedProtoEditId = r.value;
-    });
-  });
-
-  // Attache (ou ré-attache) les actions sur les boutons du modal
-const bindProtoEditActions = () => {
-  const $protoRename = document.getElementById("rch-proto-rename");
-  const $protoRemove = document.getElementById("rch-proto-remove");
-
-  console.log("[Recherche] bind actions", { protoRename: !!$protoRename, protoRemove: !!$protoRemove });
-
-  if ($protoRename) {
-    $protoRename.onclick = async (e) => {
-      e.preventDefault();
-
-      if (!selectedProtoEditId) {
-        alert("Sélectionne un protocole à modifier.");
-        return;
-      }
-
-      const proto = protocols.find(p => p.id === selectedProtoEditId);
-      const newName = prompt("Nouveau nom du protocole :", proto?.name || "");
-      if (!newName) return;
-
-      try {
-        await protoCol().doc(selectedProtoEditId).update({ name: newName.trim() });
-        await loadProtocols();
-        await showEditProtocolsModal(); // refresh liste modale
-      } catch (err) {
-        console.error(err);
-        alert("Erreur : modification impossible.");
-      }
-    };
-  }
-
-  if ($protoRemove) {
-    $protoRemove.onclick = async (e) => {
-      e.preventDefault();
-
-      if (!selectedProtoEditId) {
-        alert("Sélectionne un protocole à supprimer.");
-        return;
-      }
-
-      if (!confirm("Supprimer définitivement ce protocole ?")) return;
-
-      try {
-        // Supprime docs + fichiers
-        const snap = await docsCol().where("protocolId", "==", selectedProtoEditId).get();
-        for (const d of snap.docs) {
-          const data = d.data() || {};
-          await deleteFromStorage(data.storagePath);
-          await d.ref.delete();
-        }
-
-        await protoCol().doc(selectedProtoEditId).delete();
-
-        // reset si supprimé = protocole courant
-        if (currentProtocolId === selectedProtoEditId) {
-          currentProtocolId = "";
-          currentProtocolName = "";
-          $select.value = "";
-          $body.classList.add("hidden");
-          renderPreview(null);
-        }
-
-        await loadProtocols();
-        hideEditProtocolsModal();
-        alert("Protocole supprimé.");
-      } catch (err) {
-        console.error(err);
-        alert("Erreur : suppression impossible.");
-      }
-    };
-  }
-};
-
-bindProtoEditActions();
-
-  
-  $protoEditBackdrop.classList.remove("hidden");
-};
-
-// ==============================
-// Events: boutons Modifier / Supprimer protocole (modale édition)
-// ==============================
-const $protoRename = document.getElementById("rch-proto-rename");
-const $protoRemove = document.getElementById("rch-proto-remove");
-
-if ($protoRename) {
-  $protoRename.addEventListener("click", async () => {
-    if (!selectedProtoEditId) {
-      alert("Sélectionne un protocole.");
-      return;
-    }
-
-    const proto = protocols.find(p => p.id === selectedProtoEditId);
-    const newName = prompt("Nouveau nom du protocole :", proto?.name || "");
-    if (!newName) return;
-
-    try {
-      await protoCol().doc(selectedProtoEditId).update({ name: newName.trim() });
-      await loadProtocols();
-      hideEditProtocolsModal();
-      alert("Protocole modifié.");
-    } catch (err) {
-      console.error(err);
-      alert("Erreur : modification impossible.");
-    }
-  });
-}
-
-if ($protoRemove) {
-  $protoRemove.addEventListener("click", async () => {
-    if (!selectedProtoEditId) {
-      alert("Sélectionne un protocole.");
-      return;
-    }
-
-    if (!confirm("Supprimer définitivement ce protocole ?")) return;
-
-    try {
-      // Supprime aussi les documents liés + fichiers Storage
-      const snap = await docsCol().where("protocolId", "==", selectedProtoEditId).get();
-      for (const d of snap.docs) {
-        const data = d.data() || {};
-        await deleteFromStorage(data.storagePath);
-        await d.ref.delete();
-      }
-
-      await protoCol().doc(selectedProtoEditId).delete();
-
-      // si protocole courant supprimé, reset UI
-      if (currentProtocolId === selectedProtoEditId) {
-        currentProtocolId = "";
-        currentProtocolName = "";
-        $select.value = "";
-        $body.classList.add("hidden");
-        renderPreview(null);
-      }
-
-      await loadProtocols();
-      hideEditProtocolsModal();
-      alert("Protocole supprimé.");
-    } catch (err) {
-      console.error(err);
-      alert("Erreur : suppression impossible.");
-    }
-  });
-}
-
-const hideEditProtocolsModal = () => {
-  $protoEditBackdrop.classList.add("hidden");
-};
-
-  // ==============================
-  // State
-  // ==============================
   let protocols = [];
   let currentProtocolId = "";
   let currentProtocolName = "";
   let allDocs = [];
-
-  let activeDocId = null;
   let selectedIds = new Set();
+  let activeDocId = null;
+  let currentPage = 1;
+  let editingProtocolId = "";
 
   const PAGE_SIZE = 10;
-  let currentPage = 1;
 
-  // ==============================
-  // UI
-  // ==============================
   $app.innerHTML = `
-  <section class="page recherche-page enseignement-page">
+    <section class="page recherche-page enseignement-page">
+      <div class="title-strip">
+        <img src="img/titre8.png" alt="Titre" class="title-strip-img">
+      </div>
 
-    <div class="title-strip">
-      <img src="img/titre8.png" alt="Titre" class="title-strip-img">
-    </div>
+      <div class="recherche-proto-bar recherche-proto-actions">
+        <div class="recherche-proto-label">Sélection du protocole de recherche :</div>
 
-    <!-- Sélection protocole -->
-    <div class="recherche-proto-bar recherche-proto-actions">
-      <div class="recherche-proto-label">Sélection du protocole de recherche :</div>
+        <select id="rch-protocol-select">
+          <option value="">— Choisir un protocole —</option>
+        </select>
 
-      <select id="rch-protocol-select">
-        <option value="">— Choisir un protocole —</option>
-      </select>
+        <button class="btn" id="rch-add-protocol">Ajouter un protocole</button>
+      </div>
 
-      <button class="btn" id="rch-add-protocol">Ajouter un protocole</button>
-      <button class="btn" id="rch-edit-protocols">Éditer les protocoles</button>
-    </div>
-
-    <!-- Zone qui n'apparait qu'après sélection -->
-    <div id="rch-body" class="hidden">
-      <div class="enseignement-layout">
-        <div class="enseignement-left">
-          <div class="table-wrap">
-            <table class="enseignement-table">
-              <thead>
-                <tr>
-                  <th style="width:110px;">Fichier</th>
-                  <th>Titre</th>
-                  <th style="width:130px;">Date d’ajout</th>
-                  <th style="width:110px;">Ouvrir</th>
-                </tr>
-              </thead>
-              <tbody id="rch-tbody"></tbody>
-            </table>
-          </div>
-
-          <div class="enseignement-pagination" id="rch-pagination"></div>
-
-          <div class="enseignement-actions">
-            <button class="btn" id="rch-add">Ajouter</button>
-            <button class="btn" id="rch-edit" disabled>Modifier</button>
-            <button class="btn danger" id="rch-delete" disabled>Supprimer</button>
-            <button class="btn" id="rch-download" disabled>Télécharger</button>
-          </div>
-
-          <div class="muted" style="margin-top:8px; font-size:18px;">
-            Code requis pour Ajouter / Modifier / Supprimer : <strong>Contactez Antoine BRIZARD</strong>
-          </div>
-          <div class="muted" style="margin-top:8px; font-size:18px;">
-            Vos documents ne doivent pas comporter de données sensibles ou d'informations patients.
-          </div>
+      <div class="rch-protocol-list-card card">
+        <div class="rch-protocol-list-head">
+          <h3>Protocoles de recherche</h3>
         </div>
 
-        <div class="enseignement-right">
-          <div class="enseignement-preview" id="rch-preview">
-            <div class="ens-preview-empty">Sélectionnez un fichier pour afficher un aperçu</div>
-          </div>
+        <div class="rch-protocol-table-wrap">
+          <table class="rch-protocol-table">
+            <thead>
+              <tr>
+                <th>Protocole</th>
+                <th>Investigateur local</th>
+                <th>Statut</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="rch-protocol-list-tbody"></tbody>
+          </table>
         </div>
       </div>
-    </div>
 
-    <!-- Modal protocole (ajout) -->
-    <div class="ens-modal-backdrop hidden" id="rch-proto-modal-backdrop">
-      <div class="ens-modal" role="dialog" aria-modal="true">
-        <div class="ens-modal-head">
-          <h3>Ajouter un protocole</h3>
-          <button class="ens-modal-close" id="rch-proto-modal-close" aria-label="Fermer">×</button>
-        </div>
-
-        <form id="rch-proto-form" class="ens-form">
-          <label>
-            <span>Nom du protocole</span>
-            <input id="rch-proto-name" type="text" required />
-          </label>
-
-          <div class="ens-form-actions">
-            <button type="button" class="btn" id="rch-proto-cancel">Annuler</button>
-            <button type="submit" class="btn primary">Enregistrer</button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-   <!-- Modal édition protocoles -->
-<div class="ens-modal-backdrop hidden" id="rch-proto-edit-backdrop">
-  <div class="ens-modal" role="dialog" aria-modal="true">
-    <div class="ens-modal-head">
-      <h3>Éditer les protocoles</h3>
-      <button class="ens-modal-close" id="rch-proto-edit-close" aria-label="Fermer">×</button>
-    </div>
-
-    <div id="rch-proto-edit-list" class="ens-form">
-      <!-- injecté en JS -->
-    </div>
-
-    <div class="enseignement-actions" style="justify-content:flex-end; margin-top:12px;">
-      <button class="btn" id="rch-proto-rename" type="button">Modifier</button>
-<button class="btn danger" id="rch-proto-remove" type="button">Supprimer</button>
-    </div>
-  </div>
-</div>
-
-
-    <!-- Modal document -->
-    <div class="ens-modal-backdrop hidden" id="rch-doc-modal-backdrop">
-      <div class="ens-modal" role="dialog" aria-modal="true">
-        <div class="ens-modal-head">
-          <h3 id="rch-doc-modal-title">Ajouter un fichier</h3>
-          <button class="ens-modal-close" id="rch-doc-modal-close" aria-label="Fermer">×</button>
-        </div>
-
-        <form id="rch-doc-form" class="ens-form">
-          <input type="hidden" id="rch-doc-id" value="" />
-
-          <label>
-            <span>Titre</span>
-            <input id="rch-doc-title" type="text" required />
-          </label>
-
-          <div class="ens-dropzone" id="rch-dropzone">
-            <div class="ens-dropzone-text">
-              <strong>Fichier</strong>
-              <div class="muted">Glisser-déposer ici, ou <span class="ens-browse">parcourir</span></div>
-              <div class="ens-file-name" id="rch-file-name">Aucun fichier sélectionné</div>
+      <div id="rch-body" class="hidden">
+        <div class="enseignement-layout">
+          <div class="enseignement-left">
+            <div class="table-wrap">
+              <table class="enseignement-table">
+                <thead>
+                  <tr>
+                    <th style="width:110px;">Fichier</th>
+                    <th>Titre</th>
+                    <th style="width:130px;">Date d’ajout</th>
+                    <th style="width:110px;">Ouvrir</th>
+                  </tr>
+                </thead>
+                <tbody id="rch-tbody"></tbody>
+              </table>
             </div>
-            <input id="rch-doc-file" type="file"
-              accept=".pdf,.ppt,.pptx,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation" />
+
+            <div class="enseignement-pagination" id="rch-pagination"></div>
+
+            <div class="enseignement-actions">
+              <button class="btn" id="rch-add">Ajouter</button>
+              <button class="btn" id="rch-edit" disabled>Modifier</button>
+              <button class="btn danger" id="rch-delete" disabled>Supprimer</button>
+              <button class="btn" id="rch-download" disabled>Télécharger</button>
+            </div>
+
+            <div class="muted" style="margin-top:8px; font-size:18px;">
+              Code requis pour Ajouter / Modifier / Supprimer : <strong>Contactez Antoine BRIZARD</strong>
+            </div>
+            <div class="muted" style="margin-top:8px; font-size:18px;">
+              Vos documents ne doivent pas comporter de données sensibles ou d'informations patients.
+            </div>
           </div>
 
-          <div class="ens-form-actions">
-            <button type="button" class="btn" id="rch-doc-cancel">Annuler</button>
-            <button type="submit" class="btn primary" id="rch-doc-save">Enregistrer</button>
+          <div class="enseignement-right">
+            <div class="enseignement-preview" id="rch-preview">
+              <div class="ens-preview-empty">Sélectionnez un fichier pour afficher un aperçu</div>
+            </div>
           </div>
-        </form>
+        </div>
       </div>
-    </div>
-  </section>
-`;
 
-  // ==============================
-  // DOM refs
-  // ==============================
+      <div class="ens-modal-backdrop hidden" id="rch-proto-modal-backdrop">
+        <div class="ens-modal" role="dialog" aria-modal="true">
+          <div class="ens-modal-head">
+            <h3>Ajouter un protocole</h3>
+            <button class="ens-modal-close" id="rch-proto-modal-close">×</button>
+          </div>
+
+          <form id="rch-proto-form" class="ens-form">
+            <label>
+              <span>Nom du protocole</span>
+              <input id="rch-proto-name" type="text" required>
+            </label>
+
+            <label>
+              <span>Investigateur local</span>
+              <input id="rch-proto-investigator" type="text">
+            </label>
+
+            <label>
+              <span>Statut</span>
+              <select id="rch-proto-status">
+                ${RCH_STATUS_OPTIONS.map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join("")}
+              </select>
+            </label>
+
+            <div class="ens-form-actions">
+              <button type="button" class="btn" id="rch-proto-cancel">Annuler</button>
+              <button type="submit" class="btn primary">Enregistrer</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="ens-modal-backdrop hidden" id="rch-doc-modal-backdrop">
+        <div class="ens-modal" role="dialog" aria-modal="true">
+          <div class="ens-modal-head">
+            <h3 id="rch-doc-modal-title">Ajouter un fichier</h3>
+            <button class="ens-modal-close" id="rch-doc-modal-close">×</button>
+          </div>
+
+          <form id="rch-doc-form" class="ens-form">
+            <input type="hidden" id="rch-doc-id" value="">
+
+            <label>
+              <span>Titre</span>
+              <input id="rch-doc-title" type="text" required>
+            </label>
+
+            <div class="ens-dropzone" id="rch-dropzone">
+              <div class="ens-dropzone-text">
+                <strong>Fichier</strong>
+                <div class="muted">Glisser-déposer ici, ou <span class="ens-browse">parcourir</span></div>
+                <div class="ens-file-name" id="rch-file-name">Aucun fichier sélectionné</div>
+              </div>
+              <input id="rch-doc-file" type="file"
+                accept=".pdf,.ppt,.pptx,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation">
+            </div>
+
+            <div class="ens-form-actions">
+              <button type="button" class="btn" id="rch-doc-cancel">Annuler</button>
+              <button type="submit" class="btn primary">Enregistrer</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  `;
+
+  const $page = document.querySelector(".recherche-page");
   const $select = document.getElementById("rch-protocol-select");
   const $body = document.getElementById("rch-body");
+  const $protoListBody = document.getElementById("rch-protocol-list-tbody");
 
   const $btnAddProtocol = document.getElementById("rch-add-protocol");
   const $protoModalBackdrop = document.getElementById("rch-proto-modal-backdrop");
@@ -27782,12 +27632,9 @@ const hideEditProtocolsModal = () => {
   const $protoCancel = document.getElementById("rch-proto-cancel");
   const $protoForm = document.getElementById("rch-proto-form");
   const $protoName = document.getElementById("rch-proto-name");
+  const $protoInvestigator = document.getElementById("rch-proto-investigator");
+  const $protoStatus = document.getElementById("rch-proto-status");
 
-const $btnEditProtocols = document.getElementById("rch-edit-protocols");
-const $protoEditBackdrop = document.getElementById("rch-proto-edit-backdrop");
-const $protoEditClose = document.getElementById("rch-proto-edit-close");
-const $protoEditList = document.getElementById("rch-proto-edit-list");
-  
   const $tbody = document.getElementById("rch-tbody");
   const $pagination = document.getElementById("rch-pagination");
   const $preview = document.getElementById("rch-preview");
@@ -27808,14 +27655,227 @@ const $protoEditList = document.getElementById("rch-proto-edit-list");
   const $dropzone = document.getElementById("rch-dropzone");
   const $fileName = document.getElementById("rch-file-name");
 
-  // ==============================
-  // Modal helpers
-  // ==============================
+  const statusBadge = (status) => {
+    const s = status || "—";
+    const color = RCH_STATUS_COLORS[s] || "#64748b";
+    return `<span class="rch-status-badge" style="--rch-status-color:${color};">${esc(s)}</span>`;
+  };
+
+  const renderProtocolList = () => {
+    $protoListBody.innerHTML = protocols.map(p => {
+      if (editingProtocolId === p.id) {
+        return `
+          <tr class="rch-protocol-row-edit" data-proto-id="${p.id}">
+            <td>
+              <button class="rch-delete-proto-x" data-rch-delete-proto="${p.id}">×</button>
+              <input class="rch-proto-name-input" value="${esc(p.name || "")}">
+            </td>
+            <td>
+              <input class="rch-proto-investigator-input" value="${esc(p.investigator || "")}">
+            </td>
+            <td>
+              <select class="rch-proto-status-input">
+                ${RCH_STATUS_OPTIONS.map(s => `
+                  <option value="${esc(s)}" ${p.status === s ? "selected" : ""}>${esc(s)}</option>
+                `).join("")}
+              </select>
+            </td>
+            <td class="rch-protocol-actions">
+              <button class="btn" data-rch-save-proto="${p.id}">Sauvegarder</button>
+              <button class="btn ghost" data-rch-cancel-edit="${p.id}">Annuler</button>
+            </td>
+          </tr>
+        `;
+      }
+
+      return `
+        <tr>
+          <td><strong>${esc(p.name || "")}</strong></td>
+          <td>${esc(p.investigator || "—")}</td>
+          <td>${statusBadge(p.status)}</td>
+          <td class="rch-protocol-actions">
+            <button class="btn" data-rch-open-proto="${p.id}">Ouvrir</button>
+            <button class="btn ghost" data-rch-edit-proto="${p.id}">Modifier</button>
+          </td>
+        </tr>
+      `;
+    }).join("");
+  };
+
+  const loadProtocols = async () => {
+    const snap = await protoCol().orderBy("name").get();
+
+    protocols = snap.docs.map(d => {
+      const data = d.data() || {};
+      return {
+        id: d.id,
+        name: data.name || "",
+        investigator: data.investigator || "",
+        status: data.status || "Inclusion",
+        ...data
+      };
+    });
+
+    $select.innerHTML = `
+      <option value="">— Choisir un protocole —</option>
+      ${protocols.map(p => `<option value="${p.id}">${esc(p.name || "")}</option>`).join("")}
+    `;
+
+    renderProtocolList();
+  };
+
+  const renderPreview = (doc) => {
+    if (!doc) {
+      $preview.innerHTML = `<div class="ens-preview-empty">Sélectionnez un fichier pour afficher un aperçu</div>`;
+      return;
+    }
+
+    const kind = fileKind(doc.fileName || doc.title || "");
+    const url = doc.fileUrl || "";
+
+    if (kind === "pdf") {
+      $preview.innerHTML = `
+        <div class="ens-preview-head">
+          <div class="ens-preview-title">${esc(doc.title || "")}</div>
+        </div>
+        <div class="ens-preview-iframe-wrap">
+          <iframe class="ens-preview-frame" src="${url}#view=FitH&toolbar=1&navpanes=1"></iframe>
+        </div>
+      `;
+      return;
+    }
+
+    $preview.innerHTML = `
+      <div class="ens-preview-head">
+        <div class="ens-preview-title">${esc(doc.title || "")}</div>
+      </div>
+      <div class="ens-preview-empty" style="margin-top:10px;">
+        Aperçu non disponible pour PowerPoint.<br>
+        Utilisez la colonne <strong>Ouvrir</strong> du tableau.
+      </div>
+    `;
+  };
+
+  const updateButtons = () => {
+    $btnEdit.disabled = selectedIds.size !== 1;
+    $btnDelete.disabled = selectedIds.size === 0;
+    $btnDownload.disabled = selectedIds.size !== 1;
+  };
+
+  const renderPagination = (total) => {
+    const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+    if (currentPage > pages) currentPage = pages;
+
+    $pagination.innerHTML = `
+      <div class="ens-pages">
+        ${Array.from({ length: pages }, (_, i) => i + 1).map(p => `
+          <button class="ens-page ${p === currentPage ? "active" : ""}" data-page="${p}">
+            ${p}
+          </button>
+        `).join("")}
+      </div>
+    `;
+
+    $pagination.querySelectorAll("[data-page]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        currentPage = Number(btn.dataset.page);
+        renderTable();
+      });
+    });
+  };
+
+  const renderTable = () => {
+    const docs = [...allDocs].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    renderPagination(docs.length);
+
+    const start = (currentPage - 1) * PAGE_SIZE;
+    const pageDocs = docs.slice(start, start + PAGE_SIZE);
+
+    $tbody.innerHTML = pageDocs.map(d => {
+      const kind = fileKind(d.fileName || d.title || "");
+      const badge = kind === "pdf" ? "pdf" : kind === "ppt" ? "ppt" : "file";
+      const icon = kind === "pdf" ? "PDF" : kind === "ppt" ? "PPT" : "FILE";
+      const dateStr = d.createdAt ? new Date(d.createdAt).toLocaleDateString("fr-FR") : "";
+      const selected = selectedIds.has(d.id) ? "selected" : "";
+
+      return `
+        <tr class="ens-row ${selected}" data-id="${d.id}">
+          <td><span class="ens-badge ${badge}">${icon}</span></td>
+          <td title="${esc(d.title || "")}">${esc(d.title || "")}</td>
+          <td>${esc(dateStr)}</td>
+          <td><button class="btn small" data-open="${d.id}">Ouvrir</button></td>
+        </tr>
+      `;
+    }).join("");
+
+    $tbody.querySelectorAll(".ens-row").forEach(row => {
+      row.addEventListener("click", async e => {
+        const id = row.dataset.id;
+        if (!(e.ctrlKey || e.metaKey)) selectedIds.clear();
+
+        if (selectedIds.has(id)) selectedIds.delete(id);
+        else selectedIds.add(id);
+
+        activeDocId = id;
+        updateButtons();
+        renderTable();
+
+        const doc = allDocs.find(x => x.id === id);
+        renderPreview(doc);
+      });
+    });
+
+    $tbody.querySelectorAll("[data-open]").forEach(btn => {
+      btn.addEventListener("click", e => {
+        e.stopPropagation();
+        const doc = allDocs.find(x => x.id === btn.dataset.open);
+        if (doc?.fileUrl) openInNewTab(doc.fileUrl);
+      });
+    });
+  };
+
+  const loadDocs = async () => {
+    if (!currentProtocolId) return;
+
+    const snap = await docsCol()
+      .where("protocolId", "==", currentProtocolId)
+      .get();
+
+    allDocs = snap.docs.map(d => ({ id: d.id, ...(d.data() || {}) }));
+
+    selectedIds.clear();
+    activeDocId = null;
+    currentPage = 1;
+
+    renderPreview(null);
+    renderTable();
+    updateButtons();
+  };
+
+  const selectProtocolById = async (id) => {
+    currentProtocolId = id || "";
+    const p = protocols.find(x => x.id === currentProtocolId);
+    currentProtocolName = p?.name || "";
+
+    $select.value = currentProtocolId;
+
+    if (!currentProtocolId) {
+      $body.classList.add("hidden");
+      return;
+    }
+
+    $body.classList.remove("hidden");
+    await loadDocs();
+  };
+
   const showProtoModal = () => {
     $protoName.value = "";
+    $protoInvestigator.value = "";
+    $protoStatus.value = "Inclusion";
     $protoModalBackdrop.classList.remove("hidden");
     setTimeout(() => $protoName.focus(), 0);
   };
+
   const hideProtoModal = () => $protoModalBackdrop.classList.add("hidden");
 
   const showDocModal = (mode, doc) => {
@@ -27835,92 +27895,111 @@ const $protoEditList = document.getElementById("rch-proto-edit-list");
     $docModalBackdrop.classList.remove("hidden");
     setTimeout(() => $docTitle.focus(), 0);
   };
+
   const hideDocModal = () => $docModalBackdrop.classList.add("hidden");
 
-  // Close buttons
+  $btnAddProtocol.addEventListener("click", async () => {
+    if (!(await ensureEnsAdminCodeOnce())) return;
+    showProtoModal();
+  });
+
   $protoModalClose.addEventListener("click", hideProtoModal);
   $protoCancel.addEventListener("click", hideProtoModal);
-  $protoModalBackdrop.addEventListener("click", (e) => {
+  $protoModalBackdrop.addEventListener("click", e => {
     if (e.target === $protoModalBackdrop) hideProtoModal();
   });
 
-  $docModalClose.addEventListener("click", hideDocModal);
-  $docCancel.addEventListener("click", hideDocModal);
-  $docModalBackdrop.addEventListener("click", (e) => {
-    if (e.target === $docModalBackdrop) hideDocModal();
+  $protoForm.addEventListener("submit", async e => {
+    e.preventDefault();
+
+    const name = $protoName.value.trim();
+    const investigator = $protoInvestigator.value.trim();
+    const status = $protoStatus.value;
+
+    if (!name) return;
+
+    await protoCol().add({
+      name,
+      investigator,
+      status,
+      createdAt: Date.now(),
+      updatedAt: Date.now()
+    });
+
+    hideProtoModal();
+    await loadProtocols();
+
+    const p = protocols.find(x => x.name === name);
+    if (p) await selectProtocolById(p.id);
   });
 
-// ==============================
-// Events: édition des protocoles (renommer / supprimer)
-// ==============================
+  $protoListBody.addEventListener("click", async e => {
+    const openId = e.target.closest("[data-rch-open-proto]")?.dataset.rchOpenProto;
+    const editId = e.target.closest("[data-rch-edit-proto]")?.dataset.rchEditProto;
+    const saveId = e.target.closest("[data-rch-save-proto]")?.dataset.rchSaveProto;
+    const cancelId = e.target.closest("[data-rch-cancel-edit]")?.dataset.rchCancelEdit;
+    const deleteId = e.target.closest("[data-rch-delete-proto]")?.dataset.rchDeleteProto;
 
-// Ouvrir la modale
-$btnEditProtocols.addEventListener("click", async () => {
-  await showEditProtocolsModal();
-});
-
-// Fermer la modale
-$protoEditClose.addEventListener("click", hideEditProtocolsModal);
-$protoEditBackdrop.addEventListener("click", (e) => {
-  if (e.target === $protoEditBackdrop) hideEditProtocolsModal();
-});
-
-// Actions (💾 renommer / 🗑 supprimer)
-$protoEditList.addEventListener("click", async (e) => {
-  const saveId = e.target?.dataset?.save;
-  const deleteId = e.target?.dataset?.delete;
-
-  // Sécurité : code requis
-  if ((saveId || deleteId) && !(await ensureEnsAdminCodeOnce())) return;
-
-  // ===== Renommer =====
-  if (saveId) {
-    const input = $protoEditList.querySelector(`input[data-id="${saveId}"]`);
-    const newName = (input?.value || "").trim();
-    if (!newName) {
-      alert("Nom invalide.");
+    if (openId) {
+      await selectProtocolById(openId);
       return;
     }
 
-    try {
-      await protoCol().doc(saveId).update({ name: newName });
-
-      // Recharge la liste dans le select + la modale
-      await loadProtocols();
-
-      // Garde la sélection actuelle
-      if (currentProtocolId) $select.value = currentProtocolId;
-
-      // Ré-ouvre la modale (liste à jour)
-      await showEditProtocolsModal();
-
-      alert("Protocole renommé.");
-    } catch (err) {
-      console.error(err);
-      alert("Erreur : renommage impossible.");
+    if (editId) {
+      if (!(await ensureEnsAdminCodeOnce())) return;
+      editingProtocolId = editId;
+      renderProtocolList();
+      return;
     }
-    return;
-  }
 
-  // ===== Supprimer =====
-  if (deleteId) {
-    try {
-      // Vérifie si le protocole contient des documents
-      const snap = await docsCol()
-        .where("protocolId", "==", deleteId)
-        .limit(1)
-        .get();
+    if (cancelId) {
+      editingProtocolId = "";
+      renderProtocolList();
+      return;
+    }
 
-      if (!snap.empty) {
-        alert("Impossible de supprimer : ce protocole contient des documents.");
+    if (saveId) {
+      if (!(await ensureEnsAdminCodeOnce())) return;
+
+      const row = $protoListBody.querySelector(`tr[data-proto-id="${CSS.escape(saveId)}"]`);
+      if (!row) return;
+
+      const name = row.querySelector(".rch-proto-name-input")?.value.trim();
+      const investigator = row.querySelector(".rch-proto-investigator-input")?.value.trim();
+      const status = row.querySelector(".rch-proto-status-input")?.value;
+
+      if (!name) {
+        alert("Le nom du protocole est obligatoire.");
         return;
       }
 
-      if (!confirm("Supprimer définitivement ce protocole ?")) return;
+      await protoCol().doc(saveId).set({
+        name,
+        investigator,
+        status,
+        updatedAt: Date.now()
+      }, { merge: true });
+
+      editingProtocolId = "";
+      await loadProtocols();
+      return;
+    }
+
+    if (deleteId) {
+      if (!(await ensureEnsAdminCodeOnce())) return;
+
+      if (!confirm("Supprimer ce protocole et tous les documents associés ?")) return;
+
+      const snap = await docsCol().where("protocolId", "==", deleteId).get();
+
+      for (const d of snap.docs) {
+        const data = d.data() || {};
+        await deleteFromStorage(data.storagePath);
+        await d.ref.delete();
+      }
 
       await protoCol().doc(deleteId).delete();
 
-      // Si on a supprimé le protocole en cours, on reset l'écran
       if (currentProtocolId === deleteId) {
         currentProtocolId = "";
         currentProtocolName = "";
@@ -27929,269 +28008,51 @@ $protoEditList.addEventListener("click", async (e) => {
         renderPreview(null);
       }
 
+      editingProtocolId = "";
       await loadProtocols();
-      await showEditProtocolsModal(); // rafraîchit la liste
-      alert("Protocole supprimé.");
-    } catch (err) {
-      console.error(err);
-      alert("Erreur : suppression impossible.");
     }
-  }
-});
+  });
 
-  
-  // Dropzone UI
+  $select.addEventListener("change", async () => {
+    await selectProtocolById($select.value || "");
+  });
+
+  $docModalClose.addEventListener("click", hideDocModal);
+  $docCancel.addEventListener("click", hideDocModal);
+  $docModalBackdrop.addEventListener("click", e => {
+    if (e.target === $docModalBackdrop) hideDocModal();
+  });
+
   $docFile.addEventListener("change", () => {
     const f = $docFile.files?.[0];
     $fileName.textContent = f ? f.name : "Aucun fichier sélectionné";
   });
 
-  $dropzone.addEventListener("dragover", (e) => {
+  $dropzone.addEventListener("dragover", e => {
     e.preventDefault();
     $dropzone.classList.add("dragover");
   });
-  $dropzone.addEventListener("dragleave", () => $dropzone.classList.remove("dragover"));
-  $dropzone.addEventListener("drop", (e) => {
+
+  $dropzone.addEventListener("dragleave", () => {
+    $dropzone.classList.remove("dragover");
+  });
+
+  $dropzone.addEventListener("drop", e => {
     e.preventDefault();
     $dropzone.classList.remove("dragover");
+
     const f = e.dataTransfer?.files?.[0];
-    if (f) {
-      // inject dans l'input file (pas supporté partout -> on garde juste l'affichage)
-      $fileName.textContent = f.name;
-      // Certains navigateurs n'autorisent pas de setter files; donc on garde la sélection via "parcourir" si besoin.
-      // On tente quand même :
-      try {
-        const dt = new DataTransfer();
-        dt.items.add(f);
-        $docFile.files = dt.files;
-      } catch (_) {}
-    }
-  });
+    if (!f) return;
 
-  // ==============================
-  // Rendering
-  // ==============================
-
-const renderPreview = (doc) => {
-  if (!doc) {
-    $preview.innerHTML = `<div class="ens-preview-empty">Sélectionnez un fichier pour afficher un aperçu</div>`;
-    return;
-  }
-
-  const kind = fileKind(doc.fileName || doc.title || "");
-  const url = resolveFileUrl(doc.fileUrl);
-
-  if (kind === "pdf") {
-    // ✅ IMPORTANT : navpanes=1 + toolbar=1 => panneau multipage visible
-    const pdfUrl = `${url}#view=FitH&toolbar=1&navpanes=1`;
-
-    $preview.innerHTML = `
-      <div class="ens-preview-head">
-        <div class="ens-preview-title">${esc(doc.title || "")}</div>
-      </div>
-      <div class="ens-preview-iframe-wrap">
-        <iframe class="ens-preview-frame" src="${pdfUrl}" title="Aperçu PDF"></iframe>
-      </div>
-    `;
-    return;
-  }
-
-  // PPT/PPTX : pas d’aperçu intégré fiable
-  $preview.innerHTML = `
-    <div class="ens-preview-head">
-      <div class="ens-preview-title">${esc(doc.title || "")}</div>
-    </div>
-    <div class="ens-preview-empty" style="margin-top:10px;">
-      Aperçu non disponible pour PowerPoint.<br/>
-      Utilisez la colonne <strong>Ouvrir</strong> du tableau.
-    </div>
-  `;
-};
-
-
-  const updateButtons = () => {
-    $btnEdit.disabled = selectedIds.size !== 1;
-    $btnDelete.disabled = selectedIds.size === 0;
-    $btnDownload.disabled = selectedIds.size !== 1;
-  };
-
-  const renderPagination = (total) => {
-    const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
-    if (currentPage > pages) currentPage = pages;
-
-    const btns = [];
-    for (let p = 1; p <= pages; p++) {
-      btns.push(`
-        <button class="ens-page ${p === currentPage ? "active" : ""}" data-page="${p}">
-          ${p}
-        </button>
-      `);
-    }
-
-    $pagination.innerHTML = `
-      <div class="ens-pages">
-        ${btns.join("")}
-      </div>
-    `;
-
-    $pagination.querySelectorAll("[data-page]").forEach((b) => {
-      b.addEventListener("click", () => {
-        currentPage = Number(b.dataset.page);
-        renderTable();
-      });
-    });
-  };
-
-  const renderTable = () => {
-    // tri : plus récent d'abord
-    const docs = [...allDocs].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-
-    const total = docs.length;
-    renderPagination(total);
-
-    const start = (currentPage - 1) * PAGE_SIZE;
-    const pageDocs = docs.slice(start, start + PAGE_SIZE);
-
-    $tbody.innerHTML = pageDocs
-      .map((d) => {
-        const kind = fileKind(d.fileName || d.title || "");
-        const badge = kind === "pdf" ? "pdf" : (kind === "ppt" ? "ppt" : "file");
-
-        const icon = kind === "pdf" ? "PDF" : (kind === "ppt" ? "PPT" : "FILE");
-        const dateStr = d.createdAt
-          ? new Date(d.createdAt).toLocaleDateString("fr-FR")
-          : "";
-
-        const selected = selectedIds.has(d.id) ? "selected" : "";
-
-        return `
-          <tr class="ens-row ${selected}" data-id="${d.id}">
-            <td><span class="ens-badge ${badge}">${icon}</span></td>
-            <td title="${esc(d.title || "")}">${esc(d.title || "")}</td>
-            <td>${esc(dateStr)}</td>
-            <td><button class="btn small" data-open="${d.id}">Ouvrir</button></td>
-          </tr>
-        `;
-      })
-      .join("");
-
-    // Row selection + preview
-    $tbody.querySelectorAll(".ens-row").forEach((row) => {
-      row.addEventListener("click", async (e) => {
-        const id = row.dataset.id;
-
-        // ctrl/cmd multi-select
-        const multi = e.ctrlKey || e.metaKey;
-
-        if (!multi) selectedIds.clear();
-
-        if (selectedIds.has(id)) selectedIds.delete(id);
-        else selectedIds.add(id);
-
-        activeDocId = id;
-        updateButtons();
-        renderTable();
-
-        const doc = allDocs.find((x) => x.id === id);
-        await renderPreview(doc);
-      });
-    });
-
-    // Open buttons
-    $tbody.querySelectorAll("[data-open]").forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        const id = btn.dataset.open;
-        const doc = allDocs.find((x) => x.id === id);
-        if (doc?.fileUrl) openInNewTab(doc.fileUrl);
-      });
-    });
-  };
-
-  // ==============================
-  // Data
-  // ==============================
-  const loadProtocols = async () => {
-    const snap = await protoCol().orderBy("name").get();
-    protocols = snap.docs.map((d) => ({ id: d.id, ...(d.data() || {}) }));
-
-    $select.innerHTML = `
-      <option value="">— Choisir un protocole —</option>
-      ${protocols.map((p) => `<option value="${p.id}">${esc(p.name || "")}</option>`).join("")}
-    `;
-  };
-
-  const loadDocs = async () => {
-    if (!currentProtocolId) return;
-
-    const snap = await docsCol()
-      .where("protocolId", "==", currentProtocolId)
-      .get();
-
-    allDocs = snap.docs.map((d) => ({ id: d.id, ...(d.data() || {}) }));
-
-    // reset selection
-    selectedIds.clear();
-    activeDocId = null;
-    currentPage = 1;
-
-    renderPreview(null);
-    renderTable();
-  };
-
-  // ==============================
-  // Events: protocol selection
-  // ==============================
-  $select.addEventListener("change", async () => {
-    currentProtocolId = $select.value || "";
-    const p = protocols.find((x) => x.id === currentProtocolId);
-    currentProtocolName = p?.name || "";
-
-    if (!currentProtocolId) {
-      $body.classList.add("hidden");
-      return;
-    }
-
-    $body.classList.remove("hidden");
-    await loadDocs();
-  });
-
-  // Add protocol
-  $btnAddProtocol.addEventListener("click", async () => {
-    // (Optionnel) je protège aussi l'ajout de protocole pour éviter le spam
-    if (!(await ensureEnsAdminCodeOnce())) return;
-    showProtoModal();
-  });
-
-  $protoForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const name = $protoName.value.trim();
-    if (!name) return;
+    $fileName.textContent = f.name;
 
     try {
-      await protoCol().add({
-        name,
-        createdAt: Date.now(),
-      });
-
-      hideProtoModal();
-      await loadProtocols();
-
-      // auto-select le nouveau protocole si possible
-      const last = protocols.find((p) => p.name === name);
-      if (last) {
-        $select.value = last.id;
-        $select.dispatchEvent(new Event("change"));
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Erreur : impossible d'ajouter le protocole.");
-    }
+      const dt = new DataTransfer();
+      dt.items.add(f);
+      $docFile.files = dt.files;
+    } catch (_) {}
   });
 
-  // ==============================
-  // Events: documents actions
-  // ==============================
   $btnAdd.addEventListener("click", async () => {
     if (!currentProtocolId) return;
     if (!(await ensureEnsAdminCodeOnce())) return;
@@ -28204,7 +28065,7 @@ const renderPreview = (doc) => {
     if (selectedIds.size !== 1) return;
 
     const id = Array.from(selectedIds)[0];
-    const doc = allDocs.find((d) => d.id === id);
+    const doc = allDocs.find(d => d.id === id);
     if (doc) showDocModal("edit", doc);
   });
 
@@ -28214,102 +28075,85 @@ const renderPreview = (doc) => {
     if (selectedIds.size === 0) return;
     if (!confirm("Supprimer les fichiers sélectionnés ?")) return;
 
-    try {
-      const ids = Array.from(selectedIds);
+    for (const id of Array.from(selectedIds)) {
+      const ref = docsCol().doc(id);
+      const snap = await ref.get();
 
-      for (const id of ids) {
-        const ref = docsCol().doc(id);
-        const snap = await ref.get();
-        if (snap.exists) {
-          const data = snap.data() || {};
-          await deleteFromStorage(data.storagePath);
-          await ref.delete();
-        }
+      if (snap.exists) {
+        const data = snap.data() || {};
+        await deleteFromStorage(data.storagePath);
+        await ref.delete();
       }
-
-      selectedIds.clear();
-      activeDocId = null;
-      await loadDocs();
-    } catch (err) {
-      console.error(err);
-      alert("Erreur : suppression impossible.");
     }
+
+    selectedIds.clear();
+    await loadDocs();
   });
 
-  $btnDownload.addEventListener("click", async () => {
+  $btnDownload.addEventListener("click", () => {
     if (selectedIds.size !== 1) return;
     const id = Array.from(selectedIds)[0];
-    const doc = allDocs.find((d) => d.id === id);
+    const doc = allDocs.find(d => d.id === id);
     if (doc?.fileUrl) openInNewTab(doc.fileUrl);
   });
 
-  // Submit doc modal
-  $docForm.addEventListener("submit", async (e) => {
+  $docForm.addEventListener("submit", async e => {
     e.preventDefault();
+
     if (!currentProtocolId) return;
     if (!(await ensureEnsAdminCodeOnce())) return;
 
     const mode = $docId.value ? "edit" : "add";
     const title = $docTitle.value.trim();
+
     if (!title) return;
 
-    try {
-      const existing = mode === "edit" ? allDocs.find((d) => d.id === $docId.value) : null;
+    const existing = mode === "edit"
+      ? allDocs.find(d => d.id === $docId.value)
+      : null;
 
-      let fileMeta = {};
-      const f = $docFile.files?.[0];
+    let fileMeta = {};
+    const f = $docFile.files?.[0];
 
-      if (mode === "add") {
-        if (!f) {
-          alert("Veuillez sélectionner un fichier.");
-          return;
-        }
-        fileMeta = await uploadToStorage(f, currentProtocolId);
-      } else {
-        // En edit : fichier optionnel
-        if (f) {
-          // supprime ancien fichier si présent
-          if (existing?.storagePath) await deleteFromStorage(existing.storagePath);
-          fileMeta = await uploadToStorage(f, currentProtocolId);
-        } else {
-          fileMeta = {
-            fileUrl: existing?.fileUrl || "",
-            storagePath: existing?.storagePath || "",
-            fileName: existing?.fileName || "",
-          };
-        }
+    if (mode === "add") {
+      if (!f) {
+        alert("Veuillez sélectionner un fichier.");
+        return;
       }
-
-      const payload = {
-        protocolId: currentProtocolId,
-        protocolName: currentProtocolName || "",
-        title,
-        createdAt: existing?.createdAt || Date.now(),
-        updatedAt: Date.now(),
-        ...fileMeta,
+      fileMeta = await uploadToStorage(f, currentProtocolId);
+    } else if (f) {
+      if (existing?.storagePath) await deleteFromStorage(existing.storagePath);
+      fileMeta = await uploadToStorage(f, currentProtocolId);
+    } else {
+      fileMeta = {
+        fileUrl: existing?.fileUrl || "",
+        storagePath: existing?.storagePath || "",
+        fileName: existing?.fileName || ""
       };
-
-      if (mode === "add") {
-        await docsCol().add(payload);
-      } else {
-        await docsCol().doc($docId.value).set(payload, { merge: true });
-      }
-
-      hideDocModal();
-      await loadDocs();
-    } catch (err) {
-      console.error(err);
-      alert(err?.message || "Erreur lors de l'enregistrement.");
     }
+
+    const payload = {
+      protocolId: currentProtocolId,
+      protocolName: currentProtocolName || "",
+      title,
+      createdAt: existing?.createdAt || Date.now(),
+      updatedAt: Date.now(),
+      ...fileMeta
+    };
+
+    if (mode === "add") {
+      await docsCol().add(payload);
+    } else {
+      await docsCol().doc($docId.value).set(payload, { merge: true });
+    }
+
+    hideDocModal();
+    await loadDocs();
   });
 
-  // ==============================
-  // Init
-  // ==============================
   (async () => {
     try {
       await loadProtocols();
-      // Tant qu'aucun protocole sélectionné : on masque le body
       $body.classList.add("hidden");
       renderPreview(null);
     } catch (err) {
@@ -28318,7 +28162,6 @@ const renderPreview = (doc) => {
     }
   })();
 }
-
 
 // =====================================================================
 //  PAGES “PLANNING” ET “ANNUAIRE” (PLACEHOLDERS)
