@@ -14129,3 +14129,28 @@ body:not(.theme-light) .saric-cal-cell.weekend.holiday {
     grid-template-columns: 1fr !important;
   }
 }
+
+.recherche-page .rch-open-protocol-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 12px 0 18px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--card);
+}
+
+.recherche-page #rch-back-to-protocols {
+  width: auto !important;
+  padding: 10px 16px !important;
+  border-radius: 999px !important;
+  font-weight: 900;
+}
+
+.recherche-page .rch-open-protocol-title {
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: var(--fg);
+}
