@@ -13857,3 +13857,100 @@ body:not(.theme-light) .saric-cal-cell.weekend.holiday {
 .saric-cal-cell.holiday {
   border-color: #ef4444 !important;
 }
+
+/* ============================================================
+   RECHERCHE - tableau protocoles compact en 2 colonnes
+   ============================================================ */
+
+.recherche-page .rch-protocol-table-wrap {
+  overflow-x: visible !important;
+}
+
+/* transforme le tbody en grille 2 colonnes */
+.recherche-page .rch-protocol-table,
+.recherche-page .rch-protocol-table thead,
+.recherche-page .rch-protocol-table tbody {
+  display: block;
+  width: 100%;
+}
+
+.recherche-page .rch-protocol-table thead {
+  display: none;
+}
+
+.recherche-page .rch-protocol-table tbody {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+/* chaque protocole devient une mini-ligne compacte */
+.recherche-page .rch-protocol-table tr {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 0.9fr auto;
+  align-items: center;
+  gap: 0;
+  border: 2px solid #111827 !important;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #ffffff !important;
+}
+
+/* cellules avec séparateurs visibles */
+.recherche-page .rch-protocol-table td {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 6px 8px !important;
+  border-right: 1px solid #111827 !important;
+  border-bottom: 0 !important;
+  color: #000 !important;
+  background: #ffffff !important;
+  font-size: 0.86rem;
+}
+
+.recherche-page .rch-protocol-table td:last-child {
+  border-right: 0 !important;
+}
+
+/* boutons ouvrir / modifier côte à côte */
+.recherche-page .rch-protocol-actions {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 6px !important;
+  justify-content: flex-end;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.recherche-page .rch-protocol-actions .btn {
+  width: auto !important;
+  min-width: 74px;
+  padding: 7px 10px !important;
+  border-radius: 9px !important;
+  font-size: 0.82rem !important;
+}
+
+/* badge statut plus compact */
+.recherche-page .rch-status-badge {
+  padding: 4px 8px !important;
+  font-size: 0.78rem !important;
+}
+
+/* mode édition reste lisible */
+.recherche-page .rch-protocol-row-edit {
+  grid-template-columns: 1.2fr 1fr 0.9fr auto !important;
+}
+
+.recherche-page .rch-protocol-row-edit input,
+.recherche-page .rch-protocol-row-edit select {
+  min-height: 34px !important;
+  padding: 5px 8px !important;
+}
+
+/* mobile : retour en 1 colonne */
+@media (max-width: 1100px) {
+  .recherche-page .rch-protocol-table tbody {
+    grid-template-columns: 1fr;
+  }
+}
