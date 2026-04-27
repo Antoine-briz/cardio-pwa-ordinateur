@@ -28645,7 +28645,9 @@ function saricBuildMonthlyAbsences(st, monthKey) {
     st.doctors.forEach(doc => {
       const des = st.desiderata?.[doc.id]?.[iso] || [];
 
-      // Absences toujours affichées dans le global
+      /* =====================================================
+         Absences toujours affichées
+      ===================================================== */
       if (des.includes("ca")) {
         saricSetAbsence(st, iso, "CA", doc.id);
       }
@@ -28654,25 +28656,24 @@ function saricBuildMonthlyAbsences(st, monthKey) {
         saricSetAbsence(st, iso, "Formation", doc.id);
       }
 
-      // Absences affichées seulement si elles sont respectées
-      const hasAssignmentThatDay = Object.values(st.assignments?.[iso] || {}).includes(doc.id);
+      /* =====================================================
+         Absences affichées seulement si non affecté ce jour
+      ===================================================== */
+      const hasAssignmentThatDay =
+        Object.values(st.assignments?.[iso] || {}).includes(doc.id);
 
-      if (
-        des.includes("hors_clinique") &&
-        !hasAssignmentThatDay
-      ) {
+      if (des.includes("hors_clinique") && !hasAssignmentThatDay) {
         saricSetAbsence(st, iso, "Hors clinique", doc.id);
       }
 
-      if (
-        des.includes("enseignement") &&
-        !hasAssignmentThatDay
-      ) {
+      if (des.includes("enseignement") && !hasAssignmentThatDay) {
         saricSetAbsence(st, iso, "Enseignement/recherche", doc.id);
       }
     });
 
-    // Repos automatique après garde complète
+    /* =====================================================
+       Repos automatique après garde complète
+    ===================================================== */
     const yesterday = saricAddDays(date, -1);
     const yIso = saricDateKey(yesterday);
     const yAssign = st.assignments?.[yIso] || {};
@@ -28681,6 +28682,33 @@ function saricBuildMonthlyAbsences(st, monthKey) {
       const docId = yAssign[post];
       if (docId) {
         saricSetAbsence(st, iso, "Repos de garde", docId);
+      }
+    });
+
+    /* =====================================================
+       Disponible mais non affecté => Hors clinique auto
+    ===================================================== */
+    const assignedDocIds = new Set(
+      Object.values(st.assignments?.[iso] || {}).filter(Boolean)
+    );
+
+    st.doctors.forEach(doc => {
+      if (doc.category === "Stand by") return;
+      if (assignedDocIds.has(doc.id)) return;
+
+      const des = st.desiderata?.[doc.id]?.[iso] || [];
+
+      const blockedAllDay =
+        des.includes("ca") ||
+        des.includes("indispo_24h") ||
+        des.includes("hors_clinique");
+
+      const alreadyAbsent = Object.values(st.absences?.[iso] || {}).some(
+        list => Array.isArray(list) && list.includes(doc.id)
+      );
+
+      if (!blockedAllDay && !alreadyAbsent) {
+        saricSetAbsence(st, iso, "Hors clinique", doc.id);
       }
     });
   });
