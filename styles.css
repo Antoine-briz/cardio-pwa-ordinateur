@@ -13634,3 +13634,43 @@ body.theme-light .saric-generate-card .saric-log * {
   background: #0b3c6d;
   color: #fff;
 }
+
+/* Tableau décompte admin : "Catégorie" en noir */
+.saric-counts-table thead th:first-child {
+  color: #000 !important;
+}
+
+/* Planning global : colonne postes fixe et mieux visible */
+.saric-global-table .saric-post-col {
+  position: sticky !important;
+  left: 0 !important;
+  z-index: 20 !important;
+  filter: brightness(0.92);
+  box-shadow: 3px 0 0 #111827;
+}
+
+.saric-global-table thead .saric-post-col {
+  z-index: 40 !important;
+  background: #c7d2e4 !important;
+  filter: none;
+}
+
+/* Cases grisées volontairement vides : aucun ? */
+.saric-global-table td.saric-voluntary-empty {
+  background: #cfd4dc !important;
+  color: transparent !important;
+}
+
+/* Cases non pourvues : ? rouge */
+.saric-global-table td.saric-unfilled-cell {
+  color: #dc2626 !important;
+  font-size: 1.1rem !important;
+  font-weight: 900 !important;
+}
+
+/* Absences multiples sur plusieurs lignes */
+.saric-global-table td.saric-absence-multi{
+  line-height: 1.15;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
