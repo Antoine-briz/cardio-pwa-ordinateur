@@ -29730,16 +29730,16 @@ function saricAdminEditablePlanningTable(st, editable) {
                   const cls = saricGlobalCellClass(post, d, value);
 
                   return `
-                    <td class="${cls}"
-                        style="background:${bg};"
-                        data-saric-admin-cell="1"
-                        data-iso="${iso}"
-                        data-post="${saricEscape(post)}"
-                        ${editable ? `contenteditable="true"` : ""}>
-                      ${cls.includes("saric-absence-multi")
-  ? (value || "")
-  : saricRenderGlobalCellValue(post, value, cls)}
-                    </td>
+                    <td class="${cls} ${SARIC_ABSENCE_POSTS.includes(post) ? "saric-absence-multi" : ""}"
+    style="background:${bg};"
+    data-saric-admin-cell="1"
+    data-iso="${iso}"
+    data-post="${saricEscape(post)}"
+    ${editable ? `contenteditable="true"` : ""}>
+  ${SARIC_ABSENCE_POSTS.includes(post)
+    ? (value || "")
+    : saricRenderGlobalCellValue(post, value, cls)}
+</td>
                   `;
                 }).join("")}
               </tr>
@@ -30276,11 +30276,12 @@ function saricPlanningGlobalTable() {
                     const cls = saricGlobalCellClass(post, d, value);
 
                     return `
-                      <td class="${cls}" style="background:${bg};">
-                        ${cls.includes("saric-absence-multi")
-  ? (value || "")
-  : saricRenderGlobalCellValue(post, value, cls)}
-                      </td>
+                      <td class="${cls} ${SARIC_ABSENCE_POSTS.includes(post) ? "saric-absence-multi" : ""}"
+    style="background:${bg};">
+  ${SARIC_ABSENCE_POSTS.includes(post)
+    ? (value || "")
+    : saricRenderGlobalCellValue(post, value, cls)}
+</td>
                     `;
                   }).join("")}
                 </tr>
