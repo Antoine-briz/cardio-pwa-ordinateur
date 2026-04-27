@@ -13809,3 +13809,22 @@ body.theme-light .saric-generate-card .saric-log * {
   font-size: 1.1rem !important;
   font-weight: 900 !important;
 }
+
+/* Alignement haut colonne gauche / tableau droit */
+.saric-left-week-head {
+  height: 44px !important;
+  background: #0b3c6d !important;
+  color: #fff !important;
+  font-weight: 900 !important;
+  text-align: left !important;
+  padding-left: 16px !important;
+}
+
+.saric-left-day-head {
+  height: 42px !important;
+  background: #dbeafe !important;
+  color: #000 !important;
+  font-weight: 900 !important;
+  text-align: left !important;
+  padding-left: 16px !important;
+}
