@@ -29672,81 +29672,110 @@ function saricAdminEditablePlanningTable(st, editable) {
   const draftAbsences = st.adminDraftAbsences?.[month] || {};
 
   return `
-    <div class="saric-global-scroll saric-admin-edit-scroll">
-      <table class="saric-global-table saric-admin-edit-table">
-        <thead>
-          <tr class="saric-week-row">
-            <th class="saric-post-col"></th>
-            ${weekGroups.map(g => `
-              <th colspan="${g.colspan}" class="saric-week-header">
-                ${saricEscape(saricWeekLabel(g))}
-              </th>
-            `).join("")}
-          </tr>
+    <div class="saric-split-planning">
 
-          <tr>
-            <th class="saric-post-col">Poste</th>
-            ${days.map(d => {
-              const label = d.toLocaleDateString("fr-FR", {
-                weekday: "short",
-                day: "numeric"
-              });
-              return `<th>${saricEscape(label)}</th>`;
+      <!-- COLONNE FIXE -->
+      <div class="saric-fixed-posts">
+        <table class="saric-global-table saric-posts-only-table">
+          <thead>
+            <tr><th class="saric-post-col"></th></tr>
+            <tr><th class="saric-post-col">Poste</th></tr>
+          </thead>
+
+          <tbody>
+            ${posts.map(post => {
+              const bg = typeof saricPostColorPastel === "function"
+                ? saricPostColorPastel(post)
+                : "#ffffff";
+
+              return `
+                <tr style="background:${bg};">
+                  <td class="saric-post-col" style="background:${bg};">
+                    ${saricEscape(post)}
+                  </td>
+                </tr>
+              `;
             }).join("")}
-          </tr>
-        </thead>
+          </tbody>
+        </table>
+      </div>
 
-        <tbody>
-          ${posts.map(post => {
-            const bg = typeof saricPostColorPastel === "function"
-              ? saricPostColorPastel(post)
-              : "#ffffff";
+      <!-- TABLEAU EDITABLE -->
+      <div class="saric-global-scroll saric-admin-edit-scroll saric-scroll-days">
+        <table class="saric-global-table saric-days-only-table saric-admin-edit-table">
 
-            return `
-              <tr style="background:${bg};">
-                <td class="saric-post-col" style="background:${bg};">
-                  ${saricEscape(post)}
-                </td>
+          <thead>
+            <tr class="saric-week-row">
+              ${weekGroups.map(g => `
+                <th colspan="${g.colspan}" class="saric-week-header">
+                  ${saricEscape(saricWeekLabel(g))}
+                </th>
+              `).join("")}
+            </tr>
 
-                ${days.map(d => {
-                  const iso = saricDateKey(d);
-                  let value = "";
+            <tr>
+              ${days.map(d => {
+                const label = d.toLocaleDateString("fr-FR", {
+                  weekday: "short",
+                  day: "numeric"
+                });
+                return `<th>${saricEscape(label)}</th>`;
+              }).join("")}
+            </tr>
+          </thead>
 
-                  if (SARIC_ABSENCE_POSTS.includes(post)) {
-                    const ids = draftAbsences?.[iso]?.[post] || [];
+          <tbody>
+            ${posts.map(post => {
+              const bg = typeof saricPostColorPastel === "function"
+                ? saricPostColorPastel(post)
+                : "#ffffff";
 
-                    value = ids
-  .map(id => st.doctors.find(x => x.id === id))
-  .filter(Boolean)
-  .map(doc => saricDoctorInitials(doc.name))
-  .join("<br>");
-                  } else {
-                    const docId = draftAssignments?.[iso]?.[post];
-                    const doc = st.doctors.find(x => x.id === docId);
+              return `
+                <tr style="background:${bg};">
 
-                    value = doc ? saricDoctorInitials(doc.name) : "";
-                  }
+                  ${days.map(d => {
+                    const iso = saricDateKey(d);
+                    let value = "";
 
-                  const cls = saricGlobalCellClass(post, d, value);
+                    if (SARIC_ABSENCE_POSTS.includes(post)) {
+                      const ids = draftAbsences?.[iso]?.[post] || [];
 
-                  return `
-                    <td class="${cls} ${SARIC_ABSENCE_POSTS.includes(post) ? "saric-absence-multi" : ""}"
-    style="background:${bg};"
-    data-saric-admin-cell="1"
-    data-iso="${iso}"
-    data-post="${saricEscape(post)}"
-    ${editable ? `contenteditable="true"` : ""}>
-  ${SARIC_ABSENCE_POSTS.includes(post)
-    ? (value || "")
-    : saricRenderGlobalCellValue(post, value, cls)}
-</td>
-                  `;
-                }).join("")}
-              </tr>
-            `;
-          }).join("")}
-        </tbody>
-      </table>
+                      value = ids
+                        .map(id => st.doctors.find(x => x.id === id))
+                        .filter(Boolean)
+                        .map(doc => saricDoctorInitials(doc.name))
+                        .join("<br>");
+                    } else {
+                      const docId = draftAssignments?.[iso]?.[post];
+                      const doc = st.doctors.find(x => x.id === docId);
+
+                      value = doc ? saricDoctorInitials(doc.name) : "";
+                    }
+
+                    const cls = saricGlobalCellClass(post, d, value);
+
+                    return `
+                      <td class="${cls} ${SARIC_ABSENCE_POSTS.includes(post) ? "saric-absence-multi" : ""}"
+                          style="background:${bg};"
+                          data-saric-admin-cell="1"
+                          data-iso="${iso}"
+                          data-post="${saricEscape(post)}"
+                          ${editable ? `contenteditable="true"` : ""}>
+                        ${SARIC_ABSENCE_POSTS.includes(post)
+                          ? value
+                          : saricRenderGlobalCellValue(post, value, cls)}
+                      </td>
+                    `;
+                  }).join("")}
+
+                </tr>
+              `;
+            }).join("")}
+          </tbody>
+
+        </table>
+      </div>
+
     </div>
   `;
 }
