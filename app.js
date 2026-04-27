@@ -33984,3 +33984,60 @@ window.addEventListener("load", async () => {
 
 initActusNoonReset();
 
+async function seedResearchProtocols() {
+  const protocols = [
+    ["EULODIA", "Nima D.", "Inclusion"],
+    ["NAVAP", "Pauline D.", "Inclusion"],
+    ["KAMELOT", "Pauline D.", "Inclusion"],
+    ["EPHYRE", "Axel H.", "Inclusion"],
+    ["IMPaCT", "Axel H.", "Inclusion"],
+    ["ASPIC", "Clément C.", "Inclusion"],
+    ["PITAGORE", "Pauline D.", "Inclusion"],
+    ["IGREY", "Antoine Bo.", "Inclusion"],
+    ["COLTRANE", "Aude C.", "Inclusion"],
+    ["IIRIS", "Aurélie C.", "Accord réglementaire"],
+    ["RETSEACS 2", "Dany H.", "Fin inclusion"],
+    ["LEVO-ECMO", "Nima D.", "Publié"],
+    ["CA-CIBLE", "Edris O.", "Fin inclusion"],
+    ["CAVA-ECMO", "Geoffroy H.", "Inclusion"],
+    ["PTH2", "Jérémie G.", "Inclusion"],
+    ["EPIC-ECMO", "Edris O.", "Inclusion"],
+    ["KETALERT", "Aurélie C. / Jérémie G. / Axel H.", "Publié"],
+    ["VASOCORT", "Jérémie G.", "Inclusion"],
+    ["APICAT", "Edris O.", "Phase II"],
+    ["SAFE-FEP", "Axel H.", "Finalisation protocole"],
+    ["ESPRIT", "Jérémie G. / Axel H.", "Publié"],
+    ["OLEXT4", "En attente", "Finalisation protocole"],
+    ["PYOPHANEB", "Adrien B.", "Finalisation protocole"],
+    ["Hétérorésistance Pyo", "Axel H.", "Inclusion"],
+    ["DynECMO", "Yoann A.", "Inclusion"],
+    ["RESET", "Axel H.", "Finalisation protocole"],
+    ["DATABRAVE", "Jérémy A.", "Base de données"],
+    ["NOSODAR", "Jérémie G.", "Base de données"]
+  ];
+
+  const col = window.db.collection("researchProtocols");
+
+  for (const [name, investigator, status] of protocols) {
+    const existing = await col.where("name", "==", name).limit(1).get();
+
+    if (!existing.empty) {
+      await existing.docs[0].ref.set({
+        name,
+        investigator,
+        status,
+        updatedAt: Date.now()
+      }, { merge: true });
+    } else {
+      await col.add({
+        name,
+        investigator,
+        status,
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+      });
+    }
+  }
+
+  alert("Protocoles de recherche importés dans Firebase.");
+}
