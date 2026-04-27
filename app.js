@@ -30784,7 +30784,7 @@ function saricCanAssign(st, doc, date, post, dayAssign, usedDay, usedNight, nigh
   const isCoord = SARIC_COORD_POSTS.includes(post);
   const isWeekendOrHoliday = saricIsWeekend(date) || saricIsHoliday(date);
 
-  if (!saricCategoryAllowsPost(doc.category, post)) return false;
+  if (!saricCategoryAllowsPost(doc.category, post, st)) return false;
 
   if ((isNightPost || isCoord) && !st.abilities?.[doc.id]?.[post]) return false;
 
@@ -30842,23 +30842,34 @@ function saricCanAssign(st, doc, date, post, dayAssign, usedDay, usedNight, nigh
   return true;
 }
 
-function saricCategoryAllowsPost(category, post) {
-  if (SARIC_NIGHT_POSTS.includes(post) || SARIC_COORD_POSTS.includes(post)) return true;
-  if (category === "Stand by") return false;
-  if (category === "Mixte") return true;
+function saricCategoryAllowsPost(doctorCategory, post, st = null) {
+  const postCategory =
+    st?.postCategories?.[post] ||
+    SARIC_DEFAULT_POST_CATEGORIES?.[post] ||
+    "Mixte";
 
-  const cardiac = [
-    "Bloc CEC 1", "Bloc CEC 2", "Bloc CEC 3", "Bloc CEC 4",
-    "Coordo bloc", "Réa 1", "Réa 2", "Réa 3", "Coordo réa",
-    "PTI", "Consult. chir. Card.", "Consult. Cardio. Med", "Hors salle"
-  ];
+  // Médecin Stand by : jamais planifié
+  if (doctorCategory === "Stand by") return false;
 
-  const vascular = [
-    "Bloc vasc. 1", "Bloc vasc. 2", "SSPI", "Consult. Vasculaire", "Visite/étage"
-  ];
+  // Poste Stand by : aucun médecin attribué
+  if (postCategory === "Stand by") return false;
 
-  if (category === "Chirurgie cardiaque") return cardiac.includes(post);
-  if (category === "Chirurgie vasculaire") return vascular.includes(post);
+  // Médecin mixte : tous les postes sauf Stand by
+  if (doctorCategory === "Mixte") return true;
+
+  // Postes mixtes accessibles aux cardiaques et vasculaires
+  if (postCategory === "Mixte") return true;
+
+  // Cardiaque uniquement sur Cardiaque + Mixte
+  if (doctorCategory === "Chirurgie cardiaque") {
+    return postCategory === "Chirurgie cardiaque";
+  }
+
+  // Vasculaire uniquement sur Vasculaire + Mixte
+  if (doctorCategory === "Chirurgie vasculaire") {
+    return postCategory === "Chirurgie vasculaire";
+  }
+
   return false;
 }
 
