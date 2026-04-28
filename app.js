@@ -30454,7 +30454,6 @@ function saricRenderDesiderata() {
     <div class="saric-current-doctor-label">
       ${saricEscape(doctorName)}
     </div>
-
     ${validateBtn}
   `;
 
@@ -30465,15 +30464,16 @@ function saricRenderDesiderata() {
 }
 
 function saricUnlockDesiderata() {
-  const st = saricLoadState();
+  const current = saricCurrentUser();
+  if (!current) return;
 
-  if (!currentUser?.id) return;
+  const st = saricLoadState();
 
   st.desiderataSubmitted = st.desiderataSubmitted || {};
   st.desiderataSubmitted[st.month] =
     st.desiderataSubmitted[st.month] || {};
 
-  delete st.desiderataSubmitted[st.month][currentUser.id];
+  delete st.desiderataSubmitted[st.month][current.doctorId];
 
   saricSaveState(st);
   saricRenderDesiderata();
@@ -30508,14 +30508,22 @@ function saricOpenDesiderataDay(iso) {
 function saricSaveDesiderata(iso) {
   const st = saricLoadState();
   const docId = st.selectedDoctorId;
-  const checked = [...document.querySelectorAll("#saric-choice-panel input:checked")].map(i => i.value);
+
+  const isSubmitted =
+    !!st.desiderataSubmitted?.[st.month]?.[docId];
+
+  if (isSubmitted) return;
+
+  const checked = [...document.querySelectorAll("#saric-choice-panel input:checked")]
+    .map(i => i.value);
 
   st.desiderata[docId] = st.desiderata[docId] || {};
-  if (checked.length) st.desiderata[docId][iso] = checked;
-  else delete st.desiderata[docId][iso];
 
-  st.desiderataSubmitted[st.month] = st.desiderataSubmitted[st.month] || {};
-  st.desiderataSubmitted[st.month][docId] = true;
+  if (checked.length) {
+    st.desiderata[docId][iso] = checked;
+  } else {
+    delete st.desiderata[docId][iso];
+  }
 
   saricSaveState(st);
   saricRenderDesiderata();
@@ -31710,6 +31718,11 @@ function saricOpenDesiderataPopup(iso) {
   const current = saricCurrentUser();
   if (!current) return;
 
+  const isSubmitted =
+    !!st.desiderataSubmitted?.[st.month]?.[current.doctorId];
+
+  if (isSubmitted) return;
+
   const selected = st.desiderata?.[current.doctorId]?.[iso] || [];
   const date = new Date(iso + "T00:00:00");
   const dateLabel = date.toLocaleDateString("fr-FR", {
@@ -31772,9 +31785,17 @@ function saricSaveDesiderataPopup(iso) {
   const current = saricCurrentUser();
   if (!current) return;
 
-  const checked = [...popup.querySelectorAll("input:checked")].map(x => x.value);
-
   const st = saricLoadState();
+
+  const isSubmitted =
+    !!st.desiderataSubmitted?.[st.month]?.[current.doctorId];
+
+  if (isSubmitted) {
+    popup.remove();
+    return;
+  }
+
+  const checked = [...popup.querySelectorAll("input:checked")].map(x => x.value);
 
   st.desiderata[current.doctorId] = st.desiderata[current.doctorId] || {};
 
@@ -31783,9 +31804,6 @@ function saricSaveDesiderataPopup(iso) {
   } else {
     delete st.desiderata[current.doctorId][iso];
   }
-
-  st.desiderataSubmitted[st.month] = st.desiderataSubmitted[st.month] || {};
-  st.desiderataSubmitted[st.month][current.doctorId] = true;
 
   saricSaveState(st);
 
