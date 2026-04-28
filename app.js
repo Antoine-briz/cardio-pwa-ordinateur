@@ -30516,6 +30516,10 @@ function saricCloseDesiderataPreview(event) {
 
 function saricRenderMiniDesiderataCalendar(st, doctorId, monthKey) {
   const days = saricDaysInMonth(monthKey);
+  const firstDay = days[0];
+
+  // JS : dimanche=0, lundi=1... On convertit en index lundi=0
+  const leadingBlanks = (firstDay.getDay() + 6) % 7;
 
   return `
     <div class="saric-mini-weekdays">
@@ -30523,6 +30527,10 @@ function saricRenderMiniDesiderataCalendar(st, doctorId, monthKey) {
     </div>
 
     <div class="saric-mini-calendar">
+      ${Array.from({ length: leadingBlanks }).map(() => `
+        <div class="saric-mini-day muted"></div>
+      `).join("")}
+
       ${days.map(d => {
         const iso = saricDateKey(d);
         const des = st.desiderata?.[doctorId]?.[iso] || [];
@@ -30536,7 +30544,11 @@ function saricRenderMiniDesiderataCalendar(st, doctorId, monthKey) {
             <div class="saric-mini-tags">
               ${des.map(key => {
                 const label = saricDesiderataLabel(key);
-                return `<span class="${saricDesiderataClass(key)}">${saricEscape(label)}</span>`;
+                return `
+                  <span class="${saricDesiderataClass(key)}">
+                    ${saricEscape(label)}
+                  </span>
+                `;
               }).join("")}
             </div>
           </div>
