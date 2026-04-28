@@ -13205,6 +13205,41 @@ body.dark-theme .saric-planning-waiting-subtitle {
   margin-top: 8px !important;
 }
 
+/* =====================================================
+   DESIDERATAS - bouton validation intelligent
+   ===================================================== */
+
+.saric-desid-submit-btn {
+  background: #f59e0b !important;
+  border-color: #f59e0b !important;
+  color: #fff !important;
+  font-weight: 900;
+}
+
+.saric-desid-valid-btn {
+  background: #16a34a !important;
+  border-color: #16a34a !important;
+  color: #fff !important;
+  font-weight: 900;
+  cursor: default;
+}
+
+.saric-desid-submit-wrap {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.saric-desid-edit-btn {
+  width: 48px !important;
+  min-width: 48px !important;
+  padding: 0 !important;
+  background: #0b3c6d !important;
+  color: #fff !important;
+  border-radius: 12px !important;
+  font-size: 1rem;
+}
+
 /* ============================================================
    RECHERCHE - liste protocoles compacte en 2 colonnes
    ============================================================ */
