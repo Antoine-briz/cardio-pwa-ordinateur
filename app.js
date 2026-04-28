@@ -30395,7 +30395,7 @@ function saricRenderAdmin() {
 
       <details class="card saric-admin-collapsible-card" ${saricAdminDetailsAttr("abilities")}>
   <summary class="saric-admin-section-summary">
-    <h3>Habilitations gardes / demi-gardes / coordinations</h3>
+    <h3>Habilitations médicales</h3>
     <span>Cliquer pour afficher/masquer</span>
   </summary>
         <div class="saric-matrix-wrap">
