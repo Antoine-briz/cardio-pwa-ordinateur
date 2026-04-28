@@ -13015,7 +13015,7 @@ main.container,
 
 /* Espace au-dessus de Gestion des postes */
 #saric-planning-body .saric-admin-grid + .card {
-  margin-top: 8px !important;
+  margin-top: 6px !important;
 }
 
 /* Planning global non publié */
