@@ -30655,7 +30655,9 @@ function saricPlanningCellContent(st, iso, date) {
 }
 
 function saricDesiderataCellContent(st, iso) {
-  const docId = st.selectedDoctorId;
+  const current = saricCurrentUser();
+  const docId = current?.doctorId || st.selectedDoctorId;
+
   const values = st.desiderata?.[docId]?.[iso] || [];
   if (!values.length) return `<div class="saric-empty">Aucune demande</div>`;
 
