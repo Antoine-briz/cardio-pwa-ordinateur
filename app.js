@@ -30344,8 +30344,13 @@ function saricMonthControl(extra = "") {
   return `
     <div class="saric-toolbar">
       <div class="saric-month-nav">
-
         <button class="saric-month-arrow" onclick="saricShiftMonth(-1)">←</button>
+
+        <div class="saric-month-title">
+          ${saricEscape(saricMonthLabel(st.month))}
+        </div>
+
+        <button class="saric-month-arrow" onclick="saricShiftMonth(1)">→</button>
 
         <button
           type="button"
@@ -30353,20 +30358,8 @@ function saricMonthControl(extra = "") {
           onclick="document.getElementById('saric-month-picker')?.showPicker?.(); document.getElementById('saric-month-picker')?.click();"
           title="Choisir un mois"
         >
-          <span>📅</span>
+          📅
         </button>
-
-        <button class="saric-month-arrow" onclick="saricShiftMonth(1)">→</button>
-
-        <input
-          id="saric-month-picker"
-          class="saric-hidden-month-input"
-          type="month"
-          min="2026-01"
-          max="2026-12"
-          value="${st.month}"
-          onchange="saricSetMonth(this.value)"
-        >
       </div>
 
       ${extra}
