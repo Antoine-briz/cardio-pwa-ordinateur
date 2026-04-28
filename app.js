@@ -30188,7 +30188,11 @@ function saricDesiderataCellContent(st, iso) {
     <div class="saric-tags">
       ${values.map(v => {
         const item = SARIC_DESIDERATA_TYPES.find(t => t.id === v);
-        return `<span>${saricEscape(item?.label || v)}</span>`;
+        return `
+          <span class="${saricDesiderataClass(v)}">
+            ${saricEscape(item?.label || v)}
+          </span>
+        `;
       }).join("")}
     </div>
   `;
