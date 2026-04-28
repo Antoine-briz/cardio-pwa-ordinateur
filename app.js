@@ -30441,9 +30441,15 @@ function saricRenderAdmin() {
   <div class="saric-desid-status">
     ${saricDoctorsSorted(st.doctors).map(d => `
       <div class="saric-desid-line">
-        <span>${submitted[d.id] ? "✅" : "❌"}</span>
-        <strong>${saricEscape(d.name)}</strong>
-      </div>
+  <span>${submitted[d.id] ? "✅" : "❌"}</span>
+  <strong>${saricEscape(d.name)}</strong>
+
+  ${submitted[d.id] ? `
+    <button class="saric-desid-view-btn" onclick="saricOpenDesiderataPreview('${d.id}')">
+      🔍 Voir
+    </button>
+  ` : ""}
+</div>
     `).join("")}
   </div>
 </details>
@@ -30459,6 +30465,76 @@ function saricRenderAdmin() {
     </div>
   `;
    saricPreventDetailsCloseFromInputs();
+}
+
+function saricOpenDesiderataPreview(doctorId) {
+  const st = saricLoadState();
+  const doctor = st.doctors.find(d => d.id === doctorId);
+  if (!doctor) return;
+
+  document.getElementById("saric-desid-preview-overlay")?.remove();
+
+  const html = `
+    <div class="saric-desid-preview-overlay" id="saric-desid-preview-overlay" onclick="saricCloseDesiderataPreview(event)">
+      <div class="saric-desid-preview-box" onclick="event.stopPropagation()">
+        <div class="saric-desid-preview-head">
+          <h3>Désidératas - ${saricEscape(doctor.name)}</h3>
+          <button onclick="saricCloseDesiderataPreview()">×</button>
+        </div>
+
+        <div class="saric-desid-preview-month">
+          ${saricEscape(saricMonthLabel(st.month))}
+        </div>
+
+        ${saricRenderMiniDesiderataCalendar(st, doctorId, st.month)}
+      </div>
+    </div>
+  `;
+
+  document.body.insertAdjacentHTML("beforeend", html);
+}
+
+function saricCloseDesiderataPreview(event) {
+  if (!event || event.target?.id === "saric-desid-preview-overlay") {
+    document.getElementById("saric-desid-preview-overlay")?.remove();
+  }
+}
+
+function saricRenderMiniDesiderataCalendar(st, doctorId, monthKey) {
+  const days = saricDaysInMonth(monthKey);
+
+  return `
+    <div class="saric-mini-weekdays">
+      ${["L", "M", "M", "J", "V", "S", "D"].map(x => `<b>${x}</b>`).join("")}
+    </div>
+
+    <div class="saric-mini-calendar">
+      ${days.map(d => {
+        const iso = saricDateKey(d);
+        const des = st.desiderata?.[doctorId]?.[iso] || [];
+        const isWeekend = saricIsWeekend(d);
+        const isHoliday = saricIsHoliday(d);
+
+        return `
+          <div class="saric-mini-day ${isWeekend ? "weekend" : ""} ${isHoliday ? "holiday" : ""}">
+            <div class="saric-mini-date">${d.getDate()}</div>
+
+            <div class="saric-mini-tags">
+              ${des.map(key => {
+                const label = saricDesiderataLabel(key);
+                return `<span>${saricEscape(label)}</span>`;
+              }).join("")}
+            </div>
+          </div>
+        `;
+      }).join("")}
+    </div>
+  `;
+}
+
+function saricDesiderataLabel(key) {
+  const found = SARIC_DESIDERATA_TYPES?.find(x => x.id === key);
+  return found?.label || key;
 }
 
 function saricSetDoctorCategory(docId, category) {
