@@ -27500,13 +27500,20 @@ function renderRecherche() {
         <div class="rch-protocol-table-wrap">
           <table class="rch-protocol-table">
             <thead>
-              <tr>
-                <th>Protocole</th>
-                <th>Investigateur local</th>
-                <th>Statut</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
+  <tr>
+    <th>Protocole</th>
+    <th>Investigateur local</th>
+    <th>Statut</th>
+    <th>Actions</th>
+  </tr>
+
+  <tr>
+    <th>Protocole</th>
+    <th>Investigateur local</th>
+    <th>Statut</th>
+    <th>Actions</th>
+  </tr>
+</thead>
             <tbody id="rch-protocol-list-tbody"></tbody>
           </table>
         </div>
