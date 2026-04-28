@@ -13325,6 +13325,78 @@ body.theme-light .saric-popup-box input[type="checkbox"],
   accent-color: #0b3c6d;
 }
 
+/* =====================================================
+   GROS BOUTON CALENDRIER MODERNE
+   ===================================================== */
+
+.saric-calendar-btn {
+  width: 64px !important;
+  height: 64px !important;
+  border: 0 !important;
+  border-radius: 18px !important;
+  background: linear-gradient(135deg, #0b3c6d, #2563eb) !important;
+  color: #ffffff !important;
+  cursor: pointer !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  box-shadow:
+    0 10px 22px rgba(37,99,235,.28),
+    inset 0 1px 0 rgba(255,255,255,.22);
+
+  transition: transform .15s ease, filter .15s ease;
+}
+
+.saric-calendar-btn span {
+  font-size: 2rem !important;
+  line-height: 1 !important;
+}
+
+.saric-calendar-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  filter: brightness(1.08);
+}
+
+.saric-calendar-btn:active {
+  transform: scale(.97);
+}
+
+/* input month caché */
+.saric-hidden-month-input {
+  position: absolute !important;
+  opacity: 0 !important;
+  width: 1px !important;
+  height: 1px !important;
+  pointer-events: none !important;
+}
+
+.saric-planning-head {
+  position: relative;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.saric-planning-title-center {
+  text-align: center;
+}
+
+.saric-planning-title-center h2 {
+  margin: 0;
+}
+
+.saric-planning-title-center p {
+  margin: 4px 0 0;
+}
+
+.saric-logout-btn {
+  position: absolute;
+  right: 0;
+  width: auto !important;
+}
+
 /* ============================================================
    RECHERCHE - liste protocoles compacte en 2 colonnes
    ============================================================ */
