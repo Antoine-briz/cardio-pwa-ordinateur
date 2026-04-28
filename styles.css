@@ -13151,6 +13151,61 @@ body.dark-theme .saric-planning-waiting-subtitle {
 }
 
 /* ============================================================
+   ADMIN - correction définitive scroll interne encadrés ouverts
+   ============================================================ */
+
+#saric-planning-body .saric-admin-grid {
+  align-items: start !important;
+  margin-bottom: 0 !important;
+}
+
+/* Encadrés fermés : une seule ligne */
+#saric-planning-body .saric-admin-grid > details.saric-admin-collapsible-card:not([open]) {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: hidden !important;
+  display: block !important;
+}
+
+/* Encadrés ouverts : hauteur fixe */
+#saric-planning-body .saric-admin-grid > details.saric-admin-collapsible-card[open] {
+  height: 620px !important;
+  max-height: 620px !important;
+  min-height: 620px !important;
+  overflow: hidden !important;
+  display: block !important;
+}
+
+/* Liste médecins : scroll vertical forcé */
+#saric-planning-body .saric-admin-grid > details.saric-admin-collapsible-card[open] .saric-doctor-list {
+  max-height: 500px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding-right: 6px !important;
+}
+
+/* Tableau habilitations : scroll vertical + horizontal forcé */
+#saric-planning-body .saric-admin-grid > details.saric-admin-collapsible-card[open] .saric-matrix-wrap {
+  max-height: 500px !important;
+  overflow-y: auto !important;
+  overflow-x: auto !important;
+  padding-right: 6px !important;
+}
+
+/* En-tête habilitations sticky */
+#saric-planning-body .saric-matrix thead th {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 5 !important;
+}
+
+/* Espace réduit au-dessus de Gestion des postes */
+#saric-planning-body .saric-admin-grid + details.saric-admin-collapsible-card {
+  margin-top: 8px !important;
+}
+
+/* ============================================================
    RECHERCHE - liste protocoles compacte en 2 colonnes
    ============================================================ */
 
