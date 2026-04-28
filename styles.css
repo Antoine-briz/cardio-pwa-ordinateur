@@ -12894,6 +12894,49 @@ main.container,
   color: #ffffff !important;
 }
 
+/* Couleurs désidératas : page désidératas + aperçu admin */
+.saric-tags span.saric-mini-tag-red,
+.saric-mini-tags span.saric-mini-tag-red {
+  background: #fecaca !important;
+  color: #7f1d1d !important;
+}
+
+.saric-tags span.saric-mini-tag-grey,
+.saric-mini-tags span.saric-mini-tag-grey {
+  background: #d1d5db !important;
+  color: #111827 !important;
+}
+
+.saric-tags span.saric-mini-tag-blue,
+.saric-mini-tags span.saric-mini-tag-blue {
+  background: #dbeafe !important;
+  color: #0b1f3b !important;
+}
+
+.saric-mini-day.muted {
+  visibility: hidden;
+}
+
+/* Suivi désidératas Admin : nom collé au V/X, bouton Voir à droite */
+.saric-desid-line {
+  display: grid !important;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.saric-desid-main {
+  display: flex !important;
+  align-items: center;
+  justify-content: flex-start !important;
+  gap: 8px;
+  min-width: 0;
+}
+
+.saric-desid-main strong {
+  text-align: left !important;
+}
+
 /* ============================================================
    RECHERCHE - liste protocoles compacte en 2 colonnes
    ============================================================ */
