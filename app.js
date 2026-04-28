@@ -30607,8 +30607,8 @@ function saricSubmitDesiderataMonth() {
   saricRenderDesiderata();
 }
 
-function saricCalendarHtml(mode) {
-  const st = saricLoadState();
+function saricCalendarHtml(mode, forcedState = null) {
+  const st = forcedState || saricLoadState();
   const days = saricDaysInMonth(st.month);
   const pad = (days[0].getDay() + 6) % 7;
 
