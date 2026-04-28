@@ -29817,6 +29817,29 @@ function saricInitialsListToDoctorIds(text, st) {
     .filter(Boolean);
 }
 
+function saricApplyPublishedMonthToLiveState(st, month) {
+  if (!st || !month) return;
+
+  st.assignments = st.assignments || {};
+  st.absences = st.absences || {};
+
+  Object.keys(st.assignments).forEach(iso => {
+    if (iso.startsWith(month)) delete st.assignments[iso];
+  });
+
+  Object.entries(st.publishedAssignments?.[month] || {}).forEach(([iso, day]) => {
+    st.assignments[iso] = saricClone(day);
+  });
+
+  Object.keys(st.absences).forEach(iso => {
+    if (iso.startsWith(month)) delete st.absences[iso];
+  });
+
+  Object.entries(st.publishedAbsences?.[month] || {}).forEach(([iso, day]) => {
+    st.absences[iso] = saricClone(day);
+  });
+}
+
 function saricSaveAdminDraftPlanning() {
   const st = saricLoadState();
   const month = st.month;
@@ -29846,6 +29869,18 @@ function saricSaveAdminDraftPlanning() {
     }
   });
 
+  const alreadyPublished = !!st.publishedAssignments?.[month];
+
+  if (alreadyPublished) {
+    st.publishedAssignments = st.publishedAssignments || {};
+    st.publishedAbsences = st.publishedAbsences || {};
+
+    st.publishedAssignments[month] = saricClone(st.adminDraftAssignments[month]);
+    st.publishedAbsences[month] = saricClone(st.adminDraftAbsences?.[month] || {});
+
+    saricApplyPublishedMonthToLiveState(st, month);
+  }
+
   saricSaveState(st);
   saricSetAdminDraftEditMode(false);
   saricRenderAdmin();
@@ -29855,10 +29890,29 @@ function saricDeleteAdminDraftPlanning() {
   const st = saricLoadState();
   const month = st.month;
 
-  if (!confirm(`Supprimer la version générée/modifiable du planning ${saricMonthLabel(month)} ?`)) return;
+  const alreadyPublished = !!st.publishedAssignments?.[month];
+
+  const msg = alreadyPublished
+    ? `Supprimer la version publiée du planning ${saricMonthLabel(month)} ? Elle disparaîtra aussi de la page Planning.`
+    : `Supprimer la version générée/modifiable du planning ${saricMonthLabel(month)} ?`;
+
+  if (!confirm(msg)) return;
 
   delete st.adminDraftAssignments?.[month];
   delete st.adminDraftAbsences?.[month];
+
+  if (alreadyPublished) {
+    delete st.publishedAssignments?.[month];
+    delete st.publishedAbsences?.[month];
+
+    Object.keys(st.assignments || {}).forEach(iso => {
+      if (iso.startsWith(month)) delete st.assignments[iso];
+    });
+
+    Object.keys(st.absences || {}).forEach(iso => {
+      if (iso.startsWith(month)) delete st.absences[iso];
+    });
+  }
 
   saricSaveState(st);
   saricSetAdminDraftEditMode(false);
@@ -29884,26 +29938,7 @@ function saricPublishAdminDraftPlanning() {
   st.publishedAssignments[month] = saricClone(st.adminDraftAssignments[month]);
   st.publishedAbsences[month] = saricClone(st.adminDraftAbsences?.[month] || {});
 
-  /*
-    Important :
-    on remplace aussi st.assignments/st.absences pour que toute l'application
-    utilise immédiatement la version publiée.
-  */
-  Object.keys(st.assignments || {}).forEach(iso => {
-    if (iso.startsWith(month)) delete st.assignments[iso];
-  });
-
-  Object.entries(st.publishedAssignments[month]).forEach(([iso, day]) => {
-    st.assignments[iso] = saricClone(day);
-  });
-
-  Object.keys(st.absences || {}).forEach(iso => {
-    if (iso.startsWith(month)) delete st.absences[iso];
-  });
-
-  Object.entries(st.publishedAbsences[month]).forEach(([iso, day]) => {
-    st.absences[iso] = saricClone(day);
-  });
+  saricApplyPublishedMonthToLiveState(st, month);
 
   saricSaveState(st);
   saricSetAdminDraftEditMode(false);
@@ -30068,8 +30103,8 @@ function saricAdminEditablePlanningTable(st, editable) {
                           data-post="${saricEscape(post)}"
                           ${editable ? `contenteditable="true"` : ""}>
                         ${SARIC_ABSENCE_POSTS.includes(post)
-                          ? value
-                          : saricRenderGlobalCellValue(post, value, cls)}
+  ? `<div class="saric-absence-cell-scroll">${value}</div>`
+  : saricRenderGlobalCellValue(post, value, cls)}
                       </td>
                     `;
                   }).join("")}
