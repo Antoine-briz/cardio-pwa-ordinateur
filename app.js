@@ -28576,6 +28576,8 @@ function saricBuildMonthlyAbsences(st, monthKey) {
     /* =====================================================
        Disponible mais non affecté => Hors clinique auto
     ===================================================== */
+   const isNonWorkingDay = saricIsWeekend(date) || saricIsHoliday(date);
+if (isNonWorkingDay) return;
     const assignedDocIds = new Set(
       Object.values(st.assignments?.[iso] || {}).filter(Boolean)
     );
@@ -30494,6 +30496,18 @@ function saricOpenDesiderataPreview(doctorId) {
   document.body.insertAdjacentHTML("beforeend", html);
 }
 
+function saricDesiderataClass(key) {
+  if (["indispo_journee", "indispo_24h", "indispo_garde", "ca"].includes(key)) {
+    return "saric-mini-tag-red";
+  }
+
+  if (["formation", "enseignement", "hors_clinique"].includes(key)) {
+    return "saric-mini-tag-grey";
+  }
+
+  return "saric-mini-tag-blue";
+}
+
 function saricCloseDesiderataPreview(event) {
   if (!event || event.target?.id === "saric-desid-preview-overlay") {
     document.getElementById("saric-desid-preview-overlay")?.remove();
@@ -30522,7 +30536,7 @@ function saricRenderMiniDesiderataCalendar(st, doctorId, monthKey) {
             <div class="saric-mini-tags">
               ${des.map(key => {
                 const label = saricDesiderataLabel(key);
-                return `<span>${saricEscape(label)}</span>`;
+                return `<span class="${saricDesiderataClass(key)}">${saricEscape(label)}</span>`;
               }).join("")}
             </div>
           </div>
