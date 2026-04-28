@@ -30239,12 +30239,14 @@ async function renderPlanningMedical() {
   $app.innerHTML = `
     <section class="saric-planning-page">
       <div class="saric-planning-head">
-        <button class="btn ghost saric-small-btn" onclick="location.hash='#/'">← Menu</button>
-        <div>
-          <h2>Planning médical SARIC</h2>
-          <p>Connecté : <strong>${saricEscape(current.name)}</strong></p>
-        </div>
-        <button class="btn ghost saric-small-btn" onclick="saricLogout()">Déconnexion</button>
+        <div class="saric-planning-title-center">
+  <h2>Planning médical SARIC</h2>
+  <p>Connecté : <strong>${saricEscape(current.name)}</strong></p>
+</div>
+
+<button class="btn ghost saric-small-btn saric-logout-btn" onclick="saricLogout()">
+  Déconnexion
+</button>
       </div>
 
       <div class="saric-tabs">
@@ -30342,13 +30344,8 @@ function saricMonthControl(extra = "") {
   return `
     <div class="saric-toolbar">
       <div class="saric-month-nav">
+
         <button class="saric-month-arrow" onclick="saricShiftMonth(-1)">←</button>
-
-        <div class="saric-month-title">
-          ${saricEscape(saricMonthLabel(st.month))}
-        </div>
-
-        <button class="saric-month-arrow" onclick="saricShiftMonth(1)">→</button>
 
         <button
           type="button"
@@ -30356,8 +30353,10 @@ function saricMonthControl(extra = "") {
           onclick="document.getElementById('saric-month-picker')?.showPicker?.(); document.getElementById('saric-month-picker')?.click();"
           title="Choisir un mois"
         >
-          📅
+          <span>📅</span>
         </button>
+
+        <button class="saric-month-arrow" onclick="saricShiftMonth(1)">→</button>
 
         <input
           id="saric-month-picker"
