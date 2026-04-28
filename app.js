@@ -30311,8 +30311,8 @@ function saricPlanningGlobalTable() {
                         <td class="${cls} ${SARIC_ABSENCE_POSTS.includes(post) ? "saric-absence-multi" : ""}"
                             style="background:${bg};">
                           ${SARIC_ABSENCE_POSTS.includes(post)
-                            ? value
-                            : saricRenderGlobalCellValue(post, value, cls)}
+  ? `<div class="saric-absence-cell-scroll">${value}</div>`
+  : saricRenderGlobalCellValue(post, value, cls)}
                         </td>
                       `;
                     }).join("")}
