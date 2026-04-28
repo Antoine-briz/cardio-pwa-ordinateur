@@ -13013,6 +13013,75 @@ main.container,
   background: rgba(0,0,0,0.08);
 }
 
+/* Espace au-dessus de Gestion des postes */
+#saric-planning-body .saric-admin-grid + .card {
+  margin-top: 18px !important;
+}
+
+/* Planning global non publié */
+.saric-planning-waiting-card {
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+}
+
+.saric-planning-waiting-title {
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--fg);
+}
+
+.saric-planning-waiting-subtitle {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--muted);
+  text-transform: capitalize;
+}
+
+/* Admin : cartes repliables */
+.saric-admin-collapsible-card {
+  margin-bottom: 16px;
+}
+
+.saric-admin-collapsible-card > summary {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  list-style: none;
+}
+
+.saric-admin-collapsible-card > summary::-webkit-details-marker {
+  display: none;
+}
+
+.saric-admin-collapsible-card > summary h3 {
+  margin: 0;
+}
+
+.saric-admin-collapsible-card > summary span {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.saric-admin-collapsible-card > summary::after {
+  content: "▼";
+  font-weight: 900;
+}
+
+.saric-admin-collapsible-card[open] > summary::after {
+  content: "▲";
+}
+
+.saric-admin-collapsible-card[open] > summary {
+  margin-bottom: 14px;
+}
+
 /* ============================================================
    RECHERCHE - liste protocoles compacte en 2 colonnes
    ============================================================ */
