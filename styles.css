@@ -12845,6 +12845,55 @@ main.container,
   }
 }
 
+.saric-mini-tags span.saric-mini-tag-red {
+  background: #fecaca !important;
+  color: #7f1d1d !important;
+}
+
+.saric-mini-tags span.saric-mini-tag-grey {
+  background: #d1d5db !important;
+  color: #111827 !important;
+}
+
+.saric-mini-tags span.saric-mini-tag-blue {
+  background: #dbeafe !important;
+  color: #0b1f3b !important;
+}
+
+/* Planning global : hauteur de ligne fixe malgré beaucoup de noms */
+.saric-posts-only-table td,
+.saric-days-only-table td {
+  height: 54px !important;
+  min-height: 54px !important;
+  max-height: 54px !important;
+  vertical-align: top !important;
+}
+
+.saric-days-only-table td.saric-absence-multi {
+  height: 54px !important;
+  min-height: 54px !important;
+  max-height: 54px !important;
+  overflow-y: auto !important;
+  white-space: normal !important;
+  line-height: 1.08 !important;
+  font-size: 0.68rem !important;
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+}
+
+.saric-days-only-table td.saric-absence-multi::-webkit-scrollbar {
+  width: 5px;
+}
+
+.saric-days-only-table td.saric-absence-multi::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 999px;
+}
+
+.saric-left-week-head {
+  color: #ffffff !important;
+}
+
 /* ============================================================
    RECHERCHE - liste protocoles compacte en 2 colonnes
    ============================================================ */
