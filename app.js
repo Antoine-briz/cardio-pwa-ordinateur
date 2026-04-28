@@ -29213,47 +29213,151 @@ function saricDefaultState() {
   };
 }
 
-function saricLoadState() {
+const SARIC_FIRESTORE_ROOT = "planningMedical";
+const SARIC_CONFIG_DOC = "main";
+const SARIC_USERS_DOC = "main";
+
+let __saricCloudReady = false;
+let __saricCloudSyncing = false;
+let __saricCurrentMonthUnsubscribe = null;
+
+function saricConfigRef() {
+  return window.db
+    .collection(SARIC_FIRESTORE_ROOT)
+    .doc("config")
+    .collection("docs")
+    .doc(SARIC_CONFIG_DOC);
+}
+
+function saricMonthRef(monthKey) {
+  return window.db
+    .collection(SARIC_FIRESTORE_ROOT)
+    .doc("months")
+    .collection("docs")
+    .doc(monthKey);
+}
+
+function saricUsersRef() {
+  return window.db
+    .collection(SARIC_FIRESTORE_ROOT)
+    .doc("users")
+    .collection("docs")
+    .doc(SARIC_USERS_DOC);
+}
+
+function saricLocalStateOnly() {
   try {
-    const saved = JSON.parse(localStorage.getItem(SARIC_PLANNING_KEY) || "null");
-    if (!saved) return saricDefaultState();
-
-    const base = saricDefaultState();
-
-    return {
-      ...base,
-      ...saved,
-
-      doctors: saved.doctors || base.doctors,
-
-      customDayPosts: saved.customDayPosts || base.customDayPosts,
-      customNightPosts: saved.customNightPosts || base.customNightPosts,
-
-      postCategories: {
-        ...base.postCategories,
-        ...(saved.postCategories || {})
-      },
-
-      absences: saved.absences || {},
-      adminDraftAssignments: saved.adminDraftAssignments || {},
-      adminDraftAbsences: saved.adminDraftAbsences || {},
-      publishedAssignments: saved.publishedAssignments || {},
-      publishedAbsences: saved.publishedAbsences || {},
-
-      abilities: saved.abilities || base.abilities,
-      optionalRules: { ...base.optionalRules, ...(saved.optionalRules || {}) },
-      desiderata: saved.desiderata || {},
-      desiderataSubmitted: saved.desiderataSubmitted || {},
-      assignments: saved.assignments || {},
-      generationLogs: saved.generationLogs || {}
-    };
+    return JSON.parse(localStorage.getItem(SARIC_PLANNING_KEY) || "null");
   } catch {
-    return saricDefaultState();
+    return null;
   }
+}
+
+function saricMergeState(base, saved) {
+  saved = saved || {};
+
+  return {
+    ...base,
+    ...saved,
+
+    doctors: saved.doctors || base.doctors,
+
+    customDayPosts: saved.customDayPosts || base.customDayPosts,
+    customNightPosts: saved.customNightPosts || base.customNightPosts,
+
+    postCategories: {
+      ...base.postCategories,
+      ...(saved.postCategories || {})
+    },
+
+    absences: saved.absences || {},
+    adminDraftAssignments: saved.adminDraftAssignments || {},
+    adminDraftAbsences: saved.adminDraftAbsences || {},
+    publishedAssignments: saved.publishedAssignments || {},
+    publishedAbsences: saved.publishedAbsences || {},
+
+    abilities: saved.abilities || base.abilities,
+    optionalRules: { ...base.optionalRules, ...(saved.optionalRules || {}) },
+    desiderata: saved.desiderata || {},
+    desiderataSubmitted: saved.desiderataSubmitted || {},
+    assignments: saved.assignments || {},
+    generationLogs: saved.generationLogs || {}
+  };
+}
+
+function saricLoadState() {
+  const base = saricDefaultState();
+  const saved = saricLocalStateOnly();
+  return saricMergeState(base, saved);
+}
+
+function saricExtractConfig(st) {
+  return {
+    doctors: st.doctors || [],
+    abilities: st.abilities || {},
+    optionalRules: st.optionalRules || {},
+    customDayPosts: st.customDayPosts || [],
+    customNightPosts: st.customNightPosts || [],
+    postCategories: st.postCategories || {},
+    updatedAt: Date.now()
+  };
+}
+
+function saricExtractMonth(st, monthKey) {
+  return {
+    month: monthKey,
+
+    desiderata: st.desiderata?.[monthKey]
+      ? { [monthKey]: st.desiderata[monthKey] }
+      : {},
+
+    desiderataSubmitted: st.desiderataSubmitted?.[monthKey]
+      ? { [monthKey]: st.desiderataSubmitted[monthKey] }
+      : {},
+
+    assignments: st.assignments?.[monthKey]
+      ? { [monthKey]: st.assignments[monthKey] }
+      : {},
+
+    absences: st.absences || {},
+
+    adminDraftAssignments: st.adminDraftAssignments?.[monthKey]
+      ? { [monthKey]: st.adminDraftAssignments[monthKey] }
+      : {},
+
+    adminDraftAbsences: st.adminDraftAbsences?.[monthKey]
+      ? { [monthKey]: st.adminDraftAbsences[monthKey] }
+      : {},
+
+    publishedAssignments: st.publishedAssignments?.[monthKey]
+      ? { [monthKey]: st.publishedAssignments[monthKey] }
+      : {},
+
+    publishedAbsences: st.publishedAbsences?.[monthKey]
+      ? { [monthKey]: st.publishedAbsences[monthKey] }
+      : {},
+
+    generationLogs: st.generationLogs?.[monthKey]
+      ? { [monthKey]: st.generationLogs[monthKey] }
+      : {},
+
+    updatedAt: Date.now()
+  };
 }
 
 function saricSaveState(st) {
   localStorage.setItem(SARIC_PLANNING_KEY, JSON.stringify(st));
+
+  if (!window.db || __saricCloudSyncing) return;
+
+  const monthKey = st.month || saricTodayMonthKey();
+
+  saricConfigRef().set(saricExtractConfig(st), { merge: true });
+
+  saricMonthRef(monthKey).set(
+    saricExtractMonth(st, monthKey),
+    { merge: true }
+  );
 }
 
 function saricLoadUsers() {
@@ -29266,6 +29370,256 @@ function saricLoadUsers() {
 
 function saricSaveUsers(users) {
   localStorage.setItem(SARIC_USERS_KEY, JSON.stringify(users));
+
+  if (!window.db || __saricCloudSyncing) return;
+
+  saricUsersRef().set({
+    users,
+    updatedAt: Date.now()
+  }, { merge: true });
+}
+
+async function saricLoadCloudConfigOnce() {
+  if (!window.db) return;
+
+  const snap = await saricConfigRef().get();
+  if (!snap.exists) return;
+
+  const cloudConfig = snap.data() || {};
+  const local = saricLoadState();
+
+  const merged = saricMergeState(local, {
+    ...local,
+    doctors: cloudConfig.doctors || local.doctors,
+    abilities: cloudConfig.abilities || local.abilities,
+    optionalRules: {
+      ...local.optionalRules,
+      ...(cloudConfig.optionalRules || {})
+    },
+    customDayPosts: cloudConfig.customDayPosts || local.customDayPosts,
+    customNightPosts: cloudConfig.customNightPosts || local.customNightPosts,
+    postCategories: {
+      ...local.postCategories,
+      ...(cloudConfig.postCategories || {})
+    }
+  });
+
+  localStorage.setItem(SARIC_PLANNING_KEY, JSON.stringify(merged));
+}
+
+async function saricLoadCloudMonthOnce(monthKey) {
+  if (!window.db || !monthKey) return;
+
+  const snap = await saricMonthRef(monthKey).get();
+  if (!snap.exists) return;
+
+  const monthData = snap.data() || {};
+  const local = saricLoadState();
+
+  const merged = saricMergeState(local, {
+    ...local,
+
+    desiderata: {
+      ...(local.desiderata || {}),
+      ...(monthData.desiderata || {})
+    },
+
+    desiderataSubmitted: {
+      ...(local.desiderataSubmitted || {}),
+      ...(monthData.desiderataSubmitted || {})
+    },
+
+    assignments: {
+      ...(local.assignments || {}),
+      ...(monthData.assignments || {})
+    },
+
+    absences: {
+      ...(local.absences || {}),
+      ...(monthData.absences || {})
+    },
+
+    adminDraftAssignments: {
+      ...(local.adminDraftAssignments || {}),
+      ...(monthData.adminDraftAssignments || {})
+    },
+
+    adminDraftAbsences: {
+      ...(local.adminDraftAbsences || {}),
+      ...(monthData.adminDraftAbsences || {})
+    },
+
+    publishedAssignments: {
+      ...(local.publishedAssignments || {}),
+      ...(monthData.publishedAssignments || {})
+    },
+
+    publishedAbsences: {
+      ...(local.publishedAbsences || {}),
+      ...(monthData.publishedAbsences || {})
+    },
+
+    generationLogs: {
+      ...(local.generationLogs || {}),
+      ...(monthData.generationLogs || {})
+    }
+  });
+
+  localStorage.setItem(SARIC_PLANNING_KEY, JSON.stringify(merged));
+}
+
+async function saricLoadCloudUsersOnce() {
+  if (!window.db) return;
+
+  const snap = await saricUsersRef().get();
+  if (!snap.exists) return;
+
+  const data = snap.data() || {};
+  if (data.users) {
+    localStorage.setItem(SARIC_USERS_KEY, JSON.stringify(data.users));
+  }
+}
+
+async function saricInitCloudPlanning() {
+  if (__saricCloudReady) return;
+
+  try {
+    await saricLoadCloudConfigOnce();
+
+    const st = saricLoadState();
+    await saricLoadCloudMonthOnce(st.month);
+    await saricLoadCloudUsersOnce();
+
+    __saricCloudReady = true;
+    saricListenCurrentMonth(st.month);
+    saricListenConfig();
+    saricListenUsers();
+  } catch (e) {
+    console.warn("Synchronisation Firebase planning indisponible :", e);
+  }
+}
+
+function saricListenConfig() {
+  if (!window.db) return;
+
+  saricConfigRef().onSnapshot((snap) => {
+    if (!snap.exists) return;
+
+    __saricCloudSyncing = true;
+
+    const cloudConfig = snap.data() || {};
+    const local = saricLoadState();
+
+    const merged = saricMergeState(local, {
+      ...local,
+      doctors: cloudConfig.doctors || local.doctors,
+      abilities: cloudConfig.abilities || local.abilities,
+      optionalRules: {
+        ...local.optionalRules,
+        ...(cloudConfig.optionalRules || {})
+      },
+      customDayPosts: cloudConfig.customDayPosts || local.customDayPosts,
+      customNightPosts: cloudConfig.customNightPosts || local.customNightPosts,
+      postCategories: {
+        ...local.postCategories,
+        ...(cloudConfig.postCategories || {})
+      }
+    });
+
+    localStorage.setItem(SARIC_PLANNING_KEY, JSON.stringify(merged));
+    __saricCloudSyncing = false;
+  });
+}
+
+function saricListenCurrentMonth(monthKey) {
+  if (!window.db || !monthKey) return;
+
+  if (__saricCurrentMonthUnsubscribe) {
+    __saricCurrentMonthUnsubscribe();
+    __saricCurrentMonthUnsubscribe = null;
+  }
+
+  __saricCurrentMonthUnsubscribe = saricMonthRef(monthKey).onSnapshot((snap) => {
+    if (!snap.exists) return;
+
+    __saricCloudSyncing = true;
+
+    const monthData = snap.data() || {};
+    const local = saricLoadState();
+
+    const merged = saricMergeState(local, {
+      ...local,
+
+      desiderata: {
+        ...(local.desiderata || {}),
+        ...(monthData.desiderata || {})
+      },
+
+      desiderataSubmitted: {
+        ...(local.desiderataSubmitted || {}),
+        ...(monthData.desiderataSubmitted || {})
+      },
+
+      assignments: {
+        ...(local.assignments || {}),
+        ...(monthData.assignments || {})
+      },
+
+      absences: {
+        ...(local.absences || {}),
+        ...(monthData.absences || {})
+      },
+
+      adminDraftAssignments: {
+        ...(local.adminDraftAssignments || {}),
+        ...(monthData.adminDraftAssignments || {})
+      },
+
+      adminDraftAbsences: {
+        ...(local.adminDraftAbsences || {}),
+        ...(monthData.adminDraftAbsences || {})
+      },
+
+      publishedAssignments: {
+        ...(local.publishedAssignments || {}),
+        ...(monthData.publishedAssignments || {})
+      },
+
+      publishedAbsences: {
+        ...(local.publishedAbsences || {}),
+        ...(monthData.publishedAbsences || {})
+      },
+
+      generationLogs: {
+        ...(local.generationLogs || {}),
+        ...(monthData.generationLogs || {})
+      }
+    });
+
+    localStorage.setItem(SARIC_PLANNING_KEY, JSON.stringify(merged));
+    __saricCloudSyncing = false;
+
+    if (location.hash.includes("planning-medical")) {
+      try {
+        saricRenderActiveTab();
+      } catch (_) {}
+    }
+  });
+}
+
+function saricListenUsers() {
+  if (!window.db) return;
+
+  saricUsersRef().onSnapshot((snap) => {
+    if (!snap.exists) return;
+
+    const data = snap.data() || {};
+    if (!data.users) return;
+
+    __saricCloudSyncing = true;
+    localStorage.setItem(SARIC_USERS_KEY, JSON.stringify(data.users));
+    __saricCloudSyncing = false;
+  });
 }
 
 function saricInitUsers() {
@@ -29823,7 +30177,8 @@ function saricRenderAdminPlanningCounts(st) {
   `;
 }
 
-function renderPlanningMedical() {
+async function renderPlanningMedical() {
+  await saricInitCloudPlanning();
   saricInitUsers();
 
   const current = saricCurrentUser();
@@ -29911,18 +30266,26 @@ function saricRenderActiveTab() {
   return saricRenderPlanning();
 }
 
-function saricSetMonth(monthKey) {
+async function saricSetMonth(monthKey) {
   const st = saricLoadState();
   st.month = monthKey;
   saricSaveState(st);
+
+  await saricLoadCloudMonthOnce(monthKey);
+  saricListenCurrentMonth(monthKey);
+
   saricRenderActiveTab();
 }
 
-function saricShiftMonth(delta) {
+async function saricShiftMonth(delta) {
   const st = saricLoadState();
   const [y, m] = st.month.split("-").map(Number);
   st.month = saricMonthKey(new Date(y, m - 1 + delta, 1));
   saricSaveState(st);
+
+  await saricLoadCloudMonthOnce(st.month);
+  saricListenCurrentMonth(st.month);
+
   saricRenderActiveTab();
 }
 
