@@ -30416,7 +30416,7 @@ function saricRenderAdmin() {
   <ol>${SARIC_FIXED_RULES.map(r => `<li>${saricEscape(r)}</li>`).join("")}</ol>
 </details>
 
-    <details class="card saric-rules saric-rules-collapsible">
+    <details class="card saric-rules saric-rules-collapsible" data-saric-details="optional-rules">
   <summary>
     <h3>Règles optionnelles</h3>
     <span>Cliquer pour afficher/masquer</span>
@@ -30487,11 +30487,27 @@ function saricSetOptionalRule(key, value) {
   const st = saricLoadState();
   st.optionalRules[key] = value;
 
-  if (key === "demandesImperatives" && value) st.optionalRules.demandesSiPossible = false;
-  if (key === "demandesSiPossible" && value) st.optionalRules.demandesImperatives = false;
+  // garde la logique existante
+  if (key === "demandesImperatives" && value) {
+    st.optionalRules.demandesSiPossible = false;
+  }
+
+  if (key === "demandesSiPossible" && value) {
+    st.optionalRules.demandesImperatives = false;
+  }
 
   saricSaveState(st);
+
+  // re-render
   saricRenderAdmin();
+
+  // réouvre automatiquement le bloc "Règles optionnelles"
+  setTimeout(() => {
+    const box = document.querySelector(
+      '.saric-rules-collapsible[data-saric-details="optional-rules"]'
+    );
+    if (box) box.open = true;
+  }, 0);
 }
 
 function saricRenderAccount() {
