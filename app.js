@@ -29345,19 +29345,32 @@ function saricExtractMonth(st, monthKey) {
   };
 }
 
+let __saricCloudWriteTimer = null;
+let __saricCloudWritePending = null;
+
 function saricSaveState(st) {
   localStorage.setItem(SARIC_PLANNING_KEY, JSON.stringify(st));
 
   if (!window.db || __saricCloudSyncing) return;
 
-  const monthKey = st.month || saricTodayMonthKey();
+  __saricCloudWritePending = saricClone(st);
 
-  saricConfigRef().set(saricExtractConfig(st), { merge: true });
+  clearTimeout(__saricCloudWriteTimer);
+  __saricCloudWriteTimer = setTimeout(() => {
+    const pending = __saricCloudWritePending;
+    __saricCloudWritePending = null;
 
-  saricMonthRef(monthKey).set(
-    saricExtractMonth(st, monthKey),
-    { merge: true }
-  );
+    if (!pending || !window.db || __saricCloudSyncing) return;
+
+    const monthKey = pending.month || saricTodayMonthKey();
+
+    Promise.all([
+      saricConfigRef().set(saricExtractConfig(pending), { merge: true }),
+      saricMonthRef(monthKey).set(saricExtractMonth(pending, monthKey), { merge: true })
+    ]).catch(err => {
+      console.warn("Erreur sauvegarde Firebase planning :", err);
+    });
+  }, 500);
 }
 
 function saricLoadUsers() {
@@ -30358,7 +30371,6 @@ function saricRenderPlanning() {
     </select>
   `;
 
-  saricSaveState(st);
 
   document.getElementById("saric-planning-body").innerHTML = `
     ${saricMonthControl(extra)}
@@ -30415,9 +30427,6 @@ function saricRenderDesiderata() {
   const st = saricLoadState();
   const current = saricCurrentUser();
   if (!current) return;
-
-  st.selectedDoctorId = current.doctorId;
-  saricSaveState(st);
 
   const currentDoctor = st.doctors.find(d => d.id === current.doctorId);
   const doctorName = currentDoctor?.name || current.name;
@@ -30530,10 +30539,17 @@ function saricSaveDesiderata(iso) {
 }
 
 function saricSubmitDesiderataMonth() {
+  const current = saricCurrentUser();
+  if (!current) return;
+
   const st = saricLoadState();
-  const docId = st.selectedDoctorId;
-  st.desiderataSubmitted[st.month] = st.desiderataSubmitted[st.month] || {};
-  st.desiderataSubmitted[st.month][docId] = true;
+
+  st.desiderataSubmitted = st.desiderataSubmitted || {};
+  st.desiderataSubmitted[st.month] =
+    st.desiderataSubmitted[st.month] || {};
+
+  st.desiderataSubmitted[st.month][current.doctorId] = true;
+
   saricSaveState(st);
   saricRenderDesiderata();
 }
@@ -31797,6 +31813,7 @@ function saricSaveDesiderataPopup(iso) {
 
   const checked = [...popup.querySelectorAll("input:checked")].map(x => x.value);
 
+  st.desiderata = st.desiderata || {};
   st.desiderata[current.doctorId] = st.desiderata[current.doctorId] || {};
 
   if (checked.length) {
