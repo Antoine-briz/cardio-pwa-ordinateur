@@ -30422,19 +30422,61 @@ function saricRenderDesiderata() {
   const currentDoctor = st.doctors.find(d => d.id === current.doctorId);
   const doctorName = currentDoctor?.name || current.name;
 
+  const alreadySubmitted =
+    !!st.desiderataSubmitted?.[st.month]?.[current.doctorId];
+
+  const validateBtn = alreadySubmitted
+    ? `
+      <div class="saric-desid-submit-wrap">
+        <button class="btn saric-desid-valid-btn" disabled>
+          Désidératas du mois validés
+        </button>
+
+        <button
+          class="btn saric-desid-edit-btn"
+          onclick="saricUnlockDesiderata()"
+          title="Modifier"
+        >
+          ✏️
+        </button>
+      </div>
+    `
+    : `
+      <button
+        class="btn saric-small-btn saric-desid-submit-btn"
+        onclick="saricSubmitDesiderataMonth()"
+      >
+        Valider mes désidératas du mois
+      </button>
+    `;
+
   const extra = `
     <div class="saric-current-doctor-label">
       ${saricEscape(doctorName)}
     </div>
-    <button class="btn saric-small-btn" onclick="saricSubmitDesiderataMonth()">
-      Valider mes désidératas du mois
-    </button>
+
+    ${validateBtn}
   `;
 
   document.getElementById("saric-planning-body").innerHTML = `
     ${saricMonthControl(extra)}
     ${saricCalendarHtml("desiderata")}
   `;
+}
+
+function saricUnlockDesiderata() {
+  const st = saricLoadState();
+
+  if (!currentUser?.id) return;
+
+  st.desiderataSubmitted = st.desiderataSubmitted || {};
+  st.desiderataSubmitted[st.month] =
+    st.desiderataSubmitted[st.month] || {};
+
+  delete st.desiderataSubmitted[st.month][currentUser.id];
+
+  saricSaveState(st);
+  saricRenderDesiderata();
 }
 
 function saricSelectDesiderataDoctor(id) {
