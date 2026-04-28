@@ -13127,6 +13127,24 @@ main.container,
   overflow-y: auto !important;
 }
 
+/* Planning non publié : thème sombre lisible */
+body:not(.theme-light) .saric-planning-waiting-title,
+body:not(.theme-light) .saric-planning-waiting-subtitle {
+  color: #ffffff !important;
+}
+
+body.theme-light .saric-planning-waiting-title {
+  color: #0f172a !important;
+}
+
+body.theme-light .saric-planning-waiting-subtitle {
+  color: #475569 !important;
+}
+body.dark-theme .saric-planning-waiting-title,
+body.dark-theme .saric-planning-waiting-subtitle {
+  color:#fff !important;
+}
+
 /* ============================================================
    RECHERCHE - liste protocoles compacte en 2 colonnes
    ============================================================ */
