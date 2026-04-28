@@ -28868,10 +28868,13 @@ function saricRenderDoctorManagementCard(st) {
   const edit = saricDoctorEditMode();
 
   return `
-    <div class="card">
+    <details class="card saric-admin-collapsible-card" ${saricAdminDetailsAttr("doctors")}>
+  <summary class="saric-admin-section-summary">
+    <h3>Catégories médecins</h3>
+    <span>Cliquer pour afficher/masquer</span>
+  </summary>
       <div class="saric-admin-card-head">
         <div>
-          <h3>Catégories médecins</h3>
         </div>
 
         <div class="saric-admin-actions">
@@ -28912,7 +28915,7 @@ function saricRenderDoctorManagementCard(st) {
           </div>
         `).join("")}
       </div>
-    </div>
+    </details>
   `;
 }
 
@@ -28922,7 +28925,11 @@ function saricRenderPostManagementCard(st) {
   const posts = saricSortedPosts(saricGetAllPosts(st));
 
   return `
-    <div class="card">
+    <details class="card saric-admin-collapsible-card" ${saricAdminDetailsAttr("posts")}>
+  <summary class="saric-admin-section-summary">
+    <h3>Gestion des postes</h3>
+    <span>Cliquer pour afficher/masquer</span>
+  </summary>
       <div class="saric-admin-card-head">
         <div>
           <h3>Gestion des postes</h3>
@@ -28961,7 +28968,7 @@ function saricRenderPostManagementCard(st) {
           </div>
         `).join("")}
       </div>
-    </div>
+    </details>
   `;
 }
 
@@ -29985,10 +29992,40 @@ function saricRenderPlanning() {
     ${saricMonthControl(extra)}
     ${
       st.selectedDoctorId === "global"
+  ? (
+      saricMonthIsPublished(st, st.month)
         ? saricPlanningGlobalTable()
-        : saricPersonalCalendarHtml()
+        : saricPlanningWaitingHtml(st.month)
+    )
+  : saricPersonalCalendarHtml()
     }
   `;
+}
+
+function saricAdminSectionStorageKey(id) {
+  return `saric_admin_section_open_${id}`;
+}
+
+function saricAdminSectionIsOpen(id) {
+  return sessionStorage.getItem(saricAdminSectionStorageKey(id)) === "1";
+}
+
+function saricAdminDetailsAttr(id) {
+  return `
+    data-saric-admin-section="${id}"
+    ontoggle="saricRememberAdminSection(this)"
+    ${saricAdminSectionIsOpen(id) ? "open" : ""}
+  `;
+}
+
+function saricRememberAdminSection(el) {
+  const id = el?.dataset?.saricAdminSection;
+  if (!id) return;
+
+  sessionStorage.setItem(
+    saricAdminSectionStorageKey(id),
+    el.open ? "1" : "0"
+  );
 }
 
 function saricPersonalCalendarHtml() {
@@ -30382,8 +30419,11 @@ function saricRenderAdmin() {
     <div class="saric-admin-grid">
       ${saricRenderDoctorManagementCard(st)}
 
-      <div class="card">
-        <h3>Habilitations médicales</h3>
+      <details class="card saric-admin-collapsible-card" ${saricAdminDetailsAttr("abilities")}>
+  <summary class="saric-admin-section-summary">
+    <h3>Habilitations gardes / demi-gardes / coordinations</h3>
+    <span>Cliquer pour afficher/masquer</span>
+  </summary>
         <div class="saric-matrix-wrap">
           <table class="saric-matrix">
             <thead>
@@ -30407,8 +30447,9 @@ function saricRenderAdmin() {
             </tbody>
           </table>
         </div>
+        </details>
       </div>
-    </div>
+    
 
     ${saricRenderPostManagementCard(st)}
 
@@ -31292,6 +31333,24 @@ function saricOpenDesiderataPopup(iso) {
   document.body.insertAdjacentHTML("beforeend", html);
 }
 
+function saricMonthIsPublished(st, monthKey) {
+  return !!st.publishedAssignments?.[monthKey] &&
+    Object.keys(st.publishedAssignments[monthKey] || {}).length > 0;
+}
+
+function saricPlanningWaitingHtml(monthKey) {
+  return `
+    <div class="card saric-planning-waiting-card">
+      <div class="saric-planning-waiting-title">
+        Planning en attente de publication
+      </div>
+      <div class="saric-planning-waiting-subtitle">
+        ${saricEscape(saricMonthLabel(monthKey))}
+      </div>
+    </div>
+  `;
+}
+    
 function saricSaveDesiderataPopup(iso) {
   const popup = document.getElementById("saric-popup");
   if (!popup) return;
