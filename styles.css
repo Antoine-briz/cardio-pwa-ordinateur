@@ -13082,6 +13082,51 @@ main.container,
   margin-bottom: 14px;
 }
 
+/* Correction définitive des cartes Admin repliables */
+#saric-planning-body .saric-admin-grid {
+  align-items: start !important;
+}
+
+#saric-planning-body .saric-admin-grid > details.saric-admin-collapsible-card,
+#saric-planning-body details.saric-admin-collapsible-card {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+  display: block !important;
+}
+
+#saric-planning-body details.saric-admin-collapsible-card:not([open]) {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  padding: 16px !important;
+}
+
+#saric-planning-body details.saric-admin-collapsible-card:not([open]) > *:not(summary) {
+  display: none !important;
+}
+
+#saric-planning-body details.saric-admin-collapsible-card[open] {
+  height: auto !important;
+  overflow: visible !important;
+}
+
+/* Si tu veux garder une hauteur limitée uniquement quand ouvert dans les 2 cartes du haut */
+#saric-planning-body .saric-admin-grid > details.saric-admin-collapsible-card[open] {
+  height: 620px !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+#saric-planning-body .saric-admin-grid > details.saric-admin-collapsible-card[open] .saric-doctor-list,
+#saric-planning-body .saric-admin-grid > details.saric-admin-collapsible-card[open] .saric-matrix-wrap {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+}
+
 /* ============================================================
    RECHERCHE - liste protocoles compacte en 2 colonnes
    ============================================================ */
