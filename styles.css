@@ -13129,7 +13129,7 @@ main.container,
 
 /* Gestion des postes : espace réduit */
 #saric-planning-body .saric-admin-grid + details.saric-admin-collapsible-card {
-  margin-top: 8px !important;
+  margin-top: 6px !important;
 }
 
 /* Planning non publié : thème sombre lisible */
