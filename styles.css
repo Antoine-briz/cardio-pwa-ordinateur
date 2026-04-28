@@ -13240,6 +13240,39 @@ body.dark-theme .saric-planning-waiting-subtitle {
   font-size: 1rem;
 }
 
+.saric-desid-submit-wrap {
+  display: flex !important;
+  align-items: stretch !important;
+  gap: 10px !important;
+}
+
+.saric-desid-submit-btn {
+  background: #f59e0b !important;
+  border-color: #f59e0b !important;
+  color: #fff !important;
+  font-weight: 900 !important;
+}
+
+.saric-desid-valid-btn {
+  background: #16a34a !important;
+  border-color: #16a34a !important;
+  color: #fff !important;
+  font-weight: 900 !important;
+  cursor: default !important;
+}
+
+.saric-desid-edit-btn {
+  width: 56px !important;
+  min-width: 56px !important;
+  height: auto !important;
+  padding: 0 12px !important;
+  background: #0b3c6d !important;
+  color: #fff !important;
+  border-radius: 16px !important;
+  font-size: 1.05rem !important;
+  align-self: stretch !important;
+}
+
 /* ============================================================
    RECHERCHE - liste protocoles compacte en 2 colonnes
    ============================================================ */
