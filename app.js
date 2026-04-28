@@ -28871,7 +28871,6 @@ function saricRenderDoctorManagementCard(st) {
     <details class="card saric-admin-collapsible-card" ${saricAdminDetailsAttr("doctors")}>
   <summary class="saric-admin-section-summary">
     <h3>Catégories médecins</h3>
-    <span>Cliquer pour afficher/masquer</span>
   </summary>
       <div class="saric-admin-card-head">
         <div>
