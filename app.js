@@ -28995,32 +28995,7 @@ function saricSetPostCategory(post, category) {
   saricRenderAdmin();
 }
 
-function saricRenderPostManagementCard(st) {
-  const cats = st.postCategories || saricDefaultPostCategories();
 
-  return `
-    <div class="card">
-      <h3>Gestion des postes</h3>
-      <p>Attribuez une catégorie à chaque poste.</p>
-
-      <div class="saric-post-list">
-        ${saricSortedPosts(SARIC_ALL_POSTS).map(post => `
-          <div class="saric-post-row">
-            <strong>${saricEscape(post)}</strong>
-
-            <select onchange="saricSetPostCategory('${post.replaceAll("'", "\\'")}', this.value)">
-              ${SARIC_CATEGORIES.map(cat => `
-                <option value="${cat}" ${cats[post] === cat ? "selected" : ""}>
-                  ${saricEscape(cat)}
-                </option>
-              `).join("")}
-            </select>
-          </div>
-        `).join("")}
-      </div>
-    </div>
-  `;
-}
 
 const SARIC_DEFAULT_DOCTORS = [
   ["BOUGLE Adrien", "Chirurgie cardiaque"],
