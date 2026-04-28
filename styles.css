@@ -12679,6 +12679,173 @@ main.container,
 }
 
 /* ============================================================
+   ADMIN - aperçu désidératas médecin
+   ============================================================ */
+
+.saric-desid-line {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.saric-desid-main {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.saric-desid-view-btn {
+  margin-left: auto;
+  border: 0;
+  background: #0b3c6d;
+  color: #fff;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-weight: 900;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.saric-desid-view-btn:hover {
+  filter: brightness(1.08);
+}
+
+/* Overlay */
+.saric-desid-preview-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Fenêtre */
+.saric-desid-preview-box {
+  width: min(980px, 96vw);
+  max-height: 92vh;
+  overflow: auto;
+  background: var(--card, #111827);
+  color: var(--fg, #fff);
+  border: 1px solid var(--border, #334155);
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 24px 70px rgba(0,0,0,.45);
+}
+
+.saric-desid-preview-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.saric-desid-preview-head h3 {
+  margin: 0;
+}
+
+.saric-desid-preview-head button {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 0;
+  background: #dc2626;
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.saric-desid-preview-month {
+  font-weight: 900;
+  color: var(--muted);
+  margin-bottom: 12px;
+  text-transform: capitalize;
+}
+
+/* Mini calendrier */
+.saric-mini-weekdays,
+.saric-mini-calendar {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(90px, 1fr));
+  gap: 6px;
+}
+
+.saric-mini-weekdays {
+  margin-bottom: 6px;
+}
+
+.saric-mini-weekdays b {
+  text-align: center;
+  color: var(--muted);
+}
+
+.saric-mini-day {
+  min-height: 92px;
+  background: #ffffff;
+  color: #111827;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 6px;
+  overflow: hidden;
+}
+
+.saric-mini-day.weekend,
+.saric-mini-day.holiday {
+  background: #e5e7eb;
+}
+
+.saric-mini-day.weekend {
+  border-color: #f97316;
+}
+
+.saric-mini-day.holiday {
+  border-color: #ef4444;
+}
+
+.saric-mini-date {
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+
+.saric-mini-tags {
+  display: grid;
+  gap: 3px;
+}
+
+.saric-mini-tags span {
+  display: block;
+  border-radius: 999px;
+  background: #dbeafe;
+  color: #0b1f3b;
+  padding: 3px 6px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+/* Mobile */
+@media (max-width: 800px) {
+  .saric-mini-weekdays,
+  .saric-mini-calendar {
+    grid-template-columns: 1fr;
+  }
+
+  .saric-mini-weekdays {
+    display: none;
+  }
+
+  .saric-mini-day {
+    min-height: auto;
+  }
+}
+
+/* ============================================================
    RECHERCHE - liste protocoles compacte en 2 colonnes
    ============================================================ */
 
