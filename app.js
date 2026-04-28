@@ -28931,7 +28931,6 @@ function saricRenderPostManagementCard(st) {
   </summary>
       <div class="saric-admin-card-head">
         <div>
-          <h3>Gestion des postes</h3>
         </div>
 
         <div class="saric-admin-actions">
