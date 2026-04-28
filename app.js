@@ -30383,7 +30383,7 @@ function saricRenderAdmin() {
       ${saricRenderDoctorManagementCard(st)}
 
       <div class="card">
-        <h3>Habilitations gardes / demi-gardes / coordinations</h3>
+        <h3>Habilitations médicales</h3>
         <div class="saric-matrix-wrap">
           <table class="saric-matrix">
             <thead>
