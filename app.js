@@ -30360,6 +30360,15 @@ function saricMonthControl(extra = "") {
         >
           📅
         </button>
+        <input
+          id="saric-month-picker"
+          class="saric-hidden-month-input"
+          type="month"
+          min="2026-01"
+          max="2026-12"
+          value="${st.month}"
+          onchange="saricSetMonth(this.value)"
+        >
       </div>
 
       ${extra}
