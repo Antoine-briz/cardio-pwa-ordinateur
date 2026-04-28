@@ -30444,19 +30444,19 @@ function saricRememberAdminSection(el) {
 }
 
 function saricPublishedViewState(raw, monthKey) {
+  const publishedAssignments = raw.publishedAssignments?.[monthKey] || {};
+  const publishedAbsences = raw.publishedAbsences?.[monthKey] || {};
+
   return {
     ...raw,
 
-    /* Le planning visible ne lit QUE la version publiée */
-    assignments: {
-      [monthKey]: raw.publishedAssignments?.[monthKey] || {}
-    },
+    /* IMPORTANT :
+       l'affichage lit assignments[iso], pas assignments[mois][iso]
+    */
+    assignments: saricClone(publishedAssignments),
+    absences: saricClone(publishedAbsences),
 
-    absences: {
-      [monthKey]: raw.publishedAbsences?.[monthKey] || {}
-    },
-
-    /* Important : les désidératas bruts ne doivent pas influencer le planning */
+    /* Les désidératas ne doivent pas modifier le planning publié */
     desiderata: {}
   };
 }
@@ -30752,8 +30752,6 @@ function saricPlanningGlobalTable() {
         ...SARIC_COORD_POSTS,
         ...SARIC_DAY_POSTS.filter(p => !SARIC_COORD_POSTS.includes(p))
       ];
-
-  saricBuildMonthlyAbsences(st, st.month);
 
   const posts = typeof saricSortedPosts === "function"
     ? saricSortedPosts([...basePosts, ...SARIC_ABSENCE_POSTS])
