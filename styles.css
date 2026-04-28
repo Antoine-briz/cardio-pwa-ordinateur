@@ -13438,21 +13438,7 @@ body.theme-light .saric-popup-box input[type="checkbox"],
   background: #0b3c6d !important;
 }
 
-#app .recherche-page .rch-protocol-table thead::after {
-  content: "Protocole\00a0\00a0\00a0\00a0\00a0 Investigateur local\00a0\00a0\00a0\00a0\00a0 Statut\00a0\00a0\00a0\00a0\00a0 Actions";
-  display: grid !important;
-  grid-template-columns: 1.2fr 1.1fr 0.9fr 180px !important;
-  grid-column: span 1 !important;
-  align-items: center;
-  min-height: 50px;
-  padding: 0 14px;
-  border: 2px solid #0b3c6d;
-  border-radius: 12px;
-  background: #0b3c6d;
-  color: #fff;
-  font-weight: 900;
-  white-space: pre;
-}
+
 
 #app .recherche-page .rch-protocol-table thead th {
   display: flex !important;
@@ -13566,6 +13552,43 @@ body.theme-light .saric-popup-box input[type="checkbox"],
   }
 
   #app .recherche-page .rch-protocol-table thead::after {
+    display: none !important;
+  }
+}
+
+/* Recherche : headers alignés pour les 2 colonnes */
+#app .recherche-page .rch-protocol-table thead {
+  display: contents !important;
+}
+
+#app .recherche-page .rch-protocol-table thead tr {
+  display: grid !important;
+  grid-template-columns: 1.2fr 1.1fr 0.9fr 180px !important;
+  border: 2px solid #0b3c6d !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  background: #0b3c6d !important;
+}
+
+#app .recherche-page .rch-protocol-table thead th {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 50px !important;
+  padding: 8px !important;
+  background: #0b3c6d !important;
+  color: #fff !important;
+  border-right: 1px solid rgba(255,255,255,.35) !important;
+  font-weight: 900 !important;
+  white-space: nowrap !important;
+}
+
+#app .recherche-page .rch-protocol-table thead th:last-child {
+  border-right: 0 !important;
+}
+
+@media (max-width: 1250px) {
+  #app .recherche-page .rch-protocol-table thead tr:nth-child(2) {
     display: none !important;
   }
 }
