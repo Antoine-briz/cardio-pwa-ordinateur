@@ -13917,3 +13917,136 @@ body.theme-light .saric-popup-box input[type="checkbox"],
     padding: 12px 10px !important;
   }
 }
+
+/* ============================================================
+   BIBLIOGRAPHIE - table scrollable, lignes cliquables, citations
+   ============================================================ */
+
+/* En-tête bleu foncé : police blanche */
+.biblio-live-table thead th,
+.biblio-table thead th {
+  background: #0b3c6d !important;
+  color: #ffffff !important;
+}
+
+/* Scroll vertical : environ 5 articles visibles */
+.biblio-live-grid .biblio-table-wrap {
+  max-height: 540px !important;
+  overflow-y: auto !important;
+  overflow-x: auto !important;
+  border-radius: 16px !important;
+}
+
+/* En-tête sticky pendant le scroll */
+.biblio-live-table thead th {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 3 !important;
+}
+
+/* Ligne cliquable */
+.biblio-click-row {
+  cursor: pointer !important;
+}
+
+.biblio-click-row:hover td {
+  background: #eef6ff !important;
+}
+
+/* Nouvelles largeurs de colonnes */
+.biblio-live-table {
+  table-layout: fixed !important;
+  width: 100% !important;
+}
+
+.biblio-live-table th:nth-child(1),
+.biblio-live-table td:nth-child(1) {
+  width: 18% !important;
+}
+
+.biblio-live-table th:nth-child(2),
+.biblio-live-table td:nth-child(2) {
+  width: 9% !important;
+  white-space: nowrap !important;
+}
+
+.biblio-live-table th:nth-child(3),
+.biblio-live-table td:nth-child(3) {
+  width: 30% !important;
+}
+
+.biblio-live-table th:nth-child(4),
+.biblio-live-table td:nth-child(4) {
+  width: 35% !important;
+}
+
+.biblio-live-table th:nth-child(5),
+.biblio-live-table td:nth-child(5) {
+  width: 8% !important;
+  text-align: center !important;
+}
+
+/* Citations */
+.biblio-citation-cell {
+  font-size: 1.15rem !important;
+  font-weight: 950 !important;
+  color: #0b3c6d !important;
+}
+
+/* Domaine dans colonne source */
+.biblio-domain-pill {
+  display: inline-flex !important;
+  margin-top: 6px !important;
+  padding: 3px 8px !important;
+  border-radius: 999px !important;
+  font-size: 0.68rem !important;
+  font-weight: 950 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+
+.domain-rea {
+  background: #fee2e2 !important;
+  color: #991b1b !important;
+}
+
+.domain-anesth {
+  background: #dbeafe !important;
+  color: #1e3a8a !important;
+}
+
+.domain-cardio {
+  background: #fce7f3 !important;
+  color: #9d174d !important;
+}
+
+.domain-chir {
+  background: #ede9fe !important;
+  color: #5b21b6 !important;
+}
+
+.domain-infectio {
+  background: #dcfce7 !important;
+  color: #166534 !important;
+}
+
+.domain-other {
+  background: #e5e7eb !important;
+  color: #374151 !important;
+}
+
+/* Source plus lisible */
+.biblio-source-cell {
+  align-items: flex-start !important;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .biblio-live-table {
+    min-width: 980px !important;
+  }
+
+  .biblio-live-grid .biblio-table-wrap {
+    max-height: 520px !important;
+  }
+}
