@@ -221,6 +221,15 @@ def one_sentence(text: str, fallback: str) -> str:
 
     return result
 
+def translate_to_french(text: str) -> str:
+    try:
+        url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=fr&dt=t&q=" + urllib.parse.quote(text)
+        data = http_json(url, timeout=10)
+        translated = "".join([x[0] for x in data[0]])
+        return translated
+    except Exception:
+        return text  # fallback en anglais si erreur
+
 
 def pubdate_from_summary(summary: Dict[str, Any]) -> str:
     return summary.get("epubdate") or summary.get("pubdate") or ""
