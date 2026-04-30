@@ -26689,7 +26689,10 @@ async function loadBiblioJsonTable(url, tbodyId) {
       <tr>
         <td>${biblioSourceHtml(item.source || "")}</td>
         <td>${escapeHtml(item.date || "")}</td>
-        <td>${escapeHtml(item.titre || "")}</td>
+        <td>
+  ${biblioBadgeHtml(item)}
+  <div class="biblio-title-cell">${escapeHtml(item.titre || "")}</div>
+</td>
         <td>${escapeHtml(item.description || "")}</td>
         <td>
           ${item.lien
@@ -26705,6 +26708,26 @@ async function loadBiblioJsonTable(url, tbodyId) {
   } catch (err) {
     tbody.innerHTML = `<tr><td colspan="5">Impossible de charger les données.</td></tr>`;
   }
+}
+
+function biblioBadgeHtml(item) {
+  const text = `${item.titre || ""} ${item.description || ""}`.toLowerCase();
+
+  let badge = null;
+
+  if (text.includes("guideline") || text.includes("recommendation") || text.includes("consensus")) {
+    badge = ["Reco", "biblio-badge-reco"];
+  } else if (text.includes("randomized") || text.includes("randomised") || text.includes("trial")) {
+    badge = ["RCT", "biblio-badge-rct"];
+  } else if (text.includes("meta-analysis") || text.includes("systematic review")) {
+    badge = ["Méta-analyse", "biblio-badge-meta"];
+  } else if (text.includes("cohort") || text.includes("registry")) {
+    badge = ["Cohorte", "biblio-badge-cohort"];
+  } else {
+    badge = ["Article", "biblio-badge-article"];
+  }
+
+  return `<span class="biblio-badge ${badge[1]}">${badge[0]}</span>`;
 }
 
 function escapeHtml(value) {
