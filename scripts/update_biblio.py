@@ -343,6 +343,81 @@ def article_url(pmid: str, sem: Optional[Dict[str, Any]]) -> str:
         return sem["url"]
     return f"https://pubmed.ncbi.nlm.nih.gov/{pmid}/"
 
+def pubmed_abstracts(pmids: List[str]) -> Dict[str, str]:
+    if not pmids:
+        return {}
+
+    import xml.etree.ElementTree as ET
+
+    out: Dict[str, str] = {}
+
+    for i in range(0, len(pmids), 100):
+        chunk = pmids[i:i + 100]
+
+        params = {
+            "db": "pubmed",
+            "id": ",".join(chunk),
+            "retmode": "xml",
+            "tool": "saric_biblio",
+            "email": NCBI_EMAIL,
+        }
+
+        if NCBI_API_KEY:
+            params["api_key"] = NCBI_API_KEY
+
+        url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?" + urllib.parse.urlencode(params)
+
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                xml_text = resp.read().decode("utf-8", errors="replace")
+
+            root = ET.fromstring(xml_text)
+
+            for article in root.findall(".//PubmedArticle"):
+                pmid_el = article.find(".//PMID")
+                if pmid_el is None or not pmid_el.text:
+                    continue
+
+                pmid = pmid_el.text.strip()
+                parts = []
+
+                for abs_el in article.findall(".//AbstractText"):
+                    txt = "".join(abs_el.itertext()).strip()
+                    if txt:
+                        label = abs_el.attrib.get("Label")
+                        parts.append(f"{label}: {txt}" if label else txt)
+
+                if parts:
+                    out[pmid] = " ".join(parts)
+
+        except Exception as exc:
+            print(f"Erreur récupération abstracts PubMed: {exc}")
+
+        time.sleep(0.12 if NCBI_API_KEY else 0.34)
+
+    return out
+
+
+def doi_from_summary(summary: Dict[str, Any]) -> str:
+    for item in summary.get("articleids", []) or []:
+        if item.get("idtype") == "doi" and item.get("value"):
+            return item["value"]
+    return ""
+
+
+def crossref_citation_count(doi: str) -> int:
+    if not doi:
+        return 0
+
+    url = "https://api.crossref.org/works/" + urllib.parse.quote(doi)
+
+    try:
+        data = http_json(url, timeout=15)
+        return int(data.get("message", {}).get("is-referenced-by-count") or 0)
+    except Exception:
+        return 0
+
 def update_publications() -> None:
     start, end = previous_week_range()
     print(f"Recherche des publications du {start.isoformat()} au {end.isoformat()}")
@@ -371,6 +446,7 @@ def update_publications() -> None:
 
     summaries = pubmed_summary(pmids)
     semantic = semantic_batch_by_pmids(pmids)
+    abstracts = pubmed_abstracts(pmids)
 
     items: List[BiblioItem] = []
 
@@ -384,7 +460,12 @@ def update_publications() -> None:
         sem = semantic.get(str(pmid))
 
         citation_count = int((sem or {}).get("citationCount") or 0)
-        abstract = (sem or {}).get("abstract") or ""
+
+if citation_count == 0:
+    doi = doi_from_summary(summary)
+    citation_count = crossref_citation_count(doi)
+
+abstract = (sem or {}).get("abstract") or abstracts.get(str(pmid), "")
         venue = (sem or {}).get("venue") or summary.get("source") or "PubMed"
         pub_date = (sem or {}).get("publicationDate") or pubdate_from_summary(summary)
 
