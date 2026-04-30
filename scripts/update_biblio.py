@@ -461,11 +461,12 @@ def update_publications() -> None:
 
         citation_count = int((sem or {}).get("citationCount") or 0)
 
-if citation_count == 0:
-    doi = doi_from_summary(summary)
-    citation_count = crossref_citation_count(doi)
+        if citation_count == 0:
+            doi = doi_from_summary(summary)
+            citation_count = crossref_citation_count(doi)
 
-abstract = (sem or {}).get("abstract") or abstracts.get(str(pmid), "")
+        abstract = (sem or {}).get("abstract") or abstracts.get(str(pmid), "")
+
         venue = (sem or {}).get("venue") or summary.get("source") or "PubMed"
         pub_date = (sem or {}).get("publicationDate") or pubdate_from_summary(summary)
 
@@ -499,8 +500,6 @@ abstract = (sem or {}).get("abstract") or abstracts.get(str(pmid), "")
     )
 
     print(f"{len(top10)} publications écrites dans {PUBLICATIONS_PATH}")
-
-
 
 def pubmed_guidelines(start: date, end: date) -> List[BiblioItem]:
     terms = [
