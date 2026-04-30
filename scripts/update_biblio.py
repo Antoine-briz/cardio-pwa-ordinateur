@@ -180,23 +180,30 @@ def clean_title(title: str) -> str:
     return re.sub(r"\s+", " ", (title or "").strip())
 
 
+def translate_to_french(text: str) -> str:
+    try:
+        url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=fr&dt=t&q=" + urllib.parse.quote(text)
+        data = http_json(url, timeout=10)
+        translated = "".join([x[0] for x in data[0]])
+        return translated
+    except Exception:
+        return text  # fallback en anglais si erreur
+
 def one_sentence(text: str, fallback: str) -> str:
     text = re.sub(r"\s+", " ", (text or "").strip())
     if not text:
         return fallback
 
-    # Découpe en phrases
     sentences = re.split(r"(?<=[.!?])\s+", text)
 
-    # On garde les 2 premières phrases utiles
     selected = []
 
     for s in sentences:
         s_clean = s.strip()
 
-        # Filtrer phrases non informatives
         if len(s_clean) < 40:
             continue
+
         if any(x in s_clean.lower() for x in [
             "copyright",
             "all rights reserved",
@@ -215,20 +222,14 @@ def one_sentence(text: str, fallback: str) -> str:
 
     result = " ".join(selected)
 
+    # Traduction en français
+    result_fr = translate_to_french(result)
+
     # Limite longueur
-    if len(result) > 320:
-        result = result[:317].rsplit(" ", 1)[0] + "..."
+    if len(result_fr) > 320:
+        result_fr = result_fr[:317].rsplit(" ", 1)[0] + "..."
 
-    return result
-
-def translate_to_french(text: str) -> str:
-    try:
-        url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=fr&dt=t&q=" + urllib.parse.quote(text)
-        data = http_json(url, timeout=10)
-        translated = "".join([x[0] for x in data[0]])
-        return translated
-    except Exception:
-        return text  # fallback en anglais si erreur
+    return result_fr
 
 
 def pubdate_from_summary(summary: Dict[str, Any]) -> str:
