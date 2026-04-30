@@ -1,0 +1,52 @@
+name: Update SARIC bibliography
+
+on:
+  schedule:
+    # Tous les lundis à 06:10 UTC.
+    # Publications : chaque lundi.
+    # Recommandations : le script les met à jour uniquement si c'est le 1er lundi du mois.
+    - cron: "10 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-biblio:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run bibliography updater
+        env:
+          # Recommandé : ajoute ton email dans Settings > Secrets and variables > Actions
+          # Nom du secret : NCBI_EMAIL
+          NCBI_EMAIL: ${{ secrets.NCBI_EMAIL }}
+
+          # Optionnel mais conseillé si tu en as une :
+          # NCBI_API_KEY augmente les quotas NCBI.
+          NCBI_API_KEY: ${{ secrets.NCBI_API_KEY }}
+
+          # Optionnel mais conseillé :
+          # Semantic Scholar API key augmente la stabilité/les quotas.
+          SEMANTIC_SCHOLAR_API_KEY: ${{ secrets.SEMANTIC_SCHOLAR_API_KEY }}
+        run: python scripts/update_biblio.py
+
+      - name: Commit updated JSON files
+        run: |
+          git config user.name "saric-biblio-bot"
+          git config user.email "saric-biblio-bot@users.noreply.github.com"
+          git add data/publications.json data/recommandations.json
+          if git diff --cached --quiet; then
+            echo "No bibliography changes to commit."
+          else
+            git commit -m "Update bibliography JSON"
+            git push
+          fi
