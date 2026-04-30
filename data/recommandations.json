@@ -1,0 +1,30 @@
+[
+  {
+    "source": "SFAR",
+    "date": "2026-04-01",
+    "titre": "Exemple à remplacer — Recommandation formalisée d’experts",
+    "description": "Remplace cette ligne par une recommandation récente validée dans ton domaine.",
+    "lien": "https://sfar.org"
+  },
+  {
+    "source": "SRLF",
+    "date": "2026-04-01",
+    "titre": "Exemple à remplacer — Recommandation en réanimation",
+    "description": "Remplace cette ligne par une recommandation SRLF récente.",
+    "lien": "https://www.srlf.org"
+  },
+  {
+    "source": "SPILF",
+    "date": "2026-04-01",
+    "titre": "Exemple à remplacer — Recommandation en infectiologie",
+    "description": "Remplace cette ligne par une recommandation SPILF récente.",
+    "lien": "https://www.infectiologie.com"
+  },
+  {
+    "source": "ESC",
+    "date": "2026-04-01",
+    "titre": "Exemple à remplacer — Guideline ESC",
+    "description": "Remplace cette ligne par une recommandation ESC récente.",
+    "lien": "https://www.escardio.org/Guidelines"
+  }
+]
