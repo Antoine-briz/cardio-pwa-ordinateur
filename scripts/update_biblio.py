@@ -124,9 +124,10 @@ class BiblioItem:
     lien: str
     citation_count: int = 0
     score: float = 0.0
+    domaine: str = ""
 
     def as_json(self) -> Dict[str, str]:
-    return {
+      return {
         "source": self.source,
         "date": self.date,
         "titre": self.titre,
