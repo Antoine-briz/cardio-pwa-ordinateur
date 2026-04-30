@@ -523,7 +523,7 @@ def update_recommandations() -> None:
             seen.add(key)
             unique.append(item)
 
-    unique = unique[:10] + society_source_links()
+    unique = unique[:10]
 
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     RECOMMANDATIONS_PATH.write_text(
@@ -535,12 +535,10 @@ def update_recommandations() -> None:
 
 def main() -> None:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
-    update_publications()
 
-    if is_first_monday():
-        update_recommandations()
-    else:
-        print("Pas le premier lundi du mois : recommandations.json conservé.")
+    # Tous les lundis : publications + recommandations
+    update_publications()
+    update_recommandations()
 
 
 if __name__ == "__main__":
