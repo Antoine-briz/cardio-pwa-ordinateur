@@ -26687,13 +26687,16 @@ async function loadBiblioJsonTable(url, tbodyId) {
 
     tbody.innerHTML = items.map(item => `
       <tr>
-        <td>${escapeHtml(item.source || "")}</td>
+        <td>${biblioSourceHtml(item.source || "")}</td>
         <td>${escapeHtml(item.date || "")}</td>
         <td>${escapeHtml(item.titre || "")}</td>
         <td>${escapeHtml(item.description || "")}</td>
         <td>
           ${item.lien
-            ? `<a href="${escapeHtml(item.lien)}" target="_blank" rel="noopener noreferrer">Ouvrir</a>`
+            ? `<a class="biblio-open-link" href="${escapeHtml(item.lien)}" target="_blank" rel="noopener noreferrer">
+  <span class="biblio-open-icon">📄</span>
+  <span>Ouvrir</span>
+</a>`
             : ""}
         </td>
       </tr>
@@ -26711,6 +26714,47 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function biblioSourceHtml(source) {
+  const s = String(source || "");
+  const key = s.toLowerCase();
+
+  const logoMap = [
+    ["british journal of anaesthesia", "img/journals/bja.png"],
+    ["bja", "img/journals/bja.png"],
+    ["anesthesiology", "img/journals/anesthesiology.png"],
+    ["anesthesia", "img/journals/anesthesia_analgesia.png"],
+    ["jcva", "img/journals/jcva.png"],
+    ["intensive care medicine", "img/journals/intensive_care_medicine.png"],
+    ["critical care medicine", "img/journals/critical_care_medicine.png"],
+    ["critical care", "img/journals/critical_care.png"],
+    ["annals of intensive care", "img/journals/annals_intensive_care.png"],
+    ["circulation", "img/journals/circulation.png"],
+    ["european heart journal", "img/journals/ehj.png"],
+    ["jacc", "img/journals/jacc.png"],
+    ["lancet infectious", "img/journals/laninf.png"],
+    ["clinical infectious diseases", "img/journals/cid.png"],
+    ["journal of infection", "img/journals/journal_of_infection.png"],
+    ["jtcvs", "img/journals/jtcvs.png"],
+    ["ejcts", "img/journals/ejcts.png"],
+    ["annals of thoracic surgery", "img/journals/annals_thoracic_surgery.png"],
+    ["sfar", "img/journals/sfar.png"],
+    ["srlf", "img/journals/srlf.png"],
+    ["spilf", "img/journals/spilf.png"],
+    ["esc", "img/journals/esc.png"],
+    ["eacts", "img/journals/eacts.png"]
+  ];
+
+  const found = logoMap.find(([needle]) => key.includes(needle));
+  const logo = found ? found[1] : "img/journals/pubmed.png";
+
+  return `
+    <div class="biblio-source-cell">
+      <img class="biblio-source-logo" src="${logo}" alt="">
+      <span>${escapeHtml(s)}</span>
+    </div>
+  `;
 }
 
 /* =========================
