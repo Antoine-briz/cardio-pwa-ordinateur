@@ -26670,6 +26670,49 @@ function renderBibliographie() {
   loadBiblioJsonTable("data/publications.json", "biblio-publications-body");
 }
 
+async function loadBiblioJsonTable(url, tbodyId) {
+  const tbody = document.getElementById(tbodyId);
+  if (!tbody) return;
+
+  try {
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) throw new Error("JSON introuvable");
+
+    const items = await res.json();
+
+    if (!Array.isArray(items) || items.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5">Aucune donnée disponible.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = items.map(item => `
+      <tr>
+        <td>${escapeHtml(item.source || "")}</td>
+        <td>${escapeHtml(item.date || "")}</td>
+        <td>${escapeHtml(item.titre || "")}</td>
+        <td>${escapeHtml(item.description || "")}</td>
+        <td>
+          ${item.lien
+            ? `<a href="${escapeHtml(item.lien)}" target="_blank" rel="noopener noreferrer">Ouvrir</a>`
+            : ""}
+        </td>
+      </tr>
+    `).join("");
+
+  } catch (err) {
+    tbody.innerHTML = `<tr><td colspan="5">Impossible de charger les données.</td></tr>`;
+  }
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
 /* =========================
    PAGES BIBLIOGRAPHIE
    (UI IDENTIQUE à Enseignement, seule différence = titre)
