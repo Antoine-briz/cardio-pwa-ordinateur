@@ -184,11 +184,42 @@ def one_sentence(text: str, fallback: str) -> str:
     text = re.sub(r"\s+", " ", (text or "").strip())
     if not text:
         return fallback
-    parts = re.split(r"(?<=[.!?])\s+", text)
-    sent = parts[0].strip() if parts else text
-    if len(sent) > 260:
-        sent = sent[:257].rsplit(" ", 1)[0] + "..."
-    return sent
+
+    # Découpe en phrases
+    sentences = re.split(r"(?<=[.!?])\s+", text)
+
+    # On garde les 2 premières phrases utiles
+    selected = []
+
+    for s in sentences:
+        s_clean = s.strip()
+
+        # Filtrer phrases non informatives
+        if len(s_clean) < 40:
+            continue
+        if any(x in s_clean.lower() for x in [
+            "copyright",
+            "all rights reserved",
+            "doi:",
+            "trial registration"
+        ]):
+            continue
+
+        selected.append(s_clean)
+
+        if len(selected) == 2:
+            break
+
+    if not selected:
+        return fallback
+
+    result = " ".join(selected)
+
+    # Limite longueur
+    if len(result) > 320:
+        result = result[:317].rsplit(" ", 1)[0] + "..."
+
+    return result
 
 
 def pubdate_from_summary(summary: Dict[str, Any]) -> str:
