@@ -26463,10 +26463,10 @@ function renderBibliographie() {
               <thead>
                 <tr>
                   <th>Source</th>
-                  <th>Date</th>
-                  <th>Titre</th>
-                  <th>Description</th>
-                  <th>Lien</th>
+<th>Date</th>
+<th>Titre</th>
+<th>Description</th>
+<th>Citations</th>
                 </tr>
               </thead>
               <tbody id="biblio-recommandations-body">
@@ -26483,10 +26483,10 @@ function renderBibliographie() {
               <thead>
                 <tr>
                   <th>Source</th>
-                  <th>Date</th>
-                  <th>Titre</th>
-                  <th>Description</th>
-                  <th>Lien</th>
+<th>Date</th>
+<th>Titre</th>
+<th>Description</th>
+<th>Citations</th>
                 </tr>
               </thead>
               <tbody id="biblio-publications-body">
@@ -26686,21 +26686,17 @@ async function loadBiblioJsonTable(url, tbodyId) {
     }
 
     tbody.innerHTML = items.map(item => `
-      <tr>
-        <td>${biblioSourceHtml(item.source || "")}</td>
+      <tr class="biblio-click-row"
+          onclick="window.open('${escapeHtml(item.lien || "")}', '_blank', 'noopener,noreferrer')">
+        <td>${biblioSourceHtml(item.source || "", item.domaine || "")}</td>
         <td>${escapeHtml(item.date || "")}</td>
         <td>
-  ${biblioBadgeHtml(item)}
-  <div class="biblio-title-cell">${escapeHtml(item.titre || "")}</div>
-</td>
+          ${biblioBadgeHtml(item)}
+          <div class="biblio-title-cell">${escapeHtml(item.titre || "")}</div>
+        </td>
         <td>${escapeHtml(item.description || "")}</td>
-        <td>
-          ${item.lien
-            ? `<a class="biblio-open-link" href="${escapeHtml(item.lien)}" target="_blank" rel="noopener noreferrer">
-  <span class="biblio-open-icon">📄</span>
-  <span>Ouvrir</span>
-</a>`
-            : ""}
+        <td class="biblio-citation-cell">
+          ${escapeHtml(item.citations ?? item.citation_count ?? "0")}
         </td>
       </tr>
     `).join("");
@@ -26739,8 +26735,9 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
-function biblioSourceHtml(source) {
+function biblioSourceHtml(source, domaine = "") {
   const s = String(source || "");
+  const d = String(domaine || "");
   const key = s.toLowerCase();
 
   const logoMap = [
@@ -26752,21 +26749,18 @@ function biblioSourceHtml(source) {
     ["intensive care medicine", "img/journals/intensive_care_medicine.png"],
     ["critical care medicine", "img/journals/critical_care_medicine.png"],
     ["critical care", "img/journals/critical_care.png"],
-    ["annals of intensive care", "img/journals/annals_intensive_care.png"],
     ["circulation", "img/journals/circulation.png"],
     ["european heart journal", "img/journals/ehj.png"],
     ["jacc", "img/journals/jacc.png"],
     ["lancet infectious", "img/journals/laninf.png"],
     ["clinical infectious diseases", "img/journals/cid.png"],
-    ["journal of infection", "img/journals/journal_of_infection.png"],
     ["jtcvs", "img/journals/jtcvs.png"],
     ["ejcts", "img/journals/ejcts.png"],
     ["annals of thoracic surgery", "img/journals/annals_thoracic_surgery.png"],
     ["sfar", "img/journals/sfar.png"],
     ["srlf", "img/journals/srlf.png"],
     ["spilf", "img/journals/spilf.png"],
-    ["esc", "img/journals/esc.png"],
-    ["eacts", "img/journals/eacts.png"]
+    ["esc", "img/journals/esc.png"]
   ];
 
   const found = logoMap.find(([needle]) => key.includes(needle));
@@ -26775,9 +26769,24 @@ function biblioSourceHtml(source) {
   return `
     <div class="biblio-source-cell">
       <img class="biblio-source-logo" src="${logo}" alt="">
-      <span>${escapeHtml(s)}</span>
+      <div>
+        <div>${escapeHtml(s)}</div>
+        ${d ? `<span class="biblio-domain-pill ${biblioDomainClass(d)}">${escapeHtml(d)}</span>` : ""}
+      </div>
     </div>
   `;
+}
+
+function biblioDomainClass(domaine) {
+  const d = String(domaine || "").toLowerCase();
+
+  if (d.includes("réanimation")) return "domain-rea";
+  if (d.includes("anesth")) return "domain-anesth";
+  if (d.includes("cardiologie")) return "domain-cardio";
+  if (d.includes("chirurgie")) return "domain-chir";
+  if (d.includes("infect")) return "domain-infectio";
+
+  return "domain-other";
 }
 
 /* =========================
