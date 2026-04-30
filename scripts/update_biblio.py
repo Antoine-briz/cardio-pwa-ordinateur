@@ -197,7 +197,6 @@ def one_sentence(text: str, fallback: str) -> str:
     sentences = re.split(r"(?<=[.!?])\s+", text)
 
     selected = []
-
     for s in sentences:
         s_clean = s.strip()
 
@@ -222,12 +221,11 @@ def one_sentence(text: str, fallback: str) -> str:
 
     result = " ".join(selected)
 
-    # Traduction en français
+    # Traduction simple en français
     result_fr = translate_to_french(result)
 
-    # Limite longueur
-    if len(result_fr) > 320:
-        result_fr = result_fr[:317].rsplit(" ", 1)[0] + "..."
+    if len(result_fr) > 360:
+        result_fr = result_fr[:357].rsplit(" ", 1)[0] + "..."
 
     return result_fr
 
