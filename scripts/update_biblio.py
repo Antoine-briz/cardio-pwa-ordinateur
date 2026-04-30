@@ -126,13 +126,15 @@ class BiblioItem:
     score: float = 0.0
 
     def as_json(self) -> Dict[str, str]:
-        return {
-            "source": self.source,
-            "date": self.date,
-            "titre": self.titre,
-            "description": self.description,
-            "lien": self.lien,
-        }
+    return {
+        "source": self.source,
+        "date": self.date,
+        "titre": self.titre,
+        "description": self.description,
+        "lien": self.lien,
+        "domaine": self.domaine,
+        "citations": str(self.citation_count),
+    }
 
 
 def http_json(
@@ -340,22 +342,29 @@ def article_url(pmid: str, sem: Optional[Dict[str, Any]]) -> str:
         return sem["url"]
     return f"https://pubmed.ncbi.nlm.nih.gov/{pmid}/"
 
-
 def update_publications() -> None:
     start, end = previous_week_range()
     print(f"Recherche des publications du {start.isoformat()} au {end.isoformat()}")
 
     pmids: List[str] = []
     domain_hits: Dict[str, int] = {}
+    pmid_domains: Dict[str, str] = {}
 
     for domain, terms in DOMAINS.items():
         query = " OR ".join(f'"{t}"' for t in terms)
         ids = pubmed_search(query, start, end, retmax=PUBMED_RETMAX_PER_DOMAIN)
+
         domain_hits[domain] = len(ids)
+
+        for pmid in ids:
+            if pmid not in pmid_domains:
+                pmid_domains[pmid] = domain
+
         pmids.extend(ids)
         time.sleep(0.12 if NCBI_API_KEY else 0.34)
 
     pmids = list(dict.fromkeys(pmids))[:MAX_PMIDS_TOTAL]
+
     print(f"Articles PubMed uniques retenus avant enrichissement : {len(pmids)}")
     print(f"Répartition par domaine : {domain_hits}")
 
@@ -363,13 +372,16 @@ def update_publications() -> None:
     semantic = semantic_batch_by_pmids(pmids)
 
     items: List[BiblioItem] = []
+
     for pmid in pmids:
         summary = summaries.get(str(pmid), {})
         title = clean_title(summary.get("title", ""))
+
         if not title:
             continue
 
         sem = semantic.get(str(pmid))
+
         citation_count = int((sem or {}).get("citationCount") or 0)
         abstract = (sem or {}).get("abstract") or ""
         venue = (sem or {}).get("venue") or summary.get("source") or "PubMed"
@@ -388,16 +400,24 @@ def update_publications() -> None:
             lien=article_url(pmid, sem),
             citation_count=citation_count,
             score=score,
+            domaine=pmid_domains.get(str(pmid), ""),
         ))
 
-    top10 = sorted(items, key=lambda x: (x.citation_count, x.score), reverse=True)[:10]
+    top10 = sorted(
+        items,
+        key=lambda x: (x.citation_count, x.score),
+        reverse=True
+    )[:10]
 
     DATA_DIR.mkdir(parents=True, exist_ok=True)
+
     PUBLICATIONS_PATH.write_text(
         json.dumps([x.as_json() for x in top10], ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
+
     print(f"{len(top10)} publications écrites dans {PUBLICATIONS_PATH}")
+
 
 
 def pubmed_guidelines(start: date, end: date) -> List[BiblioItem]:
