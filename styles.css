@@ -13592,3 +13592,28 @@ body.theme-light .saric-popup-box input[type="checkbox"],
     display: none !important;
   }
 }
+
+/* ============================================================
+   BIBLIO DYNAMIQUE
+   ============================================================ */
+
+/* Bibliographie dynamique */
+.biblio-live-grid {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.biblio-live-table th {
+  font-size: 0.85rem;
+}
+
+.biblio-live-table td {
+  font-size: 0.82rem;
+  line-height: 1.3;
+}
+
+.biblio-live-table a {
+  color: #0b3c6d;
+  font-weight: 700;
+}
