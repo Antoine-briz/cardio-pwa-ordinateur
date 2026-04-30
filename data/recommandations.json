@@ -1,30 +1,72 @@
 [
   {
-    "source": "SFAR",
-    "date": "2026-04-01",
-    "titre": "Exemple à remplacer — Recommandation formalisée d’experts",
-    "description": "Remplace cette ligne par une recommandation récente validée dans ton domaine.",
-    "lien": "https://sfar.org"
+    "source": "Catheter Cardiovasc Interv",
+    "date": "2026 Apr 30",
+    "titre": "From Syncope to Shock: Emergency PCI Case Report in Multivessel Acute Coronary Occlusion.",
+    "description": "Recommandation, guideline ou consensus récent dans un domaine SARIC.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42059072/"
   },
   {
-    "source": "SRLF",
-    "date": "2026-04-01",
-    "titre": "Exemple à remplacer — Recommandation en réanimation",
-    "description": "Remplace cette ligne par une recommandation SRLF récente.",
-    "lien": "https://www.srlf.org"
+    "source": "Afr J Emerg Med",
+    "date": "2026 Apr 22",
+    "titre": "Junior doctors' interpretation of the electrocardiogram: a cross-sectional survey in South African hospitals.",
+    "description": "Recommandation, guideline ou consensus récent dans un domaine SARIC.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42059010/"
   },
   {
-    "source": "SPILF",
-    "date": "2026-04-01",
-    "titre": "Exemple à remplacer — Recommandation en infectiologie",
-    "description": "Remplace cette ligne par une recommandation SPILF récente.",
-    "lien": "https://www.infectiologie.com"
+    "source": "JRSM Cardiovasc Dis",
+    "date": "2026 Apr 24",
+    "titre": "Clinical value of non-electrocardiogram-gated computed tomography angiography for planning transcatheter aortic valve implantation: A retrospective single-centre study.",
+    "description": "Recommandation, guideline ou consensus récent dans un domaine SARIC.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42058950/"
   },
   {
-    "source": "ESC",
-    "date": "2026-04-01",
-    "titre": "Exemple à remplacer — Guideline ESC",
-    "description": "Remplace cette ligne par une recommandation ESC récente.",
-    "lien": "https://www.escardio.org/Guidelines"
+    "source": "Resusc Plus",
+    "date": "2026 Mar 27",
+    "titre": "Mild hypothermia alleviates post-resuscitation cerebral injury in rats via modulating the balance of the renin-angiotensin system.",
+    "description": "Recommandation, guideline ou consensus récent dans un domaine SARIC.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42058879/"
+  },
+  {
+    "source": "Resusc Plus",
+    "date": "2026 Apr 1",
+    "titre": "Mechanical versus manual chest compression in cardiac arrest: a systematic review.",
+    "description": "Recommandation, guideline ou consensus récent dans un domaine SARIC.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42058875/"
+  },
+  {
+    "source": "Interv Pain Med",
+    "date": "2026 Apr 21",
+    "titre": "Scar neuroma infiltration to treat post-surgical first bite syndrome.",
+    "description": "Recommandation, guideline ou consensus récent dans un domaine SARIC.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42058842/"
+  },
+  {
+    "source": "Front Reprod Health",
+    "date": "2026 Apr 14",
+    "titre": "Case Report: Transrectal ultrasound in adolescent Müllerian anomalies - bridging the gap between conflicting international guidance and real-world clinical pragmatism.",
+    "description": "Recommandation, guideline ou consensus récent dans un domaine SARIC.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42058831/"
+  },
+  {
+    "source": "Int J Microbiol",
+    "date": "2026 Apr 28",
+    "titre": "Brukina in Focus: A Narrative Review on Metagenomic Approaches to Fermentation and Food Safety.",
+    "description": "Recommandation, guideline ou consensus récent dans un domaine SARIC.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42058649/"
+  },
+  {
+    "source": "Int J Community Based Nurs Midwifery",
+    "date": "2026 Apr 1",
+    "titre": "Impact of Self-Management Education on Self-care Behaviors, Quality of Life and, Readmission in Heart Failure Patients: A Randomized Controlled Trial.",
+    "description": "Recommandation, guideline ou consensus récent dans un domaine SARIC.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42058545/"
+  },
+  {
+    "source": "Wellcome Open Res",
+    "date": "2026 Feb 11",
+    "titre": "Acrobatics for Antibiotics: Exploring circus-based engagement on community practices surrounding antimicrobial resistance in Cambodia.",
+    "description": "Recommandation, guideline ou consensus récent dans un domaine SARIC.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42058462/"
   }
 ]
