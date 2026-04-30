@@ -14050,3 +14050,24 @@ body.theme-light .saric-popup-box input[type="checkbox"],
     max-height: 520px !important;
   }
 }
+
+/* ============================================================
+   FIX FINAL BIBLIO - texte blanc dans l'en-tête bleu
+   ============================================================ */
+
+body .biblio-live-table thead tr th,
+body .biblio-live-table thead tr th *,
+body .biblio-table.biblio-live-table thead tr th,
+body .biblio-table.biblio-live-table thead tr th *,
+body.theme-light .biblio-live-table thead tr th,
+body.theme-light .biblio-live-table thead tr th *,
+body.theme-light .biblio-table.biblio-live-table thead tr th,
+body.theme-light .biblio-table.biblio-live-table thead tr th * {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+body .biblio-live-table thead tr th,
+body.theme-light .biblio-live-table thead tr th {
+  background: #0b3c6d !important;
+}
