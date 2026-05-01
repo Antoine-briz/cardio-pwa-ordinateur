@@ -699,42 +699,135 @@ def society_source_links() -> List[BiblioItem]:
                    "https://www.eacts.org/resources/guidelines/"),
     ]
 
+def html_text_snippet(html: str, max_len: int = 220) -> str:
+    text = re.sub(r"<script.*?</script>", " ", html, flags=re.S | re.I)
+    text = re.sub(r"<style.*?</style>", " ", text, flags=re.S | re.I)
+    text = re.sub(r"<[^>]+>", " ", text)
+    text = re.sub(r"\s+", " ", text).strip()
+    return text[:max_len].rsplit(" ", 1)[0] + "..." if len(text) > max_len else text
+
+
+def fetch_html(url: str) -> str:
+    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        return resp.read().decode("utf-8", errors="replace")
+
+
+def latest_link_from_page(source: str, page_url: str, keywords: List[str]) -> Optional[BiblioItem]:
+    try:
+        html = fetch_html(page_url)
+    except Exception as exc:
+        print(f"{source}: impossible de lire {page_url}: {exc}")
+        return BiblioItem(
+            source=source,
+            date="À vérifier",
+            titre=f"Page officielle {source}",
+            description=f"Impossible de récupérer automatiquement la dernière recommandation. Ouvrir la page officielle.",
+            lien=page_url,
+            domaine="Recommandations",
+        )
+
+    links = re.findall(
+        r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>',
+        html,
+        flags=re.I | re.S
+    )
+
+    candidates = []
+
+    for href, label_html in links:
+        label = html_text_snippet(label_html, 180)
+        low = f"{label} {href}".lower()
+
+        if not label or len(label) < 8:
+            continue
+
+        if any(k.lower() in low for k in keywords):
+            full_url = urllib.parse.urljoin(page_url, href)
+            candidates.append((label, full_url))
+
+    if not candidates:
+        return BiblioItem(
+            source=source,
+            date="À vérifier",
+            titre=f"Page officielle {source}",
+            description="Aucune recommandation individuelle détectée automatiquement. Ouvrir la page officielle.",
+            lien=page_url,
+            domaine="Recommandations",
+        )
+
+    title, link = candidates[0]
+
+    return BiblioItem(
+        source=source,
+        date="Dernière détectée",
+        titre=title,
+        description=f"Dernière recommandation ou guideline détectée automatiquement sur le site officiel {source}.",
+        lien=link,
+        domaine="Recommandations",
+    )
+
+
+def fetch_latest_sfar_reco() -> Optional[BiblioItem]:
+    return latest_link_from_page(
+        "SFAR",
+        "https://sfar.org/recommandations/",
+        ["recommandation", "rfe", "référentiel", "consensus", "prise en charge"]
+    )
+
+
+def fetch_latest_srlf_reco() -> Optional[BiblioItem]:
+    return latest_link_from_page(
+        "SRLF",
+        "https://www.srlf.org/categorie/recos-rfe-epp",
+        ["recommandation", "rfe", "consensus", "référentiel", "conférence"]
+    )
+
+
+def fetch_latest_spilf_reco() -> Optional[BiblioItem]:
+    return latest_link_from_page(
+        "SPILF",
+        "https://www.infectiologie.com/fr/recommandations.html",
+        ["recommandation", "argumentaire", "fiche pratique", "consensus", "spilf"]
+    )
+
+
+def fetch_latest_esc_guideline() -> Optional[BiblioItem]:
+    return latest_link_from_page(
+        "ESC",
+        "https://www.escardio.org/guidelines/clinical-practice-guidelines/",
+        ["guideline", "guidelines", "clinical practice", "2025", "2026"]
+    )
+
+
+def fetch_latest_eacts_guideline() -> Optional[BiblioItem]:
+    return latest_link_from_page(
+        "EACTS",
+        "https://www.eacts.org/clinical-practice-guidelines/",
+        ["guideline", "guidelines", "recommendations", "statement", "2025", "2026"]
+    )
 
 def update_recommandations() -> None:
-    today = date.today()
-    start = today - timedelta(days=183)
-    end = today
+    print("Recherche des dernières recommandations sur les sites officiels")
 
-    print(f"Recherche recommandations du {start.isoformat()} au {end.isoformat()}")
+    items = [
+        fetch_latest_sfar_reco(),
+        fetch_latest_srlf_reco(),
+        fetch_latest_spilf_reco(),
+        fetch_latest_esc_guideline(),
+        fetch_latest_eacts_guideline(),
+    ]
 
-    items = []
-    try:
-        items.extend(pubmed_guidelines(start, end))
-    except Exception as exc:
-        print(f"PubMed guidelines failed: {exc}")
-
-    try:
-        items.extend(crossref_guidelines(start, end))
-    except Exception as exc:
-        print(f"Crossref guidelines failed: {exc}")
-
-    seen = set()
-    unique: List[BiblioItem] = []
-    for item in items:
-        key = clean_title(item.titre).lower()
-        if key and key not in seen:
-            seen.add(key)
-            unique.append(item)
-
-    unique = unique[:10]
+    items = [item for item in items if item is not None]
 
     DATA_DIR.mkdir(parents=True, exist_ok=True)
+
     RECOMMANDATIONS_PATH.write_text(
-        json.dumps([x.as_json() for x in unique], ensure_ascii=False, indent=2),
+        json.dumps([x.as_json() for x in items], ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
-    print(f"{len(unique)} recommandations écrites dans {RECOMMANDATIONS_PATH}")
 
+    print(f"{len(items)} recommandations officielles écrites dans {RECOMMANDATIONS_PATH}")
 
 def main() -> None:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
