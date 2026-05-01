@@ -26466,7 +26466,6 @@ function renderBibliographie() {
 <th>Date</th>
 <th>Titre</th>
 <th>Description</th>
-<th>Citations</th>
                 </tr>
               </thead>
               <tbody id="biblio-recommandations-body">
@@ -26486,7 +26485,6 @@ function renderBibliographie() {
 <th>Date</th>
 <th>Titre</th>
 <th>Description</th>
-<th>Citations</th>
                 </tr>
               </thead>
               <tbody id="biblio-publications-body">
