@@ -193,21 +193,24 @@ def translate_to_french(text: str) -> str:
     except Exception:
         return text  # fallback en anglais si erreur
 
-def one_sentence(text: str, fallback: str) -> str:
+def smart_abstract_summary(text: str, fallback: str) -> str:
     text = re.sub(r"\s+", " ", (text or "").strip())
     if not text:
         return fallback
 
     sentences = re.split(r"(?<=[.!?])\s+", text)
 
-    selected = []
+    good_sentences = []
+
     for s in sentences:
         s_clean = s.strip()
+        low = s_clean.lower()
 
         if len(s_clean) < 40:
             continue
 
-        if any(x in s_clean.lower() for x in [
+        # ❌ phrases inutiles
+        if any(x in low for x in [
             "copyright",
             "all rights reserved",
             "doi:",
@@ -215,21 +218,35 @@ def one_sentence(text: str, fallback: str) -> str:
         ]):
             continue
 
-        selected.append(s_clean)
+        # ✅ phrases intéressantes
+        score = 0
 
-        if len(selected) == 2:
-            break
+        if any(x in low for x in ["randomized", "trial", "cohort", "study", "analysis"]):
+            score += 2
 
-    if not selected:
+        if any(x in low for x in ["result", "outcome", "associated", "significant", "increase", "decrease"]):
+            score += 3
+
+        if any(x in low for x in ["objective", "aim", "background"]):
+            score += 1
+
+        good_sentences.append((score, s_clean))
+
+    if not good_sentences:
         return fallback
+
+    # 🔥 tri des meilleures phrases
+    good_sentences.sort(reverse=True)
+
+    selected = [s for _, s in good_sentences[:2]]
 
     result = " ".join(selected)
 
-    # Traduction simple en français
+    # 🇫🇷 traduction
     result_fr = translate_to_french(result)
 
-    if len(result_fr) > 360:
-        result_fr = result_fr[:357].rsplit(" ", 1)[0] + "..."
+    if len(result_fr) > 320:
+        result_fr = result_fr[:317].rsplit(" ", 1)[0] + "..."
 
     return result_fr
 
@@ -563,9 +580,9 @@ def update_publications() -> None:
             source=venue,
             date=pub_date,
             titre=title,
-            description=one_sentence(
-                abstract,
-                "Article publié la semaine écoulée dans un domaine SARIC, indexé dans PubMed."
+            description=smart_abstract_summary(
+              abstract,
+              "Résumé automatique indisponible pour cet article."
             ),
             lien=article_url(pmid, sem),
             citation_count=citation_count,
