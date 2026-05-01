@@ -26469,7 +26469,7 @@ function renderBibliographie() {
                 </tr>
               </thead>
               <tbody id="biblio-recommandations-body">
-                <tr><td colspan="5">Chargement...</td></tr>
+                <tr><td colspan="4">Chargement...</td></tr>
               </tbody>
             </table>
           </div>
@@ -26488,7 +26488,7 @@ function renderBibliographie() {
                 </tr>
               </thead>
               <tbody id="biblio-publications-body">
-                <tr><td colspan="5">Chargement...</td></tr>
+                <tr><td colspan="4">Chargement...</td></tr>
               </tbody>
             </table>
           </div>
@@ -26679,7 +26679,7 @@ async function loadBiblioJsonTable(url, tbodyId) {
     const items = await res.json();
 
     if (!Array.isArray(items) || items.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="5">Aucune donnée disponible.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="4">Aucune donnée disponible.</td></tr>`;
       return;
     }
 
@@ -26701,7 +26701,7 @@ async function loadBiblioJsonTable(url, tbodyId) {
 `).join("");
 
   } catch (err) {
-    tbody.innerHTML = `<tr><td colspan="5">Impossible de charger les données.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="4">Impossible de charger les données.</td></tr>`;
   }
 }
 
