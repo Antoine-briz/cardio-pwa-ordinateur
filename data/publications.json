@@ -3,55 +3,51 @@
     "source": "Open Forum Infect Dis",
     "date": "2026 Apr 24",
     "titre": "Frailty Increases the Risk and Frequency of Lower Respiratory Tract Infections in Older Adults: A Multicenter Prospective Cohort Study.",
-    "description": "CONTEXTE : Les infections des voies respiratoires inférieures (IVRI) sont une cause majeure de morbidité chez les personnes âgées, mais la stratification du risque basée uniquement sur l'âge chronologique reste insuffisante. La fragilité, reflétant une diminution cumulative de la réserve physiologique, pourrait mieux saisir la susceptibilité aux...",
+    "description": "CONTEXTE : Les infections des voies respiratoires inférieures (IVRI) sont une cause majeure de morbidité chez les personnes âgées, mais la stratification du risque basée uniquement sur l'âge chronologique reste insuffisante. La fragilité, reflétant une diminution cumulative de la réserve physiologique, pourrait mieux rendre compte de la susceptibilité...",
     "lien": "https://pubmed.ncbi.nlm.nih.gov/42057807/",
     "domaine": "Réanimation",
-    "citations": "0"
+    "citations": "0",
+    "score": "80"
+  },
+  {
+    "source": "Am J Emerg Med",
+    "date": "2026 Apr 22",
+    "titre": "Analysis of risk factors for concurrent osteomyelitis in children with septic arthritis: A retrospective cohort study.",
+    "description": "CONTEXTE : La différenciation précoce de l'arthrite septique (AS) avec ostéomyélite (OM) concomitante et de l'AS isolée constitue un défi diagnostique critique en orthopédie pédiatrique. Cette étude visait à identifier les facteurs de risque cliniques et biologiques d'OM concomitante chez les enfants atteints d'AS.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42061203/",
+    "domaine": "Réanimation",
+    "citations": "0",
+    "score": "70"
+  },
+  {
+    "source": "Lancet Reg Health Am",
+    "date": "2026 Apr 20",
+    "titre": "Health care utilization and cost implications of Chile's 2024 nirsevimab strategy for RSV prevention: a counterfactual analysis.",
+    "description": "CONTEXTE : En 2024, le Chili est devenu le premier pays de l'hémisphère Sud à mettre en œuvre une stratégie universelle de vaccination par le nirsevimab contre le virus respiratoire syncytial (VRS). Cette étude évalue l'impact réel sur la santé et la rentabilité du programme, en comparant spécifiquement les cohortes saisonnières (nées en avril-septembre...",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42058447/",
+    "domaine": "Réanimation",
+    "citations": "0",
+    "score": "70"
+  },
+  {
+    "source": "Biochem Biophys Res Commun",
+    "date": "2026 Apr 23",
+    "titre": "Thermal resilience of the archaeal heat shock Protein-14 (sHSP14) dimer: Insights into Nature's molecular design.",
+    "description": "On s’attend à ce que les perturbations thermophysiques affaiblissent la stabilité et l’assemblage des protéines. Pourtant, dans le contexte biologique, les chaperons tels que les protéines de choc thermique (HSP) doivent contrer les effets perturbateurs pour préserver la protéostasie.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42061002/",
+    "domaine": "Réanimation",
+    "citations": "0",
+    "score": "65"
   },
   {
     "source": "J Pain Res",
     "date": "2026 Apr 22",
     "titre": "Continuous Erector Spinae Plane Block versus Thoracic Epidural Analgesia After Thoracotomy: A Randomized Controlled Assessor-Blinded Non-Inferiority Trial.",
-    "description": "OBJECTIF : L'analgésie péridurale thoracique (ATÉ) reste l'étalon-or actuel pour le contrôle de la douleur postopératoire après thoracotomie, mais est associée à des complications et contre-indications importantes. Cette étude a évalué si le bloc plan continu de l'érecteur du rachis (ESPB) fournit une analgésie non inférieure au TEA.",
+    "description": "OBJECTIF : L'analgésie péridurale thoracique (AET) reste l'étalon-or actuel pour le contrôle de la douleur postopératoire après thoracotomie, mais est associée à des complications et contre-indications importantes. Cette étude a évalué si le bloc plan continu de l'érecteur du rachis (ESPB) fournit une analgésie non inférieure au TEA.",
     "lien": "https://pubmed.ncbi.nlm.nih.gov/42051755/",
     "domaine": "Anesthésie",
-    "citations": "0"
-  },
-  {
-    "source": "Am J Cardiol",
-    "date": "2026 Apr 25",
-    "titre": "Comparison of percutaneous Intervention with dRug Coated balloons and drug Eluting stents for de novo coronary artery disease: CIRCE, a systematic review and meta-analysis.",
-    "description": "Les données comparatives sur les résultats cliniques entre les ballons enduits de médicament (DCB) et les stents à élution médicamenteuse (DES) dans l'intervention coronarienne percutanée (ICP) pour la maladie coronarienne (MAC) de novo restent limitées. Évaluer l'innocuité et l'efficacité à court et à long terme du DCB par rapport au DES chez les...",
-    "lien": "https://pubmed.ncbi.nlm.nih.gov/42044785/",
-    "domaine": "Chirurgie cardiaque",
-    "citations": "0"
-  },
-  {
-    "source": "J Cardiothorac Surg",
-    "date": "2026 Apr 25",
-    "titre": "Screening rates and geographical disparities shape venous thromboembolism risk after cardiac surgery: a systematic review and meta-analysis.",
-    "description": "Article publié la semaine écoulée dans un domaine SARIC, indexé dans PubMed.",
-    "lien": "https://pubmed.ncbi.nlm.nih.gov/42035171/",
-    "domaine": "Chirurgie cardiaque",
-    "citations": "0"
-  },
-  {
-    "source": "ESMO Gastrointest Oncol",
-    "date": "2026 Apr 21",
-    "titre": "UCCL-IKF-AIO-STO-0124 NeoART-an international phase Ib/II platform trial investigating trastuzumab deruxtecan (T-DXd) combined with neoadjuvant chemotherapy for HER2-positive, resectable esophagogastric adenocarcinoma (EGA).",
-    "description": "CONTEXTE : Malgré les progrès dans le traitement multimodal de l'adénocarcinome œsophagogastrique résécable (EGA), les taux de rechute restent élevés, entraînant un taux de guérison < 50 %. Récemment, le durvalumab périopératoire en association avec une chimiothérapie (ctx) a montré une amélioration de la survie sans événement chez les patients non...",
-    "lien": "https://pubmed.ncbi.nlm.nih.gov/42058637/",
-    "domaine": "Anesthésie",
-    "citations": "0"
-  },
-  {
-    "source": "Cureus",
-    "date": "2026 Apr 26",
-    "titre": "Comparison of Postoperative Analgesic Efficacy of Two Intrathecal Morphine Doses (75 μg vs 100 μg) for Cesarean Delivery: A Double-Blind Randomized Study.",
-    "description": "CONTEXTE : La morphine intrathécale reste la pierre angulaire de l'analgésie post-césarienne en raison de son effet prolongé sur la colonne vertébrale ; cependant, son utilisation est limitée par des effets indésirables dose-dépendants. Les tendances contemporaines en matière de pratique favorisent la minimisation de la dose, mais la dose la plus faible...",
-    "lien": "https://pubmed.ncbi.nlm.nih.gov/42058549/",
-    "domaine": "Anesthésie",
-    "citations": "0"
+    "citations": "0",
+    "score": "115"
   },
   {
     "source": "Arthroplast Today",
@@ -60,16 +56,8 @@
     "description": "CONTEXTE : Les troubles du sommeil sont fréquents chez les patients souffrant d'arthrose de la hanche et du genou et peuvent s'aggraver pendant la période périopératoire d'une arthroplastie totale de l'articulation. Un mauvais sommeil a été associé à une douleur plus élevée, à une récupération fonctionnelle retardée et à une satisfaction réduite des...",
     "lien": "https://pubmed.ncbi.nlm.nih.gov/42058459/",
     "domaine": "Anesthésie",
-    "citations": "0"
-  },
-  {
-    "source": "Int J Womens Health",
-    "date": "2026 Apr 21",
-    "titre": "Comparison of Surgical Outcomes Among Open, Laparoscopic, and Robotic Surgeries in Women with Obesity Diagnosed with Endometrial Cancer: Results from a Quaternary Hospital in Thailand.",
-    "description": "OBJECTIF : Nous avons comparé les résultats chirurgicaux de la chirurgie robotique (RS), de la chirurgie laparoscopique (LS) et de la chirurgie ouverte (OS) chez des femmes asiatiques obèses diagnostiquées avec un cancer de l'endomètre. PATIENTS ET MÉTHODES : Dans cette étude de cohorte rétrospective, les données de 248 patients avec un indice de masse...",
-    "lien": "https://pubmed.ncbi.nlm.nih.gov/42052358/",
-    "domaine": "Anesthésie",
-    "citations": "0"
+    "citations": "0",
+    "score": "100"
   },
   {
     "source": "Drug Des Devel Ther",
@@ -78,7 +66,98 @@
     "description": "OBJECTIF : Cette étude vise à évaluer l'impact de différents moments d'administration du flurbiprofène axétil (FA) sur l'insuffisance rénale aiguë postopératoire (IRA) et d'autres événements indésirables chez les patients en chirurgie non cardiaque. PATIENTS ET MÉTHODES : Cette étude de cohorte rétrospective a inclus 45 062 patients adultes subissant une...",
     "lien": "https://pubmed.ncbi.nlm.nih.gov/42052105/",
     "domaine": "Anesthésie",
-    "citations": "0"
+    "citations": "0",
+    "score": "95"
+  },
+  {
+    "source": "ESMO Gastrointest Oncol",
+    "date": "2026 Apr 21",
+    "titre": "UCCL-IKF-AIO-STO-0124 NeoART-an international phase Ib/II platform trial investigating trastuzumab deruxtecan (T-DXd) combined with neoadjuvant chemotherapy for HER2-positive, resectable esophagogastric adenocarcinoma (EGA).",
+    "description": "CONTEXTE : Malgré les progrès dans le traitement multimodal de l'adénocarcinome œsophagogastrique résécable (EGA), les taux de rechute restent élevés, entraînant un taux de guérison < 50 %. Récemment, le durvalumab périopératoire en association avec une chimiothérapie (ctx) a montré une amélioration de la survie sans événement chez les patients non...",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42058637/",
+    "domaine": "Anesthésie",
+    "citations": "0",
+    "score": "90"
+  },
+  {
+    "source": "Int J Cardiol Heart Vasc",
+    "date": "2026 Apr 20",
+    "titre": "Persistent left superior vena cava is associated with complex atrial tachyarrhythmias in repaired tetralogy of Fallot: evidence for a right-sided arrhythmogenic substrate.",
+    "description": "CONTEXTE : La fibrillation auriculaire (FA) est une complication tardive importante chez les patients présentant une tétralogie de Fallot réparée (TOF) ; cependant, ses déterminants cliniques et ses substrats arythmogènes restent incertains. L'identification des profils anatomiques à haut risque est essentielle pour une gestion optimale du rythme et des...",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42058757/",
+    "domaine": "Cardiologie",
+    "citations": "0",
+    "score": "115"
+  },
+  {
+    "source": "Int J Cardiol Heart Vasc",
+    "date": "2026 Apr 20",
+    "titre": "Cardiac dysfunction after acute ischaemic stroke: Long-term outcomes from the SICFAIL cohort.",
+    "description": "CONTEXTE : Un dysfonctionnement systolique, un dysfonctionnement diastolique et une insuffisance cardiaque cliniquement manifeste sont fréquemment rencontrés après un AVC ischémique aigu. Nous avons étudié si ces phénotypes cardiaques, considérés comme des entités distinctes, étaient associés à la réadmission et au décès dans les deux ans suivant un...",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42058759/",
+    "domaine": "Cardiologie",
+    "citations": "0",
+    "score": "95"
+  },
+  {
+    "source": "Int J Cardiol Heart Vasc",
+    "date": "2026 Apr 20",
+    "titre": "Risk prediction of atrial fibrillation progression in patients with paroxysmal atrial fibrillation: data from the RACE V study.",
+    "description": "CONTEXTE : La fibrillation auriculaire (FA) peut évoluer d'une FA paroxystique (PAF) à des formes plus soutenues, mais prédire quels patients progressent reste un défi. L'étude RACE V est une étude observationnelle prospective visant à caractériser les différences phénotypiques entre les patients avec et sans progression de la FA.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42058758/",
+    "domaine": "Cardiologie",
+    "citations": "0",
+    "score": "90"
+  },
+  {
+    "source": "JACC Adv",
+    "date": "2026 Apr 21",
+    "titre": "Lipoprotein(a) and Women's Cardiovascular Health: A Review.",
+    "description": "Une lipoprotéine(a) élevée, ou Lp(a), est un facteur de risque génétiquement déterminé de maladie cardiovasculaire (MCV) ; cependant, les connaissances relatives aux niveaux de Lp(a) et à la contribution au risque de MCV chez les femmes (définies ici comme le sexe féminin à la naissance) évoluent et sont souvent contradictoires. Les hormones sexuelles...",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42059846/",
+    "domaine": "Cardiologie",
+    "citations": "0",
+    "score": "70"
+  },
+  {
+    "source": "J Cardiothorac Surg",
+    "date": "2026 Apr 25",
+    "titre": "Screening rates and geographical disparities shape venous thromboembolism risk after cardiac surgery: a systematic review and meta-analysis.",
+    "description": "Article publié la semaine écoulée dans un domaine SARIC, indexé dans PubMed.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42035171/",
+    "domaine": "Chirurgie cardiaque",
+    "citations": "0",
+    "score": "125"
+  },
+  {
+    "source": "Hematol Transfus Cell Ther",
+    "date": "2026 Apr 26",
+    "titre": "Post-operative atrial fibrillation, intraoperative autologous blood salvage and transfusion in cardiac surgery.",
+    "description": "CONTEXTE ET OBJECTIFS : La fibrillation auriculaire postopératoire est la complication la plus courante après une intervention chirurgicale cardiaque. L'objectif de cette étude était d'évaluer une association possible entre fibrillation auriculaire postopératoire, récupération de sang autologue peropératoire et transfusion sanguine.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42044626/",
+    "domaine": "Chirurgie cardiaque",
+    "citations": "0",
+    "score": "115"
+  },
+  {
+    "source": "Crit Care",
+    "date": "2026 Apr 25",
+    "titre": "Magnitude and pattern of breathing effort during spontaneous breathing trials after cardiac surgery: a physiological model of sustained breathing effort despite diaphragm dysfunction.",
+    "description": "Article publié la semaine écoulée dans un domaine SARIC, indexé dans PubMed.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42035193/",
+    "domaine": "Chirurgie cardiaque",
+    "citations": "0",
+    "score": "115"
+  },
+  {
+    "source": "Am J Cardiol",
+    "date": "2026 Apr 25",
+    "titre": "Comparison of percutaneous Intervention with dRug Coated balloons and drug Eluting stents for de novo coronary artery disease: CIRCE, a systematic review and meta-analysis.",
+    "description": "Les données comparatives sur les résultats cliniques entre les ballons enduits de médicament (DCB) et les stents à élution médicamenteuse (DES) dans l'intervention coronarienne percutanée (ICP) pour la maladie coronarienne (MAC) de novo restent limitées. Évaluer l'innocuité et l'efficacité à court et à long terme du DCB par rapport au DES chez les...",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42044785/",
+    "domaine": "Chirurgie cardiaque",
+    "citations": "0",
+    "score": "100"
   },
   {
     "source": "Western Pac Surveill Response J",
@@ -87,6 +166,37 @@
     "description": "Article publié la semaine écoulée dans un domaine SARIC, indexé dans PubMed.",
     "lien": "https://pubmed.ncbi.nlm.nih.gov/42057796/",
     "domaine": "Infectiologie",
-    "citations": "0"
+    "citations": "0",
+    "score": "110"
+  },
+  {
+    "source": "Poult Sci",
+    "date": "2026 Apr 22",
+    "titre": "Bacillus-based probiotics and fermented products as alternatives to antibiotic growth promoters in poultry: Current perspectives.",
+    "description": "Au fil des années, des promoteurs de croissance antibiotiques (AGP) ont été ajoutés à titre prophylactique au régime alimentaire des volailles pour améliorer les performances de croissance et les caractéristiques de production. Les mécanismes d’action de l’AGP sont encore mal compris.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42061257/",
+    "domaine": "Infectiologie",
+    "citations": "0",
+    "score": "65"
+  },
+  {
+    "source": "Vet Microbiol",
+    "date": "2026 Apr 20",
+    "titre": "Phage therapy: A novel strategy to combat drug-resistant Salmonella Pullorum infection in chickens.",
+    "description": "Salmonella Pullorum, un agent pathogène important provoquant une mortalité élevée chez les poussins et des pertes économiques chez la volaille, est confronté à des défis croissants en matière de résistance aux antibiotiques. Cette étude a isolé et caractérisé quatre nouveaux bactériophages virulents provenant des excréments de poulet et des effluents...",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42061220/",
+    "domaine": "Infectiologie",
+    "citations": "0",
+    "score": "65"
+  },
+  {
+    "source": "Cancer Treat Rev",
+    "date": "2026 Apr 25",
+    "titre": "Management of infections in the outpatient care of patients with cancer.",
+    "description": "Les infections sont une complication courante chez les patients immunodéprimés atteints de maladies hématologiques et oncologiques, y compris en ambulatoire. Ils entraînent une morbidité pénible et peuvent retarder ou compromettre la mise en œuvre d'un traitement antinéoplasique efficace.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42061023/",
+    "domaine": "Infectiologie",
+    "citations": "0",
+    "score": "65"
   }
 ]
