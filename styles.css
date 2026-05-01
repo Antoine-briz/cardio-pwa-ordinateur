@@ -14071,3 +14071,65 @@ body .biblio-live-table thead tr th,
 body.theme-light .biblio-live-table thead tr th {
   background: #0b3c6d !important;
 }
+
+/* ============================================================
+   BIBLIOGRAPHIE - suppression citations + description scroll
+   ============================================================ */
+
+/* Tableau dynamique en 4 colonnes */
+.biblio-live-table th:nth-child(1),
+.biblio-live-table td:nth-child(1) {
+  width: 18% !important;
+}
+
+.biblio-live-table th:nth-child(2),
+.biblio-live-table td:nth-child(2) {
+  width: 8% !important;
+  white-space: nowrap !important;
+}
+
+.biblio-live-table th:nth-child(3),
+.biblio-live-table td:nth-child(3) {
+  width: 30% !important;
+}
+
+.biblio-live-table th:nth-child(4),
+.biblio-live-table td:nth-child(4) {
+  width: 44% !important;
+}
+
+/* Neutralise l’ancienne colonne 5 si une règle CSS existe encore */
+.biblio-live-table th:nth-child(5),
+.biblio-live-table td:nth-child(5),
+.biblio-citation-cell {
+  display: none !important;
+}
+
+/* Abstract / description lisible avec scroll interne */
+.biblio-description-scroll {
+  max-height: 120px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding-right: 8px !important;
+  line-height: 1.45 !important;
+  white-space: normal !important;
+}
+
+/* Scrollbar discrète */
+.biblio-description-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.biblio-description-scroll::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 999px;
+}
+
+.biblio-description-scroll::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.06);
+}
+
+/* Lignes plus propres avec description scrollable */
+.biblio-live-table td {
+  vertical-align: top !important;
+}
