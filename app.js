@@ -26459,7 +26459,7 @@ function renderBibliographie() {
         <div class="biblio-box">
           <h3>Dernières recommandations</h3>
           <div class="biblio-table-wrap">
-            <table class="biblio-table biblio-live-table">
+            <table class="biblio-table biblio-live-table biblio-reco-table">
               <thead>
                 <tr>
                   <th>Source</th>
