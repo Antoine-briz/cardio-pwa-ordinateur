@@ -903,10 +903,139 @@ def fetch_latest_sfar_reco() -> Optional[BiblioItem]:
     )
 
 def fetch_latest_srlf_reco() -> Optional[BiblioItem]:
-    return latest_link_from_page(
-        "SRLF",
-        "https://www.srlf.org/categorie/recos-rfe-epp",
-        ["recommandation", "rfe", "consensus", "référentiel", "conférence"]
+    url = "https://www.srlf.org/recommandations-referentiels-epp"
+
+    try:
+        html = fetch_html(url)
+    except Exception as exc:
+        print(f"SRLF erreur : {exc}")
+        return BiblioItem(
+            source="SRLF",
+            date="À vérifier",
+            titre="Recommandations, référentiels et EPP SRLF",
+            description="Impossible de récupérer automatiquement les recommandations. Ouvrir la page officielle.",
+            lien=url,
+            domaine="Recommandations",
+        )
+
+    links = re.findall(
+        r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>',
+        html,
+        flags=re.I | re.S
+    )
+
+    candidates = []
+
+    for href, label_html in links:
+        label = html_text_snippet(label_html, 260)
+
+        if not label:
+            continue
+
+        low = label.lower()
+
+        # Ignorer navigation / menus / réseaux sociaux
+        if any(x in low for x in [
+            "accueil",
+            "adhérer",
+            "connexion",
+            "contact",
+            "facebook",
+            "twitter",
+            "linkedin",
+            "youtube",
+            "instagram",
+            "mentions",
+            "politique",
+            "plan du site",
+            "agenda",
+            "congrès",
+            "formation",
+            "actualités",
+            "la srlf",
+            "rechercher",
+            "voir plus",
+            "lire la suite",
+        ]):
+            continue
+
+        # Garder les vrais intitulés de recommandations/référentiels/EPP
+        if not any(x in low for x in [
+            "recommandation",
+            "recommandations",
+            "référentiel",
+            "référentiels",
+            "epp",
+            "rfe",
+            "consensus",
+            "conférence",
+            "prise en charge",
+            "pratiques",
+            "guidelines",
+        ]):
+            continue
+
+        if len(label) < 20:
+            continue
+
+        full_url = urllib.parse.urljoin(url, href)
+
+        year_match = re.search(r"(20\d{2})", label + " " + href)
+        year = int(year_match.group(1)) if year_match else 0
+
+        candidates.append({
+            "title": label,
+            "url": full_url,
+            "year": year,
+        })
+
+    # Déduplication
+    seen = set()
+    unique = []
+
+    for item in candidates:
+        key = item["title"].lower().strip()
+        if key in seen:
+            continue
+        seen.add(key)
+        unique.append(item)
+
+    # Les plus récentes d'abord si l'année est détectée,
+    # sinon on conserve l'ordre de la page.
+    unique = sorted(
+        unique,
+        key=lambda x: x["year"],
+        reverse=True
+    )
+
+    top3 = unique[:3]
+
+    if not top3:
+        return BiblioItem(
+            source="SRLF",
+            date="À vérifier",
+            titre="Recommandations, référentiels et EPP SRLF",
+            description="Aucune recommandation individuelle détectée automatiquement. Ouvrir la page officielle.",
+            lien=url,
+            domaine="Recommandations",
+        )
+
+    titre = " | ".join([x["title"] for x in top3])
+    lien = top3[0]["url"]
+
+    description = "3 dernières recommandations SRLF : " + " ; ".join(
+        [f'{x["title"]} ({x["url"]})' for x in top3]
+    )
+
+    best_year = top3[0]["year"]
+
+    return BiblioItem(
+        source="SRLF",
+        date=str(best_year) if best_year else "Récent",
+        titre=titre,
+        description=description,
+        lien=lien,
+        domaine="Recommandations",
     )
 
 
