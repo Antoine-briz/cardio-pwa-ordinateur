@@ -769,12 +769,138 @@ def latest_link_from_page(source: str, page_url: str, keywords: List[str]) -> Op
 
 
 def fetch_latest_sfar_reco() -> Optional[BiblioItem]:
-    return latest_link_from_page(
-        "SFAR",
-        "https://sfar.org/recommandations/",
-        ["recommandation", "rfe", "référentiel", "consensus", "prise en charge"]
+    url = "https://sfar.org/recommandations/"
+
+    try:
+        html = fetch_html(url)
+    except Exception as exc:
+        print(f"SFAR erreur : {exc}")
+        return BiblioItem(
+            source="SFAR",
+            date="À vérifier",
+            titre="Recommandations SFAR",
+            description="Impossible de récupérer automatiquement les recommandations. Ouvrir la page officielle.",
+            lien=url,
+            domaine="Recommandations",
+        )
+
+    links = re.findall(
+        r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>',
+        html,
+        flags=re.I | re.S
     )
 
+    candidates = []
+
+    for href, label_html in links:
+        label = html_text_snippet(label_html, 260)
+
+        if not label:
+            continue
+
+        low = label.lower()
+
+        # Ignorer navigation / menus / liens non pertinents
+        if any(x in low for x in [
+            "accueil",
+            "adhérer",
+            "connexion",
+            "contact",
+            "facebook",
+            "twitter",
+            "linkedin",
+            "youtube",
+            "instagram",
+            "rechercher",
+            "mentions",
+            "politique",
+            "plan du site",
+            "congrès",
+            "formation",
+            "actualités",
+            "agenda",
+            "la sfar",
+        ]):
+            continue
+
+        # Garder les vrais intitulés de recommandations
+        if not any(x in low for x in [
+            "prise en charge",
+            "gestion",
+            "recommandation",
+            "référentiel",
+            "rfe",
+            "rpp",
+            "antibioprophylaxie",
+            "analgésie",
+            "intubation",
+            "diagnostic",
+            "sepsis",
+            "traumatisme",
+            "périopératoire",
+            "péri opératoire",
+            "hémorragie",
+            "réanimation",
+            "anesthésie",
+            "douleur",
+            "patient",
+            "procédure",
+        ]):
+            continue
+
+        # Exclure les titres trop génériques
+        if len(label) < 20:
+            continue
+
+        full_url = urllib.parse.urljoin(url, href)
+
+        year_match = re.search(r"(20\d{2})", label + " " + href)
+        year = year_match.group(1) if year_match else "Récent"
+
+        candidates.append({
+            "title": label,
+            "url": full_url,
+            "year": year,
+        })
+
+    # Déduplication par titre
+    seen = set()
+    unique = []
+
+    for item in candidates:
+        key = item["title"].lower().strip()
+        if key in seen:
+            continue
+        seen.add(key)
+        unique.append(item)
+
+    top3 = unique[:3]
+
+    if not top3:
+        return BiblioItem(
+            source="SFAR",
+            date="À vérifier",
+            titre="Recommandations SFAR",
+            description="Aucune recommandation individuelle détectée automatiquement. Ouvrir la page officielle.",
+            lien=url,
+            domaine="Recommandations",
+        )
+
+    titre = " | ".join([x["title"] for x in top3])
+    lien = top3[0]["url"]
+
+    description = "3 dernières recommandations SFAR : " + " ; ".join(
+        [f'{x["title"]} ({x["url"]})' for x in top3]
+    )
+
+    return BiblioItem(
+        source="SFAR",
+        date=top3[0]["year"],
+        titre=titre,
+        description=description,
+        lien=lien,
+        domaine="Recommandations",
+    )
 
 def fetch_latest_srlf_reco() -> Optional[BiblioItem]:
     return latest_link_from_page(
@@ -785,10 +911,106 @@ def fetch_latest_srlf_reco() -> Optional[BiblioItem]:
 
 
 def fetch_latest_spilf_reco() -> Optional[BiblioItem]:
-    return latest_link_from_page(
-        "SPILF",
-        "https://www.infectiologie.com/fr/recommandations.html",
-        ["recommandation", "argumentaire", "fiche pratique", "consensus", "spilf"]
+    url = "https://www.infectiologie.com/fr/diaporamas-recommandations.html"
+
+    try:
+        html = fetch_html(url)
+    except Exception as exc:
+        print(f"SPILF erreur : {exc}")
+        return BiblioItem(
+            source="SPILF",
+            date="À vérifier",
+            titre="Diaporamas des recommandations SPILF",
+            description="Impossible de récupérer automatiquement les recommandations. Ouvrir la page officielle.",
+            lien=url,
+            domaine="Recommandations",
+        )
+
+    links = re.findall(
+        r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>',
+        html,
+        flags=re.I | re.S
+    )
+
+    candidates = []
+
+    for href, label_html in links:
+        label = html_text_snippet(label_html, 220)
+
+        if not label:
+            continue
+
+        low = label.lower()
+
+        # On ignore les liens de menu/navigation
+        if any(x in low for x in [
+            "accueil",
+            "documents",
+            "recommandations archivées",
+            "partager",
+            "facebook",
+            "twitter",
+            "linkedin",
+            "accès membres",
+        ]):
+            continue
+
+        # On ne garde que les liens de la liste des diaporamas
+        if not any(x in low for x in [
+            "antibiothérapie",
+            "allergie",
+            "traitement",
+            "syphilis",
+            "endocardite",
+            "encéphalites",
+            "pneumopathie",
+            "pneumonies",
+            "infection",
+            "infections",
+            "arthrites",
+            "abcès",
+            "bêta-lactamines",
+            "légionellose",
+        ]):
+            continue
+
+        full_url = urllib.parse.urljoin(url, href)
+
+        year_match = re.search(r"(20\d{2})", label)
+        year = year_match.group(1) if year_match else "Récent"
+
+        candidates.append({
+            "title": label,
+            "url": full_url,
+            "year": year,
+        })
+
+    top3 = candidates[:3]
+
+    if not top3:
+        return BiblioItem(
+            source="SPILF",
+            date="À vérifier",
+            titre="Diaporamas des recommandations SPILF",
+            description="Aucun diaporama individuel détecté automatiquement. Ouvrir la page officielle.",
+            lien=url,
+            domaine="Recommandations",
+        )
+
+    titre = " | ".join([x["title"] for x in top3])
+    lien = top3[0]["url"]
+
+    description = "3 dernières recommandations SPILF : " + " ; ".join(
+        [f'{x["title"]} ({x["url"]})' for x in top3]
+    )
+
+    return BiblioItem(
+        source="SPILF",
+        date=top3[0]["year"],
+        titre=titre,
+        description=description,
+        lien=lien,
+        domaine="Recommandations",
     )
 
 
