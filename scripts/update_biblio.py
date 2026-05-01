@@ -598,7 +598,8 @@ def crossref_citation_count(doi: str) -> int:
         return 0
 
 def update_publications() -> None:
-  print("OPENAI KEY:", "OK" if OPENAI_API_KEY else "ABSENTE")
+    print("OPENAI KEY:", "OK" if OPENAI_API_KEY else "ABSENTE")
+
     start, end = previous_week_range()
     print(f"Recherche des publications du {start.isoformat()} au {end.isoformat()}")
 
