@@ -42,7 +42,7 @@ USER_AGENT = f"SARIC-Biblio-Updater/2.0 ({NCBI_EMAIL})"
 
 # Réglages vitesse / qualité
 PUBMED_RETMAX_PER_DOMAIN = int(os.getenv("PUBMED_RETMAX_PER_DOMAIN", "30"))
-MAX_PMIDS_TOTAL = int(os.getenv("MAX_PMIDS_TOTAL", "140"))
+MAX_PMIDS_TOTAL = int(os.getenv("MAX_PMIDS_TOTAL", "250"))
 SEMANTIC_BATCH_SIZE = int(os.getenv("SEMANTIC_BATCH_SIZE", "80"))
 
 DOMAINS = {
@@ -127,15 +127,16 @@ class BiblioItem:
     domaine: str = ""
 
     def as_json(self) -> Dict[str, str]:
-      return {
-        "source": self.source,
-        "date": self.date,
-        "titre": self.titre,
-        "description": self.description,
-        "lien": self.lien,
-        "domaine": self.domaine,
-        "citations": str(self.citation_count),
-    }
+        return {
+            "source": self.source,
+            "date": self.date,
+            "titre": self.titre,
+            "description": self.description,
+            "lien": self.lien,
+            "domaine": self.domaine,
+            "citations": str(self.citation_count),
+            "score": str(round(self.score, 1)),
+        }
 
 
 def http_json(
@@ -337,6 +338,91 @@ def compute_quality_score(title: str, citation_count: int) -> float:
             bonus += 3
     return citation_count * 10 + bonus
 
+TOP_JOURNALS = [
+    "new england journal of medicine", "nejm",
+    "lancet", "jama", "bmj",
+    "circulation", "jacc", "european heart journal", "eur heart j",
+    "intensive care medicine", "critical care", "critical care medicine",
+    "american journal of respiratory and critical care medicine", "ajrccm",
+    "british journal of anaesthesia", "bja",
+    "anesthesiology", "anesthesia & analgesia", "anaesthesia",
+    "clinical infectious diseases", "lancet infectious diseases",
+    "journal of thoracic and cardiovascular surgery", "jtcvs",
+    "european journal of cardio-thoracic surgery", "ejcts",
+    "annals of thoracic surgery",
+]
+
+
+def study_type_score(title: str) -> int:
+    t = title.lower()
+
+    if any(x in t for x in ["guideline", "recommendation", "recommendations", "consensus", "position statement"]):
+        return 100
+
+    if any(x in t for x in ["meta-analysis", "systematic review"]):
+        return 90
+
+    if any(x in t for x in ["randomized", "randomised", "randomized controlled", "trial"]):
+        return 80
+
+    if "multicenter" in t or "multicentre" in t:
+        return 70
+
+    if "cohort" in t or "registry" in t:
+        return 60
+
+    return 30
+
+
+def journal_score(venue: str) -> int:
+    v = (venue or "").lower()
+
+    for journal in TOP_JOURNALS:
+        if journal in v:
+            return 40
+
+    return 10
+
+
+def domain_relevance_score(domain: str, title: str) -> int:
+    t = title.lower()
+    bonus = 0
+
+    if domain == "Réanimation":
+        if any(x in t for x in ["icu", "intensive care", "critical care", "sepsis", "shock", "ards", "ventilation"]):
+            bonus += 25
+
+    elif domain == "Anesthésie":
+        if any(x in t for x in ["anesthesia", "anaesthesia", "analgesia", "block", "perioperative", "airway"]):
+            bonus += 25
+
+    elif domain == "Cardiologie":
+        if any(x in t for x in ["heart", "cardiac", "coronary", "valve", "arrhythmia", "heart failure", "myocardial"]):
+            bonus += 25
+
+    elif domain == "Chirurgie cardiaque":
+        if any(x in t for x in ["cardiac surgery", "cardiothoracic", "thoracic surgery", "cabg", "aortic", "valve surgery", "ecmo"]):
+            bonus += 25
+
+    elif domain == "Infectiologie":
+        if any(x in t for x in ["infection", "infectious", "antibiotic", "antimicrobial", "bacteremia", "endocarditis", "sepsis"]):
+            bonus += 25
+
+    return bonus
+
+
+def citation_score(citation_count: int) -> int:
+    return min(int(citation_count or 0), 20)
+
+
+def compute_final_score(title: str, venue: str, domain: str, citation_count: int) -> float:
+    return (
+        study_type_score(title)
+        + journal_score(venue)
+        + domain_relevance_score(domain, title)
+        + citation_score(citation_count)
+    )
+
 
 def article_url(pmid: str, sem: Optional[Dict[str, Any]]) -> str:
     if sem and sem.get("url"):
@@ -470,7 +556,8 @@ def update_publications() -> None:
         venue = (sem or {}).get("venue") or summary.get("source") or "PubMed"
         pub_date = (sem or {}).get("publicationDate") or pubdate_from_summary(summary)
 
-        score = compute_quality_score(title, citation_count)
+        domain = pmid_domains.get(str(pmid), "")
+score = compute_final_score(title, venue, domain, citation_count)
 
         items.append(BiblioItem(
             source=venue,
@@ -483,23 +570,38 @@ def update_publications() -> None:
             lien=article_url(pmid, sem),
             citation_count=citation_count,
             score=score,
-            domaine=pmid_domains.get(str(pmid), ""),
+            domaine=domain,
         ))
 
-    top10 = sorted(
-        items,
-        key=lambda x: (x.citation_count, x.score),
-        reverse=True
-    )[:10]
+    domain_order = [
+    "Réanimation",
+    "Anesthésie",
+    "Cardiologie",
+    "Chirurgie cardiaque",
+    "Infectiologie",
+]
 
-    DATA_DIR.mkdir(parents=True, exist_ok=True)
+final_selection: List[BiblioItem] = []
 
-    PUBLICATIONS_PATH.write_text(
-        json.dumps([x.as_json() for x in top10], ensure_ascii=False, indent=2),
-        encoding="utf-8",
-    )
+for domain in domain_order:
+    group = [item for item in items if item.domaine == domain]
+    group = sorted(group, key=lambda x: x.score, reverse=True)
 
-    print(f"{len(top10)} publications écrites dans {PUBLICATIONS_PATH}")
+    final_selection.extend(group[:4])
+
+final_selection = sorted(
+    final_selection,
+    key=lambda x: (domain_order.index(x.domaine), -x.score)
+)
+
+DATA_DIR.mkdir(parents=True, exist_ok=True)
+
+PUBLICATIONS_PATH.write_text(
+    json.dumps([x.as_json() for x in final_selection], ensure_ascii=False, indent=2),
+    encoding="utf-8",
+)
+
+print(f"{len(final_selection)} publications écrites dans {PUBLICATIONS_PATH} : 4 par domaine si disponibles")
 
 def pubmed_guidelines(start: date, end: date) -> List[BiblioItem]:
     terms = [
