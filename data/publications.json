@@ -1,13 +1,33 @@
 [
   {
-    "source": "Open Forum Infect Dis",
-    "date": "2026 Apr 24",
-    "titre": "Frailty Increases the Risk and Frequency of Lower Respiratory Tract Infections in Older Adults: A Multicenter Prospective Cohort Study.",
-    "description": "CONTEXTE : Les infections des voies respiratoires inférieures (IVRI) sont une cause majeure de morbidité chez les personnes âgées, mais la stratification du risque basée uniquement sur l'âge chronologique reste insuffisante. La fragilité, reflétant une diminution cumulative de la réserve physiologique, pourrait mieux saisir la susceptibilité aux...",
-    "lien": "https://pubmed.ncbi.nlm.nih.gov/42057807/",
+    "source": "Trauma Case Rep",
+    "date": "2026 Apr 22",
+    "titre": "Survival after severe blunt cardiac injury: Right atrial rupture.",
+    "description": "CONTEXTE : La rupture cardiaque fermée est une blessure rare mais potentiellement mortelle qui entraîne une mortalité extrêmement élevée. La plupart des patients qui subissent une rupture cardiaque meurent sur place, mais une réponse rapide au diagnostic et au traitement peut améliorer les chances de survie de cette blessure.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42064755/",
     "domaine": "Réanimation",
     "citations": "0",
-    "score": "80"
+    "score": "90"
+  },
+  {
+    "source": "Int J Womens Health",
+    "date": "2026 Apr 25",
+    "titre": "Red Cell Distribution Width-to-Albumin Ratio as a Predictor of Preeclampsia in Advanced Maternal Age: A Retrospective Cohort Study.",
+    "description": "CONTEXTE : La prééclampsie est une cause majeure de morbidité maternelle et périnatale, en particulier chez les femmes d'âge maternel avancé. Des marqueurs de laboratoire simples et peu coûteux associés au risque de prééclampsie restent d'intérêt clinique dans cette population.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42064359/",
+    "domaine": "Réanimation",
+    "citations": "0",
+    "score": "70"
+  },
+  {
+    "source": "Infect Drug Resist",
+    "date": "2026 Apr 25",
+    "titre": "Predictive Value of Nutritional Status in Sputum Culture Conversion Among Patients with Nontuberculous Mycobacterial Pulmonary Disease: A Retrospective Cohort Study.",
+    "description": "CONTEXTE : L'état nutritionnel est de plus en plus reconnu comme un déterminant important des résultats de la maladie pulmonaire mycobactérienne non tuberculeuse (MNT-PD), mais sa valeur prédictive pour la conversion des cultures d'expectorations reste floue. MÉTHODES : Cette étude de cohorte rétrospective a inclus 416 patients atteints de NTM-PD entre...",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42064296/",
+    "domaine": "Réanimation",
+    "citations": "0",
+    "score": "70"
   },
   {
     "source": "Am J Emerg Med",
@@ -20,30 +40,10 @@
     "score": "70"
   },
   {
-    "source": "Lancet Reg Health Am",
-    "date": "2026 Apr 20",
-    "titre": "Health care utilization and cost implications of Chile's 2024 nirsevimab strategy for RSV prevention: a counterfactual analysis.",
-    "description": "CONTEXTE : En 2024, le Chili est devenu le premier pays de l'hémisphère Sud à mettre en œuvre une stratégie universelle de vaccination par le nirsevimab contre le virus respiratoire syncytial (VRS). Cette étude évalue l'impact réel sur la santé et la rentabilité du programme, en comparant spécifiquement les cohortes saisonnières (nées en avril-septembre...",
-    "lien": "https://pubmed.ncbi.nlm.nih.gov/42058447/",
-    "domaine": "Réanimation",
-    "citations": "0",
-    "score": "70"
-  },
-  {
-    "source": "Biochem Biophys Res Commun",
-    "date": "2026 Apr 23",
-    "titre": "Thermal resilience of the archaeal heat shock Protein-14 (sHSP14) dimer: Insights into Nature's molecular design.",
-    "description": "On s’attend à ce que les perturbations thermophysiques affaiblissent la stabilité et l’assemblage des protéines. Pourtant, dans le contexte biologique, les chaperons tels que les protéines de choc thermique (HSP) doivent contrer les effets perturbateurs pour préserver la protéostasie.",
-    "lien": "https://pubmed.ncbi.nlm.nih.gov/42061002/",
-    "domaine": "Réanimation",
-    "citations": "0",
-    "score": "65"
-  },
-  {
     "source": "J Pain Res",
     "date": "2026 Apr 22",
     "titre": "Continuous Erector Spinae Plane Block versus Thoracic Epidural Analgesia After Thoracotomy: A Randomized Controlled Assessor-Blinded Non-Inferiority Trial.",
-    "description": "OBJECTIF : L'analgésie péridurale thoracique (AET) reste l'étalon-or actuel pour le contrôle de la douleur postopératoire après thoracotomie, mais est associée à des complications et contre-indications importantes. Cette étude a évalué si le bloc plan continu de l'érecteur du rachis (ESPB) fournit une analgésie non inférieure au TEA.",
+    "description": "OBJECTIF : L'analgésie péridurale thoracique (ATÉ) reste l'étalon-or actuel pour le contrôle de la douleur postopératoire après thoracotomie, mais est associée à des complications et contre-indications importantes. Cette étude a évalué si le bloc plan continu de l'érecteur du rachis (ESPB) fournit une analgésie non inférieure au TEA.",
     "lien": "https://pubmed.ncbi.nlm.nih.gov/42051755/",
     "domaine": "Anesthésie",
     "citations": "0",
@@ -80,6 +80,16 @@
     "score": "90"
   },
   {
+    "source": "Eur Heart J Open",
+    "date": "2026 Apr 21",
+    "titre": "Physician-led telemedical care enhances blood pressure control in hypertension: a randomized-controlled pilot study (REMOTE-control-HTN).",
+    "description": "OBJECTIFS : Malgré les progrès du traitement antihypertenseur, le contrôle de la pression artérielle (TA) reste inadéquat chez de nombreux patients en raison d'un suivi limité et d'une titration insuffisante des médicaments. MÉTHODES ET RÉSULTATS : Cet essai pilote contrôlé randomisé monocentrique a été mené dans un hôpital universitaire tertiaire en...",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42064617/",
+    "domaine": "Cardiologie",
+    "citations": "0",
+    "score": "120"
+  },
+  {
     "source": "Int J Cardiol Heart Vasc",
     "date": "2026 Apr 20",
     "titre": "Persistent left superior vena cava is associated with complex atrial tachyarrhythmias in repaired tetralogy of Fallot: evidence for a right-sided arrhythmogenic substrate.",
@@ -108,16 +118,6 @@
     "domaine": "Cardiologie",
     "citations": "0",
     "score": "90"
-  },
-  {
-    "source": "JACC Adv",
-    "date": "2026 Apr 21",
-    "titre": "Lipoprotein(a) and Women's Cardiovascular Health: A Review.",
-    "description": "Une lipoprotéine(a) élevée, ou Lp(a), est un facteur de risque génétiquement déterminé de maladie cardiovasculaire (MCV) ; cependant, les connaissances relatives aux niveaux de Lp(a) et à la contribution au risque de MCV chez les femmes (définies ici comme le sexe féminin à la naissance) évoluent et sont souvent contradictoires. Les hormones sexuelles...",
-    "lien": "https://pubmed.ncbi.nlm.nih.gov/42059846/",
-    "domaine": "Cardiologie",
-    "citations": "0",
-    "score": "70"
   },
   {
     "source": "J Cardiothorac Surg",
@@ -160,14 +160,24 @@
     "score": "100"
   },
   {
-    "source": "Western Pac Surveill Response J",
-    "date": "2026 Apr 20",
-    "titre": "Development of monitoring and evaluation guidelines for Indonesia's national Early Warning Alert and Response System: aiming for a standardized and systematic assessment.",
-    "description": "Article publié la semaine écoulée dans un domaine SARIC, indexé dans PubMed.",
-    "lien": "https://pubmed.ncbi.nlm.nih.gov/42057796/",
+    "source": "ACS Appl Nano Mater",
+    "date": "2026 Apr 13",
+    "titre": "Bimetallic Silver-Gold Nanoplates for Photothermal Antimicrobial Therapy: Integrating High Efficiency with Stable and Multifunctional Design.",
+    "description": "La thérapie photothermique antimicrobienne nécessite des nanomatériaux combinant des performances plasmoniques élevées, une stabilité colloïdale et une synthèse évolutive. Dans ce travail, nous avons préparé des nanoplaques d'argent bimétalliques partiellement recouvertes d'une couche d'or ultra-fine dans un lot de plus grand volume (160 ml), tout en...",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42064331/",
     "domaine": "Infectiologie",
     "citations": "0",
-    "score": "110"
+    "score": "65"
+  },
+  {
+    "source": "Infect Drug Resist",
+    "date": "2026 Apr 25",
+    "titre": "Antimicrobial Resistance in Refugee Camps and Prisons: A Global Scoping Review of Primary Studies on Burden, Risk Factors, Surveillance, and Mitigation Strategies.",
+    "description": "CONTEXTE : La RAM constitue une menace sanitaire mondiale, et les prisons et les camps de réfugiés sont des environnements à haut risque pour l'acquisition et la propagation d'organismes multirésistants (MDRO). Cette revue de la portée vise à cartographier les preuves existantes sur la résistance aux antimicrobiens (RAM) dans les prisons et les camps de...",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42064295/",
+    "domaine": "Infectiologie",
+    "citations": "0",
+    "score": "65"
   },
   {
     "source": "Poult Sci",
@@ -185,16 +195,6 @@
     "titre": "Phage therapy: A novel strategy to combat drug-resistant Salmonella Pullorum infection in chickens.",
     "description": "Salmonella Pullorum, un agent pathogène important provoquant une mortalité élevée chez les poussins et des pertes économiques chez la volaille, est confronté à des défis croissants en matière de résistance aux antibiotiques. Cette étude a isolé et caractérisé quatre nouveaux bactériophages virulents provenant des excréments de poulet et des effluents...",
     "lien": "https://pubmed.ncbi.nlm.nih.gov/42061220/",
-    "domaine": "Infectiologie",
-    "citations": "0",
-    "score": "65"
-  },
-  {
-    "source": "Cancer Treat Rev",
-    "date": "2026 Apr 25",
-    "titre": "Management of infections in the outpatient care of patients with cancer.",
-    "description": "Les infections sont une complication courante chez les patients immunodéprimés atteints de maladies hématologiques et oncologiques, y compris en ambulatoire. Ils entraînent une morbidité pénible et peuvent retarder ou compromettre la mise en œuvre d’un traitement antinéoplasique efficace.",
-    "lien": "https://pubmed.ncbi.nlm.nih.gov/42061023/",
     "domaine": "Infectiologie",
     "citations": "0",
     "score": "65"
