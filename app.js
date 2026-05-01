@@ -26684,20 +26684,21 @@ async function loadBiblioJsonTable(url, tbodyId) {
     }
 
     tbody.innerHTML = items.map(item => `
-      <tr class="biblio-click-row"
-          onclick="window.open('${escapeHtml(item.lien || "")}', '_blank', 'noopener,noreferrer')">
-        <td>${biblioSourceHtml(item.source || "", item.domaine || "")}</td>
-        <td>${escapeHtml(item.date || "")}</td>
-        <td>
-          ${biblioBadgeHtml(item)}
-          <div class="biblio-title-cell">${escapeHtml(item.titre || "")}</div>
-        </td>
-        <td>${escapeHtml(item.description || "")}</td>
-        <td class="biblio-citation-cell">
-          ${escapeHtml(item.citations ?? item.citation_count ?? "0")}
-        </td>
-      </tr>
-    `).join("");
+  <tr class="biblio-click-row"
+      onclick="window.open('${escapeHtml(item.lien || "")}', '_blank', 'noopener,noreferrer')">
+    <td>${biblioSourceHtml(item.source || "", item.domaine || "")}</td>
+    <td>${escapeHtml(item.date || "")}</td>
+    <td>
+      ${biblioBadgeHtml(item)}
+      <div class="biblio-title-cell">${escapeHtml(item.titre || "")}</div>
+    </td>
+    <td>
+      <div class="biblio-description-scroll">
+        ${escapeHtml(item.description || "")}
+      </div>
+    </td>
+  </tr>
+`).join("");
 
   } catch (err) {
     tbody.innerHTML = `<tr><td colspan="5">Impossible de charger les données.</td></tr>`;
