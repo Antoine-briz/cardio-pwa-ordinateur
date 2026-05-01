@@ -26468,7 +26468,7 @@ function renderBibliographie() {
                 </tr>
               </thead>
               <tbody id="biblio-recommandations-body">
-                <tr><td colspan="4">Chargement...</td></tr>
+                <tr><td colspan="3">Chargement...</td></tr>
               </tbody>
             </table>
           </div>
@@ -26663,7 +26663,7 @@ function renderBibliographie() {
     location.hash = "#/bibliographie/juniors";
   });
 
-  loadBiblioRecommandationsTable("data/recommandations.json", "biblioRecommandationsBody");
+  loadBiblioRecommandationsTable("data/recommandations.json", "biblio-recommandations-body");
   loadBiblioJsonTable("data/publications.json", "biblio-publications-body");
 }
 
