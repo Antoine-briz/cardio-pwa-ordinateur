@@ -574,34 +574,34 @@ def update_publications() -> None:
         ))
 
     domain_order = [
-    "Réanimation",
-    "Anesthésie",
-    "Cardiologie",
-    "Chirurgie cardiaque",
-    "Infectiologie",
-]
+        "Réanimation",
+        "Anesthésie",
+        "Cardiologie",
+        "Chirurgie cardiaque",
+        "Infectiologie",
+    ]
 
-final_selection: List[BiblioItem] = []
+    final_selection: List[BiblioItem] = []
 
-for domain in domain_order:
-    group = [item for item in items if item.domaine == domain]
-    group = sorted(group, key=lambda x: x.score, reverse=True)
+    for domain in domain_order:
+        group = [item for item in items if item.domaine == domain]
+        group = sorted(group, key=lambda x: x.score, reverse=True)
 
-    final_selection.extend(group[:4])
+        final_selection.extend(group[:4])
 
-final_selection = sorted(
-    final_selection,
-    key=lambda x: (domain_order.index(x.domaine), -x.score)
-)
+    final_selection = sorted(
+        final_selection,
+        key=lambda x: (domain_order.index(x.domaine), -x.score)
+    )
 
-DATA_DIR.mkdir(parents=True, exist_ok=True)
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
 
-PUBLICATIONS_PATH.write_text(
-    json.dumps([x.as_json() for x in final_selection], ensure_ascii=False, indent=2),
-    encoding="utf-8",
-)
+    PUBLICATIONS_PATH.write_text(
+        json.dumps([x.as_json() for x in final_selection], ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
 
-print(f"{len(final_selection)} publications écrites dans {PUBLICATIONS_PATH} : 4 par domaine si disponibles")
+    print(f"{len(final_selection)} publications écrites dans {PUBLICATIONS_PATH} : 4 par domaine si disponibles")
 
 def pubmed_guidelines(start: date, end: date) -> List[BiblioItem]:
     terms = [
