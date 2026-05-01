@@ -26465,7 +26465,6 @@ function renderBibliographie() {
                   <th>Source</th>
 <th>Date</th>
 <th>Titre</th>
-<th>Description</th>
                 </tr>
               </thead>
               <tbody id="biblio-recommandations-body">
@@ -26664,8 +26663,39 @@ function renderBibliographie() {
     location.hash = "#/bibliographie/juniors";
   });
 
-  loadBiblioJsonTable("data/recommandations.json", "biblio-recommandations-body");
+  loadBiblioRecommandationsTable("data/recommandations.json", "biblioRecommandationsBody");
   loadBiblioJsonTable("data/publications.json", "biblio-publications-body");
+}
+
+async function loadBiblioRecommandationsTable(url, tbodyId) {
+  const tbody = document.getElementById(tbodyId);
+  if (!tbody) return;
+
+  try {
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) throw new Error("JSON introuvable");
+
+    const items = await res.json();
+
+    if (!Array.isArray(items) || items.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="3">Aucune donnée disponible.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = items.map(item => `
+      <tr class="biblio-click-row"
+          onclick="window.open('${escapeHtml(item.lien || "")}', '_blank', 'noopener,noreferrer')">
+        <td>${biblioSourceHtml(item.source || "", item.domaine || "")}</td>
+        <td>${escapeHtml(item.date || "")}</td>
+        <td>
+          <div class="biblio-title-cell">${escapeHtml(item.titre || "")}</div>
+        </td>
+      </tr>
+    `).join("");
+
+  } catch (err) {
+    tbody.innerHTML = `<tr><td colspan="3">Impossible de charger les données.</td></tr>`;
+  }
 }
 
 async function loadBiblioJsonTable(url, tbodyId) {
@@ -26692,11 +26722,11 @@ async function loadBiblioJsonTable(url, tbodyId) {
       ${biblioBadgeHtml(item)}
       <div class="biblio-title-cell">${escapeHtml(item.titre || "")}</div>
     </td>
-    <td>
-      <div class="biblio-description-scroll">
-        ${escapeHtml(item.description || "")}
-      </div>
-    </td>
+    <td class="biblio-description-td">
+  <div class="biblio-description-scroll">
+    ${escapeHtml(item.description || "")}
+  </div>
+</td>
   </tr>
 `).join("");
 
