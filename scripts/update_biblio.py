@@ -557,7 +557,7 @@ def update_publications() -> None:
         pub_date = (sem or {}).get("publicationDate") or pubdate_from_summary(summary)
 
         domain = pmid_domains.get(str(pmid), "")
-score = compute_final_score(title, venue, domain, citation_count)
+        score = compute_final_score(title, venue, domain, citation_count)
 
         items.append(BiblioItem(
             source=venue,
