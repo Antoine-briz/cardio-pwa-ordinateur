@@ -37,6 +37,7 @@ RECOMMANDATIONS_PATH = DATA_DIR / "recommandations.json"
 NCBI_EMAIL = os.getenv("NCBI_EMAIL", "saric@example.com")
 NCBI_API_KEY = os.getenv("NCBI_API_KEY", "")
 SEMANTIC_SCHOLAR_API_KEY = os.getenv("SEMANTIC_SCHOLAR_API_KEY", "")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 
 USER_AGENT = f"SARIC-Biblio-Updater/2.0 ({NCBI_EMAIL})"
 
@@ -250,6 +251,75 @@ def smart_abstract_summary(text: str, fallback: str) -> str:
 
     return result_fr
 
+def llm_abstract_summary(title: str, abstract: str, fallback: str) -> str:
+    abstract = re.sub(r"\s+", " ", (abstract or "").strip())
+
+    if not abstract:
+        return fallback
+
+    if not OPENAI_API_KEY:
+        return smart_abstract_summary(abstract, fallback)
+
+    prompt = f"""
+Tu es médecin anesthésiste-réanimateur et tu rédiges une veille bibliographique médicale.
+
+Résume l'abstract ci-dessous en français, en 1 à 2 phrases maximum.
+Le résumé doit expliquer clairement :
+- l'objectif de l'étude,
+- le type d'étude si identifiable,
+- le résultat ou message principal.
+
+Contraintes :
+- français médical clair,
+- pas de citation inventée,
+- pas de conclusion au-delà de l'abstract,
+- maximum 450 caractères,
+- ne commence pas par "Cette étude..." si une formulation plus directe est possible.
+
+Titre :
+{title}
+
+Abstract :
+{abstract}
+""".strip()
+
+    payload = {
+        "model": "gpt-5.5-mini",
+        "input": prompt,
+    }
+
+    headers = {
+        "Authorization": f"Bearer {OPENAI_API_KEY}",
+        "Content-Type": "application/json",
+        "User-Agent": USER_AGENT,
+    }
+
+    try:
+        req = urllib.request.Request(
+            "https://api.openai.com/v1/responses",
+            data=json.dumps(payload).encode("utf-8"),
+            headers=headers,
+            method="POST",
+        )
+
+        with urllib.request.urlopen(req, timeout=45) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+
+        text = (data.get("output_text") or "").strip()
+
+        if not text:
+            return smart_abstract_summary(abstract, fallback)
+
+        text = re.sub(r"\s+", " ", text).strip()
+
+        if len(text) > 520:
+            text = text[:517].rsplit(" ", 1)[0] + "..."
+
+        return text
+
+    except Exception as exc:
+        print(f"Résumé LLM indisponible pour '{title[:80]}': {exc}")
+        return smart_abstract_summary(abstract, fallback)
 
 def pubdate_from_summary(summary: Dict[str, Any]) -> str:
     return summary.get("epubdate") or summary.get("pubdate") or ""
@@ -580,7 +650,8 @@ def update_publications() -> None:
             source=venue,
             date=pub_date,
             titre=title,
-            description=smart_abstract_summary(
+            description=llm_abstract_summary(
+              title,
               abstract,
               "Résumé automatique indisponible pour cet article."
             ),
