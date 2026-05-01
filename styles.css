@@ -14133,3 +14133,105 @@ body.theme-light .biblio-live-table thead tr th {
 .biblio-live-table td {
   vertical-align: top !important;
 }
+
+/* ============================================================
+   FIX FINAL BIBLIO - recommandations 3 colonnes + scroll abstracts
+   ============================================================ */
+
+/* En-têtes blancs sur fond bleu pour TOUS les tableaux biblio */
+body .biblio-table thead th,
+body .biblio-table thead th *,
+body .biblio-live-table thead th,
+body .biblio-live-table thead th *,
+body.theme-light .biblio-table thead th,
+body.theme-light .biblio-table thead th *,
+body.theme-light .biblio-live-table thead th,
+body.theme-light .biblio-live-table thead th * {
+  background: #0b3c6d !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Tableau articles : 4 colonnes */
+.biblio-live-table th:nth-child(1),
+.biblio-live-table td:nth-child(1) {
+  width: 18% !important;
+}
+
+.biblio-live-table th:nth-child(2),
+.biblio-live-table td:nth-child(2) {
+  width: 8% !important;
+  white-space: nowrap !important;
+}
+
+.biblio-live-table th:nth-child(3),
+.biblio-live-table td:nth-child(3) {
+  width: 30% !important;
+}
+
+.biblio-live-table th:nth-child(4),
+.biblio-live-table td:nth-child(4) {
+  width: 44% !important;
+}
+
+/* Description avec scroll interne réel */
+.biblio-description-td {
+  height: 150px !important;
+  max-height: 150px !important;
+  padding: 10px 12px !important;
+  overflow: hidden !important;
+  vertical-align: top !important;
+}
+
+.biblio-description-scroll {
+  display: block !important;
+  height: 130px !important;
+  max-height: 130px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  white-space: normal !important;
+  word-break: normal !important;
+  overflow-wrap: anywhere !important;
+  text-overflow: clip !important;
+  line-height: 1.45 !important;
+  padding-right: 8px !important;
+}
+
+/* Annule les règles globales qui forçaient nowrap/ellipsis dans les tableaux */
+.biblio-live-table .biblio-description-scroll,
+.biblio-live-table .biblio-description-scroll * {
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  text-overflow: clip !important;
+}
+
+/* Scrollbar description */
+.biblio-description-scroll::-webkit-scrollbar {
+  width: 7px;
+}
+
+.biblio-description-scroll::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 999px;
+}
+
+.biblio-description-scroll::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.08);
+}
+
+/* Tableau recommandations : 3 colonnes */
+.biblio-reco-table th:nth-child(1),
+.biblio-reco-table td:nth-child(1) {
+  width: 18% !important;
+}
+
+.biblio-reco-table th:nth-child(2),
+.biblio-reco-table td:nth-child(2) {
+  width: 10% !important;
+  white-space: nowrap !important;
+}
+
+.biblio-reco-table th:nth-child(3),
+.biblio-reco-table td:nth-child(3) {
+  width: 72% !important;
+}
