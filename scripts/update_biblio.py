@@ -273,8 +273,7 @@ Contraintes :
 - français médical clair,
 - pas de citation inventée,
 - pas de conclusion au-delà de l'abstract,
-- maximum 450 caractères,
-- ne commence pas par "Cette étude..." si une formulation plus directe est possible.
+- maximum 450 caractères.
 
 Titre :
 {title}
@@ -284,7 +283,7 @@ Abstract :
 """.strip()
 
     payload = {
-        "model": "gpt-4o-mini"
+        "model": "gpt-4o-mini",
         "input": prompt,
     }
 
@@ -305,23 +304,24 @@ Abstract :
         with urllib.request.urlopen(req, timeout=45) as resp:
             data = json.loads(resp.read().decode("utf-8"))
 
-        text = ""
-      if "output_text" in data:
-        text = data["output_text"]
-      elif "output" in data:
-        try:
-          text = data["output"][0]["content"][0]["text"]
-        except Exception:
-          text = ""
+        text = data.get("output_text", "").strip()
+
+        if not text:
+            try:
+                text = data["output"][0]["content"][0]["text"].strip()
+            except Exception:
+                text = ""
 
         if not text:
             return smart_abstract_summary(abstract, fallback)
 
         text = re.sub(r"\s+", " ", text).strip()
+
         if len(text) > 520:
-          text = text[:517].rsplit(" ", 1)[0] + "..."
-          print(f"LLM résumé utilisé pour : {title[:50]}")
-          return text
+            text = text[:517].rsplit(" ", 1)[0] + "..."
+
+        print(f"LLM résumé utilisé pour : {title[:50]}")
+        return text
 
     except Exception as exc:
         print(f"Résumé LLM indisponible pour '{title[:80]}': {exc}")
