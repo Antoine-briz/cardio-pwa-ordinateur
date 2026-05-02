@@ -26725,7 +26725,8 @@ async function loadBiblioJsonTable(url, tbodyId) {
 
     tbody.innerHTML = items.map(item => `
   <tr class="biblio-click-row"
-      onclick="window.open('${escapeHtml(item.lien || "")}', '_blank', 'noopener,noreferrer')">
+    data-domain="${item.domaine || ''}"
+    onclick="window.open('${escapeHtml(item.lien || "")}', '_blank', 'noopener,noreferrer')">
     <td>${biblioSourceHtml(item.source || "", item.domaine || "")}</td>
     <td>${escapeHtml(item.date || "")}</td>
     <td>
