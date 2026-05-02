@@ -26475,7 +26475,7 @@ function renderBibliographie() {
         </div>
 
         <div class="biblio-box">
-          <h3>Artciles de la semaine</h3>
+          <h3>Articles de la semaine</h3>
           <div class="biblio-table-wrap">
             <table class="biblio-table biblio-live-table">
               <thead>
