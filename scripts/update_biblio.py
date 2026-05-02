@@ -324,8 +324,13 @@ Abstract :
         return text
 
     except Exception as exc:
-        print(f"Résumé LLM indisponible pour '{title[:80]}': {exc}")
-        return smart_abstract_summary(abstract, fallback)
+    print(f"ERREUR LLM pour '{title[:80]}': {type(exc).__name__} - {exc}")
+    return smart_abstract_summary(abstract, fallback)
+
+with urllib.request.urlopen(req, timeout=45) as resp:
+    data = json.loads(resp.read().decode("utf-8"))
+
+print("Réponse OpenAI brute:", json.dumps(data, ensure_ascii=False)[:1000])
 
 def pubdate_from_summary(summary: Dict[str, Any]) -> str:
     return summary.get("epubdate") or summary.get("pubdate") or ""
