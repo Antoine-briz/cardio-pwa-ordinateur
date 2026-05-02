@@ -285,7 +285,7 @@ Abstract :
         "User-Agent": USER_AGENT,
     }
 
-    delays = [5, 15, 40]
+    delays = [3, 8]
 
     for attempt, delay in enumerate(delays, start=1):
         try:
@@ -679,7 +679,7 @@ def update_publications() -> None:
         group = [item for item in items if item.domaine == domain]
         group = sorted(group, key=lambda x: x.score, reverse=True)
 
-        final_selection.extend(group[:5])
+        final_selection.extend(group[:1])
 
         final_selection = sorted(
         final_selection,
