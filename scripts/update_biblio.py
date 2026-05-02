@@ -264,16 +264,8 @@ def llm_abstract_summary(title: str, abstract: str, fallback: str) -> str:
 Tu es médecin anesthésiste-réanimateur et tu rédiges une veille bibliographique médicale.
 
 Résume l'abstract ci-dessous en français, en 1 à 2 phrases maximum.
-Le résumé doit expliquer clairement :
-- l'objectif de l'étude,
-- le type d'étude si identifiable,
-- le résultat ou message principal.
-
-Contraintes :
-- français médical clair,
-- pas de citation inventée,
-- pas de conclusion au-delà de l'abstract,
-- maximum 450 caractères.
+Le résumé doit expliquer clairement l'objectif, le type d'étude et le message principal.
+Maximum 450 caractères. Ne conclus pas au-delà de l'abstract.
 
 Titre :
 {title}
@@ -293,40 +285,44 @@ Abstract :
         "User-Agent": USER_AGENT,
     }
 
-    try:
-        req = urllib.request.Request(
-            "https://api.openai.com/v1/responses",
-            data=json.dumps(payload).encode("utf-8"),
-            headers=headers,
-            method="POST",
-        )
+    delays = [5, 15, 40]
 
-        with urllib.request.urlopen(req, timeout=45) as resp:
-            data = json.loads(resp.read().decode("utf-8"))
+    for attempt, delay in enumerate(delays, start=1):
+        try:
+            req = urllib.request.Request(
+                "https://api.openai.com/v1/responses",
+                data=json.dumps(payload).encode("utf-8"),
+                headers=headers,
+                method="POST",
+            )
 
-        text = data.get("output_text", "").strip()
+            with urllib.request.urlopen(req, timeout=60) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
 
-        if not text:
-            try:
-                text = data["output"][0]["content"][0]["text"].strip()
-            except Exception:
-                text = ""
+            text = data.get("output_text", "").strip()
 
-        if not text:
-            print(f"LLM sans texte exploitable pour : {title[:80]}")
-            return smart_abstract_summary(abstract, fallback)
+            if not text:
+                try:
+                    text = data["output"][0]["content"][0]["text"].strip()
+                except Exception:
+                    text = ""
 
-        text = re.sub(r"\s+", " ", text).strip()
+            if not text:
+                return smart_abstract_summary(abstract, fallback)
 
-        if len(text) > 520:
-            text = text[:517].rsplit(" ", 1)[0] + "..."
+            text = re.sub(r"\s+", " ", text).strip()
 
-        print(f"LLM résumé utilisé pour : {title[:50]}")
-        return text
+            if len(text) > 520:
+                text = text[:517].rsplit(" ", 1)[0] + "..."
 
-    except Exception as exc:
-        print(f"ERREUR LLM pour '{title[:80]}': {type(exc).__name__} - {exc}")
-        return smart_abstract_summary(abstract, fallback)
+            print(f"LLM résumé utilisé pour : {title[:50]}")
+            return text
+
+        except Exception as exc:
+            print(f"ERREUR LLM tentative {attempt} pour '{title[:60]}': {type(exc).__name__} - {exc}")
+            time.sleep(delay)
+
+    return smart_abstract_summary(abstract, fallback)
 
 def pubdate_from_summary(summary: Dict[str, Any]) -> str:
     return summary.get("epubdate") or summary.get("pubdate") or ""
