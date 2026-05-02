@@ -26475,7 +26475,17 @@ function renderBibliographie() {
         </div>
 
         <div class="biblio-box">
-          <h3>Articles de la semaine</h3>
+          <div class="biblio-header-row">
+  <h3>Articles de la semaine</h3>
+
+  <div class="biblio-filters">
+    <label><input type="checkbox" value="Réanimation" checked> Réanimation</label>
+    <label><input type="checkbox" value="Anesthésie" checked> Anesthésie</label>
+    <label><input type="checkbox" value="Cardiologie" checked> Cardiologie</label>
+    <label><input type="checkbox" value="Chirurgie cardiaque" checked> Chirurgie cardiaque</label>
+    <label><input type="checkbox" value="Infectiologie" checked> Infectiologie</label>
+  </div>
+</div>
           <div class="biblio-table-wrap">
             <table class="biblio-table biblio-live-table">
               <thead>
