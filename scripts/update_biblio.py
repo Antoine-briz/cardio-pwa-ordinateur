@@ -685,12 +685,12 @@ def update_publications() -> None:
 
         final_selection.extend(group[:5])
 
-    final_selection = sorted(
+        final_selection = sorted(
         final_selection,
         key=lambda x: (domain_order.index(x.domaine), -x.score)
     )
 
-      # Résumés LLM uniquement pour les 25 articles sélectionnés
+    # Résumés LLM uniquement pour les 25 articles sélectionnés
     for item in final_selection:
         full_abstract = ""
 
@@ -707,7 +707,7 @@ def update_publications() -> None:
             item.description or "Résumé automatique indisponible pour cet article."
         )
 
-        time.sleep(1.2)
+        time.sleep(3.0)
 
 
   
