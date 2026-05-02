@@ -1,5 +1,15 @@
 [
   {
+    "source": "Am J Emerg Med",
+    "date": "2026 Apr 25",
+    "titre": "Alcoholic cardiomyopathy presenting with severe circulatory failure requiring mechanical circulatory support: A systematic review.",
+    "description": "Cette étude visait à évaluer les résultats de survie et la récupération myocardique chez les patients atteints de MCA présentant une insuffisance circulatoire sévère. CONTEXTE : La cardiomyopathie alcoolique (MAC) est une forme potentiellement réversible de cardiomyopathie dilatée associée à une consommation...",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42066650/",
+    "domaine": "Réanimation",
+    "citations": "0",
+    "score": "100"
+  },
+  {
     "source": "Trauma Case Rep",
     "date": "2026 Apr 22",
     "titre": "Survival after severe blunt cardiac injury: Right atrial rupture.",
@@ -46,8 +56,18 @@
     "description": "RÉSULTATS : Cinquante-trois patients ont été inscrits ; 44 ont été inclus dans l’analyse modifiée en intention de traiter (ESPB n = 23 ; TEA n = 21). Les critères de jugement secondaires, notamment les scores de douleur, la consommation d'opioïdes, les scores de qualité de récupération-15 et les évaluations de la...",
     "lien": "https://pubmed.ncbi.nlm.nih.gov/42051755/",
     "domaine": "Anesthésie",
+    "citations": "1",
+    "score": "116"
+  },
+  {
+    "source": "Int J Obstet Anesth",
+    "date": "2026 Apr 24",
+    "titre": "Anaesthetic management of obstetric patients with Chiari 1 malformation with or without syringomyelia: a multidisciplinary consensus statement from the Obstetric Anaesthetists' Association (OAA).",
+    "description": "Nous n'avons trouvé pratiquement aucune preuve publiée sur la prise en charge anesthésique péripartum des patientes obstétricales présentant des symptômes significatifs ou rares de malformation de Chiari. L'objectif du groupe d'experts était de réaliser une revue de la littérature et d'évaluer de manière critique...",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42066719/",
+    "domaine": "Anesthésie",
     "citations": "0",
-    "score": "115"
+    "score": "110"
   },
   {
     "source": "Arthroplast Today",
@@ -120,14 +140,14 @@
     "score": "95"
   },
   {
-    "source": "J Cardiothorac Surg",
-    "date": "2026 Apr 25",
-    "titre": "Screening rates and geographical disparities shape venous thromboembolism risk after cardiac surgery: a systematic review and meta-analysis.",
-    "description": "Résumé automatique indisponible pour cet article.",
-    "lien": "https://pubmed.ncbi.nlm.nih.gov/42035171/",
-    "domaine": "Chirurgie cardiaque",
+    "source": "Int J Cardiol Heart Vasc",
+    "date": "2026 Apr 20",
+    "titre": "Cardiac dysfunction after acute ischaemic stroke: Long-term outcomes from the SICFAIL cohort.",
+    "description": "Nous avons étudié si ces phénotypes cardiaques, considérés comme des entités distinctes, étaient associés à la réadmission et au décès dans les deux ans suivant un accident vasculaire cérébral dans la cohorte prospective SICFAIL. RÉSULTATS : Sur 696 patients inscrits, 644 (92,5 %) avaient des données...",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42058759/",
+    "domaine": "Cardiologie",
     "citations": "0",
-    "score": "125"
+    "score": "95"
   },
   {
     "source": "Hematol Transfus Cell Ther",
@@ -160,6 +180,46 @@
     "score": "100"
   },
   {
+    "source": "Health Sci Rep",
+    "date": "2026 Apr 22",
+    "titre": "Predicting Factors Affecting Postoperative Length of Stay in Patients Undergoing Coronary Artery Bypass Graft Surgery Using Machine Learning Methods: A Systematic Review.",
+    "description": "Le résultat a montré qu’il existe 56 facteurs efficaces pour prédire le PLOS chez les patients subissant un PAC. RÉSULTAT : Au total, 9 715 articles ont été identifiés après suppression des doublons.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42040917/",
+    "domaine": "Chirurgie cardiaque",
+    "citations": "0",
+    "score": "100"
+  },
+  {
+    "source": "Braz J Anesthesiol",
+    "date": "2026 Apr 24",
+    "titre": "Clinical impact of extubation in the operating room after cardiac surgery: a retrospective analysis of a prospective registry.",
+    "description": "CONCLUSION : Dans cette analyse monocentrique et robustement ajustée, l'extubation en salle d'opération était associée à des résultats favorables, notamment une mortalité plus faible à 30 jours et une utilisation réduite des ressources chez des patients hautement sélectionnés. RÉSULTATS : Sur les 846 patients, 115...",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42035915/",
+    "domaine": "Chirurgie cardiaque",
+    "citations": "0",
+    "score": "95"
+  },
+  {
+    "source": "Water Res",
+    "date": "2026 Apr 23",
+    "titre": "Ripples of resistance: Unveiling antimicrobial resistance dynamics along Switzerland's Aare river.",
+    "description": "Les résultats ont révélé une augmentation progressive de l’abondance des ARG en aval, entraînée par les effluents des STEP enrichis en ARG. Cette étude fournit la première référence détaillée pour la prévalence de l'ARG le long d'un grand système fluvial suisse, depuis les cours supérieurs immaculés jusqu'aux cours...",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42066401/",
+    "domaine": "Infectiologie",
+    "citations": "0",
+    "score": "65"
+  },
+  {
+    "source": "Immunobiology",
+    "date": "2026 Apr 25",
+    "titre": "Complement in tuberculosis infection and disease, a battle of two ancients.",
+    "description": "La tuberculose continue de tuer plus d'un million de personnes chaque année, et 10 millions de personnes supplémentaires tombent malades. Les efforts en cours pour éradiquer la maladie sont entravés par une compréhension incomplète des mécanismes impliqués dans la défense contre la tuberculose.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42066380/",
+    "domaine": "Infectiologie",
+    "citations": "0",
+    "score": "65"
+  },
+  {
     "source": "ACS Appl Nano Mater",
     "date": "2026 Apr 13",
     "titre": "Bimetallic Silver-Gold Nanoplates for Photothermal Antimicrobial Therapy: Integrating High Efficiency with Stable and Multifunctional Design.",
@@ -185,16 +245,6 @@
     "titre": "Bacillus-based probiotics and fermented products as alternatives to antibiotic growth promoters in poultry: Current perspectives.",
     "description": "Cependant, en raison des problèmes de coût, de durabilité et de faisabilité associés à cette stratégie, la fermentation à l’état solide attire de plus en plus l’attention. Cette revue traite des dernières avancées dans l'application de Bacillus comme alternative aux AGP pour promouvoir la santé intestinale et les...",
     "lien": "https://pubmed.ncbi.nlm.nih.gov/42061257/",
-    "domaine": "Infectiologie",
-    "citations": "0",
-    "score": "65"
-  },
-  {
-    "source": "Vet Microbiol",
-    "date": "2026 Apr 20",
-    "titre": "Phage therapy: A novel strategy to combat drug-resistant Salmonella Pullorum infection in chickens.",
-    "description": "Le traitement avec vB_SpuM_18, vB_SpuM_23 ou un cocktail de phages (chacun à raison de 1 × 1010 PFU par poussin et par dose, administré par voie orale deux fois par jour) a significativement amélioré les résultats par rapport aux témoins PBS. La microscopie électronique à transmission (TEM) a révélé que tous les...",
-    "lien": "https://pubmed.ncbi.nlm.nih.gov/42061220/",
     "domaine": "Infectiologie",
     "citations": "0",
     "score": "65"
