@@ -26743,15 +26743,16 @@ async function loadBiblioJsonTable(url, tbodyId) {
 </td>
   </tr>
 `).join("");
-
+setupBiblioFilters();
+    
   } catch (err) {
     tbody.innerHTML = `<tr><td colspan="4">Impossible de charger les données.</td></tr>`;
   }
 }
 
-function setupBiblioFilters() {
+function setupBiblioFilters(tbodyId) {
   const checkboxes = document.querySelectorAll(".biblio-filters input");
-  const rows = document.querySelectorAll(".biblio-table tbody tr");
+  const rows = document.querySelectorAll(`#${tbodyId} tr`);
 
   function updateFilter() {
     const activeDomains = Array.from(checkboxes)
