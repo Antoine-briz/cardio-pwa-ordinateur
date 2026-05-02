@@ -659,8 +659,7 @@ def update_publications() -> None:
             source=venue,
             date=pub_date,
             titre=title,
-            description=llm_abstract_summary(
-              title,
+            description=smart_abstract_summary(
               abstract,
               "Résumé automatique indisponible pour cet article."
             ),
@@ -684,13 +683,33 @@ def update_publications() -> None:
         group = [item for item in items if item.domaine == domain]
         group = sorted(group, key=lambda x: x.score, reverse=True)
 
-        final_selection.extend(group[:4])
+        final_selection.extend(group[:5])
 
     final_selection = sorted(
         final_selection,
         key=lambda x: (domain_order.index(x.domaine), -x.score)
     )
+  # Résumés LLM uniquement pour les 25 articles sélectionnés
+for item in final_selection:
+    full_abstract = ""
 
+    for pmid in pmids:
+        summary = summaries.get(str(pmid), {})
+        if clean_title(summary.get("title", "")) == item.titre:
+            sem = semantic.get(str(pmid))
+            full_abstract = (sem or {}).get("abstract") or abstracts.get(str(pmid), "")
+            break
+
+    item.description = llm_abstract_summary(
+        item.titre,
+        full_abstract,
+        item.description or "Résumé automatique indisponible pour cet article."
+    )
+
+    time.sleep(1.2)
+
+
+  
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 
     PUBLICATIONS_PATH.write_text(
