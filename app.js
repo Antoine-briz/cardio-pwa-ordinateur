@@ -26745,6 +26745,29 @@ async function loadBiblioJsonTable(url, tbodyId) {
   }
 }
 
+function setupBiblioFilters() {
+  const checkboxes = document.querySelectorAll(".biblio-filters input");
+  const rows = document.querySelectorAll(".biblio-table tbody tr");
+
+  function updateFilter() {
+    const activeDomains = Array.from(checkboxes)
+      .filter(cb => cb.checked)
+      .map(cb => cb.value);
+
+    rows.forEach(row => {
+      const domain = row.getAttribute("data-domain");
+
+      if (activeDomains.includes(domain)) {
+        row.style.display = "";
+      } else {
+        row.style.display = "none";
+      }
+    });
+  }
+
+  checkboxes.forEach(cb => cb.addEventListener("change", updateFilter));
+}
+
 function biblioBadgeHtml(item) {
   const text = `${item.titre || ""} ${item.description || ""}`.toLowerCase();
 
