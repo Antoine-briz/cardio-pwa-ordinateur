@@ -26702,9 +26702,6 @@ async function loadBiblioRecommandationsTable(url, tbodyId) {
         </td>
       </tr>
     `).join("");
-
-// ✅ ICI
-setupBiblioFilters(tbodyId);
     
   } catch (err) {
     tbody.innerHTML = `<tr><td colspan="3">Impossible de charger les données.</td></tr>`;
@@ -26743,7 +26740,9 @@ async function loadBiblioJsonTable(url, tbodyId) {
 </td>
   </tr>
 `).join("");
-setupBiblioFilters();
+
+    // ✅ ICI
+setupBiblioFilters(tbodyId);
     
   } catch (err) {
     tbody.innerHTML = `<tr><td colspan="4">Impossible de charger les données.</td></tr>`;
