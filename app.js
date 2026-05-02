@@ -26703,6 +26703,9 @@ async function loadBiblioRecommandationsTable(url, tbodyId) {
       </tr>
     `).join("");
 
+// ✅ ACTIVER FILTRE
+setupBiblioFilters();
+    
   } catch (err) {
     tbody.innerHTML = `<tr><td colspan="3">Impossible de charger les données.</td></tr>`;
   }
