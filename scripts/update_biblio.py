@@ -689,24 +689,25 @@ def update_publications() -> None:
         final_selection,
         key=lambda x: (domain_order.index(x.domaine), -x.score)
     )
-  # Résumés LLM uniquement pour les 25 articles sélectionnés
-for item in final_selection:
-    full_abstract = ""
 
-    for pmid in pmids:
-        summary = summaries.get(str(pmid), {})
-        if clean_title(summary.get("title", "")) == item.titre:
-            sem = semantic.get(str(pmid))
-            full_abstract = (sem or {}).get("abstract") or abstracts.get(str(pmid), "")
-            break
+      # Résumés LLM uniquement pour les 25 articles sélectionnés
+    for item in final_selection:
+        full_abstract = ""
 
-    item.description = llm_abstract_summary(
-        item.titre,
-        full_abstract,
-        item.description or "Résumé automatique indisponible pour cet article."
-    )
+        for pmid in pmids:
+            summary = summaries.get(str(pmid), {})
+            if clean_title(summary.get("title", "")) == item.titre:
+                sem = semantic.get(str(pmid))
+                full_abstract = (sem or {}).get("abstract") or abstracts.get(str(pmid), "")
+                break
 
-    time.sleep(1.2)
+        item.description = llm_abstract_summary(
+            item.titre,
+            full_abstract,
+            item.description or "Résumé automatique indisponible pour cet article."
+        )
+
+        time.sleep(1.2)
 
 
   
