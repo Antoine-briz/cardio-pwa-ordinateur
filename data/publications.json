@@ -3,21 +3,101 @@
     "source": "Am J Emerg Med",
     "date": "2026 Apr 25",
     "titre": "Alcoholic cardiomyopathy presenting with severe circulatory failure requiring mechanical circulatory support: A systematic review.",
-    "description": "Cette revue systématique vise à évaluer les résultats de survie et la récupération myocardique chez des patients présentant une cardiomyopathie alcoolique (ACM) avec échec circulatoire sévère nécessitant un soutien circulatoire mécanique. L'analyse de cinq études sur dix patients a montré que tous ont survécu et, parmi ceux ayant des données de suivi, la fraction d'éjection ventriculaire gauche s'est améliorée significativement, soulignant la réversibilité potentielle de cette condition même en cas de...",
+    "description": "Cette étude systématique vise à évaluer les résultats de survie et la récupération myocardique chez des patients présentant une cardiomyopathie alcoolique (ACM) avec défaillance circulatoire sévère nécessitant un support circulatoire mécanique. Les résultats montrent une amélioration significative de la fonction ventriculaire gauche chez les patients traités, soulignant que l'ACM peut être potentiellement réversible même en cas de choc cardiogénique sévère.",
     "lien": "https://pubmed.ncbi.nlm.nih.gov/42066650/",
     "domaine": "Réanimation",
     "citations": "0",
     "score": "100"
   },
   {
+    "source": "Trauma Case Rep",
+    "date": "2026 Apr 22",
+    "titre": "Survival after severe blunt cardiac injury: Right atrial rupture.",
+    "description": "Cet article présente un cas de rupture du cœur due à un traumatisme contondant, survenu après un accident de la route à grande vitesse. L'objectif est de montrer que, bien que ce type de blessure soit souvent fatal, une intervention rapide avec réanimation par transfusions sanguines et un traitement chirurgical urgent peuvent améliorer les chances de survie, comme l'illustre ce cas où une anomalie cardiaque rare a été détectée par échographie après l'accident.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42064755/",
+    "domaine": "Réanimation",
+    "citations": "0",
+    "score": "90"
+  },
+  {
+    "source": "Int J Womens Health",
+    "date": "2026 Apr 25",
+    "titre": "Red Cell Distribution Width-to-Albumin Ratio as a Predictor of Preeclampsia in Advanced Maternal Age: A Retrospective Cohort Study.",
+    "description": "Cette étude de cohorte rétrospective a examiné l'association entre le rapport de largeur de distribution des globules rouges à l'albumine (RAR) et le risque de prééclampsie chez des femmes âgées de 35 ans et plus. Les résultats montrent qu'une augmentation du RAR en début de grossesse est corrélée à une hausse significative du risque de prééclampsie, en particulier chez les femmes obèses, suggérant que le RAR pourrait être un biomarqueur utile pour le dépistage précoce dans cette population.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42064359/",
+    "domaine": "Réanimation",
+    "citations": "0",
+    "score": "70"
+  },
+  {
+    "source": "Infect Drug Resist",
+    "date": "2026 Apr 25",
+    "titre": "Predictive Value of Nutritional Status in Sputum Culture Conversion Among Patients with Nontuberculous Mycobacterial Pulmonary Disease: A Retrospective Cohort Study.",
+    "description": "Cette étude rétrospective a examiné la valeur prédictive du statut nutritionnel sur la conversion des cultures de crachats chez 416 patients atteints de maladie pulmonaire à mycobactéries non tuberculeuses (NTM-PD). Les résultats montrent que les patients malnutris ont des taux de conversion significativement plus bas et que l'âge, l'IMC, l'hémoglobine et les protéines totales sont des prédicteurs indépendants de cette conversion, avec un modèle combiné montrant une performance prédictive solide.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42064296/",
+    "domaine": "Réanimation",
+    "citations": "0",
+    "score": "70"
+  },
+  {
+    "source": "Am J Emerg Med",
+    "date": "2026 Apr 22",
+    "titre": "Analysis of risk factors for concurrent osteomyelitis in children with septic arthritis: A retrospective cohort study.",
+    "description": "Cette étude rétrospective sur 132 enfants traités chirurgicalement pour arthrite septique vise à identifier les facteurs de risque de l'ostéomyélite concomitante. Les résultats montrent que des retards de plus de 7,5 jours avant la chirurgie, une température préopératoire élevée et une infection par Staphylococcus aureus sont des prédicteurs indépendants significatifs de cette complication, soulignant l'importance d'une vigilance accrue chez ces patients.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42061203/",
+    "domaine": "Réanimation",
+    "citations": "0",
+    "score": "70"
+  },
+  {
     "source": "J Pain Res",
     "date": "2026 Apr 22",
     "titre": "Continuous Erector Spinae Plane Block versus Thoracic Epidural Analgesia After Thoracotomy: A Randomized Controlled Assessor-Blinded Non-Inferiority Trial.",
-    "description": "Cette étude randomisée et contrôlée vise à comparer l'efficacité analgésique d'un bloc continu du plan érecteur du rachis (ESPB) à celle de l'analgésie épidurale thoracique (TEA) après thoracotomie. Les résultats montrent que l'ESPB offre une analgésie non inférieure à celle de la TEA, avec des scores de douleur similaires et aucun événement indésirable majeur, suggérant qu'il pourrait être une alternative sécuritaire et plus simple à la TEA.",
+    "description": "Cette étude randomisée et contrôlée évalue si le bloc de l'ESPB continu fournit une analgésie non inférieure à celle de l'anesthésie péridurale thoracique (TEA) après thoracotomie. Les résultats montrent que les scores de douleur au repos lors du premier jour postopératoire étaient comparables entre les groupes ESPB et TEA, suggérant que l'ESPB pourrait être une alternative sûre et efficace à la TEA pour le contrôle de la douleur postopératoire.",
     "lien": "https://pubmed.ncbi.nlm.nih.gov/42051755/",
     "domaine": "Anesthésie",
     "citations": "1",
     "score": "116"
+  },
+  {
+    "source": "Int J Obstet Anesth",
+    "date": "2026 Apr 24",
+    "titre": "Anaesthetic management of obstetric patients with Chiari 1 malformation with or without syringomyelia: a multidisciplinary consensus statement from the Obstetric Anaesthetists' Association (OAA).",
+    "description": "L'objectif de cette étude est d'établir un consensus sur la prise en charge anesthésique des patientes obstétriques atteintes de malformation de Chiari 1, avec ou sans syringomyélie, en raison de la variabilité des pratiques et du manque de preuves solides. Un groupe d'experts a examiné la littérature, menant à huit recommandations et dix déclarations basées sur des niveaux de certitude faibles ou modérés, soulignant que la plupart des patientes asymptômatiques peuvent être gérées selon les protocoles...",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42066719/",
+    "domaine": "Anesthésie",
+    "citations": "0",
+    "score": "110"
+  },
+  {
+    "source": "Arthroplast Today",
+    "date": "2026 Apr 20",
+    "titre": "Objective Sleep Disturbance After Total Hip and Knee Arthroplasty: A Systematic Review of Wearable-Derived Metrics and Targeted Interventions.",
+    "description": "L'objectif de cette revue systématique est d'examiner les perturbations du sommeil objectivement mesurées chez les patients après une arthroplastie totale de la hanche ou du genou, à l'aide de dispositifs portables. Les résultats montrent une perturbation significative du sommeil en période postopératoire précoce, souvent sous-estimée par les questionnaires subjectifs, avec une récupération progressive au fil du temps et des interventions pharmacologiques ayant peu d'impact sur la durée ou l'architecture du...",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42058459/",
+    "domaine": "Anesthésie",
+    "citations": "0",
+    "score": "100"
+  },
+  {
+    "source": "Drug Des Devel Ther",
+    "date": "2026 Apr 23",
+    "titre": "Perioperative Flurbiprofen Axetil Administration and Acute Kidney Injury After Non-Cardiac Surgery: A Retrospective Cohort Study.",
+    "description": "Cette étude rétrospective a évalué l'impact de l'administration de flurbiprofen axétil (FA) sur l'insuffisance rénale aiguë (IRA) après une chirurgie non cardiaque chez 45,062 patients. Les résultats montrent que l'administration de FA pendant et après la chirurgie est associée à un risque réduit d'IRA, tandis que seule l'administration postoperative diminue les événements cardiovasculaires indésirables.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42052105/",
+    "domaine": "Anesthésie",
+    "citations": "0",
+    "score": "95"
+  },
+  {
+    "source": "ESMO Gastrointest Oncol",
+    "date": "2026 Apr 21",
+    "titre": "UCCL-IKF-AIO-STO-0124 NeoART-an international phase Ib/II platform trial investigating trastuzumab deruxtecan (T-DXd) combined with neoadjuvant chemotherapy for HER2-positive, resectable esophagogastric adenocarcinoma (EGA).",
+    "description": "L'étude UCCL-IKF-AIO-STO-0124 NeoART est un essai clinique international de phase Ib/II visant à évaluer la faisabilité, la sécurité et l'efficacité de divers régimes néoadjuvants combinant trastuzumab deruxtecan (T-DXd) avec une chimiothérapie chez des patients atteints d'adénocarcinome œsogastrique résécable et positif pour HER2. L'objectif principal est de déterminer le taux de faisabilité des différentes cohortes.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42058637/",
+    "domaine": "Anesthésie",
+    "citations": "0",
+    "score": "90"
   },
   {
     "source": "JACC Clin Electrophysiol",
@@ -30,21 +110,141 @@
     "score": "120"
   },
   {
+    "source": "Eur Heart J Open",
+    "date": "2026 Apr 21",
+    "titre": "Physician-led telemedical care enhances blood pressure control in hypertension: a randomized-controlled pilot study (REMOTE-control-HTN).",
+    "description": "Cette étude contrôlée randomisée a évalué l'impact de soins télémedicalisés dirigés par un médecin sur le contrôle de la pression artérielle chez des adultes souffrant d'hypertension non contrôlée. Les résultats montrent que le groupe bénéficiant de cette intervention a présenté une diminution significative de la pression systolique et une meilleure adhérence aux mesures de pression artérielle comparativement au groupe de soins standard, soulignant l'efficacité de la télémedecine dans la gestion de cette...",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42064617/",
+    "domaine": "Cardiologie",
+    "citations": "0",
+    "score": "120"
+  },
+  {
+    "source": "Int J Cardiol Heart Vasc",
+    "date": "2026 Apr 20",
+    "titre": "Persistent left superior vena cava is associated with complex atrial tachyarrhythmias in repaired tetralogy of Fallot: evidence for a right-sided arrhythmogenic substrate.",
+    "description": "Cette étude rétrospective a examiné 137 patients présentant une tétralogie de Fallot réparée, mettant en évidence que la présence d'une veine cave supérieure gauche persistante (PLSVC) est fortement associée à des tachyarrhythmies atriales complexes, notamment la fibrillation auriculaire (FA). Les résultats suggèrent que la PLSVC pourrait influencer les stratégies d'ablation des arythmies.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42058757/",
+    "domaine": "Cardiologie",
+    "citations": "0",
+    "score": "115"
+  },
+  {
+    "source": "JACC Cardiovasc Imaging",
+    "date": "2026 Apr 24",
+    "titre": "Deep Learning for Cardiac Image Analysis: Unveiling Advances in Deep Learning Architectures.",
+    "description": "Cet article passe en revue les avancées récentes en apprentissage profond (DL) appliquées à l'analyse des images cardiaques, en mettant l'accent sur des méthodes novatrices comme les réseaux neuronaux graphiques, les transformateurs et les réseaux antagonistes génératifs. L'objectif est d'améliorer le modélisation anatomique et fonctionnelle des images tout en abordant les défis et les implications cliniques futures de ces technologies.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42065698/",
+    "domaine": "Cardiologie",
+    "citations": "0",
+    "score": "95"
+  },
+  {
+    "source": "Int J Cardiol Heart Vasc",
+    "date": "2026 Apr 20",
+    "titre": "Cardiac dysfunction after acute ischaemic stroke: Long-term outcomes from the SICFAIL cohort.",
+    "description": "Cette étude prospective de la cohorte SICFAIL examine l'impact de la dysfonction systolique et de l'insuffisance cardiaque cliniquement manifeste sur les réhospitalisations et la mortalité dans les deux ans suivant un AVC ischémique aigu. Les résultats montrent que la dysfonction systolique et l'insuffisance cardiaque cliniquement manifeste sont associées à un risque accru de réhospitalisation ou de décès, tandis que la dysfonction diastolique ne semble pas avoir d'impact significatif.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42058759/",
+    "domaine": "Cardiologie",
+    "citations": "0",
+    "score": "95"
+  },
+  {
     "source": "Hematol Transfus Cell Ther",
     "date": "2026 Apr 26",
     "titre": "Post-operative atrial fibrillation, intraoperative autologous blood salvage and transfusion in cardiac surgery.",
-    "description": "Cette étude vise à évaluer la relation entre la fibrillation atriale postopératoire, la récupération de sang autologue en peropératoire et la transfusion sanguine chez des patients subissant une chirurgie cardiaque. Sur 357 patients, il a été observé qu'aucune association significative n'existe entre la quantité de sang autologue récupéré et le risque de fibrillation, tandis que les transfusions homologues étaient liées à un risque accru de mortalité et de fibrillation atriale postopératoire.",
+    "description": "Cette étude évalue la relation entre la fibrillation auriculaire postopératoire, la récupération de sang autologue et la transfusion sanguine chez 357 patients adultes subissant une chirurgie cardiaque. Les résultats montrent que la transfusion de sang homologué augmente significativement le risque de mortalité et de fibrillation auriculaire, tandis que la quantité de sang autologue récupéré n'est pas associée à un risque accru de ces complications.",
     "lien": "https://pubmed.ncbi.nlm.nih.gov/42044626/",
     "domaine": "Chirurgie cardiaque",
     "citations": "0",
     "score": "115"
   },
   {
+    "source": "Crit Care",
+    "date": "2026 Apr 25",
+    "titre": "Magnitude and pattern of breathing effort during spontaneous breathing trials after cardiac surgery: a physiological model of sustained breathing effort despite diaphragm dysfunction.",
+    "description": "Résumé automatique indisponible pour cet article.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42035193/",
+    "domaine": "Chirurgie cardiaque",
+    "citations": "0",
+    "score": "115"
+  },
+  {
+    "source": "Am J Cardiol",
+    "date": "2026 Apr 25",
+    "titre": "Comparison of percutaneous Intervention with dRug Coated balloons and drug Eluting stents for de novo coronary artery disease: CIRCE, a systematic review and meta-analysis.",
+    "description": "Cette étude systématique et méta-analyse compare la sécurité et l'efficacité à court et long terme des ballons à libération de médicament (DCB) par rapport aux stents à élution de médicament (DES) chez des patients présentant une maladie coronarienne de novo. Les résultats montrent que les deux interventions ne diffèrent pas significativement en termes d'événements cliniques majeurs, mais que les DCB sont associés à une incidence inférieure des saignements majeurs.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42044785/",
+    "domaine": "Chirurgie cardiaque",
+    "citations": "0",
+    "score": "100"
+  },
+  {
+    "source": "Health Sci Rep",
+    "date": "2026 Apr 22",
+    "titre": "Predicting Factors Affecting Postoperative Length of Stay in Patients Undergoing Coronary Artery Bypass Graft Surgery Using Machine Learning Methods: A Systematic Review.",
+    "description": "Cette revue systématique a pour objectif d'identifier les facteurs influençant la durée de séjour postopératoire chez les patients subissant une chirurgie de pontage aortocoronaire (CABG), en utilisant des méthodes d'apprentissage automatique. Après examen de 9715 articles, 20 études ont été retenues, mettant en avant 56 facteurs prédictifs, dont 15, tels que l'âge, le sexe et la fonction cardiaque, qui sont couramment cités comme déterminants de la durée du séjour à l'hôpital.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42040917/",
+    "domaine": "Chirurgie cardiaque",
+    "citations": "0",
+    "score": "100"
+  },
+  {
+    "source": "Braz J Anesthesiol",
+    "date": "2026 Apr 24",
+    "titre": "Clinical impact of extubation in the operating room after cardiac surgery: a retrospective analysis of a prospective registry.",
+    "description": "Cette étude rétrospective analyse l'impact de l'extubation immédiate en salle d'opération après une chirurgie cardiaque, en comparant 115 patients extubés en salle d'opération à 731 extubés en unité de soins intensifs. Les résultats montrent que l'extubation en salle d'opération réduit significativement la mortalité à 30 jours et le risque de l'insuffisance rénale aiguë, tout en diminuant la durée de séjour en soins intensifs, sans augmentation des taux de réintubation ou d'infections respiratoires.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42035915/",
+    "domaine": "Chirurgie cardiaque",
+    "citations": "0",
+    "score": "95"
+  },
+  {
     "source": "Water Res",
     "date": "2026 Apr 23",
     "titre": "Ripples of resistance: Unveiling antimicrobial resistance dynamics along Switzerland's Aare river.",
-    "description": "Cette étude examine l'impact des rejets des stations d'épuration d'eaux usées sur la propagation de la résistance antimicrobienne (RAM) le long de l'Aare, la plus longue rivière de Suisse. À travers des analyses détaillées, les résultats montrent une augmentation progressive des gènes de résistance en aval, en particulier à proximité des effluents d'hôpitaux. Ce travail constitue une base essentielle pour la compréhension des dynamiques de RAM dans les écosystèmes aquatiques et la mise en place de futures...",
+    "description": "L'étude examine la dynamique de la résistance aux antimicrobiens (RAM) le long du fleuve Aare en Suisse, en évaluant l'impact des effluents des stations d'épuration. Grâce à des analyses moléculaires, les résultats montrent une augmentation progressive de la concentration de gènes de résistance aux antibiotiques en aval, attribuée aux déversements enrichis d'ARG. Cette recherche offre une première base de données sur la prévalence des ARG dans ce système fluvial et fournit des indications pour des futures...",
     "lien": "https://pubmed.ncbi.nlm.nih.gov/42066401/",
+    "domaine": "Infectiologie",
+    "citations": "0",
+    "score": "65"
+  },
+  {
+    "source": "Immunobiology",
+    "date": "2026 Apr 25",
+    "titre": "Complement in tuberculosis infection and disease, a battle of two ancients.",
+    "description": "L'objectif de cette étude est d'explorer le rôle du système du complément dans l'infection et la maladie tuberculeuse, à travers une revue des mécanismes de défense immunitaire impliqués. L'article souligne que, bien que les réponses T-cellulaires soient bien connues, le système du complément joue également un rôle crucial, tant protecteur que néfaste, et pourrait être utilisé pour améliorer le diagnostic, les vaccins et les traitements contre la tuberculose.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42066380/",
+    "domaine": "Infectiologie",
+    "citations": "0",
+    "score": "65"
+  },
+  {
+    "source": "ACS Appl Nano Mater",
+    "date": "2026 Apr 13",
+    "titre": "Bimetallic Silver-Gold Nanoplates for Photothermal Antimicrobial Therapy: Integrating High Efficiency with Stable and Multifunctional Design.",
+    "description": "L'objectif de cette étude est de développer des nanoplates bimetalliques en argent et or pour la thérapie photothermique antimicrobienne, en évaluant leur efficacité et leur stabilité. Ce travail démontre que les nanoplates synthétisées convertissent efficacement la lumière infrarouge en chaleur et présentent une activité antimicrobienne notable contre Pseudomonas aeruginosa et Staphylococcus aureus, tout en intégrant des principes de conception essentiels pour des applications thérapeutiques futures.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42064331/",
+    "domaine": "Infectiologie",
+    "citations": "0",
+    "score": "65"
+  },
+  {
+    "source": "Infect Drug Resist",
+    "date": "2026 Apr 25",
+    "titre": "Antimicrobial Resistance in Refugee Camps and Prisons: A Global Scoping Review of Primary Studies on Burden, Risk Factors, Surveillance, and Mitigation Strategies.",
+    "description": "Cette revue de portée examine la résistance aux antimicrobiens (RAM) dans les prisons et les camps de réfugiés, en se concentrant sur la charge, les facteurs de risque, la surveillance et les stratégies d'atténuation. Sur les 3 659 études analysées, 26 ont été retenues, montrant une prévalence élevée de germes multirésistants, notamment le MRSA et la tuberculose multirésistante. Les résultats soulignent la nécessité d'améliorer la surveillance et les programmes de gestion des antimicrobiens pour protéger ces...",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42064295/",
+    "domaine": "Infectiologie",
+    "citations": "0",
+    "score": "65"
+  },
+  {
+    "source": "Poult Sci",
+    "date": "2026 Apr 22",
+    "titre": "Bacillus-based probiotics and fermented products as alternatives to antibiotic growth promoters in poultry: Current perspectives.",
+    "description": "L'article examine les probiotiques à base de Bacillus et les produits fermentés comme alternatives aux promoteurs de croissance antibiotiques (AGPs) chez les volailles. Il s'agit d'une revue des avancées concernant l'utilisation de Bacillus pour améliorer la santé intestinale et la performance de croissance des oiseaux, en mettant l'accent sur la production par fermentation solide et les mécanismes d'action variés de ces produits par rapport aux AGPs.",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42061257/",
     "domaine": "Infectiologie",
     "citations": "0",
     "score": "65"
