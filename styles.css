@@ -14235,3 +14235,38 @@ body.theme-light .biblio-live-table thead th * {
 .biblio-reco-table td:nth-child(3) {
   width: 72% !important;
 }
+
+.biblio-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.biblio-header-row h3 {
+  margin: 0;
+  font-size: 18px; /* adapte si besoin */
+  white-space: nowrap;
+}
+
+.biblio-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: nowrap; /* ❗ empêche retour à la ligne */
+  font-size: 12px;   /* plus petit que le titre */
+  align-items: center;
+}
+
+.biblio-filters label {
+  background: #eef3f8;
+  padding: 3px 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap; /* ❗ empêche coupure du texte */
+}
+
+.biblio-filters input {
+  margin-right: 4px;
+  transform: scale(0.9); /* rend la checkbox plus discrète */
+}
