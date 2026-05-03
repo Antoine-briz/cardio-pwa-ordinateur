@@ -126,9 +126,10 @@ class BiblioItem:
     citation_count: int = 0
     score: float = 0.0
     domaine: str = ""
+    documents: Optional[List[Dict[str, str]]] = None
 
-    def as_json(self) -> Dict[str, str]:
-        return {
+    def as_json(self) -> Dict[str, Any]:
+        data = {
             "source": self.source,
             "date": self.date,
             "titre": self.titre,
@@ -139,6 +140,10 @@ class BiblioItem:
             "score": str(round(self.score, 1)),
         }
 
+        if self.documents:
+            data["documents"] = self.documents
+
+        return data
 
 def http_json(
     url: str,
@@ -825,6 +830,184 @@ def fetch_html(url: str) -> str:
     with urllib.request.urlopen(req, timeout=30) as resp:
         return resp.read().decode("utf-8", errors="replace")
 
+
+def extract_recommendation_candidates(source: str, page_url: str, max_candidates: int = 100) -> List[Dict[str, str]]:
+    html = fetch_html(page_url)
+
+    links = re.findall(
+        r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>',
+        html,
+        flags=re.I | re.S
+    )
+
+    candidates = []
+
+    for href, label_html in links:
+        title = html_text_snippet(label_html, 320)
+        if not title or len(title) < 10:
+            continue
+
+        low = f"{title} {href}".lower()
+
+        if any(x in low for x in [
+            "accueil", "contact", "connexion", "login", "adhérer",
+            "facebook", "twitter", "linkedin", "youtube", "instagram",
+            "mentions", "privacy", "cookies", "search", "rechercher",
+            "congrès", "agenda", "formation", "newsletter", "sitemap",
+            "membership", "education", "about", "news"
+        ]):
+            continue
+
+        if not any(x in low for x in [
+            "recommandation", "recommandations",
+            "guideline", "guidelines",
+            "rfe", "rpp", "consensus",
+            "référentiel", "referentiel",
+            "prise en charge",
+            "clinical practice",
+            "practice guideline",
+            "position statement",
+            "diaporama"
+        ]):
+            continue
+
+        full_url = urllib.parse.urljoin(page_url, href)
+
+        year_match = re.search(r"(20\d{2})", title + " " + href)
+        year = year_match.group(1) if year_match else "À vérifier"
+
+        candidates.append({
+            "source": source,
+            "date": year,
+            "titre": title,
+            "description": "",
+            "lien": full_url,
+        })
+
+    seen = set()
+    unique = []
+
+    for item in candidates:
+        key = (item["titre"].lower().strip(), item["lien"])
+        if key in seen:
+            continue
+        seen.add(key)
+        unique.append(item)
+
+    return unique[:max_candidates]
+
+
+def llm_select_recommendations(source: str, page_url: str, candidates: List[Dict[str, str]]) -> List[Dict[str, str]]:
+    if not candidates:
+        return []
+
+    if not OPENAI_API_KEY:
+        return candidates[:3]
+
+    prompt = f"""
+Tu es médecin anesthésiste-réanimateur et tu dois sélectionner les vraies recommandations officielles les plus récentes.
+
+Source : {source}
+Page officielle : {page_url}
+
+Parmi les candidats ci-dessous, sélectionne exactement les 3 recommandations/guidelines officielles les plus récentes.
+Exclus les liens de navigation, congrès, actualités, formation, vidéos, pages génériques, pages d'accueil et archives non pertinentes.
+
+Pour chaque recommandation, rédige une description courte en français, en une phrase, expliquant le thème principal.
+Ne pas inventer d'information absente du titre. Si le thème est incertain, rester général.
+
+Retourne uniquement un JSON valide sous cette forme :
+[
+  {{"date":"YYYY ou date courte", "titre":"...", "description":"...", "lien":"..."}},
+  {{"date":"YYYY ou date courte", "titre":"...", "description":"...", "lien":"..."}},
+  {{"date":"YYYY ou date courte", "titre":"...", "description":"...", "lien":"..."}}
+]
+
+Candidats :
+{json.dumps(candidates, ensure_ascii=False)}
+""".strip()
+
+    payload = {
+        "model": "gpt-4o-mini",
+        "input": prompt,
+    }
+
+    headers = {
+        "Authorization": f"Bearer {OPENAI_API_KEY}",
+        "Content-Type": "application/json",
+        "User-Agent": USER_AGENT,
+    }
+
+    try:
+        req = urllib.request.Request(
+            "https://api.openai.com/v1/responses",
+            data=json.dumps(payload).encode("utf-8"),
+            headers=headers,
+            method="POST",
+        )
+
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+
+        text = data.get("output_text", "").strip()
+
+        if not text:
+            text = data["output"][0]["content"][0]["text"].strip()
+
+        text = re.sub(r"^```json\s*|\s*```$", "", text.strip(), flags=re.I | re.S)
+        selected = json.loads(text)
+
+        if isinstance(selected, list):
+            return selected[:3]
+
+    except Exception as exc:
+        print(f"LLM recommandations indisponible pour {source}: {type(exc).__name__} - {exc}")
+
+    return candidates[:3]
+
+
+def fetch_society_recommendations(source: str, page_url: str) -> BiblioItem:
+    try:
+        candidates = extract_recommendation_candidates(source, page_url)
+        selected = llm_select_recommendations(source, page_url, candidates)
+
+        if not selected:
+            selected = [{
+                "date": "À vérifier",
+                "titre": f"Page officielle {source}",
+                "description": "Ouvrir la page officielle pour vérifier les dernières recommandations.",
+                "lien": page_url,
+            }]
+
+        dates = " / ".join([x.get("date", "") for x in selected if x.get("date")])
+
+        return BiblioItem(
+            source=source,
+            date=dates or "À vérifier",
+            titre=f"3 dernières recommandations {source}",
+            description="",
+            lien=selected[0].get("lien") or page_url,
+            domaine="Recommandations",
+            documents=selected,
+        )
+
+    except Exception as exc:
+        print(f"{source}: erreur recommandations: {exc}")
+
+        return BiblioItem(
+            source=source,
+            date="À vérifier",
+            titre=f"Page officielle {source}",
+            description="",
+            lien=page_url,
+            domaine="Recommandations",
+            documents=[{
+                "date": "À vérifier",
+                "titre": f"Page officielle {source}",
+                "description": "Impossible de récupérer automatiquement les recommandations.",
+                "lien": page_url,
+            }],
+        )
 
 def latest_link_from_page(source: str, page_url: str, keywords: List[str]) -> Optional[BiblioItem]:
     try:
@@ -1513,17 +1696,15 @@ def fetch_latest_eacts_guideline() -> Optional[BiblioItem]:
     )
 
 def update_recommandations() -> None:
-    print("Recherche des dernières recommandations sur les sites officiels")
+    print("Recherche intelligente des dernières recommandations officielles")
 
     items = [
-        fetch_latest_sfar_reco(),
-        fetch_latest_srlf_reco(),
-        fetch_latest_spilf_reco(),
-        fetch_latest_esc_guideline(),
-        fetch_latest_eacts_guideline(),
+        fetch_society_recommendations("SFAR", "https://sfar.org/recommandations/"),
+        fetch_society_recommendations("SRLF", "https://www.srlf.org/recommandations-referentiels-epp"),
+        fetch_society_recommendations("SPILF", "https://www.infectiologie.com/fr/diaporamas-recommandations.html"),
+        fetch_society_recommendations("ESC", "https://www.escardio.org/guidelines/clinical-practice-guidelines/all-esc-practice-guidelines/"),
+        fetch_society_recommendations("EACTS", "https://www.eacts.org/clinical-practice-guidelines/"),
     ]
-
-    items = [item for item in items if item is not None]
 
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -1532,7 +1713,7 @@ def update_recommandations() -> None:
         encoding="utf-8",
     )
 
-    print(f"{len(items)} recommandations officielles écrites dans {RECOMMANDATIONS_PATH}")
+    print(f"{len(items)} lignes de recommandations écrites dans {RECOMMANDATIONS_PATH}")
 
 def main() -> None:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
