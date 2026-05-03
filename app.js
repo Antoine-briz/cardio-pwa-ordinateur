@@ -26693,36 +26693,32 @@ async function loadBiblioRecommandationsTable(url, tbodyId) {
     }
 
     tbody.innerHTML = items.map(item => `
-      <tr class="biblio-click-row"
-          onclick="window.open('${escapeHtml(item.lien || "")}', '_blank', 'noopener,noreferrer')">
-        <td>${biblioSourceHtml(item.source || "", item.domaine || "")}</td>
+  <tr class="biblio-click-row"
+      onclick="window.open('${escapeHtml(item.lien || "")}', '_blank', 'noopener,noreferrer')">
+    <td>${biblioSourceHtml(item.source || "", item.domaine || "")}</td>
 
-        <td>
-          <div class="biblio-reco-docs">
-            ${(item.documents || []).map(doc => `
-              <a class="biblio-reco-doc"
-                 href="${escapeHtml(doc.lien || "")}"
-                 target="_blank"
-                 rel="noopener noreferrer"
-                 onclick="event.stopPropagation()">
-                <span class="biblio-reco-date">${escapeHtml(doc.date || "")}</span>
-                <span class="biblio-reco-title">${escapeHtml(doc.titre || "")}</span>
-              </a>
-            `).join("")}
-          </div>
-        </td>
+    <td colspan="2">
+      <div class="biblio-reco-grid">
+        ${(item.documents || []).map(doc => `
+          <div class="biblio-reco-row">
+            <a class="biblio-reco-title-block"
+               href="${escapeHtml(doc.lien || "")}"
+               target="_blank"
+               rel="noopener noreferrer"
+               onclick="event.stopPropagation()">
+              <span class="biblio-reco-date">${escapeHtml(doc.date || "")}</span>
+              <span class="biblio-reco-title">${escapeHtml(doc.titre || "")}</span>
+            </a>
 
-        <td>
-          <div class="biblio-reco-descriptions">
-            ${(item.documents || []).map(doc => `
-              <div class="biblio-reco-description">
-                ${escapeHtml(doc.description || "")}
-              </div>
-            `).join("")}
+            <div class="biblio-reco-description">
+              ${escapeHtml(doc.description || "")}
+            </div>
           </div>
-        </td>
-      </tr>
-    `).join("");
+        `).join("")}
+      </div>
+    </td>
+  </tr>
+`).join("");
 
   } catch (err) {
     tbody.innerHTML = `<tr><td colspan="3">Impossible de charger les données.</td></tr>`;
