@@ -14403,3 +14403,10 @@ body.theme-light .biblio-live-table thead th * {
   word-break: normal !important;
   min-height: 38px !important;
 }
+
+.biblio-reco-description {
+  font-weight: 400 !important; /* 👈 enlève le gras */
+}
+.biblio-reco-descriptions {
+  font-weight: 400 !important;
+}
