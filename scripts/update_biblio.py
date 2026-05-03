@@ -1009,6 +1009,86 @@ def fetch_society_recommendations(source: str, page_url: str) -> BiblioItem:
             }],
         )
 
+def fetch_spilf_recommendations() -> BiblioItem:
+    page_url = "https://www.infectiologie.com/fr/diaporamas-recommandations.html"
+    source = "SPILF"
+
+    try:
+        candidates = extract_recommendation_candidates(source, page_url, max_candidates=30)
+
+        if not candidates:
+            raise RuntimeError("Aucun candidat SPILF trouvé")
+
+        prompt = f"""
+Tu es médecin infectiologue et tu dois sélectionner les dernières recommandations officielles SPILF.
+
+Page officielle : {page_url}
+
+Important :
+- cette page est déjà organisée de la plus récente vers la plus ancienne ;
+- sélectionne les 3 recommandations les plus récentes affichées sur cette page ;
+- privilégie donc les premiers vrais liens de recommandations/diaporamas ;
+- exclus uniquement les menus, archives, navigation, réseaux sociaux, pages génériques.
+
+Pour chaque recommandation, rédige une description courte en français, en une phrase.
+
+Retourne uniquement un JSON valide :
+[
+  {{"date":"YYYY", "titre":"...", "description":"...", "lien":"..."}},
+  {{"date":"YYYY", "titre":"...", "description":"...", "lien":"..."}},
+  {{"date":"YYYY", "titre":"...", "description":"...", "lien":"..."}}
+]
+
+Candidats :
+{json.dumps(candidates, ensure_ascii=False)}
+""".strip()
+
+        if not OPENAI_API_KEY:
+            selected = candidates[:3]
+        else:
+            payload = {
+                "model": "gpt-4o-mini",
+                "input": prompt,
+            }
+
+            headers = {
+                "Authorization": f"Bearer {OPENAI_API_KEY}",
+                "Content-Type": "application/json",
+                "User-Agent": USER_AGENT,
+            }
+
+            req = urllib.request.Request(
+                "https://api.openai.com/v1/responses",
+                data=json.dumps(payload).encode("utf-8"),
+                headers=headers,
+                method="POST",
+            )
+
+            with urllib.request.urlopen(req, timeout=60) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+
+            text = data.get("output_text", "").strip()
+
+            if not text:
+                text = data["output"][0]["content"][0]["text"].strip()
+
+            text = re.sub(r"^```json\s*|\s*```$", "", text.strip(), flags=re.I | re.S)
+            selected = json.loads(text)[:3]
+
+        return BiblioItem(
+            source="SPILF",
+            date=" / ".join([x.get("date", "") for x in selected if x.get("date")]),
+            titre="3 dernières recommandations SPILF",
+            description="",
+            lien=selected[0].get("lien") if selected else page_url,
+            domaine="Recommandations",
+            documents=selected,
+        )
+
+    except Exception as exc:
+        print(f"SPILF recommandations indisponibles: {type(exc).__name__} - {exc}")
+        return fetch_society_recommendations("SPILF", page_url)
+
 def latest_link_from_page(source: str, page_url: str, keywords: List[str]) -> Optional[BiblioItem]:
     try:
         html = fetch_html(page_url)
@@ -1701,7 +1781,7 @@ def update_recommandations() -> None:
     items = [
         fetch_society_recommendations("SFAR", "https://sfar.org/recommandations/"),
         fetch_society_recommendations("SRLF", "https://www.srlf.org/recommandations-referentiels-epp"),
-        fetch_society_recommendations("SPILF", "https://www.infectiologie.com/fr/diaporamas-recommandations.html"),
+        fetch_spilf_recommendations(),
         fetch_society_recommendations("ESC", "https://www.escardio.org/guidelines/clinical-practice-guidelines/all-esc-practice-guidelines/"),
         fetch_society_recommendations("EACTS", "https://www.eacts.org/clinical-practice-guidelines/"),
     ]
