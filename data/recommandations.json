@@ -12,19 +12,19 @@
       {
         "date": "2026",
         "titre": "Gestion des anticoagulants pour une procédure invasive programmée",
-        "description": "Recommandations sur la gestion des anticoagulants avant une procédure invasive.",
+        "description": "Recommandations sur la gestion des anticoagulants avant une intervention chirurgicale.",
         "lien": "https://sfar.org/wp-content/uploads/2026/04/RFE-20.4.2026-deifinitif-et-validei.pdf"
       },
       {
         "date": "2025",
         "titre": "Prise en charge du sepsis du nouveau-né, de l’enfant et de l’adulte – HAS 2025",
-        "description": "Directives concernant la prise en charge du sepsis chez le nouveau-né, l'enfant et l'adulte.",
+        "description": "Lignes directrices pour le traitement du sepsis chez les patients de tout âge.",
         "lien": "https://sfar.org/prise-en-charge-du-sepsis-du-nouveau-ne-de-lenfant-et-de-ladulte-has-2025/"
       },
       {
         "date": "2024",
         "titre": "Recommandations de bonne pratique relatives aux démarches anticipées en vue de don d’organes et de tissus",
-        "description": "Guidelines concernant les démarches anticipées pour le don d'organes et de tissus.",
+        "description": "Directives concernant les démarches anticipées pour le don d'organes.",
         "lien": "https://sfar.org/wp-content/uploads/2024/10/RBP-deimarches-anticipeies_12_10_24.pdf"
       }
     ]
@@ -42,19 +42,19 @@
       {
         "date": "2024",
         "titre": "Conférence de consensus SRLF (2024) - Épuration Extra-Rénale en Réanimation",
-        "description": "Cette recommandation traite des méthodes d'épuration extra-rénale en milieu de réanimation.",
+        "description": "Discussion sur les pratiques et recommandations en matière d'épuration extra-rénale en réanimation.",
         "lien": "https://www.srlf.org/article/conference-consensus-srlf-2024-epuration-extra-renale-reanimation"
       },
       {
         "date": "2023",
         "titre": "Conférence de consensus SRLF (2023) - L'oxygénothérapie",
-        "description": "Ce consensus aborde les pratiques et recommandations concernant l'oxygénothérapie en réanimation.",
+        "description": "Analyse des meilleures pratiques et recommandations pour l'oxygénothérapie en réanimation.",
         "lien": "https://www.srlf.org/article/conference-consensus-srlf-2023-loxygenotherapie"
       },
       {
         "date": "À vérifier",
         "titre": "Encéphalopathie aiguë en réanimation : un consensus d’experts pour améliorer la prise en charge",
-        "description": "Cette recommandation vise à améliorer la gestion des encéphalopathies aiguës en réanimation.",
+        "description": "Consensus portant sur la prise en charge des encéphalopathies aiguës en milieu de réanimation.",
         "lien": "https://www.srlf.org/article/encephalopathie-aigue-reanimation-consensus-dexperts-ameliorer-prise-charge"
       }
     ]
@@ -72,20 +72,20 @@
       {
         "date": "2025",
         "titre": "Pneumonies communautaires: recommandations SPILF/SPLF",
-        "description": "Recommandations concernant le traitement et la prise en charge des pneumonies communautaires.",
+        "description": "Ces recommandations portent sur la prise en charge des pneumonies communautaires, incluant le diagnostic et le traitement.",
         "lien": "https://www.infectiologie.com/UserFiles/File/spilf/recos/spilf-groupe-reco-pac-2025.pptx"
       },
       {
         "date": "2022",
         "titre": "traitement des BMR (position Statement / reco ESCMID et IDSA) 2022",
-        "description": "Recommandations sur le traitement des bactéries multirésistantes en conformité avec les directives ESCMID et IDSA.",
+        "description": "Les recommandations abordent le traitement des bactéries multirésistantes, dans le cadre d'une collaboration avec l'ESCMID et l'IDSA.",
         "lien": "https://www.infectiologie.com/UserFiles/File/spilf/recos/mdr-bgn-spilf-2022-final.pptx"
       },
       {
         "date": "2017",
-        "titre": "Infections urinaires communautaires-2017.pp",
-        "description": "Directives sur la gestion et le traitement des infections urinaires communautaires.",
-        "lien": "https://www.infectiologie.com/UserFiles/File/spilf/recos/spilf-comite-referentiels-iu-communautaires-2018.pptx"
+        "titre": "Méningites 2017",
+        "description": "Ce document présente les recommandations pour le diagnostic et le traitement des méningites.",
+        "lien": "https://www.infectiologie.com/UserFiles/File/spilf/recos/spilf-comite-referentiel-meningites-2018.pptx"
       }
     ]
   },
@@ -102,19 +102,19 @@
       {
         "date": "À vérifier",
         "titre": "CVD and Pregnancy",
-        "description": "Recommandations sur la gestion des maladies cardiovasculaires pendant la grossesse.",
+        "description": "Gestion des maladies cardiovasculaires pendant la grossesse.",
         "lien": "https://www.escardio.org/guidelines/clinical-practice-guidelines/all-esc-practice-guidelines/cardiovascular-diseases-during-pregnancy-management-of/"
       },
       {
         "date": "À vérifier",
         "titre": "Dyslipidaemias",
-        "description": "Directives concernant la prévention et le traitement des dyslipidémies.",
+        "description": "Gestion des dyslipidémies et ses implications cliniques.",
         "lien": "https://www.escardio.org/guidelines/clinical-practice-guidelines/all-esc-practice-guidelines/dyslipidaemias/"
       },
       {
         "date": "À vérifier",
         "titre": "Mental Health and CVD",
-        "description": "Lien entre la santé mentale et les maladies cardiovasculaires avec recommandations correspondantes.",
+        "description": "Relation entre santé mentale et maladies cardiovasculaires.",
         "lien": "https://www.escardio.org/guidelines/clinical-practice-guidelines/all-esc-practice-guidelines/mental-health-and-cvd/"
       }
     ]
@@ -132,19 +132,19 @@
       {
         "date": "2024",
         "titre": "2024 EACTS/EACTAIC/EBCP Guidelines on cardiopulmonary bypass in adult cardiac surgery",
-        "description": "Lignes directrices sur la circulation extracorporelle en chirurgie cardiaque adulte.",
+        "description": "Ces lignes directrices traitent de l'utilisation de la circulation extracorporelle lors de la chirurgie cardiaque adulte.",
         "lien": "https://www.eacts.org/clinical-practice-guideline/2024-eacts-eactaic-ebcp-guidelines-on-cardiopulmonary-bypass-in-adult-cardiac-surgery/"
       },
       {
         "date": "2024",
         "titre": "2024 EACTS/EACTAIC Guidelines on patient blood management in adult cardiac surgery in collaboration with EBCP",
-        "description": "Recommandations sur la gestion des transfusions sanguines en chirurgie cardiaque adulte.",
+        "description": "Ces recommandations portent sur la gestion des transfusions sanguines et des soins aux patients lors de la chirurgie cardiaque adulte.",
         "lien": "https://www.eacts.org/clinical-practice-guideline/2024-eacts-eactaic-guidelines-on-patient-blood-management-in-adult-cardiac-surgery-in-collaboration-with-ebcp/"
       },
       {
         "date": "2024",
         "titre": "2024 EACTS Guidelines on perioperative medication in adult cardiac surgery",
-        "description": "Directives sur l'utilisation des médicaments en périopératoire pour la chirurgie cardiaque adulte.",
+        "description": "Ces lignes directrices concernent l'administration de médicaments periopératoires durant la chirurgie cardiaque adulte.",
         "lien": "https://www.eacts.org/clinical-practice-guideline/2024-eacts-guidelines-on-perioperative-medication-in-adult-cardiac-surgery/"
       }
     ]
