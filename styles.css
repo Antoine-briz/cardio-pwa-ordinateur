@@ -14410,3 +14410,30 @@ body.theme-light .biblio-live-table thead th * {
 .biblio-reco-descriptions {
   font-weight: 400 !important;
 }
+
+/* ============================================================
+   BIBLIO ORDINATEUR - agrandissement colonne Source
+   ============================================================ */
+
+/* Logo x3 */
+.biblio-live-table .biblio-source-logo {
+  width: 72px !important;   /* ~ x3 (si 24px de base) */
+  height: 72px !important;
+}
+
+/* Conteneur source */
+.biblio-live-table .biblio-source-cell {
+  gap: 16px !important;
+}
+
+/* Nom source (SFAR, SRLF, etc) x2 */
+.biblio-live-table .biblio-source-cell span {
+  font-size: 1.8rem !important;
+  font-weight: 900 !important;
+}
+
+/* Badge "Recommandations" un peu agrandi aussi */
+.biblio-live-table .biblio-source-cell .biblio-badge {
+  font-size: 0.95rem !important;
+  padding: 6px 12px !important;
+}
