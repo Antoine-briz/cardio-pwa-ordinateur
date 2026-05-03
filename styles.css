@@ -14270,3 +14270,63 @@ body.theme-light .biblio-live-table thead th * {
   margin-right: 4px;
   transform: scale(0.9); /* rend la checkbox plus discrète */
 }
+
+.biblio-reco-table th:nth-child(1),
+.biblio-reco-table td:nth-child(1) {
+  width: 15% !important;
+}
+
+.biblio-reco-table th:nth-child(2),
+.biblio-reco-table td:nth-child(2) {
+  width: 12% !important;
+  white-space: nowrap !important;
+}
+
+.biblio-reco-table th:nth-child(3),
+.biblio-reco-table td:nth-child(3) {
+  width: 43% !important;
+}
+
+.biblio-reco-table th:nth-child(4),
+.biblio-reco-table td:nth-child(4) {
+  width: 30% !important;
+}
+
+.biblio-reco-docs,
+.biblio-reco-descriptions {
+  display: grid;
+  gap: 6px;
+}
+
+.biblio-reco-doc {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.04);
+}
+
+.biblio-reco-doc:hover {
+  background: rgba(11, 60, 109, 0.10);
+}
+
+.biblio-reco-date {
+  font-weight: 900;
+  color: #0b3c6d;
+  white-space: nowrap;
+}
+
+.biblio-reco-title {
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.biblio-reco-description {
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.04);
+  line-height: 1.25;
+}
