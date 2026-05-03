@@ -26463,12 +26463,11 @@ function renderBibliographie() {
               <thead>
   <tr>
     <th>Source</th>
-    <th>Titre</th>
-    <th>Description</th>
+    <th>Titre &amp; description</th>
   </tr>
 </thead>
               <tbody id="biblio-recommandations-body">
-                <tr><td colspan="3">Chargement...</td></tr>
+                <tr><td colspan="2">Chargement...</td></tr>
               </tbody>
             </table>
           </div>
@@ -26697,7 +26696,7 @@ async function loadBiblioRecommandationsTable(url, tbodyId) {
       onclick="window.open('${escapeHtml(item.lien || "")}', '_blank', 'noopener,noreferrer')">
     <td>${biblioSourceHtml(item.source || "", item.domaine || "")}</td>
 
-    <td colspan="2">
+    <td>
       <div class="biblio-reco-grid">
         ${(item.documents || []).map(doc => `
           <div class="biblio-reco-row">
@@ -26721,7 +26720,7 @@ async function loadBiblioRecommandationsTable(url, tbodyId) {
 `).join("");
 
   } catch (err) {
-    tbody.innerHTML = `<tr><td colspan="3">Impossible de charger les données.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="2">Impossible de charger les données.</td></tr>`;
   }
 }
 
