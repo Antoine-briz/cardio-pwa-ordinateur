@@ -14287,10 +14287,6 @@ body.theme-light .biblio-live-table thead th * {
   width: 43% !important;
 }
 
-.biblio-reco-table th:nth-child(4),
-.biblio-reco-table td:nth-child(4) {
-  width: 30% !important;
-}
 
 .biblio-reco-docs,
 .biblio-reco-descriptions {
@@ -14329,4 +14325,81 @@ body.theme-light .biblio-live-table thead th * {
   border-radius: 8px;
   background: rgba(15, 23, 42, 0.04);
   line-height: 1.25;
+}
+
+/* ===============================
+   TABLE RECOMMANDATIONS - 3 COLONNES
+================================ */
+
+.biblio-reco-table {
+  table-layout: fixed !important;
+  width: 100% !important;
+}
+
+.biblio-reco-table th:nth-child(1),
+.biblio-reco-table td:nth-child(1) {
+  width: 20% !important;
+}
+
+.biblio-reco-table th:nth-child(2),
+.biblio-reco-table td:nth-child(2) {
+  width: 45% !important;
+}
+
+.biblio-reco-table th:nth-child(3),
+.biblio-reco-table td:nth-child(3) {
+  width: 35% !important;
+}
+
+.biblio-reco-table td {
+  vertical-align: top !important;
+  overflow: hidden !important;
+  white-space: normal !important;
+}
+
+.biblio-reco-docs,
+.biblio-reco-descriptions {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+}
+
+.biblio-reco-doc {
+  display: grid !important;
+  grid-template-columns: 80px minmax(0, 1fr) !important;
+  gap: 10px !important;
+  align-items: start !important;
+  text-decoration: none !important;
+  color: inherit !important;
+  padding: 8px 10px !important;
+  border-radius: 8px !important;
+  background: rgba(15, 23, 42, 0.04) !important;
+  white-space: normal !important;
+  overflow: hidden !important;
+}
+
+.biblio-reco-date {
+  font-weight: 900 !important;
+  color: #0b3c6d !important;
+  white-space: nowrap !important;
+}
+
+.biblio-reco-title {
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+  min-width: 0 !important;
+}
+
+.biblio-reco-description {
+  padding: 8px 10px !important;
+  border-radius: 8px !important;
+  background: rgba(15, 23, 42, 0.04) !important;
+  line-height: 1.25 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+  min-height: 38px !important;
 }
