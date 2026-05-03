@@ -26461,14 +26461,15 @@ function renderBibliographie() {
           <div class="biblio-table-wrap">
             <table class="biblio-table biblio-live-table biblio-reco-table">
               <thead>
-                <tr>
-                  <th>Source</th>
-<th>Date</th>
-<th>Titre</th>
-                </tr>
-              </thead>
+  <tr>
+    <th>Source</th>
+    <th>Date</th>
+    <th>Titre</th>
+    <th>Description</th>
+  </tr>
+</thead>
               <tbody id="biblio-recommandations-body">
-                <tr><td colspan="3">Chargement...</td></tr>
+                <tr><td colspan="4">Chargement...</td></tr>
               </tbody>
             </table>
           </div>
@@ -26688,7 +26689,7 @@ async function loadBiblioRecommandationsTable(url, tbodyId) {
     const items = await res.json();
 
     if (!Array.isArray(items) || items.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="3">Aucune donnée disponible.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="4">Aucune donnée disponible.</td></tr>`;
       return;
     }
 
@@ -26697,14 +26698,36 @@ async function loadBiblioRecommandationsTable(url, tbodyId) {
           onclick="window.open('${escapeHtml(item.lien || "")}', '_blank', 'noopener,noreferrer')">
         <td>${biblioSourceHtml(item.source || "", item.domaine || "")}</td>
         <td>${escapeHtml(item.date || "")}</td>
+
         <td>
-          <div class="biblio-title-cell">${escapeHtml(item.titre || "")}</div>
+          <div class="biblio-reco-docs">
+            ${(item.documents || []).map(doc => `
+              <a class="biblio-reco-doc"
+                 href="${escapeHtml(doc.lien || "")}"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 onclick="event.stopPropagation()">
+                <span class="biblio-reco-date">${escapeHtml(doc.date || "")}</span>
+                <span class="biblio-reco-title">${escapeHtml(doc.titre || "")}</span>
+              </a>
+            `).join("")}
+          </div>
+        </td>
+
+        <td>
+          <div class="biblio-reco-descriptions">
+            ${(item.documents || []).map(doc => `
+              <div class="biblio-reco-description">
+                ${escapeHtml(doc.description || "")}
+              </div>
+            `).join("")}
+          </div>
         </td>
       </tr>
     `).join("");
-    
+
   } catch (err) {
-    tbody.innerHTML = `<tr><td colspan="3">Impossible de charger les données.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="4">Impossible de charger les données.</td></tr>`;
   }
 }
 
