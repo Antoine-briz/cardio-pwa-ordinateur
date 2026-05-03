@@ -26463,13 +26463,12 @@ function renderBibliographie() {
               <thead>
   <tr>
     <th>Source</th>
-    <th>Date</th>
     <th>Titre</th>
     <th>Description</th>
   </tr>
 </thead>
               <tbody id="biblio-recommandations-body">
-                <tr><td colspan="4">Chargement...</td></tr>
+                <tr><td colspan="3">Chargement...</td></tr>
               </tbody>
             </table>
           </div>
@@ -26689,7 +26688,7 @@ async function loadBiblioRecommandationsTable(url, tbodyId) {
     const items = await res.json();
 
     if (!Array.isArray(items) || items.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="4">Aucune donnée disponible.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="3">Aucune donnée disponible.</td></tr>`;
       return;
     }
 
@@ -26697,7 +26696,6 @@ async function loadBiblioRecommandationsTable(url, tbodyId) {
       <tr class="biblio-click-row"
           onclick="window.open('${escapeHtml(item.lien || "")}', '_blank', 'noopener,noreferrer')">
         <td>${biblioSourceHtml(item.source || "", item.domaine || "")}</td>
-        <td>${escapeHtml(item.date || "")}</td>
 
         <td>
           <div class="biblio-reco-docs">
@@ -26727,7 +26725,7 @@ async function loadBiblioRecommandationsTable(url, tbodyId) {
     `).join("");
 
   } catch (err) {
-    tbody.innerHTML = `<tr><td colspan="4">Impossible de charger les données.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="3">Impossible de charger les données.</td></tr>`;
   }
 }
 
