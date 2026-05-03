@@ -14412,28 +14412,29 @@ body.theme-light .biblio-live-table thead th * {
 }
 
 /* ============================================================
-   BIBLIO ORDINATEUR - agrandissement UNIQUEMENT recommandations
+   BIBLIO ORDINATEUR - FIX badge recommandations
    ============================================================ */
 
-/* Logo x3 uniquement dans recommandations */
+/* Logo */
 .biblio-reco-table .biblio-source-logo {
   width: 72px !important;
   height: 72px !important;
 }
 
-/* Espacement */
+/* Layout */
 .biblio-reco-table .biblio-source-cell {
   gap: 16px !important;
 }
 
-/* Nom source x2 */
-.biblio-reco-table .biblio-source-cell span {
+/* ✅ Texte source UNIQUEMENT (SFAR, SRLF…) */
+.biblio-reco-table .biblio-source-cell > span:not(.biblio-badge) {
   font-size: 1.8rem !important;
   font-weight: 900 !important;
 }
 
-/* ⚠️ IMPORTANT : on ne touche PAS au badge "Recommandations" */
+/* ✅ Badge remis à taille normale */
 .biblio-reco-table .biblio-badge {
-  font-size: inherit !important;
-  padding: inherit !important;
+  font-size: 0.75rem !important;
+  padding: 4px 8px !important;
+  transform: none !important;
 }
