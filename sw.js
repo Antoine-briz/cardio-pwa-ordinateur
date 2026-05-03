@@ -224,6 +224,12 @@ const PRECACHE = [
   "img/cecprotocole.png",
   "img/cecspecifique.png",
   "img/cecurgence.png",
+  "img/sfar.png",
+  "img/srlf.png",
+  "img/spilf.png",
+  "img/esc.png",
+  "img/eacts.png",
+  "img/pubmed.png",
 
   
   // Menu principal
