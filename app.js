@@ -35015,3 +35015,93 @@ async function seedResearchProtocols() {
 
   alert("Protocoles de recherche importés dans Firebase.");
 }
+
+let saricDeferredInstallPrompt = null;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  saricDeferredInstallPrompt = e;
+
+  if (new URLSearchParams(window.location.search).get("install") === "1") {
+    showSaricInstallModal();
+  }
+});
+
+window.addEventListener("appinstalled", () => {
+  saricDeferredInstallPrompt = null;
+  closeSaricInstallModal();
+});
+
+function isIosSafari() {
+  const ua = window.navigator.userAgent.toLowerCase();
+  const isIOS = /iphone|ipad|ipod/.test(ua);
+  const isSafari = /safari/.test(ua) && !/crios|fxios|edgios/.test(ua);
+  return isIOS && isSafari;
+}
+
+function isStandalonePwa() {
+  return window.matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone === true;
+}
+
+function showSaricInstallModal() {
+  if (document.getElementById("saric-install-modal")) return;
+  if (isStandalonePwa()) return;
+
+  const modal = document.createElement("div");
+  modal.id = "saric-install-modal";
+  modal.className = "saric-install-modal";
+
+  modal.innerHTML = `
+    <div class="saric-install-box">
+      <button class="saric-install-close" onclick="closeSaricInstallModal()">×</button>
+      <div class="saric-install-badge">SARIC</div>
+      <h2>Installer Protocoles SARIC</h2>
+
+      ${
+        isIosSafari()
+          ? `
+            <p class="saric-install-text">Sur iPhone, l’installation se fait depuis Safari :</p>
+            <div class="saric-install-steps">
+              <div><strong>1</strong><span>Partager</span></div>
+              <div><strong>2</strong><span>Sur l’écran d’accueil</span></div>
+              <div><strong>3</strong><span>Ajouter</span></div>
+            </div>
+          `
+          : `
+            <p class="saric-install-text">Cliquez ci-dessous pour installer l’application.</p>
+            <button class="btn saric-install-btn" id="saric-install-now">
+              Installer maintenant
+            </button>
+          `
+      }
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  document.getElementById("saric-install-now")?.addEventListener("click", async () => {
+    if (!saricDeferredInstallPrompt) {
+      alert("L’installation n’est pas disponible pour le moment. Essayez depuis le menu du navigateur.");
+      return;
+    }
+
+    saricDeferredInstallPrompt.prompt();
+    await saricDeferredInstallPrompt.userChoice;
+    saricDeferredInstallPrompt = null;
+    closeSaricInstallModal();
+  });
+}
+
+function closeSaricInstallModal() {
+  document.getElementById("saric-install-modal")?.remove();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (new URLSearchParams(window.location.search).get("install") === "1") {
+    setTimeout(() => {
+      if (isIosSafari()) showSaricInstallModal();
+      else if (saricDeferredInstallPrompt) showSaricInstallModal();
+    }, 800);
+  }
+});
