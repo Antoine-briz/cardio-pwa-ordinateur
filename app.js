@@ -11149,7 +11149,7 @@ if (crAnesthState.alr.thoraciqueTransverse) {
 }
 if (crAnesthState.alr.paravertebralDroit) {
   ia.push(
-    "ALR : Bloc paravertébral droit, pas de ponction artérielle. Injection de Ropivacaïne 3,75mg/mL 20mL."
+    "ALR : Bloc paravertébral droit sans complication, pas de ponction artérielle. Injection de Ropivacaïne 3,75mg/mL 20mL."
   );
 }
   
