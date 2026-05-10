@@ -10064,7 +10064,108 @@ function crAnFlowSelect({ id, label, value = "", options = [], cls = "" }) {
   `;
 }
 
+const CRAN_CHIR_STORAGE_KEY = "cran_chirurgiens_saved_v1";
+const CRAN_AN_STORAGE_KEY = "cran_anesthesistes_saved_v1";
+
+function crAnGetSavedList(key, defaultList) {
+  try {
+    const saved = JSON.parse(localStorage.getItem(key));
+    return Array.isArray(saved) && saved.length ? saved : defaultList;
+  } catch {
+    return defaultList;
+  }
+}
+
+function crAnSaveList(key, list) {
+  localStorage.setItem(key, JSON.stringify(list));
+}
+
+function crAnEditList(type) {
+  const isChir = type === "chir";
+
+  const key = isChir ? CRAN_CHIR_STORAGE_KEY : CRAN_AN_STORAGE_KEY;
+  const title = isChir ? "chirurgiens" : "anesthésistes";
+
+  const defaultList = isChir ? CRAN_DEFAULT_CHIR_LIST : CRAN_DEFAULT_AN_LIST;
+  const currentList = crAnGetSavedList(key, defaultList);
+
+  const txt = prompt(
+    `Modifier la liste des ${title} :\n\nUn nom par ligne.`,
+    currentList.join("\n")
+  );
+
+  if (txt === null) return;
+
+  const newList = txt
+    .split("\n")
+    .map(x => x.trim())
+    .filter(Boolean);
+
+  crAnSaveList(key, newList);
+
+  renderCrAnTabAnesth();
+  crAnSyncState();
+  crAnRenderSynth();
+}
+
 function renderCrAnTabAnesth() {
+  const CRAN_DEFAULT_CHIR_LIST = [
+  "LEPRINCE Pascal",
+  "BARREDA Theo",
+  "D’ALESSANDRO Cosimo",
+  "DANIAL Pichoy",
+  "DEBAUCHEZ Mathieu",
+  "FARAHMAND Patrick",
+  "JUVIN Charles",
+  "HENNEB Belkacem",
+  "LAALI Mojgan",
+  "LANSAC Emmanuel",
+  "LEBRETON Guillaume",
+  "SAIYDOUN Gabriel",
+  "MEYER Horacio",
+  "ZAMORANO Claudio"
+];
+
+const CRAN_DEFAULT_AN_LIST = [
+  "BOUGLE Adrien",
+  "ABBES Ahmed",
+  "ANNONAY Marianne",
+  "ARZOINE Jérémy",
+  "BEAUCOTE Victor",
+  "BERECIBAR Jon Ander",
+  "BOROUCHAKI Antoine",
+  "BRIZARD Antoine",
+  "CAMPEANU Aurélie",
+  "CARILLION Aude",
+  "CLAPIN Sixtine",
+  "COELEMBIER Clément",
+  "DE SARCUS Martin",
+  "DJAVIDI Nima",
+  "DUCEAU Baptiste",
+  "DUREAU Pauline",
+  "GUILLEMIN Jérémie",
+  "HAMIDI Dany",
+  "HARIRI Geoffroy",
+  "HENOCQ Paul",
+  "HIRWE Axel",
+  "LABARRIERE Ambroise",
+  "LANCELOT Aymeric",
+  "LOEB Jules",
+  "MANSOURI Sehmi",
+  "MARQUET Yann",
+  "MOHAMMEDI Neyla",
+  "NICULESCU Michaela",
+  "OMAR Edris",
+  "PERRIER Johann",
+  "POUJADE Julien",
+  "ROMBI Louise",
+  "SCHRAMM Rémi",
+  "VAUZANGES Quentin"
+];
+
+const CRAN_CHIR_LIST = crAnGetSavedList(CRAN_CHIR_STORAGE_KEY, CRAN_DEFAULT_CHIR_LIST);
+const CRAN_AN_LIST = crAnGetSavedList(CRAN_AN_STORAGE_KEY, CRAN_DEFAULT_AN_LIST);
+  
   const mount = document.getElementById("cr-an-tab-content-anesth");
   if (!mount || !crAnesthState) return;
 
@@ -10163,78 +10264,40 @@ ${crAnesthState.geste3 !== undefined && crAnIsValveGeste(crAnesthState.geste3) ?
 ` : ""}
 
             <div class="cr-an-form-row cr-an-form-row-tight">
-              <label>Chirurgien</label>
-              <input
-                list="cran-chir-list"
-                id="cran-chir1"
-                placeholder="Choisir chirurgien"
-                value="${crAnEsc(crAnesthState.chirurgien1)}"
-                oninput="crAnSyncState(); crAnRenderSynth();"
-              >
-              <datalist id="cran-chir-list">
-                <option value="LEPRINCE Pascal">
-                <option value="BARREDA Theo">
-                <option value="D’ALESSANDRO Cosimo">
-                <option value="DANIAL Pichoy">
-                <option value="DEBAUCHEZ Mathieu">
-                <option value="FARAHMAND Patrick">
-                <option value="JUVIN Charles">
-                <option value="HENNEB Belkacem">
-                <option value="LAALI Mojgan">
-                <option value="LANSAC Emmanuel">
-                <option value="LEBRETON Guillaume">
-                <option value="SAIYDOUN Gabriel">
-                <option value="MEYER Horacio">
-                <option value="ZAMORANO Claudio">
-              </datalist>
-            </div>
+  <label>Chirurgien</label>
+  <div class="cr-an-list-edit-wrap">
+    <input
+      list="cran-chir-list"
+      id="cran-chir1"
+      placeholder="Choisir chirurgien"
+      value="${crAnEsc(crAnesthState.chirurgien1)}"
+      oninput="crAnSyncState(); crAnRenderSynth();"
+    >
+    <button type="button" class="cr-an-list-edit-btn" onclick="crAnEditList('chir')">✎</button>
+  </div>
+
+  <datalist id="cran-chir-list">
+    ${CRAN_CHIR_LIST.map(x => `<option value="${crAnEsc(x)}">`).join("")}
+  </datalist>
+</div>
 
             <div class="cr-an-form-row cr-an-form-row-tight">
-              <label>Anesthésiste</label>
-              <input
-                list="cran-an-list"
-                id="cran-an1"
-                placeholder="Choisir anesthésiste"
-                value="${crAnEsc(crAnesthState.anesth1)}"
-                oninput="crAnSyncState(); crAnRenderSynth();"
-              >
-              <datalist id="cran-an-list">
-                <option value="BOUGLE Adrien">
-                <option value="ABBES Ahmed">
-                <option value="ANNONAY Marianne">
-                <option value="ARZOINE Jérémy">
-                <option value="BEAUCOTE Victor">
-                <option value="BERECIBAR Jon Ander">
-                <option value="BOROUCHAKI Antoine">
-                <option value="BRIZARD Antoine">
-                <option value="CAMPEANU Aurélie">
-                <option value="CARILLION Aude">
-                <option value="CLAPIN Sixtine">
-                <option value="COELEMBIER Clément">
-                <option value="DE SARCUS Martin">
-                <option value="DJAVIDI Nima">
-                <option value="DUCEAU Baptiste">
-                <option value="DUREAU Pauline">
-                <option value="GUILLEMIN Jérémie">
-                <option value="HAMIDI Dany">
-                <option value="HARIRI Geoffroy">
-                <option value="HENOCQ Paul">
-                <option value="HIRWE Axel">
-                <option value="LABARRIERE Ambroise">
-                <option value="LANCELOT Aymeric">
-                <option value="LOEB Jules">
-                <option value="MANSOURI Sehmi">
-                <option value="MARQUET Yann">
-                <option value="MOHAMMEDI Neyla">
-                <option value="NICULESCU Michaela">
-                <option value="OMAR Edris">
-                <option value="PERRIER Johann">
-                <option value="POUJADE Julien">
-                <option value="ROMBI Louise">
-                <option value="SCHRAMM Rémi">
-                <option value="VAUZANGES Quentin">
-              </datalist>
-            </div>
+  <label>Anesthésiste</label>
+  <div class="cr-an-list-edit-wrap">
+    <input
+      list="cran-an-list"
+      id="cran-an1"
+      placeholder="Choisir anesthésiste"
+      value="${crAnEsc(crAnesthState.anesth1)}"
+      oninput="crAnSyncState(); crAnRenderSynth();"
+    >
+    <button type="button" class="cr-an-list-edit-btn" onclick="crAnEditList('an')">✎</button>
+  </div>
+
+  <datalist id="cran-an-list">
+    ${CRAN_AN_LIST.map(x => `<option value="${crAnEsc(x)}">`).join("")}
+  </datalist>
+</div>
           </section>
 
           <!-- 2 -->
