@@ -11119,22 +11119,22 @@ function crAnCardioRenderSynth(){
   if(cur.length)ia.push(`Curare : ${cur.join(", ")}.`);
 
   const va=[];
-  if(s.ventilation.vsCapno)va.push("Ventilation spontanée avec capnomasque");
-  if(s.ventilation.iot)va.push("Ventilation/IOT");
-  if(s.ventilation.isr)va.push("ISR");
-  if(s.ventilation.iot&&s.ventilation.sonde)va.push(`sonde ${s.ventilation.sonde}`);
+  if(s.ventilation.vsCapno)va.push("Ventilation spontanée avec capnomasque.");
+  if(s.ventilation.iot)va.push("Ventilation aisée au masque facial. Intubation oro-trachéale atraumatique.");
+  if(s.ventilation.isr)va.push("Intubation atraumatique en séquence rapide.");
+  if(s.ventilation.iot&&s.ventilation.sonde)va.push(`Sonde n° ${s.ventilation.sonde}`);
   if(s.ventilation.iot&&s.ventilation.cormack)va.push(`Cormack ${s.ventilation.cormack}`);
-  if(s.ventilation.iot&&s.ventilation.pogo)va.push(`POGO ${s.ventilation.pogo}%`);
-  if(s.ventilation.iot&&s.ventilation.eschmann)va.push("Eschmann");
+  if(s.ventilation.iot&&s.ventilation.pogo)va.push(`Vidéo-laryngoscopie McGrath, POGO ${s.ventilation.pogo}%`);
+  if(s.ventilation.iot&&s.ventilation.eschmann)va.push("Utilisation d'un mandrin d'Eschmann");
   if(va.length)ia.push(`Voies aériennes : ${va.join(", ")}.`);
 
   const atb=[];
   if(s.antibioprophylaxie.aucune)atb.push("Aucune antibioprophylaxie indiquée");
-  if(s.antibioprophylaxie.cefazoline)atb.push("Céfazoline");
-  if(s.antibioprophylaxie.augmentin)atb.push("Augmentin");
-  if(s.antibioprophylaxie.vancomycine)atb.push("Vancomycine");
-  if(s.antibioprophylaxie.tazocilline)atb.push("Tazocilline");
-  if(s.antibioprophylaxie.daptomycine)atb.push("Daptomycine");
+  if(s.antibioprophylaxie.cefazoline)atb.push("Céfazoline 2g puis 1g/4h");
+  if(s.antibioprophylaxie.augmentin)atb.push("Augmentin 2g puis 1g/2g");
+  if(s.antibioprophylaxie.vancomycine)atb.push("Vancomycine 20mg/kg");
+  if(s.antibioprophylaxie.tazocilline)atb.push("Tazocilline 4g puis 4g/4h");
+  if(s.antibioprophylaxie.daptomycine)atb.push("Daptomycine 10mg/kg");
   if(atb.length)ia.push(`Antibioprophylaxie : ${atb.join(", ")}.`);
 
   if(s.entretien.remifentanil&&!s.entretien.propofol){
@@ -11222,7 +11222,7 @@ if(etopost.length)fin.push(`ETO post-opératoire : ${etopost.join(", ")}.`);
     sspi3:"SSPI 3ème",
     "usi-rythmo":"USI rythmo",
     usic:"USIC",
-    rea:"Réa."
+    rea:"Réanimation"
   }[s.fin.destination]||"";
   if(dest)fin.push(`Destination : ${dest}.`);
   crAnPushSection(lines,"En fin d’intervention",fin);
