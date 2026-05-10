@@ -10299,8 +10299,6 @@ function crAnEditList(type) {
   });
 }
 
-let crAnCardioState = null;
-
 function openCrAnCardioModal(){
   crAnCardioState=crAnInitCardioState();
   crAnCardioApplyPreset(crAnCardioState.geste);
