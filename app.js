@@ -11169,7 +11169,7 @@ if(s.cardioInter.tv)events.push("tachycardie ventriculaire");
 if(s.cardioInter.fv)events.push("fibrillation ventriculaire");
 if(s.cardioInter.fa)events.push("fibrillation atriale");
 if(s.cardioInter.bav)events.push("BAV");
-if(s.cardioInter.cei)events.push(`administration de ${s.cardioInter.cei} choc électriques externes`);
+if(s.cardioInter.cei)events.push(`administration de ${s.cardioInter.cei} chocs électriques externes`);
 if(events.length)ci.push(`Évènement rythmo : ${events.join(", ")}.`);
 
 if(s.cardioInter.heparine)ci.push(`Héparine totale : ${s.cardioInter.heparine} UI.`);
