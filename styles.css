@@ -14743,3 +14743,16 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
   display: inline-block;
   margin-left: 8px;
 }
+
+.cr-an-disabled-block{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:140px;
+  border:2px dashed #999;
+  border-radius:12px;
+  background:#f1f1f1;
+  color:#666;
+  font-style:italic;
+  font-size:15px;
+}
