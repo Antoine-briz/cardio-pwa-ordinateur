@@ -10939,8 +10939,12 @@ function crAnCardioExclusiveCurare(key){
 }
 
 function crAnCardioExclusiveVent(key){
-  crAnCardioState.ventilation.vsCapno=false;
-  crAnCardioState.ventilation.iot=false;
+  crAnCardioState.ventilation={
+    ...crAnCardioState.ventilation,
+    vsCapno:false,
+    iot:false,
+    isr:false
+  };
   crAnCardioState.ventilation[key]=true;
   crAnCardioRefresh();
 }
