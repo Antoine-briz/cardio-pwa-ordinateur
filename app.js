@@ -10936,7 +10936,24 @@ function renderCrAnCardioFin(){
       ${crAnCardioState.conditionnement.eto ? `
   <div class="cr-an-flow-row cr-an-inline-title-row">
     <div class="cr-an-inline-title">ETO post-opératoire :</div>
+${crAnFlowTextInput({
+      id:"crac-fin-fevg",
+      label:"FEVG",
+      value:s.fevg,
+      placeholder:" ",
+      type:"number",
+      cls:"is-micro"
+    })}
 
+    ${crAnFlowTextInput({
+      id:"crac-fin-itv",
+      label:"ITV SsAo",
+      value:s.itv,
+      placeholder:" ",
+      type:"number",
+      step:"any",
+      cls:"is-micro"
+    })}
     ${crAnFlowCheck("crac-fin-cine","Cinétique segmentaire OK",s.cinesegOk,"crAnCardioToggle('fin','cinesegOk')")}
     ${crAnFlowCheck("crac-fin-va","Valve aortique OK",s.vaOk,"crAnCardioToggle('fin','vaOk')")}
     ${crAnFlowCheck("crac-fin-vm","Valve mitrale OK",s.vmOk,"crAnCardioToggle('fin','vmOk')")}
