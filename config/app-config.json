@@ -4,5 +4,11 @@
     "editorPassword": "SARICeditor12345678",
     "updatedAt": "2026-02-04T17:17:35Z"
   },
-  "overrides": {}
+  "overrides": {},
+  "crAnesth": {
+    "chirurgiens": [],
+    "anesthesistes": [],
+    "cardiologuesStructurels": [],
+    "cardiologuesRythmologie": []
+  }
 }
