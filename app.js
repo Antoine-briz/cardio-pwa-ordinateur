@@ -10752,23 +10752,6 @@ function crAnCardioSyncFromDom(){
   crAnCardioState.fin.destination=radio("crac-fin-dest")||crAnCardioState.fin.destination;
 }
 
-function crAnCardioRefresh(){
-  const wrap=document.querySelector(".cr-an-main-wrap");
-  if(wrap)wrap.innerHTML=renderCrAnCardio();
-  crAnCardioRenderSynth();
-}
-
-function crAnCardioToggle(section,key){
-  crAnCardioState[section][key]=!crAnCardioState[section][key];
-  crAnCardioRenderSynth();
-}
-
-function crAnCardioExclusiveFinAirway(key){
-  crAnCardioState.fin.extubation=false;
-  crAnCardioState.fin.sortieVentile=false;
-  crAnCardioState.fin[key]=true;
-  crAnCardioRefresh();
-}
 
 function crAnCardioToggle(section,key){
   crAnCardioState[section][key]=!crAnCardioState[section][key];
@@ -10807,11 +10790,19 @@ function crAnCardioExclusiveAtb(key){
   crAnCardioRefresh();
 }
 
+function crAnCardioExclusiveFinAirway(key){
+  crAnCardioState.fin.extubation=false;
+  crAnCardioState.fin.sortieVentile=false;
+  crAnCardioState.fin[key]=true;
+  crAnCardioRefresh();
+}
+
 function crAnCardioRenderSynth(){
   if(!crAnCardioState)return;
-  const s=crAnCardioState;
   crAnCardioSyncFromDom();
+  const s=crAnCardioState;
   const lines=[];
+
   crAnPushSection(lines,"Intervention",[
     s.date?`Date : ${s.date}`:"",
     s.type?`Type d’intervention : ${s.type==="structurelle"?"Cardiologie structurelle":"Rythmologie"}`:"",
@@ -10819,14 +10810,130 @@ function crAnCardioRenderSynth(){
     s.cardiologue?`Cardiologue : ${s.cardiologue}`:"",
     s.anesthesiste?`Anesthésiste : ${s.anesthesiste}`:""
   ]);
+
   const ia=[];
-  if(s.induction.remifentanil&&!s.induction.propofol)ia.push("Induction : Sédation par AIVOC Rémifentanil.");
-  if(s.induction.remifentanil&&s.induction.propofol)ia.push("Induction : Anesthésie générale par AIVOC Propofol/Rémifentanil.");
-  if(s.ventilation.vsCapno)ia.push("Voies aériennes : Ventilation spontanée avec capnomasque.");
-  if(s.antibioprophylaxie.aucune)ia.push("Antibioprophylaxie : Aucune antibioprophylaxie indiquée.");
-  if(s.entretien.remifentanil&&!s.entretien.propofol)ia.push("Entretien : AIVOC Rémifentanil.");
-  if(s.entretien.propofol&&s.entretien.remifentanil)ia.push("Entretien : AIVOC Propofol/Rémifentanil.");
+  const cond=[];
+  if(s.conditionnement.scope)cond.push("Scope");
+  if(s.conditionnement.spo2)cond.push("SpO2");
+  if(s.conditionnement.vvp)cond.push("VVP");
+  if(s.conditionnement.bis)cond.push("BIS");
+  if(s.conditionnement.tof)cond.push("TOF");
+  if(s.conditionnement.nirs)cond.push("NIRS");
+  if(s.conditionnement.pni)cond.push("PNI");
+  if(s.conditionnement.kta)cond.push("KTa");
+  if(s.conditionnement.ktc)cond.push("KTc");
+  if(s.conditionnement.eto)cond.push("ETO");
+  if(cond.length)ia.push(`Conditionnement : ${cond.join(", ")}.`);
+
+  if(s.induction.remifentanil&&!s.induction.propofol){
+    ia.push("Induction : Sédation par AIVOC Rémifentanil.");
+  }else if(s.induction.remifentanil&&s.induction.propofol){
+    ia.push("Induction : Anesthésie générale par AIVOC Propofol/Rémifentanil.");
+  }
+
+  const cur=[];
+  if(s.curare.atracurium)cur.push("Atracurium");
+  if(s.curare.celocurine)cur.push("Célocurine");
+  if(s.curare.rocuronium)cur.push("Rocuronium");
+  if(cur.length)ia.push(`Curare : ${cur.join(", ")}.`);
+
+  const va=[];
+  if(s.ventilation.vsCapno)va.push("Ventilation spontanée avec capnomasque");
+  if(s.ventilation.iot)va.push("Ventilation/IOT");
+  if(s.ventilation.isr)va.push("ISR");
+  if(s.ventilation.iot&&s.ventilation.sonde)va.push(`sonde ${s.ventilation.sonde}`);
+  if(s.ventilation.iot&&s.ventilation.cormack)va.push(`Cormack ${s.ventilation.cormack}`);
+  if(s.ventilation.iot&&s.ventilation.pogo)va.push(`POGO ${s.ventilation.pogo}%`);
+  if(s.ventilation.iot&&s.ventilation.eschmann)va.push("Eschmann");
+  if(va.length)ia.push(`Voies aériennes : ${va.join(", ")}.`);
+
+  const atb=[];
+  if(s.antibioprophylaxie.aucune)atb.push("Aucune antibioprophylaxie indiquée");
+  if(s.antibioprophylaxie.cefazoline)atb.push("Céfazoline");
+  if(s.antibioprophylaxie.augmentin)atb.push("Augmentin");
+  if(s.antibioprophylaxie.vancomycine)atb.push("Vancomycine");
+  if(s.antibioprophylaxie.tazocilline)atb.push("Tazocilline");
+  if(s.antibioprophylaxie.daptomycine)atb.push("Daptomycine");
+  if(atb.length)ia.push(`Antibioprophylaxie : ${atb.join(", ")}.`);
+
+  if(s.entretien.remifentanil&&!s.entretien.propofol){
+    ia.push("Entretien : AIVOC Rémifentanil.");
+  }else if(s.entretien.propofol&&s.entretien.remifentanil){
+    ia.push("Entretien : AIVOC Propofol/Rémifentanil.");
+  }
+
+  if(s.vasopresseur==="aucun")ia.push("Vasopresseur : Aucun.");
+  if(s.vasopresseur==="10")ia.push("Vasopresseur : Noradrénaline 10 µg/mL.");
+  if(s.vasopresseur==="0,16")ia.push("Vasopresseur : Noradrénaline 0,16 mg/mL.");
   crAnPushSection(lines,"Induction et entretien anesthésie",ia);
+
+  const eto=[];
+  if(s.etoPre.fevg)eto.push(`FEVG ${s.etoPre.fevg} %.`);
+  if(s.etoPre.itv)eto.push(`ITV Ssao ${s.etoPre.itv} cm.`);
+  if(s.etoPre.cinesegOk)eto.push("Cinétique segmentaire OK.");
+  if(s.etoPre.auriculeLibre)eto.push("Auricule gauche libre.");
+  if(s.etoPre.valvesOk)eto.push("Absence de valvulopathie aortique ou mitrale.");
+  if(s.etoPre.vdOk)eto.push("Fonction VD OK.");
+  if(s.etoPre.pasEpanchement)eto.push("Absence d’épanchement péricardique.");
+  crAnPushSection(lines,"ETO pré-opératoire",eto);
+
+  const ci=[];
+  const abordType={
+    "artere-femorale":"artère fémorale",
+    "veine-femorale":"veine fémorale",
+    "pectoral":"abord pectoral"
+  }[s.cardioInter.abordType]||"";
+  const cote=s.cardioInter.abordCote==="gauche"?"gauche":"droite";
+  if(abordType){
+    if(s.cardioInter.abordType==="pectoral")ci.push(`Abord : ${abordType} ${cote==="droite"?"droit":"gauche"}.`);
+    else ci.push(`Abord : ${abordType} ${cote==="droite"?"droite":"gauche"}.`);
+  }
+  ci.push(`Geste réalisé : ${s.cardioInter.gesteRealise||s.geste||""}.`);
+  const events=[];
+  if(s.cardioInter.tv)events.push("tachycardie ventriculaire");
+  if(s.cardioInter.fv)events.push("fibrillation ventriculaire");
+  if(s.cardioInter.fa)events.push("fibrillation atriale");
+  if(s.cardioInter.bav)events.push("BAV");
+  if(s.cardioInter.cei)events.push(`administration de ${s.cardioInter.cei} CEE`);
+  if(events.length)ci.push(`Évènement rythmo : ${events.join(", ")}.`);
+  if(s.cardioInter.heparine)ci.push(`Héparine totale : ${s.cardioInter.heparine} UI.`);
+  if(s.cardioInter.protamine)ci.push(`Protamine : ${s.cardioInter.protamine} UI.`);
+  crAnPushSection(lines,"Cardiologie interventionnelle",ci.filter(x=>!x.endsWith(" : .")));
+
+  const fin=[];
+  const rythme={
+    sinusal:"Sinusal",
+    fa:"FA",
+    bav:"BAV",
+    stimule:"stimulé"
+  }[s.fin.rythme]||"";
+  if(rythme)fin.push(`Rythme cardiaque : ${rythme}.`);
+  if(s.fin.ringer)fin.push(`Expansion volémique : Ringer lactate ${s.fin.ringer} mL.`);
+  const amines=[];
+  if(s.fin.noradMax)amines.push(`Noradrénaline ${s.fin.noradMax} mg/h`);
+  if(s.fin.dobuMax)amines.push(`Dobutamine ${s.fin.dobuMax} µg/kg/min`);
+  if(amines.length)fin.push(`Catécholamines max : ${amines.join(", ")}.`);
+  const etopost=[];
+  if(s.fin.fevg)etopost.push(`FEVG ${s.fin.fevg} %`);
+  if(s.fin.itv)etopost.push(`ITV Ssao ${s.fin.itv} cm`);
+  if(s.fin.cinesegOk)etopost.push("cinétique segmentaire OK");
+  if(s.fin.valvesOk)etopost.push("valves aortique/mitrale OK");
+  if(s.fin.vdOk)etopost.push("fonction VD OK");
+  if(s.fin.pericardeSec)etopost.push("péricarde sec");
+  if(s.fin.aorteOk)etopost.push("paroi aortique OK");
+  if(etopost.length)fin.push(`ETO post-opératoire : ${etopost.join(", ")}.`);
+  if(s.fin.extubation)fin.push("Voies aériennes : Extubation.");
+  if(s.fin.sortieVentile)fin.push("Voies aériennes : Sortie ventilé.");
+  const dest={
+    sspi1:"SSPI 1er",
+    sspi3:"SSPI 3ème",
+    "usi-rythmo":"USI rythmo",
+    usic:"USIC",
+    rea:"Réa."
+  }[s.fin.destination]||"";
+  if(dest)fin.push(`Destination : ${dest}.`);
+  crAnPushSection(lines,"En fin d’intervention",fin);
+
   const el=document.getElementById("cr-an-cardio-synth");
   if(el)el.innerHTML=lines.join("\n");
 }
