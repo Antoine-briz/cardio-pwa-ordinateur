@@ -14673,3 +14673,11 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
   font-size:16px !important;
   line-height:1.55 !important;
 }
+
+.cr-an-list-modal-actions .btn{
+  color:#ffffff !important;
+}
+
+.cr-an-list-modal-actions .btn.outline{
+  color:#111827 !important;
+}
