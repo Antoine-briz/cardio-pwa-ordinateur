@@ -943,7 +943,17 @@ function renderAnesthMenu() {
 
         <div class="card anesth-card" onclick="location.hash = '#/anesthesie/cardio-struct'">
           <img src="img/cardiostruct.png" class="menu-section-img">
-          <h3>Cardiologie structurelle & rythmologie</h3>
+          <div class="cr-an-page-title-row">
+  <h2>Cardiologie structurelle & rythmologie</h2>
+
+  <button
+    class="btn btn-warning"
+    type="button"
+    onclick="openCrAnCardioModal()"
+  >
+    CR anesth.
+  </button>
+</div>
         </div>
 
         <div class="card anesth-card" onclick="location.hash = '#/anesthesie/vasculaire'">
@@ -9492,6 +9502,7 @@ const CRAN_GESTE_PROFILES = {
 };
 
 let crAnesthState = null;
+let crAnCardioState = null;
 
 function crAnSafe(v) {
   return String(v ?? "").trim();
@@ -10077,6 +10088,24 @@ const CRAN_AN_STORAGE_KEY = "anesthesistes";
 const CRAN_CARDIO_STRUCT_STORAGE_KEY = "cardiologuesStructurels";
 const CRAN_CARDIO_RYTHMO_STORAGE_KEY = "cardiologuesRythmologie";
 
+const CRAN_CARDIO_STRUCT_GESTES = [
+  "TAVI",
+  "Mitra-clip",
+  "TMVR",
+  "Tri-clip",
+  "Fermeture de FOP"
+];
+
+const CRAN_CARDIO_RYTHMO_GESTES = [
+  "Pose/changement de pacemaker",
+  "Pose/changement de DAI",
+  "Ablation de flutter commun",
+  "Ablation de tachycardie jonctionnelle",
+  "Ablation de fibrillation atriale",
+  "Ablation de flutter gauche",
+  "Ablation de tachycardie ventriculaire"
+];
+
 const CRAN_DEFAULT_CHIR_LIST = [
   "LEPRINCE Pascal",
   "BARREDA Theo",
@@ -10131,6 +10160,27 @@ const CRAN_DEFAULT_AN_LIST = [
   "VAUZANGES Quentin"
 ];
 
+const CRAN_DEFAULT_CARDIO_STRUCT_LIST = [
+  "Olivier Barthelemy",
+  "Estelle Gandjbakhch",
+  "Paul Guedeney",
+  "Pascal Leprince",
+  "Gilles Montalescot",
+  "Alban Redheuil",
+  "Xavier Waintraub"
+];
+
+const CRAN_DEFAULT_CARDIO_RYTHMO_LIST = [
+  "Nicolas Badenco",
+  "Thomas Chastre",
+  "Guillaume Duthoit",
+  "Estelle Gandjbakhch",
+  "Etienne Jacquemard",
+  "Mikael Laredo",
+  "Thomas Rolland",
+  "Marine Thuillot"
+];
+
 function crAnEnsureConfigLists() {
 
   if (!OV_CONFIG.crAnesth) {
@@ -10174,13 +10224,29 @@ async function crAnSaveList(key, list) {
 }
 
 function crAnEditList(type) {
-  const isChir = type === "chir";
-  const key = isChir ? CRAN_CHIR_STORAGE_KEY : CRAN_AN_STORAGE_KEY;
-  const defaultList = isChir ? CRAN_DEFAULT_CHIR_LIST : CRAN_DEFAULT_AN_LIST;
-  const title = isChir ? "chirurgiens" : "anesthésistes";
+  let key, defaultList, title;
+
+  if (type === "chir") {
+    key = CRAN_CHIR_STORAGE_KEY;
+    defaultList = CRAN_DEFAULT_CHIR_LIST;
+    title = "chirurgiens";
+  } else if (type === "an") {
+    key = CRAN_AN_STORAGE_KEY;
+    defaultList = CRAN_DEFAULT_AN_LIST;
+    title = "anesthésistes";
+  } else if (type === "cardio-struct") {
+    key = CRAN_CARDIO_STRUCT_STORAGE_KEY;
+    defaultList = CRAN_DEFAULT_CARDIO_STRUCT_LIST;
+    title = "cardiologues - cardiologie structurelle";
+  } else if (type === "cardio-rythmo") {
+    key = CRAN_CARDIO_RYTHMO_STORAGE_KEY;
+    defaultList = CRAN_DEFAULT_CARDIO_RYTHMO_LIST;
+    title = "cardiologues - rythmologie";
+  } else {
+    return;
+  }
 
   const currentList = crAnGetSavedList(key, defaultList);
-
   const overlay = document.createElement("div");
   overlay.className = "cr-an-list-modal-overlay";
 
@@ -10188,18 +10254,10 @@ function crAnEditList(type) {
     <div class="cr-an-list-modal" role="dialog" aria-modal="true">
       <h3>Modifier la liste des ${title}</h3>
       <p>Un nom par ligne.</p>
-
-      <textarea id="cr-an-list-edit-textarea">${currentList
-        .map(crAnEsc)
-        .join("\n")}</textarea>
-
+      <textarea id="cr-an-list-edit-textarea">${currentList.map(crAnEsc).join("\n")}</textarea>
       <div class="cr-an-list-modal-actions">
-        <button type="button" class="btn" id="cr-an-list-save">
-          Enregistrer
-        </button>
-        <button type="button" class="btn outline" id="cr-an-list-cancel">
-          Annuler
-        </button>
+        <button type="button" class="btn" id="cr-an-list-save">Enregistrer</button>
+        <button type="button" class="btn outline" id="cr-an-list-cancel">Annuler</button>
       </div>
     </div>
   `;
@@ -10209,9 +10267,7 @@ function crAnEditList(type) {
   const textarea = document.getElementById("cr-an-list-edit-textarea");
   textarea.focus();
 
-  document.getElementById("cr-an-list-cancel").onclick = () => {
-    overlay.remove();
-  };
+  document.getElementById("cr-an-list-cancel").onclick = () => overlay.remove();
 
   document.getElementById("cr-an-list-save").onclick = async () => {
     const newList = textarea.value
@@ -10220,24 +10276,322 @@ function crAnEditList(type) {
       .filter(Boolean);
 
     try {
+      await crAnSaveList(key, newList);
+      overlay.remove();
 
-  await crAnSaveList(key, newList);
+      if (typeof renderCrAnTabAnesth === "function" && crAnesthState) {
+        renderCrAnTabAnesth();
+        crAnSyncState();
+        crAnRenderSynth();
+      }
 
-  overlay.remove();
+      if (typeof renderCrAnCardio === "function" && crAnCardioState) {
+        openCrAnCardioModal();
+      }
 
-  renderCrAnTabAnesth();
-  crAnSyncState();
-  crAnRenderSynth();
-
-} catch (e) {
-
-  alert("Erreur lors de la sauvegarde GitHub : " + e.message);
-}
+    } catch (e) {
+      alert("Erreur lors de la sauvegarde GitHub : " + e.message);
+    }
   };
 
-  overlay.addEventListener("click", (e) => {
+  overlay.addEventListener("click", e => {
     if (e.target === overlay) overlay.remove();
   });
+}
+
+let crAnCardioState = null;
+
+function openCrAnCardioModal() {
+  crAnCardioState = crAnInitCardioState();
+
+  openModal(`
+    <div class="cr-an-main-wrap">
+      ${renderCrAnCardio()}
+    </div>
+  `);
+
+  crAnCardioRenderSynth();
+}
+
+function crAnInitCardioState() {
+  return {
+    date: crAnTodayFR(),
+    type: "structurelle",
+    geste: "",
+    cardiologue: "",
+    anesthesiste: "",
+
+    conditionnement: {
+      scope: true,
+      spo2: true,
+      vvp: true,
+      bis: false,
+      tof: false,
+      nirs: false,
+      pni: false,
+      kta: true,
+      ktc: true,
+      eto: false
+    },
+
+    induction: {
+      propofol: false,
+      remifentanil: true,
+      etomidate: false,
+      esketamine: false
+    },
+
+    curare: {
+      atracurium: false,
+      celocurine: false,
+      rocuronium: false
+    },
+
+    ventilation: {
+      vsCapno: true,
+      iot: false,
+      isr: false,
+      sonde: "7",
+      cormack: "1",
+      pogo: "",
+      eschmann: false
+    },
+
+    antibioprophylaxie: {
+      aucune: true,
+      cefazoline: false,
+      augmentin: false,
+      vancomycine: false,
+      tazocilline: false,
+      daptomycine: false
+    },
+
+    entretien: {
+      propofol: false,
+      remifentanil: true
+    },
+
+    vasopresseur: "aucun"
+  };
+}
+
+function renderCrAnCardio() {
+  return `
+    <div class="eto-desktop-grid cr-an-desktop-grid">
+
+      <div class="eto-left cr-an-left">
+        ${renderCrAnCardioIntervention()}
+      </div>
+
+      <div class="eto-right cr-an-right">
+
+        <div class="eto-synth-panel">
+          <div class="eto-synth-title">
+            Synthèse CR d’anesthésie
+          </div>
+
+          <pre id="cr-an-cardio-synth" class="eto-synth-box"></pre>
+        </div>
+
+        <div class="cr-an-bottom-actions cr-an-bottom-actions-right">
+
+          <button class="btn" onclick="crAnCardioCopySynth()">
+            Copier la synthèse
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+  `;
+}
+
+function renderCrAnCardioIntervention() {
+
+  const cardioList =
+    crAnCardioState.type === "structurelle"
+      ? crAnGetSavedList(
+          CRAN_CARDIO_STRUCT_STORAGE_KEY,
+          CRAN_DEFAULT_CARDIO_STRUCT_LIST
+        )
+      : crAnGetSavedList(
+          CRAN_CARDIO_RYTHMO_STORAGE_KEY,
+          CRAN_DEFAULT_CARDIO_RYTHMO_LIST
+        );
+
+  const gestes =
+    crAnCardioState.type === "structurelle"
+      ? CRAN_CARDIO_STRUCT_GESTES
+      : CRAN_CARDIO_RYTHMO_GESTES;
+
+  return `
+    <section class="cr-an-cell">
+
+      <div class="cr-an-cell-title">
+        Intervention
+      </div>
+
+      <div class="cr-an-form-row">
+        <label>Date</label>
+
+        <input
+          id="crac-date"
+          value="${crAnEsc(crAnCardioState.date)}"
+          oninput="crAnCardioRenderSynth()"
+        >
+      </div>
+
+      <div class="cr-an-flow-row">
+
+        ${crAnFlowRadio(
+          "crac-type",
+          "structurelle",
+          "Cardiologie structurelle",
+          crAnCardioState.type === "structurelle"
+        )}
+
+        ${crAnFlowRadio(
+          "crac-type",
+          "rythmo",
+          "Rythmologie",
+          crAnCardioState.type === "rythmo"
+        )}
+
+      </div>
+
+      <div class="cr-an-form-row">
+
+        <label>Geste</label>
+
+        <select id="crac-geste">
+
+          ${gestes.map(g => `
+            <option value="${g}">
+              ${g}
+            </option>
+          `).join("")}
+
+        </select>
+
+      </div>
+
+      <div class="cr-an-form-row">
+
+        <label>Cardiologue</label>
+
+        <input
+          list="crac-cardio-list"
+          id="crac-cardiologue"
+        >
+
+        <datalist id="crac-cardio-list">
+
+          ${cardioList.map(x => `
+            <option value="${x}">
+          `).join("")}
+
+        </datalist>
+
+      </div>
+
+      <div class="cr-an-form-row">
+
+        <label>Anesthésiste</label>
+
+        <input
+          list="cran-an-list"
+          id="crac-anesth"
+        >
+
+        <datalist id="cran-an-list">
+
+          ${crAnGetSavedList(
+            CRAN_AN_STORAGE_KEY,
+            CRAN_DEFAULT_AN_LIST
+          ).map(x => `
+            <option value="${x}">
+          `).join("")}
+
+        </datalist>
+
+      </div>
+
+    </section>
+  `;
+}
+
+function crAnCardioRenderSynth(){
+  if(!crAnCardioState)return;
+  const s=crAnCardioState;
+  const lines=[];
+  crAnPushSection(lines,"Intervention",[
+    s.date?`Date : ${s.date}`:"",
+    s.type?`Type d’intervention : ${s.type==="structurelle"?"Cardiologie structurelle":"Rythmologie"}`:"",
+    s.geste?`Geste : ${s.geste}`:"",
+    s.cardiologue?`Cardiologue : ${s.cardiologue}`:"",
+    s.anesthesiste?`Anesthésiste : ${s.anesthesiste}`:""
+  ]);
+  const ia=[];
+  if(s.induction.remifentanil&&!s.induction.propofol)ia.push("Induction : Sédation par AIVOC Rémifentanil.");
+  if(s.induction.remifentanil&&s.induction.propofol)ia.push("Induction : Anesthésie générale par AIVOC Propofol/Rémifentanil.");
+  if(s.ventilation.vsCapno)ia.push("Voies aériennes : Ventilation spontanée avec capnomasque.");
+  if(s.antibioprophylaxie.aucune)ia.push("Antibioprophylaxie : Aucune antibioprophylaxie indiquée.");
+  if(s.entretien.remifentanil&&!s.entretien.propofol)ia.push("Entretien : AIVOC Rémifentanil.");
+  if(s.entretien.propofol&&s.entretien.remifentanil)ia.push("Entretien : AIVOC Propofol/Rémifentanil.");
+  crAnPushSection(lines,"Induction et entretien anesthésie",ia);
+  const el=document.getElementById("cr-an-cardio-synth");
+  if(el)el.innerHTML=lines.join("\n");
+}
+
+function crAnCardioCopySynth(){
+  const el=document.getElementById("cr-an-cardio-synth");
+  if(!el)return;
+  navigator.clipboard.writeText(el.innerText||el.textContent||"");
+}
+
+function crAnApplyCardioPreset(geste) {
+
+  const s = crAnCardioState;
+
+  // reset simple
+  s.conditionnement.bis = false;
+  s.conditionnement.tof = false;
+  s.conditionnement.eto = false;
+  s.conditionnement.pni = false;
+
+  if (
+    geste === "TAVI" ||
+    geste === "Pose/changement de pacemaker"
+  ) {
+
+    s.induction.propofol = false;
+    s.induction.remifentanil = true;
+
+    s.ventilation.vsCapno = true;
+    s.ventilation.iot = false;
+
+    s.curare.atracurium = false;
+  }
+
+  if (
+    geste === "Mitra-clip" ||
+    geste === "TMVR" ||
+    geste === "Tri-clip"
+  ) {
+
+    s.conditionnement.bis = true;
+    s.conditionnement.tof = true;
+    s.conditionnement.eto = true;
+
+    s.induction.propofol = true;
+    s.induction.remifentanil = true;
+
+    s.curare.atracurium = true;
+
+    s.ventilation.vsCapno = false;
+    s.ventilation.iot = true;
+  }
 }
 
 function renderCrAnTabAnesth() {
