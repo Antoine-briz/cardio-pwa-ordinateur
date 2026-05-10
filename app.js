@@ -10877,24 +10877,31 @@ function renderCrAnCardioInterventionnelle(){
       <div class="cr-an-cell-title">Cardiologie interventionnelle</div>
 
       <div class="cr-an-flow-row cr-an-inline-title-row">
-  <div class="cr-an-inline-title">Abord :</div>
-  <select
-    id="crac-abord-type"
-    onchange="
-      crAnCardioState.cardioInter.abordType=this.value;
-      crAnCardioRenderSynth();
-    "
-  >
-    <option value="artere-femorale" ${s.abordType==="artere-femorale" ? "selected" : ""}>Artère fémorale</option>
-    <option value="veine-femorale" ${s.abordType==="veine-femorale" ? "selected" : ""}>Veine fémorale</option>
-    <option value="pectoral" ${s.abordType==="pectoral" ? "selected" : ""}>Pectoral</option>
-  </select>
-</div>
+        <div class="cr-an-inline-title">Abord :</div>
+        <select
+          id="crac-abord-type"
+          onchange="
+            crAnCardioState.cardioInter.abordType=this.value;
+            crAnCardioRenderSynth();
+          "
+        >
+          <option value="artere-femorale" ${s.abordType==="artere-femorale" ? "selected" : ""}>Artère fémorale</option>
+          <option value="veine-femorale" ${s.abordType==="veine-femorale" ? "selected" : ""}>Veine fémorale</option>
+          <option value="pectoral" ${s.abordType==="pectoral" ? "selected" : ""}>Pectoral</option>
+        </select>
+      </div>
 
-<div class="cr-an-flow-row cr-an-inline-title-row">
-  ${crAnFlowRadio("crac-abord-cote","droite","Droite",s.abordCote==="droite")}
-  ${crAnFlowRadio("crac-abord-cote","gauche","Gauche",s.abordCote==="gauche")}
-</div>
+      <div class="cr-an-flow-row cr-an-inline-title-row">
+        <label class="cr-an-flow-check">
+          <input type="radio" name="crac-abord-cote" value="droite" ${s.abordCote==="droite" ? "checked" : ""} onchange="crAnCardioSet('cardioInter','abordCote','droite')">
+          <span>Droite</span>
+        </label>
+
+        <label class="cr-an-flow-check">
+          <input type="radio" name="crac-abord-cote" value="gauche" ${s.abordCote==="gauche" ? "checked" : ""} onchange="crAnCardioSet('cardioInter','abordCote','gauche')">
+          <span>Gauche</span>
+        </label>
+      </div>
 
       <div class="cr-an-flow-row cr-an-geste-inline-row">
         <label class="cr-an-inline-main-label">Geste réalisé :</label>
@@ -10914,22 +10921,35 @@ function renderCrAnCardioInterventionnelle(){
         ${crAnFlowCheck("crac-event-fa","FA",s.fa,"crAnCardioToggle('cardioInter','fa')")}
         ${crAnFlowCheck("crac-event-bav","BAV",s.bav,"crAnCardioToggle('cardioInter','bav')")}
         <span>CEE</span>
-<input
-  type="number"
-  id="crac-event-cei"
-  class="cr-an-mini-input"
-  value="${crAnEsc(s.cei)}"
-  oninput="
-    crAnCardioState.cardioInter.cei=this.value;
-    crAnCardioRenderSynth();
-  "
->
+        <input
+          type="number"
+          id="crac-event-cei"
+          class="cr-an-mini-input"
+          value="${crAnEsc(s.cei)}"
+          oninput="crAnCardioState.cardioInter.cei=this.value;crAnCardioRenderSynth();"
+        >
       </div>
 
       <div class="cr-an-flow-row cr-an-inline-title-row">
         <div class="cr-an-inline-title">Anticoagulation :</div>
-        ${crAnFlowTextInput({id:"crac-heparine",label:"Héparine",value:s.heparine,placeholder:"UI",type:"number",cls:"is-mini"})}
-        ${crAnFlowTextInput({id:"crac-protamine",label:"Protamine",value:s.protamine,placeholder:"UI",type:"number",cls:"is-mini"})}
+        <span>Héparine</span>
+        <input
+          type="number"
+          id="crac-heparine"
+          class="cr-an-mini-input"
+          value="${crAnEsc(s.heparine)}"
+          placeholder="UI"
+          oninput="crAnCardioState.cardioInter.heparine=this.value;crAnCardioRenderSynth();"
+        >
+        <span>Protamine</span>
+        <input
+          type="number"
+          id="crac-protamine"
+          class="cr-an-mini-input"
+          value="${crAnEsc(s.protamine)}"
+          placeholder="UI"
+          oninput="crAnCardioState.cardioInter.protamine=this.value;crAnCardioRenderSynth();"
+        >
       </div>
     </section>
   `;
@@ -10940,44 +10960,112 @@ function renderCrAnCardioFin(){
   return `
     <section class="cr-an-cell">
       <div class="cr-an-cell-title">En fin d’intervention</div>
+
       <div class="cr-an-flow-row cr-an-inline-title-row">
         <div class="cr-an-inline-title">Rythme cardiaque :</div>
-        ${crAnFlowRadio("crac-fin-rythme","sinusal","Sinusal",s.rythme==="sinusal")}
-        ${crAnFlowRadio("crac-fin-rythme","fa","FA",s.rythme==="fa")}
-        ${crAnFlowRadio("crac-fin-rythme","bav","BAV",s.rythme==="bav")}
-        ${crAnFlowRadio("crac-fin-rythme","stimule","Stimulé",s.rythme==="stimule")}
-      </div>
-      <div class="cr-an-flow-row cr-an-inline-title-row">
-  <div class="cr-an-inline-title">Cristalloïde :</div>
-  ${crAnFlowTextInput({id:"crac-fin-ringer",label:"Ringer lactate",value:s.ringer,placeholder:"mL",type:"number",cls:"is-mini"})}
-</div>
 
-<div class="cr-an-flow-row cr-an-inline-title-row">
-  <div class="cr-an-inline-title">Amines :</div>
-  ${crAnFlowTextInput({id:"crac-fin-noradmax",label:"Noradrénaline max",value:s.noradMax,placeholder:"mg/h",type:"number",step:"any",cls:"is-mini"})}
-  ${crAnFlowTextInput({id:"crac-fin-dobumax",label:"Dobutamine max",value:s.dobuMax,placeholder:"µg/kg/min",type:"number",step:"any",cls:"is-mini"})}
-</div>
+        <label class="cr-an-flow-check">
+          <input type="radio" name="crac-fin-rythme" value="sinusal" ${s.rythme==="sinusal" ? "checked" : ""} onchange="crAnCardioSet('fin','rythme','sinusal')">
+          <span>Sinusal</span>
+        </label>
+
+        <label class="cr-an-flow-check">
+          <input type="radio" name="crac-fin-rythme" value="fa" ${s.rythme==="fa" ? "checked" : ""} onchange="crAnCardioSet('fin','rythme','fa')">
+          <span>FA</span>
+        </label>
+
+        <label class="cr-an-flow-check">
+          <input type="radio" name="crac-fin-rythme" value="bav" ${s.rythme==="bav" ? "checked" : ""} onchange="crAnCardioSet('fin','rythme','bav')">
+          <span>BAV</span>
+        </label>
+
+        <label class="cr-an-flow-check">
+          <input type="radio" name="crac-fin-rythme" value="stimule" ${s.rythme==="stimule" ? "checked" : ""} onchange="crAnCardioSet('fin','rythme','stimule')">
+          <span>Stimulé</span>
+        </label>
+      </div>
+
+      <div class="cr-an-flow-row cr-an-inline-title-row">
+        <div class="cr-an-inline-title">Cristalloïde :</div>
+        <span>Ringer lactate</span>
+        <input
+          type="number"
+          id="crac-fin-ringer"
+          class="cr-an-mini-input"
+          value="${crAnEsc(s.ringer)}"
+          placeholder="mL"
+          oninput="crAnCardioState.fin.ringer=this.value;crAnCardioRenderSynth();"
+        >
+      </div>
+
+      <div class="cr-an-flow-row cr-an-inline-title-row">
+        <div class="cr-an-inline-title">Amines :</div>
+        <span>Noradrénaline max</span>
+        <input
+          type="number"
+          step="any"
+          id="crac-fin-noradmax"
+          class="cr-an-mini-input"
+          value="${crAnEsc(s.noradMax)}"
+          placeholder="mg/h"
+          oninput="crAnCardioState.fin.noradMax=this.value;crAnCardioRenderSynth();"
+        >
+
+        <span>Dobutamine max</span>
+        <input
+          type="number"
+          step="any"
+          id="crac-fin-dobumax"
+          class="cr-an-mini-input"
+          value="${crAnEsc(s.dobuMax)}"
+          placeholder="µg/kg/min"
+          oninput="crAnCardioState.fin.dobuMax=this.value;crAnCardioRenderSynth();"
+        >
+      </div>
+
       <div class="cr-an-flow-row cr-an-inline-title-row">
         <div class="cr-an-inline-title">ETO post-opératoire :</div>
         ${crAnFlowCheck("crac-fin-cine","Cinétique segmentaire OK",s.cinesegOk,"crAnCardioToggle('fin','cinesegOk')")}
-${crAnFlowCheck("crac-fin-va","Valve aortique OK",s.vaOk,"crAnCardioToggle('fin','vaOk')")}
-${crAnFlowCheck("crac-fin-vm","Valve mitrale OK",s.vmOk,"crAnCardioToggle('fin','vmOk')")}
-${crAnFlowCheck("crac-fin-vd","Fonction VD OK",s.vdOk,"crAnCardioToggle('fin','vdOk')")}
-${crAnFlowCheck("crac-fin-pericarde","Péricarde sec",s.pericardeSec,"crAnCardioToggle('fin','pericardeSec')")}
-${crAnFlowCheck("crac-fin-aorte","Paroi aortique OK",s.aorteOk,"crAnCardioToggle('fin','aorteOk')")}
+        ${crAnFlowCheck("crac-fin-va","Valve aortique OK",s.vaOk,"crAnCardioToggle('fin','vaOk')")}
+        ${crAnFlowCheck("crac-fin-vm","Valve mitrale OK",s.vmOk,"crAnCardioToggle('fin','vmOk')")}
+        ${crAnFlowCheck("crac-fin-vd","Fonction VD OK",s.vdOk,"crAnCardioToggle('fin','vdOk')")}
+        ${crAnFlowCheck("crac-fin-pericarde","Péricarde sec",s.pericardeSec,"crAnCardioToggle('fin','pericardeSec')")}
+        ${crAnFlowCheck("crac-fin-aorte","Paroi aortique OK",s.aorteOk,"crAnCardioToggle('fin','aorteOk')")}
       </div>
+
       <div class="cr-an-flow-row cr-an-inline-title-row">
         <div class="cr-an-inline-title">Voies aériennes :</div>
         ${crAnFlowCheck("crac-fin-extub","Extubation",s.extubation,"crAnCardioExclusiveFinAirway('extubation')")}
         ${crAnFlowCheck("crac-fin-ventile","Sortie ventilé",s.sortieVentile,"crAnCardioExclusiveFinAirway('sortieVentile')")}
       </div>
+
       <div class="cr-an-flow-row cr-an-inline-title-row">
         <div class="cr-an-inline-title">Destination :</div>
-        ${crAnFlowRadio("crac-fin-dest","sspi1","SSPI 1er",s.destination==="sspi1")}
-        ${crAnFlowRadio("crac-fin-dest","sspi3","SSPI 3ème",s.destination==="sspi3")}
-        ${crAnFlowRadio("crac-fin-dest","usi-rythmo","USI rythmo",s.destination==="usi-rythmo")}
-        ${crAnFlowRadio("crac-fin-dest","usic","USIC",s.destination==="usic")}
-        ${crAnFlowRadio("crac-fin-dest","rea","Réa.",s.destination==="rea")}
+
+        <label class="cr-an-flow-check">
+          <input type="radio" name="crac-fin-dest" value="sspi1" ${s.destination==="sspi1" ? "checked" : ""} onchange="crAnCardioSet('fin','destination','sspi1')">
+          <span>SSPI 1er</span>
+        </label>
+
+        <label class="cr-an-flow-check">
+          <input type="radio" name="crac-fin-dest" value="sspi3" ${s.destination==="sspi3" ? "checked" : ""} onchange="crAnCardioSet('fin','destination','sspi3')">
+          <span>SSPI 3ème</span>
+        </label>
+
+        <label class="cr-an-flow-check">
+          <input type="radio" name="crac-fin-dest" value="usi-rythmo" ${s.destination==="usi-rythmo" ? "checked" : ""} onchange="crAnCardioSet('fin','destination','usi-rythmo')">
+          <span>USI rythmo</span>
+        </label>
+
+        <label class="cr-an-flow-check">
+          <input type="radio" name="crac-fin-dest" value="usic" ${s.destination==="usic" ? "checked" : ""} onchange="crAnCardioSet('fin','destination','usic')">
+          <span>USIC</span>
+        </label>
+
+        <label class="cr-an-flow-check">
+          <input type="radio" name="crac-fin-dest" value="rea" ${s.destination==="rea" ? "checked" : ""} onchange="crAnCardioSet('fin','destination','rea')">
+          <span>Réa.</span>
+        </label>
       </div>
     </section>
   `;
@@ -11024,6 +11112,11 @@ function crAnCardioRefresh(){
   const wrap=document.querySelector(".cr-an-main-wrap");
   if(wrap)wrap.innerHTML=renderCrAnCardio();
   crAnCardioRenderSynth();
+}
+
+function crAnCardioSet(section,key,value){
+  crAnCardioState[section][key]=value;
+  crAnCardioRefresh();
 }
 
 function crAnCardioExclusiveCurare(key){
