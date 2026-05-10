@@ -10155,64 +10155,61 @@ function crAnEditList(type) {
   const isChir = type === "chir";
 
   const key = isChir ? CRAN_CHIR_STORAGE_KEY : CRAN_AN_STORAGE_KEY;
+  const defaultList = isChir ? CRAN_DEFAULT_CHIR_LIST : CRAN_DEFAULT_AN_LIST;
   const title = isChir ? "chirurgiens" : "anesthésistes";
 
-  const defaultList = isChir ? CRAN_DEFAULT_CHIR_LIST : CRAN_DEFAULT_AN_LIST;
   const currentList = crAnGetSavedList(key, defaultList);
 
-  const txt = prompt(
-    `Modifier la liste des ${title} :\n\nUn nom par ligne.`,
-    currentList.join("\n")
-  );
+  const overlay = document.createElement("div");
+  overlay.className = "cr-an-list-modal-overlay";
 
-  if (txt === null) return;
+  overlay.innerHTML = `
+    <div class="cr-an-list-modal" role="dialog" aria-modal="true">
+      <h3>Modifier la liste des ${title}</h3>
+      <p>Un nom par ligne.</p>
 
-  const newList = txt
-    .split("\n")
-    .map(x => x.trim())
-    .filter(Boolean);
+      <textarea id="cr-an-list-edit-textarea">${currentList
+        .map(crAnEsc)
+        .join("\n")}</textarea>
 
-  crAnSaveList(key, newList);
+      <div class="cr-an-list-modal-actions">
+        <button type="button" class="btn" id="cr-an-list-save">
+          Enregistrer
+        </button>
+        <button type="button" class="btn outline" id="cr-an-list-cancel">
+          Annuler
+        </button>
+      </div>
+    </div>
+  `;
 
-  renderCrAnTabAnesth();
-  crAnSyncState();
-  crAnRenderSynth();
-}
+  document.body.appendChild(overlay);
 
-function crAnEditList(type) {
-  const isChir = type === "chir";
+  const textarea = document.getElementById("cr-an-list-edit-textarea");
+  textarea.focus();
 
-  const key = isChir
-    ? CRAN_CHIR_STORAGE_KEY
-    : CRAN_AN_STORAGE_KEY;
+  document.getElementById("cr-an-list-cancel").onclick = () => {
+    overlay.remove();
+  };
 
-  const defaultList = isChir
-    ? CRAN_DEFAULT_CHIR_LIST
-    : CRAN_DEFAULT_AN_LIST;
+  document.getElementById("cr-an-list-save").onclick = () => {
+    const newList = textarea.value
+      .split("\n")
+      .map(x => x.trim())
+      .filter(Boolean);
 
-  const title = isChir
-    ? "chirurgiens"
-    : "anesthésistes";
+    crAnSaveList(key, newList);
 
-  const currentList = crAnGetSavedList(key, defaultList);
+    overlay.remove();
 
-  const txt = prompt(
-    `Modifier la liste des ${title} :\n\nUn nom par ligne.`,
-    currentList.join("\n")
-  );
+    renderCrAnTabAnesth();
+    crAnSyncState();
+    crAnRenderSynth();
+  };
 
-  if (txt === null) return;
-
-  const newList = txt
-    .split("\n")
-    .map(x => x.trim())
-    .filter(Boolean);
-
-  crAnSaveList(key, newList);
-
-  renderCrAnTabAnesth();
-  crAnSyncState();
-  crAnRenderSynth();
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) overlay.remove();
+  });
 }
 
 function renderCrAnTabAnesth() {
