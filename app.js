@@ -10996,7 +10996,7 @@ function crAnPushSection(lines, title, bodyLines) {
 
   // espace UNIQUEMENT entre sections
   if (lines.length) {
-    lines.push("");
+   lines.push("<br>");
   }
 
   // titre
