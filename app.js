@@ -10944,12 +10944,12 @@ function renderCrAnCardioFin(){
       </div>
       <div class="cr-an-flow-row cr-an-inline-title-row">
         <div class="cr-an-inline-title">ETO post-opératoire :</div>
-        ${crAnFlowCheck("crac-fin-cine","cinétique segmentaire OK",s.cinesegOk,"crAnCardioToggle('fin','cinesegOk')")}
-${crAnFlowCheck("crac-fin-va","valve aortique OK",s.vaOk,"crAnCardioToggle('fin','vaOk')")}
-${crAnFlowCheck("crac-fin-vm","valve mitrale OK",s.vmOk,"crAnCardioToggle('fin','vmOk')")}
-${crAnFlowCheck("crac-fin-vd","fonction VD OK",s.vdOk,"crAnCardioToggle('fin','vdOk')")}
-${crAnFlowCheck("crac-fin-pericarde","péricarde sec",s.pericardeSec,"crAnCardioToggle('fin','pericardeSec')")}
-${crAnFlowCheck("crac-fin-aorte","paroi aortique OK",s.aorteOk,"crAnCardioToggle('fin','aorteOk')")}
+        ${crAnFlowCheck("crac-fin-cine","Cinétique segmentaire OK",s.cinesegOk,"crAnCardioToggle('fin','cinesegOk')")}
+${crAnFlowCheck("crac-fin-va","Valve aortique OK",s.vaOk,"crAnCardioToggle('fin','vaOk')")}
+${crAnFlowCheck("crac-fin-vm","Valve mitrale OK",s.vmOk,"crAnCardioToggle('fin','vmOk')")}
+${crAnFlowCheck("crac-fin-vd","Fonction VD OK",s.vdOk,"crAnCardioToggle('fin','vdOk')")}
+${crAnFlowCheck("crac-fin-pericarde","Péricarde sec",s.pericardeSec,"crAnCardioToggle('fin','pericardeSec')")}
+${crAnFlowCheck("crac-fin-aorte","Paroi aortique OK",s.aorteOk,"crAnCardioToggle('fin','aorteOk')")}
       </div>
       <div class="cr-an-flow-row cr-an-inline-title-row">
         <div class="cr-an-inline-title">Voies aériennes :</div>
