@@ -10308,10 +10308,54 @@ function crAnEditList(type) {
   });
 }
 
-function openCrAnCardioModal(){
-  crAnCardioState=crAnInitCardioState();
+function openCrAnCardioModal() {
+  crAnCardioState = crAnInitCardioState();
   crAnCardioApplyPreset(crAnCardioState.geste);
-  openModal(`<div class="cr-an-main-wrap">${renderCrAnCardio()}</div>`);
+
+  closeCrAnesthModal();
+
+  const overlay = document.createElement("div");
+  overlay.id = "cr-an-overlay";
+  overlay.className = "acr-modal";
+
+  overlay.innerHTML = `
+    <div class="acr-modal-card eto-fullscreen eto-modal cr-an-modal" role="dialog" aria-modal="true">
+
+      <div class="cr-an-topbar">
+        <div class="cr-an-topbar-left">
+          <div class="cr-an-tabs" role="tablist" aria-label="Compte rendu">
+            <button type="button"
+                    class="cr-an-tab is-active"
+                    role="tab"
+                    aria-selected="true">
+              CR Anesthésie
+            </button>
+          </div>
+        </div>
+
+        <button class="acr-close-btn cr-an-close-btn"
+                type="button"
+                onclick="closeCrAnesthModal()"
+                aria-label="Fermer">
+          ✕
+        </button>
+      </div>
+
+      <div class="acr-modal-body cr-an-body">
+        <div class="cr-an-main-wrap">
+          ${renderCrAnCardio()}
+        </div>
+      </div>
+
+    </div>
+  `;
+
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) closeCrAnesthModal();
+  });
+
+  document.body.appendChild(overlay);
+
   crAnCardioRenderSynth();
 }
 
