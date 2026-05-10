@@ -9958,13 +9958,13 @@ if (
   crAnesthState.etoLoadedVariant = variant;
 }
 
-function crAnFlowCheck(id, label, checked) {
+function crAnFlowCheck(id, label, checked, onchange = "crAnSyncState(); crAnRenderSynth();") {
   return `
     <label class="cr-an-flow-item cr-an-flow-check">
       <input type="checkbox"
              id="${id}"
              ${checked ? "checked" : ""}
-             onchange="crAnSyncState(); crAnRenderSynth();">
+             onchange="${onchange}">
       <span>${label}</span>
     </label>
   `;
@@ -10029,6 +10029,18 @@ function crAnFlowCheck(id, label, checked) {
       <span>${label}</span>
     </label>
   `;
+}
+
+function crAnExclusiveCheck(checkedId, otherId) {
+  const checkedEl = document.getElementById(checkedId);
+  const otherEl = document.getElementById(otherId);
+
+  if (checkedEl?.checked && otherEl) {
+    otherEl.checked = false;
+  }
+
+  crAnSyncState();
+  crAnRenderSynth();
 }
 
 function crAnFlowRadio(name, value, label, checked) {
@@ -10404,8 +10416,19 @@ ${crAnesthState.geste3 !== undefined && crAnIsValveGeste(crAnesthState.geste3) ?
 
             <div class="cr-an-flow-row cr-an-inline-title-row">
               <div class="cr-an-inline-title">Intubation :</div>
-              ${crAnFlowCheck("cran-int-vent", "Ventilation", crAnesthState.intubation.ventilation)}
-              ${crAnFlowCheck("cran-int-sr", "ISR", crAnesthState.intubation.sequenceRapide)}
+              ${crAnFlowCheck(
+  "cran-int-vent",
+  "Ventilation",
+  crAnesthState.intubation.ventilation,
+  "crAnExclusiveCheck('cran-int-vent','cran-int-sr')"
+)}
+
+${crAnFlowCheck(
+  "cran-int-sr",
+  "ISR",
+  crAnesthState.intubation.sequenceRapide,
+  "crAnExclusiveCheck('cran-int-sr','cran-int-vent')"
+)}
               ${crAnFlowSelect({
                 id: "cran-int-sonde",
                 label: "Sonde",
@@ -10442,15 +10465,19 @@ ${crAnesthState.geste3 !== undefined && crAnIsValveGeste(crAnesthState.geste3) ?
 
 <div class="cr-an-flow-row cr-an-inline-title-row">
   <div class="cr-an-inline-title">ALR :</div>
+
   ${crAnFlowCheck(
     "cran-alr-tt",
     "Bloc thoracique transverse bilatéral",
-    crAnesthState.alr.thoraciqueTransverse
+    crAnesthState.alr.thoraciqueTransverse,
+    "crAnExclusiveCheck('cran-alr-tt','cran-alr-pv')"
   )}
+
   ${crAnFlowCheck(
     "cran-alr-pv",
     "Bloc paravertébral droit",
-    crAnesthState.alr.paravertebralDroit
+    crAnesthState.alr.paravertebralDroit,
+    "crAnExclusiveCheck('cran-alr-pv','cran-alr-tt')"
   )}
 </div>
 
@@ -10849,6 +10876,11 @@ crAnesthState.anesth1 = crAnVal("cran-an1");
     daptomycine: crAnChecked("cran-atb-dapto")
   };
 
+crAnesthState.alr = {
+  thoraciqueTransverse: crAnChecked("cran-alr-tt"),
+  paravertebralDroit: crAnChecked("cran-alr-pv")
+};
+  
   crAnesthState.entretien = {
     propofol: crAnChecked("cran-ent-prop"),
     sufentanil: crAnChecked("cran-ent-suf"),
