@@ -10990,11 +10990,33 @@ function crAnBuildGeste() {
 }
 
 function crAnPushSection(lines, title, bodyLines) {
+
   const clean = bodyLines.filter(Boolean);
   if (!clean.length) return;
-  if (lines.length) lines.push("");
-  lines.push(title.toUpperCase());
-  lines.push(...clean);
+
+  // ligne vide entre sections
+  if (lines.length) {
+    lines.push(" ");
+  }
+
+  // Titre : 1ère lettre majuscule + reste inchangé
+  const formattedTitle =
+    title.charAt(0).toUpperCase() +
+    title.slice(1).toLowerCase();
+
+  // titre gras + souligné
+  lines.push(`<b><u>${formattedTitle}</u></b>`);
+
+  // vraie ligne vide
+  lines.push(" ");
+
+  clean.forEach(line => {
+
+    const txt = String(line).trim();
+
+    // chaque ligne précédée d’un tiret
+    lines.push(`- ${txt}`);
+  });
 }
 
 function crAnRenderSynth() {
