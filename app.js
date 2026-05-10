@@ -10715,9 +10715,49 @@ function renderCrAnCardioAnesthesie(){
         ${crAnFlowCheck("crac-va-vs","VS",s.ventilation.vsCapno,"crAnCardioExclusiveVent('vsCapno')")}
         ${crAnFlowCheck("crac-va-iot","Ventil./IOT",s.ventilation.iot,"crAnCardioExclusiveVent('iot')")}
         ${crAnFlowCheck("crac-va-isr","ISR",s.ventilation.isr,"crAnCardioToggle('ventilation','isr')")}
-        ${crAnFlowSelect({id:"crac-va-sonde",label:"Sonde",value:s.ventilation.sonde,options:[" ","6,5","7","7,5","8"],cls:"is-micro"})}
-        ${crAnFlowSelect({id:"crac-va-cormack",label:"Cormack",value:s.ventilation.cormack,options:[" ","1","2","3","4"],cls:"is-micro"})}
-        ${crAnFlowTextInput({id:"crac-va-pogo",label:"POGO",value:s.ventilation.pogo,placeholder:"",type:"number",cls:"is-micro"})}
+        <span>Sonde</span>
+<select
+  id="crac-va-sonde"
+  class="cr-an-mini-input"
+  onchange="
+    crAnCardioState.ventilation.sonde=this.value;
+    crAnCardioRenderSynth();
+  "
+>
+  <option value="" ${s.ventilation.sonde==="" ? "selected" : ""}></option>
+  <option value="6,5" ${s.ventilation.sonde==="6,5" ? "selected" : ""}>6,5</option>
+  <option value="7" ${s.ventilation.sonde==="7" ? "selected" : ""}>7</option>
+  <option value="7,5" ${s.ventilation.sonde==="7,5" ? "selected" : ""}>7,5</option>
+  <option value="8" ${s.ventilation.sonde==="8" ? "selected" : ""}>8</option>
+</select>
+
+<span>Cormack</span>
+<select
+  id="crac-va-cormack"
+  class="cr-an-mini-input"
+  onchange="
+    crAnCardioState.ventilation.cormack=this.value;
+    crAnCardioRenderSynth();
+  "
+>
+  <option value="" ${s.ventilation.cormack==="" ? "selected" : ""}></option>
+  <option value="1" ${s.ventilation.cormack==="1" ? "selected" : ""}>1</option>
+  <option value="2" ${s.ventilation.cormack==="2" ? "selected" : ""}>2</option>
+  <option value="3" ${s.ventilation.cormack==="3" ? "selected" : ""}>3</option>
+  <option value="4" ${s.ventilation.cormack==="4" ? "selected" : ""}>4</option>
+</select>
+
+<span>POGO</span>
+<input
+  type="number"
+  id="crac-va-pogo"
+  class="cr-an-mini-input"
+  value="${crAnEsc(s.ventilation.pogo)}"
+  oninput="
+    crAnCardioState.ventilation.pogo=this.value;
+    crAnCardioRenderSynth();
+  "
+>
         ${crAnFlowCheck("crac-va-esch","Eschmann",s.ventilation.eschmann,"crAnCardioToggle('ventilation','eschmann')")}
       </div>
       <div class="cr-an-flow-row cr-an-inline-title-row">
