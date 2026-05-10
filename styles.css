@@ -14521,3 +14521,26 @@ body.theme-light .biblio-live-table thead th * {
   border-radius: 999px;
   background: #0b3c6d;
 }
+
+.cr-an-list-edit-wrap{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  width:100%;
+}
+
+.cr-an-list-edit-wrap input{
+  flex:1;
+}
+
+.cr-an-list-edit-btn{
+  width:30px;
+  height:28px;
+  border:1.6px solid #000;
+  border-radius:8px;
+  background:#4169be;
+  color:#fff;
+  font-weight:800;
+  cursor:pointer;
+  line-height:1;
+}
