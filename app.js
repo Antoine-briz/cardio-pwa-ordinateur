@@ -10849,12 +10849,12 @@ function renderCrAnCardioEtoPre(){
       </div>
 
       <div class="cr-an-flow-row cr-an-inline-title-row">
-        ${crAnFlowCheck("crac-etopre-cine","cinétique segmentaire OK",s.cinesegOk,"crAnCardioToggle('etoPre','cinesegOk')")}
-        ${crAnFlowCheck("crac-etopre-va","valve aortique OK",s.vaOk,"crAnCardioToggle('etoPre','vaOk')")}
-        ${crAnFlowCheck("crac-etopre-vm","valve mitrale OK",s.vmOk,"crAnCardioToggle('etoPre','vmOk')")}
-        ${crAnFlowCheck("crac-etopre-vd","fonction VD OK",s.vdOk,"crAnCardioToggle('etoPre','vdOk')")}
-        ${crAnFlowCheck("crac-etopre-ag","auricule gauche libre",s.auriculeLibre,"crAnCardioToggle('etoPre','auriculeLibre')")}
-        ${crAnFlowCheck("crac-etopre-pericarde","péricarde sec",s.pericardeSec,"crAnCardioToggle('etoPre','pericardeSec')")}
+        ${crAnFlowCheck("crac-etopre-cine","Cinétique segmentaire OK",s.cinesegOk,"crAnCardioToggle('etoPre','cinesegOk')")}
+        ${crAnFlowCheck("crac-etopre-va","Valve aortique OK",s.vaOk,"crAnCardioToggle('etoPre','vaOk')")}
+        ${crAnFlowCheck("crac-etopre-vm","Valve mitrale OK",s.vmOk,"crAnCardioToggle('etoPre','vmOk')")}
+        ${crAnFlowCheck("crac-etopre-vd","Fonction VD OK",s.vdOk,"crAnCardioToggle('etoPre','vdOk')")}
+        ${crAnFlowCheck("crac-etopre-ag","Auricule gauche libre",s.auriculeLibre,"crAnCardioToggle('etoPre','auriculeLibre')")}
+        ${crAnFlowCheck("crac-etopre-pericarde","Péricarde sec",s.pericardeSec,"crAnCardioToggle('etoPre','pericardeSec')")}
       </div>
     </section>
   `;
