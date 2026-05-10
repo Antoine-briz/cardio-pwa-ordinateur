@@ -10315,9 +10315,13 @@ function openCrAnCardioModal() {
 
 function crAnInitCardioState() {
   return {
+
     date: crAnTodayFR(),
+
     type: "structurelle",
+
     geste: "",
+
     cardiologue: "",
     anesthesiste: "",
 
@@ -10371,38 +10375,73 @@ function crAnInitCardioState() {
       remifentanil: true
     },
 
-    vasopresseur: "aucun"
+    vasopresseur: "aucun",
+
+    etoPre: {
+      fevg: "",
+      itv: "",
+      cinesegOk: true,
+      auriculeLibre: true,
+      valvesOk: true,
+      vdOk: true,
+      pasEpanchement: true
+    },
+
+    cardioInter: {
+      abordType: "artere-femorale",
+      abordCote: "droite",
+      gesteRealise: "",
+      tv: false,
+      fv: false,
+      fa: false,
+      bav: false,
+      cei: "",
+      heparine: "",
+      protamine: ""
+    },
+
+    fin: {
+      rythme: "sinusal",
+      ringer: "",
+      noradMax: "",
+      dobuMax: "",
+      fevg: "",
+      itv: "",
+      cinesegOk: true,
+      valvesOk: true,
+      vdOk: true,
+      pericardeSec: true,
+      aorteOk: true,
+      extubation: true,
+      sortieVentile: false,
+      destination: "sspi1"
+    }
+
   };
 }
 
-function renderCrAnCardio() {
+function renderCrAnCardio(){
   return `
     <div class="eto-desktop-grid cr-an-desktop-grid">
-
       <div class="eto-left cr-an-left">
-        ${renderCrAnCardioIntervention()}
+        <div class="cr-an-grid-5">
+          ${renderCrAnCardioIntervention()}
+          ${renderCrAnCardioAnesthesie()}
+          ${renderCrAnCardioEtoPre()}
+          ${renderCrAnCardioInterventionnelle()}
+          ${renderCrAnCardioFin()}
+        </div>
       </div>
-
       <div class="eto-right cr-an-right">
-
         <div class="eto-synth-panel">
-          <div class="eto-synth-title">
-            Synthèse CR d’anesthésie
-          </div>
-
+          <div class="eto-synth-title">Synthèse CR d’anesthésie</div>
           <pre id="cr-an-cardio-synth" class="eto-synth-box"></pre>
         </div>
-
         <div class="cr-an-bottom-actions cr-an-bottom-actions-right">
-
-          <button class="btn" onclick="crAnCardioCopySynth()">
-            Copier la synthèse
-          </button>
-
+          <button class="btn" onclick="crAnCardioCopySynth()">Copier la synthèse</button>
+          <button class="btn" onclick="openCrAnCardioModal()">Effacer la saisie</button>
         </div>
-
       </div>
-
     </div>
   `;
 }
@@ -10521,9 +10560,257 @@ function renderCrAnCardioIntervention() {
   `;
 }
 
+function renderCrAnCardioAnesthesie(){
+  const s=crAnCardioState;
+  return `
+    <section class="cr-an-cell cr-an-cell-induction">
+      <div class="cr-an-cell-title">Induction et entretien anesthésie</div>
+      <div class="cr-an-flow-row cr-an-inline-title-row">
+        <div class="cr-an-inline-title">Conditionnement :</div>
+        ${crAnFlowCheck("crac-scope","Scope",s.conditionnement.scope,"crAnCardioToggle('conditionnement','scope')")}
+        ${crAnFlowCheck("crac-spo2","SpO2",s.conditionnement.spo2,"crAnCardioToggle('conditionnement','spo2')")}
+        ${crAnFlowCheck("crac-vvp","VVP",s.conditionnement.vvp,"crAnCardioToggle('conditionnement','vvp')")}
+        ${crAnFlowCheck("crac-bis","BIS",s.conditionnement.bis,"crAnCardioToggle('conditionnement','bis')")}
+        ${crAnFlowCheck("crac-tof","TOF",s.conditionnement.tof,"crAnCardioToggle('conditionnement','tof')")}
+        ${crAnFlowCheck("crac-nirs","NIRS",s.conditionnement.nirs,"crAnCardioToggle('conditionnement','nirs')")}
+        ${crAnFlowCheck("crac-pni","PNI",s.conditionnement.pni,"crAnCardioToggle('conditionnement','pni')")}
+        ${crAnFlowCheck("crac-kta","KTa",s.conditionnement.kta,"crAnCardioToggle('conditionnement','kta')")}
+        ${crAnFlowCheck("crac-ktc","KTc",s.conditionnement.ktc,"crAnCardioToggle('conditionnement','ktc')")}
+        ${crAnFlowCheck("crac-eto","ETO",s.conditionnement.eto,"crAnCardioToggle('conditionnement','eto')")}
+      </div>
+      <div class="cr-an-flow-row cr-an-inline-title-row">
+        <div class="cr-an-inline-title">Induction :</div>
+        ${crAnFlowCheck("crac-ind-prop","Propofol",s.induction.propofol,"crAnCardioToggle('induction','propofol')")}
+        ${crAnFlowCheck("crac-ind-remi","Rémifentanil",s.induction.remifentanil,"crAnCardioToggle('induction','remifentanil')")}
+        ${crAnFlowCheck("crac-ind-eto","Etomidate",s.induction.etomidate,"crAnCardioToggle('induction','etomidate')")}
+        ${crAnFlowCheck("crac-ind-eske","Eskétamine",s.induction.esketamine,"crAnCardioToggle('induction','esketamine')")}
+      </div>
+      <div class="cr-an-flow-row cr-an-inline-title-row">
+        <div class="cr-an-inline-title">Curare :</div>
+        ${crAnFlowCheck("crac-cur-atr","Atracurium",s.curare.atracurium,"crAnCardioExclusiveCurare('atracurium')")}
+        ${crAnFlowCheck("crac-cur-celo","Célocurine",s.curare.celocurine,"crAnCardioExclusiveCurare('celocurine')")}
+        ${crAnFlowCheck("crac-cur-rocu","Rocuronium",s.curare.rocuronium,"crAnCardioExclusiveCurare('rocuronium')")}
+      </div>
+      <div class="cr-an-flow-row cr-an-inline-title-row">
+        <div class="cr-an-inline-title">Voies aériennes :</div>
+        ${crAnFlowCheck("crac-va-vs","VS capnomasque",s.ventilation.vsCapno,"crAnCardioExclusiveVent('vsCapno')")}
+        ${crAnFlowCheck("crac-va-iot","Ventilation/IOT",s.ventilation.iot,"crAnCardioExclusiveVent('iot')")}
+        ${crAnFlowCheck("crac-va-isr","ISR",s.ventilation.isr,"crAnCardioToggle('ventilation','isr')")}
+        ${crAnFlowSelect({id:"crac-va-sonde",label:"Sonde",value:s.ventilation.sonde,options:["6,5","7","7,5","8"],cls:"is-micro"})}
+        ${crAnFlowSelect({id:"crac-va-cormack",label:"Cormack",value:s.ventilation.cormack,options:["1","2","3","4"],cls:"is-micro"})}
+        ${crAnFlowTextInput({id:"crac-va-pogo",label:"POGO",value:s.ventilation.pogo,placeholder:"",type:"number",cls:"is-micro"})}
+        ${crAnFlowCheck("crac-va-esch","Eschmann",s.ventilation.eschmann,"crAnCardioToggle('ventilation','eschmann')")}
+      </div>
+      <div class="cr-an-flow-row cr-an-inline-title-row">
+        <div class="cr-an-inline-title">Antibioprophylaxie :</div>
+        ${crAnFlowCheck("crac-atb-none","Aucune",s.antibioprophylaxie.aucune,"crAnCardioExclusiveAtb('aucune')")}
+        ${crAnFlowCheck("crac-atb-cef","Céfazoline",s.antibioprophylaxie.cefazoline,"crAnCardioExclusiveAtb('cefazoline')")}
+        ${crAnFlowCheck("crac-atb-aug","Augmentin",s.antibioprophylaxie.augmentin,"crAnCardioExclusiveAtb('augmentin')")}
+        ${crAnFlowCheck("crac-atb-vanc","Vancomycine",s.antibioprophylaxie.vancomycine,"crAnCardioExclusiveAtb('vancomycine')")}
+        ${crAnFlowCheck("crac-atb-tazo","Tazocilline",s.antibioprophylaxie.tazocilline,"crAnCardioExclusiveAtb('tazocilline')")}
+        ${crAnFlowCheck("crac-atb-dapto","Daptomycine",s.antibioprophylaxie.daptomycine,"crAnCardioExclusiveAtb('daptomycine')")}
+      </div>
+      <div class="cr-an-flow-row cr-an-inline-title-row">
+        <div class="cr-an-inline-title">Entretien :</div>
+        ${crAnFlowCheck("crac-ent-prop","Propofol",s.entretien.propofol,"crAnCardioToggle('entretien','propofol')")}
+        ${crAnFlowCheck("crac-ent-remi","Rémifentanil",s.entretien.remifentanil,"crAnCardioToggle('entretien','remifentanil')")}
+      </div>
+      <div class="cr-an-flow-row cr-an-inline-title-row">
+        <div class="cr-an-inline-title">Vasopresseur :</div>
+        ${crAnFlowRadio("crac-vaso","aucun","Aucun",s.vasopresseur==="aucun")}
+        ${crAnFlowRadio("crac-vaso","10","Noradré. 10 µg/mL",s.vasopresseur==="10")}
+        ${crAnFlowRadio("crac-vaso","0,16","Noradré. 0,16 mg/mL",s.vasopresseur==="0,16")}
+      </div>
+    </section>
+  `;
+}
+
+function renderCrAnCardioEtoPre(){
+  const s=crAnCardioState.etoPre;
+  return `
+    <section class="cr-an-cell">
+      <div class="cr-an-cell-title">ETO pré-opératoire</div>
+      <div class="cr-an-flow-row cr-an-inline-title-row">
+        ${crAnFlowTextInput({id:"crac-etopre-fevg",label:"FEVG",value:s.fevg,placeholder:" ",type:"number",cls:"is-micro"})}
+        ${crAnFlowTextInput({id:"crac-etopre-itv",label:"ITV Ssao",value:s.itv,placeholder:" ",type:"number",step:"any",cls:"is-micro"})}
+        ${crAnFlowCheck("crac-etopre-cine","cinétique segmentaire OK",s.cinesegOk,"crAnCardioToggle('etoPre','cinesegOk')")}
+        ${crAnFlowCheck("crac-etopre-ag","auricule gauche libre",s.auriculeLibre,"crAnCardioToggle('etoPre','auriculeLibre')")}
+        ${crAnFlowCheck("crac-etopre-valves","absence de valvulopathie aortique ou mitrale",s.valvesOk,"crAnCardioToggle('etoPre','valvesOk')")}
+        ${crAnFlowCheck("crac-etopre-vd","fonction VD OK",s.vdOk,"crAnCardioToggle('etoPre','vdOk')")}
+        ${crAnFlowCheck("crac-etopre-ep","absence d’épanchement péricardique",s.pasEpanchement,"crAnCardioToggle('etoPre','pasEpanchement')")}
+      </div>
+    </section>
+  `;
+}
+
+function renderCrAnCardioInterventionnelle(){
+  const s=crAnCardioState.cardioInter;
+  return `
+    <section class="cr-an-cell">
+      <div class="cr-an-cell-title">Cardiologie interventionnelle</div>
+      <div class="cr-an-flow-row cr-an-inline-title-row">
+        <div class="cr-an-inline-title">Abord :</div>
+        ${crAnFlowRadio("crac-abord-type","artere-femorale","Artère fémorale",s.abordType==="artere-femorale")}
+        ${crAnFlowRadio("crac-abord-type","veine-femorale","Veine fémorale",s.abordType==="veine-femorale")}
+        ${crAnFlowRadio("crac-abord-type","pectoral","Pectoral",s.abordType==="pectoral")}
+        ${crAnFlowRadio("crac-abord-cote","droite","Droite",s.abordCote==="droite")}
+        ${crAnFlowRadio("crac-abord-cote","gauche","Gauche",s.abordCote==="gauche")}
+      </div>
+      <div class="cr-an-flow-row cr-an-geste-inline-row">
+        <label class="cr-an-inline-main-label">Geste réalisé :</label>
+        <input type="text" id="crac-geste-realise" class="cr-an-geste-inline-input" value="${crAnEsc(s.gesteRealise || crAnCardioState.geste)}" oninput="crAnCardioState.cardioInter.gesteRealise=this.value;crAnCardioRenderSynth();">
+      </div>
+      <div class="cr-an-flow-row cr-an-inline-title-row">
+        <div class="cr-an-inline-title">Évènement rythmo :</div>
+        ${crAnFlowCheck("crac-event-tv","TV",s.tv,"crAnCardioToggle('cardioInter','tv')")}
+        ${crAnFlowCheck("crac-event-fv","FV",s.fv,"crAnCardioToggle('cardioInter','fv')")}
+        ${crAnFlowCheck("crac-event-fa","FA",s.fa,"crAnCardioToggle('cardioInter','fa')")}
+        ${crAnFlowCheck("crac-event-bav","BAV",s.bav,"crAnCardioToggle('cardioInter','bav')")}
+        ${crAnFlowTextInput({id:"crac-event-cei",label:"CEE",value:s.cei,placeholder:" ",type:"number",cls:"is-micro"})}
+      </div>
+      <div class="cr-an-flow-row cr-an-inline-title-row">
+        <div class="cr-an-inline-title">Héparine :</div>
+        ${crAnFlowTextInput({id:"crac-heparine",label:"Héparine",value:s.heparine,placeholder:"UI",type:"number",cls:"is-mini"})}
+        ${crAnFlowTextInput({id:"crac-protamine",label:"Protamine",value:s.protamine,placeholder:"UI",type:"number",cls:"is-mini"})}
+      </div>
+    </section>
+  `;
+}
+
+function renderCrAnCardioFin(){
+  const s=crAnCardioState.fin;
+  return `
+    <section class="cr-an-cell">
+      <div class="cr-an-cell-title">En fin d’intervention</div>
+      <div class="cr-an-flow-row cr-an-inline-title-row">
+        <div class="cr-an-inline-title">Rythme cardiaque :</div>
+        ${crAnFlowRadio("crac-fin-rythme","sinusal","Sinusal",s.rythme==="sinusal")}
+        ${crAnFlowRadio("crac-fin-rythme","fa","FA",s.rythme==="fa")}
+        ${crAnFlowRadio("crac-fin-rythme","bav","BAV",s.rythme==="bav")}
+        ${crAnFlowRadio("crac-fin-rythme","stimule","Stimulé",s.rythme==="stimule")}
+      </div>
+      <div class="cr-an-flow-row cr-an-inline-title-row">
+        ${crAnFlowTextInput({id:"crac-fin-ringer",label:"Ringer lactate",value:s.ringer,placeholder:"mL",type:"number",cls:"is-mini"})}
+        ${crAnFlowTextInput({id:"crac-fin-noradmax",label:"Noradrénaline max",value:s.noradMax,placeholder:"mg/h",type:"number",step:"any",cls:"is-mini"})}
+        ${crAnFlowTextInput({id:"crac-fin-dobumax",label:"Dobutamine max",value:s.dobuMax,placeholder:"µg/kg/min",type:"number",step:"any",cls:"is-mini"})}
+      </div>
+      <div class="cr-an-flow-row cr-an-inline-title-row">
+        <div class="cr-an-inline-title">ETO post-opératoire :</div>
+        ${crAnFlowTextInput({id:"crac-fin-fevg",label:"FEVG",value:s.fevg,placeholder:" ",type:"number",cls:"is-micro"})}
+        ${crAnFlowTextInput({id:"crac-fin-itv",label:"ITV Ssao",value:s.itv,placeholder:" ",type:"number",step:"any",cls:"is-micro"})}
+        ${crAnFlowCheck("crac-fin-cine","cinétique segmentaire OK",s.cinesegOk,"crAnCardioToggle('fin','cinesegOk')")}
+        ${crAnFlowCheck("crac-fin-valves","valves aortique/mitrale OK",s.valvesOk,"crAnCardioToggle('fin','valvesOk')")}
+        ${crAnFlowCheck("crac-fin-vd","fonction VD OK",s.vdOk,"crAnCardioToggle('fin','vdOk')")}
+        ${crAnFlowCheck("crac-fin-pericarde","péricarde sec",s.pericardeSec,"crAnCardioToggle('fin','pericardeSec')")}
+        ${crAnFlowCheck("crac-fin-aorte","paroi aortique OK",s.aorteOk,"crAnCardioToggle('fin','aorteOk')")}
+      </div>
+      <div class="cr-an-flow-row cr-an-inline-title-row">
+        <div class="cr-an-inline-title">Voies aériennes :</div>
+        ${crAnFlowCheck("crac-fin-extub","Extubation",s.extubation,"crAnCardioExclusiveFinAirway('extubation')")}
+        ${crAnFlowCheck("crac-fin-ventile","Sortie ventilé",s.sortieVentile,"crAnCardioExclusiveFinAirway('sortieVentile')")}
+      </div>
+      <div class="cr-an-flow-row cr-an-inline-title-row">
+        <div class="cr-an-inline-title">Destination :</div>
+        ${crAnFlowRadio("crac-fin-dest","sspi1","SSPI 1er",s.destination==="sspi1")}
+        ${crAnFlowRadio("crac-fin-dest","sspi3","SSPI 3ème",s.destination==="sspi3")}
+        ${crAnFlowRadio("crac-fin-dest","usi-rythmo","USI rythmo",s.destination==="usi-rythmo")}
+        ${crAnFlowRadio("crac-fin-dest","usic","USIC",s.destination==="usic")}
+        ${crAnFlowRadio("crac-fin-dest","rea","Réa.",s.destination==="rea")}
+      </div>
+    </section>
+  `;
+}
+
+function crAnCardioSyncFromDom(){
+  if(!crAnCardioState)return;
+  const v=id=>document.getElementById(id)?.value||"";
+  const checked=id=>!!document.getElementById(id)?.checked;
+  const radio=name=>document.querySelector(`input[name="${name}"]:checked`)?.value||"";
+  crAnCardioState.date=v("crac-date");
+  crAnCardioState.type=radio("crac-type")||crAnCardioState.type;
+  crAnCardioState.geste=v("crac-geste");
+  crAnCardioState.cardiologue=v("crac-cardiologue");
+  crAnCardioState.anesthesiste=v("crac-anesth");
+  crAnCardioState.ventilation.sonde=v("crac-va-sonde");
+  crAnCardioState.ventilation.cormack=v("crac-va-cormack");
+  crAnCardioState.ventilation.pogo=v("crac-va-pogo");
+  crAnCardioState.vasopresseur=radio("crac-vaso")||crAnCardioState.vasopresseur;
+  crAnCardioState.etoPre.fevg=v("crac-etopre-fevg");
+  crAnCardioState.etoPre.itv=v("crac-etopre-itv");
+  crAnCardioState.cardioInter.abordType=radio("crac-abord-type")||crAnCardioState.cardioInter.abordType;
+  crAnCardioState.cardioInter.abordCote=radio("crac-abord-cote")||crAnCardioState.cardioInter.abordCote;
+  crAnCardioState.cardioInter.gesteRealise=v("crac-geste-realise");
+  crAnCardioState.cardioInter.cei=v("crac-event-cei");
+  crAnCardioState.cardioInter.heparine=v("crac-heparine");
+  crAnCardioState.cardioInter.protamine=v("crac-protamine");
+  crAnCardioState.fin.rythme=radio("crac-fin-rythme")||crAnCardioState.fin.rythme;
+  crAnCardioState.fin.ringer=v("crac-fin-ringer");
+  crAnCardioState.fin.noradMax=v("crac-fin-noradmax");
+  crAnCardioState.fin.dobuMax=v("crac-fin-dobumax");
+  crAnCardioState.fin.fevg=v("crac-fin-fevg");
+  crAnCardioState.fin.itv=v("crac-fin-itv");
+  crAnCardioState.fin.destination=radio("crac-fin-dest")||crAnCardioState.fin.destination;
+}
+
+function crAnCardioRefresh(){
+  const wrap=document.querySelector(".cr-an-main-wrap");
+  if(wrap)wrap.innerHTML=renderCrAnCardio();
+  crAnCardioRenderSynth();
+}
+
+function crAnCardioToggle(section,key){
+  crAnCardioState[section][key]=!crAnCardioState[section][key];
+  crAnCardioRenderSynth();
+}
+
+function crAnCardioExclusiveFinAirway(key){
+  crAnCardioState.fin.extubation=false;
+  crAnCardioState.fin.sortieVentile=false;
+  crAnCardioState.fin[key]=true;
+  crAnCardioRefresh();
+}
+
+function crAnCardioToggle(section,key){
+  crAnCardioState[section][key]=!crAnCardioState[section][key];
+  crAnCardioRefresh();
+}
+
+function crAnCardioRefresh(){
+  const wrap=document.querySelector(".cr-an-main-wrap");
+  if(wrap)wrap.innerHTML=renderCrAnCardio();
+  crAnCardioRenderSynth();
+}
+
+function crAnCardioExclusiveCurare(key){
+  crAnCardioState.curare={atracurium:false,celocurine:false,rocuronium:false};
+  crAnCardioState.curare[key]=true;
+  crAnCardioRefresh();
+}
+
+function crAnCardioExclusiveVent(key){
+  crAnCardioState.ventilation.vsCapno=false;
+  crAnCardioState.ventilation.iot=false;
+  crAnCardioState.ventilation[key]=true;
+  crAnCardioRefresh();
+}
+
+function crAnCardioExclusiveAtb(key){
+  crAnCardioState.antibioprophylaxie={
+    aucune:false,
+    cefazoline:false,
+    augmentin:false,
+    vancomycine:false,
+    tazocilline:false,
+    daptomycine:false
+  };
+  crAnCardioState.antibioprophylaxie[key]=true;
+  crAnCardioRefresh();
+}
+
 function crAnCardioRenderSynth(){
   if(!crAnCardioState)return;
   const s=crAnCardioState;
+  crAnCardioSyncFromDom();
   const lines=[];
   crAnPushSection(lines,"Intervention",[
     s.date?`Date : ${s.date}`:"",
