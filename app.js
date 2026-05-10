@@ -10746,6 +10746,19 @@ function renderCrAnCardioAnesthesie(){
 
 function renderCrAnCardioEtoPre(){
   const s=crAnCardioState.etoPre;
+  const etoActive=crAnCardioState.conditionnement.eto;
+
+  if(!etoActive){
+    return `
+      <section class="cr-an-cell">
+        <div class="cr-an-cell-title">ETO pré-opératoire</div>
+        <div class="cr-an-disabled-block">
+          ETO non réalisée
+        </div>
+      </section>
+    `;
+  }
+
   return `
     <section class="cr-an-cell">
       <div class="cr-an-cell-title">ETO pré-opératoire</div>
@@ -10920,15 +10933,18 @@ function renderCrAnCardioFin(){
         >
       </div>
 
-      <div class="cr-an-flow-row cr-an-inline-title-row">
-        <div class="cr-an-inline-title">ETO post-opératoire :</div>
-        ${crAnFlowCheck("crac-fin-cine","Cinétique segmentaire OK",s.cinesegOk,"crAnCardioToggle('fin','cinesegOk')")}
-        ${crAnFlowCheck("crac-fin-va","Valve aortique OK",s.vaOk,"crAnCardioToggle('fin','vaOk')")}
-        ${crAnFlowCheck("crac-fin-vm","Valve mitrale OK",s.vmOk,"crAnCardioToggle('fin','vmOk')")}
-        ${crAnFlowCheck("crac-fin-vd","Fonction VD OK",s.vdOk,"crAnCardioToggle('fin','vdOk')")}
-        ${crAnFlowCheck("crac-fin-pericarde","Péricarde sec",s.pericardeSec,"crAnCardioToggle('fin','pericardeSec')")}
-        ${crAnFlowCheck("crac-fin-aorte","Paroi aortique OK",s.aorteOk,"crAnCardioToggle('fin','aorteOk')")}
-      </div>
+      ${crAnCardioState.conditionnement.eto ? `
+  <div class="cr-an-flow-row cr-an-inline-title-row">
+    <div class="cr-an-inline-title">ETO post-opératoire :</div>
+
+    ${crAnFlowCheck("crac-fin-cine","Cinétique segmentaire OK",s.cinesegOk,"crAnCardioToggle('fin','cinesegOk')")}
+    ${crAnFlowCheck("crac-fin-va","Valve aortique OK",s.vaOk,"crAnCardioToggle('fin','vaOk')")}
+    ${crAnFlowCheck("crac-fin-vm","Valve mitrale OK",s.vmOk,"crAnCardioToggle('fin','vmOk')")}
+    ${crAnFlowCheck("crac-fin-vd","Fonction VD OK",s.vdOk,"crAnCardioToggle('fin','vdOk')")}
+    ${crAnFlowCheck("crac-fin-pericarde","Péricarde sec",s.pericardeSec,"crAnCardioToggle('fin','pericardeSec')")}
+    ${crAnFlowCheck("crac-fin-aorte","Paroi aortique OK",s.aorteOk,"crAnCardioToggle('fin','aorteOk')")}
+  </div>
+` : ""}
 
       <div class="cr-an-flow-row cr-an-inline-title-row">
         <div class="cr-an-inline-title">Voies aériennes :</div>
@@ -11148,6 +11164,7 @@ function crAnCardioRenderSynth(){
   if(s.vasopresseur==="0,16")ia.push("Vasopresseur : Noradrénaline 0,16 mg/mL.");
   crAnPushSection(lines,"Induction et entretien anesthésie",ia);
 
+  if(s.conditionnement.eto){
   const eto=[];
 if(s.etoPre.fevg)eto.push(`FEVG ${s.etoPre.fevg} %`);
 if(s.etoPre.itv)eto.push(`ITV sous-aortique ${s.etoPre.itv} cm`);
@@ -11158,7 +11175,8 @@ if(s.etoPre.vdOk)eto.push("fonction systolique du VD préservée");
 if(s.etoPre.auriculeLibre)eto.push("auricule gauche libre");
 if(s.etoPre.pericardeSec)eto.push("absence d'épanchement péricardique");
 if(eto.length)crAnPushSection(lines,"ETO pré-opératoire",[`ETO pré-opératoire : ${eto.join(", ")}.`]);
-
+}
+    
 const ci=[];
 
 const abordType=s.cardioInter.abordType;
@@ -11205,6 +11223,7 @@ crAnPushSection(lines,"Cardiologie interventionnelle",ci);
   if(s.fin.noradMax)amines.push(`Noradrénaline ${s.fin.noradMax} mg/h`);
   if(s.fin.dobuMax)amines.push(`Dobutamine ${s.fin.dobuMax} µg/kg/min`);
   if(amines.length)fin.push(`Catécholamines max : ${amines.join(", ")}.`);
+  if(s.conditionnement.eto){
   const etopost=[];
 if(s.fin.fevg)etopost.push(`FEVG ${s.fin.fevg} %`);
 if(s.fin.itv)etopost.push(`ITV sous-aortique ${s.fin.itv} cm`);
@@ -11215,6 +11234,7 @@ if(s.fin.vdOk)etopost.push("fonction systolique du VD préservée");
 if(s.fin.pericardeSec)etopost.push("absence d'épanchement péricardique");
 if(s.fin.aorteOk)etopost.push("intégrité de la paroi aortique");
 if(etopost.length)fin.push(`ETO post-opératoire : ${etopost.join(", ")}.`);
+    }
   if(s.fin.extubation)fin.push("Voies aériennes : Extubation.");
   if(s.fin.sortieVentile)fin.push("Voies aériennes : Sortie ventilé.");
   const dest={
