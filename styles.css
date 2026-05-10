@@ -14631,14 +14631,22 @@ body.theme-light .biblio-live-table thead th * {
   height:360px !important;
   resize:vertical !important;
   padding:12px !important;
-  border:1.6px solid #111827 !important;
-  border-radius:10px !important;
-  font-family:inherit !important;
-  font-size:15px !important;
-  line-height:1.45 !important;
-  background:#ffffff !important;
+  border:2px solid #cbd5e1 !important;
+  border-radius:12px !important;
+  background:#f8fafc !important;
   color:#111827 !important;
+  font-family:inherit !important;
+  font-size:16px !important;
+  line-height:1.55 !important;
+  caret-color:#111827 !important;
+  appearance:none !important;
+  -webkit-appearance:none !important;
   -webkit-text-fill-color:#111827 !important;
+}
+
+.cr-an-list-modal textarea::selection{
+  background:#bfdbfe !important;
+  color:#111827 !important;
 }
 
 .cr-an-list-modal-actions{
