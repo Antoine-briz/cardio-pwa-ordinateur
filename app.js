@@ -10377,15 +10377,16 @@ function crAnInitCardioState() {
 
     vasopresseur: "aucun",
 
-    etoPre: {
-      fevg: "",
-      itv: "",
-      cinesegOk: true,
-      auriculeLibre: true,
-      valvesOk: true,
-      vdOk: true,
-      pasEpanchement: true
-    },
+    etoPre:{
+  fevg:"",
+  itv:"",
+  cinesegOk:true,
+  vaOk:true,
+  vmOk:true,
+  vdOk:true,
+  auriculeLibre:true,
+  pericardeSec:true
+},
 
     cardioInter: {
       abordType: "artere-femorale",
@@ -10407,11 +10408,12 @@ function crAnInitCardioState() {
       dobuMax: "",
       fevg: "",
       itv: "",
-      cinesegOk: true,
-      valvesOk: true,
-      vdOk: true,
-      pericardeSec: true,
-      aorteOk: true,
+      cinesegOk:true,
+vaOk:true,
+vmOk:true,
+vdOk:true,
+pericardeSec:true,
+aorteOk:true,
       extubation: true,
       sortieVentile: false,
       destination: "sspi1"
@@ -10630,14 +10632,19 @@ function renderCrAnCardioEtoPre(){
   return `
     <section class="cr-an-cell">
       <div class="cr-an-cell-title">ETO pré-opératoire</div>
+
       <div class="cr-an-flow-row cr-an-inline-title-row">
         ${crAnFlowTextInput({id:"crac-etopre-fevg",label:"FEVG",value:s.fevg,placeholder:" ",type:"number",cls:"is-micro"})}
         ${crAnFlowTextInput({id:"crac-etopre-itv",label:"ITV Ssao",value:s.itv,placeholder:" ",type:"number",step:"any",cls:"is-micro"})}
+      </div>
+
+      <div class="cr-an-flow-row cr-an-inline-title-row">
         ${crAnFlowCheck("crac-etopre-cine","cinétique segmentaire OK",s.cinesegOk,"crAnCardioToggle('etoPre','cinesegOk')")}
-        ${crAnFlowCheck("crac-etopre-ag","auricule gauche libre",s.auriculeLibre,"crAnCardioToggle('etoPre','auriculeLibre')")}
-        ${crAnFlowCheck("crac-etopre-valves","absence de valvulopathie aortique ou mitrale",s.valvesOk,"crAnCardioToggle('etoPre','valvesOk')")}
+        ${crAnFlowCheck("crac-etopre-va","valve aortique OK",s.vaOk,"crAnCardioToggle('etoPre','vaOk')")}
+        ${crAnFlowCheck("crac-etopre-vm","valve mitrale OK",s.vmOk,"crAnCardioToggle('etoPre','vmOk')")}
         ${crAnFlowCheck("crac-etopre-vd","fonction VD OK",s.vdOk,"crAnCardioToggle('etoPre','vdOk')")}
-        ${crAnFlowCheck("crac-etopre-ep","absence d’épanchement péricardique",s.pasEpanchement,"crAnCardioToggle('etoPre','pasEpanchement')")}
+        ${crAnFlowCheck("crac-etopre-ag","auricule gauche libre",s.auriculeLibre,"crAnCardioToggle('etoPre','auriculeLibre')")}
+        ${crAnFlowCheck("crac-etopre-pericarde","péricarde sec",s.pericardeSec,"crAnCardioToggle('etoPre','pericardeSec')")}
       </div>
     </section>
   `;
@@ -10696,13 +10703,12 @@ function renderCrAnCardioFin(){
       </div>
       <div class="cr-an-flow-row cr-an-inline-title-row">
         <div class="cr-an-inline-title">ETO post-opératoire :</div>
-        ${crAnFlowTextInput({id:"crac-fin-fevg",label:"FEVG",value:s.fevg,placeholder:" ",type:"number",cls:"is-micro"})}
-        ${crAnFlowTextInput({id:"crac-fin-itv",label:"ITV Ssao",value:s.itv,placeholder:" ",type:"number",step:"any",cls:"is-micro"})}
         ${crAnFlowCheck("crac-fin-cine","cinétique segmentaire OK",s.cinesegOk,"crAnCardioToggle('fin','cinesegOk')")}
-        ${crAnFlowCheck("crac-fin-valves","valves aortique/mitrale OK",s.valvesOk,"crAnCardioToggle('fin','valvesOk')")}
-        ${crAnFlowCheck("crac-fin-vd","fonction VD OK",s.vdOk,"crAnCardioToggle('fin','vdOk')")}
-        ${crAnFlowCheck("crac-fin-pericarde","péricarde sec",s.pericardeSec,"crAnCardioToggle('fin','pericardeSec')")}
-        ${crAnFlowCheck("crac-fin-aorte","paroi aortique OK",s.aorteOk,"crAnCardioToggle('fin','aorteOk')")}
+${crAnFlowCheck("crac-fin-va","valve aortique OK",s.vaOk,"crAnCardioToggle('fin','vaOk')")}
+${crAnFlowCheck("crac-fin-vm","valve mitrale OK",s.vmOk,"crAnCardioToggle('fin','vmOk')")}
+${crAnFlowCheck("crac-fin-vd","fonction VD OK",s.vdOk,"crAnCardioToggle('fin','vdOk')")}
+${crAnFlowCheck("crac-fin-pericarde","péricarde sec",s.pericardeSec,"crAnCardioToggle('fin','pericardeSec')")}
+${crAnFlowCheck("crac-fin-aorte","paroi aortique OK",s.aorteOk,"crAnCardioToggle('fin','aorteOk')")}
       </div>
       <div class="cr-an-flow-row cr-an-inline-title-row">
         <div class="cr-an-inline-title">Voies aériennes :</div>
@@ -10868,14 +10874,15 @@ function crAnCardioRenderSynth(){
   crAnPushSection(lines,"Induction et entretien anesthésie",ia);
 
   const eto=[];
-  if(s.etoPre.fevg)eto.push(`FEVG ${s.etoPre.fevg} %.`);
-  if(s.etoPre.itv)eto.push(`ITV Ssao ${s.etoPre.itv} cm.`);
-  if(s.etoPre.cinesegOk)eto.push("Cinétique segmentaire OK.");
-  if(s.etoPre.auriculeLibre)eto.push("Auricule gauche libre.");
-  if(s.etoPre.valvesOk)eto.push("Absence de valvulopathie aortique ou mitrale.");
-  if(s.etoPre.vdOk)eto.push("Fonction VD OK.");
-  if(s.etoPre.pasEpanchement)eto.push("Absence d’épanchement péricardique.");
-  crAnPushSection(lines,"ETO pré-opératoire",eto);
+if(s.etoPre.fevg)eto.push(`FEVG ${s.etoPre.fevg} %`);
+if(s.etoPre.itv)eto.push(`ITV sous-aortique ${s.etoPre.itv} cm`);
+if(s.etoPre.cinesegOk)eto.push("absence de trouble de cinétique segmentaire");
+if(s.etoPre.vaOk)eto.push("valve aortique normale, non sténosante non fuyante");
+if(s.etoPre.vmOk)eto.push("valve mitrale normale, non sténosante non fuyante");
+if(s.etoPre.vdOk)eto.push("fonction systolique du VD préservée");
+if(s.etoPre.auriculeLibre)eto.push("auricule gauche libre");
+if(s.etoPre.pericardeSec)eto.push("absence d'épanchement péricardique");
+if(eto.length)crAnPushSection(lines,"ETO pré-opératoire",[`ETO pré-opératoire : ${eto.join(", ")}.`]);
 
   const ci=[];
   const abordType={
@@ -10914,14 +10921,15 @@ function crAnCardioRenderSynth(){
   if(s.fin.dobuMax)amines.push(`Dobutamine ${s.fin.dobuMax} µg/kg/min`);
   if(amines.length)fin.push(`Catécholamines max : ${amines.join(", ")}.`);
   const etopost=[];
-  if(s.fin.fevg)etopost.push(`FEVG ${s.fin.fevg} %`);
-  if(s.fin.itv)etopost.push(`ITV Ssao ${s.fin.itv} cm`);
-  if(s.fin.cinesegOk)etopost.push("cinétique segmentaire OK");
-  if(s.fin.valvesOk)etopost.push("valves aortique/mitrale OK");
-  if(s.fin.vdOk)etopost.push("fonction VD OK");
-  if(s.fin.pericardeSec)etopost.push("péricarde sec");
-  if(s.fin.aorteOk)etopost.push("paroi aortique OK");
-  if(etopost.length)fin.push(`ETO post-opératoire : ${etopost.join(", ")}.`);
+if(s.fin.fevg)etopost.push(`FEVG ${s.fin.fevg} %`);
+if(s.fin.itv)etopost.push(`ITV sous-aortique ${s.fin.itv} cm`);
+if(s.fin.cinesegOk)etopost.push("absence de trouble de cinétique segmentaire");
+if(s.fin.vaOk)etopost.push("valve aortique normale, non sténosante non fuyante");
+if(s.fin.vmOk)etopost.push("valve mitrale normale, non sténosante non fuyante");
+if(s.fin.vdOk)etopost.push("fonction systolique du VD préservée");
+if(s.fin.pericardeSec)etopost.push("absence d'épanchement péricardique");
+if(s.fin.aorteOk)etopost.push("intégrité de la paroi aortique");
+if(etopost.length)fin.push(`ETO post-opératoire : ${etopost.join(", ")}.`);
   if(s.fin.extubation)fin.push("Voies aériennes : Extubation.");
   if(s.fin.sortieVentile)fin.push("Voies aériennes : Sortie ventilé.");
   const dest={
