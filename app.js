@@ -10072,6 +10072,60 @@ function crAnFlowSelect({ id, label, value = "", options = [], cls = "" }) {
 const CRAN_CHIR_STORAGE_KEY = "cran_chirurgiens_saved_v1";
 const CRAN_AN_STORAGE_KEY = "cran_anesthesistes_saved_v1";
 
+const CRAN_DEFAULT_CHIR_LIST = [
+  "LEPRINCE Pascal",
+  "BARREDA Theo",
+  "D’ALESSANDRO Cosimo",
+  "DANIAL Pichoy",
+  "DEBAUCHEZ Mathieu",
+  "FARAHMAND Patrick",
+  "JUVIN Charles",
+  "HENNEB Belkacem",
+  "LAALI Mojgan",
+  "LANSAC Emmanuel",
+  "LEBRETON Guillaume",
+  "SAIYDOUN Gabriel",
+  "MEYER Horacio",
+  "ZAMORANO Claudio"
+];
+
+const CRAN_DEFAULT_AN_LIST = [
+  "BOUGLE Adrien",
+  "ABBES Ahmed",
+  "ANNONAY Marianne",
+  "ARZOINE Jérémy",
+  "BEAUCOTE Victor",
+  "BERECIBAR Jon Ander",
+  "BOROUCHAKI Antoine",
+  "BRIZARD Antoine",
+  "CAMPEANU Aurélie",
+  "CARILLION Aude",
+  "CLAPIN Sixtine",
+  "COELEMBIER Clément",
+  "DE SARCUS Martin",
+  "DJAVIDI Nima",
+  "DUCEAU Baptiste",
+  "DUREAU Pauline",
+  "GUILLEMIN Jérémie",
+  "HAMIDI Dany",
+  "HARIRI Geoffroy",
+  "HENOCQ Paul",
+  "HIRWE Axel",
+  "LABARRIERE Ambroise",
+  "LANCELOT Aymeric",
+  "LOEB Jules",
+  "MANSOURI Sehmi",
+  "MARQUET Yann",
+  "MOHAMMEDI Neyla",
+  "NICULESCU Michaela",
+  "OMAR Edris",
+  "PERRIER Johann",
+  "POUJADE Julien",
+  "ROMBI Louise",
+  "SCHRAMM Rémi",
+  "VAUZANGES Quentin"
+];
+
 function crAnGetSavedList(key, defaultList) {
   try {
     const saved = JSON.parse(localStorage.getItem(key));
@@ -10150,59 +10204,6 @@ function crAnEditList(type) {
 }
 
 function renderCrAnTabAnesth() {
-  const CRAN_DEFAULT_CHIR_LIST = [
-  "LEPRINCE Pascal",
-  "BARREDA Theo",
-  "D’ALESSANDRO Cosimo",
-  "DANIAL Pichoy",
-  "DEBAUCHEZ Mathieu",
-  "FARAHMAND Patrick",
-  "JUVIN Charles",
-  "HENNEB Belkacem",
-  "LAALI Mojgan",
-  "LANSAC Emmanuel",
-  "LEBRETON Guillaume",
-  "SAIYDOUN Gabriel",
-  "MEYER Horacio",
-  "ZAMORANO Claudio"
-];
-
-const CRAN_DEFAULT_AN_LIST = [
-  "BOUGLE Adrien",
-  "ABBES Ahmed",
-  "ANNONAY Marianne",
-  "ARZOINE Jérémy",
-  "BEAUCOTE Victor",
-  "BERECIBAR Jon Ander",
-  "BOROUCHAKI Antoine",
-  "BRIZARD Antoine",
-  "CAMPEANU Aurélie",
-  "CARILLION Aude",
-  "CLAPIN Sixtine",
-  "COELEMBIER Clément",
-  "DE SARCUS Martin",
-  "DJAVIDI Nima",
-  "DUCEAU Baptiste",
-  "DUREAU Pauline",
-  "GUILLEMIN Jérémie",
-  "HAMIDI Dany",
-  "HARIRI Geoffroy",
-  "HENOCQ Paul",
-  "HIRWE Axel",
-  "LABARRIERE Ambroise",
-  "LANCELOT Aymeric",
-  "LOEB Jules",
-  "MANSOURI Sehmi",
-  "MARQUET Yann",
-  "MOHAMMEDI Neyla",
-  "NICULESCU Michaela",
-  "OMAR Edris",
-  "PERRIER Johann",
-  "POUJADE Julien",
-  "ROMBI Louise",
-  "SCHRAMM Rémi",
-  "VAUZANGES Quentin"
-];
 
 const CRAN_CHIR_LIST = crAnGetSavedList(CRAN_CHIR_STORAGE_KEY, CRAN_DEFAULT_CHIR_LIST);
 const CRAN_AN_LIST = crAnGetSavedList(CRAN_AN_STORAGE_KEY, CRAN_DEFAULT_AN_LIST);
