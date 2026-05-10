@@ -10865,18 +10865,39 @@ function renderCrAnCardioInterventionnelle(){
   return `
     <section class="cr-an-cell">
       <div class="cr-an-cell-title">Cardiologie interventionnelle</div>
+
+      <div class="cr-an-form-row cr-an-form-row-tight">
+        <label>Abord</label>
+        <select
+          id="crac-abord-type"
+          onchange="
+            crAnCardioState.cardioInter.abordType=this.value;
+            crAnCardioRenderSynth();
+          "
+        >
+          <option value="artere-femorale" ${s.abordType==="artere-femorale" ? "selected" : ""}>Artère fémorale</option>
+          <option value="veine-femorale" ${s.abordType==="veine-femorale" ? "selected" : ""}>Veine fémorale</option>
+          <option value="pectoral" ${s.abordType==="pectoral" ? "selected" : ""}>Pectoral</option>
+        </select>
+      </div>
+
       <div class="cr-an-flow-row cr-an-inline-title-row">
-        <div class="cr-an-inline-title">Abord :</div>
-        ${crAnFlowRadio("crac-abord-type","artere-femorale","Artère fémorale",s.abordType==="artere-femorale")}
-        ${crAnFlowRadio("crac-abord-type","veine-femorale","Veine fémorale",s.abordType==="veine-femorale")}
-        ${crAnFlowRadio("crac-abord-type","pectoral","Pectoral",s.abordType==="pectoral")}
+        <div class="cr-an-inline-title">Côté :</div>
         ${crAnFlowRadio("crac-abord-cote","droite","Droite",s.abordCote==="droite")}
         ${crAnFlowRadio("crac-abord-cote","gauche","Gauche",s.abordCote==="gauche")}
       </div>
+
       <div class="cr-an-flow-row cr-an-geste-inline-row">
         <label class="cr-an-inline-main-label">Geste réalisé :</label>
-        <input type="text" id="crac-geste-realise" class="cr-an-geste-inline-input" value="${crAnEsc(s.gesteRealise || crAnCardioState.geste)}" oninput="crAnCardioState.cardioInter.gesteRealise=this.value;crAnCardioRenderSynth();">
+        <input
+          type="text"
+          id="crac-geste-realise"
+          class="cr-an-geste-inline-input"
+          value="${crAnEsc(s.gesteRealise || crAnCardioState.geste)}"
+          oninput="crAnCardioState.cardioInter.gesteRealise=this.value;crAnCardioRenderSynth();"
+        >
       </div>
+
       <div class="cr-an-flow-row cr-an-inline-title-row">
         <div class="cr-an-inline-title">Évènement rythmo :</div>
         ${crAnFlowCheck("crac-event-tv","TV",s.tv,"crAnCardioToggle('cardioInter','tv')")}
@@ -10885,8 +10906,9 @@ function renderCrAnCardioInterventionnelle(){
         ${crAnFlowCheck("crac-event-bav","BAV",s.bav,"crAnCardioToggle('cardioInter','bav')")}
         ${crAnFlowTextInput({id:"crac-event-cei",label:"CEE",value:s.cei,placeholder:" ",type:"number",cls:"is-micro"})}
       </div>
+
       <div class="cr-an-flow-row cr-an-inline-title-row">
-        <div class="cr-an-inline-title">Héparine :</div>
+        <div class="cr-an-inline-title">Anticoagulation :</div>
         ${crAnFlowTextInput({id:"crac-heparine",label:"Héparine",value:s.heparine,placeholder:"UI",type:"number",cls:"is-mini"})}
         ${crAnFlowTextInput({id:"crac-protamine",label:"Protamine",value:s.protamine,placeholder:"UI",type:"number",cls:"is-mini"})}
       </div>
@@ -10953,7 +10975,7 @@ function crAnCardioSyncFromDom(){
   crAnCardioState.vasopresseur=radio("crac-vaso")||crAnCardioState.vasopresseur;
   crAnCardioState.etoPre.fevg=v("crac-etopre-fevg");
   crAnCardioState.etoPre.itv=v("crac-etopre-itv");
-  crAnCardioState.cardioInter.abordType=radio("crac-abord-type")||crAnCardioState.cardioInter.abordType;
+  crAnCardioState.cardioInter.abordType=v("crac-abord-type")||crAnCardioState.cardioInter.abordType;
   crAnCardioState.cardioInter.abordCote=radio("crac-abord-cote")||crAnCardioState.cardioInter.abordCote;
   crAnCardioState.cardioInter.gesteRealise=v("crac-geste-realise");
   crAnCardioState.cardioInter.cei=v("crac-event-cei");
@@ -11098,28 +11120,38 @@ if(s.etoPre.auriculeLibre)eto.push("auricule gauche libre");
 if(s.etoPre.pericardeSec)eto.push("absence d'épanchement péricardique");
 if(eto.length)crAnPushSection(lines,"ETO pré-opératoire",[`ETO pré-opératoire : ${eto.join(", ")}.`]);
 
-  const ci=[];
-  const abordType={
-    "artere-femorale":"artère fémorale",
-    "veine-femorale":"veine fémorale",
-    "pectoral":"abord pectoral"
-  }[s.cardioInter.abordType]||"";
-  const cote=s.cardioInter.abordCote==="gauche"?"gauche":"droite";
-  if(abordType){
-    if(s.cardioInter.abordType==="pectoral")ci.push(`Abord : ${abordType} ${cote==="droite"?"droit":"gauche"}.`);
-    else ci.push(`Abord : ${abordType} ${cote==="droite"?"droite":"gauche"}.`);
-  }
-  ci.push(`Geste réalisé : ${s.cardioInter.gesteRealise||s.geste||""}.`);
-  const events=[];
-  if(s.cardioInter.tv)events.push("tachycardie ventriculaire");
-  if(s.cardioInter.fv)events.push("fibrillation ventriculaire");
-  if(s.cardioInter.fa)events.push("fibrillation atriale");
-  if(s.cardioInter.bav)events.push("BAV");
-  if(s.cardioInter.cei)events.push(`administration de ${s.cardioInter.cei} CEE`);
-  if(events.length)ci.push(`Évènement rythmo : ${events.join(", ")}.`);
-  if(s.cardioInter.heparine)ci.push(`Héparine totale : ${s.cardioInter.heparine} UI.`);
-  if(s.cardioInter.protamine)ci.push(`Protamine : ${s.cardioInter.protamine} UI.`);
-  crAnPushSection(lines,"Cardiologie interventionnelle",ci.filter(x=>!x.endsWith(" : .")));
+const ci=[];
+
+const abordType=s.cardioInter.abordType;
+const abordCote=s.cardioInter.abordCote;
+
+let abordLabel="";
+if(abordType==="pectoral"){
+  abordLabel=abordCote==="gauche" ? "Pectoral gauche" : "Pectoral droit";
+}else if(abordType==="artere-femorale"){
+  abordLabel=abordCote==="gauche" ? "Artère fémorale gauche" : "Artère fémorale droite";
+}else if(abordType==="veine-femorale"){
+  abordLabel=abordCote==="gauche" ? "Veine fémorale gauche" : "Veine fémorale droite";
+}
+
+if(abordLabel)ci.push(`Abord : ${abordLabel}.`);
+
+if(s.cardioInter.gesteRealise||s.geste){
+  ci.push(`Geste réalisé : ${s.cardioInter.gesteRealise||s.geste}.`);
+}
+
+const events=[];
+if(s.cardioInter.tv)events.push("tachycardie ventriculaire");
+if(s.cardioInter.fv)events.push("fibrillation ventriculaire");
+if(s.cardioInter.fa)events.push("fibrillation atriale");
+if(s.cardioInter.bav)events.push("BAV");
+if(s.cardioInter.cei)events.push(`administration de ${s.cardioInter.cei} choc électriques externes`);
+if(events.length)ci.push(`Évènement rythmo : ${events.join(", ")}.`);
+
+if(s.cardioInter.heparine)ci.push(`Héparine totale : ${s.cardioInter.heparine} UI.`);
+if(s.cardioInter.protamine)ci.push(`Protamine : ${s.cardioInter.protamine} UI.`);
+
+crAnPushSection(lines,"Cardiologie interventionnelle",ci);
 
   const fin=[];
   const rythme={
