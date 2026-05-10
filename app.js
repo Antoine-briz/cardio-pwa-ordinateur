@@ -11112,20 +11112,32 @@ function crAnCardioExclusiveCurare(key){
 }
 
 function crAnCardioExclusiveVent(key){
+  const ids={
+    vsCapno:"crac-va-vs",
+    iot:"crac-va-iot",
+    isr:"crac-va-isr"
+  };
+
+  const checked=!!document.getElementById(ids[key])?.checked;
+
   crAnCardioState.ventilation.vsCapno=false;
   crAnCardioState.ventilation.iot=false;
   crAnCardioState.ventilation.isr=false;
 
-  crAnCardioState.ventilation[key]=true;
+  if(checked){
+    crAnCardioState.ventilation[key]=true;
+  }
 
-  if(key==="vsCapno"){
+  if(key==="vsCapno" && checked){
     crAnCardioState.ventilation.sonde="";
     crAnCardioState.ventilation.cormack="";
     crAnCardioState.ventilation.pogo="";
     crAnCardioState.ventilation.eschmann=false;
-  }else{
-    if(!crAnCardioState.ventilation.sonde)crAnCardioState.ventilation.sonde="7";
-    if(!crAnCardioState.ventilation.cormack)crAnCardioState.ventilation.cormack="1";
+  }
+
+  if((key==="iot" || key==="isr") && checked){
+    if(!crAnCardioState.ventilation.sonde) crAnCardioState.ventilation.sonde="7";
+    if(!crAnCardioState.ventilation.cormack) crAnCardioState.ventilation.cormack="1";
   }
 
   crAnCardioRefresh();
