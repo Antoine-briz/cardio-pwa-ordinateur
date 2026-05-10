@@ -10170,24 +10170,24 @@ const CRAN_DEFAULT_AN_LIST = [
 ];
 
 const CRAN_DEFAULT_CARDIO_STRUCT_LIST = [
-  "Olivier Barthelemy",
-  "Estelle Gandjbakhch",
-  "Paul Guedeney",
-  "Pascal Leprince",
-  "Gilles Montalescot",
-  "Alban Redheuil",
-  "Xavier Waintraub"
+  "BARTHELEMY Olivier",
+"GANDJBAKHCH Estelle",
+"GUEDENEY Paul",
+"LEPRINCE Pascal",
+"MONTALESCOT Gilles",
+"REDHEUIL Alban",
+"WAINTRAUB Xavier"
 ];
 
 const CRAN_DEFAULT_CARDIO_RYTHMO_LIST = [
-  "Nicolas Badenco",
-  "Thomas Chastre",
-  "Guillaume Duthoit",
-  "Estelle Gandjbakhch",
-  "Etienne Jacquemard",
-  "Mikael Laredo",
-  "Thomas Rolland",
-  "Marine Thuillot"
+  "BADENCO Nicolas",
+"CHASTRE Thomas",
+"DUTHOIT Guillaume",
+"GANDJBAKHCH Estelle",
+"JACQUEMARD Etienne",
+"LAREDO Mikael",
+"ROLLAND Thomas",
+"THUILLOT Marine"
 ];
 
 function crAnEnsureConfigLists() {
