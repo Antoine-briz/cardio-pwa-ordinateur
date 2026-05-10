@@ -10994,9 +10994,9 @@ function crAnPushSection(lines, title, bodyLines) {
   const clean = bodyLines.filter(Boolean);
   if (!clean.length) return;
 
-  // espace entre sections
+  // espace UNIQUEMENT entre sections
   if (lines.length) {
-    lines.push("<br>");
+    lines.push("");
   }
 
   // titre
@@ -11006,13 +11006,9 @@ function crAnPushSection(lines, title, bodyLines) {
 
   lines.push(`<b><u>${formattedTitle}</u></b>`);
 
-  // espace après titre
-  lines.push("<br>");
-
-  // lignes
+  // contenu
   clean.forEach(line => {
-    const txt = String(line).trim();
-    lines.push(`- <b>${txt.split(":")[0]}</b>${txt.includes(":") ? " :" + txt.split(":").slice(1).join(":") : ""}`);
+    lines.push(`- ${line}`);
   });
 }
 
