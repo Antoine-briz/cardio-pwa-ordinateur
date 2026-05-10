@@ -9970,6 +9970,8 @@ function crAnFlowCheck(id, label, checked, onchange = "crAnSyncState(); crAnRend
   `;
 }
 
+
+
 function crAnFlowRadio(name, value, label, checked) {
   return `
     <label class="cr-an-flow-item cr-an-flow-check">
@@ -10016,18 +10018,6 @@ function crAnFlowSelect({ id, label, value = "", options = [], cls = "" }) {
         ${options.map(v => `<option value="${v}" ${value === v ? "selected" : ""}>${v}</option>`).join("")}
       </select>
     </div>
-  `;
-}
-
-function crAnFlowCheck(id, label, checked) {
-  return `
-    <label class="cr-an-flow-item cr-an-flow-check">
-      <input type="checkbox"
-             id="${id}"
-             ${checked ? "checked" : ""}
-             onchange="crAnSyncState(); crAnRenderSynth();">
-      <span>${label}</span>
-    </label>
   `;
 }
 
