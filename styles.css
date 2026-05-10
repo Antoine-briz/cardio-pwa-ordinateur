@@ -14707,3 +14707,26 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
   width: 190px;
   max-width: 190px;
 }
+
+.cr-an-cell-intervention .cr-an-list-edit-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 230px;
+}
+
+.cr-an-cell-intervention .cr-an-list-edit-wrap input {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.cr-an-cell-intervention .cr-an-list-edit-btn {
+  flex: 0 0 38px;
+}
+
+#crac-abord-type {
+  width: 210px !important;
+  max-width: 210px;
+  display: inline-block;
+  margin-left: 8px;
+}
