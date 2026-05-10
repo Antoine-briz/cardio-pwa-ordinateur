@@ -14723,3 +14723,14 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
 .cr-an-cell-intervention .cr-an-list-edit-btn {
   flex: 0 0 38px;
 }
+
+#crac-abord-type {
+  width: auto !important;
+  min-width: 220px;
+  flex: 0 0 auto;
+}
+
+.cr-an-inline-title-row {
+  align-items: center;
+  flex-wrap: nowrap;
+}
