@@ -2237,12 +2237,31 @@ function renderAnesthCardioStructMenu() {
 
       <!-- Colonne gauche : titre + deux groupes -->
       <div class="intervention-main">
-        <div class="hero">
-          <h2>Cardiologie structurelle et rythmologie</h2>
-        </div>
+        <div class="hero cr-an-cec-hero">
+  <h2>Cardiologie structurelle et rythmologie</h2>
 
+  <button class="btn cr-an-cec-entry-btn"
+          type="button"
+          onclick="openCrAnCardioModal()">
+    <span class="cr-an-cec-entry-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M8 4.5h8.2a1.8 1.8 0 0 1 1.8 1.8v11.4a1.8 1.8 0 0 1-1.8 1.8H7.8A1.8 1.8 0 0 1 6 17.7V6.3a1.8 1.8 0 0 1 1.8-1.8Z"
+              stroke="currentColor" stroke-width="1.7"/>
+        <path d="M9.2 8h5.5M9.2 11h5.5M9.2 14h3.8"
+              stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+        <path d="m14.2 9.3 4.5-4.5a1.2 1.2 0 1 1 1.7 1.7l-4.5 4.5-2.3.5.6-2.2Z"
+              stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+      </svg>
+    </span>
+
+    <span class="cr-an-cec-entry-label">CR anesth.</span>
+  </button>
+</div>
         <!-- Groupe 1 : Cardiologie structurelle -->
         <h3>Cardiologie structurelle</h3>
+
+
+        
         <div class="grid">
           <button class="btn" onclick="openSubPage(renderInterventionTAVI, renderAnesthCardioStructMenu)">
             TAVI
