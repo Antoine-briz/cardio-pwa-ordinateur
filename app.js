@@ -9679,7 +9679,12 @@ anesth1: "",
       tazocilline: false,
       daptomycine: false
     },
-
+    
+    alr: {
+  thoraciqueTransverse: true,
+  paravertebralDroit: false
+},
+    
     entretien: {
       propofol: true,
       sufentanil: true,
@@ -10434,6 +10439,20 @@ ${crAnesthState.geste3 !== undefined && crAnIsValveGeste(crAnesthState.geste3) ?
               ${crAnFlowCheck("cran-atb-vanc", "Vancomycine", crAnesthState.antibiotique.vancomycine)}
             </div>
 
+<div class="cr-an-flow-row cr-an-inline-title-row">
+  <div class="cr-an-inline-title">ALR :</div>
+  ${crAnFlowCheck(
+    "cran-alr-tt",
+    "Bloc thoracique transverse bilatéral",
+    crAnesthState.alr.thoraciqueTransverse
+  )}
+  ${crAnFlowCheck(
+    "cran-alr-pv",
+    "Bloc paravertébral droit",
+    crAnesthState.alr.paravertebralDroit
+  )}
+</div>
+
             <div class="cr-an-flow-row cr-an-inline-title-row">
               <div class="cr-an-inline-title">Entretien :</div>
               ${crAnFlowCheck("cran-ent-prop", "Propofol", crAnesthState.entretien.propofol)}
@@ -11088,7 +11107,17 @@ if (crAnesthState.autres.insulineIvse) {
 if (autres.length) {
   ia.push(`Autre : ${autres.join(", ")}.`);
 }
-
+if (crAnesthState.alr.thoraciqueTransverse) {
+  ia.push(
+    "ALR : Bloc thoracique transverse bilatéral sans complication, pas de ponction artérielle. Injection de Ropivacaïne 3,75mg/mL 20mL par côté."
+  );
+}
+if (crAnesthState.alr.paravertebralDroit) {
+  ia.push(
+    "ALR : Bloc paravertébral droit, pas de ponction artérielle. Injection de Ropivacaïne 3,75mg/mL 20mL."
+  );
+}
+  
   crAnPushSection(out, "Induction et entretien anesthésie", ia);
 
   // ETO PRE-CEC
