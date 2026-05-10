@@ -10994,28 +10994,25 @@ function crAnPushSection(lines, title, bodyLines) {
   const clean = bodyLines.filter(Boolean);
   if (!clean.length) return;
 
-  // ligne vide entre sections
+  // espace entre sections
   if (lines.length) {
-    lines.push(" ");
+    lines.push("<br>");
   }
 
-  // Titre : 1ère lettre majuscule + reste inchangé
+  // titre
   const formattedTitle =
     title.charAt(0).toUpperCase() +
     title.slice(1).toLowerCase();
 
-  // titre gras + souligné
   lines.push(`<b><u>${formattedTitle}</u></b>`);
 
-  // vraie ligne vide
-  lines.push(" ");
+  // espace après titre
+  lines.push("<br>");
 
+  // lignes
   clean.forEach(line => {
-
     const txt = String(line).trim();
-
-    // chaque ligne précédée d’un tiret
-    lines.push(`- ${txt}`);
+    lines.push(`- <b>${txt.split(":")[0]}</b>${txt.includes(":") ? " :" + txt.split(":").slice(1).join(":") : ""}`);
   });
 }
 
