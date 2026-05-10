@@ -10108,6 +10108,42 @@ function crAnEditList(type) {
   crAnRenderSynth();
 }
 
+function crAnEditList(type) {
+  const isChir = type === "chir";
+
+  const key = isChir
+    ? CRAN_CHIR_STORAGE_KEY
+    : CRAN_AN_STORAGE_KEY;
+
+  const defaultList = isChir
+    ? CRAN_DEFAULT_CHIR_LIST
+    : CRAN_DEFAULT_AN_LIST;
+
+  const title = isChir
+    ? "chirurgiens"
+    : "anesthésistes";
+
+  const currentList = crAnGetSavedList(key, defaultList);
+
+  const txt = prompt(
+    `Modifier la liste des ${title} :\n\nUn nom par ligne.`,
+    currentList.join("\n")
+  );
+
+  if (txt === null) return;
+
+  const newList = txt
+    .split("\n")
+    .map(x => x.trim())
+    .filter(Boolean);
+
+  crAnSaveList(key, newList);
+
+  renderCrAnTabAnesth();
+  crAnSyncState();
+  crAnRenderSynth();
+}
+
 function renderCrAnTabAnesth() {
   const CRAN_DEFAULT_CHIR_LIST = [
   "LEPRINCE Pascal",
