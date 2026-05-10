@@ -10655,122 +10655,119 @@ function renderCrAnCardio(){
 }
 
 function renderCrAnCardioIntervention() {
+  const isStruct = crAnCardioState.type === "structurelle";
 
-  const cardioList =
-    crAnCardioState.type === "structurelle"
-      ? crAnGetSavedList(
-          CRAN_CARDIO_STRUCT_STORAGE_KEY,
-          CRAN_DEFAULT_CARDIO_STRUCT_LIST
-        )
-      : crAnGetSavedList(
-          CRAN_CARDIO_RYTHMO_STORAGE_KEY,
-          CRAN_DEFAULT_CARDIO_RYTHMO_LIST
-        );
+  const cardioList = isStruct
+    ? crAnGetSavedList(CRAN_CARDIO_STRUCT_STORAGE_KEY, CRAN_DEFAULT_CARDIO_STRUCT_LIST)
+    : crAnGetSavedList(CRAN_CARDIO_RYTHMO_STORAGE_KEY, CRAN_DEFAULT_CARDIO_RYTHMO_LIST);
 
-  const gestes =
-    crAnCardioState.type === "structurelle"
-      ? CRAN_CARDIO_STRUCT_GESTES
-      : CRAN_CARDIO_RYTHMO_GESTES;
+  const gestes = isStruct
+    ? CRAN_CARDIO_STRUCT_GESTES
+    : CRAN_CARDIO_RYTHMO_GESTES;
 
   return `
-    <section class="cr-an-cell">
+    <section class="cr-an-cell cr-an-cell-intervention">
+      <div class="cr-an-cell-title">Intervention</div>
 
-      <div class="cr-an-cell-title">
-        Intervention
-      </div>
-
-      <div class="cr-an-form-row">
+      <div class="cr-an-form-row cr-an-form-row-tight">
         <label>Date</label>
-
         <input
+          type="text"
           id="crac-date"
           value="${crAnEsc(crAnCardioState.date)}"
-          oninput="crAnCardioRenderSynth()"
+          placeholder="JJ/MM/AAAA"
+          oninput="crAnCardioRenderSynth();"
         >
       </div>
 
-      <div class="cr-an-flow-row">
-
-        ${crAnFlowRadio(
-          "crac-type",
-          "structurelle",
-          "Cardiologie structurelle",
-          crAnCardioState.type === "structurelle"
-        )}
-
-        ${crAnFlowRadio(
-          "crac-type",
-          "rythmo",
-          "Rythmologie",
-          crAnCardioState.type === "rythmo"
-        )}
-
+      <div class="cr-an-form-row cr-an-form-row-tight">
+        <label>Type de geste</label>
+        <select
+          id="crac-type"
+          onchange="
+            crAnCardioState.type=this.value;
+            crAnCardioState.geste='';
+            crAnCardioState.cardiologue='';
+            crAnCardioRefresh();
+          "
+        >
+          <option value="structurelle" ${isStruct ? "selected" : ""}>
+            Cardiologie structurelle
+          </option>
+          <option value="rythmo" ${!isStruct ? "selected" : ""}>
+            Rythmologie
+          </option>
+        </select>
       </div>
 
-      <div class="cr-an-form-row">
-
+      <div class="cr-an-form-row cr-an-form-row-tight">
         <label>Geste</label>
-
         <select
-  id="crac-geste"
-  onchange="
-    crAnCardioState.geste=this.value;
-    crAnCardioApplyPreset(this.value);
-    crAnCardioRefresh();
-  "
->
-
+          id="crac-geste"
+          onchange="
+            crAnCardioState.geste=this.value;
+            crAnCardioApplyPreset(this.value);
+            crAnCardioRefresh();
+          "
+        >
+          <option value=""></option>
           ${gestes.map(g => `
-            <option value="${g}">
-              ${g}
+            <option value="${crAnEsc(g)}" ${crAnCardioState.geste === g ? "selected" : ""}>
+              ${crAnEsc(g)}
             </option>
           `).join("")}
-
         </select>
-
       </div>
 
-      <div class="cr-an-form-row">
-
+      <div class="cr-an-form-row cr-an-form-row-tight">
         <label>Cardiologue</label>
-
         <input
           list="crac-cardio-list"
           id="crac-cardiologue"
+          placeholder="Choisir cardiologue"
+          value="${crAnEsc(crAnCardioState.cardiologue)}"
+          oninput="crAnCardioRenderSynth();"
         >
+        <button
+          type="button"
+          class="cr-an-btn-edit-list"
+          onclick="crAnEditList('${isStruct ? "cardio-struct" : "cardio-rythmo"}')"
+          aria-label="Modifier cardiologues"
+          title="Modifier cardiologues"
+        >
+          ✎
+        </button>
 
         <datalist id="crac-cardio-list">
-
-          ${cardioList.map(x => `
-            <option value="${x}">
-          `).join("")}
-
+          ${cardioList.map(x => `<option value="${crAnEsc(x)}">`).join("")}
         </datalist>
-
       </div>
 
-      <div class="cr-an-form-row">
-
+      <div class="cr-an-form-row cr-an-form-row-tight">
         <label>Anesthésiste</label>
-
         <input
-          list="cran-an-list"
+          list="crac-an-list"
           id="crac-anesth"
+          placeholder="Choisir anesthésiste"
+          value="${crAnEsc(crAnCardioState.anesthesiste)}"
+          oninput="crAnCardioRenderSynth();"
         >
+        <button
+          type="button"
+          class="cr-an-btn-edit-list"
+          onclick="crAnEditList('an')"
+          aria-label="Modifier anesthésistes"
+          title="Modifier anesthésistes"
+        >
+          ✎
+        </button>
 
-        <datalist id="cran-an-list">
-
-          ${crAnGetSavedList(
-            CRAN_AN_STORAGE_KEY,
-            CRAN_DEFAULT_AN_LIST
-          ).map(x => `
-            <option value="${x}">
-          `).join("")}
-
+        <datalist id="crac-an-list">
+          ${crAnGetSavedList(CRAN_AN_STORAGE_KEY, CRAN_DEFAULT_AN_LIST)
+            .map(x => `<option value="${crAnEsc(x)}">`)
+            .join("")}
         </datalist>
-
       </div>
-
     </section>
   `;
 }
@@ -10808,8 +10805,8 @@ function renderCrAnCardioAnesthesie(){
       </div>
       <div class="cr-an-flow-row cr-an-inline-title-row">
         <div class="cr-an-inline-title">Voies aériennes :</div>
-        ${crAnFlowCheck("crac-va-vs","VS capnomasque",s.ventilation.vsCapno,"crAnCardioExclusiveVent('vsCapno')")}
-        ${crAnFlowCheck("crac-va-iot","Ventilation/IOT",s.ventilation.iot,"crAnCardioExclusiveVent('iot')")}
+        ${crAnFlowCheck("crac-va-vs","VS",s.ventilation.vsCapno,"crAnCardioExclusiveVent('vsCapno')")}
+        ${crAnFlowCheck("crac-va-iot","Ventil./IOT",s.ventilation.iot,"crAnCardioExclusiveVent('iot')")}
         ${crAnFlowCheck("crac-va-isr","ISR",s.ventilation.isr,"crAnCardioToggle('ventilation','isr')")}
         ${crAnFlowSelect({id:"crac-va-sonde",label:"Sonde",value:s.ventilation.sonde,options:["6,5","7","7,5","8"],cls:"is-micro"})}
         ${crAnFlowSelect({id:"crac-va-cormack",label:"Cormack",value:s.ventilation.cormack,options:["1","2","3","4"],cls:"is-micro"})}
