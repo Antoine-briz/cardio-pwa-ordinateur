@@ -12088,25 +12088,21 @@ function crAnBuildGeste() {
   return parts.join(" + ");
 }
 
-function crAnPushSection(lines, title, bodyLines) {
+function crAnPushSection(lines,title,bodyLines){
+  const clean=bodyLines.filter(Boolean);
+  if(!clean.length)return;
 
-  const clean = bodyLines.filter(Boolean);
-  if (!clean.length) return;
-
-  // espace UNIQUEMENT entre sections
-  if (lines.length) {
-   lines.push("<br>");
+  if(lines.length){
+    lines.push("");
   }
 
-  // titre
-  const formattedTitle =
-    title.charAt(0).toUpperCase() +
+  const formattedTitle=
+    title.charAt(0).toUpperCase()+
     title.slice(1).toLowerCase();
 
   lines.push(`<b><u>${formattedTitle}</u></b>`);
 
-  // contenu
-  clean.forEach(line => {
+  clean.forEach(line=>{
     lines.push(`- ${line}`);
   });
 }
