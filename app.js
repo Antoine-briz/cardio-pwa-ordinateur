@@ -10694,6 +10694,7 @@ function renderCrAnCardioIntervention() {
           <option value="structurelle" ${isStruct ? "selected" : ""}>
             Cardiologie structurelle
           </option>
+
           <option value="rythmo" ${!isStruct ? "selected" : ""}>
             Rythmologie
           </option>
@@ -10702,6 +10703,7 @@ function renderCrAnCardioIntervention() {
 
       <div class="cr-an-form-row cr-an-form-row-tight">
         <label>Geste</label>
+
         <select
           id="crac-geste"
           onchange="
@@ -10711,8 +10713,10 @@ function renderCrAnCardioIntervention() {
           "
         >
           <option value=""></option>
+
           ${gestes.map(g => `
-            <option value="${crAnEsc(g)}" ${crAnCardioState.geste === g ? "selected" : ""}>
+            <option value="${crAnEsc(g)}"
+              ${crAnCardioState.geste === g ? "selected" : ""}>
               ${crAnEsc(g)}
             </option>
           `).join("")}
@@ -10721,46 +10725,52 @@ function renderCrAnCardioIntervention() {
 
       <div class="cr-an-form-row cr-an-form-row-tight">
         <label>Cardiologue</label>
-        <input
-          list="crac-cardio-list"
-          id="crac-cardiologue"
-          placeholder="Choisir cardiologue"
-          value="${crAnEsc(crAnCardioState.cardiologue)}"
-          oninput="crAnCardioRenderSynth();"
-        >
-        <button
-          type="button"
-          class="cr-an-btn-edit-list"
-          onclick="crAnEditList('${isStruct ? "cardio-struct" : "cardio-rythmo"}')"
-          aria-label="Modifier cardiologues"
-          title="Modifier cardiologues"
-        >
-          ✎
-        </button>
+
+        <div class="cr-an-list-edit-wrap">
+          <input
+            list="crac-cardio-list"
+            id="crac-cardiologue"
+            placeholder="Choisir cardiologue"
+            value="${crAnEsc(crAnCardioState.cardiologue)}"
+            oninput="crAnCardioRenderSynth();"
+          >
+
+          <button
+            type="button"
+            class="cr-an-list-edit-btn"
+            onclick="crAnEditList('${isStruct ? "cardio-struct" : "cardio-rythmo"}')"
+          >
+            ✎
+          </button>
+        </div>
 
         <datalist id="crac-cardio-list">
-          ${cardioList.map(x => `<option value="${crAnEsc(x)}">`).join("")}
+          ${cardioList
+            .map(x => `<option value="${crAnEsc(x)}">`)
+            .join("")}
         </datalist>
       </div>
 
       <div class="cr-an-form-row cr-an-form-row-tight">
         <label>Anesthésiste</label>
-        <input
-          list="crac-an-list"
-          id="crac-anesth"
-          placeholder="Choisir anesthésiste"
-          value="${crAnEsc(crAnCardioState.anesthesiste)}"
-          oninput="crAnCardioRenderSynth();"
-        >
-        <button
-          type="button"
-          class="cr-an-btn-edit-list"
-          onclick="crAnEditList('an')"
-          aria-label="Modifier anesthésistes"
-          title="Modifier anesthésistes"
-        >
-          ✎
-        </button>
+
+        <div class="cr-an-list-edit-wrap">
+          <input
+            list="crac-an-list"
+            id="crac-anesth"
+            placeholder="Choisir anesthésiste"
+            value="${crAnEsc(crAnCardioState.anesthesiste)}"
+            oninput="crAnCardioRenderSynth();"
+          >
+
+          <button
+            type="button"
+            class="cr-an-list-edit-btn"
+            onclick="crAnEditList('an')"
+          >
+            ✎
+          </button>
+        </div>
 
         <datalist id="crac-an-list">
           ${crAnGetSavedList(CRAN_AN_STORAGE_KEY, CRAN_DEFAULT_AN_LIST)
