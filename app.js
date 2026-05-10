@@ -10913,7 +10913,17 @@ function renderCrAnCardioInterventionnelle(){
         ${crAnFlowCheck("crac-event-fv","FV",s.fv,"crAnCardioToggle('cardioInter','fv')")}
         ${crAnFlowCheck("crac-event-fa","FA",s.fa,"crAnCardioToggle('cardioInter','fa')")}
         ${crAnFlowCheck("crac-event-bav","BAV",s.bav,"crAnCardioToggle('cardioInter','bav')")}
-        ${crAnFlowTextInput({id:"crac-event-cei",label:"CEE",value:s.cei,placeholder:" ",type:"number",cls:"is-micro"})}
+        <span>CEE</span>
+<input
+  type="number"
+  id="crac-event-cei"
+  class="cr-an-mini-input"
+  value="${crAnEsc(s.cei)}"
+  oninput="
+    crAnCardioState.cardioInter.cei=this.value;
+    crAnCardioRenderSynth();
+  "
+>
       </div>
 
       <div class="cr-an-flow-row cr-an-inline-title-row">
@@ -10938,10 +10948,15 @@ function renderCrAnCardioFin(){
         ${crAnFlowRadio("crac-fin-rythme","stimule","Stimulé",s.rythme==="stimule")}
       </div>
       <div class="cr-an-flow-row cr-an-inline-title-row">
-        ${crAnFlowTextInput({id:"crac-fin-ringer",label:"Ringer lactate",value:s.ringer,placeholder:"mL",type:"number",cls:"is-mini"})}
-        ${crAnFlowTextInput({id:"crac-fin-noradmax",label:"Noradrénaline max",value:s.noradMax,placeholder:"mg/h",type:"number",step:"any",cls:"is-mini"})}
-        ${crAnFlowTextInput({id:"crac-fin-dobumax",label:"Dobutamine max",value:s.dobuMax,placeholder:"µg/kg/min",type:"number",step:"any",cls:"is-mini"})}
-      </div>
+  <div class="cr-an-inline-title">Cristalloïde :</div>
+  ${crAnFlowTextInput({id:"crac-fin-ringer",label:"Ringer lactate",value:s.ringer,placeholder:"mL",type:"number",cls:"is-mini"})}
+</div>
+
+<div class="cr-an-flow-row cr-an-inline-title-row">
+  <div class="cr-an-inline-title">Amines :</div>
+  ${crAnFlowTextInput({id:"crac-fin-noradmax",label:"Noradrénaline max",value:s.noradMax,placeholder:"mg/h",type:"number",step:"any",cls:"is-mini"})}
+  ${crAnFlowTextInput({id:"crac-fin-dobumax",label:"Dobutamine max",value:s.dobuMax,placeholder:"µg/kg/min",type:"number",step:"any",cls:"is-mini"})}
+</div>
       <div class="cr-an-flow-row cr-an-inline-title-row">
         <div class="cr-an-inline-title">ETO post-opératoire :</div>
         ${crAnFlowCheck("crac-fin-cine","Cinétique segmentaire OK",s.cinesegOk,"crAnCardioToggle('fin','cinesegOk')")}
