@@ -9684,7 +9684,7 @@ anesth1: "",
       propofol: true,
       sufentanil: true,
       remifentanil: false,
-      atracuriumIvse: true,
+      atracuriumIvse: false,
       esketamineIvse: true
     },
 
