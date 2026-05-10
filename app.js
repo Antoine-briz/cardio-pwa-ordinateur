@@ -10071,8 +10071,11 @@ function crAnFlowSelect({ id, label, value = "", options = [], cls = "" }) {
   `;
 }
 
-const CRAN_CHIR_STORAGE_KEY = "cran_chirurgiens_saved_v1";
-const CRAN_AN_STORAGE_KEY = "cran_anesthesistes_saved_v1";
+const CRAN_CHIR_STORAGE_KEY = "chirurgiens";
+const CRAN_AN_STORAGE_KEY = "anesthesistes";
+
+const CRAN_CARDIO_STRUCT_STORAGE_KEY = "cardiologuesStructurels";
+const CRAN_CARDIO_RYTHMO_STORAGE_KEY = "cardiologuesRythmologie";
 
 const CRAN_DEFAULT_CHIR_LIST = [
   "LEPRINCE Pascal",
@@ -10128,22 +10131,50 @@ const CRAN_DEFAULT_AN_LIST = [
   "VAUZANGES Quentin"
 ];
 
-function crAnGetSavedList(key, defaultList) {
-  try {
-    const saved = JSON.parse(localStorage.getItem(key));
-    return Array.isArray(saved) && saved.length ? saved : defaultList;
-  } catch {
-    return defaultList;
+function crAnEnsureConfigLists() {
+
+  if (!OV_CONFIG.crAnesth) {
+    OV_CONFIG.crAnesth = {};
+  }
+
+  if (!Array.isArray(OV_CONFIG.crAnesth.chirurgiens)) {
+    OV_CONFIG.crAnesth.chirurgiens = [];
+  }
+
+  if (!Array.isArray(OV_CONFIG.crAnesth.anesthesistes)) {
+    OV_CONFIG.crAnesth.anesthesistes = [];
+  }
+
+  if (!Array.isArray(OV_CONFIG.crAnesth.cardiologuesStructurels)) {
+    OV_CONFIG.crAnesth.cardiologuesStructurels = [];
+  }
+
+  if (!Array.isArray(OV_CONFIG.crAnesth.cardiologuesRythmologie)) {
+    OV_CONFIG.crAnesth.cardiologuesRythmologie = [];
   }
 }
 
-function crAnSaveList(key, list) {
-  localStorage.setItem(key, JSON.stringify(list));
+function crAnGetSavedList(key, defaultList) {
+  crAnEnsureConfigLists();
+  const saved = OV_CONFIG.crAnesth[key];
+  return Array.isArray(saved) && saved.length
+    ? saved
+    : defaultList;
+}
+
+async function crAnSaveList(key, list) {
+  crAnEnsureConfigLists();
+  OV_CONFIG.crAnesth[key] = list;
+  if (!OV_CONFIG._meta) {
+    OV_CONFIG._meta = {};
+  }
+
+  OV_CONFIG._meta.updatedAt = new Date().toISOString();
+  await saveOverridesToGitHub();
 }
 
 function crAnEditList(type) {
   const isChir = type === "chir";
-
   const key = isChir ? CRAN_CHIR_STORAGE_KEY : CRAN_AN_STORAGE_KEY;
   const defaultList = isChir ? CRAN_DEFAULT_CHIR_LIST : CRAN_DEFAULT_AN_LIST;
   const title = isChir ? "chirurgiens" : "anesthésistes";
@@ -10182,19 +10213,26 @@ function crAnEditList(type) {
     overlay.remove();
   };
 
-  document.getElementById("cr-an-list-save").onclick = () => {
+  document.getElementById("cr-an-list-save").onclick = async () => {
     const newList = textarea.value
       .split("\n")
       .map(x => x.trim())
       .filter(Boolean);
 
-    crAnSaveList(key, newList);
+    try {
 
-    overlay.remove();
+  await crAnSaveList(key, newList);
 
-    renderCrAnTabAnesth();
-    crAnSyncState();
-    crAnRenderSynth();
+  overlay.remove();
+
+  renderCrAnTabAnesth();
+  crAnSyncState();
+  crAnRenderSynth();
+
+} catch (e) {
+
+  alert("Erreur lors de la sauvegarde GitHub : " + e.message);
+}
   };
 
   overlay.addEventListener("click", (e) => {
