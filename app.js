@@ -10876,26 +10876,25 @@ function renderCrAnCardioInterventionnelle(){
     <section class="cr-an-cell">
       <div class="cr-an-cell-title">Cardiologie interventionnelle</div>
 
-      <div class="cr-an-form-row cr-an-form-row-tight">
-        <label>Abord</label>
-        <select
-          id="crac-abord-type"
-          onchange="
-            crAnCardioState.cardioInter.abordType=this.value;
-            crAnCardioRenderSynth();
-          "
-        >
-          <option value="artere-femorale" ${s.abordType==="artere-femorale" ? "selected" : ""}>Artère fémorale</option>
-          <option value="veine-femorale" ${s.abordType==="veine-femorale" ? "selected" : ""}>Veine fémorale</option>
-          <option value="pectoral" ${s.abordType==="pectoral" ? "selected" : ""}>Pectoral</option>
-        </select>
-      </div>
-
       <div class="cr-an-flow-row cr-an-inline-title-row">
-        <div class="cr-an-inline-title">Côté :</div>
-        ${crAnFlowRadio("crac-abord-cote","droite","Droite",s.abordCote==="droite")}
-        ${crAnFlowRadio("crac-abord-cote","gauche","Gauche",s.abordCote==="gauche")}
-      </div>
+  <div class="cr-an-inline-title">Abord :</div>
+  <select
+    id="crac-abord-type"
+    onchange="
+      crAnCardioState.cardioInter.abordType=this.value;
+      crAnCardioRenderSynth();
+    "
+  >
+    <option value="artere-femorale" ${s.abordType==="artere-femorale" ? "selected" : ""}>Artère fémorale</option>
+    <option value="veine-femorale" ${s.abordType==="veine-femorale" ? "selected" : ""}>Veine fémorale</option>
+    <option value="pectoral" ${s.abordType==="pectoral" ? "selected" : ""}>Pectoral</option>
+  </select>
+</div>
+
+<div class="cr-an-flow-row cr-an-inline-title-row">
+  ${crAnFlowRadio("crac-abord-cote","droite","Droite",s.abordCote==="droite")}
+  ${crAnFlowRadio("crac-abord-cote","gauche","Gauche",s.abordCote==="gauche")}
+</div>
 
       <div class="cr-an-flow-row cr-an-geste-inline-row">
         <label class="cr-an-inline-main-label">Geste réalisé :</label>
