@@ -10380,7 +10380,7 @@ function crAnInitCardioState() {
       nirs: false,
       pni: false,
       kta: true,
-      ktc: true,
+      ktc: false,
       eto: false
     },
 
@@ -10470,162 +10470,59 @@ aorteOk:true,
 
 function crAnCardioApplyPreset(geste){
   const s=crAnCardioState;
-  if(!geste)return;
-  // reset
-  s.conditionnement={
-    scope:true,
-    spo2:true,
-    vvp:true,
-    bis:false,
-    tof:false,
-    nirs:false,
-    pni:false,
-    kta:true,
-    ktc:true,
-    eto:false
+  if(!s||!geste)return;
+
+  const presets={
+    "TAVI":{mon:["scope","spo2","vvp","kta"],an:"sedation",atb:"augmentin",abord:["artere-femorale","droite"],vaso:"10"},
+    "Mitra-clip":{mon:["scope","spo2","vvp","bis","tof","kta","eto"],an:"ag",atb:"augmentin",abord:["veine-femorale","droite"],vaso:"10"},
+    "TMVR":{mon:["scope","spo2","vvp","bis","tof","kta","eto"],an:"ag",atb:"augmentin",abord:["veine-femorale","droite"],vaso:"10"},
+    "Tri-clip":{mon:["scope","spo2","vvp","bis","tof","kta","eto"],an:"ag",atb:"augmentin",abord:["veine-femorale","droite"],vaso:"10"},
+    "Fermeture de FOP":{mon:["scope","spo2","vvp","bis","tof","pni","eto"],an:"ag",atb:"augmentin",abord:["veine-femorale","droite"],vaso:"10"},
+    "Pose/changement de pacemaker":{mon:["scope","spo2","vvp","pni"],an:"sedation",atb:"cefazoline",abord:["pectoral","gauche"],vaso:"aucun"},
+    "Pose/changement de DAI":{mon:["scope","spo2","vvp","pni"],an:"sedation",atb:"cefazoline",abord:["pectoral","gauche"],vaso:"aucun"},
+    "Ablation de flutter commun":{mon:["scope","spo2","vvp","pni"],an:"sedation",atb:"aucune",abord:["veine-femorale","droite"],vaso:"aucun"},
+    "Ablation de tachycardie jonctionnelle":{mon:["scope","spo2","vvp","pni"],an:"sedation",atb:"aucune",abord:["veine-femorale","droite"],vaso:"aucun"},
+    "Ablation de fibrillation atriale":{mon:["scope","spo2","vvp","bis","tof","pni","eto"],an:"ag",atb:"aucune",abord:["veine-femorale","droite"],vaso:"10"},
+    "Ablation de flutter gauche":{mon:["scope","spo2","vvp","bis","tof","pni","eto"],an:"ag",atb:"aucune",abord:["veine-femorale","droite"],vaso:"10"},
+    "Ablation de tachycardie ventriculaire":{mon:["scope","spo2","vvp","bis","tof","kta","eto"],an:"ag",atb:"aucune",abord:["veine-femorale","droite"],vaso:"10"}
   };
-  s.induction={
-    propofol:false,
-    remifentanil:true,
-    etomidate:false,
-    esketamine:false
-  };
-  s.curare={
-    atracurium:false,
-    celocurine:false,
-    rocuronium:false
-  };
-  s.ventilation={
-    vsCapno:true,
-    iot:false,
-    isr:false,
-    sonde:"7",
-    cormack:"1",
-    pogo:"",
-    eschmann:false
-  };
-  s.antibioprophylaxie={
-    aucune:true,
-    cefazoline:false,
-    augmentin:false,
-    vancomycine:false,
-    tazocilline:false,
-    daptomycine:false
-  };
-  s.entretien={
-    propofol:false,
-    remifentanil:true
-  };
-  s.vasopresseur="aucun";
-  s.cardioInter.abordType="artere-femorale";
-  s.cardioInter.abordCote="droite";
 
-  // =========================
-  // TAVI
-  // =========================
-  if(geste==="TAVI"){
-    s.conditionnement.bis=true;
-    s.conditionnement.eto=true;
-    s.induction.propofol=true;
-    s.curare.rocuronium=true;
-    s.ventilation.vsCapno=false;
-    s.ventilation.iot=true;
-    s.entretien.propofol=true;
-    s.antibioprophylaxie.cefazoline=true;
-    s.antibioprophylaxie.aucune=false;
-    s.vasopresseur="0,16";
-    s.cardioInter.abordType="artere-femorale";
-    s.cardioInter.abordCote="droite";
+  const p=presets[geste];
+  if(!p)return;
+
+  s.conditionnement={scope:false,spo2:false,vvp:false,bis:false,tof:false,nirs:false,pni:false,kta:false,ktc:false,eto:false};
+  p.mon.forEach(k=>s.conditionnement[k]=true);
+
+  if(p.an==="sedation"){
+    s.induction={propofol:false,remifentanil:true,etomidate:false,esketamine:false};
+    s.curare={atracurium:false,celocurine:false,rocuronium:false};
+    s.ventilation={vsCapno:true,iot:false,isr:false,sonde:"",cormack:"",pogo:"",eschmann:false};
+    s.entretien={propofol:false,remifentanil:true};
   }
 
-  // =========================
-  // MITRA CLIP / TRI CLIP
-  // =========================
-  if(
-    geste==="Mitra-clip" ||
-    geste==="Tri-clip"
-  ){
-    s.conditionnement.bis=true;
-    s.conditionnement.eto=true;
-    s.induction.propofol=true;
-    s.curare.rocuronium=true;
-    s.ventilation.vsCapno=false;
-    s.ventilation.iot=true;
-    s.entretien.propofol=true;
-    s.antibioprophylaxie.cefazoline=true;
-    s.antibioprophylaxie.aucune=false;
-    s.vasopresseur="10";
-    s.cardioInter.abordType="veine-femorale";
-    s.cardioInter.abordCote="droite";
+  if(p.an==="ag"){
+    s.induction={propofol:true,remifentanil:true,etomidate:false,esketamine:false};
+    s.curare={atracurium:true,celocurine:false,rocuronium:false};
+    s.ventilation={vsCapno:false,iot:true,isr:false,sonde:"7",cormack:"1",pogo:"",eschmann:false};
+    s.entretien={propofol:true,remifentanil:true};
   }
 
-  // =========================
-  // TMVR
-  // =========================
-  if(geste==="TMVR"){
-    s.conditionnement.bis=true;
-    s.conditionnement.eto=true;
-    s.conditionnement.nirs=true;
-    s.induction.propofol=true;
-    s.curare.rocuronium=true;
-    s.ventilation.vsCapno=false;
-    s.ventilation.iot=true;
-    s.entretien.propofol=true;
-    s.antibioprophylaxie.cefazoline=true;
-    s.antibioprophylaxie.aucune=false;
-    s.vasopresseur="0,16";
-    s.cardioInter.abordType="veine-femorale";
-    s.cardioInter.abordCote="droite";
-  }
+  s.antibioprophylaxie={aucune:false,cefazoline:false,augmentin:false,vancomycine:false,tazocilline:false,daptomycine:false};
+  s.antibioprophylaxie[p.atb]=true;
 
-  // =========================
-  // FOP
-  // =========================
-  if(geste==="Fermeture de FOP"){
-    s.conditionnement.eto=true;
-    s.cardioInter.abordType="veine-femorale";
-    s.cardioInter.abordCote="droite";
-  }
+  s.vasopresseur=p.vaso;
 
-  // =========================
-  // PM / DAI
-  // =========================
-  if(
-    geste==="Pose/changement de pacemaker" ||
-    geste==="Pose/changement de DAI"
-  ){
-    s.conditionnement.pni=true;
-    s.cardioInter.abordType="pectoral";
-    s.cardioInter.abordCote="gauche";
-  }
+  s.cardioInter.abordType=p.abord[0];
+  s.cardioInter.abordCote=p.abord[1];
 
-  // =========================
-  // Ablations
-  // =========================
-  if(
-    geste==="Ablation de flutter commun" ||
-    geste==="Ablation de tachycardie jonctionnelle"
-  ){
-    s.conditionnement.eto=false;
-    s.cardioInter.abordType="veine-femorale";
-    s.cardioInter.abordCote="droite";
-  }
-
-  if(
-    geste==="Ablation de fibrillation atriale" ||
-    geste==="Ablation de flutter gauche" ||
-    geste==="Ablation de tachycardie ventriculaire"
-  ){
-    s.conditionnement.eto=true;
-    s.conditionnement.bis=true;
-    s.induction.propofol=true;
-    s.curare.rocuronium=true;
-    s.ventilation.vsCapno=false;
-    s.ventilation.iot=true;
-    s.entretien.propofol=true;
-    s.cardioInter.abordType="veine-femorale";
-    s.cardioInter.abordCote="droite";
-  }
+  s.cardioInter.tv=false;
+  s.cardioInter.fv=false;
+  s.cardioInter.fa=false;
+  s.cardioInter.bav=false;
+  s.cardioInter.cei="";
+  s.cardioInter.heparine="";
+  s.cardioInter.protamine="";
+  s.cardioInter.gesteRealise="";
 }
 
 function renderCrAnCardio(){
@@ -10818,8 +10715,8 @@ function renderCrAnCardioAnesthesie(){
         ${crAnFlowCheck("crac-va-vs","VS",s.ventilation.vsCapno,"crAnCardioExclusiveVent('vsCapno')")}
         ${crAnFlowCheck("crac-va-iot","Ventil./IOT",s.ventilation.iot,"crAnCardioExclusiveVent('iot')")}
         ${crAnFlowCheck("crac-va-isr","ISR",s.ventilation.isr,"crAnCardioToggle('ventilation','isr')")}
-        ${crAnFlowSelect({id:"crac-va-sonde",label:"Sonde",value:s.ventilation.sonde,options:["6,5","7","7,5","8"],cls:"is-micro"})}
-        ${crAnFlowSelect({id:"crac-va-cormack",label:"Cormack",value:s.ventilation.cormack,options:["1","2","3","4"],cls:"is-micro"})}
+        ${crAnFlowSelect({id:"crac-va-sonde",label:"Sonde",value:s.ventilation.sonde,options:[" ","6,5","7","7,5","8"],cls:"is-micro"})}
+        ${crAnFlowSelect({id:"crac-va-cormack",label:"Cormack",value:s.ventilation.cormack,options:[" ","1","2","3","4"],cls:"is-micro"})}
         ${crAnFlowTextInput({id:"crac-va-pogo",label:"POGO",value:s.ventilation.pogo,placeholder:"",type:"number",cls:"is-micro"})}
         ${crAnFlowCheck("crac-va-esch","Eschmann",s.ventilation.eschmann,"crAnCardioToggle('ventilation','eschmann')")}
       </div>
@@ -11120,19 +11017,44 @@ function crAnCardioSet(section,key,value){
 }
 
 function crAnCardioExclusiveCurare(key){
-  crAnCardioState.curare={atracurium:false,celocurine:false,rocuronium:false};
-  crAnCardioState.curare[key]=true;
+  const ids={
+    atracurium:"crac-cur-atr",
+    celocurine:"crac-cur-celo",
+    rocuronium:"crac-cur-rocu"
+  };
+
+  const checked=!!document.getElementById(ids[key])?.checked;
+
+  crAnCardioState.curare={
+    atracurium:false,
+    celocurine:false,
+    rocuronium:false
+  };
+
+  if(checked){
+    crAnCardioState.curare[key]=true;
+  }
+
   crAnCardioRefresh();
 }
 
 function crAnCardioExclusiveVent(key){
-  crAnCardioState.ventilation={
-    ...crAnCardioState.ventilation,
-    vsCapno:false,
-    iot:false,
-    isr:false
-  };
+  crAnCardioState.ventilation.vsCapno=false;
+  crAnCardioState.ventilation.iot=false;
+  crAnCardioState.ventilation.isr=false;
+
   crAnCardioState.ventilation[key]=true;
+
+  if(key==="vsCapno"){
+    crAnCardioState.ventilation.sonde="";
+    crAnCardioState.ventilation.cormack="";
+    crAnCardioState.ventilation.pogo="";
+    crAnCardioState.ventilation.eschmann=false;
+  }else{
+    if(!crAnCardioState.ventilation.sonde)crAnCardioState.ventilation.sonde="7";
+    if(!crAnCardioState.ventilation.cormack)crAnCardioState.ventilation.cormack="1";
+  }
+
   crAnCardioRefresh();
 }
 
