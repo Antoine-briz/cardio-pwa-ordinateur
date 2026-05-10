@@ -10931,7 +10931,7 @@ function renderCrAnCardioInterventionnelle(){
       </div>
 
       <div class="cr-an-flow-row cr-an-inline-title-row">
-        <div class="cr-an-inline-title">Anticoagulation :</div>
+        <div class="cr-an-inline-title">Coagulation :</div>
         <span>Héparine</span>
         <input
           type="number"
