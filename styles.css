@@ -14681,3 +14681,23 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
 .cr-an-list-modal-actions .btn.outline{
   color:#111827 !important;
 }
+
+#crac-cardiologue,
+#crac-anesth {
+  width: 155px;
+  max-width: 155px;
+  height: 34px;
+  padding: 4px 8px;
+  border: 2px solid #111;
+  border-radius: 10px;
+  background: #fff;
+  color: #111;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+#crac-cardiologue + .cr-an-btn-edit-list,
+#crac-anesth + .cr-an-btn-edit-list {
+  flex: 0 0 auto;
+  margin-left: 6px;
+}
