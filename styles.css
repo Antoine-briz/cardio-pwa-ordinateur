@@ -14733,6 +14733,13 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
 
 #crac-cardiologue,
 #crac-anesth {
-  width: 160px !important;
-  max-width: 160px !important;
+  width: 112px !important;
+  max-width: 112px !important;
+}
+
+#crac-abord-type {
+  width: 145px !important;
+  max-width: 145px;
+  display: inline-block;
+  margin-left: 8px;
 }
