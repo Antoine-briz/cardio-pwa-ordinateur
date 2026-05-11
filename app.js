@@ -10714,7 +10714,7 @@ function renderCrAnCardioAnesthesie(){
         <div class="cr-an-inline-title">Voies aériennes :</div>
         ${crAnFlowCheck("crac-va-vs","VS",s.ventilation.vsCapno,"crAnCardioExclusiveVent('vsCapno')")}
         ${crAnFlowCheck("crac-va-iot","Ventil./IOT",s.ventilation.iot,"crAnCardioExclusiveVent('iot')")}
-        ${crAnFlowCheck("crac-va-isr","ISR",s.ventilation.isr,"crAnCardioToggle('ventilation','isr')")}
+        ${crAnFlowCheck("crac-va-isr","ISR",s.ventilation.isr,"crAnCardioExclusiveVent('isr')")}
         ${crAnFlowSelect({id:"crac-va-sonde",label:"Sonde",value:s.ventilation.sonde,options:["6,5","7","7,5","8"],cls:"is-micro"})}
         ${crAnFlowSelect({id:"crac-va-cormack",label:"Cormack",value:s.ventilation.cormack,options:["1","2","3","4"],cls:"is-micro"})}
         ${crAnFlowTextInput({id:"crac-va-pogo",label:"POGO",value:s.ventilation.pogo,placeholder:"",type:"number",cls:"is-micro"})}
