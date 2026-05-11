@@ -15654,7 +15654,7 @@ function renderReanMenu() {
         <!-- 5. ETO (hors assistances) -->
         <div class="card rean-card" onclick="location.hash = '#/reanimation/eto'">
           <img src="img/eto.png" alt="Échocardiographie trans-œsophagienne" class="menu-section-img" />
-          <h3>ETO</h3>
+          <h3>Echographie trans-oesophagienne</h3>
         </div>
 
         <div class="card rean-card" onclick="location.hash = '#/reanimation/echographie-generale'">
