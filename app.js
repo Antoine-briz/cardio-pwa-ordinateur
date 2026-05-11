@@ -11222,15 +11222,15 @@ if(va.length)ia.push(`Voies aériennes : ${va.join(", ")}.`);
 
   if(s.conditionnement.eto){
   const eto=[];
-if(s.etoPre.fevg)eto.push(`FEVG ${s.etoPre.fevg} %`);
-if(s.etoPre.itv)eto.push(`ITV sous-aortique ${s.etoPre.itv} cm`);
-if(s.etoPre.cinesegOk)eto.push("absence de trouble de cinétique segmentaire");
-if(s.etoPre.vaOk)eto.push("valve aortique normale, non sténosante non fuyante");
-if(s.etoPre.vmOk)eto.push("valve mitrale normale, non sténosante non fuyante");
-if(s.etoPre.vdOk)eto.push("fonction systolique du VD préservée");
-if(s.etoPre.auriculeLibre)eto.push("auricule gauche libre");
-if(s.etoPre.pericardeSec)eto.push("absence d'épanchement péricardique");
-if(eto.length)crAnPushSection(lines,"ETO pré-opératoire",[`ETO pré-opératoire : ${eto.join(", ")}.`]);
+  if(s.etoPre.fevg)eto.push(`FEVG ${s.etoPre.fevg} %`);
+  if(s.etoPre.itv)eto.push(`ITV sous-aortique ${s.etoPre.itv} cm`);
+  if(s.etoPre.cinesegOk)eto.push("absence de trouble de cinétique segmentaire");
+  if(s.etoPre.vaOk)eto.push("valve aortique normale, non sténosante non fuyante");
+  if(s.etoPre.vmOk)eto.push("valve mitrale normale, non sténosante non fuyante");
+  if(s.etoPre.vdOk)eto.push("fonction systolique du VD préservée");
+  if(s.etoPre.auriculeLibre)eto.push("auricule gauche libre");
+  if(s.etoPre.pericardeSec)eto.push("absence d'épanchement péricardique");
+  if(eto.length)crAnPushSection(lines,"ETO pré-opératoire",[`ETO pré-opératoire : ${eto.join(", ")}.`]);
 }
     
 const ci=[];
@@ -11281,8 +11281,8 @@ crAnPushSection(lines,"Cardiologie interventionnelle",ci);
   if(amines.length)fin.push(`Catécholamines max : ${amines.join(", ")}.`);
   if(s.conditionnement.eto){
   const etopost=[];
-if(s.fin.fevg)etopost.push(`FEVG ${s.fin.fevg} %`);
-if(s.fin.itv)etopost.push(`ITV sous-aortique ${s.fin.itv} cm`);
+if(s.fin.fevg)etoPost.push(`FEVG ${s.fin.fevg} %`);
+if(s.fin.itv)etoPost.push(`ITV sous-aortique ${s.fin.itv} cm`);
 if(s.fin.cinesegOk)etopost.push("absence de trouble de cinétique segmentaire");
 if(s.fin.vaOk)etopost.push("valve aortique normale, non sténosante non fuyante");
 if(s.fin.vmOk)etopost.push("valve mitrale normale, non sténosante non fuyante");
