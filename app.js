@@ -7178,7 +7178,6 @@ function renderALRPage() {
   const alrItems = [
     { file: "./img/cf-bloc-cervical.png", title: "Bloc cervical" },
     { file: "./img/cf-bloc-thoracique-transverse.png", title: "Bloc thoracique transverse" },
-    { file: "./img/cf-algorithme-quantra.png", title: "Algorithme Quantra" },
     { file: "./img/cf-bpv.png", title: "Bloc para-vertébral" },
     { file: "./img/cf-erecteur-rachis.png", title: "Bloc des érecteurs du rachis" },
     { file: "./img/cf-tap-bloc.png", title: "TAP bloc" },
