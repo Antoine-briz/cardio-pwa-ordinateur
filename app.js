@@ -997,7 +997,7 @@ function renderAnesthConsultations() {
       <!-- Colonne gauche : titre + boutons -->
       <div class="intervention-main">
 
-        <h2 class="page-title">Consultation d’anesthésie</h2>
+        <h2 class="main-title">Consultation d’anesthésie</h2>
 
         <div class="grid">
           <button class="btn" onclick="window.open('https://www.euroscore.org/index.php?id=17', '_blank')">
@@ -7195,9 +7195,9 @@ function renderALRPage() {
     <section class="intervention-shell page-alr">
 
       <div class="intervention-main">
-        <h2 class="intervention-title" style="text-align:center; margin-bottom:24px;">
-          Anesthésie loco-régionale
-        </h2>
+        <h2 class="main-title">
+  Anesthésie loco-régionale
+</h2>
 
         <div class="alr-grid">
           ${alrItems.map(item => `
@@ -7246,9 +7246,9 @@ function renderAntibioproForm() {
       <!-- Colonne gauche : titre + formulaire -->
       <div class="intervention-main">
 
-        <h2 class="intervention-title" style="text-align:center; margin-bottom:24px;">
-          Antibioprophylaxies per-opératoire
-        </h2>
+        <h2 class="main-title">
+  Antibioprophylaxies per-opératoire
+</h2>
 
         <form class="form" onsubmit="return false;">
 
