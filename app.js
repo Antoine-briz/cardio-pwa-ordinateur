@@ -965,6 +965,10 @@ function renderAnesthMenu() {
 <button class="btn btn-danger" onclick="location.hash = '#/anesthesie/antibiopro'">
   Antibioprophylaxie
 </button>
+<button class="btn btn-danger" onclick="location.hash = '#/anesthesie/alr'">
+          ALR
+        </button>
+
       </div>
 
     </section>
@@ -7169,6 +7173,52 @@ const ANTIBIOPRO_DATA = {
     }
   },
 };
+
+function renderALRPage() {
+  const alrItems = [
+    { file: "./img/cf-bloc-cervical.png", title: "Bloc cervical" },
+    { file: "./img/cf-bloc-thoracique-transverse.png", title: "Bloc thoracique transverse" },
+    { file: "./img/cf-algorithme-quantra.png", title: "Algorithme Quantra" },
+    { file: "./img/cf-bpv.png", title: "Bloc para-vertébral" },
+    { file: "./img/cf-erecteur-rachis.png", title: "Bloc des érecteurs du rachis" },
+    { file: "./img/cf-tap-bloc.png", title: "TAP bloc" },
+    { file: "./img/cf-serratus.png", title: "Bloc serratus" },
+    { file: "./img/cf-qlb.png", title: "Carré des lombes" },
+    { file: "./img/cf-biiih.png", title: "Bloc ilio-inguino-hypogastrique" },
+    { file: "./img/cf-femoral.png", title: "Bloc fémoral" },
+    { file: "./img/cf-obturateur.png", title: "Bloc obturateur" },
+    { file: "./img/cf-canal-adducteurs.png", title: "Bloc du canal des adducteurs" },
+    { file: "./img/cf-sciatique.png", title: "Bloc sciatique" },
+    { file: "./img/cf-supra-claviculaire.png", title: "Bloc supra-claviculaire" }
+  ];
+
+  $app.innerHTML = `
+    <section class="intervention-shell page-alr">
+
+      <div class="intervention-main">
+        <h2 class="intervention-title" style="text-align:center; margin-bottom:24px;">
+          Anesthésie loco-régionale
+        </h2>
+
+        <div class="alr-grid">
+          ${alrItems.map(item => `
+            <button class="alr-thumb-card" onclick="openImg('${item.file}')">
+              <img src="${item.file}" alt="${item.title}" class="alr-thumb-img">
+              <div class="alr-thumb-title">${item.title}</div>
+            </button>
+          `).join("")}
+        </div>
+      </div>
+
+      <aside class="intervention-side">
+        <img src="./img/antibioprophylaxie.png"
+             alt="Anesthésie loco-régionale">
+      </aside>
+
+    </section>
+  `;
+}
+
 
 // ===== Page Antibioprophylaxies per-opératoire (formulaire à 3 sélections)
 function renderAntibioproForm() {
@@ -35570,6 +35620,7 @@ const routes = {
   "#/anesthesie": renderAnesthMenu,
   "#/anesthesie/consultations": renderAnesthConsultations,
   "#/anesthesie/antibiopro": renderAntibioproForm,
+  "#/anesthesie/alr": renderALRPage,
 
   "#/anesthesie/chir-cec": renderAnesthChirCecMenu,
   "#/anesthesie/chir-cec/pontages": sub(renderAnesthChirCecMenu, renderInterventionPontages),
