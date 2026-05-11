@@ -10715,31 +10715,10 @@ function renderCrAnCardioAnesthesie(){
         ${crAnFlowCheck("crac-va-vs","VS",s.ventilation.vsCapno,"crAnCardioExclusiveVent('vsCapno')")}
         ${crAnFlowCheck("crac-va-iot","Ventil./IOT",s.ventilation.iot,"crAnCardioExclusiveVent('iot')")}
         ${crAnFlowCheck("crac-va-isr","ISR",s.ventilation.isr,"crAnCardioToggle('ventilation','isr')")}
-        <span>Sonde</span>
-<select
-  id="crac-va-sonde"
-  class="cr-an-mini-input"
-  onchange="
-    crAnCardioState.ventilation.sonde=this.value;
-    crAnCardioRenderSynth();
-  "
->
-  <option value="" ${s.ventilation.sonde==="" ? "selected" : ""}></option>
-  <option value="6,5" ${s.ventilation.sonde==="6,5" ? "selected" : ""}>6,5</option>
-  <option value="7" ${s.ventilation.sonde==="7" ? "selected" : ""}>7</option>
-  <option value="7,5" ${s.ventilation.sonde==="7,5" ? "selected" : ""}>7,5</option>
-  <option value="8" ${s.ventilation.sonde==="8" ? "selected" : ""}>8</option>
-</select>
-
-<span>Cormack</span>
-<select
-  id="crac-va-cormack"
-  class="cr-an-mini-input"
-  onchange="
-    crAnCardioState.ventilation.cormack=this.value;
-    crAnCardioRenderSynth();
-  "
->
+        ${crAnFlowSelect({id:"crac-va-sonde",label:"Sonde",value:s.ventilation.sonde,options:["6,5","7","7,5","8"],cls:"is-micro"})}
+        ${crAnFlowSelect({id:"crac-va-cormack",label:"Cormack",value:s.ventilation.cormack,options:["1","2","3","4"],cls:"is-micro"})}
+        ${crAnFlowTextInput({id:"crac-va-pogo",label:"POGO",value:s.ventilation.pogo,placeholder:"",type:"number",cls:"is-micro"})}
+        ${crAnFlowCheck("crac-va-esch","Eschmann",s.ventilation.eschmann,"crAnCardioToggle('ventilation','eschmann')")}
   <option value="" ${s.ventilation.cormack==="" ? "selected" : ""}></option>
   <option value="1" ${s.ventilation.cormack==="1" ? "selected" : ""}>1</option>
   <option value="2" ${s.ventilation.cormack==="2" ? "selected" : ""}>2</option>
@@ -11204,13 +11183,13 @@ function crAnCardioRenderSynth(){
   if(cur.length)ia.push(`Curare : ${cur.join(", ")}.`);
 
   const va=[];
-  if(s.ventilation.vsCapno)va.push("Ventilation spontanée avec capnomasque.");
-  if(s.ventilation.iot)va.push("Ventilation aisée au masque facial. Intubation oro-trachéale atraumatique.");
-  if(s.ventilation.isr)va.push("Intubation atraumatique en séquence rapide.");
-  if(s.ventilation.iot&&s.ventilation.sonde)va.push(`Sonde n° ${s.ventilation.sonde}`);
+  if(s.ventilation.vsCapno)va.push("Ventilation spontanée avec capnomasque");
+  if(s.ventilation.iot)va.push("Ventilation aisée au masque facial, intubation oro-trachéale atraumatique");
+  if(s.ventilation.isr)va.push("Intubation atraumatique en séquence rapide");
+  if(s.ventilation.iot&&s.ventilation.sonde)va.push(`sonde n° ${s.ventilation.sonde}`);
   if(s.ventilation.iot&&s.ventilation.cormack)va.push(`Cormack ${s.ventilation.cormack}`);
-  if(s.ventilation.iot&&s.ventilation.pogo)va.push(`Vidéo-laryngoscopie McGrath, POGO ${s.ventilation.pogo}%`);
-  if(s.ventilation.iot&&s.ventilation.eschmann)va.push("Utilisation d'un mandrin d'Eschmann");
+  if(s.ventilation.iot&&s.ventilation.pogo)va.push(`vidéo-laryngoscopie McGrath, POGO ${s.ventilation.pogo}%`);
+  if(s.ventilation.iot&&s.ventilation.eschmann)va.push("utilisation d'un mandrin d'Eschmann");
   if(va.length)ia.push(`Voies aériennes : ${va.join(", ")}.`);
 
   const atb=[];
