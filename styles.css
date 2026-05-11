@@ -14817,3 +14817,16 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
     height: 110px;
   }
 }
+
+/* =====================================================
+   Grands titres pages anesthésie
+===================================================== */
+
+.main-title {
+  text-align: center;
+  font-size: clamp(2.2rem, 4vw, 4rem);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 32px;
+  color: #fff;
+}
