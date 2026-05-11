@@ -10787,8 +10787,11 @@ function renderCrAnCardioEtoPre(){
       <div class="cr-an-cell-title">ETO pré-opératoire</div>
 
       <div class="cr-an-flow-row cr-an-inline-title-row">
-        ${crAnFlowTextInput({id:"crac-etopre-fevg",label:"FEVG",value:s.fevg,placeholder:" ",type:"number",cls:"is-micro"})}
-        ${crAnFlowTextInput({id:"crac-etopre-itv",label:"ITV Ssao",value:s.itv,placeholder:" ",type:"number",step:"any",cls:"is-micro"})}
+        <span>FEVG</span>
+<input type="number" id="crac-etopre-fevg" class="cr-an-mini-input" value="${crAnEsc(s.fevg)}" oninput="crAnCardioState.etoPre.fevg=this.value;crAnCardioRenderSynth();">
+
+<span>ITV SsAo</span>
+<input type="number" step="any" id="crac-etopre-itv" class="cr-an-mini-input" value="${crAnEsc(s.itv)}" oninput="crAnCardioState.etoPre.itv=this.value;crAnCardioRenderSynth();">
       </div>
 
       <div class="cr-an-flow-row cr-an-inline-title-row">
@@ -10959,24 +10962,11 @@ function renderCrAnCardioFin(){
       ${crAnCardioState.conditionnement.eto ? `
   <div class="cr-an-flow-row cr-an-inline-title-row">
     <div class="cr-an-inline-title">ETO post-opératoire :</div>
-${crAnFlowTextInput({
-      id:"crac-fin-fevg",
-      label:"FEVG",
-      value:s.fevg,
-      placeholder:" ",
-      type:"number",
-      cls:"is-micro"
-    })}
+    <span>FEVG</span>
+<input type="number" id="crac-fin-fevg" class="cr-an-mini-input" value="${crAnEsc(s.fevg)}" oninput="crAnCardioState.fin.fevg=this.value;crAnCardioRenderSynth();">
 
-    ${crAnFlowTextInput({
-      id:"crac-fin-itv",
-      label:"ITV SsAo",
-      value:s.itv,
-      placeholder:" ",
-      type:"number",
-      step:"any",
-      cls:"is-micro"
-    })}
+<span>ITV SsAo</span>
+<input type="number" step="any" id="crac-fin-itv" class="cr-an-mini-input" value="${crAnEsc(s.itv)}" oninput="crAnCardioState.fin.itv=this.value;crAnCardioRenderSynth();">
     ${crAnFlowCheck("crac-fin-cine","Cinétique segmentaire OK",s.cinesegOk,"crAnCardioToggle('fin','cinesegOk')")}
     ${crAnFlowCheck("crac-fin-va","Valve aortique OK",s.vaOk,"crAnCardioToggle('fin','vaOk')")}
     ${crAnFlowCheck("crac-fin-vm","Valve mitrale OK",s.vmOk,"crAnCardioToggle('fin','vmOk')")}
