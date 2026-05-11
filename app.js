@@ -15355,7 +15355,7 @@ function setupPacemakerLogic() {
 
         <p>
           <strong>Traitements contre-indiqués en cas de Sd de Brugada :</strong>
-          ${imgLink("Brugada & traitements", "traitementbrugada.png")}
+          ${imgLink("Brugada & traitements 🖼️", "traitementbrugada.png")}
         </p>
       `;
       return;
@@ -15371,23 +15371,22 @@ function setupPacemakerLogic() {
 
         <p>
           <strong>Traitements contre-indiqués en cas de Sd de Brugada :</strong>
-          ${imgLink("Brugada & traitements", "traitementbrugada.png")}
+          ${imgLink("Brugada & traitements 🖼️", "traitementbrugada.png")}
         </p>
       `;
       return;
     }
 
     anesthText.innerHTML = `
-      <p><strong>Options :</strong></p>
       <ul>
-        <li>Option 1:  Sédation AIVOC Rémifentanil (cibles 0,8–2 ng/mL) + anesthésie locale par l’opérateur </li>
+        <li>Option 1: Sédation AIVOC Rémifentanil (cibles 0,8–2 ng/mL) + anesthésie locale par l’opérateur </li>
         <li>Option 2: ALR bi-bloc (Serratus antérieur + PECS1 ou thoracique transverse) + anesthésie locale par l’opérateur </li>
         <li>Option 3: Anesthésie générale AIVOC Propofol/Rémifentanil si intolérance, douleur, troubles cognitifs. IOT ou masque laryngé selon contexte.</li>
       </ul>
 
       <p>
         <strong>Traitements contre-indiqués en cas de Sd de Brugada :</strong>
-        ${imgLink("Brugada & traitements", "traitementbrugada.png")}
+        ${imgLink("Brugada & traitements 🖼️", "traitementbrugada.png")}
       </p>
     `;
   }
