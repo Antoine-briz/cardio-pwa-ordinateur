@@ -7210,7 +7210,7 @@ function renderALRPage() {
       </div>
 
       <aside class="intervention-side">
-        <img src="./img/antibioprophylaxie.png"
+        <img src="./img/alr.png"
              alt="Anesthésie loco-régionale">
       </aside>
 
