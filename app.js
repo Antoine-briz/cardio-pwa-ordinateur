@@ -15646,11 +15646,21 @@ function renderReanMenu() {
           <h3>FA post-opératoire</h3>
         </div>
 
+        <div class="card rean-card" onclick="location.hash = '#/reanimation/ett'">
+  <img src="img/imageett.png" alt="Échographie trans-thoracique" class="menu-section-img" />
+  <h3>Échographie trans-thoracique</h3>
+</div>
+
         <!-- 5. ETO (hors assistances) -->
         <div class="card rean-card" onclick="location.hash = '#/reanimation/eto'">
           <img src="img/eto.png" alt="Échocardiographie trans-œsophagienne" class="menu-section-img" />
           <h3>ETO</h3>
         </div>
+
+        <div class="card rean-card" onclick="location.hash = '#/reanimation/echographie-generale'">
+  <img src="img/echogenerale.png" alt="Échographie générale" class="menu-section-img" />
+  <h3>Échographie générale</h3>
+</div>
 
         <!-- 6. Antibiothérapies -->
         <div class="card rean-card" onclick="openSubPage(renderReanAntibiotherapieMenu, renderReanMenu)">
@@ -17180,6 +17190,63 @@ function openEtoSectionModal(sectionTitle, items) {
 
   document.body.appendChild(modal);
 }
+
+function renderReanETT() {
+  const items = [
+    { titre: "Principales coupes 1/2", img: "ett1.png" },
+    { titre: "Principales coupes 2/2", img: "ett2.png" },
+    { titre: "Estimation débit cardiaque", img: "ettDC.png" },
+    { titre: "Evaluation d’une HTP", img: "ettHTAP.png" },
+    { titre: "Pré-charge dépendance", img: "ettPC.png" },
+    { titre: "Tamponnade péricardique", img: "ettpericarde.png" },
+    { titre: "Pression de remplissage VG (PTDVG)", img: "ettptdvg.png" },
+    { titre: "Cinétique segmentaire du VG", img: "ettseg.png" },
+    { titre: "Valve aortique", img: "ettVA.png" },
+    { titre: "Fonction ventriculaire droite", img: "ettVD.png" },
+    { titre: "Valve mitrale", img: "ettVM.png" },
+  ];
+
+  renderEchoMenuPage("Échographie trans-thoracique", "imageett2.png", items);
+}
+
+function renderReanEchoGenerale() {
+  const items = [
+    { titre: "Échographie abdominale", img: "echoabdo.png" },
+    { titre: "Échographie diaphragmatique", img: "echodiaph.png" },
+    { titre: "Echo-doppler transcrânien", img: "echodtc.png" },
+    { titre: "Échographie pleuro-pulmonaire", img: "echopoumon.png" },
+    { titre: "Echo-doppler des artères rénales", img: "echorein.png" },
+    { titre: "Abords vasculaires", img: "echovascu.png" },
+  ];
+
+  renderEchoMenuPage("Échographie générale", "echogenerale2.png", items);
+}
+
+function renderEchoMenuPage(title, sideImage, items) {
+  $app.innerHTML = `
+    <section class="intervention-shell">
+      <div class="intervention-main">
+        <div class="hero">
+          <h2>${title}</h2>
+        </div>
+
+        <div class="eto-menu-grid">
+          ${items.map(item => `
+            <button class="eto-menu-card" type="button" onclick="openImg('${item.img}')">
+              <img src="img/${item.img}" alt="${item.titre}" onerror="this.style.opacity='0.35'">
+              <div class="eto-menu-title">${item.titre}</div>
+            </button>
+          `).join("")}
+        </div>
+      </div>
+
+      <aside class="intervention-side">
+        <img src="img/${sideImage}" alt="${title}" onerror="this.style.display='none'">
+      </aside>
+    </section>
+  `;
+}
+
 
 function renderReanEto() {
   const sections = [
@@ -35741,6 +35808,8 @@ const routes = {
   "#/reanimation/saignements": renderReanSaignementsPostOp,
   "#/reanimation/fa": renderReanFAPostOp,
   "#/reanimation/eto": renderReanEto,
+  "#/reanimation/ett": renderReanETT,
+  "#/reanimation/echographie-generale": renderReanEchoGenerale,
 
   "#/reanimation/antibiotherapie": renderReanAntibiotherapieMenu,
   "#/reanimation/antibiotherapie/probabiliste": sub(renderReanAntibiotherapieMenu, renderProbaMenu),
