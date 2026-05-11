@@ -36083,7 +36083,8 @@ function ensureQuickAccessButton() {
   menu.className = "qa-menu";
   menu.innerHTML = `
     <button type="button" class="qa-item" data-key="ttm">Gestion pré-op des traitements</button>
-    <button type="button" class="qa-item" data-key="cran_cec">CR d'anesthésie CEC</button>
+    <button type="button" class="qa-item" data-key="cran_cec">CR anesth. CEC</button>
+    <button type="button" class="qa-item" data-key="cran_cardio_interv">CR anesth. cardio. interventionnelle</button>
     <button type="button" class="qa-item" data-key="eto_page">Coupes et mesures ETO</button>
     <button type="button" class="qa-item" data-key="eto_standard">CR ETO standard</button>
     <button type="button" class="qa-item" data-key="eto_aortique">CR ETO plastie aortique</button>
@@ -36254,6 +36255,25 @@ if (key === "cran_cec") {
     window.location.hash = "#/reanimation";
     return;
   }
+
+if (key === "cran_cardio_interv") {
+  __qaPending = null;
+
+  if (typeof renderAnesthCardioStructMenu === "function") {
+    renderAnesthCardioStructMenu();
+
+    setTimeout(() => {
+      if (typeof openCrAnCardioModal === "function") {
+        openCrAnCardioModal();
+      }
+    }, 100);
+
+    return;
+  }
+
+  window.location.hash = "#/anesthesie/cardio-struct";
+  return;
+}
   
 }
 
