@@ -11281,8 +11281,8 @@ crAnPushSection(lines,"Cardiologie interventionnelle",ci);
   if(amines.length)fin.push(`Catécholamines max : ${amines.join(", ")}.`);
   if(s.conditionnement.eto){
   const etopost=[];
-if(s.fin.fevg)etoPost.push(`FEVG ${s.fin.fevg} %`);
-if(s.fin.itv)etoPost.push(`ITV sous-aortique ${s.fin.itv} cm`);
+if(s.fin.fevg)etopost.push(`FEVG ${s.fin.fevg} %`);
+if(s.fin.itv)etopost.push(`ITV sous-aortique ${s.fin.itv} cm`);
 if(s.fin.cinesegOk)etopost.push("absence de trouble de cinétique segmentaire");
 if(s.fin.vaOk)etopost.push("valve aortique normale, non sténosante non fuyante");
 if(s.fin.vmOk)etopost.push("valve mitrale normale, non sténosante non fuyante");
