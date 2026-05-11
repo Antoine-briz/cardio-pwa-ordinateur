@@ -14756,3 +14756,64 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
   font-style:italic;
   font-size:15px;
 }
+
+/* =====================================================
+   Page ALR – miniatures
+   Route : #/anesthesie/alr
+===================================================== */
+
+.page-alr .alr-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  width: 100%;
+}
+
+.page-alr .alr-thumb-card {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--card);
+  color: var(--fg);
+  padding: 10px;
+  cursor: pointer;
+  text-align: center;
+  overflow: hidden;
+}
+
+.page-alr .alr-thumb-img {
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+  background: #fff;
+}
+
+.page-alr .alr-thumb-title {
+  margin-top: 8px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  line-height: 1.2;
+  min-height: 2.4em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Tablette */
+@media (max-width: 1000px) {
+  .page-alr .alr-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .page-alr .alr-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .page-alr .alr-thumb-img {
+    height: 110px;
+  }
+}
