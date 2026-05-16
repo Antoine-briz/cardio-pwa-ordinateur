@@ -14887,72 +14887,29 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
 }
 
 /* =====================================================
-   HEADER MULTI-SERVICES — VERSION FINALE
+   HEADER MULTI-SERVICES — VERSION UNIQUE DÉFINITIVE
 ===================================================== */
 
-/* Layout général */
 .app-header {
   position: sticky !important;
   top: 0 !important;
+  z-index: 1000 !important;
 
-  display: grid !important;
-  grid-template-columns: 460px 1fr 460px !important;
-
+  display: flex !important;
   align-items: center !important;
-  gap: 12px !important;
 
-  padding: 10px 18px !important;
+  height: 116px !important;
+  padding: 10px 16px !important;
 
   background: #0b2344 !important;
-
   overflow: visible !important;
-  z-index: 1000 !important;
 }
 
-/* =====================================================
-   COLONNES
-===================================================== */
-
+/* Gauche : bouton service */
 .header-left {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
+  flex: 0 0 auto !important;
+  z-index: 3 !important;
 }
-
-.header-right,
-#header-tools {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: flex-end !important;
-  gap: 10px !important;
-
-  width: 100% !important;
-}
-
-/* =====================================================
-   TITRE CENTRAL
-===================================================== */
-
-.header-text {
-  text-align: center !important;
-  width: 100% !important;
-}
-
-.header-title {
-  font-size: 26px !important;
-  font-weight: 900 !important;
-  color: #fff !important;
-  white-space: nowrap !important;
-}
-
-.header-subtitle {
-  font-size: 14px !important;
-  color: rgba(255,255,255,.55) !important;
-}
-
-/* =====================================================
-   BOUTON SERVICE
-===================================================== */
 
 .service-switcher {
   position: relative !important;
@@ -14964,22 +14921,20 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
   align-items: center !important;
   gap: 14px !important;
 
-  min-width: 360px !important;
-  height: 64px !important;
+  width: 450px !important;
+  height: 78px !important;
 
-  padding: 0 22px !important;
+  padding: 0 26px !important;
 
-  border-radius: 18px !important;
+  border-radius: 20px !important;
   border: 2px solid rgba(255,255,255,.18) !important;
 
-  color: white !important;
-
-  font-size: 20px !important;
+  color: #fff !important;
+  font-size: 28px !important;
   font-weight: 900 !important;
 
-  cursor: pointer !important;
-
   box-shadow: 0 8px 20px rgba(0,0,0,.35) !important;
+  cursor: pointer !important;
 }
 
 #service-chip-label {
@@ -14988,14 +14943,13 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
 }
 
 .service-icon {
-  font-size: 26px !important;
+  font-size: 30px !important;
 }
 
 .service-arrow {
   font-size: 18px !important;
 }
 
-/* Couleurs */
 #service-switch-btn.service-cardio {
   background: linear-gradient(135deg, #e30613, #7f0008) !important;
 }
@@ -15012,27 +14966,20 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
   background: linear-gradient(135deg, #7e22ce, #3b0764) !important;
 }
 
-/* =====================================================
-   MENU SERVICES
-===================================================== */
-
+/* Menu services */
 .service-menu {
   position: absolute !important;
-
   top: calc(100% + 10px) !important;
   left: 0 !important;
 
-  min-width: 360px !important;
+  width: 450px !important;
 
   background: #0f172a !important;
-
   border: 1px solid rgba(255,255,255,.18) !important;
   border-radius: 18px !important;
-
   padding: 8px !important;
 
   z-index: 99999 !important;
-
   box-shadow: 0 16px 40px rgba(0,0,0,.45) !important;
 }
 
@@ -15042,16 +14989,13 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
   gap: 12px !important;
 
   width: 100% !important;
-
   padding: 14px 16px !important;
 
   border: 0 !important;
   border-radius: 14px !important;
-
   background: transparent !important;
 
   color: white !important;
-
   text-align: left !important;
 
   font-size: 16px !important;
@@ -15064,401 +15008,36 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
   background: rgba(255,255,255,.10) !important;
 }
 
-/* =====================================================
-   ACCÈS RAPIDE
-===================================================== */
-
-#header-tools .qa-wrap,
-#header-tools .header-qa-wrap {
-  position: relative !important;
-}
-
-#qa-btn,
-#home-qa-btn {
-  min-width: 190px !important;
-  height: 54px !important;
-
-  padding: 0 22px !important;
-
-  border-radius: 18px !important;
-
-  white-space: nowrap !important;
-
-  font-size: 18px !important;
-  font-weight: 800 !important;
-}
-
-/* Menu accès rapide */
-#qa-menu {
-  display: none !important;
-
-  position: absolute !important;
-
-  top: calc(100% + 8px) !important;
-  right: 0 !important;
-
-  width: 360px !important;
-  max-height: 70vh !important;
-
-  overflow-y: auto !important;
-
-  background: #0f172a !important;
-
-  border: 1px solid rgba(255,255,255,.18) !important;
-  border-radius: 16px !important;
-
-  padding: 8px !important;
-
-  z-index: 99999 !important;
-
-  box-shadow: 0 18px 45px rgba(0,0,0,.45) !important;
-}
-
-#qa-menu.is-open {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 4px !important;
-}
-
-#qa-menu .qa-item {
-  display: block !important;
-
-  width: 100% !important;
-
-  padding: 12px 14px !important;
-
-  border: 0 !important;
-  border-radius: 12px !important;
-
-  background: transparent !important;
-
-  color: white !important;
-
-  text-align: left !important;
-
-  font-size: 14px !important;
-  font-weight: 700 !important;
-
-  cursor: pointer !important;
-}
-
-#qa-menu .qa-item:hover {
-  background: rgba(255,255,255,.10) !important;
-}
-
-/* =====================================================
-   RECHERCHE
-===================================================== */
-
-#header-tools .header-search {
-  position: relative !important;
-}
-
-#header-search {
-  width: 190px !important;
-  max-width: 190px !important;
-
-  height: 54px !important;
-
-  padding: 0 18px !important;
-
-  border-radius: 999px !important;
-
-  background: rgba(255,255,255,.08) !important;
-
-  border: 1px solid rgba(255,255,255,.22) !important;
-
-  color: white !important;
-
-  font-size: 16px !important;
-}
-
-#header-search::placeholder {
-  color: rgba(255,255,255,.85) !important;
-}
-
-/* =====================================================
-   UTILITAIRES
-===================================================== */
-
-.hidden {
-  display: none !important;
-}
-
-/* =====================================================
-   RESPONSIVE
-===================================================== */
-
-@media (max-width: 1100px) {
-
-  .app-header {
-    grid-template-columns: 1fr !important;
-  }
-
-  .header-left,
-  .header-text,
-  #header-tools {
-    justify-content: center !important;
-  }
-
-  .header-title {
-    white-space: normal !important;
-  }
-
-  #service-switch-btn.service-chip,
-  .service-menu {
-    width: 100% !important;
-    min-width: 0 !important;
-  }
-
-  #header-tools {
-    flex-wrap: wrap !important;
-  }
-
-  #header-search {
-    width: 100% !important;
-    max-width: none !important;
-  }
-}
-
-/* =====================================================
-   HEADER FINAL — service gauche / titre centré / outils droite
-===================================================== */
-
-.app-header {
-  position: sticky !important;
-  top: 0 !important;
-  display: grid !important;
-  grid-template-columns: 420px minmax(0,1fr) 520px !important;
-  align-items: center !important;
-  gap: 12px !important;
-  padding: 10px 18px !important;
-  background: #0b2344 !important;
-  overflow: visible !important;
-}
-
-/* Gauche */
-.header-left {
-  display: flex !important;
-  justify-content: flex-start !important;
-  align-items: center !important;
-  min-width: 0 !important;
-}
-
-/* Centre vraiment centré */
-.header-text {
-  text-align: center !important;
-  justify-self: center !important;
-  width: 100% !important;
-}
-
-.header-title {
-  font-size: 26px !important;
-  font-weight: 900 !important;
-  color: #fff !important;
-  white-space: nowrap !important;
-}
-
-.header-subtitle {
-  font-size: 14px !important;
-  color: rgba(255,255,255,.55) !important;
-}
-
-/* Droite */
-#header-tools,
-.header-right {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: flex-end !important;
-  gap: 10px !important;
-  min-width: 0 !important;
-  width: 100% !important;
-  overflow: visible !important;
-}
-
-/* Accès rapide */
-#header-tools .qa-wrap,
-#header-tools .header-qa-wrap {
-  position: relative !important;
-  flex: 0 0 auto !important;
-}
-
-#qa-btn,
-#home-qa-btn {
-  width: auto !important;
-  min-width: 190px !important;
-  height: 54px !important;
-  padding: 0 22px !important;
-  border-radius: 18px !important;
-  white-space: nowrap !important;
-}
-
-/* Recherche */
-#header-tools .header-search {
-  position: relative !important;
-  flex: 0 0 auto !important;
-}
-
-#header-search {
-  width: 190px !important;
-  height: 54px !important;
-  padding: 0 18px !important;
-  border-radius: 999px !important;
-  max-width: 190px !important;
-}
-
-/* Menu accès rapide en vrai menu déroulant */
-#qa-menu {
-  position: absolute !important;
-  top: calc(100% + 8px) !important;
-  right: 0 !important;
-  width: 360px !important;
-  display: none !important;
-  z-index: 99999 !important;
-}
-
-#qa-menu.is-open {
-  display: flex !important;
-  flex-direction: column !important;
-}
-
-/* Responsive */
-@media (max-width: 1100px) {
-  .app-header {
-    grid-template-columns: 1fr !important;
-  }
-
-  .header-left,
-  .header-text,
-  #header-tools {
-    justify-content: center !important;
-  }
-
-  .header-title {
-    white-space: normal !important;
-  }
-}
-
-/* =====================================================
-   ALIGNEMENT FINAL OUTILS HEADER
-===================================================== */
-
-#header-tools,
-.header-right {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: flex-end !important;
-
-  gap: 12px !important;
-
-  height: 100% !important;
-
-  min-width: 520px !important;
-}
-
-/* Wrapper recherche */
-#header-tools .header-search {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-
-  margin: 0 !important;
-  padding: 0 !important;
-
-  height: 54px !important;
-}
-
-/* Champ recherche */
-#header-search {
-  width: 190px !important;
-  height: 54px !important;
-
-  margin: 0 !important;
-
-  display: block !important;
-
-  box-sizing: border-box !important;
-}
-
-/* Accès rapide */
-#qa-btn,
-#home-qa-btn {
-  margin: 0 !important;
-
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-
-  height: 54px !important;
-}
-
-/* Même hauteur : Accès rapide = Recherche */
-
-#qa-btn,
-#home-qa-btn {
-  height: 54px !important;
-  min-height: 54px !important;
-
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-
-  padding: 0 22px !important;
-
-  box-sizing: border-box !important;
-}
-
-#header-search {
-  height: 54px !important;
-  box-sizing: border-box !important;
-}
-
-/* =====================================================
-   HEADER FINAL : titre vraiment centré + outils collés à droite
-===================================================== */
-
-.app-header {
-  position: sticky !important;
-  top: 0 !important;
-
-  display: flex !important;
-  align-items: center !important;
-
-  padding: 10px 16px !important;
-  background: #0b2344 !important;
-  overflow: visible !important;
-}
-
-/* Gauche */
-.header-left {
-  flex: 0 0 auto !important;
-  z-index: 2 !important;
-}
-
-/* Titre centré par rapport à l’écran, pas par rapport aux colonnes */
+/* Centre : titre vraiment centré dans l'écran */
 .header-text {
   position: absolute !important;
   left: 50% !important;
-  transform: translateX(-50%) !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+
+  width: max-content !important;
+  max-width: 42vw !important;
 
   text-align: center !important;
-  z-index: 1 !important;
   pointer-events: none !important;
+  z-index: 1 !important;
 }
 
 .header-title {
-  font-size: 26px !important;
-  font-weight: 900 !important;
   color: #fff !important;
+  font-size: 30px !important;
+  font-weight: 900 !important;
+  line-height: 1.15 !important;
   white-space: nowrap !important;
 }
 
 .header-subtitle {
-  font-size: 14px !important;
+  margin-top: 8px !important;
   color: rgba(255,255,255,.55) !important;
+  font-size: 16px !important;
 }
 
-/* Outils à droite */
+/* Droite : accès rapide + recherche */
 .header-right,
 #header-tools {
   margin-left: auto !important;
@@ -15469,14 +15048,20 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
 
   gap: 6px !important;
 
-  width: auto !important;
+  flex: 0 1 auto !important;
   min-width: 0 !important;
-  max-width: calc(100vw - 520px) !important;
+  max-width: calc(100vw - 980px) !important;
 
-  z-index: 2 !important;
+  z-index: 3 !important;
 }
 
 /* Accès rapide */
+#header-tools .qa-wrap,
+#header-tools .header-qa-wrap {
+  position: relative !important;
+  flex: 0 0 auto !important;
+}
+
 #qa-btn,
 #home-qa-btn {
   width: auto !important;
@@ -15490,8 +15075,63 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
   align-items: center !important;
   justify-content: center !important;
 
+  border-radius: 18px !important;
+
   white-space: nowrap !important;
   box-sizing: border-box !important;
+
+  font-size: 22px !important;
+  font-weight: 900 !important;
+}
+
+/* Menu accès rapide */
+#qa-menu {
+  display: none !important;
+
+  position: absolute !important;
+  top: calc(100% + 8px) !important;
+  right: 0 !important;
+
+  width: 360px !important;
+  max-height: 70vh !important;
+  overflow-y: auto !important;
+
+  background: #0f172a !important;
+  border: 1px solid rgba(255,255,255,.18) !important;
+  border-radius: 16px !important;
+  padding: 8px !important;
+
+  z-index: 99999 !important;
+  box-shadow: 0 18px 45px rgba(0,0,0,.45) !important;
+}
+
+#qa-menu.is-open {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+}
+
+#qa-menu .qa-item {
+  display: block !important;
+
+  width: 100% !important;
+  padding: 12px 14px !important;
+
+  border: 0 !important;
+  border-radius: 12px !important;
+  background: transparent !important;
+
+  color: white !important;
+  text-align: left !important;
+
+  font-size: 14px !important;
+  font-weight: 700 !important;
+
+  cursor: pointer !important;
+}
+
+#qa-menu .qa-item:hover {
+  background: rgba(255,255,255,.10) !important;
 }
 
 /* Recherche */
@@ -15499,16 +15139,16 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
   display: flex !important;
   align-items: center !important;
 
+  flex: 0 1 160px !important;
+  min-width: 120px !important;
+
   margin: 0 !important;
   padding: 0 !important;
-
-  flex: 0 1 190px !important;
-  min-width: 120px !important;
 }
 
 #header-search {
-  width: 190px !important;
-  max-width: min(190px, calc(100vw - 760px)) !important;
+  width: 160px !important;
+  max-width: 160px !important;
   min-width: 120px !important;
 
   height: 54px !important;
@@ -15518,39 +15158,95 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
 
   border-radius: 999px !important;
   box-sizing: border-box !important;
+
+  background: rgba(255,255,255,.08) !important;
+  border: 1px solid rgba(255,255,255,.22) !important;
+
+  color: white !important;
+  font-size: 16px !important;
 }
 
-/* Sur écran moyen : on réduit la recherche avant de dépasser */
-@media (max-width: 1250px) {
+#header-search::placeholder {
+  color: rgba(255,255,255,.85) !important;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Écrans moins larges */
+@media (max-width: 1400px) {
+  #service-switch-btn.service-chip {
+    width: 400px !important;
+    font-size: 24px !important;
+  }
+
+  .header-text {
+    max-width: 38vw !important;
+  }
+
+  .header-title {
+    font-size: 26px !important;
+  }
+
   #header-search {
-    width: 150px !important;
-    max-width: 150px !important;
+    width: 130px !important;
+    max-width: 130px !important;
   }
 
   #qa-btn,
   #home-qa-btn {
-    min-width: 160px !important;
+    min-width: 155px !important;
+    font-size: 20px !important;
+  }
+
+  .header-right,
+  #header-tools {
+    max-width: calc(100vw - 860px) !important;
   }
 }
 
-/* Sur petit écran : le header repasse en lignes */
-@media (max-width: 1000px) {
+/* Mobile / tablette */
+@media (max-width: 1050px) {
   .app-header {
+    height: auto !important;
     flex-wrap: wrap !important;
     justify-content: center !important;
+    gap: 10px !important;
   }
 
   .header-text {
     position: static !important;
     transform: none !important;
     order: -1 !important;
+
     width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .header-title {
+    white-space: normal !important;
   }
 
   .header-left,
   .header-right,
   #header-tools {
+    width: 100% !important;
     max-width: 100% !important;
     justify-content: center !important;
+  }
+
+  #service-switch-btn.service-chip,
+  .service-menu {
+    width: 100% !important;
+  }
+
+  #header-tools {
+    flex-wrap: wrap !important;
+  }
+
+  #header-search {
+    width: 220px !important;
+    max-width: 220px !important;
   }
 }
