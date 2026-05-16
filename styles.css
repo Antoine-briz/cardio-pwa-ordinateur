@@ -15060,3 +15060,28 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
     width: 100% !important;
   }
 }
+
+#header-tools {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 12px !important;
+}
+
+#header-tools .qa-wrap {
+  position: relative !important;
+  margin: 0 !important;
+}
+
+#header-tools .header-search {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+#header-search {
+  width: 220px !important;
+  height: 44px !important;
+  padding: 0 16px !important;
+  border-radius: 999px !important;
+}
