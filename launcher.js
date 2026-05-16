@@ -3,112 +3,76 @@ const SERVICE_KEY = "saric_service";
 const SERVICES = {
   cardio: {
     label: "Institut de cardiologie",
-    icon: "♡",
-    file: "./app-saric.js"
     className: "service-cardio",
+    file: "./app-saric.js"
   },
 
   gaston: {
     label: "Gaston Cordier",
-    icon: "⚕",
-    file: "./app-gaston.js",
     className: "service-gaston",
+    file: "./app-gaston.js"
   },
 
   husson: {
     label: "Husson Mourier",
-    icon: "⌁",
-    file: "./app-husson.js",
     className: "service-husson",
+    file: "./app-husson.js"
   },
 
   babinski: {
     label: "Babinski",
-    icon: "☊",
-    file: "./app-babinski.js",
     className: "service-babinski",
-  },
+    file: "./app-babinski.js"
+  }
 };
 
-let currentService =
-  localStorage.getItem(SERVICE_KEY) || "cardio";
+let currentService = localStorage.getItem(SERVICE_KEY) || "cardio";
 
 if (!SERVICES[currentService]) {
   currentService = "cardio";
 }
 
 function initServiceSwitcher() {
-
   const service = SERVICES[currentService];
 
-  document.body.classList.remove(
+  const chip = document.getElementById("service-switch-btn");
+  const label = document.getElementById("service-chip-label");
+  const menu = document.getElementById("service-menu");
+
+  if (!chip || !label || !menu) return;
+
+  label.textContent = service.label;
+
+  chip.classList.remove(
     "service-cardio",
     "service-gaston",
     "service-husson",
     "service-babinski"
   );
 
-  document.body.classList.add(service.className);
-
-  const chip =
-    document.getElementById("service-switch-btn");
-
-  const label =
-    document.getElementById("service-chip-label");
-
-  const icon =
-    document.getElementById("service-chip-icon");
-
-  const menu =
-    document.getElementById("service-menu");
-
-  label.textContent = service.label;
-  icon.textContent = service.icon;
+  chip.classList.add(service.className);
 
   chip.addEventListener("click", () => {
     menu.classList.toggle("hidden");
   });
 
-  menu.querySelectorAll("button[data-service]")
-    .forEach(btn => {
-
-      btn.addEventListener("click", () => {
-
-        const selected = btn.dataset.service;
-
-        localStorage.setItem(
-          SERVICE_KEY,
-          selected
-        );
-
-        location.reload();
-      });
+  menu.querySelectorAll("button[data-service]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      localStorage.setItem(SERVICE_KEY, btn.dataset.service);
+      location.hash = "#/";
+      location.reload();
     });
-
-  document.addEventListener("click", e => {
-
-    if (
-      !chip.contains(e.target) &&
-      !menu.contains(e.target)
-    ) {
-      menu.classList.add("hidden");
-    }
   });
 }
 
-function loadCurrentServiceApp() {
+function loadServiceScript() {
+  const service = SERVICES[currentService];
 
   const script = document.createElement("script");
-
-  script.src =
-    SERVICES[currentService].file + "?v=1.0.0";
+  script.src = service.file + "?v=1.0.0";
 
   document.body.appendChild(script);
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-
-  initServiceSwitcher();
-
-  loadCurrentServiceApp();
-});
+initServiceSwitcher();
+loadServiceScript();
