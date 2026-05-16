@@ -15694,3 +15694,17 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
       #311451 100%
     ) !important;
 }
+
+/* =====================================================
+   HEADER — HAUTEUR FINALE
+===================================================== */
+
+header.appbar.app-header,
+.appbar.app-header,
+.app-header {
+  min-height: 112px !important;
+  height: 112px !important;
+  padding-top: 18px !important;
+  padding-bottom: 18px !important;
+  align-items: center !important;
+}
