@@ -15391,3 +15391,24 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
 
   height: 54px !important;
 }
+
+/* Même hauteur : Accès rapide = Recherche */
+
+#qa-btn,
+#home-qa-btn {
+  height: 54px !important;
+  min-height: 54px !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  padding: 0 22px !important;
+
+  box-sizing: border-box !important;
+}
+
+#header-search {
+  height: 54px !important;
+  box-sizing: border-box !important;
+}
