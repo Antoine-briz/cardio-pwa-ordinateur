@@ -15444,3 +15444,143 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
     min-width: 0 !important;
   }
 }
+
+/* =====================================================
+   FIX DÉFINITIF HEADER SEARCH + ACCÈS RAPIDE
+===================================================== */
+
+.header-right,
+#header-tools {
+  margin-left: auto !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 8px !important;
+  transform: translateX(-90px) !important;
+  max-width: none !important;
+  height: 58px !important;
+}
+
+/* Recherche : annule l'ancien position:absolute */
+#header-tools .header-search,
+.header-right .header-search {
+  position: static !important;
+  left: auto !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  height: 46px !important;
+  width: 160px !important;
+  min-width: 160px !important;
+  max-width: 160px !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  order: 1 !important;
+}
+
+#header-search {
+  height: 46px !important;
+  width: 160px !important;
+  min-width: 160px !important;
+  max-width: 160px !important;
+
+  margin: 0 !important;
+  padding: 0 14px !important;
+
+  display: block !important;
+
+  border-radius: 999px !important;
+  box-sizing: border-box !important;
+
+  line-height: 46px !important;
+  font-size: 15px !important;
+}
+
+/* Accès rapide à droite de la recherche */
+#header-tools .qa-wrap,
+#header-tools .header-qa-wrap {
+  position: relative !important;
+  order: 2 !important;
+  height: 46px !important;
+  display: flex !important;
+  align-items: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#qa-btn,
+#home-qa-btn {
+  height: 46px !important;
+  min-height: 46px !important;
+  min-width: 138px !important;
+
+  padding: 0 16px !important;
+  margin: 0 !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  border-radius: 16px !important;
+  font-size: 17px !important;
+  font-weight: 850 !important;
+
+  box-sizing: border-box !important;
+  white-space: nowrap !important;
+}
+
+/* Bouton bâtiment : une ligne + style plus moderne */
+#service-switch-btn.service-chip {
+  width: 365px !important;
+  min-width: 365px !important;
+  height: 58px !important;
+
+  padding: 0 20px !important;
+
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+
+  border-radius: 20px !important;
+
+  white-space: nowrap !important;
+
+  font-size: 21px !important;
+  font-weight: 900 !important;
+
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255,255,255,.35), transparent 32%),
+    linear-gradient(135deg, #ff263d 0%, #c40018 45%, #790008 100%) !important;
+
+  border: 1px solid rgba(255,255,255,.35) !important;
+
+  box-shadow:
+    0 14px 30px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(255,255,255,.35),
+    inset 0 -1px 0 rgba(0,0,0,.25) !important;
+}
+
+#service-chip-label {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: clip !important;
+}
+
+.service-icon {
+  font-size: 25px !important;
+  flex: 0 0 auto !important;
+}
+
+.service-arrow {
+  margin-left: auto !important;
+  flex: 0 0 auto !important;
+}
