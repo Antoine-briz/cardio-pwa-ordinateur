@@ -15624,3 +15624,73 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
 .service-arrow {
   margin-left: auto !important;
 }
+
+/* =====================================================
+   HEADER — FOND SOMBRE ÉLÉGANT
+===================================================== */
+
+.app-header {
+  background:
+    linear-gradient(
+      180deg,
+      #243244 0%,
+      #1b2737 100%
+    ) !important;
+
+  border-bottom: 1px solid rgba(255,255,255,.08) !important;
+
+  box-shadow:
+    0 6px 20px rgba(0,0,0,.28) !important;
+}
+
+/* =====================================================
+   COULEURS SOMBRES DES SERVICES
+===================================================== */
+
+/* CARDIO */
+#service-switch-btn.service-cardio {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255,255,255,.18), transparent 32%),
+    linear-gradient(
+      135deg,
+      #b31224 0%,
+      #7d0a17 45%,
+      #4a040b 100%
+    ) !important;
+}
+
+/* GASTON */
+#service-switch-btn.service-gaston {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255,255,255,.15), transparent 32%),
+    linear-gradient(
+      135deg,
+      #245fc4 0%,
+      #183f82 45%,
+      #102650 100%
+    ) !important;
+}
+
+/* HUSSON */
+#service-switch-btn.service-husson {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255,255,255,.14), transparent 32%),
+    linear-gradient(
+      135deg,
+      #2d8f46 0%,
+      #1e6130 45%,
+      #12381d 100%
+    ) !important;
+}
+
+/* BABINSKI */
+#service-switch-btn.service-babinski {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255,255,255,.15), transparent 32%),
+    linear-gradient(
+      135deg,
+      #7a3ec2 0%,
+      #52258a 45%,
+      #311451 100%
+    ) !important;
+}
