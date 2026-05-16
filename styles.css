@@ -11737,6 +11737,9 @@ body.theme-light .cr-an-right .eto-synth-title *{
   width: 100%;
 }
 
+
+ONGLETS DU HEADER 
+
 /* Header / onglets */
 .saric-planning-head {
   display: grid;
@@ -14880,5 +14883,132 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
 @media (max-width: 700px) {
   .rean-grid {
     grid-template-columns: 1fr !important;
+  }
+}
+
+ONGLETS DU HEADER
+
+.app-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-text {
+  text-align: center;
+}
+
+.header-title {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.header-subtitle {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.header-tools {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#header-search {
+  width: 220px;
+  padding: 10px 14px;
+  border-radius: 999px;
+}
+
+.service-switcher {
+  position: relative;
+}
+
+.service-chip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 260px;
+  padding: 14px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.25);
+  color: white;
+  font-weight: 800;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.service-cardio .service-chip {
+  background: linear-gradient(135deg, #e30613, #8f0008);
+}
+
+.service-gaston .service-chip {
+  background: linear-gradient(135deg, #2563eb, #0f2f73);
+}
+
+.service-husson .service-chip {
+  background: linear-gradient(135deg, #2f8f3a, #10451b);
+}
+
+.service-babinski .service-chip {
+  background: linear-gradient(135deg, #7e22ce, #3b0764);
+}
+
+.service-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 260px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 8px;
+  z-index: 100;
+  box-shadow: 0 12px 30px rgba(0,0,0,.25);
+}
+
+.service-menu button {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  border: 0;
+  background: transparent;
+  color: var(--fg);
+  text-align: left;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.service-menu button:hover {
+  background: rgba(148,163,184,.15);
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .app-header {
+    grid-template-columns: 1fr;
+  }
+
+  .header-text {
+    order: -1;
+  }
+
+  .header-tools {
+    justify-content: center;
+  }
+
+  .service-chip,
+  .service-menu {
+    width: 100%;
+    min-width: 0;
+  }
+
+  #header-search {
+    width: 100%;
   }
 }
