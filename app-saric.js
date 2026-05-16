@@ -36274,7 +36274,7 @@ function ensureQuickAccessButton() {
 
   wrap.appendChild(btn);
   wrap.appendChild(menu);
-  header.prepend(wrap);
+  header.appendChild(wrap);
 
   __qaBtn = btn;
   __qaMenu = menu;
