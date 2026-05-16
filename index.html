@@ -15,31 +15,93 @@
   <img id="popup-img" src="" alt="">
 </div>
   <header class="appbar app-header">
-  <div class="header-text">
-    <div class="header-title">Protocoles du SARIC</div>
-    <div class="header-subtitle">Groupe hospitalier Pitié-Salpêtrière</div>
-  </div>
-<!-- Menu déroulant -->
+
+  <!-- Colonne gauche : sélecteur de bâtiment -->
+  <div class="header-side header-left">
+
+    <div class="service-switcher">
+
+      <button id="service-switch-btn"
+              class="service-chip service-cardio"
+              type="button">
+
+        <span id="service-chip-icon" class="service-icon">♡</span>
+
+        <span id="service-chip-label">
+          Institut de cardiologie
+        </span>
+
+        <span class="service-arrow">▾</span>
+
+      </button>
+
       <div id="service-menu"
            class="service-menu hidden">
 
         <button data-service="cardio">
+          <span class="service-menu-icon">♡</span>
           Institut de cardiologie
         </button>
 
         <button data-service="gaston">
+          <span class="service-menu-icon">⚕</span>
           Gaston Cordier
         </button>
 
         <button data-service="husson">
+          <span class="service-menu-icon">⌁</span>
           Husson Mourier
         </button>
 
         <button data-service="babinski">
+          <span class="service-menu-icon">☊</span>
           Babinski
         </button>
 
       </div>
+
+    </div>
+
+  </div>
+
+  <!-- Centre -->
+  <div class="header-text">
+    <div class="header-title">
+      Protocoles d'anesthésie-réanimation
+    </div>
+    <div class="header-subtitle">
+      Groupe hospitalier Pitié-Salpêtrière
+    </div>
+  </div>
+
+  <!-- Colonne droite : accès rapide + recherche -->
+  <div class="header-side header-right">
+
+    <div class="home-qa-wrap header-qa-wrap">
+      <button id="home-qa-btn"
+              type="button"
+              class="btn qa-btn">
+        Accès rapide ▾
+      </button>
+
+      <div id="home-qa-menu"
+           class="qa-menu">
+      </div>
+    </div>
+
+    <div class="home-search-wrap header-search">
+      <input id="home-search"
+             type="search"
+             placeholder="Recherche..."
+             autocomplete="off">
+
+      <div id="home-search-panel"
+           class="search-panel">
+      </div>
+    </div>
+
+  </div>
+
 </header>
 
   <main class="container">
