@@ -15220,3 +15220,121 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
     max-width: none !important;
   }
 }
+
+/* =====================================================
+   HEADER FINAL — service gauche / titre centré / outils droite
+===================================================== */
+
+.app-header {
+  position: sticky !important;
+  top: 0 !important;
+  display: grid !important;
+  grid-template-columns: 460px 1fr 460px !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 10px 18px !important;
+  background: #0b2344 !important;
+  overflow: visible !important;
+}
+
+/* Gauche */
+.header-left {
+  display: flex !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  min-width: 0 !important;
+}
+
+/* Centre vraiment centré */
+.header-text {
+  text-align: center !important;
+  justify-self: center !important;
+  width: 100% !important;
+}
+
+.header-title {
+  font-size: 26px !important;
+  font-weight: 900 !important;
+  color: #fff !important;
+  white-space: nowrap !important;
+}
+
+.header-subtitle {
+  font-size: 14px !important;
+  color: rgba(255,255,255,.55) !important;
+}
+
+/* Droite */
+#header-tools,
+.header-right {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 10px !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  overflow: visible !important;
+}
+
+/* Accès rapide */
+#header-tools .qa-wrap,
+#header-tools .header-qa-wrap {
+  position: relative !important;
+  flex: 0 0 auto !important;
+}
+
+#qa-btn,
+#home-qa-btn {
+  width: auto !important;
+  min-width: 190px !important;
+  height: 54px !important;
+  padding: 0 22px !important;
+  border-radius: 18px !important;
+  white-space: nowrap !important;
+}
+
+/* Recherche */
+#header-tools .header-search {
+  position: relative !important;
+  flex: 0 0 auto !important;
+}
+
+#header-search {
+  width: 190px !important;
+  height: 54px !important;
+  padding: 0 18px !important;
+  border-radius: 999px !important;
+  max-width: 190px !important;
+}
+
+/* Menu accès rapide en vrai menu déroulant */
+#qa-menu {
+  position: absolute !important;
+  top: calc(100% + 8px) !important;
+  right: 0 !important;
+  width: 360px !important;
+  display: none !important;
+  z-index: 99999 !important;
+}
+
+#qa-menu.is-open {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .app-header {
+    grid-template-columns: 1fr !important;
+  }
+
+  .header-left,
+  .header-text,
+  #header-tools {
+    justify-content: center !important;
+  }
+
+  .header-title {
+    white-space: normal !important;
+  }
+}
