@@ -36478,8 +36478,8 @@ window.addEventListener("load", async () => {
   ensureFooterEditButton();
   blockNavigationWhileEditing();
 
-  ensureQuickAccessButton();
   ensureHeaderSearchBox();
+ensureQuickAccessButton();
   initHeaderSearch();
 
   navigate();
