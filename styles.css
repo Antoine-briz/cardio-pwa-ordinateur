@@ -15538,7 +15538,27 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
   white-space: nowrap !important;
 }
 
-/* Bouton bâtiment : une ligne + style plus moderne */
+
+#service-chip-label {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: clip !important;
+}
+
+.service-icon {
+  font-size: 25px !important;
+  flex: 0 0 auto !important;
+}
+
+.service-arrow {
+  margin-left: auto !important;
+  flex: 0 0 auto !important;
+}
+
+/* =====================================================
+   STYLE MODERNE BOUTON SERVICE
+===================================================== */
+
 #service-switch-btn.service-chip {
   width: 365px !important;
   min-width: 365px !important;
@@ -15557,10 +15577,6 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
   font-size: 21px !important;
   font-weight: 900 !important;
 
-  background:
-    radial-gradient(circle at 18% 0%, rgba(255,255,255,.35), transparent 32%),
-    linear-gradient(135deg, #ff263d 0%, #c40018 45%, #790008 100%) !important;
-
   border: 1px solid rgba(255,255,255,.35) !important;
 
   box-shadow:
@@ -15569,18 +15585,42 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
     inset 0 -1px 0 rgba(0,0,0,.25) !important;
 }
 
+/* CARDIO */
+#service-switch-btn.service-cardio {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255,255,255,.35), transparent 32%),
+    linear-gradient(135deg, #ff263d 0%, #c40018 45%, #790008 100%) !important;
+}
+
+/* GASTON */
+#service-switch-btn.service-gaston {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255,255,255,.28), transparent 32%),
+    linear-gradient(135deg, #3388ff 0%, #1550c7 45%, #0d2d78 100%) !important;
+}
+
+/* HUSSON */
+#service-switch-btn.service-husson {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255,255,255,.25), transparent 32%),
+    linear-gradient(135deg, #41b94f 0%, #1f7d2d 45%, #11461b 100%) !important;
+}
+
+/* BABINSKI */
+#service-switch-btn.service-babinski {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255,255,255,.28), transparent 32%),
+    linear-gradient(135deg, #a94cff 0%, #7126c7 45%, #3e0d73 100%) !important;
+}
+
 #service-chip-label {
   white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: clip !important;
 }
 
 .service-icon {
   font-size: 25px !important;
-  flex: 0 0 auto !important;
 }
 
 .service-arrow {
   margin-left: auto !important;
-  flex: 0 0 auto !important;
 }
