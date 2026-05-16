@@ -4,28 +4,28 @@ const SERVICES = {
   cardio: {
     label: "Institut de cardiologie",
     icon: "♡",
-    file: "./apps/app-cardio.js",
+    file: "./app-saric.js"
     className: "service-cardio",
   },
 
   gaston: {
     label: "Gaston Cordier",
     icon: "⚕",
-    file: "./apps/app-gaston.js",
+    file: "./app-gaston.js",
     className: "service-gaston",
   },
 
   husson: {
     label: "Husson Mourier",
     icon: "⌁",
-    file: "./apps/app-husson.js",
+    file: "./app-husson.js",
     className: "service-husson",
   },
 
   babinski: {
     label: "Babinski",
     icon: "☊",
-    file: "./apps/app-babinski.js",
+    file: "./app-babinski.js",
     className: "service-babinski",
   },
 };
