@@ -15229,7 +15229,7 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
   position: sticky !important;
   top: 0 !important;
   display: grid !important;
-  grid-template-columns: 460px 1fr 460px !important;
+  grid-template-columns: 420px minmax(0,1fr) 520px !important;
   align-items: center !important;
   gap: 12px !important;
   padding: 10px 18px !important;
@@ -15337,4 +15337,57 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
   .header-title {
     white-space: normal !important;
   }
+}
+
+/* =====================================================
+   ALIGNEMENT FINAL OUTILS HEADER
+===================================================== */
+
+#header-tools,
+.header-right {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+
+  gap: 12px !important;
+
+  height: 100% !important;
+
+  min-width: 520px !important;
+}
+
+/* Wrapper recherche */
+#header-tools .header-search {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  height: 54px !important;
+}
+
+/* Champ recherche */
+#header-search {
+  width: 190px !important;
+  height: 54px !important;
+
+  margin: 0 !important;
+
+  display: block !important;
+
+  box-sizing: border-box !important;
+}
+
+/* Accès rapide */
+#qa-btn,
+#home-qa-btn {
+  margin: 0 !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  height: 54px !important;
 }
