@@ -15250,3 +15250,39 @@ body:not(.theme-light) .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-a
     max-width: 220px !important;
   }
 }
+
+/* Taille réduite header + recherche à gauche de Accès rapide */
+
+#service-switch-btn.service-chip {
+  width: 340px !important;
+  height: 58px !important;
+  min-width: 340px !important;
+  padding: 0 18px !important;
+  font-size: 22px !important;
+  border-radius: 18px !important;
+}
+
+.service-icon {
+  font-size: 24px !important;
+}
+
+#qa-btn,
+#home-qa-btn {
+  min-width: 145px !important;
+  height: 46px !important;
+  padding: 0 16px !important;
+  font-size: 18px !important;
+  border-radius: 16px !important;
+}
+
+#header-search {
+  width: 170px !important;
+  max-width: 170px !important;
+  height: 46px !important;
+  padding: 0 14px !important;
+  font-size: 15px !important;
+}
+
+#header-tools {
+  gap: 6px !important;
+}
