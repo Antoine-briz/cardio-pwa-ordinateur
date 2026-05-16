@@ -17,30 +17,96 @@
   </div>
 
   <header class="appbar app-header">
+
   <!-- Colonne gauche -->
   <div class="header-side header-left">
-    <div class="header-logo-left">
-      <img src="img/logocardio.png" alt="Institut de cardiologie">
+
+    <!-- Sélecteur de secteur -->
+    <div class="service-switcher">
+
+      <button id="service-switch-btn"
+              class="service-chip service-cardio"
+              type="button">
+
+        <span class="service-icon">♡</span>
+
+        <span id="service-chip-label">
+          Institut de cardiologie
+        </span>
+
+        <span class="service-arrow">▾</span>
+
+      </button>
+
+      <!-- Menu déroulant -->
+      <div id="service-menu"
+           class="service-menu hidden">
+
+        <button data-service="cardio">
+          Institut de cardiologie
+        </button>
+
+        <button data-service="gaston">
+          Gaston Cordier
+        </button>
+
+        <button data-service="husson">
+          Husson Mourier
+        </button>
+
+        <button data-service="babinski">
+          Babinski
+        </button>
+
+      </div>
+
     </div>
 
-    <div class="header-search">
-      <input id="header-search" type="search" placeholder="Recherche..." autocomplete="off">
-    </div>
   </div>
 
   <!-- Centre -->
   <div class="header-text">
-    <div class="header-title">Protocoles du SARIC</div>
-    <div class="header-subtitle">Groupe hospitalier Pitié-Salpêtrière</div>
+
+    <div class="header-title">
+      Protocoles d'anesthésie-réanimation
+    </div>
+
+    <div class="header-subtitle">
+      Groupe hospitalier Pitié-Salpêtrière
+    </div>
+
   </div>
 
   <!-- Colonne droite -->
   <div class="header-side header-right">
-    <!-- Le bouton “Accès rapide” sera injecté ici par ton JS (ou peut rester dans le header en absolute, mais idéalement ici) -->
-    <div class="header-logo-right">
-      <img src="img/logosaric.png" alt="SARIC">
+
+    <!-- Accès rapide -->
+    <div class="home-qa-wrap header-qa-wrap">
+      <button id="home-qa-btn"
+              type="button"
+              class="btn qa-btn">
+        Accès rapide ▾
+      </button>
+
+      <div id="home-qa-menu"
+           class="qa-menu">
+      </div>
     </div>
+
+    <!-- Recherche -->
+    <div class="header-search">
+      <input id="home-search"
+             type="search"
+             placeholder="Recherche..."
+             autocomplete="off">
+
+      <div id="home-search-panel"
+           class="search-panel">
+      </div>
+    </div>
+
   </div>
+
 </header>
 
 
