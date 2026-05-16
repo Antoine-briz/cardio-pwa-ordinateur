@@ -36192,15 +36192,29 @@ let __qaMenu = null;
 let __qaPending = null;
 // ex: { type:"ttm" } ou { type:"eto", prefix:"pc"|"rva"|"rvm", variant:"standard"|"plastie_aortique"|"plastie_mitrale" }
 
+function ensureHeaderSearchBox() {
+  const host = document.getElementById("header-tools");
+  if (!host) return;
+  if (document.getElementById("header-search")) return;
+
+  const wrap = document.createElement("div");
+  wrap.className = "header-search";
+
+  wrap.innerHTML = `
+    <input id="header-search"
+           type="search"
+           placeholder="Recherche..."
+           autocomplete="off">
+  `;
+
+  host.appendChild(wrap);
+}
+
 function ensureQuickAccessButton() {
   // Desktop only
   if (window.matchMedia("(max-width: 900px)").matches) return;
 
-  const header =
-    document.querySelector(".app-header") ||
-    document.querySelector("#app-header") ||
-    document.querySelector(".topbar") ||
-    document.querySelector("header");
+  const header = document.getElementById("header-tools");
 
   if (!header) return;
   if (document.getElementById("qa-btn")) return;
@@ -36260,7 +36274,7 @@ function ensureQuickAccessButton() {
 
   wrap.appendChild(btn);
   wrap.appendChild(menu);
-  header.appendChild(wrap);
+  header.prepend(wrap);
 
   __qaBtn = btn;
   __qaMenu = menu;
@@ -36463,8 +36477,11 @@ window.addEventListener("load", async () => {
   await loadOverridesConfig();
   ensureFooterEditButton();
   blockNavigationWhileEditing();
-  ensureQuickAccessButton();       // ✅
+
+  ensureQuickAccessButton();
+  ensureHeaderSearchBox();
   initHeaderSearch();
+
   navigate();
 });
 
