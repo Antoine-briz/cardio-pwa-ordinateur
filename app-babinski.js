@@ -1012,7 +1012,7 @@ function renderAnesthMenu() {
         </div>
 
         <div class="card anesth-card" onclick="location.hash = '#/anesthesie/ophtalmologie'">
-          <img src="img/ophtlmologie.png" class="menu-section-img">
+          <img src="img/ophtalmologie.png" class="menu-section-img">
           <h3>Chirurgie ophtalmologique</h3>
         </div>
       </div>
