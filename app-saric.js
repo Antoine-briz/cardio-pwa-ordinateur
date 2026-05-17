@@ -238,9 +238,20 @@ function openPdf(file) {
 }
 
 // =====================================================================
-//  PAGE D’ACCUEIL
+//  Affichage haut de page systématique
 // =====================================================================
 
+function scrollToTopInstant() {
+  requestAnimationFrame(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+
+    const app = document.getElementById("app");
+    if (app) app.scrollTop = 0;
+
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  });
+}
 
 // =====================================================================
 //  01 — ACCUEIL / ACCÈS PROTÉGÉ / ACTUALITÉS
@@ -34925,9 +34936,7 @@ window.openSubPage = (renderFn, backFn) => {
   renderFn();
 
   // remet en haut
-  requestAnimationFrame(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-  });
+  scrollToTopInstant();
 };
 
 // =====================================================
@@ -35924,6 +35933,7 @@ function navigate() {
   } else {
     renderNotFound();
   }
+    scrollToTopInstant();
 }
 
 // =======================================
