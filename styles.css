@@ -9364,9 +9364,14 @@ body .biblio-table thead th, body .biblio-table thead th *, body .biblio-live-ta
   background: #fff !important;
   color: #000 !important;
 }
-body:not(.theme-light) .cr-an-modal, body:not(.theme-light) .cr-an-modal * {
+body:not(.theme-light) .cr-an-modal {
   color: #000 !important;
 }
+.cr-an-modal .cr-an-cell-title,
+.cr-an-modal .cr-an-cell-title * {
+  color: #fff !important;
+}
+
 .cr-an-modal-body {
   border-top: 1.5px solid #2a4c84;
 }
