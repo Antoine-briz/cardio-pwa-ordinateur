@@ -6534,6 +6534,12 @@ body.theme-light .cr-an-cell-title, body.theme-light .cr-an-cell-title *, body.t
   }
 }
 
+/* Titres bleus des cellules — texte blanc */
+.cr-an-cell-title,
+.cr-an-cell-title *{
+  color:#fff !important;
+}
+
 @media (max-width: 950px) {
   .eto-modal .eto-compact .eto-row {
     grid-template-columns: repeat(2, minmax(240px, 1fr));
