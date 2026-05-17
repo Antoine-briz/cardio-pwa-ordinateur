@@ -36494,7 +36494,7 @@ window.addEventListener("load", async () => {
   ensureHeaderSearchBox();
 ensureQuickAccessButton();
   initHeaderSearch();
-  initThemeSwitcher();
+  initTheme();
 
   navigate();
 });
