@@ -41,11 +41,19 @@ function initServiceSwitcher() {
 
   const chip = document.getElementById("service-switch-btn");
   const label = document.getElementById("service-chip-label");
-  const menu = document.getElementById("service-menu");
+const icon = document.getElementById("service-chip-icon");
+const menu = document.getElementById("service-menu");
 
-  if (!chip || !label || !menu) return;
+if (!chip || !menu) return;
 
+if (label) {
   label.textContent = service.label;
+}
+
+if (icon) {
+  icon.src = service.icon;
+  icon.alt = service.label;
+}
 
   chip.classList.remove(
     "service-cardio",
