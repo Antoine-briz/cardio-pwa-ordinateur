@@ -3,24 +3,28 @@ const SERVICE_KEY = "saric_service";
 const SERVICES = {
   cardio: {
     label: "Institut de cardiologie",
+    icon: "img/logoIC.png",
     className: "service-cardio",
     file: "./app-saric.js"
   },
 
   gaston: {
     label: "Gaston Cordier",
+    icon: "img/logoGC.png",
     className: "service-gaston",
     file: "./app-gaston.js"
   },
 
   husson: {
     label: "Husson Mourier",
+    icon: "img/logoHM.png",
     className: "service-husson",
     file: "./app-husson.js"
   },
 
   babinski: {
     label: "Babinski",
+    icon: "img/logoBA.png",
     className: "service-babinski",
     file: "./app-babinski.js"
   }
