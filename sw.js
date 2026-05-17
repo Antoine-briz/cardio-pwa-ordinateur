@@ -253,6 +253,10 @@ const PRECACHE = [
   "./img/echogenerale2.png",
   "./img/alr.png",
 "./img/traitementbrugada.png",
+  "./img/logoIC.png",
+   "./img/logoGC.png",
+   "./img/logoHM.png",
+   "./img/logoBA.png",
 
   
   // Menu principal
