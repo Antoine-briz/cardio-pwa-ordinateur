@@ -15369,3 +15369,16 @@ body.theme-light #home-qa-btn {
   border: 1px solid #d0d0d0 !important;
   box-shadow: 0 6px 16px rgba(0,0,0,.18) !important;
 }
+
+#service-chip-icon {
+  width: 28px !important;
+  height: 28px !important;
+  object-fit: contain !important;
+  display: block !important;
+  flex: 0 0 auto !important;
+}
+
+#service-chip-label {
+  flex: 1 !important;
+  text-align: left !important;
+}
