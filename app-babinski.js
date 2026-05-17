@@ -1007,7 +1007,7 @@ function renderAnesthMenu() {
         </div>
 
         <div class="card anesth-card" onclick="location.hash = '#/anesthesie/orl'">
-          <img src="img/orl.png" class="menu-section-img">
+          <img src="img/chirurgieorl.png" class="menu-section-img">
           <h3>Chirurgie ORL</h3>
         </div>
 
