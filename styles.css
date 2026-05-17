@@ -15328,3 +15328,44 @@ header.appbar.app-header,
     min-width: 0 !important;
   }
 }
+
+/* =====================================================
+   THÈME CLAIR — HEADER COMME FOOTER
+===================================================== */
+
+body.theme-light header.appbar.app-header,
+body.theme-light .appbar.app-header,
+body.theme-light .app-header {
+  background: #f5f5f5 !important;
+  color: #111 !important;
+
+  border-bottom: 1px solid #d4d4d4 !important;
+
+  box-shadow: none !important;
+}
+
+body.theme-light .header-title {
+  color: #111 !important;
+}
+
+body.theme-light .header-subtitle {
+  color: #555 !important;
+}
+
+body.theme-light #header-search {
+  background: #eeeeee !important;
+  border: 1px solid #bdbdbd !important;
+  color: #111 !important;
+}
+
+body.theme-light #header-search::placeholder {
+  color: #555 !important;
+}
+
+body.theme-light #qa-btn,
+body.theme-light #home-qa-btn {
+  background: #ffffff !important;
+  color: #000 !important;
+  border: 1px solid #d0d0d0 !important;
+  box-shadow: 0 6px 16px rgba(0,0,0,.18) !important;
+}
