@@ -257,6 +257,7 @@ const PRECACHE = [
    "./img/logoGC.png",
    "./img/logoHM.png",
    "./img/logoBA.png",
+  "./img/sspi.png",
 
   
   // Menu principal
