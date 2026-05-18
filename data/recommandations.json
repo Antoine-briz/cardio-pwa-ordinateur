@@ -12,19 +12,19 @@
       {
         "date": "2026",
         "titre": "Gestion des anticoagulants pour une procédure invasive programmée",
-        "description": "Recommandations sur la gestion des anticoagulants avant une intervention chirurgicale programmée.",
+        "description": "Recommandations concernant la gestion des anticoagulants avant une intervention chirurgicale prévue.",
         "lien": "https://sfar.org/wp-content/uploads/2026/04/RFE-20.4.2026-deifinitif-et-validei.pdf"
       },
       {
         "date": "2025",
         "titre": "Prise en charge du sepsis du nouveau-né, de l’enfant et de l’adulte &#8211; HAS 2025",
-        "description": "Directives concernant la prise en charge du sepsis chez les nouveaux-nés, les enfants et les adultes.",
+        "description": "Directives sur la prise en charge du sepsis pour différents groupes d'âge.",
         "lien": "https://sfar.org/prise-en-charge-du-sepsis-du-nouveau-ne-de-lenfant-et-de-ladulte-has-2025/"
       },
       {
         "date": "2024",
         "titre": "Recommandations de bonne pratique relatives aux démarches anticipées en vue de don d’organes et de tissus",
-        "description": "Lignes directrices sur les démarches à suivre pour le don d'organes et de tissus.",
+        "description": "Lignes directrices sur les démarches anticipées pour le don d'organes et de tissus.",
         "lien": "https://sfar.org/wp-content/uploads/2024/10/RBP-deimarches-anticipeies_12_10_24.pdf"
       }
     ]
@@ -42,19 +42,19 @@
       {
         "date": "2024",
         "titre": "Conférence de consensus SRLF (2024) - Épuration Extra-Rénale en Réanimation",
-        "description": "Cette recommandation traite des pratiques d'épuration extra-rénale en réanimation.",
+        "description": "Cette recommandation porte sur les meilleures pratiques en épuration extra-rénale pour les patients en réanimation.",
         "lien": "https://www.srlf.org/article/conference-consensus-srlf-2024-epuration-extra-renale-reanimation"
       },
       {
         "date": "2023",
         "titre": "Conférence de consensus SRLF (2023) - L'oxygénothérapie",
-        "description": "Ce document aborde les recommandations concernant l'oxygénothérapie en réanimation.",
+        "description": "Cette recommandation aborde les indications et les modalités de l'oxygénothérapie en réanimation.",
         "lien": "https://www.srlf.org/article/conference-consensus-srlf-2023-loxygenotherapie"
       },
       {
         "date": "À vérifier",
         "titre": "Encéphalopathie aiguë en réanimation : un consensus d’experts pour améliorer la prise en charge",
-        "description": "Cette recommandation vise à améliorer la prise en charge des patients souffrant d'encéphalopathie aiguë en réanimation.",
+        "description": "Ce consensus traite des approches pour la gestion de l'encéphalopathie aiguë en milieu de réanimation.",
         "lien": "https://www.srlf.org/article/encephalopathie-aigue-reanimation-consensus-dexperts-ameliorer-prise-charge"
       }
     ]
@@ -72,19 +72,19 @@
       {
         "date": "2025",
         "titre": "Pneumonies communautaires: recommandations SPILF/SPLF",
-        "description": "Ces recommandations portent sur la gestion des pneumonies communautaires en intégrant les meilleures pratiques actuelles.",
+        "description": "Recommandations actualisées concernant la prise en charge des pneumonies communautaires.",
         "lien": "https://www.infectiologie.com/UserFiles/File/spilf/recos/spilf-groupe-reco-pac-2025.pptx"
       },
       {
         "date": "2022",
         "titre": "traitement des BMR (position Statement / reco ESCMID et IDSA) 2022",
-        "description": "Ces recommandations visent à guider le traitement des bactéries multirésistantes avec des perspectives globales.",
+        "description": "Position et recommandations sur le traitement des bactéries multirésistantes.",
         "lien": "https://www.infectiologie.com/UserFiles/File/spilf/recos/mdr-bgn-spilf-2022-final.pptx"
       },
       {
         "date": "2017",
         "titre": "Méningites 2017",
-        "description": "Ce document présente les recommandations pour le diagnostic et la prise en charge des méningites.",
+        "description": "Recommandations pour la prise en charge des méningites basées sur les meilleures pratiques.",
         "lien": "https://www.infectiologie.com/UserFiles/File/spilf/recos/spilf-comite-referentiel-meningites-2018.pptx"
       }
     ]
@@ -102,13 +102,13 @@
       {
         "date": "À vérifier",
         "titre": "CVD and Pregnancy",
-        "description": "Gestion des maladies cardiovasculaires pendant la grossesse.",
+        "description": "Gestion des maladies cardiovasculaires durant la grossesse.",
         "lien": "https://www.escardio.org/guidelines/clinical-practice-guidelines/all-esc-practice-guidelines/cardiovascular-diseases-during-pregnancy-management-of/"
       },
       {
         "date": "À vérifier",
         "titre": "Dyslipidaemias",
-        "description": "Recommandations sur la gestion des dyslipidémies.",
+        "description": "Gestion des dyslipidémies pour la prévention des maladies cardiovasculaires.",
         "lien": "https://www.escardio.org/guidelines/clinical-practice-guidelines/all-esc-practice-guidelines/dyslipidaemias/"
       },
       {
@@ -124,28 +124,28 @@
     "date": "2024 / 2024 / 2024",
     "titre": "3 dernières recommandations EACTS",
     "description": "",
-    "lien": "https://www.eacts.org/clinical-practice-guideline/2024-eacts-eactaic-ebcp-guidelines-on-cardiopulmonary-bypass-in-adult-cardiac-surgery/",
+    "lien": "https://www.eacts.org/clinical-practice-guideline/2024-eacts-eactaic-guidelines-on-patient-blood-management-in-adult-cardiac-surgery-in-collaboration-with-ebcp/",
     "domaine": "Recommandations",
     "citations": "0",
     "score": "0.0",
     "documents": [
       {
         "date": "2024",
-        "titre": "2024 EACTS/EACTAIC/EBCP Guidelines on cardiopulmonary bypass in adult cardiac surgery",
-        "description": "Directives sur la gestion du bypass cardiopulmonaire dans la chirurgie cardiaque adulte.",
-        "lien": "https://www.eacts.org/clinical-practice-guideline/2024-eacts-eactaic-ebcp-guidelines-on-cardiopulmonary-bypass-in-adult-cardiac-surgery/"
+        "titre": "2024 EACTS/EACTAIC Guidelines on patient blood management in adult cardiac surgery in collaboration with EBCP",
+        "description": "Ces lignes directrices portent sur la gestion du sang chez les patients adultes subissant une chirurgie cardiaque.",
+        "lien": "https://www.eacts.org/clinical-practice-guideline/2024-eacts-eactaic-guidelines-on-patient-blood-management-in-adult-cardiac-surgery-in-collaboration-with-ebcp/"
       },
       {
         "date": "2024",
         "titre": "2024 EACTS Guidelines on perioperative medication in adult cardiac surgery",
-        "description": "Recommandations sur l'utilisation des médicaments peri-opératoires en chirurgie cardiaque adulte.",
+        "description": "Ces recommandations concernent l'utilisation de médicaments en périopératoire lors de la chirurgie cardiaque chez l'adulte.",
         "lien": "https://www.eacts.org/clinical-practice-guideline/2024-eacts-guidelines-on-perioperative-medication-in-adult-cardiac-surgery/"
       },
       {
         "date": "2024",
-        "titre": "2024 EACTS/EACTAIC Guidelines on patient blood management in adult cardiac surgery in collaboration with EBCP",
-        "description": "Directives sur la gestion du sang des patients durant la chirurgie cardiaque adulte.",
-        "lien": "https://www.eacts.org/clinical-practice-guideline/2024-eacts-eactaic-guidelines-on-patient-blood-management-in-adult-cardiac-surgery-in-collaboration-with-ebcp/"
+        "titre": "2024 EACTS/EACTAIC/EBCP Guidelines on cardiopulmonary bypass in adult cardiac surgery",
+        "description": "Ces lignes directrices traitent de l'utilisation du bypass cardiopulmonaire durant la chirurgie cardiaque chez les adultes.",
+        "lien": "https://www.eacts.org/clinical-practice-guideline/2024-eacts-eactaic-ebcp-guidelines-on-cardiopulmonary-bypass-in-adult-cardiac-surgery/"
       }
     ]
   }
