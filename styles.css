@@ -1709,6 +1709,42 @@ details.subcard summary {
   width: 25%;
   white-space: nowrap;
 }
+/* =========================================
+   URGENCES
+========================================= */
+
+.annuaire-urgence-card {
+  background: #ffebeb !important;
+  border: 1px solid #ffb3b3 !important;
+}
+
+.annuaire-urgence-card summary {
+  color: #b00020 !important;
+  font-weight: 700;
+}
+
+.dark-mode .info-card,
+.dark-mode details.info-card,
+.dark-mode .annuaire-subcard {
+  color: #ffffff !important;
+}
+.dark-mode .info-card table,
+.dark-mode .info-card td,
+.dark-mode .info-card th,
+.dark-mode .info-card summary,
+.dark-mode .info-card h4,
+.dark-mode .info-content {
+  color: #ffffff !important;
+}
+
+.dark-mode #annuaire-search-input {
+  color: white !important;
+}
+
+.dark-mode #annuaire-search-input::placeholder {
+  color: rgba(255,255,255,0.6) !important;
+}
+
 .header-banner {
   display: block;
   width: 100%;
