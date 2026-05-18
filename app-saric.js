@@ -33651,487 +33651,484 @@ function mergeAllAnnuaireTables(root = document) {
 function renderAnnuaire() {
   const encadres = [
 
-
-  /* ================================
-   1) ANESTHÉSISTES-RÉANIMATEURS
-   ================================ */
-{
-  titre: "Anesthésistes-réanimateurs",
-  sousTitreEncadre: "",
-  html: `
-    <div style="height:6px;"></div>
-
-    <table class="annuaire-table annuaire-2cols">
-      <colgroup>
-        <col style="width:70%">
-        <col style="width:30%">
-      </colgroup>
-
-      <thead>
-        <tr>
-          <th>Nom</th>
-          <th>Poste</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr><td>BOUGLE Adrien</td><td>62 991</td></tr>
-        <tr><td>ABBES Ahmed</td><td>65 693</td></tr>
-        <tr><td>ANNONAY Marianne</td><td>62 994</td></tr>
-        <tr><td>ARZOINE Jérémy</td><td>27 133</td></tr>
-        <tr><td>BEAUCOTE Victor</td><td>28 357</td></tr>
-        <tr><td>BERECIBAR Jon Ander</td><td>28 354</td></tr>
-        <tr><td>BOROUCHAKI Antoine</td><td>62 998</td></tr>
-        <tr><td>BRIZARD Antoine</td><td>28 352</td></tr>
-        <tr><td>CAMPEANU Aurélie</td><td>28 252</td></tr>
-        <tr><td>CARILLION Aude</td><td>27 387</td></tr>
-        <tr><td>CLAPIN Sixtine</td><td>28 353</td></tr>
-        <tr><td>COELEMBIER Clément</td><td>65 689</td></tr>
-        <tr><td>DE SARCUS Martin</td><td>75 869</td></tr>
-        <tr><td>DJAVIDI Nima</td><td>28 363</td></tr>
-        <tr><td>DUCEAU Baptiste</td><td>27 915</td></tr>
-        <tr><td>DUREAU Pauline</td><td>27 689</td></tr>
-        <tr><td>GUILLEMIN Jérémie</td><td>28 258</td></tr>
-        <tr><td>HAMIDI Dany</td><td>28 253</td></tr>
-        <tr><td>HARIRI Geoffroy</td><td>27 385</td></tr>
-        <tr><td>HENOCQ Paul</td><td>28 255</td></tr>
-        <tr><td>HIRWE Axel</td><td>28 355</td></tr>
-        <tr><td>LABARRIERE Ambroise</td><td>28 308</td></tr>
-        <tr><td>LANCELOT Aymeric</td><td>65 695</td></tr>
-        <tr><td>LOEB Jules</td><td>62 997</td></tr>
-        <tr><td>MANSOURI Sehmi</td><td>28 256</td></tr>
-        <tr><td>MARQUET Yann</td><td>28 356</td></tr>
-        <tr><td>MOHAMMEDI Neyla</td><td>28 257</td></tr>
-        <tr><td>NICULESCU Michaela</td><td>62 996</td></tr>
-        <tr><td>OMAR Edris</td><td>27 386</td></tr>
-        <tr><td>PERRIER Johann</td><td>28 357</td></tr>
-        <tr><td>POUJADE Julien</td><td>27 816</td></tr>
-        <tr><td>ROMBI Louise</td><td>28 106</td></tr>
-        <tr><td>SCHRAMM Rémi</td><td>28 062</td></tr>
-        <tr><td>VAUZANGES Quentin</td><td>27 613</td></tr>
-      </tbody>
-    </table>
-  `,
-},
-
-/* ================================
-   2) CHIRURGIENS CARDIAQUES
-   ================================ */
-{
-  titre: "Chirurgiens cardiaques",
-  sousTitreEncadre: "",
-  html: `
-    <div style="height:6px;"></div>
-
-    <table class="annuaire-table annuaire-2cols">
-      <colgroup>
-        <col style="width:70%">
-        <col style="width:30%">
-      </colgroup>
-
-      <thead>
-        <tr>
-          <th>Nom</th>
-          <th>Poste</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr><td>LEPRINCE Pascal</td><td>27 550</td></tr>
-        <tr><td>BARREDA Theo</td><td>27 343</td></tr>
-        <tr><td>D’ALESSANDRO Cosimo</td><td>65 690</td></tr>
-        <tr><td>DANIAL Pichoy</td><td>27 801</td></tr>
-        <tr><td>DEBAUCHEZ Mathieu</td><td>80 622</td></tr>
-        <tr><td>FARAHMAND Patrick</td><td>27 018</td></tr>
-        <tr><td>JUVIN Charles</td><td>27 737</td></tr>
-        <tr><td>HENNEB Belkacem</td><td>27 177</td></tr>
-        <tr><td>LAALI Mojgan</td><td>63 839</td></tr>
-        <tr><td>LANSAC Emmanuel</td><td>27 123</td></tr>
-        <tr><td>LEBRETON Guillaume</td><td>62 979</td></tr>
-        <tr><td>SAIYDOUN Gabriel</td><td>27 175</td></tr>
-        <tr><td>MEYER Horacio</td><td>28 391</td></tr>
-        <tr><td>ZAMORANO Claudio</td><td>28 391</td></tr>
-        <tr><td><em>Interne de garde</em></td><td>65 645</td></tr>
-      </tbody>
-    </table>
-  `,
-},
-
-/* ================================
-   3) CHIRURGIENS VASCULAIRES
-   ================================ */
-{
-  titre: "Chirurgiens vasculaires",
-  sousTitreEncadre: "",
-  html: `
-    <div style="height:6px;"></div>
-
-    <table class="annuaire-table annuaire-2cols">
-      <colgroup>
-        <col style="width:70%">
-        <col style="width:30%">
-      </colgroup>
-
-      <thead>
-        <tr>
-          <th>Nom</th>
-          <th>Poste</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr><td>CHICHE Laurent</td><td>75 710 / 27 690</td></tr>
-        <tr><td>COCHENNEC Frédéric</td><td>28 217</td></tr>
-        <tr><td>COUTURE Thibault</td><td>28 082</td></tr>
-        <tr><td>LAME Charles</td><td>—</td></tr>
-        <tr><td>GAUDRIC Julien</td><td>27 691</td></tr>
-        <tr><td>LOCATELLI Federica</td><td>—</td></tr>
-        <tr><td>PELISSIE Jérôme</td><td>—</td></tr>
-        <tr><td>RUELLO Pauline</td><td>—</td></tr>
-        <tr><td>VERSCHEURE Dorian</td><td>27 635</td></tr>
-        <tr><td><em>Interne chirurgie vasculaire</em></td><td>27 493</td></tr>
-      </tbody>
-    </table>
-  `,
-},
-
-/* ================================
-   4) RYTHMOLOGUES
-   ================================ */
-{
-  titre: "Rythmologues",
-  sousTitreEncadre: "",
-  html: `
-    <div style="height:6px;"></div>
-
-    <table class="annuaire-table annuaire-2cols">
-      <colgroup>
-        <col style="width:70%">
-        <col style="width:30%">
-      </colgroup>
-
-      <thead>
-        <tr>
-          <th>Nom</th>
-          <th>Poste</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr><td>BADENCO Nicolas</td><td>62 976</td></tr>
-        <tr><td>CHASTRE Thomas</td><td>63 821</td></tr>
-        <tr><td>DINANIAN Sylvie</td><td>27 804</td></tr>
-        <tr><td>DUTHOIT Guillaume</td><td>63 031</td></tr>
-        <tr><td>GANDJBAKHCH Estelle</td><td>63 055</td></tr>
-        <tr><td>JACQUEMART Étienne</td><td>27 545</td></tr>
-        <tr><td>LAREDO Mickaël</td><td>27 620</td></tr>
-        <tr><td>MAUPAIN Carole</td><td>27 283</td></tr>
-        <tr><td>ROLLAND Thomas</td><td>63 051</td></tr>
-        <tr><td>SCHUMACHER Stéphane</td><td>27 545</td></tr>
-        <tr><td>TEMMAR Yacine</td><td>63 036</td></tr>
-        <tr><td>THUILLOT Marine</td><td>63 036</td></tr>
-        <tr><td>WAINTRAUB Xavier</td><td>63 028</td></tr>
-      </tbody>
-    </table>
-  `,
-},
-
-/* ================================
-   5) CARDIOLOGUES
-   ================================ */
-{
-  titre: "Cardiologues",
-  sousTitreEncadre: "",
-  html: `
-    <div style="height:6px;"></div>
-
-    <table class="annuaire-table annuaire-2cols">
-      <colgroup>
-        <col style="width:70%">
-        <col style="width:30%">
-      </colgroup>
-
-      <thead>
-        <tr>
-          <th>Nom</th>
-          <th>Poste</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr><td>BALDI Lorenzo</td><td>27 531</td></tr>
-        <tr><td>BARTHELEMY Olivier</td><td>63 033</td></tr>
-        <tr><td>BEGOT Emmanuelle</td><td>27 778</td></tr>
-        <tr><td>CHOUSSAT Rémy</td><td>62 951</td></tr>
-        <tr><td>COLLET Jean-Philippe</td><td>62 962</td></tr>
-        <tr><td>CHARINOT Jean-Christophe</td><td>63 837</td></tr>
-        <tr><td>COUTANCE Guillaume</td><td>28 057</td></tr>
-        <tr><td>DESIRE Eva</td><td>28 196</td></tr>
-        <tr><td>GRANGER Camille</td><td>27 134</td></tr>
-        <tr><td>GUEDENEY Paul</td><td>27 619</td></tr>
-        <tr><td>HAMMOUDI Nadjib</td><td>80 782</td></tr>
-        <tr><td>HAZAN Fanny</td><td>80 699</td></tr>
-        <tr><td>HELFT Gérard</td><td>62 912</td></tr>
-        <tr><td>KERNEIS Mathieu</td><td>27 753</td></tr>
-        <tr><td>JAULT Frédérique</td><td>65 694</td></tr>
-        <tr><td>LECUYER Lucien</td><td>27 174</td></tr>
-        <tr><td>LE FEVRE Claude</td><td>63 012</td></tr>
-        <tr><td>LEGRAND Lise</td><td>63 836</td></tr>
-        <tr><td>MONGUILLON Victorien</td><td>28 375</td></tr>
-        <tr><td>MONTALESCOT Gilles</td><td>80 713</td></tr>
-        <tr><td>SILVAIN Johanne</td><td>62 975</td></tr>
-        <tr><td>OULDAMMAR Salima</td><td>28 163</td></tr>
-        <tr><td>VARNOUS Sheida</td><td>65 690</td></tr>
-        <tr><td>WALLET Thomas</td><td>62 975</td></tr>
-        <tr><td>ZEITOUNI Michel</td><td>80 680</td></tr>
-      </tbody>
-    </table>
-  `,
-},
-
-
     /* ================================
-       6) REZ-DE-CHAUSSÉE
+       1) URGENCES
        ================================ */
     {
-      titre: "Rez-de-chaussée",
+      titre: "Numéros d’urgence",
       sousTitreEncadre: "",
+      open: true,
       html: `
         <div style="height:6px;"></div>
 
-        <table class="annuaire-table">
+        <table class="annuaire-table annuaire-2cols annuaire-urgence-table">
+          <colgroup>
+            <col style="width:65%">
+            <col style="width:35%">
+          </colgroup>
           <thead>
             <tr>
-              <th>Nom</th>
-              <th>Poste</th>
-              <th>Téléphone</th>
+              <th>Urgence</th>
+              <th>Numéro</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td>Radiologie interventionnelle — RDC</td><td>Poste IDE</td><td>27 815</td></tr>
-
-            <tr><td>UCASAR — RDC</td><td>Poste de soins IDE</td><td>28 074</td></tr>
-            <tr><td>UCASAR — RDC</td><td>Secrétariat</td><td>28 073</td></tr>
-            <tr><td>UCASAR — RDC</td><td>Médecin</td><td>62 999</td></tr>
-
-            <tr><td>HDJ chirurgie — RDC</td><td>Poste de soins</td><td>65 578 ou 65 577</td></tr>
-            <tr><td>HDJ cardiologie médicale — RDC</td><td>Poste de soins</td><td>62 896</td></tr>
+            <tr><td>Interne chir. cardiaque</td><td>65 645</td></tr>
+            <tr><td>Interne vasculaire</td><td>27 943</td></tr>
+            <tr><td>Perfusionniste</td><td>65 626 / 27 009</td></tr>
+            <tr><td>Coordo réanimation</td><td>27 670</td></tr>
+            <tr><td>Coordo anesthésie</td><td>27 671</td></tr>
+            <tr><td>Bureau coordo</td><td>65 643</td></tr>
           </tbody>
         </table>
       `,
     },
 
     /* ================================
-       7) 1ER ÉTAGE
+       2) MÉDECINS INSTITUT DE CARDIOLOGIE
        ================================ */
     {
-      titre: "1er étage",
+      titre: "Médecins institut de cardiologie",
+      sousTitreEncadre: "",
+      html: `
+
+        <details class="info-card annuaire-subcard">
+          <summary>Anesthésistes-réanimateurs</summary>
+          <div class="info-content">
+            <table class="annuaire-table annuaire-2cols">
+              <colgroup>
+                <col style="width:70%">
+                <col style="width:30%">
+              </colgroup>
+              <thead>
+                <tr><th>Nom</th><th>Poste</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>BOUGLE Adrien</td><td>62 991</td></tr>
+                <tr><td>ABBES Ahmed</td><td>65 693</td></tr>
+                <tr><td>ANNONAY Marianne</td><td>62 994</td></tr>
+                <tr><td>ARZOINE Jérémy</td><td>27 133</td></tr>
+                <tr><td>BEAUCOTE Victor</td><td>28 357</td></tr>
+                <tr><td>BERECIBAR Jon Ander</td><td>28 354</td></tr>
+                <tr><td>BOROUCHAKI Antoine</td><td>62 998</td></tr>
+                <tr><td>BRIZARD Antoine</td><td>28 352</td></tr>
+                <tr><td>CAMPEANU Aurélie</td><td>28 252</td></tr>
+                <tr><td>CARILLION Aude</td><td>27 387</td></tr>
+                <tr><td>CLAPIN Sixtine</td><td>28 353</td></tr>
+                <tr><td>COELEMBIER Clément</td><td>65 689</td></tr>
+                <tr><td>DE SARCUS Martin</td><td>75 869</td></tr>
+                <tr><td>DJAVIDI Nima</td><td>28 363</td></tr>
+                <tr><td>DUCEAU Baptiste</td><td>27 915</td></tr>
+                <tr><td>DUREAU Pauline</td><td>27 689</td></tr>
+                <tr><td>GUILLEMIN Jérémie</td><td>28 258</td></tr>
+                <tr><td>HAMIDI Dany</td><td>28 253</td></tr>
+                <tr><td>HARIRI Geoffroy</td><td>27 385</td></tr>
+                <tr><td>HENOCQ Paul</td><td>28 255</td></tr>
+                <tr><td>HIRWE Axel</td><td>28 355</td></tr>
+                <tr><td>LABARRIERE Ambroise</td><td>28 308</td></tr>
+                <tr><td>LANCELOT Aymeric</td><td>65 695</td></tr>
+                <tr><td>LOEB Jules</td><td>62 997</td></tr>
+                <tr><td>MANSOURI Sehmi</td><td>28 256</td></tr>
+                <tr><td>MARQUET Yann</td><td>28 356</td></tr>
+                <tr><td>MOHAMMEDI Neyla</td><td>28 257</td></tr>
+                <tr><td>NICULESCU Michaela</td><td>62 996</td></tr>
+                <tr><td>OMAR Edris</td><td>27 386</td></tr>
+                <tr><td>PERRIER Johann</td><td>28 357</td></tr>
+                <tr><td>POUJADE Julien</td><td>27 816</td></tr>
+                <tr><td>ROMBI Louise</td><td>28 106</td></tr>
+                <tr><td>SCHRAMM Rémi</td><td>28 062</td></tr>
+                <tr><td>VAUZANGES Quentin</td><td>27 613</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+
+        <details class="info-card annuaire-subcard">
+          <summary>Chirurgiens cardiaques et vasculaires</summary>
+          <div class="info-content">
+            <h4>Chirurgiens cardiaques</h4>
+            <table class="annuaire-table annuaire-2cols">
+              <colgroup>
+                <col style="width:70%">
+                <col style="width:30%">
+              </colgroup>
+              <thead>
+                <tr><th>Nom</th><th>Poste</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>LEPRINCE Pascal</td><td>27 550</td></tr>
+                <tr><td>BARREDA Theo</td><td>27 343</td></tr>
+                <tr><td>D’ALESSANDRO Cosimo</td><td>65 690</td></tr>
+                <tr><td>DANIAL Pichoy</td><td>27 801</td></tr>
+                <tr><td>DEBAUCHEZ Mathieu</td><td>80 622</td></tr>
+                <tr><td>FARAHMAND Patrick</td><td>27 018</td></tr>
+                <tr><td>JUVIN Charles</td><td>27 737</td></tr>
+                <tr><td>HENNEB Belkacem</td><td>27 177</td></tr>
+                <tr><td>LAALI Mojgan</td><td>63 839</td></tr>
+                <tr><td>LANSAC Emmanuel</td><td>27 123</td></tr>
+                <tr><td>LEBRETON Guillaume</td><td>62 979</td></tr>
+                <tr><td>SAIYDOUN Gabriel</td><td>27 175</td></tr>
+                <tr><td>MEYER Horacio</td><td>28 391</td></tr>
+                <tr><td>ZAMORANO Claudio</td><td>28 391</td></tr>
+                <tr><td><em>Interne de garde</em></td><td>65 645</td></tr>
+              </tbody>
+            </table>
+
+            <h4>Chirurgiens vasculaires</h4>
+            <table class="annuaire-table annuaire-2cols">
+              <colgroup>
+                <col style="width:70%">
+                <col style="width:30%">
+              </colgroup>
+              <thead>
+                <tr><th>Nom</th><th>Poste</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>CHICHE Laurent</td><td>75 710 / 27 690</td></tr>
+                <tr><td>COCHENNEC Frédéric</td><td>28 217</td></tr>
+                <tr><td>COUTURE Thibault</td><td>28 082</td></tr>
+                <tr><td>LAME Charles</td><td>—</td></tr>
+                <tr><td>GAUDRIC Julien</td><td>27 691</td></tr>
+                <tr><td>LOCATELLI Federica</td><td>—</td></tr>
+                <tr><td>PELISSIE Jérôme</td><td>—</td></tr>
+                <tr><td>RUELLO Pauline</td><td>—</td></tr>
+                <tr><td>VERSCHEURE Dorian</td><td>27 635</td></tr>
+                <tr><td><em>Interne chirurgie vasculaire</em></td><td>27 493</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+
+        <details class="info-card annuaire-subcard">
+          <summary>Cardiologues</summary>
+          <div class="info-content">
+            <h4>Cardiologues</h4>
+            <table class="annuaire-table annuaire-2cols">
+              <colgroup>
+                <col style="width:70%">
+                <col style="width:30%">
+              </colgroup>
+              <thead>
+                <tr><th>Nom</th><th>Poste</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>BALDI Lorenzo</td><td>27 531</td></tr>
+                <tr><td>BARTHELEMY Olivier</td><td>63 033</td></tr>
+                <tr><td>BEGOT Emmanuelle</td><td>27 778</td></tr>
+                <tr><td>CHOUSSAT Rémy</td><td>62 951</td></tr>
+                <tr><td>COLLET Jean-Philippe</td><td>62 962</td></tr>
+                <tr><td>CHARINOT Jean-Christophe</td><td>63 837</td></tr>
+                <tr><td>COUTANCE Guillaume</td><td>28 057</td></tr>
+                <tr><td>DESIRE Eva</td><td>28 196</td></tr>
+                <tr><td>GRANGER Camille</td><td>27 134</td></tr>
+                <tr><td>GUEDENEY Paul</td><td>27 619</td></tr>
+                <tr><td>HAMMOUDI Nadjib</td><td>80 782</td></tr>
+                <tr><td>HAZAN Fanny</td><td>80 699</td></tr>
+                <tr><td>HELFT Gérard</td><td>62 912</td></tr>
+                <tr><td>KERNEIS Mathieu</td><td>27 753</td></tr>
+                <tr><td>JAULT Frédérique</td><td>65 694</td></tr>
+                <tr><td>LECUYER Lucien</td><td>27 174</td></tr>
+                <tr><td>LE FEVRE Claude</td><td>63 012</td></tr>
+                <tr><td>LEGRAND Lise</td><td>63 836</td></tr>
+                <tr><td>MONGUILLON Victorien</td><td>28 375</td></tr>
+                <tr><td>MONTALESCOT Gilles</td><td>80 713</td></tr>
+                <tr><td>SILVAIN Johanne</td><td>62 975</td></tr>
+                <tr><td>OULDAMMAR Salima</td><td>28 163</td></tr>
+                <tr><td>VARNOUS Sheida</td><td>65 690</td></tr>
+                <tr><td>WALLET Thomas</td><td>62 975</td></tr>
+                <tr><td>ZEITOUNI Michel</td><td>80 680</td></tr>
+              </tbody>
+            </table>
+
+            <h4>Rythmologues</h4>
+            <table class="annuaire-table annuaire-2cols">
+              <colgroup>
+                <col style="width:70%">
+                <col style="width:30%">
+              </colgroup>
+              <thead>
+                <tr><th>Nom</th><th>Poste</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>BADENCO Nicolas</td><td>62 976</td></tr>
+                <tr><td>CHASTRE Thomas</td><td>63 821</td></tr>
+                <tr><td>DINANIAN Sylvie</td><td>27 804</td></tr>
+                <tr><td>DUTHOIT Guillaume</td><td>63 031</td></tr>
+                <tr><td>GANDJBAKHCH Estelle</td><td>63 055</td></tr>
+                <tr><td>JACQUEMART Étienne</td><td>27 545</td></tr>
+                <tr><td>LAREDO Mickaël</td><td>27 620</td></tr>
+                <tr><td>MAUPAIN Carole</td><td>27 283</td></tr>
+                <tr><td>ROLLAND Thomas</td><td>63 051</td></tr>
+                <tr><td>SCHUMACHER Stéphane</td><td>27 545</td></tr>
+                <tr><td>TEMMAR Yacine</td><td>63 036</td></tr>
+                <tr><td>THUILLOT Marine</td><td>63 036</td></tr>
+                <tr><td>WAINTRAUB Xavier</td><td>63 028</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+      `,
+    },
+
+    /* ================================
+       3) NUMÉROS INSTITUT COEUR PAR ÉTAGES
+       ================================ */
+    {
+      titre: "Numéro institut coeur par étages",
+      sousTitreEncadre: "",
+      html: `
+
+        <details class="info-card annuaire-subcard">
+          <summary>Rez-de-chaussée</summary>
+          <div class="info-content">
+            <table class="annuaire-table">
+              <thead><tr><th>Nom</th><th>Poste</th><th>Téléphone</th></tr></thead>
+              <tbody>
+                <tr><td>Radiologie interventionnelle — RDC</td><td>Poste IDE</td><td>27 815</td></tr>
+                <tr><td>UCASAR — RDC</td><td>Poste de soins IDE</td><td>28 074</td></tr>
+                <tr><td>UCASAR — RDC</td><td>Secrétariat</td><td>28 073</td></tr>
+                <tr><td>UCASAR — RDC</td><td>Médecin</td><td>62 999</td></tr>
+                <tr><td>HDJ chirurgie — RDC</td><td>Poste de soins</td><td>65 578 ou 65 577</td></tr>
+                <tr><td>HDJ cardiologie médicale — RDC</td><td>Poste de soins</td><td>62 896</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+
+        <details class="info-card annuaire-subcard">
+          <summary>1er étage</summary>
+          <div class="info-content">
+            <table class="annuaire-table">
+              <thead><tr><th>Nom</th><th>Poste</th><th>Téléphone</th></tr></thead>
+              <tbody>
+                <tr><td>PTI — 1er étage</td><td>Poste IDE électrophysiologie</td><td>—</td></tr>
+                <tr><td>PTI — 1er étage</td><td>Accueil coro</td><td>—</td></tr>
+                <tr><td>PTI — 1er étage</td><td>Brancardier</td><td>—</td></tr>
+                <tr><td>Radio-vasculaire — 1er étage</td><td>Urgences</td><td>27 243</td></tr>
+                <tr><td>Radio-vasculaire — 1er étage</td><td>Poste manip-radio</td><td>65 639 ou 65 540</td></tr>
+                <tr><td>Réanimation médicale — 1er étage</td><td>Unité 1 (Ch 101 à 106)</td><td>63 801</td></tr>
+                <tr><td>Réanimation médicale — 1er étage</td><td>Unité 2 (Ch 107 à 112)</td><td>63 802</td></tr>
+                <tr><td>Réanimation médicale — 1er étage</td><td>Unité 3 (Ch 114 à 119)</td><td>63 803</td></tr>
+                <tr><td>Réanimation médicale — 1er étage</td><td>Réanimateur de garde</td><td>27 544</td></tr>
+                <tr><td>SSPI — 1er étage</td><td>Poste de soins IDE</td><td>28 120</td></tr>
+                <tr><td>USC — 1er étage</td><td>Poste de soins</td><td>62 939 ou 62 947</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+
+        <details class="info-card annuaire-subcard">
+          <summary>2ème étage</summary>
+          <div class="info-content">
+            <table class="annuaire-table">
+              <thead><tr><th>Nom</th><th>Poste</th><th>Téléphone</th></tr></thead>
+              <tbody>
+                <tr><td>HDS — 2ème étage</td><td>Poste de soins</td><td>62 980</td></tr>
+                <tr><td>UCA — 2ème étage</td><td>UCA 1 (Ch 229 à 249)</td><td>62 946</td></tr>
+                <tr><td>UCA — 2ème étage</td><td>UCA 2 (Ch 219 à 228)</td><td>62 967</td></tr>
+                <tr><td>UCA — 2ème étage</td><td>Régul UCA</td><td>28 130</td></tr>
+                <tr><td>UCA — 2ème étage</td><td>Interne</td><td>62 905</td></tr>
+                <tr><td>UCA — 2ème étage</td><td>Secrétaires hospitalières</td><td>62 945 ou 62 949 ou 28 138</td></tr>
+                <tr><td>USIC — 2ème étage</td><td>Ch 201 à 212</td><td>62 943 ou 62 944</td></tr>
+                <tr><td>USIC — 2ème étage</td><td>Interne</td><td>62 960</td></tr>
+                <tr><td>USIC — 2ème étage</td><td>Ch 214 à 218</td><td>62 966</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+
+        <details class="info-card annuaire-subcard">
+          <summary>3ème étage</summary>
+          <div class="info-content">
+            <table class="annuaire-table">
+              <thead><tr><th>Nom</th><th>Poste</th><th>Téléphone</th></tr></thead>
+              <tbody>
+                <tr><td>USI — 3ème étage</td><td>Cadre de santé — LE TOULLEC Ann-Solenn</td><td>28 121</td></tr>
+                <tr><td>USI — 3ème étage</td><td>DECT IDE</td><td>27 011</td></tr>
+                <tr><td>USI — 3ème étage</td><td>Poste de soins 2</td><td>63 083 ou 63 093</td></tr>
+                <tr><td>USI — 3ème étage</td><td>Poste de soins 3</td><td>63 046 ou 86 051</td></tr>
+                <tr><td>USI — 3ème étage</td><td>Fax</td><td>62 954</td></tr>
+                <tr><td>USI — 3ème étage</td><td>Interne</td><td>28 119</td></tr>
+                <tr><td>USI — 3ème étage</td><td>MAR</td><td>28 118</td></tr>
+
+                <tr><td>SSPI — 3ème étage</td><td>Poste de soins</td><td>63 900</td></tr>
+                <tr><td>SSPI — 3ème étage</td><td>DECT IDE</td><td>27 388</td></tr>
+                <tr><td>SSPI — 3ème étage</td><td>MAR</td><td>28 118</td></tr>
+                <tr><td>SSPI — 3ème étage</td><td>Interne</td><td>28 119</td></tr>
+
+                <tr><td>Réanimation chirurgicale — 3ème étage</td><td>Cadre de santé — RUGARD Sébastien</td><td>63 976</td></tr>
+                <tr><td>Réanimation chirurgicale — 3ème étage</td><td>Cadre de santé — GUIDEZ Laurence</td><td>27 487</td></tr>
+                <tr><td>Réanimation chirurgicale — 3ème étage</td><td>Secrétariat — MOVALLI Angèle</td><td>65 642</td></tr>
+                <tr><td>Réanimation chirurgicale — 3ème étage</td><td>IDE référent</td><td>28 164</td></tr>
+                <tr><td>Réanimation chirurgicale — 3ème étage</td><td>Interne de garde</td><td>65 644</td></tr>
+                <tr><td>Réanimation chirurgicale — 3ème étage</td><td>Unité 1 (Ch 301 à 306)</td><td>65 648</td></tr>
+                <tr><td>Réanimation chirurgicale — 3ème étage</td><td>Unité 2 (Ch 307 à 312)</td><td>65 649</td></tr>
+                <tr><td>Réanimation chirurgicale — 3ème étage</td><td>Unité 3 (Ch 314 à 319)</td><td>65 650</td></tr>
+
+                <tr><td>Equipe paramédicale DAR</td><td>CP DMU</td><td>27 865</td></tr>
+                <tr><td>Equipe paramédicale DAR</td><td>CSS IADE</td><td>27 727</td></tr>
+                <tr><td>Equipe paramédicale DAR</td><td>Cadre de santé IADE — MEALLAN Marilyn</td><td>63 901</td></tr>
+                <tr><td>Equipe paramédicale DAR</td><td>Cadre de santé IADE — ANGELI Nicolas</td><td>27 270</td></tr>
+                <tr><td>Equipe paramédicale DAR</td><td>IADE bloc chirurgie cardiaque</td><td>26 283</td></tr>
+                <tr><td>Equipe paramédicale DAR</td><td>IADE PTT 1er étage</td><td>28 110</td></tr>
+                <tr><td>Equipe paramédicale DAR</td><td>Fax bureau IADE</td><td>63 902</td></tr>
+                <tr><td>Equipe paramédicale DAR</td><td>AS anesthésie</td><td>27 200</td></tr>
+
+                <tr><td>Bloc cardio-vasculaire 3ème</td><td>Coordination</td><td>27 383 ou 66 638</td></tr>
+                <tr><td>Bloc cardio-vasculaire 3ème</td><td>Consultation — Accueil</td><td>65 638</td></tr>
+                <tr><td>Bloc cardio-vasculaire 3ème</td><td>Consultation — Fax</td><td>65 639</td></tr>
+                <tr><td>Bloc cardio-vasculaire 3ème</td><td>POUPON Estelle</td><td>27 994</td></tr>
+                <tr><td>Bloc cardio-vasculaire 3ème</td><td>IBODE chirurgie cardiaque</td><td>27 311</td></tr>
+                <tr><td>Bloc cardio-vasculaire 3ème</td><td>IBODE chirurgie vasculaire</td><td>75 705</td></tr>
+                <tr><td>Bloc cardio-vasculaire 3ème</td><td>AS chirurgie cardiaque</td><td>26 400 / 80 568 / 26 099</td></tr>
+                <tr><td>Bloc cardio-vasculaire 3ème</td><td>AS chirurgie vasculaire</td><td>80 878</td></tr>
+                <tr><td>Bloc cardio-vasculaire 3ème</td><td>Brancardier vasculaire / salle 6</td><td>26 427</td></tr>
+                <tr><td>Bloc cardio-vasculaire 3ème</td><td>Salles 1 à 9 / Couloir</td><td>65 611 à 65 618</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+
+        <details class="info-card annuaire-subcard">
+          <summary>4ème étage</summary>
+          <div class="info-content">
+            <table class="annuaire-table">
+              <thead><tr><th>Nom</th><th>Poste</th><th>Téléphone</th></tr></thead>
+              <tbody>
+                <tr><td>Rythmologie — 4ème étage</td><td>Poste de soins</td><td>62 915 ou 63 064</td></tr>
+                <tr><td>Chirurgie cardiaque — 4ème étage</td><td>Ch 429 à 455</td><td>65 664 ou 65 064</td></tr>
+                <tr><td>Chirurgie cardiaque — 4ème étage</td><td>Ch 460 à 475</td><td>63 082 ou 63 072</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+
+        <details class="info-card annuaire-subcard">
+          <summary>Brancardage</summary>
+          <div class="info-content">
+            <table class="annuaire-table">
+              <thead><tr><th>Nom</th><th>Poste</th><th>Téléphone</th></tr></thead>
+              <tbody>
+                <tr><td>Secteur PTI — 1er étage</td><td>Brancardage</td><td>26 275</td></tr>
+                <tr><td>Secteur PTI — 1er étage</td><td>Brancardage</td><td>26 418</td></tr>
+                <tr><td>Chirurgie cardiaque</td><td>AS bloc</td><td>80 568</td></tr>
+                <tr><td>Chirurgie cardiaque</td><td>AS bloc</td><td>26 400</td></tr>
+                <tr><td>Chirurgie cardiaque</td><td>AS bloc</td><td>26 099</td></tr>
+                <tr><td>Chirurgie cardiaque</td><td>Courses cardio</td><td>26 376</td></tr>
+                <tr><td>Rythmologie</td><td>Brancardage</td><td>26 187</td></tr>
+                <tr><td>Secteur radio interventionnelle</td><td>Brancardage</td><td>65 540</td></tr>
+                <tr><td>Secteur radio interventionnelle</td><td>Brancardage</td><td>28 815</td></tr>
+                <tr><td>Coursier USIP / réa</td><td>+ SSPI 3ème chir cardio si besoin</td><td>26 444</td></tr>
+                <tr><td>Régulation PTAH</td><td>Jour</td><td>61 576</td></tr>
+                <tr><td>Régulation PTAH</td><td>Nuit</td><td>26 128 ou 26 086</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+      `,
+    },
+
+    /* ================================
+       4) RÉANIMATIONS ET SOINS INTENSIFS
+       ================================ */
+    {
+      titre: "Réanimations et soins intensifs",
       sousTitreEncadre: "",
       html: `
         <div style="height:6px;"></div>
-
-        <table class="annuaire-table">
-          <thead>
-            <tr>
-              <th>Nom</th>
-              <th>Poste</th>
-              <th>Téléphone</th>
-            </tr>
-          </thead>
+        <table class="annuaire-table annuaire-2cols">
+          <colgroup>
+            <col style="width:70%">
+            <col style="width:30%">
+          </colgroup>
+          <thead><tr><th>Service</th><th>Numéro</th></tr></thead>
           <tbody>
-            <tr><td>PTI — 1er étage</td><td>Poste IDE électrophysiologie</td><td>—</td></tr>
-            <tr><td>PTI — 1er étage</td><td>Accueil coro</td><td>—</td></tr>
-            <tr><td>PTI — 1er étage</td><td>Brancardier</td><td>—</td></tr>
-
-            <tr><td>Radio-vasculaire — 1er étage</td><td>Urgences</td><td>27 243</td></tr>
-            <tr><td>Radio-vasculaire — 1er étage</td><td>Poste manip-radio</td><td>65 639 ou 65 540</td></tr>
-
-            <tr><td>Réanimation médicale — 1er étage</td><td>Unité 1 (Ch 101 à 106)</td><td>63 801</td></tr>
-            <tr><td>Réanimation médicale — 1er étage</td><td>Unité 2 (Ch 107 à 112)</td><td>63 802</td></tr>
-            <tr><td>Réanimation médicale — 1er étage</td><td>Unité 3 (Ch 114 à 119)</td><td>63 803</td></tr>
-            <tr><td>Réanimation médicale — 1er étage</td><td>Réanimateur de garde</td><td>27 544</td></tr>
-
-            <tr><td>SSPI — 1er étage</td><td>Poste de soins IDE</td><td>28 120</td></tr>
-            <tr><td>USC — 1er étage</td><td>Poste de soins</td><td>62 939 ou 62 947</td></tr>
+            <tr><td>USIC</td><td>62 960</td></tr>
+            <tr><td>USI HGE</td><td>61 032</td></tr>
+            <tr><td>USINV</td><td>27 013</td></tr>
+            <tr><td>SSPI Gaston Cordier</td><td>27 364</td></tr>
+            <tr><td>Réa Gaston Cordier</td><td>78 437</td></tr>
+            <tr><td>Réa chir. cardiaque</td><td>27 670</td></tr>
+            <tr><td>Réa Husson Mourier</td><td>27 136</td></tr>
+            <tr><td>SSPI Babinski</td><td>27 191</td></tr>
+            <tr><td>Réa Babinski</td><td>27 306</td></tr>
+            <tr><td>Réa médicale coeur</td><td>63 814</td></tr>
+            <tr><td>Réa médicale Eole</td><td>20 333</td></tr>
+            <tr><td>Réa médicale neuro</td><td>27 370</td></tr>
           </tbody>
         </table>
       `,
     },
 
     /* ================================
-       8) 2ÈME ÉTAGE
+       5) AVIS CHIRURGICAUX EXTÉRIEURS
        ================================ */
     {
-      titre: "2ème étage",
+      titre: "Avis chirurgicaux extérieurs",
       sousTitreEncadre: "",
       html: `
         <div style="height:6px;"></div>
-
         <table class="annuaire-table">
-          <thead>
-            <tr>
-              <th>Nom</th>
-              <th>Poste</th>
-              <th>Téléphone</th>
-            </tr>
-          </thead>
+          <thead><tr><th>Spécialité</th><th>Contact</th><th>Numéro</th></tr></thead>
           <tbody>
-            <tr><td>HDS — 2ème étage</td><td>Poste de soins</td><td>62 980</td></tr>
-
-            <tr><td>UCA — 2ème étage</td><td>UCA 1 (Ch 229 à 249)</td><td>62 946</td></tr>
-            <tr><td>UCA — 2ème étage</td><td>UCA 2 (Ch 219 à 228)</td><td>62 967</td></tr>
-            <tr><td>UCA — 2ème étage</td><td>Régul UCA</td><td>28 130</td></tr>
-            <tr><td>UCA — 2ème étage</td><td>Interne</td><td>62 905</td></tr>
-            <tr><td>UCA — 2ème étage</td><td>Secrétaires hospitalières</td><td>62 945 ou 62 949 ou 28 138</td></tr>
-
-            <tr><td>USIC — 2ème étage</td><td>Ch 201 à 212</td><td>62 943 ou 62 944</td></tr>
-            <tr><td>USIC — 2ème étage</td><td>Interne</td><td>62 960</td></tr>
-            <tr><td>USIC — 2ème étage</td><td>Ch 214 à 218</td><td>62 966</td></tr>
-          </tbody>
-        </table>
-      `,
-    },
-/* ================================
-   9) 3ÈME ÉTAGE
-   ================================ */
-{
-  titre: "3ème étage",
-  sousTitreEncadre: "",
-  html: `
-    <div style="height:6px;"></div>
-
-    <table class="annuaire-table">
-      <thead>
-        <tr>
-          <th>Nom</th>
-          <th>Poste</th>
-          <th>Téléphone</th>
-        </tr>
-      </thead>
-      <tbody>
-
-        <!-- ================= USI ================= -->
-        <tr><td>USI — 3ème étage</td><td>Cadre de santé — LE TOULLEC Ann-Solenn</td><td>28 121</td></tr>
-        <tr><td>USI — 3ème étage</td><td>DECT IDE</td><td>27 011</td></tr>
-        <tr><td>USI — 3ème étage</td><td>Poste de soins 2</td><td>63 083 ou 63 093</td></tr>
-        <tr><td>USI — 3ème étage</td><td>Poste de soins 3</td><td>63 046 ou 86 051</td></tr>
-        <tr><td>USI — 3ème étage</td><td>Fax</td><td>62 954</td></tr>
-        <tr><td>USI — 3ème étage</td><td>Interne</td><td>28 119</td></tr>
-        <tr><td>USI — 3ème étage</td><td>MAR</td><td>28 118</td></tr>
-
-        <!-- ================= SSPI ================= -->
-        <tr><td>SSPI — 3ème étage</td><td>Poste de soins</td><td>63 900</td></tr>
-        <tr><td>SSPI — 3ème étage</td><td>DECT IDE</td><td>27 388</td></tr>
-        <tr><td>SSPI — 3ème étage</td><td>MAR</td><td>28 118</td></tr>
-        <tr><td>SSPI — 3ème étage</td><td>Interne</td><td>28 119</td></tr>
-
-        <!-- ================= RÉANIMATION CHIR ================= -->
-        <tr><td>Réanimation chirurgicale — 3ème étage</td><td>Cadre de santé — RUGARD Sébastien</td><td>63 976</td></tr>
-        <tr><td>Réanimation chirurgicale — 3ème étage</td><td>Cadre de santé — GUIDEZ Laurence</td><td>27 487</td></tr>
-        <tr><td>Réanimation chirurgicale — 3ème étage</td><td>Secrétariat — MOVALLI Angèle</td><td>65 642</td></tr>
-        <tr><td>Réanimation chirurgicale — 3ème étage</td><td>IDE référent</td><td>28 164</td></tr>
-        <tr><td>Réanimation chirurgicale — 3ème étage</td><td>Interne de garde</td><td>65 644</td></tr>
-        <tr><td>Réanimation chirurgicale — 3ème étage</td><td>Unité 1 (Ch 301 à 306)</td><td>65 648</td></tr>
-        <tr><td>Réanimation chirurgicale — 3ème étage</td><td>Unité 2 (Ch 307 à 312)</td><td>65 649</td></tr>
-        <tr><td>Réanimation chirurgicale — 3ème étage</td><td>Unité 3 (Ch 314 à 319)</td><td>65 650</td></tr>
-
-       <!-- ================= ÉQUIPE PARAMÉDICALE DAR ================= -->
-        <tr><td>Equipe paramédicale DAR</td><td>CP DMU</td><td>27 865</td></tr>
-        <tr><td>Equipe paramédicale DAR</td><td>CSS IADE</td><td>27 727</td></tr>
-        <tr><td>Equipe paramédicale DAR</td><td>Cadre de santé IADE — MEALLAN Marilyn</td><td>63 901</td></tr>
-        <tr><td>Equipe paramédicale DAR</td><td>Cadre de santé IADE — ANGELI Nicolas</td><td>27 270</td></tr>
-        <tr><td>Equipe paramédicale DAR</td><td>IADE bloc chirurgie cardiaque</td><td>26 283</td></tr>
-        <tr><td>Equipe paramédicale DAR</td><td>IADE PTT 1er étage</td><td>28 110</td></tr>
-        <tr><td>Equipe paramédicale DAR</td><td>Fax bureau IADE</td><td>63 902</td></tr>
-        <tr><td>Equipe paramédicale DAR</td><td>AS anesthésie</td><td>27 200</td></tr>
-
-        <!-- ================= BLOC CARDIO-VASCULAIRE ================= -->
-        <tr><td>Bloc cardio-vasculaire 3ème</td><td>Coordination</td><td>27 383 ou 66 638</td></tr>
-        <tr><td>Bloc cardio-vasculaire 3ème</td><td>Consultation — Accueil</td><td>65 638</td></tr>
-        <tr><td>Bloc cardio-vasculaire 3ème</td><td>Consultation — Fax</td><td>65 639</td></tr>
-        <tr><td>Bloc cardio-vasculaire 3ème</td><td>POUPON Estelle</td><td>27 994</td></tr>
-        <tr><td>Bloc cardio-vasculaire 3ème</td><td>IBODE chirurgie cardiaque</td><td>27 311</td></tr>
-        <tr><td>Bloc cardio-vasculaire 3ème</td><td>IBODE chirurgie vasculaire</td><td>75 705</td></tr>
-        <tr><td>Bloc cardio-vasculaire 3ème</td><td>AS chirurgie cardiaque</td><td>26 400 / 80 568 / 26 099</td></tr>
-        <tr><td>Bloc cardio-vasculaire 3ème</td><td>AS chirurgie vasculaire</td><td>80 878</td></tr>
-        <tr><td>Bloc cardio-vasculaire 3ème</td><td>Brancardier vasculaire / salle 6</td><td>26 427</td></tr>
-        <tr><td>Bloc cardio-vasculaire 3ème</td><td>Salles 1 à 9 / Couloir</td><td>65 611 à 65 618</td></tr>
-
-      </tbody>
-    </table>
-  `,
-},
-
-
-    /* ================================
-       10) 4ÈME ÉTAGE
-       ================================ */
-    {
-      titre: "4ème étage",
-      sousTitreEncadre: "",
-      html: `
-        <div style="height:6px;"></div>
-
-        <table class="annuaire-table">
-          <thead>
-            <tr>
-              <th>Nom</th>
-              <th>Poste</th>
-              <th>Téléphone</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>Rythmologie — 4ème étage</td><td>Poste de soins</td><td>62 915 ou 63 064</td></tr>
-            <tr><td>Chirurgie cardiaque — 4ème étage</td><td>Ch 429 à 455</td><td>65 664 ou 65 064</td></tr>
-            <tr><td>Chirurgie cardiaque — 4ème étage</td><td>Ch 460 à 475</td><td>63 082 ou 63 072</td></tr>
+            <tr><td>Maxillo-facial</td><td>Urgence interne / sénior</td><td>27 368 / 26 276</td></tr>
+            <tr><td>Thoracique Tenon</td><td>SOS thorax</td><td>01 56 01 62 42</td></tr>
+            <tr><td>Viscéral-digestif</td><td>Urgence interne / sénior</td><td>27 253 / 27 254</td></tr>
+            <tr><td>Viscéral-digestif</td><td>Service Pr Ménégaux — interne</td><td>27 613</td></tr>
+            <tr><td>Viscéral-digestif</td><td>Service Pr Vaillant — interne</td><td>27 526</td></tr>
+            <tr><td>Gynécologie-obstétrique</td><td>Interne jour obstétrique / gynécologie</td><td>77 735 / 78 116</td></tr>
+            <tr><td>Gynécologie-obstétrique</td><td>Interne nuit / sénior</td><td>77 735 / 77 734</td></tr>
+            <tr><td>Neurochirurgie</td><td>Interne / grande garde</td><td>26 302 / 26 305</td></tr>
+            <tr><td>Ophtalmologie</td><td>Interne urgence</td><td>63 268</td></tr>
+            <tr><td>ORL</td><td>Journée interne / sénior</td><td>63 119 / 63 121</td></tr>
+            <tr><td>ORL</td><td>Garde : appeler CMF</td><td>27 368</td></tr>
+            <tr><td>Orthopédie</td><td>Interne</td><td>27 393</td></tr>
+            <tr><td>Urologie</td><td>Interne</td><td>27 647</td></tr>
           </tbody>
         </table>
       `,
     },
 
     /* ================================
-       11) BRANCARDAGE
+       6) AVIS MÉDICAUX EXTÉRIEURS
        ================================ */
     {
-      titre: "Brancardage",
+      titre: "Avis médicaux extérieurs",
       sousTitreEncadre: "",
       html: `
         <div style="height:6px;"></div>
-
         <table class="annuaire-table">
-          <thead>
-            <tr>
-              <th>Nom</th>
-              <th>Poste</th>
-              <th>Téléphone</th>
-            </tr>
-          </thead>
+          <thead><tr><th>Spécialité</th><th>Contact</th><th>Numéro</th></tr></thead>
           <tbody>
-            <tr><td>Secteur PTI — 1er étage</td><td>Brancardage</td><td>26 275</td></tr>
-            <tr><td>Secteur PTI — 1er étage</td><td>Brancardage</td><td>26 418</td></tr>
-
-            <tr><td>Chirurgie cardiaque</td><td>AS bloc</td><td>80 568</td></tr>
-            <tr><td>Chirurgie cardiaque</td><td>AS bloc</td><td>26 400</td></tr>
-            <tr><td>Chirurgie cardiaque</td><td>AS bloc</td><td>26 099</td></tr>
-
-            <tr><td>Chirurgie cardiaque</td><td>Courses cardio</td><td>26 376</td></tr>
-
-            <tr><td>Rythmologie</td><td>Brancardage</td><td>26 187</td></tr>
-
-            <tr><td>Secteur radio interventionnelle</td><td>Brancardage</td><td>65 540</td></tr>
-            <tr><td>Secteur radio interventionnelle</td><td>Brancardage</td><td>28 815</td></tr>
-
-            <tr><td>Coursier USIP / réa</td><td>(+ SSPI 3ème chir cardio si besoin)</td><td>26 444</td></tr>
-
-            <tr><td>Régulation PTAH</td><td>Jour</td><td>61 576</td></tr>
-            <tr><td>Régulation PTAH</td><td>Nuit</td><td>26 128 ou 26 086</td></tr>
+            <tr><td>Addictologie</td><td>Fax / Dr Edel</td><td>78 514 / 78 501</td></tr>
+            <tr><td>Cardiologie</td><td>Avis / rythmologue</td><td>62 960 / 63 043</td></tr>
+            <tr><td>Diabétologie</td><td>Avis</td><td>78 100 / 27 805</td></tr>
+            <tr><td>Dermatologie</td><td>Avis</td><td>61 466</td></tr>
+            <tr><td>Diététicien</td><td>Avis</td><td>61 915</td></tr>
+            <tr><td>Dialyse</td><td>Avis</td><td>77 245 / 77 219</td></tr>
+            <tr><td>Endocrinologie</td><td>Avis</td><td>77 908 / 77 909</td></tr>
+            <tr><td>Gastro-entérologie</td><td>Médecin endoscopie / nuit & WE</td><td>27 704 / 26 170</td></tr>
+            <tr><td>Gastro-entérologie</td><td>Hépatologue / transplantation / onco-dig</td><td>27 524 / 27 346 / 27 523</td></tr>
+            <tr><td>Gériatrie</td><td>Avis / UPOG</td><td>20 388 / 60 376</td></tr>
+            <tr><td>Hématologie</td><td>Médecin de garde / avis</td><td>62 818 / 62 831</td></tr>
+            <tr><td>Infectiologie</td><td>Transfert / avis Dr Blebtreu</td><td>60 120 / 27 692</td></tr>
+            <tr><td>Interniste</td><td>Amoura / Benveniste / Cacoub</td><td>27 632 / 61 225 / 78 013</td></tr>
+            <tr><td>Néphrologie</td><td>Avis / IDE dialyse / médecin dialyse / transplanteur</td><td>27 582 / 77 219 / 77 219 / 77 107</td></tr>
+            <tr><td>Neurologie</td><td>Avis épilepsie / EEG</td><td>61 833 / 62 393 ou 62 395</td></tr>
+            <tr><td>Neurologie</td><td>Neurophy / réa neuro / USINV / astreinte SLA</td><td>0805626626 / 27 370 / 27 013 / 20 391</td></tr>
+            <tr><td>Oncologie</td><td>Avis</td><td>60 518</td></tr>
+            <tr><td>Pédiatre mater</td><td>Avis</td><td>77 759</td></tr>
+            <tr><td>Pharmacie</td><td>Jour / nuit / dérivés sang / stupéfiants</td><td>62 078 / 27 345 / 62 280 / 80 285</td></tr>
+            <tr><td>Pneumologie</td><td>Avis / appareillage</td><td>27 935 / 20 866</td></tr>
+            <tr><td>Psychiatrie</td><td>Avis urgence / sans urgence</td><td>76 308 / 62 809</td></tr>
+            <tr><td>Rhumatologie</td><td>Avis</td><td>01 42 17 79 59</td></tr>
           </tbody>
         </table>
       `,
     },
 
     /* ================================
-       12) IMAGERIES
+       7) IMAGERIES
        ================================ */
     {
       titre: "Imageries",
@@ -34206,72 +34203,7 @@ function renderAnnuaire() {
     },
 
     /* ================================
-       13) NUMÉROS EXTÉRIEURS AU BÂTIMENT CŒUR
-       ================================ */
-    {
-      titre: "Numéros extérieurs à l'institut de cardiologie",
-      sousTitreEncadre: "",
-      html: `
-        <div style="height:6px;"></div>
-
-        <table class="annuaire-table">
-          <thead>
-            <tr>
-              <th>Nom</th>
-              <th>Poste</th>
-              <th>Téléphone</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>Addiction (ECIMUD)</td><td>—</td><td>78 515 ou 78 580</td></tr>
-            <tr><td>Consultation pied diabétique</td><td>—</td><td>27 364</td></tr>
-            <tr><td>Consultation pied diabétique</td><td>Fax</td><td>77 834</td></tr>
-            <tr><td>Consultation urologie</td><td>—</td><td>61 863</td></tr>
-            <tr><td>Dermatologie</td><td>—</td><td>61 466</td></tr>
-            <tr><td>Diététicienne</td><td>—</td><td>61 915</td></tr>
-            <tr><td>Dialyse</td><td>—</td><td>77 245 ou 77 219</td></tr>
-            <tr><td>EEG</td><td>—</td><td>62 393 ou 62 395</td></tr>
-            <tr><td>EEG</td><td>Fax</td><td>61 942</td></tr>
-            <tr><td>EEG neurophysio</td><td>—</td><td>08 05 62 66 26</td></tr>
-            <tr><td>Équipe douleur</td><td>—</td><td>61 194 ou 77 622</td></tr>
-            <tr><td>Équipe douleur</td><td>Fax</td><td>77 955</td></tr>
-            <tr><td>Endoscopie nuit & week-end</td><td>—</td><td>26 170</td></tr>
-            <tr><td>Gastro</td><td>—</td><td>27 704</td></tr>
-            <tr><td>Gastro garde chir. MENÉGAUX</td><td>(digestif)</td><td>27 253 (27 254 urgence)</td></tr>
-            <tr><td>Gaston Cordier</td><td>Cadre réanimation</td><td>77 303</td></tr>
-            <tr><td>Interne chirurgie</td><td>VAILLANT</td><td>27 527 ou 27 526</td></tr>
-            <tr><td>Interne chir. vasculaire</td><td>Pr KOSKAS</td><td>27 493</td></tr>
-            <tr><td>Interne diabétologie</td><td>—</td><td>26 220</td></tr>
-            <tr><td>Interne maternité</td><td>—</td><td>77 735</td></tr>
-            <tr><td>Interne maxillo-faciale</td><td>—</td><td>27 368</td></tr>
-            <tr><td>Interne garde neurochir</td><td>—</td><td>63 690</td></tr>
-            <tr><td>Interne chir ortho</td><td>—</td><td>27 393</td></tr>
-            <tr><td>Interne orthopédie</td><td>—</td><td>67 531 ou 67 506</td></tr>
-            <tr><td>Interne stomatologie</td><td>—</td><td>61 452</td></tr>
-            <tr><td>Maternité chef de garde</td><td>—</td><td>77 734</td></tr>
-            <tr><td>Neuro vasculaire</td><td>(avis/urgence)</td><td>27 013</td></tr>
-            <tr><td>Neurochirurgie cadres</td><td>—</td><td>63 347 ou 63 375</td></tr>
-            <tr><td>Neuro-ophtalmo</td><td>Fax</td><td>63 245</td></tr>
-            <tr><td>ORL</td><td>(week-end tel interne maxillo)</td><td>77 440</td></tr>
-            <tr><td>ORL</td><td>Fax</td><td>63 164 ou 63 121 ou 63 119</td></tr>
-            <tr><td>Pharmacie MDCTS</td><td>Jour / Nuit</td><td>62 078 ou 27 345 (nuit)</td></tr>
-            <tr><td>Pharmacie MDCTS</td><td>Fax</td><td>62 007</td></tr>
-            <tr><td>Pharmacie MDCTS</td><td>Dérivés du sang</td><td>62 280</td></tr>
-            <tr><td>Pharmacie MDCTS</td><td>Dispensation contrôlée</td><td>62 002</td></tr>
-            <tr><td>Pharmacie stupéfiants</td><td>—</td><td>80 285</td></tr>
-            <tr><td>Psychiatre</td><td>—</td><td>62 859</td></tr>
-            <tr><td>Réanimateur garde</td><td>Gaston Cordier (SSPI)</td><td>27 364</td></tr>
-            <tr><td>Réanimateur garde</td><td>Husson Mourrier</td><td>27 136 ou 75 894</td></tr>
-            <tr><td>Réanimateur garde</td><td>EOLE</td><td>20 333</td></tr>
-            <tr><td>Stomatologie urgence</td><td>—</td><td>61 307</td></tr>
-            <tr><td>USIC chir digestive</td><td>—</td><td>61 032</td></tr>
-          </tbody>
-        </table>
-      `,
-    },
-
-    /* ================================
-       14) LABORATOIRES
+       8) LABORATOIRES
        ================================ */
     {
       titre: "Laboratoires",
@@ -34332,7 +34264,6 @@ function renderAnnuaire() {
     },
   ];
 
-
   renderInterventionPage({
     titre: "Annuaire",
     sousTitre: "",
@@ -34340,263 +34271,262 @@ function renderAnnuaire() {
     encadres,
   });
 
-  setTimeout(() => mergeAllAnnuaireTables($app), 0);
+  setTimeout(() => {
+    mergeAllAnnuaireTables($app);
 
-// ==========================================================
-// Annuaire - Recherche + Résultats (robuste + diagnostic)
-// ==========================================================
-const rootApp = document.getElementById("app");
+    const urgenceDetails = Array.from($app.querySelectorAll("details.card, details.info-card"))
+      .find(d => (d.querySelector("summary")?.textContent || "").includes("Numéros d’urgence"));
 
-const esc = (s) =>
-  String(s ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-
-function norm(s) {
-  return (s || "")
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]/g, "");
-}
-
-// ---------- UI ----------
-const hero = rootApp.querySelector(".hero");
-
-const searchWrap = document.createElement("div");
-searchWrap.className = "annuaire-search-wrap";
-searchWrap.innerHTML = `
-  <div class="annuaire-panel">
-    <div class="annuaire-panel-title">Recherche</div>
-    <input id="annuaire-search-input"
-           type="search"
-           placeholder="Nom, poste ou numéro…"
-           autocomplete="off" />
-    <div class="annuaire-search-hint" id="annuaire-search-hint">Initialisation…</div>
-  </div>
-
-  <div class="annuaire-panel">
-    <div class="annuaire-panel-title">Résultats</div>
-    <div id="annuaire-results" class="annuaire-results"></div>
-  </div>
-`;
-
-if (hero) hero.insertAdjacentElement("afterend", searchWrap);
-else rootApp.insertAdjacentElement("afterbegin", searchWrap);
-
-const input = document.getElementById("annuaire-search-input");
-const resultsEl = document.getElementById("annuaire-results");
-const hintEl = document.getElementById("annuaire-search-hint");
-
-function showDiag(msg) {
-  resultsEl.innerHTML = `<div class="annuaire-results-empty" style="white-space:pre-wrap;">${esc(msg)}</div>`;
-}
-
-if (!input || !resultsEl || !hintEl) {
-  console.error("Annuaire search DOM missing:", { input, resultsEl, hintEl });
-  return;
-}
-
-// ---------- Surlignage ----------
-function clearHighlights(container) {
-  (container || document).querySelectorAll("mark.annuaire-mark").forEach((m) => {
-    m.replaceWith(document.createTextNode(m.textContent || ""));
-  });
-}
-
-function highlightInCell(td, queryRaw) {
-  if (!td || !queryRaw) return;
-  const q = queryRaw.trim();
-  if (!q) return;
-
-  const walker = document.createTreeWalker(td, NodeFilter.SHOW_TEXT, null);
-  const nodes = [];
-  while (walker.nextNode()) nodes.push(walker.currentNode);
-
-  const qLower = q.toLowerCase();
-
-  nodes.forEach((node) => {
-    const txt = node.nodeValue || "";
-    const low = txt.toLowerCase();
-    const idx = low.indexOf(qLower);
-    if (idx === -1) return;
-
-    const before = txt.slice(0, idx);
-    const match = txt.slice(idx, idx + q.length);
-    const after = txt.slice(idx + q.length);
-
-    const frag = document.createDocumentFragment();
-    if (before) frag.appendChild(document.createTextNode(before));
-
-    const mark = document.createElement("mark");
-    mark.className = "annuaire-mark";
-    mark.textContent = match;
-    frag.appendChild(mark);
-
-    if (after) frag.appendChild(document.createTextNode(after));
-    node.parentNode.replaceChild(frag, node);
-  });
-}
-
-function flashRow(tr) {
-  tr.classList.add("annuaire-row-flash");
-  setTimeout(() => tr.classList.remove("annuaire-row-flash"), 900);
-}
-
-// ---------- Index + retry ----------
-let index = [];
-
-function buildIndexOnce() {
-  const allRows = Array.from(rootApp.querySelectorAll("tr")).filter(
-    (tr) => tr.querySelectorAll("td").length > 0
-  );
-
-  index = allRows
-    .map((tr) => {
-      const tds = Array.from(tr.querySelectorAll("td"));
-      if (tds.length === 0) return null;
-
-      const details = tr.closest("details.card");
-      const summary = details?.querySelector("summary");
-      const encadre = (summary?.textContent || "").trim(); // <-- textContent
-
-      // ✅ IMPORTANT: textContent (pas innerText) => marche même si <details> fermé
-      const cellsText = tds.map((td) => (td.textContent || "").trim()); // <-- textContent
-      const raw = cellsText.join(" | ");
-
-      return {
-        tr,
-        tds,
-        details,
-        encadre,
-        nom: (cellsText[0] || "").trim(),
-        meta: cellsText.slice(1).filter(Boolean).join(" • "),
-        raw,
-        key: norm(raw),
-      };
-    })
-    .filter(Boolean);
-
-  return index.length;
-}
-
-function renderResults(matches, qRaw) {
-  if (!qRaw) {
-    resultsEl.innerHTML = `<div class="annuaire-results-empty">Aucun filtre appliqué</div>`;
-    resultsEl._matches = [];
-    return;
-  }
-  if (matches.length === 0) {
-    resultsEl.innerHTML = `<div class="annuaire-results-empty">Aucun résultat</div>`;
-    resultsEl._matches = [];
-    return;
-  }
-
-  const MAX = 50;
-  const shown = matches.slice(0, MAX);
-  resultsEl._matches = shown;
-
-  resultsEl.innerHTML = shown
-    .map(
-      (x, i) => `
-        <button class="annuaire-result-item" type="button" data-i="${i}">
-          <div class="annuaire-result-name">${esc(x.nom || x.raw)}</div>
-          <div class="annuaire-result-meta">${esc(x.meta || "")}</div>
-          <div class="annuaire-result-badge">${esc(x.encadre || "")}</div>
-        </button>
-      `
-    )
-    .join("");
-}
-
-function applyFilter() {
-  const qRaw = (input.value || "").trim();
-  const q = norm(qRaw);
-
-  clearHighlights(rootApp);
-
-  if (!q) {
-    hintEl.textContent = "Tape pour filtrer…";
-    index.forEach((x) => (x.tr.style.display = ""));
-    renderResults([], "");
-    return;
-  }
-
-  const matches = [];
-  index.forEach((x) => {
-    const ok = x.key.includes(q);
-    x.tr.style.display = ok ? "" : "none";
-    if (ok) {
-      matches.push(x);
-      x.tds.forEach((td) => highlightInCell(td, qRaw));
+    if (urgenceDetails) {
+      urgenceDetails.open = true;
+      urgenceDetails.classList.add("annuaire-urgence-card");
     }
-  });
+  }, 0);
 
-  hintEl.textContent = `${matches.length} résultat(s)`;
-  renderResults(matches, qRaw);
+  // ==========================================================
+  // Annuaire - Recherche + Résultats
+  // ==========================================================
+  const rootApp = document.getElementById("app");
 
-  // ✅ Test demandé
-  if (norm(qRaw) === "bou") {
-    console.log("TEST 'bou' =>", matches.map((m) => m.nom));
-    if (!matches.some((m) => norm(m.nom).includes("bougle"))) {
-      showDiag(
-        `⚠️ Test "bou" : BOUGLE non trouvé\n` +
-        `Index = ${index.length}\n` +
-        `Exemple 1 = ${index[0]?.raw || "NONE"}\n` +
-        `Exemple 2 = ${index[1]?.raw || "NONE"}\n\n` +
-        `➡️ Si les exemples ne contiennent jamais de noms, alors ce n'est pas le bon DOM qui est indexé.`
-      );
-    }
+  const esc = (s) =>
+    String(s ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+
+  function norm(s) {
+    return (s || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]/g, "");
   }
-}
 
-// click sur résultat => ouvre l'encadré + scroll
-resultsEl.addEventListener("click", (e) => {
-  const btn = e.target.closest(".annuaire-result-item");
-  if (!btn) return;
+  const hero = rootApp.querySelector(".hero");
 
-  const shown = resultsEl._matches || [];
-  const i = Number(btn.getAttribute("data-i"));
-  const item = shown[i];
-  if (!item) return;
+  const searchWrap = document.createElement("div");
+  searchWrap.className = "annuaire-search-wrap";
+  searchWrap.innerHTML = `
+    <div class="annuaire-panel">
+      <div class="annuaire-panel-title">Recherche</div>
+      <input id="annuaire-search-input"
+             type="search"
+             placeholder="Nom, poste ou numéro…"
+             autocomplete="off" />
+      <div class="annuaire-search-hint" id="annuaire-search-hint">Initialisation…</div>
+    </div>
 
-  if (item.details) item.details.open = true;
-  item.tr.scrollIntoView({ behavior: "smooth", block: "center" });
-  flashRow(item.tr);
-});
+    <div class="annuaire-panel">
+      <div class="annuaire-panel-title">Résultats</div>
+      <div id="annuaire-results" class="annuaire-results"></div>
+    </div>
+  `;
 
-input.addEventListener("input", applyFilter);
+  if (hero) hero.insertAdjacentElement("afterend", searchWrap);
+  else rootApp.insertAdjacentElement("afterbegin", searchWrap);
 
-// Retry (attend le rendu)
-let tries = 0;
-const maxTries = 120; // ~2s
-(function waitForRows() {
-  tries += 1;
-  const n = buildIndexOnce();
+  const input = document.getElementById("annuaire-search-input");
+  const resultsEl = document.getElementById("annuaire-results");
+  const hintEl = document.getElementById("annuaire-search-hint");
 
-  if (n > 0) {
-    const hasBougle = index.some((x) => x.key.includes("bougle"));
-    console.log("Annuaire index =", n, "BOUGLE présent =", hasBougle, "first =", index[0]?.raw);
-    hintEl.textContent = `Index prêt (${n} lignes)`;
-    applyFilter(); // affiche "Aucun filtre appliqué" au départ
+  function showDiag(msg) {
+    resultsEl.innerHTML = `<div class="annuaire-results-empty" style="white-space:pre-wrap;">${esc(msg)}</div>`;
+  }
+
+  if (!input || !resultsEl || !hintEl) {
+    console.error("Annuaire search DOM missing:", { input, resultsEl, hintEl });
     return;
   }
 
-  hintEl.textContent = `Initialisation… (${tries}/${maxTries})`;
-  if (tries >= maxTries) {
-    showDiag(
-      `❌ Index vide après ${tries} tentatives.\n` +
-      `➡️ Aucun <tr><td> trouvé dans #app au moment du scan.\n` +
-      `Vérifie que l'annuaire est bien rendu dans #app.`
+  function clearHighlights(container) {
+    (container || document).querySelectorAll("mark.annuaire-mark").forEach((m) => {
+      m.replaceWith(document.createTextNode(m.textContent || ""));
+    });
+  }
+
+  function highlightInCell(td, queryRaw) {
+    if (!td || !queryRaw) return;
+    const q = queryRaw.trim();
+    if (!q) return;
+
+    const walker = document.createTreeWalker(td, NodeFilter.SHOW_TEXT, null);
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+
+    const qLower = q.toLowerCase();
+
+    nodes.forEach((node) => {
+      const txt = node.nodeValue || "";
+      const low = txt.toLowerCase();
+      const idx = low.indexOf(qLower);
+      if (idx === -1) return;
+
+      const before = txt.slice(0, idx);
+      const match = txt.slice(idx, idx + q.length);
+      const after = txt.slice(idx + q.length);
+
+      const frag = document.createDocumentFragment();
+      if (before) frag.appendChild(document.createTextNode(before));
+
+      const mark = document.createElement("mark");
+      mark.className = "annuaire-mark";
+      mark.textContent = match;
+      frag.appendChild(mark);
+
+      if (after) frag.appendChild(document.createTextNode(after));
+      node.parentNode.replaceChild(frag, node);
+    });
+  }
+
+  function flashRow(tr) {
+    tr.classList.add("annuaire-row-flash");
+    setTimeout(() => tr.classList.remove("annuaire-row-flash"), 900);
+  }
+
+  let index = [];
+
+  function buildIndexOnce() {
+    const allRows = Array.from(rootApp.querySelectorAll("tr")).filter(
+      (tr) => tr.querySelectorAll("td").length > 0
     );
-    return;
+
+    index = allRows
+      .map((tr) => {
+        const tds = Array.from(tr.querySelectorAll("td"));
+        if (tds.length === 0) return null;
+
+        const details = tr.closest("details.card, details.info-card");
+        const summary = details?.querySelector("summary");
+        const encadre = (summary?.textContent || "").trim();
+
+        const cellsText = tds.map((td) => (td.textContent || "").trim());
+        const raw = cellsText.join(" | ");
+
+        return {
+          tr,
+          tds,
+          details,
+          encadre,
+          nom: (cellsText[0] || "").trim(),
+          meta: cellsText.slice(1).filter(Boolean).join(" • "),
+          raw,
+          key: norm(raw),
+        };
+      })
+      .filter(Boolean);
+
+    return index.length;
   }
-  requestAnimationFrame(waitForRows);
-})();
- }
+
+  function renderResults(matches, qRaw) {
+    if (!qRaw) {
+      resultsEl.innerHTML = `<div class="annuaire-results-empty">Aucun filtre appliqué</div>`;
+      resultsEl._matches = [];
+      return;
+    }
+
+    if (matches.length === 0) {
+      resultsEl.innerHTML = `<div class="annuaire-results-empty">Aucun résultat</div>`;
+      resultsEl._matches = [];
+      return;
+    }
+
+    const MAX = 50;
+    const shown = matches.slice(0, MAX);
+    resultsEl._matches = shown;
+
+    resultsEl.innerHTML = shown
+      .map(
+        (x, i) => `
+          <button class="annuaire-result-item" type="button" data-i="${i}">
+            <div class="annuaire-result-name">${esc(x.nom || x.raw)}</div>
+            <div class="annuaire-result-meta">${esc(x.meta || "")}</div>
+            <div class="annuaire-result-badge">${esc(x.encadre || "")}</div>
+          </button>
+        `
+      )
+      .join("");
+  }
+
+  function applyFilter() {
+    const qRaw = (input.value || "").trim();
+    const q = norm(qRaw);
+
+    clearHighlights(rootApp);
+
+    if (!q) {
+      hintEl.textContent = "Tape pour filtrer…";
+      index.forEach((x) => (x.tr.style.display = ""));
+      renderResults([], "");
+      return;
+    }
+
+    const matches = [];
+
+    index.forEach((x) => {
+      const ok = x.key.includes(q);
+      x.tr.style.display = ok ? "" : "none";
+
+      if (ok) {
+        matches.push(x);
+        x.tds.forEach((td) => highlightInCell(td, qRaw));
+      }
+    });
+
+    hintEl.textContent = `${matches.length} résultat(s)`;
+    renderResults(matches, qRaw);
+  }
+
+  resultsEl.addEventListener("click", (e) => {
+    const btn = e.target.closest(".annuaire-result-item");
+    if (!btn) return;
+
+    const shown = resultsEl._matches || [];
+    const i = Number(btn.getAttribute("data-i"));
+    const item = shown[i];
+    if (!item) return;
+
+    let d = item.details;
+    while (d) {
+      d.open = true;
+      d = d.parentElement?.closest("details");
+    }
+
+    item.tr.scrollIntoView({ behavior: "smooth", block: "center" });
+    flashRow(item.tr);
+  });
+
+  input.addEventListener("input", applyFilter);
+
+  let tries = 0;
+  const maxTries = 120;
+
+  (function waitForRows() {
+    tries += 1;
+    const n = buildIndexOnce();
+
+    if (n > 0) {
+      hintEl.textContent = `Index prêt (${n} lignes)`;
+      applyFilter();
+      return;
+    }
+
+    hintEl.textContent = `Initialisation… (${tries}/${maxTries})`;
+
+    if (tries >= maxTries) {
+      showDiag(
+        `❌ Index vide après ${tries} tentatives.\n` +
+        `➡️ Aucun <tr><td> trouvé dans #app au moment du scan.`
+      );
+      return;
+    }
+
+    requestAnimationFrame(waitForRows);
+  })();
+}
+
  function renderCodesAcces() {
   const encadres = [
     {
