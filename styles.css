@@ -1723,26 +1723,73 @@ details.subcard summary {
   font-weight: 700;
 }
 
-.dark-mode .info-card,
-.dark-mode details.info-card,
-.dark-mode .annuaire-subcard {
-  color: #ffffff !important;
-}
-.dark-mode .info-card table,
-.dark-mode .info-card td,
-.dark-mode .info-card th,
-.dark-mode .info-card summary,
-.dark-mode .info-card h4,
-.dark-mode .info-content {
+/* =====================================================
+   ANNUAIRE — CORRECTION THÈME SOMBRE
+===================================================== */
+
+body:not(.theme-light) .info-card,
+body:not(.theme-light) details.info-card,
+body:not(.theme-light) .annuaire-subcard,
+body:not(.theme-light) .annuaire-panel,
+body:not(.theme-light) .annuaire-panel * {
   color: #ffffff !important;
 }
 
-.dark-mode #annuaire-search-input {
-  color: white !important;
+/* Tableaux annuaire */
+
+body:not(.theme-light) .annuaire-table,
+body:not(.theme-light) .annuaire-table td,
+body:not(.theme-light) .annuaire-table th,
+body:not(.theme-light) .annuaire-table tr {
+  color: #ffffff !important;
 }
 
-.dark-mode #annuaire-search-input::placeholder {
-  color: rgba(255,255,255,0.6) !important;
+/* Headers tableaux */
+
+body:not(.theme-light) .annuaire-table th {
+  background: rgba(255,255,255,0.10) !important;
+  color: #ffffff !important;
+}
+
+/* Inputs recherche */
+
+body:not(.theme-light) #annuaire-search-input,
+body:not(.theme-light) .annuaire-search input,
+body:not(.theme-light) input[type="search"] {
+  color: #ffffff !important;
+}
+
+body:not(.theme-light) #annuaire-search-input::placeholder,
+body:not(.theme-light) .annuaire-search input::placeholder,
+body:not(.theme-light) input[type="search"]::placeholder {
+  color: rgba(255,255,255,0.65) !important;
+}
+
+/* Résultats recherche */
+
+body:not(.theme-light) .annuaire-result-item,
+body:not(.theme-light) .annuaire-result-name,
+body:not(.theme-light) .annuaire-result-meta,
+body:not(.theme-light) .annuaire-result-badge {
+  color: #ffffff !important;
+}
+
+/* Sous-encadrés */
+
+body:not(.theme-light) details.subcard summary,
+body:not(.theme-light) .subcard summary {
+  color: #ffffff !important;
+}
+
+/* Encadré urgence */
+
+body:not(.theme-light) .annuaire-urgence-card {
+  background: #5c1d1d !important;
+  border: 1px solid #b94a4a !important;
+}
+
+body:not(.theme-light) .annuaire-urgence-card summary {
+  color: #ffb3b3 !important;
 }
 
 .header-banner {
