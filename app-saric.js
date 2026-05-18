@@ -33656,6 +33656,7 @@ function renderAnnuaire() {
        ================================ */
     {
       titre: "Numéros d’urgence",
+      className: "annuaire-urgence-card",
       sousTitreEncadre: "",
       open: true,
       html: `
