@@ -20258,7 +20258,7 @@ function renderReanAntibiotherapieMenu() {
         </div>
 
         <div class="atb-menu-section-title">
-  Enseignement :
+  Enseignement
 </div>
 
 <div class="grid">
@@ -20279,7 +20279,7 @@ function renderReanAntibiotherapieMenu() {
 </div>
 
 <div class="atb-menu-section-title">
-  Outils antibiothérapie :
+  Outils antibiothérapie
 </div>
 
 <div class="grid">
@@ -20305,7 +20305,7 @@ function renderReanAntibiotherapieMenu() {
 </div>
 
 <div class="atb-menu-section-title">
-  Documentation :
+  Documentation
 </div>
 
 <div class="antibio-btn-group">
@@ -20331,44 +20331,65 @@ function renderReanAntibiotherapieMenu() {
   `;
 }
 
-function renderClassificationBacteriennePage(){
-  const appContainer=document.getElementById("app");
-  appContainer.innerHTML=`
-    <section class="classification-page">
-      <h2>Classification bactérienne</h2>
-      <div class="classification-bacteria-grid">
-        ${classificationImg("gramneg1.png")}
-        ${classificationImg("gramneg4.png")}
-        ${classificationImg("grampos3.png")}
-        ${classificationImg("gramneg2.png")}
-        ${classificationImg("grampos1.png")}
-        ${classificationImg("gramneg3.png","classification-img-stick-top")}
-        ${classificationImg("grampos2.png","classification-img-stick-bottom")}
-        ${classificationImg("bactautres.png")}
+function renderThumbPage({title,image,items}){
+  $app.innerHTML=`
+    <section class="intervention-shell">
+      <div class="intervention-main">
+        <div class="hero">
+          <h2>${title}</h2>
+        </div>
+
+        <div class="thumb-grid">
+          ${items.map(item=>`
+            <button type="button" class="thumb-card" onclick="openImg('${item.file}')">
+              <img src="img/${item.file}" alt="${item.label}">
+              <span>${item.label}</span>
+            </button>
+          `).join("")}
+        </div>
       </div>
+
+      <aside class="intervention-side">
+        <img src="img/${image}" alt="${title}">
+      </aside>
     </section>
   `;
+}
+
+function renderClassificationBacteriennePage(){
+  renderThumbPage({
+    title:"Classification bactérienne",
+    image:"antibiotherapie2.png",
+    items:[
+      {file:"gramneg1.png",label:"Bacilles Gram négatif - 1"},
+      {file:"gramneg2.png",label:"Bacilles Gram négatif - 2"},
+      {file:"gramneg3.png",label:"Bacilles Gram négatif - 3"},
+      {file:"gramneg4.png",label:"Bacilles Gram négatif - 4"},
+      {file:"grampos1.png",label:"Cocci Gram positif - 1"},
+      {file:"grampos2.png",label:"Cocci Gram positif - 2"},
+      {file:"grampos3.png",label:"Cocci Gram positif - 3"},
+      {file:"bactautres.png",label:"Autres bactéries"}
+    ]
+  });
 }
 
 function renderClassificationAntibiotiquesPage(){
-  const appContainer=document.getElementById("app");
-  appContainer.innerHTML=`
-    <section class="classification-page">
-      <h2>Classification des antibiotiques</h2>
-      <div class="classification-antibio-grid">
-        ${[1,2,3,4,5,6,7,8].map(n=>classificationImg(`antibio${n}.png`)).join("")}
-      </div>
-    </section>
-  `;
+  renderThumbPage({
+    title:"Classification des antibiotiques",
+    image:"antibiotherapie2.png",
+    items:[
+      {file:"antibio1.png",label:"Antibiotiques - 1"},
+      {file:"antibio2.png",label:"Antibiotiques - 2"},
+      {file:"antibio3.png",label:"Antibiotiques - 3"},
+      {file:"antibio4.png",label:"Antibiotiques - 4"},
+      {file:"antibio5.png",label:"Antibiotiques - 5"},
+      {file:"antibio6.png",label:"Antibiotiques - 6"},
+      {file:"antibio7.png",label:"Antibiotiques - 7"},
+      {file:"antibio8.png",label:"Antibiotiques - 8"}
+    ]
+  });
 }
 
-function classificationImg(file,extraClass=""){
-  return `
-    <button type="button" class="classification-img-card ${extraClass}" onclick="openImg('${file}')">
-      <img src="img/${file}" alt="">
-    </button>
-  `;
-}
 
 // Les 5 fonctions suivantes se contentent de déléguer à tes fonctions
 // existantes de pwa-atb-rules (renderProbaMenu, renderAdapteeMenu, etc.)
@@ -20473,23 +20494,56 @@ function renderAdapteeMenu() {
 
 <h2>Principaux mécanismes d'antibiorésistance</h2>
 
-<div class="abx-phenotypes-grid">
+<div class="atb-block">
+  <h3 class="atb-block-title">
+    Principaux mécanismes d'antibiorésistance
+  </h3>
 
-  <figure>
-    <img src="img/resistance1.png" alt="Classification des bêta-lactamases">
-    <figcaption>Classification des bêta-lactamases (Ambler)</figcaption>
-  </figure>
+  <div class="thumb-grid">
+    <button
+      type="button"
+      class="thumb-card"
+      onclick="openImg('resistance1.png')"
+    >
+      <img
+        src="img/resistance1.png"
+        alt="Classification des bêta-lactamases (Ambler)"
+        loading="lazy"
+      >
+      <span>
+        Classification des bêta-lactamases (Ambler)
+      </span>
+    </button>
+    <button
+      type="button"
+      class="thumb-card"
+      onclick="openImg('resistance2.png')"
+    >
+      <img
+        src="img/resistance2.png"
+        alt="Classification des entérobactéries"
+        loading="lazy"
+      >
+      <span>
+        Classification des entérobactéries
+      </span>
+    </button>
+    <button
+      type="button"
+      class="thumb-card"
+      onclick="openImg('resistance3.png')"
+    >
+      <img
+        src="img/resistance3.png"
+        alt="Synthèse des mécanismes d'antibiorésistance"
+        loading="lazy"
+      >
+      <span>
+        Synthèse des mécanismes d'antibiorésistance
+      </span>
+    </button>
 
-  <figure>
-    <img src="img/resistance2.png" alt="Classification des entérobactéries">
-    <figcaption>Classification des entérobactéries</figcaption>
-  </figure>
-
-  <figure>
-    <img src="img/resistance3.png" alt="Synthèse des mécanismes d'antibiorésistance">
-    <figcaption>Synthèse des mécanismes d'antibiorésistance</figcaption>
-  </figure>
-
+  </div>
 </div>
        
         <div class="atb-block">
