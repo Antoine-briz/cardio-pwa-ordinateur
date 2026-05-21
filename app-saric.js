@@ -20258,6 +20258,17 @@ function renderReanAntibiotherapieMenu() {
         </div>
 
         <div class="grid">
+
+       <button class="btn"
+  onclick="openSubPage(renderClassificationBacteriennePage, renderReanAntibiotherapieMenu)">
+  Classification bactérienne
+</button>
+
+<button class="btn"
+  onclick="openSubPage(renderClassificationAntibiotiquesPage, renderReanAntibiotherapieMenu)">
+  Classification des antibiotiques
+</button>
+         
          <button class="btn"
   onclick="openSubPage(renderProbaMenu, renderReanAntibiotherapieMenu)">
   Antibiothérapie probabiliste
@@ -20308,6 +20319,45 @@ function renderReanAntibiotherapieMenu() {
       </aside>
 
     </section>
+  `;
+}
+
+function renderClassificationBacteriennePage(){
+  const appContainer=document.getElementById("app");
+  appContainer.innerHTML=`
+    <section class="classification-page">
+      <h2>Classification bactérienne</h2>
+      <div class="classification-bacteria-grid">
+        ${classificationImg("gramneg1.png")}
+        ${classificationImg("gramneg4.png")}
+        ${classificationImg("grampos3.png")}
+        ${classificationImg("gramneg2.png")}
+        ${classificationImg("grampos1.png")}
+        ${classificationImg("gramneg3.png","classification-img-stick-top")}
+        ${classificationImg("grampos2.png","classification-img-stick-bottom")}
+        ${classificationImg("bactautres.png")}
+      </div>
+    </section>
+  `;
+}
+
+function renderClassificationAntibiotiquesPage(){
+  const appContainer=document.getElementById("app");
+  appContainer.innerHTML=`
+    <section class="classification-page">
+      <h2>Classification des antibiotiques</h2>
+      <div class="classification-antibio-grid">
+        ${[1,2,3,4,5,6,7,8].map(n=>classificationImg(`antibio${n}.png`)).join("")}
+      </div>
+    </section>
+  `;
+}
+
+function classificationImg(file,extraClass=""){
+  return `
+    <button type="button" class="classification-img-card ${extraClass}" onclick="openImg('${file}')">
+      <img src="img/${file}" alt="">
+    </button>
   `;
 }
 
@@ -35768,6 +35818,8 @@ const routes = {
   "#/reanimation/echographie-generale": renderReanEchoGenerale,
 
   "#/reanimation/antibiotherapie": renderReanAntibiotherapieMenu,
+  "#/reanimation/antibiotherapie/classification-bacterienne": sub(renderReanAntibiotherapieMenu, renderClassificationBacteriennePage),
+"#/reanimation/antibiotherapie/classification-antibiotiques": sub(renderReanAntibiotherapieMenu, renderClassificationAntibiotiquesPage),
   "#/reanimation/antibiotherapie/probabiliste": sub(renderReanAntibiotherapieMenu, renderProbaMenu),
   "#/reanimation/antibiotherapie/bmr-bhre": sub(renderReanAntibiotherapieMenu, renderAdapteeMenu),
   "#/reanimation/antibiotherapie/durees": sub(renderReanAntibiotherapieMenu, renderDureesForm),
