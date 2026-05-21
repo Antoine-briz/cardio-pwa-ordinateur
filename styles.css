@@ -9912,47 +9912,45 @@ body:not(.theme-light) .atb-block-title {
 body.theme-light .atb-block-title {
   color: #000000 !important;
 }
-
 /* =====================================================
    PROTOCOLE STANDARD CEC — CORRECTIONS COULEURS
 ===================================================== */
 
-/* Encadrés de gauche : Choix intervention + Caractéristiques */
-.cec-proto-page .cec-left-card,
-.cec-proto-page .cec-left-card *,
-.cec-proto-page .cec-choice-card,
-.cec-proto-page .cec-choice-card *,
-.cec-proto-page .cec-characteristics-card,
-.cec-proto-page .cec-characteristics-card * {
+/* Encadrés de gauche uniquement */
+.cec-proto-page .cec-panel,
+.cec-proto-page .cec-panel *,
+.cec-proto-page .cec-form-card,
+.cec-proto-page .cec-form-card *,
+.cec-proto-page .cec-proto-left,
+.cec-proto-page .cec-proto-left *,
+.cec-proto-page .cec-proto-sidebar,
+.cec-proto-page .cec-proto-sidebar * {
   color: #000000 !important;
 }
 
-/* Si tes deux encadrés utilisent seulement .card */
-.cec-proto-page .card,
-.cec-proto-page .card * {
+/* Si les encadrés sont dans la première colonne */
+.cec-proto-page .cec-proto-grid > :first-child,
+.cec-proto-page .cec-proto-grid > :first-child * {
   color: #000000 !important;
 }
 
-/* Tableau : colonne gauche bleu foncé */
-.cec-proto-page table th:first-child,
-.cec-proto-page table td:first-child {
-  background: #0b3c6d !important;
+/* Tableau : uniquement les cellules déjà bleu foncé gardent texte blanc */
+.cec-proto-page table th[style*="background"],
+.cec-proto-page table td[style*="background"],
+.cec-proto-page table .cec-blue-cell,
+.cec-proto-page table .cec-row-title,
+.cec-proto-page table .cec-section-title {
   color: #ffffff !important;
 }
 
-/* Tableau : première ligne / en-têtes */
+/* En-tête Objectifs / Mesures correctrices : texte noir, fond inchangé */
 .cec-proto-page table thead th,
 .cec-proto-page table tr:first-child th,
 .cec-proto-page table tr:first-child td {
-  background: #0b3c6d !important;
-  color: #ffffff !important;
+  color: #000000 !important;
 }
 
-/* On force aussi les textes internes éventuels */
-.cec-proto-page table th:first-child *,
-.cec-proto-page table td:first-child *,
-.cec-proto-page table thead th *,
-.cec-proto-page table tr:first-child th *,
-.cec-proto-page table tr:first-child td * {
-  color: #ffffff !important;
+/* Annule le bleu ajouté par l’ancien bloc */
+.cec-proto-page table td:first-child {
+  background: inherit !important;
 }
