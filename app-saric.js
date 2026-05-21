@@ -20411,7 +20411,28 @@ function renderAdapteeMenu() {
           <h2>Antibiorésistances bactériennes</h2>
         </div>
 
-        <!-- 1) Tableaux des phénotypes -->
+
+<h2>Principaux mécanismes d'antibiorésistance</h2>
+
+<div class="abx-phenotypes-grid">
+
+  <figure>
+    <img src="img/resistance1.png" alt="Classification des bêta-lactamases">
+    <figcaption>Classification des bêta-lactamases (Ambler)</figcaption>
+  </figure>
+
+  <figure>
+    <img src="img/resistance2.png" alt="Classification des entérobactéries">
+    <figcaption>Classification des entérobactéries</figcaption>
+  </figure>
+
+  <figure>
+    <img src="img/resistance3.png" alt="Synthèse des mécanismes d'antibiorésistance">
+    <figcaption>Synthèse des mécanismes d'antibiorésistance</figcaption>
+  </figure>
+
+</div>
+       
         <div class="atb-block">
           <h3 class="atb-block-title">Phénotypes habituels d'antibiorésistance</h3>
 
