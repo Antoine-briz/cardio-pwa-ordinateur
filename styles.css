@@ -7303,7 +7303,23 @@ body:not(.light-theme) .cec-proto-page .info-card input, body:not(.light-theme) 
   font-size:24px;
   font-weight:800;
 }
+.thumb-card{
+  background:#ffffff !important;
+  color:#000000 !important;
+  border-radius:16px;
+  overflow:hidden;
+}
 
+.thumb-card span{
+  color:#000000 !important;
+  font-size:13px;
+  line-height:1.2;
+  font-weight:700;
+  text-align:center;
+  padding:8px;
+  display:block;
+  overflow-wrap:anywhere;
+}
 
 /* =====================================================
    08 — Arrêt cardiaque
