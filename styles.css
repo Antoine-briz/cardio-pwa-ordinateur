@@ -9912,3 +9912,47 @@ body:not(.theme-light) .atb-block-title {
 body.theme-light .atb-block-title {
   color: #000000 !important;
 }
+
+/* =====================================================
+   PROTOCOLE STANDARD CEC — CORRECTIONS COULEURS
+===================================================== */
+
+/* Encadrés de gauche : Choix intervention + Caractéristiques */
+.cec-proto-page .cec-left-card,
+.cec-proto-page .cec-left-card *,
+.cec-proto-page .cec-choice-card,
+.cec-proto-page .cec-choice-card *,
+.cec-proto-page .cec-characteristics-card,
+.cec-proto-page .cec-characteristics-card * {
+  color: #000000 !important;
+}
+
+/* Si tes deux encadrés utilisent seulement .card */
+.cec-proto-page .card,
+.cec-proto-page .card * {
+  color: #000000 !important;
+}
+
+/* Tableau : colonne gauche bleu foncé */
+.cec-proto-page table th:first-child,
+.cec-proto-page table td:first-child {
+  background: #0b3c6d !important;
+  color: #ffffff !important;
+}
+
+/* Tableau : première ligne / en-têtes */
+.cec-proto-page table thead th,
+.cec-proto-page table tr:first-child th,
+.cec-proto-page table tr:first-child td {
+  background: #0b3c6d !important;
+  color: #ffffff !important;
+}
+
+/* On force aussi les textes internes éventuels */
+.cec-proto-page table th:first-child *,
+.cec-proto-page table td:first-child *,
+.cec-proto-page table thead th *,
+.cec-proto-page table tr:first-child th *,
+.cec-proto-page table tr:first-child td * {
+  color: #ffffff !important;
+}
