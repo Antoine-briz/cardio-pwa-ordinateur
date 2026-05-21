@@ -20359,7 +20359,7 @@ function renderThumbPage({title,image,items}){
 function renderClassificationBacteriennePage(){
   renderThumbPage({
     title:"Classification bactérienne",
-    image:"antibiotherapie2.png",
+    image:"antibiotherapie3.png",
     items:[
       {file:"gramneg1.png",label:"Bacilles Gram négatif - 1"},
       {file:"gramneg2.png",label:"Bacilles Gram négatif - 2"},
@@ -20376,7 +20376,7 @@ function renderClassificationBacteriennePage(){
 function renderClassificationAntibiotiquesPage(){
   renderThumbPage({
     title:"Classification des antibiotiques",
-    image:"antibiotherapie2.png",
+    image:"antibiotherapie4.png",
     items:[
       {file:"antibio1.png",label:"Antibiotiques - 1"},
       {file:"antibio2.png",label:"Antibiotiques - 2"},
