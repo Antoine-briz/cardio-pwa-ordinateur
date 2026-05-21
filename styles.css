@@ -7298,6 +7298,12 @@ body:not(.light-theme) .cec-proto-page .info-card input, body:not(.light-theme) 
     grid-area:auto !important;
   }
 }
+.atb-menu-section-title{
+  margin:22px 0 12px;
+  font-size:24px;
+  font-weight:800;
+}
+
 
 /* =====================================================
    08 — Arrêt cardiaque
