@@ -20333,22 +20333,20 @@ function renderReanAntibiotherapieMenu() {
 
 function renderThumbPage({title,image,items}){
   $app.innerHTML=`
-    <section class="intervention-shell">
+    <section class="intervention-shell page-alr page-atb-imgs">
       <div class="intervention-main">
         <div class="hero">
           <h2>${title}</h2>
         </div>
-
-        <div class="thumb-grid">
+        <div class="alr-grid">
           ${items.map(item=>`
-            <button type="button" class="thumb-card" onclick="openImg('${item.file}')">
-              <img src="img/${item.file}" alt="${item.label}">
-              <span>${item.label}</span>
+            <button type="button" class="alr-thumb-card" onclick="openImg('${item.file}')">
+              <img src="img/${item.file}" alt="${item.label}" class="alr-thumb-img">
+              <div class="alr-thumb-title">${item.label}</div>
             </button>
           `).join("")}
         </div>
       </div>
-
       <aside class="intervention-side">
         <img src="img/${image}" alt="${title}">
       </aside>
@@ -20483,158 +20481,295 @@ function renderProbaMenu() {
 
 function renderAdapteeMenu() {
   $app.innerHTML = `
-    <section class="intervention-shell">
+    <section class="intervention-shell page-alr page-atb-imgs">
 
-      <!-- Colonne gauche : titres + miniatures + boutons -->
+      <!-- Colonne gauche -->
       <div class="intervention-main">
+
         <div class="hero">
           <h2>Antibiorésistances bactériennes</h2>
         </div>
 
-<div class="atb-block">
-  <h3 class="atb-block-title">
-    Principaux mécanismes d'antibiorésistance
-  </h3>
+        <!-- ===================================================== -->
+        <!-- PRINCIPAUX MECANISMES -->
+        <!-- ===================================================== -->
 
-  <div class="thumb-grid">
-    <button
-      type="button"
-      class="thumb-card"
-      onclick="openImg('resistance1.png')"
-    >
-      <img
-        src="img/resistance1.png"
-        alt="Classification des bêta-lactamases (Ambler)"
-        loading="lazy"
-      >
-      <span>
-        Classification des bêta-lactamases (Ambler)
-      </span>
-    </button>
-    <button
-      type="button"
-      class="thumb-card"
-      onclick="openImg('resistance2.png')"
-    >
-      <img
-        src="img/resistance2.png"
-        alt="Classification des entérobactéries"
-        loading="lazy"
-      >
-      <span>
-        Classification des entérobactéries
-      </span>
-    </button>
-    <button
-      type="button"
-      class="thumb-card"
-      onclick="openImg('resistance3.png')"
-    >
-      <img
-        src="img/resistance3.png"
-        alt="Synthèse des mécanismes d'antibiorésistance"
-        loading="lazy"
-      >
-      <span>
-        Synthèse des mécanismes d'antibiorésistance
-      </span>
-    </button>
-
-  </div>
-</div>
-       
         <div class="atb-block">
-          <h3 class="atb-block-title">Phénotypes habituels d'antibiorésistance</h3>
 
-          <div class="thumb-grid">
-            <button type="button" class="thumb-card" onclick="openImg('Cocci-Gram-positifs.png')">
-              <img src="img/Cocci-Gram-positifs.png" alt="Cocci gram positifs" loading="lazy">
-              <span>Cocci gram positifs</span>
+          <h3 class="atb-block-title">
+            Principaux mécanismes d'antibiorésistance
+          </h3>
+
+          <div class="alr-grid">
+
+            <button
+              type="button"
+              class="alr-thumb-card"
+              onclick="openImg('resistance1.png')"
+            >
+              <img
+                src="img/resistance1.png"
+                alt="Classification des bêta-lactamases (Ambler)"
+                loading="lazy"
+                class="alr-thumb-img"
+              >
+
+              <div class="alr-thumb-title">
+                Classification des bêta-lactamases (Ambler)
+              </div>
             </button>
 
-            <button type="button" class="thumb-card" onclick="openImg('Bacilles-Gram-négatifs.png')">
-              <img src="img/Bacilles-Gram-négatifs.png" alt="Bacilles gram négatif sauvages" loading="lazy">
-              <span>Bacilles gram négatif sauvages</span>
+            <button
+              type="button"
+              class="alr-thumb-card"
+              onclick="openImg('resistance2.png')"
+            >
+              <img
+                src="img/resistance2.png"
+                alt="Classification des entérobactéries"
+                loading="lazy"
+                class="alr-thumb-img"
+              >
+
+              <div class="alr-thumb-title">
+                Classification des entérobactéries
+              </div>
             </button>
 
-            <button type="button" class="thumb-card" onclick="openImg('Béta-lactamases.png')">
-              <img src="img/Béta-lactamases.png" alt="Béta-lactamases" loading="lazy">
-              <span>Béta-lactamases</span>
+            <button
+              type="button"
+              class="alr-thumb-card"
+              onclick="openImg('resistance3.png')"
+            >
+              <img
+                src="img/resistance3.png"
+                alt="Synthèse des mécanismes d'antibiorésistance"
+                loading="lazy"
+                class="alr-thumb-img"
+              >
+
+              <div class="alr-thumb-title">
+                Synthèse des mécanismes d'antibiorésistance
+              </div>
             </button>
 
-            <button type="button" class="thumb-card" onclick="openImg('Pseudomonas-aeruginosa.png')">
-              <img src="img/Pseudomonas-aeruginosa.png" alt="Pseudomonas aeruginosa" loading="lazy">
-              <span>Pseudomonas aeruginosa</span>
-            </button>
-
-            <button type="button" class="thumb-card" onclick="openImg('Acinetobacter-baumanii.png')">
-              <img src="img/Acinetobacter-baumanii.png" alt="Acinetobacter baumanii" loading="lazy">
-              <span>Acinetobacter baumanii</span>
-            </button>
-
-            <button type="button" class="thumb-card" onclick="openImg('Carbapénèmases.png')">
-              <img src="img/Carbapénèmases.png" alt="Carbapénèmases" loading="lazy">
-              <span>Carbapénèmases</span>
-            </button>
           </div>
         </div>
 
-        <!-- 2) BMR -->
+        <!-- ===================================================== -->
+        <!-- PHENOTYPES -->
+        <!-- ===================================================== -->
+
         <div class="atb-block">
-          <h3 class="atb-block-title">Bactéries multi-résistantes (BMR)</h3>
+
+          <h3 class="atb-block-title">
+            Phénotypes habituels d'antibiorésistance
+          </h3>
+
+          <div class="alr-grid">
+
+            <button
+              type="button"
+              class="alr-thumb-card"
+              onclick="openImg('Cocci-Gram-positifs.png')"
+            >
+              <img
+                src="img/Cocci-Gram-positifs.png"
+                alt="Cocci gram positifs"
+                loading="lazy"
+                class="alr-thumb-img"
+              >
+
+              <div class="alr-thumb-title">
+                Cocci gram positifs
+              </div>
+            </button>
+
+            <button
+              type="button"
+              class="alr-thumb-card"
+              onclick="openImg('Bacilles-Gram-négatifs.png')"
+            >
+              <img
+                src="img/Bacilles-Gram-négatifs.png"
+                alt="Bacilles gram négatif sauvages"
+                loading="lazy"
+                class="alr-thumb-img"
+              >
+
+              <div class="alr-thumb-title">
+                Bacilles gram négatif sauvages
+              </div>
+            </button>
+
+            <button
+              type="button"
+              class="alr-thumb-card"
+              onclick="openImg('Béta-lactamases.png')"
+            >
+              <img
+                src="img/Béta-lactamases.png"
+                alt="Béta-lactamases"
+                loading="lazy"
+                class="alr-thumb-img"
+              >
+
+              <div class="alr-thumb-title">
+                Béta-lactamases
+              </div>
+            </button>
+
+            <button
+              type="button"
+              class="alr-thumb-card"
+              onclick="openImg('Pseudomonas-aeruginosa.png')"
+            >
+              <img
+                src="img/Pseudomonas-aeruginosa.png"
+                alt="Pseudomonas aeruginosa"
+                loading="lazy"
+                class="alr-thumb-img"
+              >
+
+              <div class="alr-thumb-title">
+                Pseudomonas aeruginosa
+              </div>
+            </button>
+
+            <button
+              type="button"
+              class="alr-thumb-card"
+              onclick="openImg('Acinetobacter-baumanii.png')"
+            >
+              <img
+                src="img/Acinetobacter-baumanii.png"
+                alt="Acinetobacter baumanii"
+                loading="lazy"
+                class="alr-thumb-img"
+              >
+
+              <div class="alr-thumb-title">
+                Acinetobacter baumanii
+              </div>
+            </button>
+
+            <button
+              type="button"
+              class="alr-thumb-card"
+              onclick="openImg('Carbapénèmases.png')"
+            >
+              <img
+                src="img/Carbapénèmases.png"
+                alt="Carbapénèmases"
+                loading="lazy"
+                class="alr-thumb-img"
+              >
+
+              <div class="alr-thumb-title">
+                Carbapénèmases
+              </div>
+            </button>
+
+          </div>
+        </div>
+
+        <!-- ===================================================== -->
+        <!-- BMR -->
+        <!-- ===================================================== -->
+
+        <div class="atb-block">
+
+          <h3 class="atb-block-title">
+            Bactéries multi-résistantes (BMR)
+          </h3>
 
           <div class="grid cols-2">
-            <button type="button" class="btn"
-              onclick="openSubPage(() => renderBacteriaPage('SARM', BACTERIA_DATA.SARM), renderAdapteeMenu)">
+
+            <button
+              type="button"
+              class="btn"
+              onclick="openSubPage(() => renderBacteriaPage('SARM', BACTERIA_DATA.SARM), renderAdapteeMenu)"
+            >
               SARM
             </button>
 
-            <button type="button" class="btn"
-              onclick="openSubPage(() => renderBacteriaPage('ampC', BACTERIA_DATA.ampC), renderAdapteeMenu)">
+            <button
+              type="button"
+              class="btn"
+              onclick="openSubPage(() => renderBacteriaPage('ampC', BACTERIA_DATA.ampC), renderAdapteeMenu)"
+            >
               Entérobactéries ampC
             </button>
 
-            <button type="button" class="btn"
-              onclick="openSubPage(() => renderBacteriaPage('BLSE', BACTERIA_DATA.BLSE), renderAdapteeMenu)">
+            <button
+              type="button"
+              class="btn"
+              onclick="openSubPage(() => renderBacteriaPage('BLSE', BACTERIA_DATA.BLSE), renderAdapteeMenu)"
+            >
               BLSE
             </button>
 
-            <button type="button" class="btn"
-              onclick="openSubPage(() => renderBacteriaPage('pyo', BACTERIA_DATA.pyo), renderAdapteeMenu)">
+            <button
+              type="button"
+              class="btn"
+              onclick="openSubPage(() => renderBacteriaPage('pyo', BACTERIA_DATA.pyo), renderAdapteeMenu)"
+            >
               Pseudomonas aeruginosa MDR/XDR
             </button>
 
-            <button type="button" class="btn"
-              onclick="openSubPage(() => renderBacteriaPage('acineto', BACTERIA_DATA.acineto), renderAdapteeMenu)">
+            <button
+              type="button"
+              class="btn"
+              onclick="openSubPage(() => renderBacteriaPage('acineto', BACTERIA_DATA.acineto), renderAdapteeMenu)"
+            >
               Acinetobacter baumannii Imipénème-R
             </button>
 
-            <button type="button" class="btn"
-              onclick="openSubPage(() => renderBacteriaPage('steno', BACTERIA_DATA.steno), renderAdapteeMenu)">
+            <button
+              type="button"
+              class="btn"
+              onclick="openSubPage(() => renderBacteriaPage('steno', BACTERIA_DATA.steno), renderAdapteeMenu)"
+            >
               Stenotrophomonas maltophilia
             </button>
+
           </div>
         </div>
 
-        <!-- 3) BHRe -->
+        <!-- ===================================================== -->
+        <!-- BHRe -->
+        <!-- ===================================================== -->
+
         <div class="atb-block">
-          <h3 class="atb-block-title">Bactéries hautement résistantes émergeantes (BHRe)</h3>
+
+          <h3 class="atb-block-title">
+            Bactéries hautement résistantes émergeantes (BHRe)
+          </h3>
 
           <div class="grid cols-2">
-            <button type="button" class="btn"
-              onclick="openSubPage(() => renderBacteriaPage('carba', BACTERIA_DATA.carba), renderAdapteeMenu)">
+
+            <button
+              type="button"
+              class="btn"
+              onclick="openSubPage(() => renderBacteriaPage('carba', BACTERIA_DATA.carba), renderAdapteeMenu)"
+            >
               Entérobactéries carbapénémases
             </button>
 
-            <button type="button" class="btn"
-              onclick="openSubPage(() => renderBacteriaPage('erv', BACTERIA_DATA.erv), renderAdapteeMenu)">
+            <button
+              type="button"
+              class="btn"
+              onclick="openSubPage(() => renderBacteriaPage('erv', BACTERIA_DATA.erv), renderAdapteeMenu)"
+            >
               E. faecium Vancomycine-R
             </button>
+
           </div>
         </div>
+
       </div>
 
-      <!-- Colonne droite : image verticale (inchangée) -->
+      <!-- Colonne droite -->
       <aside class="intervention-side">
         <img src="img/adaptee.png" alt="BMR et BHRe">
       </aside>
