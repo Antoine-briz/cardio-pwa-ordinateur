@@ -9845,3 +9845,70 @@ body .cr-an-list-modal-overlay .cr-an-list-modal textarea#cr-an-list-edit-textar
   to { transform: rotate(360deg); }
 }
 
+/* =====================================================
+   ANTIBIOTHERAPIE — MINIATURES COMPACTES
+===================================================== */
+
+/* Cartes miniatures */
+.antibiotherapy-container .thumb-grid .thumb-card,
+.classification-page .thumb-grid .thumb-card {
+  height: 180px !important;
+  min-height: 180px !important;
+  max-height: 180px !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+
+  overflow: hidden !important;
+  border-radius: 18px !important;
+
+  background: #f3f3f3 !important;
+}
+
+/* Zone image */
+.antibiotherapy-container .thumb-grid .thumb-card img,
+.classification-page .thumb-grid .thumb-card img {
+  width: 100% !important;
+
+  height: 125px !important;
+  min-height: 125px !important;
+  max-height: 125px !important;
+
+  object-fit: cover !important;
+  object-position: top center !important;
+
+  padding: 6px !important;
+  background: #f3f3f3 !important;
+}
+
+/* Titres miniatures */
+.antibiotherapy-container .thumb-grid .thumb-card span,
+.classification-page .thumb-grid .thumb-card span {
+  flex: 1 !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  text-align: center !important;
+
+  color: #000000 !important;
+  background: #f3f3f3 !important;
+
+  font-size: 12px !important;
+  font-weight: 800 !important;
+
+  padding: 6px !important;
+  line-height: 1.15 !important;
+
+  overflow-wrap: break-word !important;
+}
+
+/* Titres de sections */
+body:not(.theme-light) .atb-block-title {
+  color: #ffffff !important;
+}
+
+body.theme-light .atb-block-title {
+  color: #000000 !important;
+}
