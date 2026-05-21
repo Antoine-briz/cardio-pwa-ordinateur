@@ -20491,9 +20491,6 @@ function renderAdapteeMenu() {
           <h2>Antibiorésistances bactériennes</h2>
         </div>
 
-
-<h2>Principaux mécanismes d'antibiorésistance</h2>
-
 <div class="atb-block">
   <h3 class="atb-block-title">
     Principaux mécanismes d'antibiorésistance
