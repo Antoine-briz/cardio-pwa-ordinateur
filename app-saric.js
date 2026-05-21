@@ -20257,59 +20257,68 @@ function renderReanAntibiotherapieMenu() {
           <h2>Antibiothérapie en Réanimation</h2>
         </div>
 
-        <div class="grid">
+        <div class="atb-menu-section-title">
+  Enseignement :
+</div>
 
-       <button class="btn"
-  onclick="openSubPage(renderClassificationBacteriennePage, renderReanAntibiotherapieMenu)">
-  Classification bactérienne
-</button>
+<div class="grid">
+  <button class="btn"
+    onclick="openSubPage(renderClassificationBacteriennePage, renderReanAntibiotherapieMenu)">
+    Classification bactérienne
+  </button>
 
-<button class="btn"
-  onclick="openSubPage(renderClassificationAntibiotiquesPage, renderReanAntibiotherapieMenu)">
-  Classification des antibiotiques
-</button>
-         
-         <button class="btn"
-  onclick="openSubPage(renderProbaMenu, renderReanAntibiotherapieMenu)">
-  Antibiothérapie probabiliste
-</button>
+  <button class="btn"
+    onclick="openSubPage(renderClassificationAntibiotiquesPage, renderReanAntibiotherapieMenu)">
+    Classification des antibiotiques
+  </button>
 
-<button class="btn"
-  onclick="openSubPage(renderAdapteeMenu, renderReanAntibiotherapieMenu)">
-  Antibiorésistances bactériennes
-</button>
+  <button class="btn"
+    onclick="openSubPage(renderAdapteeMenu, renderReanAntibiotherapieMenu)">
+    Antibiorésistances bactériennes
+  </button>
+</div>
 
-<button class="btn"
-  onclick="openSubPage(renderDureesForm, renderReanAntibiotherapieMenu)">
-  Durée d'antibiothérapie
-</button>
+<div class="atb-menu-section-title">
+  Outils antibiothérapie :
+</div>
 
-<button class="btn"
-  onclick="openSubPage(renderReinForm, renderReanAntibiotherapieMenu)">
-  Adaptation posologique à la fonction rénale
-</button>
+<div class="grid">
+  <button class="btn"
+    onclick="openSubPage(renderProbaMenu, renderReanAntibiotherapieMenu)">
+    Antibiothérapie probabiliste
+  </button>
 
-<button class="btn"
-  onclick="openSubPage(renderModalitesForm, renderReanAntibiotherapieMenu)">
-  Modalités d'administration des antibiotiques
-</button>
+  <button class="btn"
+    onclick="openSubPage(renderDureesForm, renderReanAntibiotherapieMenu)">
+    Durée d'antibiothérapie
+  </button>
 
-        </div>
+  <button class="btn"
+    onclick="openSubPage(renderReinForm, renderReanAntibiotherapieMenu)">
+    Adaptation posologique à la fonction rénale
+  </button>
 
-        <!-- Boutons rouges PDF -->
-        <div style="margin-top:20px;">
-          <div class="antibio-btn-group">
-            <button class="btn btn-red"
-                    onclick="window.open('files/MITIC.pdf', '_blank')">
-              Protocoles MITIC
-            </button>
+  <button class="btn"
+    onclick="openSubPage(renderModalitesForm, renderReanAntibiotherapieMenu)">
+    Modalités d'administration des antibiotiques
+  </button>
+</div>
 
-            <button class="btn btn-red"
-                    onclick='openPdf("Bactériologie clinique.pdf")'>
-              Bactériologie clinique en réanimation
-            </button>
-          </div>
-        </div>
+<div class="atb-menu-section-title">
+  Documentation :
+</div>
+
+<div class="antibio-btn-group">
+  <button class="btn btn-red"
+          onclick="window.open('files/MITIC.pdf', '_blank')">
+    Protocoles MITIC
+  </button>
+
+  <button class="btn btn-red"
+          onclick='openPdf("Bactériologie clinique.pdf")'>
+    Bactériologie clinique en réanimation
+  </button>
+</div>
 
         <div id="atb-section-root"></div>
       </div>
