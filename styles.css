@@ -9954,3 +9954,22 @@ body.theme-light .atb-block-title {
 .cec-proto-page table td:first-child {
   background: inherit !important;
 }
+
+/* Antibiothérapie : mêmes miniatures que la page ALR */
+.page-atb-imgs .alr-thumb-card {
+  background: var(--card) !important;
+  color: var(--fg) !important;
+}
+
+.page-atb-imgs .alr-thumb-img {
+  width: 100% !important;
+  height: 130px !important;
+  object-fit: cover !important;
+  object-position: top center !important;
+  background: #ffffff !important;
+}
+
+.page-atb-imgs .alr-thumb-title {
+  color: #000000 !important;
+  background: transparent !important;
+}
