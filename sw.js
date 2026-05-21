@@ -262,6 +262,22 @@ const PRECACHE = [
   "./img/resistance1.png",
   "./img/resistance2.png",
   "./img/resistance3.png",
+  ".img/gramneg1.png",
+".img/gramneg2.png",
+".img/gramneg3.png",
+".img/gramneg4.png",
+".img/grampos1.png",
+".img/grampos2.png",
+".img/grampos3.png",
+".img/bactautres.png",
+".img/antibio1.png",
+".img/antibio2.png",
+".img/antibio3.png",
+".img/antibio4.png",
+".img/antibio5.png",
+".img/antibio6.png",
+".img/antibio7.png",
+".img/antibio8.png",
 
   
   // Menu principal
