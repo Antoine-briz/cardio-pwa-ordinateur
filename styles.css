@@ -181,7 +181,7 @@ html[data-theme="dark"] .thumb-card * {
   color: #ffffff !important;
 }
 [data-theme="dark"] .atb-block-title {
-  color: #ffffff;
+  color: #000000 !important;
 }
 body:not(.dark) .cec-frbox {
   background: rgba(0,0,0,.04);
