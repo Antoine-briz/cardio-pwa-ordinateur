@@ -7232,6 +7232,73 @@ body:not(.light-theme) .cec-proto-page .info-card input, body:not(.light-theme) 
   }
 }
 
+.classification-page{
+  width:100%;
+  max-width:1200px;
+  margin:0 auto;
+  padding:10px 16px 30px;
+}
+
+.classification-page h2{
+  text-align:center;
+  margin:0 0 24px;
+  font-size:22px;
+  font-weight:800;
+}
+
+.classification-img-card{
+  border:0;
+  background:transparent;
+  padding:0;
+  cursor:pointer;
+}
+
+.classification-img-card img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+}
+
+.classification-bacteria-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  grid-template-areas:
+    "g1 g4 gp3"
+    "g2 gp1 ."
+    "g3 gp2 ."
+    "g3 autre .";
+  gap:10px 14px;
+  align-items:stretch;
+}
+
+.classification-bacteria-grid .classification-img-card:nth-child(1){grid-area:g1;}
+.classification-bacteria-grid .classification-img-card:nth-child(2){grid-area:g4;}
+.classification-bacteria-grid .classification-img-card:nth-child(3){grid-area:gp3;}
+.classification-bacteria-grid .classification-img-card:nth-child(4){grid-area:g2;}
+.classification-bacteria-grid .classification-img-card:nth-child(5){grid-area:gp1;}
+.classification-bacteria-grid .classification-img-card:nth-child(6){grid-area:g3;}
+.classification-bacteria-grid .classification-img-card:nth-child(7){grid-area:gp2;}
+.classification-bacteria-grid .classification-img-card:nth-child(8){grid-area:autre;}
+
+.classification-antibio-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px 16px;
+}
+
+@media(max-width:800px){
+  .classification-bacteria-grid,
+  .classification-antibio-grid{
+    grid-template-columns:1fr;
+    grid-template-areas:none;
+  }
+
+  .classification-bacteria-grid .classification-img-card{
+    grid-area:auto !important;
+  }
+}
+
 /* =====================================================
    08 — Arrêt cardiaque
 ===================================================== */
