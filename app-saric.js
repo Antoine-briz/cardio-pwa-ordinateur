@@ -20361,13 +20361,13 @@ function renderClassificationBacteriennePage(){
     title:"Classification bactérienne",
     image:"antibiotherapie3.png",
     items:[
-      {file:"gramneg1.png",label:"Bacilles Gram négatif - 1"},
-      {file:"gramneg2.png",label:"Bacilles Gram négatif - 2"},
-      {file:"gramneg3.png",label:"Bacilles Gram négatif - 3"},
-      {file:"gramneg4.png",label:"Bacilles Gram négatif - 4"},
-      {file:"grampos1.png",label:"Cocci Gram positif - 1"},
-      {file:"grampos2.png",label:"Cocci Gram positif - 2"},
-      {file:"grampos3.png",label:"Cocci Gram positif - 3"},
+      {file:"gramneg1.png",label:"Classification Gram -"},
+      {file:"gramneg2.png",label:"Cocci Gram -"},
+      {file:"gramneg3.png",label:"Bacilles Gram (1/2)"},
+      {file:"gramneg4.png",label:"Bacilles Gram (2/2)"},
+      {file:"grampos1.png",label:"Classification Gram +"},
+      {file:"grampos2.png",label:"Cocci Gram +"},
+      {file:"grampos3.png",label:"Bacilles Gram +"},
       {file:"bactautres.png",label:"Autres bactéries"}
     ]
   });
@@ -20378,14 +20378,14 @@ function renderClassificationAntibiotiquesPage(){
     title:"Classification des antibiotiques",
     image:"antibiotherapie4.png",
     items:[
-      {file:"antibio1.png",label:"Antibiotiques - 1"},
-      {file:"antibio2.png",label:"Antibiotiques - 2"},
-      {file:"antibio3.png",label:"Antibiotiques - 3"},
-      {file:"antibio4.png",label:"Antibiotiques - 4"},
-      {file:"antibio5.png",label:"Antibiotiques - 5"},
-      {file:"antibio6.png",label:"Antibiotiques - 6"},
-      {file:"antibio7.png",label:"Antibiotiques - 7"},
-      {file:"antibio8.png",label:"Antibiotiques - 8"}
+      {file:"antibio1.png",label:"Mécanismes d'action"},
+      {file:"antibio2.png",label:"Paramètres PK/PD"},
+      {file:"antibio3.png",label:"Béta-lactamines"},
+      {file:"antibio4.png",label:"Aminosides"},
+      {file:"antibio5.png",label:"Fluoroquinolones"},
+      {file:"antibio6.png",label:"Macrolides & apparentés"},
+      {file:"antibio7.png",label:"Anti Gram+"},
+      {file:"antibio8.png",label:"Autres antibiotiques"}
     ]
   });
 }
