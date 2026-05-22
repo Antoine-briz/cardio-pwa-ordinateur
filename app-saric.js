@@ -22737,16 +22737,28 @@ function renderProbaPneumonieForm() {
 
 // ---------- Démo de logique provisoire (on la remplacera par tes règles) ----------
 function decidePneumonie(p){
-  // Priorités d’exemple (identiques à ce qu’on a déjà esquissé)
-  if (p.allergie) return `Lévofloxacine 500 mg x2/j ± Aztréonam si besoin (${p.origine.toLowerCase()}).`;
-  if (p.blse) return `Méropénème 4–6 g/24h IVL${p.origine==="Communautaire"?" + Spiramycine 3 MU x3/j":""}.`;
-  if (p.pseudo || p.immuno) return `Céfépime 1 g x4/j ou Pip/Tazo 4 g x4/j${p.origine==="Communautaire"?" + Spiramycine 3 MU x3/j":""}.`;
-  if (p.inhal) return `${p.origine==="Communautaire"?"Amox/Clav 1 g x3/j":"Amox/Clav 1 g x3/j ou Pip/Tazo 4 g x4/j"}.`;
-  // défaut
-  if (p.origine==="Communautaire") return "Céfotaxime 1 g x4–6/24h + Spiramycine 3 MU x3/j.";
-  return "Céfépime 1 g x4/j si >5j; sinon Céfotaxime 1 g x4–6/24h.";
-}
+  let reco = "";
 
+  if (p.allergie) {
+    reco = `Lévofloxacine 500 mg x2/j ± Aztréonam si besoin (${p.origine.toLowerCase()}).`;
+  } else if (p.blse) {
+    reco = `Méropénème 4–6 g/24h IVL${p.origine==="Communautaire" ? " + Spiramycine 3 MU x3/j" : ""}.`;
+  } else if (p.pseudo || p.immuno) {
+    reco = `Céfépime 1 g x4/j ou Pip/Tazo 4 g x4/j${p.origine==="Communautaire" ? " + Spiramycine 3 MU x3/j" : ""}.`;
+  } else if (p.inhal) {
+    reco = `${p.origine==="Communautaire" ? "Amox/Clav 1 g x3/j" : "Amox/Clav 1 g x3/j ou Pip/Tazo 4 g x4/j"}.`;
+  } else if (p.origine==="Communautaire") {
+    reco = "Céfotaxime 1 g x4–6/24h + Spiramycine 3 MU x3/j.";
+  } else {
+    reco = "Céfépime 1 g x4/j si >5j; sinon Céfotaxime 1 g x4–6/24h.";
+  }
+
+  if (p.choc && p.origine === "Nosocomiale") {
+    reco += "\nAjout d'Amikacine 25–30 mg/kg IVL sur 30 min.";
+  }
+
+  return reco;
+}
 
 function renderProbaIUForm() {
   $app.innerHTML = `
@@ -23220,13 +23232,18 @@ function recoPeritonites(p){
   const o = p.origine;
 
   if (p.allergieBL){
-    if (o === "Communautaires"){
-      txt = "Lévofloxacine 500 mg x2/j IVL/PO\n+ Métronidazole 500 mg x3/j IVL/PO\n+ Gentamicine 5–8 mg/kg IVL 30 min";
-    } else {
-      txt = "Ciprofloxacine 750 mg x2/j IVL/PO ou Aztréonam 1 g x4/j IVL\n+ Métronidazole 500 mg x3/j IVL/PO\n+ Vancomycine 30 mg/kg/j IVSE\n+ Amikacine 25–30 mg/kg IVL 30 min";
-    }
-    return txt;
+  if (o === "Communautaires"){
+    txt = "Lévofloxacine 500 mg x2/j IVL/PO\n+ Métronidazole 500 mg x3/j IVL/PO\n+ Gentamicine 5–8 mg/kg IVL 30 min";
+  } else {
+    txt = "Ciprofloxacine 750 mg x2/j IVL/PO ou Aztréonam 1 g x4/j IVL\n+ Métronidazole 500 mg x3/j IVL/PO\n+ Vancomycine 30 mg/kg/j IVSE\n+ Amikacine 25–30 mg/kg IVL 30 min";
   }
+
+  if (p.Dupont) {
+    txt += "\nAjout Caspofungine 70 mg puis 50 mg/j IVL";
+  }
+
+  return txt;
+}
 
   if (o === "Communautaires"){
     txt = "Céfotaxime 4–6 g/24h IVL\n+ Métronidazole 500 mg x3/j IVL/PO";
