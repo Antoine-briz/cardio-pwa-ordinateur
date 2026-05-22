@@ -24403,10 +24403,6 @@ function etoHtmlValveMitrale() {
           <span class="eto-icon" onclick="openImg('eto_im_VC.png')">🖥️</span>
         </li>
         <li>
-          IM : Temps de 1/2 pression (PHT)
-          <span class="eto-icon" onclick="openImg('eto_im_1.2.png')">🖥️</span>
-        </li>
-        <li>
           Chirurgie de plastie mitrale
           <span class="eto-icon" onclick="openImg('cf-plastiemitrale.png')">🖥️</span>
         </li>
