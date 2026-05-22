@@ -7908,6 +7908,15 @@ body.screen-square .acr-modal .acr-modal-card.eto-fullscreen .eto-right {
     max-height: 58vh !important;
   }
 }
+.acr5-pause-btn {
+  width: 100%;
+  margin-top: 8px;
+  font-size: 18px;
+}
+
+.acr5-pause-btn.is-paused {
+  background: #2e7d32 !important;
+}
 
 /* =====================================================
    09 — Actualités / enseignement / bibliographie
