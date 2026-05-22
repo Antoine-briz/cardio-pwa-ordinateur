@@ -7914,8 +7914,14 @@ body.screen-square .acr-modal .acr-modal-card.eto-fullscreen .eto-right {
   font-size: 18px;
 }
 
+.acr5-pause-btn {
+  background: #5b3cc4 !important;
+  border-color: #5b3cc4 !important;
+}
+
 .acr5-pause-btn.is-paused {
-  background: #2e7d32 !important;
+  background: #7b4dff !important;
+  border-color: #7b4dff !important;
 }
 
 /* =====================================================
