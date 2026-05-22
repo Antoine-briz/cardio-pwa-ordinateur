@@ -20258,7 +20258,7 @@ function renderReanAntibiotherapieMenu() {
         </div>
 
         <div class="atb-menu-section-title">
-  Enseignement
+  Classifications
 </div>
 
 <div class="grid">
