@@ -9975,44 +9975,34 @@ body.theme-light .atb-block-title {
 }
 
 /* =====================================================
-   TABLEAUX — CELLULES BLEU FONCÉ = TEXTE BLANC
+   TABLEAUX — UNIQUEMENT CELLULES MARINE = TEXTE BLANC
 ===================================================== */
 
-/* Protocole CEC standard */
+/* CEC : uniquement vraie colonne/ligne marine */
 .cec-proto-table .cec-obj-left,
 .cec-proto-table .cec-obj-left *,
+.cec-proto-table .cec-section-left,
+.cec-proto-table .cec-section-left *,
+.cec-proto-table .cec-navy-cell,
+.cec-proto-table .cec-navy-cell * {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Antibiorésistance : uniquement en-têtes réellement bleu foncé */
+.bact-table thead th,
+.bact-table thead th *,
+.bact-table .bact-head,
+.bact-table .bact-head * {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Sécurité : cellules gris clair = texte noir */
 .cec-proto-table .cec-obj-head,
 .cec-proto-table .cec-obj-head *,
 .cec-proto-table thead th,
-.cec-proto-table thead th *,
-.cec-proto-table tr:first-child th,
-.cec-proto-table tr:first-child th *,
-.cec-proto-table tr:first-child td,
-.cec-proto-table tr:first-child td * {
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
-}
-
-/* Tableaux antibiorésistance */
-.bact-table-wrap table thead th,
-.bact-table-wrap table thead th *,
-table.bact-table thead th,
-table.bact-table thead th * {
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
-}
-
-/* Cas générique : classes de cellules bleu/marine */
-table .cec-obj-left,
-table .cec-obj-left *,
-table .cec-obj-head,
-table .cec-obj-head *,
-table .cec-row-title,
-table .cec-row-title *,
-table .cec-section-title,
-table .cec-section-title *,
-table .cec-blue-cell,
-table .cec-blue-cell * {
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
+.cec-proto-table thead th * {
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
 }
