@@ -34851,7 +34851,11 @@ function renderAnnuaire() {
 
 let acrTimerInterval = null;
 let acrStartMs = null;
-let acrLog = []; // { label, wall, chrono }
+let acrLog = [];
+
+let acrPaused = false;
+let acrPauseStartMs = null;
+let acrPausedTotalMs = 0;
 
 function pad2(n) {
   return String(n).padStart(2, "0");
@@ -34859,10 +34863,14 @@ function pad2(n) {
 
 function getChronoStr() {
   if (!acrStartMs) return "00:00";
-  const elapsed = Date.now() - acrStartMs;
-  const totalSec = Math.floor(elapsed / 1000);
+
+  const now = acrPaused && acrPauseStartMs ? acrPauseStartMs : Date.now();
+  const elapsed = now - acrStartMs - acrPausedTotalMs;
+
+  const totalSec = Math.max(0, Math.floor(elapsed / 1000));
   const mm = Math.floor(totalSec / 60);
   const ss = totalSec % 60;
+
   return `${pad2(mm)}:${pad2(ss)}`;
 }
 
@@ -34900,19 +34908,26 @@ function acrAddEvent(label) {
 }
 
 function acrStartTimer() {
-  // éviter les doublons si on revient sur la page
   if (acrTimerInterval) clearInterval(acrTimerInterval);
 
   acrStartMs = Date.now();
+  acrPaused = false;
+  acrPauseStartMs = null;
+  acrPausedTotalMs = 0;
   acrLog = [];
 
-  // Ligne “début de la réanimation” dès l’ouverture
   acrAddEvent("Début de la réanimation");
   acrRenderLiveSynth();
-  const chronoEl = document.getElementById("acr-chrono");
+
   const tick = () => {
-    if (!chronoEl) return;
-    chronoEl.textContent = getChronoStr();
+    const chronoEl = document.getElementById("acr-chrono");
+    if (chronoEl) chronoEl.textContent = getChronoStr();
+
+    const pauseBtn = document.getElementById("acr-pause-btn");
+    if (pauseBtn) {
+      pauseBtn.innerHTML = acrPaused ? "▶ Play" : "⏸ Pause";
+      pauseBtn.classList.toggle("is-paused", acrPaused);
+    }
   };
 
   tick();
@@ -34923,6 +34938,33 @@ function acrStopTimer() {
   if (acrTimerInterval) clearInterval(acrTimerInterval);
   acrTimerInterval = null;
   acrStartMs = null;
+  acrPaused = false;
+  acrPauseStartMs = null;
+  acrPausedTotalMs = 0;
+}
+
+function acrTogglePause() {
+  if (!acrStartMs) return;
+
+  if (!acrPaused) {
+    acrPaused = true;
+    acrPauseStartMs = Date.now();
+    acrAddEvent("Pause du chronomètre");
+  } else {
+    acrPaused = false;
+    acrPausedTotalMs += Date.now() - acrPauseStartMs;
+    acrPauseStartMs = null;
+    acrAddEvent("Reprise du chronomètre");
+  }
+
+  const pauseBtn = document.getElementById("acr-pause-btn");
+  if (pauseBtn) {
+    pauseBtn.innerHTML = acrPaused ? "▶ Play" : "⏸ Pause";
+    pauseBtn.classList.toggle("is-paused", acrPaused);
+  }
+
+  const chronoEl = document.getElementById("acr-chrono");
+  if (chronoEl) chronoEl.textContent = getChronoStr();
 }
 
 function setAcrTheme(forceLight) {
@@ -34970,11 +35012,19 @@ function renderAcrChirCardiaque() {
 
         <!-- CHRONOMÈTRES -->
         <div class="acr5-frame f-chrono">
-          <div class="acr5-frame-title">Chronomètre</div>
-          <div class="acr5-frame-body acr5-chrono-body">
-            <div id="acr-chrono" class="acr5-chrono-screen">00:00</div>
-          </div>
-        </div>
+  <div class="acr5-frame-title">Chronomètre</div>
+  <div class="acr5-frame-body acr5-chrono-body">
+    <div id="acr-chrono" class="acr5-chrono-screen">00:00</div>
+    <button
+      type="button"
+      id="acr-pause-btn"
+      class="acr5-btn blue acr5-pause-btn"
+      onclick="acrTogglePause()"
+    >
+      ⏸ Pause
+    </button>
+  </div>
+</div>
 
         <!-- AIDES -->
         <div class="acr5-frame f-aides">
