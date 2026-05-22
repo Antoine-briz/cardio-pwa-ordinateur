@@ -10033,3 +10033,25 @@ table .cec-blue-cell * {
   color: #000000 !important;
   -webkit-text-fill-color: #000000 !important;
 }
+
+/* =====================================================
+   CORRECTIFS ULTRA SPECIFIQUES CEC
+===================================================== */
+
+/* Ligne Patient / Coeur / Chirurgie : toujours BLANC */
+.cec-proto-table .cec-patient-banner,
+.cec-proto-table .cec-patient-banner *,
+.cec-proto-table .cec-header-banner,
+.cec-proto-table .cec-header-banner * {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* "Objectifs per-CEC" : toujours NOIR */
+.cec-proto-table .cec-obj-left,
+.cec-proto-table .cec-obj-left *,
+.cec-proto-table .cec-section-title,
+.cec-proto-table .cec-section-title * {
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
+}
