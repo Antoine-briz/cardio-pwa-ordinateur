@@ -23545,13 +23545,12 @@ function buildAbces(p){
 
 function renderProbaDermohypoForm(){
   $app.innerHTML = `
-    <h2 class="antibio-title">Infections des parties molles</h2>
+    <section class="intervention-shell">
 
-    <div class="hero-pneu card">
-      <img src="./img/dermohypodermite.png" alt="Dermohypodermite" class="form-hero">
-    </div>
+      <div class="intervention-main">
+        <h2 class="antibio-title">Infections des parties molles</h2>
 
-    <form id="formDH" class="form">
+        <form id="formDH" class="form">
       <!-- Type d'infection -->
       <fieldset>
         <legend>Type d’infection</legend>
@@ -23612,7 +23611,14 @@ function renderProbaDermohypoForm(){
         <button type="button" class="btn" id="btnDH">Antibiothérapie probabiliste recommandée</button>
       </div>
       <div id="resDH" class="result"></div>
-    </form>
+            </form>
+      </div>
+
+      <aside class="intervention-side">
+        <img src="img/dermohypodermite.png" alt="Dermohypodermite">
+      </aside>
+
+    </section>
   `;
 
   // --- Affichages conditionnels des blocs (mêmes règles que le UserForm VBA)
