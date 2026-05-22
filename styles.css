@@ -9973,3 +9973,61 @@ body.theme-light .atb-block-title {
   color: #000000 !important;
   background: transparent !important;
 }
+
+/* =====================================================
+   TABLEAUX — FOND BLEU FONCÉ / MARINE = TEXTE BLANC
+===================================================== */
+
+table th[style*="background:#0b3c6d"],
+table td[style*="background:#0b3c6d"],
+table th[style*="background: #0b3c6d"],
+table td[style*="background: #0b3c6d"],
+table th[style*="background-color:#0b3c6d"],
+table td[style*="background-color:#0b3c6d"],
+table th[style*="background-color: #0b3c6d"],
+table td[style*="background-color: #0b3c6d"],
+table th[style*="background:#0b2540"],
+table td[style*="background:#0b2540"],
+table th[style*="background: #0b2540"],
+table td[style*="background: #0b2540"],
+table th[style*="background-color:#0b2540"],
+table td[style*="background-color:#0b2540"],
+table th[style*="background-color: #0b2540"],
+table td[style*="background-color: #0b2540"],
+table th[style*="background:#123a63"],
+table td[style*="background:#123a63"],
+table th[style*="background: #123a63"],
+table td[style*="background: #123a63"],
+table th[style*="background-color:#123a63"],
+table td[style*="background-color:#123a63"],
+table th[style*="background-color: #123a63"],
+table td[style*="background-color: #123a63"] {
+  color: #ffffff !important;
+}
+
+table th[style*="background:#0b3c6d"] *,
+table td[style*="background:#0b3c6d"] *,
+table th[style*="background: #0b3c6d"] *,
+table td[style*="background: #0b3c6d"] *,
+table th[style*="background-color:#0b3c6d"] *,
+table td[style*="background-color:#0b3c6d"] *,
+table th[style*="background-color: #0b3c6d"] *,
+table td[style*="background-color: #0b3c6d"] *,
+table th[style*="background:#0b2540"] *,
+table td[style*="background:#0b2540"] *,
+table th[style*="background: #0b2540"] *,
+table td[style*="background: #0b2540"] *,
+table th[style*="background-color:#0b2540"] *,
+table td[style*="background-color:#0b2540"] *,
+table th[style*="background-color: #0b2540"] *,
+table td[style*="background-color: #0b2540"] *,
+table th[style*="background:#123a63"] *,
+table td[style*="background:#123a63"] *,
+table th[style*="background: #123a63"] *,
+table td[style*="background: #123a63"] *,
+table th[style*="background-color:#123a63"] *,
+table td[style*="background-color:#123a63"] *,
+table th[style*="background-color: #123a63"] *,
+table td[style*="background-color: #123a63"] * {
+  color: #ffffff !important;
+}
