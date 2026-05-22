@@ -9975,59 +9975,44 @@ body.theme-light .atb-block-title {
 }
 
 /* =====================================================
-   TABLEAUX — FOND BLEU FONCÉ / MARINE = TEXTE BLANC
+   TABLEAUX — CELLULES BLEU FONCÉ = TEXTE BLANC
 ===================================================== */
 
-table th[style*="background:#0b3c6d"],
-table td[style*="background:#0b3c6d"],
-table th[style*="background: #0b3c6d"],
-table td[style*="background: #0b3c6d"],
-table th[style*="background-color:#0b3c6d"],
-table td[style*="background-color:#0b3c6d"],
-table th[style*="background-color: #0b3c6d"],
-table td[style*="background-color: #0b3c6d"],
-table th[style*="background:#0b2540"],
-table td[style*="background:#0b2540"],
-table th[style*="background: #0b2540"],
-table td[style*="background: #0b2540"],
-table th[style*="background-color:#0b2540"],
-table td[style*="background-color:#0b2540"],
-table th[style*="background-color: #0b2540"],
-table td[style*="background-color: #0b2540"],
-table th[style*="background:#123a63"],
-table td[style*="background:#123a63"],
-table th[style*="background: #123a63"],
-table td[style*="background: #123a63"],
-table th[style*="background-color:#123a63"],
-table td[style*="background-color:#123a63"],
-table th[style*="background-color: #123a63"],
-table td[style*="background-color: #123a63"] {
+/* Protocole CEC standard */
+.cec-proto-table .cec-obj-left,
+.cec-proto-table .cec-obj-left *,
+.cec-proto-table .cec-obj-head,
+.cec-proto-table .cec-obj-head *,
+.cec-proto-table thead th,
+.cec-proto-table thead th *,
+.cec-proto-table tr:first-child th,
+.cec-proto-table tr:first-child th *,
+.cec-proto-table tr:first-child td,
+.cec-proto-table tr:first-child td * {
   color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
-table th[style*="background:#0b3c6d"] *,
-table td[style*="background:#0b3c6d"] *,
-table th[style*="background: #0b3c6d"] *,
-table td[style*="background: #0b3c6d"] *,
-table th[style*="background-color:#0b3c6d"] *,
-table td[style*="background-color:#0b3c6d"] *,
-table th[style*="background-color: #0b3c6d"] *,
-table td[style*="background-color: #0b3c6d"] *,
-table th[style*="background:#0b2540"] *,
-table td[style*="background:#0b2540"] *,
-table th[style*="background: #0b2540"] *,
-table td[style*="background: #0b2540"] *,
-table th[style*="background-color:#0b2540"] *,
-table td[style*="background-color:#0b2540"] *,
-table th[style*="background-color: #0b2540"] *,
-table td[style*="background-color: #0b2540"] *,
-table th[style*="background:#123a63"] *,
-table td[style*="background:#123a63"] *,
-table th[style*="background: #123a63"] *,
-table td[style*="background: #123a63"] *,
-table th[style*="background-color:#123a63"] *,
-table td[style*="background-color:#123a63"] *,
-table th[style*="background-color: #123a63"] *,
-table td[style*="background-color: #123a63"] * {
+/* Tableaux antibiorésistance */
+.bact-table-wrap table thead th,
+.bact-table-wrap table thead th *,
+table.bact-table thead th,
+table.bact-table thead th * {
   color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Cas générique : classes de cellules bleu/marine */
+table .cec-obj-left,
+table .cec-obj-left *,
+table .cec-obj-head,
+table .cec-obj-head *,
+table .cec-row-title,
+table .cec-row-title *,
+table .cec-section-title,
+table .cec-section-title *,
+table .cec-blue-cell,
+table .cec-blue-cell * {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
