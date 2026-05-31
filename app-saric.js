@@ -16756,7 +16756,15 @@ function setupReanPrescLogic() {
   // - Aspirine + Kardégic systématiques
   // - Anticoagulation préventive
   // - Retrait électrodes J1
-  const groupePréventif = new Set(["pc", "tsc", "rva-bio", "plastie-ao"]);
+  const groupePréventif = new Set([
+  "pc",
+  "tsc",
+  "rva-bio",
+  "plastie-ao",
+  "tirone",
+  "bentall-bio",
+  "crosse"
+]);
 
   function update() {
     // 1) valeur brute du select
@@ -16808,9 +16816,9 @@ function setupReanPrescLogic() {
         // Pontages, TSC, RVA bio → anticoag préventive
         anticoagDiv.innerHTML = `
           <ul>
-            <li>Lovenox 4000 UI SC à H+6.</li>
+            <li>Enoxaparine 4000 UI Sc à H+6 en l'absence de saignement (< 50mL/h).</li>
             <li>Ensuite : anticoagulation préventive :
-                Lovenox 4000 UI x1/j SC
+                Enoxaparine 4000 UI x1/j SC
                 (HNF ou Calciparine si DFG &lt; 15 mL/min/1,73m²).</li>
           </ul>
         `;
@@ -16818,10 +16826,8 @@ function setupReanPrescLogic() {
         // Autres (valvulaires, aorte…) → schéma thérapeutique
         anticoagDiv.innerHTML = `
           <ul>
-            <li>Lovenox 4000 UI SC à H+6.</li>
-            <li>Ensuite : anticoagulation efficace :
-                Lovenox 100 UI/kg x2/j dès J1
-                (HNF IVSE si DFG &lt; 15 mL/min/1,73m²).</li>
+            <li>HNF 10 000 UI IVSE à H+6, puis majoration pour AntiXa 0,2-0,3. Relai HBPM après retrait des électrodes épicardiques.</li>
+            <li>Après retrait des électrodes: Enoxaparine 100 UI/kg x2/j (ou HNF IVSE si DFG &lt; 15 mL/min/1,73m²).</li>
           </ul>
         `;
       }
