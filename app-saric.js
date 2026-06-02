@@ -18673,21 +18673,45 @@ function openHepatiteImage() {
 
 function renderReanTransplantCoronaires() {
   $app.innerHTML = `
-    <section>
-      ${sectionHeader("Transplantation cardiaque – Réanimation", "transplantation.png")}
+    <section class="intervention-shell">
 
-      <h3>Prévention de la maladie coronaire du greffon</h3>
+      <!-- Colonne gauche -->
+      <div class="intervention-main">
 
-      <div class="card">
-        <div class="card-body">
-          <ul>
-            <li>Kardégic 75 mg/j PO ou Aspirine 100 mg/j IVL dès que possible
-              en l’absence de thrombopénie.</li>
-            <li>Pravastatine 40 mg/j PO à partir de J10 (si bilan hépatique normal).</li>
-            <li>Coronarographie à 1 an puis tous les 2 ans.</li>
-          </ul>
+        <div class="hero">
+          <h2>Transplantation cardiaque – Réanimation</h2>
         </div>
+
+        <h3>Prévention de la maladie coronaire du greffon</h3>
+
+        <div class="card">
+          <div class="card-body">
+            <ul>
+              <li>
+                Kardégic 75 mg/j PO ou Aspirine 100 mg/j IVL dès que possible
+                en l’absence de thrombopénie.
+              </li>
+              <li>
+                Pravastatine 40 mg/j PO à partir de J10
+                (si bilan hépatique normal).
+              </li>
+              <li>
+                Coronarographie à 1 an puis tous les 2 ans.
+              </li>
+            </ul>
+          </div>
+        </div>
+
       </div>
+
+      <!-- Colonne droite -->
+      <aside class="intervention-side">
+        <img
+          src="img/transplantation.png"
+          alt="Transplantation cardiaque"
+        >
+      </aside>
+
     </section>
   `;
 }
