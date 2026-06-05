@@ -20391,8 +20391,8 @@ function renderClassificationBacteriennePage(){
     items:[
       {file:"gramneg1.png",label:"Classification Gram -"},
       {file:"gramneg2.png",label:"Cocci Gram -"},
-      {file:"gramneg3.png",label:"Bacilles Gram (1/2)"},
-      {file:"gramneg4.png",label:"Bacilles Gram (2/2)"},
+      {file:"gramneg3.png",label:"Bacilles Gram - (1/2)"},
+      {file:"gramneg4.png",label:"Bacilles Gram - (2/2)"},
       {file:"grampos1.png",label:"Classification Gram +"},
       {file:"grampos2.png",label:"Cocci Gram +"},
       {file:"grampos3.png",label:"Bacilles Gram +"},
